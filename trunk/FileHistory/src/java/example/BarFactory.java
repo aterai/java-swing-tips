@@ -154,6 +154,8 @@ public final class BarFactory{
                 public float getAlignmentY() { return 0.5f; }
             };
         }
+        b.setFocusPainted(false);
+        b.setFocusable(false);
         b.setRequestFocusEnabled(false);
         b.setMargin(new Insets(1,1,1,1));
 
