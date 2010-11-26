@@ -9,8 +9,8 @@ import javax.swing.table.*;
 
 public class TestModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
-        new ColumnContext("No.", Integer.class, false),
-        new ColumnContext("Name", String.class, false),
+        new ColumnContext("No.",      Integer.class, false),
+        new ColumnContext("Name",     String.class, false),
         new ColumnContext("Progress", Integer.class, false)
     };
     private final Map<Integer, SwingWorker> swmap = new HashMap<Integer, SwingWorker>();
