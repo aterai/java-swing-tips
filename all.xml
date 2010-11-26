@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="swingall" default="all" basedir=".">
+  <target name="all">
+    <subant target="${all}">
+      <fileset dir="." casesensitive="yes">
+        <filename name=".hg/*" negate="true"/>
+        <filename name="*/build.xml"/>
+      </fileset>
+    </subant>
+  </target>
+</project>

@@ -1,0 +1,47 @@
+package example;
+//-*- mode:java; encoding:utf8n; coding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+//@homepage@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class MainPanel extends JPanel {
+    private final JButton button = new JButton("showMessageDialog");
+    public MainPanel() {
+        super(new BorderLayout());
+        button.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                JButton b = (JButton)e.getSource();
+                JOptionPane.showMessageDialog(b, "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
+                Toolkit.getDefaultToolkit().beep();
+            }
+        });
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(BorderFactory.createTitledBorder("Toolkit.getDefaultToolkit().beep()"));
+        p.add(button);
+        add(p);
+        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        setPreferredSize(new Dimension(320, 200));
+    }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}

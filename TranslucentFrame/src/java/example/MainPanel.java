@@ -1,0 +1,170 @@
+package example;
+//-*- mode:java; encoding:utf8n; coding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+//@homepage@
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.plaf.synth.*;
+//import com.sun.java.swing.Painter; // 1.6.0
+//import javax.swing.Painter; // 1.7.0
+
+public class MainPanel extends JPanel{
+    private final JDesktopPane desktop = new JDesktopPane();
+    public MainPanel() {
+        super(new BorderLayout());
+        JPanel p1 = new JPanel();
+        p1.setOpaque(false);
+        JPanel p2 = new JPanel() {
+            @Override public void paintComponent(Graphics g) {
+                //super.paintComponent(g);
+                g.setColor(new Color(100,50,50,100));
+                g.fillRect(0,0,getWidth(), getHeight());
+            }
+        };
+//         d.put("InternalFrame[Enabled].backgroundPainter", new Painter() {
+//             public void paint(Graphics2D g, Object o, int w, int h) {
+//                 g.setColor(new Color(100,200,100,100));
+//                 g.fillRoundRect(0,0,w-1,h-1,15,15);
+//             }
+//         });
+//         d.put("InternalFrame[Enabled+WindowFocused].backgroundPainter", new Painter() {
+//             public void paint(Graphics2D g, Object o, int w, int h) {
+//                 g.setColor(new Color(100,250,120,100));
+//                 g.fillRoundRect(0,0,w-1,h-1,15,15);
+//             }
+//         });
+        createFrame(p1, 0);
+        createFrame(p2, 1);
+        add(desktop);
+        setPreferredSize(new Dimension(320, 240));
+    }
+//     private final UIDefaults d = new UIDefaults();
+
+    protected JInternalFrame createFrame(JPanel panel, int idx) {
+        MyInternalFrame frame = new MyInternalFrame();
+//         frame.putClientProperty("Nimbus.Overrides", d);
+//         //frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+        if(panel!=null) {
+            frame.setContentPane(panel);
+            panel.add(new JLabel("label"));
+            panel.add(new JButton("button"));
+            frame.getRootPane().setOpaque(false);
+        }
+        desktop.add(frame);
+        frame.setOpaque(false);
+        frame.setVisible(true);
+        frame.setLocation(10+60*idx, 10+40*idx);
+        desktop.getDesktopManager().activateFrame(frame);
+        return frame;
+    }
+    static class MyInternalFrame extends JInternalFrame{
+        public MyInternalFrame() {
+            super("title", true, true, true, true);
+            setSize(160, 100);
+        }
+    }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+                if("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                    SynthLookAndFeel.setStyleFactory(
+                        new MySynthStyleFactory(SynthLookAndFeel.getStyleFactory()));
+                    break;
+                }
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+class MySynthStyleFactory extends SynthStyleFactory {
+    private SynthStyleFactory wrappedFactory;
+    public MySynthStyleFactory(SynthStyleFactory factory) {
+        this.wrappedFactory = factory;
+    }
+    @Override public SynthStyle getStyle(JComponent c, Region id) {
+        SynthStyle s = wrappedFactory.getStyle(c, id);
+        //if(id==Region.INTERNAL_FRAME_TITLE_PANE||id==Region.INTERNAL_FRAME) {
+        if(id==Region.INTERNAL_FRAME) {
+            s = new TranslucentSynthSytle(s);
+        }
+        return s;
+    }
+}
+class TranslucentSynthSytle extends SynthStyle {
+    private final SynthStyle style;
+    public TranslucentSynthSytle(SynthStyle s) {
+        style = s;
+    }
+    @Override public Object get(SynthContext context, Object key) {
+        return style.get(context, key);
+    }
+    @Override public boolean getBoolean(SynthContext context, Object key, boolean defaultValue) {
+        return style.getBoolean(context, key, defaultValue);
+    }
+    @Override public Color getColor(SynthContext context, ColorType type) {
+        return style.getColor(context, type);
+    }
+    @Override public Font getFont(SynthContext context) {
+        return style.getFont(context);
+    }
+    @Override public SynthGraphicsUtils getGraphicsUtils(SynthContext context) {
+        return style.getGraphicsUtils(context);
+    }
+    @Override public Icon getIcon(SynthContext context, Object key) {
+        return style.getIcon(context, key);
+    }
+    @Override public Insets getInsets(SynthContext context, Insets insets) {
+        return style.getInsets(context, insets);
+    }
+    @Override public int getInt(SynthContext context, Object key, int defaultValue) {
+        return style.getInt(context, key, defaultValue);
+    }
+    @Override public SynthPainter getPainter(final SynthContext context) {
+        return new SynthPainter() {
+            @Override public void paintInternalFrameBackground(SynthContext context, Graphics g,
+                                                               int x, int y, int w, int h) {
+                g.setColor(new Color(100,200,100,100));
+                g.fillRoundRect(x,y,w-1,h-1,15,15);
+            }
+        };
+    }
+    @Override public String getString(SynthContext context,
+                            Object key, String defaultValue) {
+        return style.getString(context, key, defaultValue);
+    }
+    @Override public void installDefaults(SynthContext context) {
+        style.installDefaults(context);
+    }
+    @Override public void uninstallDefaults(SynthContext context) {
+        style.uninstallDefaults(context);
+    }
+    @Override public boolean isOpaque(SynthContext context) {
+        if(context.getRegion()==Region.INTERNAL_FRAME) {
+            return false;
+        }else{
+            return style.isOpaque(context);
+        }
+    }
+    @Override public Color getColorForState(SynthContext context, ColorType type) {
+        return null; //Color.RED;
+    }
+    @Override public Font getFontForState(SynthContext context) {
+        return null; //new Font("MONOSPACE", Font.ITALIC, 24);
+    }
+}

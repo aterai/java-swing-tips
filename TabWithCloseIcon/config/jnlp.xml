@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Encoding Hint: 雀の往来 -->
+<project>
+ <property name="jnlp.title"    value="JST タブを閉じる" />
+ <property name="jnlp.Name"     value="TabWithCloseIcon" />
+ <property name="jnlp.name"     value="tabwithcloseicon" />
+ <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+</project>
