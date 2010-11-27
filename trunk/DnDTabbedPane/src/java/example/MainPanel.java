@@ -136,6 +136,8 @@ class DnDTabbedPane extends JTabbedPane {
             rBackward.setBounds(r.x, r.y, r.width, rwh);
             rForward.setBounds(r.x, r.y+r.height-rwh-buttonsize, r.width, rwh+buttonsize);
         }
+        rBackward = SwingUtilities.convertRectangle(getParent(), rBackward, glassPane);
+        rForward  = SwingUtilities.convertRectangle(getParent(), rForward,  glassPane);
         if(rBackward.contains(glassPt)) {
             //System.out.println(new java.util.Date() + "Backward");
             clickArrowButton("scrollTabsBackwardAction");
