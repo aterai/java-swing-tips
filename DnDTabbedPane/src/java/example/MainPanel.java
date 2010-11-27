@@ -224,20 +224,20 @@ class DnDTabbedPane extends JTabbedPane {
         @Override public void dragExit(DropTargetEvent e) {}
         @Override public void dropActionChanged(DropTargetDragEvent e) {}
 
-        private Point pt_ = new Point();
+        private Point _glassPt = new Point();
         @Override public void dragOver(final DropTargetDragEvent e) {
-            Point pt = e.getLocation();
+            Point glassPt = e.getLocation();
             if(getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM) {
-                initTargetLeftRightLine(getTargetTabIndex(pt));
+                initTargetLeftRightLine(getTargetTabIndex(glassPt));
             }else{
-                initTargetTopBottomLine(getTargetTabIndex(pt));
+                initTargetTopBottomLine(getTargetTabIndex(glassPt));
             }
             if(hasGhost()) {
-                glassPane.setPoint(pt);
+                glassPane.setPoint(glassPt);
             }
-            if(!pt_.equals(pt)) glassPane.repaint();
-            pt_ = pt;
-            autoScrollTest(pt);
+            if(!_glassPt.equals(glassPt)) glassPane.repaint();
+            _glassPt = glassPt;
+            autoScrollTest(glassPt);
         }
 
         @Override public void drop(DropTargetDropEvent e) {
