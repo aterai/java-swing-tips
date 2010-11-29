@@ -10,38 +10,34 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         JTable table = new JTable(model);
-        table.setRowSelectionAllowed(true);
-        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        table.setAutoCreateRowSorter(true);
 
         Font font = new Font("Sans-serif", Font.PLAIN, 32);
-        JTableHeader header = table.getTableHeader();
-        TableCellRenderer renderer = header.getDefaultRenderer();
-        TableColumn c = table.getColumnModel().getColumn(0);
-        c.setHeaderRenderer(new HeaderRenderer(renderer, font));
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
+        table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer(font));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 180));
     }
     private static class HeaderRenderer implements TableCellRenderer {
-        private final TableCellRenderer tcr;
         private final Font font;
-        public HeaderRenderer(TableCellRenderer tcr, Font font) {
-            this.tcr  = tcr;
+        public HeaderRenderer(Font font) {
             this.font = font;
         }
-        @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS,
+        @Override public Component getTableCellRendererComponent(JTable t, Object val, boolean isS,
                                                        boolean hasF, int row, int col) {
-            JLabel l = (JLabel)tcr.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+            TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
+            JLabel l = (JLabel)r.getTableCellRendererComponent(t, val, isS, hasF, row, col);
             l.setFont(font);
             return l;
         }
