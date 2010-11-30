@@ -40,8 +40,13 @@ public class MainPanel extends JPanel {
             }
         };
         table.setAutoCreateRowSorter(true);
-        JTableHeader h = table.getTableHeader();
-        h.setDefaultRenderer(new ToolTipHeaderRenderer(h.getDefaultRenderer()));
+
+        TableCellRenderer r = new ToolTipHeaderRenderer();
+        for(int i=0;i<table.getColumnModel().getColumnCount();i++) {
+            table.getColumnModel().getColumn(i).setHeaderRenderer(r);
+        }
+//         JTableHeader h = table.getTableHeader();
+//         h.setDefaultRenderer(new ToolTipHeaderRenderer(h.getDefaultRenderer()));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 200));
@@ -70,13 +75,10 @@ public class MainPanel extends JPanel {
 }
 
 class ToolTipHeaderRenderer implements TableCellRenderer {
-    private final TableCellRenderer renderer;
     private final Icon icon = UIManager.getIcon("Table.ascendingSortIcon");
-    public ToolTipHeaderRenderer(TableCellRenderer renderer) {
-        this.renderer  = renderer;
-    }
     @Override public Component getTableCellRendererComponent(JTable table,Object value,
                     boolean isSelected, boolean hasFocus, int row, int column) {
+        TableCellRenderer renderer = table.getTableHeader().getDefaultRenderer();
         JLabel l = (JLabel)renderer.getTableCellRendererComponent(
             table, value, isSelected, hasFocus, row, column);
         Insets i = l.getInsets();
