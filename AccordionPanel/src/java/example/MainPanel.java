@@ -56,7 +56,7 @@ public class MainPanel extends JPanel{
 
     private Vector<ExpansionPanel> makeList() {
         Vector<ExpansionPanel> panelList = new Vector<ExpansionPanel>();
-        panelList.addElement(new ExpansionPanel("ファイル") {
+        panelList.addElement(new ExpansionPanel("System Tasks") {
             @Override public JPanel makePanel() {
                 JPanel pnl = new JPanel(new GridLayout(0,1));
                 JCheckBox c1 = new JCheckBox("aaaa");
@@ -68,17 +68,17 @@ public class MainPanel extends JPanel{
                 return pnl;
             }
         });
-        panelList.addElement(new ExpansionPanel("その他") {
+        panelList.addElement(new ExpansionPanel("Other Places") {
             @Override public JPanel makePanel() {
                 JPanel pnl = new JPanel(new GridLayout(0,1));
-                pnl.add(new JLabel("デスクトップ"));
-                pnl.add(new JLabel("マイ ドキュメント"));
-                pnl.add(new JLabel("マイ コンピュータ"));
-                pnl.add(new JLabel("マイ ネットワーク"));
+                pnl.add(new JLabel("Desktop"));
+                pnl.add(new JLabel("My Network Places"));
+                pnl.add(new JLabel("My Documents"));
+                pnl.add(new JLabel("Shared Documents"));
                 return pnl;
             }
         });
-        panelList.addElement(new ExpansionPanel("詳細") {
+        panelList.addElement(new ExpansionPanel("Details") {
             @Override public JPanel makePanel() {
                 JPanel pnl = new JPanel(new GridLayout(0,1));
                 ButtonGroup bg = new ButtonGroup();
