@@ -10,7 +10,7 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private final JTable table;
     private final TestModel model;
-    private final JCheckBox modelCheck = new JCheckBox("奇数行だけ表示する");
+    private final JCheckBox check = new JCheckBox("display an odd number of rows");
     public MainPanel() {
         super(new BorderLayout());
         model = new TestModel();
@@ -55,13 +55,13 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("Name a", ""));
         model.addTest(new Test("Name 0", "Test aa"));
 
-        modelCheck.addActionListener(new ActionListener() {
+        check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                model.filterRows(modelCheck.isSelected());
+                model.filterRows(check.isSelected());
             }
         });
         add(new JScrollPane(table));
-        add(modelCheck, BorderLayout.NORTH);
+        add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
 

@@ -27,12 +27,12 @@ public class MainPanel extends JPanel{
                 label.setText(frame.getSize().toString());
             }
         });
-        checkbox1.setAction(new AbstractAction(MW+"*"+MH1+"以下にならないよう制限する") {
+        checkbox1.setAction(new AbstractAction("the minimum size of this window: "+MW+"x"+MH1) {
             @Override public void actionPerformed(ActionEvent e) {
                 initFrameSize();
             }
         });
-        checkbox2.setAction(new AbstractAction(MW+"*"+MH2+"以下にならないよう制限する(1.6以上)") {
+        checkbox2.setAction(new AbstractAction("the minimum size of this window(since 1.6): "+MW+"x"+MH2) {
             @Override public void actionPerformed(ActionEvent e) {
                 frame.setMinimumSize((checkbox2.isSelected())?new Dimension(MW, MH2):null);
             }
