@@ -17,24 +17,23 @@ public class MainPanel extends JPanel {
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tableHeader.setReorderingAllowed(false);
 
-        //すべてのヘッダカラムは変更不可
+        //// User can't resize columns by dragging between headers.
         //tableHeader.setResizingAllowed(false);
 
-        //JTable.AUTO_RESIZE_OFFで、サイズ変更を不可にしたい場合
+        //// Disable resizing of the column width(JTable.AUTO_RESIZE_OFF).
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         //col.setPreferredWidth(50);
         //col.setResizable(false);
 
-        //サイズ変更を不可にしたい場合
+        //// Disable resizing of the column width.
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
         col.setMaxWidth(60);
 
-        //列の削除(非表示)
+        //// Deletes the column from the tableColumns array.
         //table.removeColumn(col);
 
-//         //0に固定すると表示されない列が作成できる
-//         //(再表示が簡単だけど、フォーカス移動がおかしくなる)
+//         //// XXX: focus traversal
 //         col = table.getColumnModel().getColumn(1);
 //         col.setMinWidth(0);
 //         col.setMaxWidth(0);

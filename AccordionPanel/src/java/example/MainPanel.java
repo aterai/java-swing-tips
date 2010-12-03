@@ -127,7 +127,7 @@ abstract class ExpansionPanel extends JPanel{
     public ExpansionPanel(String title_) {
         super(new BorderLayout());
         title = title_;
-        label = new JLabel("↓ "+title) {
+        label = new JLabel("▼ "+title) {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D)g;
                 //Insets ins = getInsets();
@@ -169,7 +169,7 @@ abstract class ExpansionPanel extends JPanel{
     }
     protected void initPanel() {
         panel.setVisible(!panel.isVisible());
-        label.setText((panel.isVisible()?"↑ ":"↓ ")+title);
+        label.setText((panel.isVisible()?"△ ":"▼ ")+title);
         revalidate();
         fireExpansionEvent();
         EventQueue.invokeLater(new Runnable() {

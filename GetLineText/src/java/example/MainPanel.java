@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
 
-        JButton button = new JButton(new AbstractAction("#で始まるコメント行を数える") {
+        JButton button = new JButton(new AbstractAction("count commented lines: startsWith(\"#\")") {
             @Override public void actionPerformed(ActionEvent e) {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
@@ -78,7 +78,7 @@ public class MainPanel extends JPanel {
 //                             count = -1;
 //                         }
 //                         //ElementCount
-                        JOptionPane.showMessageDialog(scroll, "コメント行数: "+count, "タイトル", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(scroll, "commented lines: "+count, "title", JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
             }
