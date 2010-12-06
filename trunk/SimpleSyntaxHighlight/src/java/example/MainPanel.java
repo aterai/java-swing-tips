@@ -43,13 +43,13 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     public SimpleSyntaxDocument() {
         super();
         StyleConstants.setForeground(normal, Color.BLACK);
-        MutableAttributeSet color;
-        StyleConstants.setForeground(color = new SimpleAttributeSet(), Color.RED);
-        keywords.put("red", color);
-        StyleConstants.setForeground(color = new SimpleAttributeSet(), Color.GREEN);
-        keywords.put("green", color);
-        StyleConstants.setForeground(color = new SimpleAttributeSet(), Color.BLUE);
-        keywords.put("blue", color);
+        MutableAttributeSet attr;
+        StyleConstants.setForeground(attr = new SimpleAttributeSet(), Color.RED);
+        keywords.put("red",   attr);
+        StyleConstants.setForeground(attr = new SimpleAttributeSet(), Color.GREEN);
+        keywords.put("green", attr);
+        StyleConstants.setForeground(attr = new SimpleAttributeSet(), Color.BLUE);
+        keywords.put("blue",  attr);
     }
     @Override public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
         super.insertString(offset, str, a);
