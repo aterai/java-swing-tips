@@ -18,6 +18,14 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         jtp.setEditable(false);
+        StyledDocument doc = jtp.getStyledDocument();
+        Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        Style regular = doc.addStyle("regular", def);
+        //StyleConstants.setForeground(error, Color.BLACK);
+        //Style error = doc.addStyle("error", regular);
+        StyleConstants.setForeground(doc.addStyle("error", regular), Color.RED);
+        StyleConstants.setForeground(doc.addStyle("blue",  regular), Color.BLUE);
+
         ok.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 int i1 = ((Integer)spinner1.getValue()).intValue();
@@ -26,25 +34,25 @@ public class MainPanel extends JPanel {
                     File file = new File(System.getProperty("java.io.tmpdir"), "backup-test");
                     if(!file.exists()) {
                         if(!file.createNewFile()) {
-                            append(file.getName()+"の生成に失敗しました。", true);
+                            append(file.getName()+"の生成に失敗しました。", "error");
                             return;
                         }
                         //file.deleteOnExit();
-                        append(file.getName()+"を生成しました。", false);
+                        append(file.getName()+"を生成しました。", "regular");
                     }else{
                         File nf = makeBackupFile(file, i1, i2);
                         if(nf==null) {
-                            append("バックアップファイルの生成に失敗しました。", true);
+                            append("バックアップファイルの生成に失敗しました。", "error");
                         }else if(!nf.createNewFile()) {
-                            append(nf.getName()+"の生成に失敗しました。", true);
+                            append(nf.getName()+"の生成に失敗しました。", "regular");
                         }
-                        //append(nf.getName()+"を更新しました。", false);
+                        //append(nf.getName()+"を更新しました。", "error");
                     }
                 }catch(IOException ioe) {
                     ioe.printStackTrace();
-                    append("ファイルの生成に失敗しました。", true);
+                    append("ファイルの生成に失敗しました。", "error");
                 }
-                append("----------------------------------", true);
+                append("----------------------------------", "regular");
             }
         });
         Box box = Box.createHorizontalBox();
@@ -105,7 +113,7 @@ public class MainPanel extends JPanel {
             if(file.delete()) {
                 return new File(newfilename);
             }else{
-                append("古いバックアップファイル削除に失敗", true);
+                append("古いバックアップファイル削除に失敗", "error");
                 return null;
             }
         }
@@ -128,52 +136,48 @@ public class MainPanel extends JPanel {
         }
         if(testFileFlag) {
             if(file.renameTo(testFile)) {
-                append("古い同名ファイルをリネーム", true);
-                append("    "+file.getName()+" -> "+testFile.getName(), false);
+                append("古い同名ファイルをリネーム", "regular");
+                append("    "+file.getName()+" -> "+testFile.getName(), "blue");
             }else{
-                append("ファイルのリネームに失敗", true);
+                append("ファイルのリネームに失敗", "error");
                 return null;
             }
         }else{
             File tmpFile3 = new File(file.getParentFile(), file.getName()+"."+(intold+1)+"~");
-            append("古いパックアップファイルを削除", true);
-            append("    del:"+tmpFile3.getAbsolutePath(),false);
+            append("古いパックアップファイルを削除", "regular");
+            append("    del:"+tmpFile3.getAbsolutePath(), "blue");
             if(!tmpFile3.delete()) {
-                append("古いバックアップファイル削除に失敗", true);
+                append("古いバックアップファイル削除に失敗", "error");
                 return null;
             }
             for(int i=intold+2;i<=intold+intnew;i++) {
                 File tmpFile1 = new File(file.getParentFile(), file.getName()+"."+i+"~");
                 File tmpFile2 = new File(file.getParentFile(), file.getName()+"."+(i-1)+"~");
                 if(!tmpFile1.renameTo(tmpFile2)) {
-                    append("ファイルのリネームに失敗", true);
+                    append("ファイルのリネームに失敗", "error");
                     return null;
                 }
-                append("古いパックアップファイルの番号を更新", true);
-                append("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), false);
+                append("古いパックアップファイルの番号を更新", "regular");
+                append("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), "blue");
             }
             File tmpFile = new File(file.getParentFile(), file.getName()+"."+(intold+intnew)+"~");
-            append("古い同名ファイルをリネーム", true);
-            append("    "+file.getName()+" -> "+tmpFile.getName(), false);
+            append("古い同名ファイルをリネーム", "regular");
+            append("    "+file.getName()+" -> "+tmpFile.getName(), "blue");
             if(!file.renameTo(tmpFile)) {
-                append("ファイルのリネームに失敗", true);
+                append("ファイルのリネームに失敗", "error");
                 return null;
             }
         }
         return new File(newfilename);
     }
 
-    private void append(final String str, final boolean flg) {
-        SimpleAttributeSet sas = null;
-        if(!flg) {
-            sas = new SimpleAttributeSet();
-            StyleConstants.setForeground(sas, Color.RED);
-        }
+    private void append(String str, String style) {
+        StyledDocument doc = jtp.getStyledDocument();
         try{
-            Document doc = jtp.getDocument();
-            doc.insertString(doc.getLength(), str+"\n", sas);
-            jtp.setCaretPosition(doc.getLength());
-        }catch(BadLocationException e) { e.printStackTrace(); }
+            doc.insertString(doc.getLength(), str+"\n", doc.getStyle(style));
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
