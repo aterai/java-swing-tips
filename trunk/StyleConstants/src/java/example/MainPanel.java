@@ -15,7 +15,6 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout(5,5));
-        jtp.setEditable(false);
         ok.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 append("Test test test test", true);
@@ -38,6 +37,17 @@ public class MainPanel extends JPanel {
         box.add(Box.createHorizontalStrut(5));
         box.add(clr);
 
+        jtp.setEditable(false);
+        StyledDocument doc = jtp.getStyledDocument();
+        Style def = StyleContext.getDefaultStyleContext().getStyle(
+            StyleContext.DEFAULT_STYLE);
+
+        Style regular = doc.addStyle("regular", def);
+        //StyleConstants.setForeground(def, Color.BLACK);
+
+        Style error = doc.addStyle("error", regular);
+        StyleConstants.setForeground(error, Color.RED);
+
         JScrollPane scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                                              JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.getVerticalScrollBar().setUnitIncrement(25);
@@ -50,22 +60,31 @@ public class MainPanel extends JPanel {
     }
 
     private static final String SEPARATOR = "\n";
-    private void append(final String str, final boolean flg) {
-        SimpleAttributeSet sas = null;
-        if(!flg) {
-            //sas = new SimpleAttributeSet(jtp.getCharacterAttributes());
-            sas = new SimpleAttributeSet();
-            StyleConstants.setForeground(sas, Color.RED);
-            //StyleConstants.setBold(sas, true);
-            //StyleConstants.setFontFamily(sas, "Monospaced");
-            //StyleConstants.setFontSize(sas, 32);
-            //StyleConstants.setForeground(sas, Color.GREEN);
-        }
+//     private void append_(String str, boolean flg) {
+//         SimpleAttributeSet sas = null;
+//         if(!flg) {
+//             //sas = new SimpleAttributeSet(jtp.getCharacterAttributes());
+//             sas = new SimpleAttributeSet();
+//             StyleConstants.setForeground(sas, Color.RED);
+//             //StyleConstants.setBold(sas, true);
+//             //StyleConstants.setFontFamily(sas, "Monospaced");
+//             //StyleConstants.setFontSize(sas, 32);
+//             //StyleConstants.setForeground(sas, Color.GREEN);
+//         }
+//         try{
+//             Document doc = jtp.getDocument();
+//             doc.insertString(doc.getLength(), str+SEPARATOR, sas);
+//             jtp.setCaretPosition(doc.getLength());
+//         }catch(BadLocationException e) { e.printStackTrace(); }
+//     }
+    private void append(String str, boolean flg) {
+        String style = flg?"regular":"error";
+        StyledDocument doc = jtp.getStyledDocument();
         try{
-            Document doc = jtp.getDocument();
-            doc.insertString(doc.getLength(), str+SEPARATOR, sas);
-            jtp.setCaretPosition(doc.getLength());
-        }catch(BadLocationException e) { e.printStackTrace(); }
+            doc.insertString(doc.getLength(), str+"\n", doc.getStyle(style));
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
