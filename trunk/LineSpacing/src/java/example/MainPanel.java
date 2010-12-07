@@ -12,6 +12,9 @@ public class MainPanel extends JPanel {
     private final JEditorPane editor2 = new JEditorPane();
     public MainPanel() {
         super(new BorderLayout());
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        StyleConstants.setFontSize(attr, 32);
+
         SimpleAttributeSet a = new SimpleAttributeSet();
         StyleConstants.setLineSpacing(a, .5f);
         //StyleConstants.setSpaceAbove(a, 5.0f);
@@ -19,7 +22,8 @@ public class MainPanel extends JPanel {
         //StyleConstants.setLeftIndent(a, 5.0f);
         //StyleConstants.setRightIndent(a, 5.0f);
         editor1.setParagraphAttributes(a, true);
-        setDummyText(editor1);
+        editor1.setText("JTextPane, StyleConstants.setLineSpacing(...);\naaaaaaaa");
+        setDummyText(editor1, "1234567890", attr);
 
 //         StyleSheet styleSheet = new StyleSheet();
 //         styleSheet.addRule("body {font-size: 24pt; line-height: 2.0}"); //XXX
@@ -29,7 +33,8 @@ public class MainPanel extends JPanel {
 //         editor1.setText("<html><body>12341234<br />asdf_fASdfasf_fasdf_affffFSDdfasdf<br />nasdfasFasdf<font size='32'>12341234<br />asdfasdf</font></body></html>");
 
         editor2.setEditorKit(new BottomInsetEditorKit());
-        setDummyText(editor2);
+        editor2.setText("JEditorPane, BottomInsetEditorKit\nbbbbbbb");
+        setDummyText(editor2, "0987654321\nasdf", attr);
 
         final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setTopComponent(new JScrollPane(editor1));
@@ -43,15 +48,12 @@ public class MainPanel extends JPanel {
             }
         });
     }
-    private static void setDummyText(JEditorPane textPane) {
-        textPane.setText("12341234\nasdf_fASdfasf_fasdf_affffFSDdfasdf\nasdfasFasdf");
-        SimpleAttributeSet attr = new SimpleAttributeSet();
-        StyleConstants.setFontSize(attr, 32);
+    private static void setDummyText(JEditorPane editor, String str, MutableAttributeSet attr) {
+        Document doc = editor.getDocument();
         try{
-            Document doc = textPane.getDocument();
-            doc.insertString(doc.getLength(), "12341234\nasdfasdf", attr);
-            textPane.setCaretPosition(doc.getLength());
-        } catch (BadLocationException e) {
+            doc.insertString(doc.getLength(), str, attr);
+            editor.setCaretPosition(doc.getLength());
+        }catch(BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -81,20 +83,20 @@ class BottomInsetEditorKit extends StyledEditorKit {
         return new ViewFactory() {
             @Override public View create(Element elem) {
                 String kind = elem.getName();
-                if (kind!=null) {
-                    if (kind.equals(AbstractDocument.ContentElementName)) {
+                if(kind!=null) {
+                    if(kind.equals(AbstractDocument.ContentElementName)) {
                         return new LabelView(elem);
-                    } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
+                    }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
                         return new javax.swing.text.ParagraphView(elem) {
                             @Override protected short getBottomInset() {
                                 return 5;
                             }
                         };
-                    } else if (kind.equals(AbstractDocument.SectionElementName)) {
+                    }else if(kind.equals(AbstractDocument.SectionElementName)) {
                         return new BoxView(elem, View.Y_AXIS);
-                    } else if (kind.equals(StyleConstants.ComponentElementName)) {
+                    }else if(kind.equals(StyleConstants.ComponentElementName)) {
                         return new ComponentView(elem);
-                    } else if (kind.equals(StyleConstants.IconElementName)) {
+                    }else if(kind.equals(StyleConstants.IconElementName)) {
                         return new IconView(elem);
                     }
                 }
