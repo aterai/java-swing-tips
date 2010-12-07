@@ -38,18 +38,16 @@ public class MainPanel extends JPanel {
 }
 //From: http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
-    HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
-    MutableAttributeSet normal = new SimpleAttributeSet();
+    //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
+    private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
     public SimpleSyntaxDocument() {
         super();
+        Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        normal = addStyle("normal", def);
         StyleConstants.setForeground(normal, Color.BLACK);
-        MutableAttributeSet attr;
-        StyleConstants.setForeground(attr = new SimpleAttributeSet(), Color.RED);
-        keywords.put("red",   attr);
-        StyleConstants.setForeground(attr = new SimpleAttributeSet(), Color.GREEN);
-        keywords.put("green", attr);
-        StyleConstants.setForeground(attr = new SimpleAttributeSet(), Color.BLUE);
-        keywords.put("blue",  attr);
+        StyleConstants.setForeground(addStyle("red",   normal), Color.RED);
+        StyleConstants.setForeground(addStyle("green", normal), Color.GREEN);
+        StyleConstants.setForeground(addStyle("blue",  normal), Color.BLUE);
     }
     @Override public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
         super.insertString(offset, str, a);
@@ -64,7 +62,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         String content = getText(0, getLength());
         int startLine = root.getElementIndex( offset );
         int endLine = root.getElementIndex( offset + length );
-        for (int i = startLine; i <= endLine; i++) {
+        for(int i = startLine; i <= endLine; i++) {
             applyHighlighting(content, i);
         }
     }
@@ -74,16 +72,16 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         int endOffset     = root.getElement( line ).getEndOffset() - 1;
         int lineLength    = endOffset - startOffset;
         int contentLength = content.length();
-        if (endOffset >= contentLength) endOffset = contentLength - 1;
+        if(endOffset >= contentLength) endOffset = contentLength - 1;
         setCharacterAttributes(startOffset, lineLength, normal, true);
         checkForTokens(content, startOffset, endOffset);
     }
     private void checkForTokens(String content, int startOffset, int endOffset) {
-        while (startOffset <= endOffset) {
-            while (isDelimiter(content.substring(startOffset, startOffset+1))) {
-                if (startOffset < endOffset) {
+        while(startOffset <= endOffset) {
+            while(isDelimiter(content.substring(startOffset, startOffset+1))) {
+                if(startOffset < endOffset) {
                     startOffset++;
-                } else {
+                }else{
                     return;
                 }
             }
@@ -92,15 +90,18 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private int getOtherToken(String content, int startOffset, int endOffset) {
         int endOfToken = startOffset + 1;
-        while ( endOfToken <= endOffset ) {
-            if ( isDelimiter( content.substring(endOfToken, endOfToken + 1) ) ) {
+        while(endOfToken <= endOffset) {
+            if(isDelimiter(content.substring(endOfToken, endOfToken + 1) ) ) {
                 break;
             }
             endOfToken++;
         }
         String token = content.substring(startOffset, endOfToken);
-        if ( keywords.containsKey( token ) ) {
-            setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
+        Style s = getStyle(token);
+        //if(keywords.containsKey(token)) {
+        //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
+        if(s!=null) {
+            setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
         }
         return endOfToken + 1;
     }
