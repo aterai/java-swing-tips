@@ -43,111 +43,20 @@ public class MainPanel extends JPanel{
             @Override public void columnMarginChanged(final ChangeEvent e) {
                 //System.out.println("columnMarginChanged");
                 super.columnMarginChanged(e);
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        initPreferredHeight();
-                    }
-                });
-            }
-            private SizeSequence rowModel2;
-            private SizeSequence getRowModel2() {
-                if (rowModel2 == null) {
-                    rowModel2 = new SizeSequence(getRowCount(), getRowHeight());
-                }
-                return rowModel2;
-            }
-            @Override public int getRowHeight(int row) {
-                return (rowModel2 == null) ? getRowHeight() : rowModel2.getSize(row);
-            }
-            @Override public int rowAtPoint(Point point) {
-                int y = point.y;
-                int result = (rowModel2 == null) ?  y/getRowHeight() : rowModel2.getIndex(y);
-                if (result < 0) {
-                    return -1;
-                }
-                else if (result >= getRowCount()) {
-                    return -1;
-                }
-                else {
-                    return result;
-                }
-            }
-            @Override public Rectangle getCellRect(int row, int column, boolean includeSpacing) {
-                Rectangle r = new Rectangle();
-                boolean valid = true;
-                if (row < 0) {
-                    // y = height = 0;
-                    valid = false;
-                }
-                else if (row >= getRowCount()) {
-                    r.y = getHeight();
-                    valid = false;
-                }
-                else {
-                    r.height = getRowHeight(row);
-                    r.y = (rowModel2 == null) ? row * r.height : rowModel2.getPosition(row);
-                }
-
-                if (column < 0) {
-                    if( !getComponentOrientation().isLeftToRight() ) {
-                        r.x = getWidth();
-                    }
-                    // otherwise, x = width = 0;
-                    valid = false;
-                }
-                else if (column >= getColumnCount()) {
-                    if( getComponentOrientation().isLeftToRight() ) {
-                        r.x = getWidth();
-                    }
-                    // otherwise, x = width = 0;
-                    valid = false;
-                }
-                else {
-                    TableColumnModel cm = getColumnModel();
-                    if( getComponentOrientation().isLeftToRight() ) {
-                        for(int i = 0; i < column; i++) {
-                            r.x += cm.getColumn(i).getWidth();
-                        }
-                    } else {
-                        for(int i = cm.getColumnCount()-1; i > column; i--) {
-                            r.x += cm.getColumn(i).getWidth();
-                        }
-                    }
-                    r.width = cm.getColumn(column).getWidth();
-                }
-
-                if (valid && !includeSpacing) {
-                    // Bound the margins by their associated dimensions to prevent
-                    // returning bounds with negative dimensions.
-                    int rm = Math.min(getRowMargin(), r.height);
-                    int cm = Math.min(getColumnModel().getColumnMargin(), r.width);
-                    // This is not the same as grow(), it rounds differently.
-                    r.setBounds(r.x + cm/2, r.y + rm/2, r.width - cm, r.height - rm);
-                }
-                return r;
-            }
-
-            @Override public void setRowHeight(int row, int rowHeight) {
-                if (rowHeight <= 0) {
-                    throw new IllegalArgumentException("New row height less than 1");
-                }
-                getRowModel2().setSize(row, rowHeight);
-                //if (sortManager != null) {
-                //    sortManager.setViewRowHeight(row, rowHeight);
-                //}
-                //resizeAndRepaint();
+                initPreferredHeight();
             }
             private void initPreferredHeight() {
-                int vc = convertColumnIndexToView(AUTOWRAP_COLUMN);
-                TableColumn col = getColumnModel().getColumn(vc);
-                for(int row=0; row<getRowCount(); row++) {
-                    Component c = prepareRenderer(col.getCellRenderer(), row, vc);
-                    if(c instanceof JTextArea) {
-                        JTextArea a = (JTextArea)c;
-                        int h = getPreferredHeight(a); // + getIntercellSpacing().height;
-                        //if(getRowHeight(row)!=h)
-                        setRowHeight(row, h);
+                for(int row=0;row<getRowCount();row++) {
+                    int maximum_height = 0;
+                    for(int col=0;col<getColumnModel().getColumnCount();col++) {
+                        Component c = prepareRenderer(getCellRenderer(row, col), row, col);
+                        if(c instanceof JTextArea) {
+                            JTextArea a = (JTextArea)c;
+                            int h = getPreferredHeight(a); // + getIntercellSpacing().height;
+                            maximum_height = Math.max(maximum_height, h);
+                        }
                     }
+                    setRowHeight(row, maximum_height);
                 }
             }
             //http://tips4java.wordpress.com/2008/10/26/text-utilities/
@@ -166,7 +75,8 @@ public class MainPanel extends JPanel{
         table.setShowGrid(false);
         table.getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
         //table.setIntercellSpacing(new Dimension(0,0));
-        add(new JScrollPane(table));
+        add(new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                                   ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         setPreferredSize(new Dimension(320, 240));
     }
 
