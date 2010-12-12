@@ -51,6 +51,9 @@ public class MainPanel extends JPanel {
         new DropTarget(table, DnDConstants.ACTION_COPY, dtl, true);
         //new DropTarget(scroll.getViewport(), DnDConstants.ACTION_COPY, dtl, true);
 
+//         table.setDropMode(DropMode.INSERT_ROWS);
+//         table.setTransferHandler(new FileTransferHandler());
+
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
         col.setMaxWidth(60);
@@ -115,3 +118,38 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+// //table.setDropMode(DropMode.INSERT_ROWS);
+// //table.setTransferHandler(new FileTransferHandler());
+// class FileTransferHandler extends TransferHandler {
+//     @Override public boolean importData(JComponent component, Transferable transferable) {
+//         try{
+//             if(canImport(component, transferable.getTransferDataFlavors())) {
+//                 //DefaultTableModel model = (DefaultTableModel)((JTable)component).getModel();
+//                 TestModel model = (TestModel)((JTable)component).getModel();
+//                 for(Object o: (java.util.List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+//                     if(o instanceof File) {
+//                         File file = (File)o;
+//                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
+//                         model.addTest(new Test(file.getName(), file.getAbsolutePath()));
+//                     }
+//                 }
+//                 return true;
+//             }
+//         }catch(Exception ex) {
+//             ex.printStackTrace();
+//         }
+//         return false;
+//     }
+//     @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
+//         for(DataFlavor f: flavors) {
+//             if(DataFlavor.javaFileListFlavor.equals(f)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+//     }
+//     @Override public int getSourceActions(JComponent component) {
+//         return COPY;
+//     }
+// }
