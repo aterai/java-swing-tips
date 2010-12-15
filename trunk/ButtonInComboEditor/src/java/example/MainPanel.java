@@ -71,7 +71,7 @@ class MainPanel extends JPanel {
                 return parent.getMinimumSize();
             }
             @Override public void layoutContainer(Container parent) {
-                //if(!(parent instanceof JComboBox)) return;
+                if(!(parent instanceof JComboBox)) return;
                 JComboBox cb     = (JComboBox)parent;
                 int width        = cb.getWidth();
                 int height       = cb.getHeight();
