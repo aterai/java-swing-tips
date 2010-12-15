@@ -92,9 +92,9 @@ class JSearchBar extends JComboBox{
     public SearchBarComboBoxUI getUI() {
         return (SearchBarComboBoxUI)ui;
     }
-    public void setUI(SearchBarComboBoxUI newUI) {
-        super.setUI(newUI);
-    }
+//     public void setUI(SearchBarComboBoxUI newUI) {
+//         super.setUI(newUI);
+//     }
     @Override public void updateUI() {
         if(UIManager.get(getUIClassID())!=null) {
             setUI((SearchBarComboBoxUI)UIManager.getUI(this));
@@ -135,6 +135,6 @@ class JSearchBar extends JComboBox{
         updateUI();
     }
     @Override protected void processFocusEvent(java.awt.event.FocusEvent e) {
-        System.out.println("eee");
+        System.out.println("processFocusEvent");
     }
 }
