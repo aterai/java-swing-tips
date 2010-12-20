@@ -8,6 +8,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -151,11 +152,11 @@ public class MainPanel extends JPanel {
     }
 }
 class FileTransferHandler extends TransferHandler {
-    @Override public boolean importData(JComponent component, Transferable transferable) {
+    @Override public boolean importData(TransferSupport support) {
         try{
-            if(canImport(component, transferable.getTransferDataFlavors())) {
-                DefaultTableModel model = (DefaultTableModel)((JTable)component).getModel();
-                for(Object o: (java.util.List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+            if(canImport(support)) {
+                DefaultTableModel model = (DefaultTableModel)((JTable)support.getComponent()).getModel();
+                for(Object o: (List)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
                     if(o instanceof File) {
                         File file = (File)o;
                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
@@ -169,14 +170,34 @@ class FileTransferHandler extends TransferHandler {
         }
         return false;
     }
-    @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
-        for(DataFlavor f: flavors) {
-            if(DataFlavor.javaFileListFlavor.equals(f)) {
-                return true;
-            }
-        }
-        return false;
+    @Override public boolean canImport(TransferSupport support) {
+        return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
+//     @Override public boolean importData(JComponent component, Transferable transferable) {
+//         try{
+//             if(canImport(component, transferable.getTransferDataFlavors())) {
+//                 DefaultTableModel model = (DefaultTableModel)((JTable)component).getModel();
+//                 for(Object o: (java.util.List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+//                     if(o instanceof File) {
+//                         File file = (File)o;
+//                         model.addRow(new Object[] {file, file, file});
+//                     }
+//                 }
+//                 return true;
+//             }
+//         }catch(Exception ex) {
+//             ex.printStackTrace();
+//         }
+//         return false;
+//     }
+//     @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
+//         for(DataFlavor f: flavors) {
+//             if(DataFlavor.javaFileListFlavor.equals(f)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+//     }
     @Override public int getSourceActions(JComponent component) {
         return COPY;
     }
