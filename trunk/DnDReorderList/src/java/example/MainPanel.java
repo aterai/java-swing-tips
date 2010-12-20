@@ -80,7 +80,7 @@ class ListItemTransferHandler extends TransferHandler {
         transferedObjects = list.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferHandler.TransferSupport info) {
+    @Override public boolean canImport(TransferSupport info) {
         if (!info.isDrop() || !info.isDataFlavorSupported(localObjectFlavor)) {
             return false;
         }
@@ -89,7 +89,7 @@ class ListItemTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
-    @Override public boolean importData(TransferHandler.TransferSupport info) {
+    @Override public boolean importData(TransferSupport info) {
         if (!canImport(info)) {
             return false;
         }
