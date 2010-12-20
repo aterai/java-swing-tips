@@ -392,20 +392,21 @@
 
   <fileset id="ftp.upload.fileset" dir="${build.dir}">
     <include name="${name}.*" />
-    <include name="screenshot*.*" />
+    <!-- include name="screenshot*.*" / -->
     <include name="*.jar" />
     <include name="src.zip" />
   </fileset>
   <target name="ftp" depends="dist">
+    <property name="ftp.userid" value="terai" />
+    <property name="ftp.server" value="s55.xrea.com" />
+    <property name="ftp.remotedir" value="/public_html/swing/${jnlp.name}" />
     <input message="Enter Password:" addproperty="ftp.password" />
     <ftp action="mkdir"
-         server="s353.xrea.com"
-         remotedir="/public_html/swing/${jnlp.name}"
-         userid="aterai" password="${ftp.password}"
+         server="${ftp.server}" remotedir="${ftp.remotedir}"
+         userid="${ftp.userid}" password="${ftp.password}"
          passive="yes" verbose="yes" />
-    <ftp server="s353.xrea.com"
-         remotedir="/public_html/swing/${jnlp.name}"
-         userid="aterai" password="${ftp.password}"
+    <ftp server="${ftp.server}" remotedir="${ftp.remotedir}"
+         userid="${ftp.userid}" password="${ftp.password}"
          passive="yes" verbose="yes">
       <fileset refid="ftp.upload.fileset" />
     </ftp>
