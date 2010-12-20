@@ -81,13 +81,13 @@ class ListItemTransferHandler extends TransferHandler {
         transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferHandler.TransferSupport info) {
+    @Override public boolean canImport(TransferSupport info) {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
     }
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
-    @Override public boolean importData(TransferHandler.TransferSupport info) {
+    @Override public boolean importData(TransferSupport info) {
         if (!canImport(info)) {
             return false;
         }

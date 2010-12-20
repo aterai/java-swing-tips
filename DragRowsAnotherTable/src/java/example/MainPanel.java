@@ -90,7 +90,7 @@ class TableRowTransferHandler extends TransferHandler {
         transferedObjects = list.toArray();
         return new DataHandler(transferedObjects,localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferHandler.TransferSupport info) {
+    @Override public boolean canImport(TransferSupport info) {
         JTable t = (JTable)info.getComponent();
         boolean b = info.isDrop()&&info.isDataFlavorSupported(localObjectFlavor);
         //XXX bug?
@@ -100,7 +100,7 @@ class TableRowTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.COPY_OR_MOVE;
     }
-    @Override public boolean importData(TransferHandler.TransferSupport info) {
+    @Override public boolean importData(TransferSupport info) {
         JTable target = (JTable)info.getComponent();
         JTable.DropLocation dl  = (JTable.DropLocation)info.getDropLocation();
         DefaultTableModel model = (DefaultTableModel)target.getModel();

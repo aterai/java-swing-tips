@@ -399,7 +399,7 @@ class TabTransferHandler extends TransferHandler {
         if(c instanceof DnDTabbedPane) source = (DnDTabbedPane)c;
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferHandler.TransferSupport support) {
+    @Override public boolean canImport(TransferSupport support) {
         //System.out.println("canImport");
         if(!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
             System.out.println("canImport:"+support.isDrop()+" "+support.isDataFlavorSupported(localObjectFlavor));
@@ -494,7 +494,7 @@ class TabTransferHandler extends TransferHandler {
         c.getRootPane().getGlassPane().setVisible(true);
         return TransferHandler.MOVE;
     }
-    @Override public boolean importData(TransferHandler.TransferSupport support) {
+    @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
         if(!canImport(support)) return false;
 

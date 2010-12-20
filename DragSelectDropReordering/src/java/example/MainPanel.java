@@ -252,7 +252,7 @@ class ListItemTransferHandler extends TransferHandler {
         transferedObjects = list.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferHandler.TransferSupport support) {
+    @Override public boolean canImport(TransferSupport support) {
         //System.out.println("canImport");
         if(!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
             return false;
@@ -283,7 +283,7 @@ class ListItemTransferHandler extends TransferHandler {
         glassPane.setVisible(true);
         return TransferHandler.MOVE;
     }
-    @Override public boolean importData(TransferHandler.TransferSupport support) {
+    @Override public boolean importData(TransferSupport support) {
         if(!canImport(support)) {
             return false;
         }
