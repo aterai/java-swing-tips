@@ -258,7 +258,7 @@ class ListItemTransferHandler extends TransferHandler {
             return false;
         }
         support.setShowDropLocation(true);
-        support.setDropAction(TransferHandler.MOVE);
+        support.setDropAction(MOVE);
         return true;
     }
     private BufferedImage makeIconImage(JList c) {
@@ -281,7 +281,7 @@ class ListItemTransferHandler extends TransferHandler {
         Component glassPane = c.getRootPane().getGlassPane();
         glassPane.setCursor(DragSource.DefaultMoveDrop);
         glassPane.setVisible(true);
-        return TransferHandler.MOVE;
+        return MOVE;
     }
     @Override public boolean importData(TransferSupport support) {
         if(!canImport(support)) {
@@ -318,7 +318,7 @@ class ListItemTransferHandler extends TransferHandler {
         Component glassPane = c.getRootPane().getGlassPane();
         //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         glassPane.setVisible(false);
-        cleanup(c, action == TransferHandler.MOVE);
+        cleanup(c, action == MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
         if(remove && indices != null) {

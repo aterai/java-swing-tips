@@ -98,7 +98,7 @@ class TableRowTransferHandler extends TransferHandler {
         return b;
     }
     @Override public int getSourceActions(JComponent c) {
-        return TransferHandler.COPY_OR_MOVE;
+        return COPY_OR_MOVE;
     }
     @Override public boolean importData(TransferSupport info) {
         JTable target = (JTable)info.getComponent();
@@ -126,7 +126,7 @@ class TableRowTransferHandler extends TransferHandler {
         return false;
     }
     @Override protected void exportDone(JComponent c, Transferable t, int act) {
-        cleanup(c, act == TransferHandler.MOVE);
+        cleanup(c, act == MOVE);
     }
     private void cleanup(JComponent src, boolean remove) {
         if(remove && rows != null) {
