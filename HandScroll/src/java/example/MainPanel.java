@@ -9,7 +9,6 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private final JLabel label       = new JLabel();
     private final JScrollPane scroll = new JScrollPane(label);
-    private final JViewport vport    = scroll.getViewport();
     private final JRadioButton r1    = new JRadioButton("scrollRectToVisible");
     private final JRadioButton r2    = new JRadioButton("setViewPosition");
     public MainPanel() {
@@ -22,6 +21,7 @@ class MainPanel extends JPanel {
 
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
         HandScrollListener hsl = new HandScrollListener();
+        JViewport vport = scroll.getViewport();
         vport.addMouseMotionListener(hsl);
         vport.addMouseListener(hsl);
         add(scroll);
@@ -32,7 +32,8 @@ class MainPanel extends JPanel {
         private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
         private final Point pp = new Point();
-        @Override public void mouseDragged(final MouseEvent e) {
+        @Override public void mouseDragged(MouseEvent e) {
+            JViewport vport = (JViewport)e.getSource();
             Point cp = e.getPoint();
             Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
             vp.translate(pp.x-cp.x, pp.y-cp.y);
@@ -44,12 +45,11 @@ class MainPanel extends JPanel {
             pp.setLocation(cp);
         }
         @Override public void mousePressed(MouseEvent e) {
-            label.setCursor(hndCursor);
+            ((JComponent)e.getSource()).setCursor(hndCursor);
             pp.setLocation(e.getPoint());
         }
         @Override public void mouseReleased(MouseEvent e) {
-            label.setCursor(defCursor);
-            label.repaint();
+            ((JComponent)e.getSource()).setCursor(defCursor);
         }
     }
 
