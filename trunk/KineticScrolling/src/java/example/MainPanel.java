@@ -107,13 +107,13 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
         });
     }
     @Override public void mousePressed(MouseEvent e) {
-        label.setCursor(hc);
+        ((JComponent)e.getSource()).setCursor(hc);
         startPt.setLocation(e.getPoint());
         scroller.stop();
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
-        JViewport vport = (JViewport)label.getParent();
+        JViewport vport = (JViewport)e.getSource(); //label.getParent();
         Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
         vp.translate(startPt.x-pt.x, startPt.y-pt.y);
         delta.setLocation(SPEED*(pt.x-startPt.x), SPEED*(pt.y-startPt.y));
@@ -121,7 +121,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
         startPt.setLocation(pt);
     }
     @Override public void mouseReleased(MouseEvent e) {
-        label.setCursor(dc);
+        ((JComponent)e.getSource()).setCursor(dc);
         scroller.start();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
@@ -186,7 +186,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
         });
     }
     @Override public void mousePressed(MouseEvent e) {
-        label.setCursor(hc);
+        ((JComponent)e.getSource()).setCursor(hc);
         startPt.setLocation(e.getPoint());
         inside.stop();
         outside.stop();
@@ -201,7 +201,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
         startPt.setLocation(pt);
     }
     @Override public void mouseReleased(MouseEvent e) {
-        label.setCursor(dc);
+        ((JComponent)e.getSource()).setCursor(dc);
         if(isInside((JViewport)label.getParent(), label)) {
             inside.start();
         }else{

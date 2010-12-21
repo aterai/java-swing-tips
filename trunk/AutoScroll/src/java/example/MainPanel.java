@@ -42,7 +42,6 @@ class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
-        //frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -65,7 +64,7 @@ class DragMoverListener extends MouseAdapter implements HierarchyListener{
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
                 vp.translate(-move.x, -move.y);
-                label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+                label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); //vport.setViewPosition(vp);
             }
         });
     }
@@ -83,15 +82,15 @@ class DragMoverListener extends MouseAdapter implements HierarchyListener{
         scroller.start();
     }
     @Override public void mousePressed(MouseEvent e) {
-        label.setCursor(hc);
+        ((JComponent)e.getSource()).setCursor(hc); //label.setCursor(hc);
         startPt.setLocation(e.getPoint());
         scroller.stop();
     }
     @Override public void mouseReleased(MouseEvent e) {
-        label.setCursor(dc);
+        ((JComponent)e.getSource()).setCursor(dc); //label.setCursor(dc);
     }
     @Override public void mouseExited(MouseEvent e) {
-        label.setCursor(dc);
+        ((JComponent)e.getSource()).setCursor(dc); //label.setCursor(dc);
         move.setLocation(0, 0);
         scroller.stop();
     }
