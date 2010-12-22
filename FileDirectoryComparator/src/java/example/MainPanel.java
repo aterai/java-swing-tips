@@ -202,7 +202,7 @@ class FileTransferHandler extends TransferHandler {
         return COPY;
     }
 }
-class DefaultFileComparator implements Comparator<File>{
+class DefaultFileComparator implements Comparator<File>, Serializable{
     protected final int column;
     public DefaultFileComparator(int column) {
         this.column = column;
