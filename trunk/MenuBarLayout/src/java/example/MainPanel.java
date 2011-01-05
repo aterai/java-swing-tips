@@ -3,13 +3,19 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
     public MainPanel(JFrame frame) {
         super(new BorderLayout());
-        //frame.setJMenuBar(createMenubar());
+//         frame.setJMenuBar(createMenubar());
         add(createMenubar(), BorderLayout.NORTH);
+        addComponentListener(new ComponentAdapter() {
+            @Override public void componentResized(ComponentEvent e) {
+                ((JComponent)e.getSource()).revalidate();
+            }
+        });
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 200));
     }
@@ -88,6 +94,11 @@ public class MainPanel extends JPanel{
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel(frame));
+//         frame.getContentPane().addComponentListener(new ComponentAdapter() {
+//             @Override public void componentResized(ComponentEvent e) {
+//                 ((JComponent)e.getSource()).revalidate();
+//             }
+//         });
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
