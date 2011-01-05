@@ -10,12 +10,24 @@ public class MainPanel extends JPanel{
     public MainPanel(JFrame frame) {
         super(new BorderLayout());
 //         frame.setJMenuBar(createMenubar());
+//         addComponentListener(new ComponentAdapter() {
+//             @Override public void componentResized(ComponentEvent e) {
+//                 System.out.println("componentResized");
+//                 ((JComponent)e.getSource()).revalidate();
+//             }
+//         });
+//         frame.addWindowStateListener(new WindowAdapter() {
+//             @Override public void windowStateChanged(final WindowEvent e) {
+//                 EventQueue.invokeLater(new Runnable() {
+//                     @Override public void run() {
+//                         System.out.println("windowStateChanged");
+//                         JFrame f = (JFrame)e.getWindow();
+//                         ((JComponent)f.getContentPane()).revalidate();
+//                     }
+//                 });
+//             }
+//         });
         add(createMenubar(), BorderLayout.NORTH);
-        addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                ((JComponent)e.getSource()).revalidate();
-            }
-        });
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 200));
     }
@@ -94,11 +106,6 @@ public class MainPanel extends JPanel{
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel(frame));
-//         frame.getContentPane().addComponentListener(new ComponentAdapter() {
-//             @Override public void componentResized(ComponentEvent e) {
-//                 ((JComponent)e.getSource()).revalidate();
-//             }
-//         });
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
