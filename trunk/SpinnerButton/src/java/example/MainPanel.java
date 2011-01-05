@@ -28,7 +28,6 @@ public class MainPanel extends JPanel{
         box.add(makePanel("BasicSpinnerUI",   spinner1));
         box.add(makePanel("getName()",        spinner2));
         box.add(makePanel("WindowsSpinnerUI", spinner3));
-
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 200));
@@ -47,16 +46,13 @@ public class MainPanel extends JPanel{
     }
 
     private static class MySpinnerUI extends BasicSpinnerUI {
-        public MySpinnerUI() {
-            super();
-        }
-        protected Component createNextButton() {
+        @Override protected Component createNextButton() {
             JComponent nextButton = (JComponent)super.createNextButton();
             nextButton.setToolTipText("SpinnerUI: next next");
             //nextButton.setBackground(Color.GREEN);
             return nextButton;
         }
-        protected Component createPreviousButton() {
+        @Override protected Component createPreviousButton() {
             JComponent previousButton = (JComponent)super.createPreviousButton();
             previousButton.setToolTipText("SpinnerUI: prev prev");
             //previousButton.setBackground(Color.RED);
@@ -64,15 +60,12 @@ public class MainPanel extends JPanel{
         }
     }
     private static class MyWinSpinnerUI extends WindowsSpinnerUI {
-        public MyWinSpinnerUI() {
-            super();
-        }
-        protected Component createNextButton() {
+        @Override protected Component createNextButton() {
             JComponent nextButton = (JComponent)super.createNextButton();
             nextButton.setToolTipText("WindowsSpinnerUI: next next");
             return nextButton;
         }
-        protected Component createPreviousButton() {
+        @Override protected Component createPreviousButton() {
             JComponent previousButton = (JComponent)super.createPreviousButton();
             previousButton.setToolTipText("WindowsSpinnerUI: prev prev");
             return previousButton;
