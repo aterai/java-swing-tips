@@ -75,7 +75,13 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         }
         return popupMenuListener;
     }
-
+    //NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
+    @Override protected KeyListener createKeyListener() {
+        if(keyListener==null) {
+            keyListener = new KeyAdapter() {};
+        }
+        return keyListener;
+    }
     protected Action loupeAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             comboBox.setPopupVisible(false);
