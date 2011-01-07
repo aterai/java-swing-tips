@@ -48,25 +48,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                         SearchEngine se = (SearchEngine) o;
                         arrowButton.setIcon(se.favicon);
                     }
-                    //JButton arrowButton = (JButton)combo.getComponent(0);
-                    //Object a = combo.getUI().getAccessibleChild(combo, 0);
-                    //if(a instanceof JPopupMenu) {
-                    //    JPopupMenu pop = (JPopupMenu)a;
-                    //    JComponent s = (JComponent)pop.getComponent(0);
-                    //    if(s instanceof JScrollPane) {
-                    //        JScrollPane sp = (JScrollPane) s;
-                    //        JList listBox = (JList)sp.getViewport().getView();
-                    //        Object o = listBox.getSelectedValue();
-                    //        if(o!=null && o instanceof SearchEngine) {
-                    //            SearchEngine se = (SearchEngine) o;
-                    //            arrowButton.setIcon(se.favicon);
-                    //        }
-                    //    }
-                    //}
-                    final JComboBox combo = (JComboBox)e.getSource();
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
-                            combo.getEditor().setItem(str);
+                            comboBox.getEditor().setItem(str);
                         }
                     });
                 }
@@ -85,8 +69,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     protected Action loupeAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             comboBox.setPopupVisible(false);
-            //JTextField editor = (JTextField)comboBox.getEditor().getEditorComponent();
-            System.out.println(comboBox.getEditor().getItem());
+            System.out.println(listBox.getSelectedValue() + ": " +comboBox.getEditor().getItem());
         }
     };
     @Override protected void configureEditor() {
