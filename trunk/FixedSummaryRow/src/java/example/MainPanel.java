@@ -32,10 +32,8 @@ public class MainPanel extends JPanel{
     public JTable makeTable() {
         final JTable table = new JTable(model);
         final RowFilter<TableModel,Integer> filter = new RowFilter<TableModel,Integer>() {
-            @Override public boolean include(
-                Entry<? extends TableModel, ? extends Integer> entry) {
-                int i0 = table.convertRowIndexToView(entry.getIdentifier());
-                return i0 != 0;
+            @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+                return 0 != table.convertRowIndexToView(entry.getIdentifier());
             }
         };
         final TableRowSorter<TableModel> s = new TableRowSorter<TableModel>(model) {
@@ -55,8 +53,7 @@ public class MainPanel extends JPanel{
         for(int i=0;i<col.getColumnCount();i++) {
             final TableCellRenderer r = table.getDefaultRenderer(model.getColumnClass(i));
             col.getColumn(i).setCellRenderer(new TableCellRenderer() {
-                @Override public Component getTableCellRendererComponent(
-                    JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel l;
                     if(row==model.getRowCount()-2) {
                         int i = getSum(table.convertColumnIndexToModel(column));
