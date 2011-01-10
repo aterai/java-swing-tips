@@ -9,76 +9,78 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final JTextField field = new JTextField("1:2:5");
-    private final JTable table;
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+    private final JTextField field = new JTextField("5:3:2");
+    private final JCheckBox check  = new JCheckBox("ComponentListener#componentResized(...)", true);
     public MainPanel() {
         super(new BorderLayout(5,5));
-        TestModel model = new TestModel();
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-
-        table = new JTable(model);
-
-        JPanel p = new JPanel(new BorderLayout(5,5));
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        p.add(new JLabel("Header Ratio:"), BorderLayout.WEST);
-        p.add(field);
-        p.add(new JButton(new AbstractAction("init") {
-            @Override public void actionPerformed(ActionEvent ae) {
-                setRaito();
-            }
-        }), BorderLayout.EAST);
+        table.setAutoCreateRowSorter(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                setRaito();
+                if(check.isSelected()) setTableHeaderColumnRaito();
             }
         });
-        add(p, BorderLayout.NORTH);
+        add(makeSettingPanel(), BorderLayout.NORTH);
         add(scrollPane);
-        setPreferredSize(new Dimension(320, 200));
-        setRaito();
+        setPreferredSize(new Dimension(320, 240));
     }
-    private void setRaito() {
+    private JPanel makeSettingPanel() {
+        JPanel p = new JPanel(new BorderLayout(5,5));
+        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        p.add(new JLabel("Ratio:"), BorderLayout.WEST);
+        p.add(field);
+        p.add(new JButton(new AbstractAction("revalidate") {
+            @Override public void actionPerformed(ActionEvent ae) {
+                setTableHeaderColumnRaito();
+            }
+        }), BorderLayout.EAST);
+        JPanel panel = new JPanel(new GridLayout(2,1));
+        panel.setBorder(BorderFactory.createTitledBorder("JTableHeader column width ratio"));
+        panel.add(p);
+        panel.add(check);
+        return panel;
+    }
+    private void setTableHeaderColumnRaito() {
         int[] list = getWidthRaitoArray();
-        int total = getTotalColumnWidth(table);
-        int raito = total/getRaitoTotal(table, list);
+        //System.out.println("a: "+table.getColumnModel().getTotalColumnWidth());
+        //System.out.println("b: "+table.getSize().width);
+        int total = table.getSize().width; //table.getColumnModel().getTotalColumnWidth();
+        int raito = total/getRaitoTotal(list);
         for(int i=0;i<table.getColumnModel().getColumnCount()-1;i++) {
             TableColumn col = table.getColumnModel().getColumn(i);
             int colwidth = list[i]*raito;
-            col.setMaxWidth(colwidth);
-            total = total - colwidth;
+            //col.setMaxWidth(colwidth);
+            col.setPreferredWidth(colwidth);
+            total -= colwidth;
         }
-        table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setMaxWidth(total);
+        //table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setMaxWidth(total);
+        table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setPreferredWidth(total);
         table.revalidate();
     }
-    private int getRaitoTotal(JTable table, int[] list) {
-        int wr = 0;
-        for(int i=0;i<list.length;i++) {
-            wr = wr + list[i];
-        }
-        return wr;
+    private static int getRaitoTotal(int[] list) {
+        int w = 0;
+        for(int i:list) w += i;
+        return w;
     }
-    private int getTotalColumnWidth(JTable table) {
-        int tablewidth = table.getBounds(null).width;
-        if(tablewidth==0) tablewidth = 512;
-        return tablewidth;
-    }
-
     private int[] getWidthRaitoArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ":");
         int[] list = {1,1,1};
+        int i = 0;
         try{
-            int i = 0;
             while(st.hasMoreTokens() && i<list.length) {
-                list[i] = (new Integer(st.nextToken().trim())).intValue();
-                i++;
+                list[i++] = Integer.valueOf(st.nextToken().trim()).intValue();
             }
         }catch(final NumberFormatException nfe) {
             java.awt.Toolkit.getDefaultToolkit().beep();
@@ -87,36 +89,6 @@ public class MainPanel extends JPanel {
         }
         return list;
     }
-
-//     private void setRaito_xxx() {
-//         int[] list = getWidthRaitoArray();
-//         int total = table.getColumnModel().getTotalColumnWidth();;
-//         int raito = total/getRaitoTotal(table, list);
-// //                 System.out.println("---------------------------");
-// //                 for(int i=0;i<table.getColumnModel().getColumnCount();i++) {
-// //                     TableColumn col = table.getColumnModel().getColumn(i);
-// //                     int colwidth = col.getWidth();
-// //                     System.out.println(""+i+": "+colwidth);
-// //                 }
-// //                 System.out.println("---------");
-//         for(int i=0;i<table.getColumnModel().getColumnCount()-1;i++) {
-//             TableColumn col = table.getColumnModel().getColumn(i);
-//             int colwidth = list[i]*raito; // - table.getColumnModel().getColumnMargin();
-//             col.setMinWidth(0);
-//             col.setMaxWidth(Integer.MAX_VALUE);
-//             col.setPreferredWidth(colwidth);
-//             total = total - colwidth;
-//             //    System.out.println(""+i+": "+colwidth);
-//         }
-//         System.out.println("2: "+(int)(list[2]*raito));
-//         System.out.println("l: "+total);
-//
-//         table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setPreferredWidth(total);
-//         table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setMinWidth(0);
-//         table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setMaxWidth(Integer.MAX_VALUE);
-//
-//         table.revalidate();
-//     }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
