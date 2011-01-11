@@ -32,6 +32,24 @@ public class MainPanel extends JPanel{
 
         int width  = image.getWidth(p);
         int height = image.getHeight(p);
+
+//         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+//         Graphics2D g2d = bi.createGraphics();
+//         g2d.drawImage(image, 0, 0, null);
+//         g2d.setComposite(AlphaComposite.Clear);
+//         g2d.setPaint(new Color(255,255,255,0));
+//         //NW
+//         g2d.drawLine(0,0,4,0);
+//         g2d.drawLine(0,1,2,1);
+//         g2d.drawLine(0,2,1,2);
+//         g2d.drawLine(0,3,0,4);
+//         //NE
+//         g2d.drawLine(width-5,0,width-1,0);
+//         g2d.drawLine(width-3,1,width-1,1);
+//         g2d.drawLine(width-2,2,width-1,2);
+//         g2d.drawLine(width-1,3,width-1,4);
+//         g2d.dispose();
+
         int[] pix  = new int[height * width];
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, pix, 0, width);
         try{
