@@ -123,3 +123,77 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     @Override public void mouseReleased(MouseEvent e) {}
     @Override public void mouseClicked(MouseEvent e) {}
 }
+
+// class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
+//     private static final Color ERASER = new Color(0,0,0,0);
+//     private boolean isPen = true;
+//     private Point startPoint = new Point(-10,-10);
+//     private BufferedImage currentImage = null;
+//     private BufferedImage backImage = null;
+//     private TexturePaint texture  = makeTexturePaint();
+//     public PaintPanel() {
+//         super();
+//         addMouseMotionListener(this);
+//         addMouseListener(this);
+//         currentImage = new BufferedImage(320, 240, BufferedImage.TYPE_4BYTE_ABGR);
+//         backImage = new BufferedImage(320, 240, BufferedImage.TYPE_4BYTE_ABGR);
+//         Graphics2D g2 = backImage.createGraphics();
+//         g2.setPaint(texture);
+//         g2.fillRect(0,0,320,240);
+//         g2.dispose();
+//     }
+//     private static BufferedImage makeBGImage() {
+//         Color color = new Color(200,150,100,50);
+//         int cs = 6, sz = cs*cs;
+//         BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_4BYTE_ABGR);
+//         Graphics2D g2 = img.createGraphics();
+//         g2.setPaint(color);
+//         g2.fillRect(0,0,sz,sz);
+//         for(int i=0; i*cs<sz; i++) {
+//             for(int j=0; j*cs<sz; j++) {
+//                 if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+//             }
+//         }
+//         g2.dispose();
+//         return img;
+//     }
+//     private static TexturePaint makeTexturePaint() {
+//         BufferedImage img = makeBGImage();
+//         int w = img.getWidth(), h = img.getHeight();
+//         Rectangle2D r2d = new Rectangle2D.Float(0,0,w,h);
+//         return new TexturePaint(img, r2d);
+//     }
+//     @Override public void paintComponent(Graphics g) {
+//         super.paintComponent(g);
+//         if(backImage!=null) {
+//             g.drawImage(backImage, 0, 0, this);
+//         }
+//         if(currentImage!=null) {
+//             g.drawImage(currentImage, 0, 0, this);
+//         }
+//     }
+//     @Override public void mouseDragged(MouseEvent e) {
+//         Point pt = e.getPoint();
+//         Graphics2D g2d = currentImage.createGraphics();
+//         g2d.setStroke(new BasicStroke(3.0F));
+//         if(isPen) {
+//             g2d.setPaint(Color.BLACK);
+//         }else{
+//             g2d.setComposite(AlphaComposite.Clear);
+//             g2d.setPaint(ERASER);
+//         }
+//         g2d.drawLine(startPoint.x, startPoint.y, pt.x, pt.y);
+//         g2d.dispose();
+//         startPoint = pt;
+//         repaint();
+//     }
+//     @Override public void mousePressed(MouseEvent e) {
+//         startPoint = e.getPoint();
+//         isPen = e.getButton()==MouseEvent.BUTTON1;
+//     }
+//     @Override public void mouseMoved(MouseEvent e) {}
+//     @Override public void mouseExited(MouseEvent e) {}
+//     @Override public void mouseEntered(MouseEvent e) {}
+//     @Override public void mouseReleased(MouseEvent e) {}
+//     @Override public void mouseClicked(MouseEvent e) {}
+// }
