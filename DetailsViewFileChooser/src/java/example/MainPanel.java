@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
                     if(searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
                         Dimension d = chooser.getPreferredSize();
                         chooser.setPreferredSize(new Dimension(d.width+20, d.height)); //XXX
-                    };
+                    }
                 }
                 int retvalue = chooser.showOpenDialog(p);
                 if(retvalue==JFileChooser.APPROVE_OPTION) {
