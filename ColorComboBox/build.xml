@@ -238,22 +238,6 @@
       <format property="TSTAMP_BACKUP" pattern="yyyyMMddHHmm" />
     </tstamp>
     <mkdir dir="${bkup.dir}" />
-    <fileset id="java.file.list" dir="${src.dir}">
-      <include name="**/*.java" />
-    </fileset>
-    <pathconvert pathsep="&lt;/path&gt;&lt;type&gt;Java&lt;/type&gt;&lt;/file&gt;&lt;file&gt;&lt;path&gt;" dirsep="/" property="java.file" refid="java.file.list">
-      <map from="${basedir}/" to=""/>
-    </pathconvert>
-    <echo file="${bkup.dir}/packagemap.xml" message="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;" />
-    <echo append="true" file="${bkup.dir}/packagemap.xml" >
-&lt;fileset&gt;
-</echo>
-    <echo append="true" file="${bkup.dir}/packagemap.xml" message="&lt;file&gt;&lt;path&gt;" />
-    <echo append="true" file="${bkup.dir}/packagemap.xml" message="${java.file}" />
-    <echo append="true" file="${bkup.dir}/packagemap.xml" message="&lt;/path&gt;&lt;type&gt;Java&lt;/type&gt;&lt;/file&gt;"/>
-    <echo append="true" file="${bkup.dir}/packagemap.xml" >
-&lt;/fileset&gt;
-</echo>
     <filter token="homepage" value="${jnlp.homepage}" />
     <filter token="title" value="${jnlp.Name}" />
     <copy todir="${bkup.dir}/${src.dir}" filtering="yes"
