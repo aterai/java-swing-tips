@@ -8,32 +8,39 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer", "String"};
+    private final Object[][] data = {
+        {"aaa", 1, ""}, {"bbb", 2, ""},
+        {"CCC", 0, ""}, {"DDD", 3, ""}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return column==1?Integer.class:String.class;
+        }
+        @Override public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
     private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
         table.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(final MouseEvent me) {
-                if(me.getClickCount()==2) {
-                    Point pt = me.getPoint();
-                    int row = table.convertRowIndexToModel(table.rowAtPoint(pt));
-                    String str = String.format("%s (%s)", model.getValueAt(row, 1),
-                                                          model.getValueAt(row, 2));
-                    JOptionPane.showMessageDialog(table, str, "title",
-                                                  JOptionPane.INFORMATION_MESSAGE);
+            @Override public void mouseClicked(MouseEvent e) {
+                JTable t = (JTable)e.getSource();
+                if(e.getClickCount()==2) {
+                    TableModel m = t.getModel();
+                    Point pt = e.getPoint();
+                    int i = t.rowAtPoint(pt);
+                    if(i>=0) {
+                        int row = t.convertRowIndexToModel(i);
+                        String s = String.format("%s (%s)", m.getValueAt(row, 0), m.getValueAt(row, 1));
+                        JOptionPane.showMessageDialog(t, s, "title", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
         });
         //DefaultCellEditor ce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
         //ce.setClickCountToStart(Integer.MAX_VALUE);
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
@@ -51,7 +58,7 @@ public class MainPanel extends JPanel {
         }
     }
     private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("New row", ""));
+        model.addRow(new Object[] {"New row", 0, ""});
         Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
         table.scrollRectToVisible(r);
     }
