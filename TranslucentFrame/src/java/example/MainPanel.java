@@ -21,6 +21,8 @@ public class MainPanel extends JPanel{
                 g.fillRect(0,0,getWidth(), getHeight());
             }
         };
+        p2.setOpaque(false);
+
 //         d.put("InternalFrame[Enabled].backgroundPainter", new Painter() {
 //             public void paint(Graphics2D g, Object o, int w, int h) {
 //                 g.setColor(new Color(100,200,100,100));
