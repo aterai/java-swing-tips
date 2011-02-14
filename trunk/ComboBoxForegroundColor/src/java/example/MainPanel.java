@@ -38,7 +38,7 @@ public class MainPanel extends JPanel{
             ColorItem item = (ColorItem) value;
             if(index<0 && item!=null && item.color!=null
                        && !item.color.equals(combo.getForeground())) {
-                //combo.setForeground(item.color); //Windows XP
+                combo.setForeground(item.color); //Windows XP
                 list.setSelectionForeground(item.color);
                 list.setSelectionBackground(selectionBackground);
             }
