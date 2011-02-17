@@ -12,8 +12,8 @@ public class MainPanel extends JPanel {
     private final JTextField field2 = new JTextField("History Search");
     public MainPanel() {
         super(new BorderLayout());
-        field1.addFocusListener(new HintTextFocusListener(field1));
-        field2.addFocusListener(new HintTextFocusListener(field2));
+        field1.addFocusListener(new PlaceholderFocusListener(field1));
+        field2.addFocusListener(new PlaceholderFocusListener(field2));
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -51,29 +51,25 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class HintTextFocusListener implements FocusListener {
-    private static final Color INACTIVE_COLOR = UIManager.getColor("TextField.inactiveForeground");
-    private static final Color ORIGINAL_COLOR = UIManager.getColor("TextField.foreground");
+class PlaceholderFocusListener implements FocusListener {
+    private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
     private final String hintMessage;
-    public HintTextFocusListener(final JTextComponent tf) {
+    public PlaceholderFocusListener(JTextComponent tf) {
         hintMessage = tf.getText();
-        tf.setForeground(INACTIVE_COLOR);
+        tf.setForeground(INACTIVE);
     }
-    @Override public void focusGained(final FocusEvent e) {
-        JTextComponent textField = (JTextComponent)e.getSource();
-        String str = textField.getText();
-        Color col  = textField.getForeground();
-        if(hintMessage.equals(str) && INACTIVE_COLOR.equals(col)) {
-            textField.setForeground(ORIGINAL_COLOR);
-            textField.setText("");
+    @Override public void focusGained(FocusEvent e) {
+        JTextComponent tf = (JTextComponent)e.getSource();
+        if(hintMessage.equals(tf.getText()) && INACTIVE.equals(tf.getForeground())) {
+            tf.setForeground(UIManager.getColor("TextField.foreground"));
+            tf.setText("");
         }
     }
-    @Override public void focusLost(final FocusEvent e) {
-        JTextComponent textField = (JTextComponent)e.getSource();
-        String str = textField.getText().trim();
-        if("".equals(str)) {
-            textField.setForeground(INACTIVE_COLOR);
-            textField.setText(hintMessage);
+    @Override public void focusLost(FocusEvent e) {
+        JTextComponent tf = (JTextComponent)e.getSource();
+        if("".equals(tf.getText().trim())) {
+            tf.setForeground(INACTIVE);
+            tf.setText(hintMessage);
         }
     }
 }
