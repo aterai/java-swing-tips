@@ -18,7 +18,7 @@ public class MainPanel extends JPanel{
             @Override protected void paintComponent(Graphics g) {
                 int w = getWidth();
                 int h = getHeight();
-                Graphics2D g2 = (Graphics2D)g;
+                Graphics2D g2 = (Graphics2D)g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g.setColor(getBackground());
                 g.fillRoundRect(0, 0, w-1, h-1, h, h);
