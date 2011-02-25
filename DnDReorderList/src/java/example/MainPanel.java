@@ -26,6 +26,15 @@ public class MainPanel extends JPanel {
         list.setTransferHandler(new ListItemTransferHandler());
         list.setDropMode(DropMode.INSERT);
         list.setDragEnabled(true);
+        //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6603243
+        //regression: ClassCastException in the DropHandler.initProperties()
+        ActionMap map = list.getActionMap();
+        AbstractAction dummy = new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) {}
+        };
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
+        map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
         final ListCellRenderer r = list.getCellRenderer();
         list.setCellRenderer(new ListCellRenderer() {
