@@ -185,8 +185,8 @@ class RoundedCornerButtonUI extends BasicButtonUI{
     private static final float arcwidth  = 16.0f;
     private static final float archeight = 16.0f;
     protected static final int focusstroke = 2;
-    protected final Color fc = new Color(100,150,255,200);
-    protected final Color ac = new Color(230,230,230);
+    protected final Color fc = new Color(100,150,255);
+    protected final Color ac = new Color(220,225,230);
     protected final Color rc = Color.ORANGE;
     protected Shape shape;
     protected Shape border;
@@ -195,8 +195,10 @@ class RoundedCornerButtonUI extends BasicButtonUI{
     @Override protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
         b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
         b.setOpaque(false);
-        b.setBackground(new Color(250, 250, 250));
+        b.setBackground(new Color(245, 250, 255));
+        b.setBorder(BorderFactory.createEmptyBorder(4,12,4,12));
         initShape(b);
     }
     @Override protected void installListeners(AbstractButton b) {
@@ -230,14 +232,14 @@ class RoundedCornerButtonUI extends BasicButtonUI{
         }
     }
     @Override public void paint(Graphics g, JComponent c) {
-        Graphics2D g2 = (Graphics2D)g;
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
-
         initShape(b);
 
-        //ContentArea
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //ContentArea
         if(model.isArmed()) {
             g2.setColor(ac);
             g2.fill(shape);
@@ -253,9 +255,10 @@ class RoundedCornerButtonUI extends BasicButtonUI{
         g2.setPaint(c.getForeground());
         g2.draw(shape);
 
-        g2.setColor(c.getBackground());
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        super.paint(g2, c);
+        g2.dispose();
+        //g2.setColor(c.getBackground());
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        super.paint(g, c);
     }
     private void initShape(JComponent c) {
         if(!c.getBounds().equals(base)) {
