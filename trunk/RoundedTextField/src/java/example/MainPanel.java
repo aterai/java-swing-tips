@@ -16,14 +16,17 @@ public class MainPanel extends JPanel{
             //Unleash Your Creativity with Swing and the Java 2D API!
             //http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
             @Override protected void paintComponent(Graphics g) {
-                int w = getWidth();
-                int h = getHeight();
-                Graphics2D g2 = (Graphics2D)g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g.setColor(getBackground());
-                g.fillRoundRect(0, 0, w-1, h-1, h, h);
-                g2.setColor(Color.GRAY);
-                g2.drawRoundRect(0, 0, w-1, h-1, h, h);
+                if(!isOpaque()) {
+                    int w = getWidth();
+                    int h = getHeight();
+                    Graphics2D g2 = (Graphics2D)g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.setColor(getBackground());
+                    g2.fillRoundRect(0, 0, w-1, h-1, h, h);
+                    g2.setColor(Color.GRAY);
+                    g2.drawRoundRect(0, 0, w-1, h-1, h, h);
+                    g2.dispose();
+                }
                 super.paintComponent(g);
             }
         };
@@ -79,25 +82,28 @@ class RoundTextUI extends BasicTextFieldUI {
     public static ComponentUI createUI(JComponent c) {
         return new RoundTextUI();
     }
-    public void installUI(JComponent c) {
+    @Override public void installUI(JComponent c) {
         super.installUI(c);
         c.setBorder(new RoundBorder());
         c.setOpaque(false);
     }
-    protected void paintSafely(Graphics g) {
+    @Override protected void paintSafely(Graphics g) {
         JComponent c = getComponent();
         if(!c.isOpaque()) {
-            g.setColor(c.getBackground());
-            g.fillRoundRect(0, 0, c.getWidth()-1, c.getHeight()-1, c.getHeight(), c.getHeight());
+            Graphics2D g2 = (Graphics2D)g.create();
+            g2.setColor(c.getBackground());
+            g2.fillRoundRect(0, 0, c.getWidth()-1, c.getHeight()-1, c.getHeight(), c.getHeight());
+            g2.dispose();
         }
         super.paintSafely(g);
     }
     private static class RoundBorder extends AbstractBorder {
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setColor(Color.GRAY);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.drawRoundRect(x, y, width-1, height-1, height, height);
+            g2.dispose();
         }
         @Override public Insets getBorderInsets(Component c) {
             return new Insets(4, 8, 4, 8);
