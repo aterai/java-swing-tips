@@ -23,6 +23,11 @@ class MainPanel extends JPanel {
                 g.drawImage(bgimage.getImage(), i*w, j*h, w, h, null);
             }
         }
+//         for(int x=0;x<d.width;x+=w) {
+//             for(int y=0;y<d.height;y+=h) {
+//                 g.drawImage(bgimage.getImage(), x, y, w, h, this);
+//             }
+//         }
         super.paintComponent(g);
     }
 
