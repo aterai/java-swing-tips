@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -24,10 +25,11 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
+        final JTable table = new JTable(model);
         table.setRowHeight(36);
-        //table.setAutoCreateRowSorter(true);
-        table.addMouseListener(new CellButtonsMouseListener());
+        table.setAutoCreateRowSorter(true);
+        //table.addMouseListener(new CellButtonsMouseListener());
+
         ButtonsEditorRenderer er = new ButtonsEditorRenderer(table);
         TableColumn column = table.getColumnModel().getColumn(1);
         column.setCellRenderer(er);
@@ -56,45 +58,72 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class CellButtonsMouseListener extends MouseAdapter{
-    @Override public void mouseReleased(MouseEvent e) {
-        JTable t = (JTable)e.getComponent();
-        Point pt = e.getPoint();
-        int row  = t.rowAtPoint(pt);
-        int col  = t.columnAtPoint(pt);
-        if(t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
-            TableCellEditor ce = t.getCellEditor(row, col);
-            ce.stopCellEditing();
-            Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
-            Point p = SwingUtilities.convertPoint(t, pt, c);
-            Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-            if(b instanceof JButton) ((JButton)b).doClick();
-        }
-    }
-}
+// class CellButtonsMouseListener extends MouseAdapter{
+//     @Override public void mouseReleased(MouseEvent e) {
+//         JTable t = (JTable)e.getComponent();
+//         Point pt = e.getPoint();
+//         int row  = t.rowAtPoint(pt);
+//         int col  = t.columnAtPoint(pt);
+//         if(t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
+//             TableCellEditor ce = t.getCellEditor(row, col);
+//             ce.stopCellEditing();
+//             Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
+//             Point p = SwingUtilities.convertPoint(t, pt, c);
+//             Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
+//             if(b instanceof JButton) ((JButton)b).doClick();
+//         }
+//     }
+// }
 
 class ButtonsEditorRenderer extends AbstractCellEditor implements TableCellRenderer,TableCellEditor{
     private final JPanel renderer = new JPanel();
     private final JPanel editor   = new JPanel();
-    public ButtonsEditorRenderer(final JTable table) {
+    private final JTable table;
+    private final MouseListener ml = new MouseAdapter() {
+        public void mousePressed(MouseEvent e) {
+            ButtonModel m = ((JButton)e.getSource()).getModel();
+            if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && !e.isShiftDown()) {
+                editor.setBackground(table.getBackground());
+            }
+        }
+    };
+    public ButtonsEditorRenderer(JTable t) {
         super();
-        JButton viewButton2 = new JButton(new AbstractAction("view2") {;
+        this.table = t;
+        JButton viewButton2 = new JButton(new AbstractAction("view") {;
             @Override public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
                 JOptionPane.showMessageDialog(table, "Viewing");
             }
         });
-        JButton editButton2 = new JButton(new AbstractAction("edit2") {;
+        JButton editButton2 = new JButton(new AbstractAction("edit") {;
             @Override public void actionPerformed(ActionEvent e) {
-                Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
+                //Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
+                int row = table.convertRowIndexToModel(table.getEditingRow());
+                Object o = table.getModel().getValueAt(row, 0);
+                fireEditingStopped();
                 JOptionPane.showMessageDialog(table, "Editing: "+o);
             }
         });
+        viewButton2.addMouseListener(ml);
+        viewButton2.setFocusable(false);
+        viewButton2.setRolloverEnabled(false);
+
+        editButton2.addMouseListener(ml);
+        editButton2.setFocusable(false);
+        editButton2.setRolloverEnabled(false);
+
         renderer.setOpaque(true);
-        renderer.add(new JButton("view1"));
-        renderer.add(new JButton("edit1"));
+        renderer.add(new JButton("view"));
+        renderer.add(new JButton("edit"));
         editor.setOpaque(true);
         editor.add(viewButton2);
         editor.add(editButton2);
+        editor.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                fireEditingStopped();
+            }
+        });
     }
     @Override public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus,
