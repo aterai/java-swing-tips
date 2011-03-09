@@ -19,15 +19,6 @@ public class MainPanel extends JPanel {
 //             }
 //         };
         final JTable table = new JTable(model);
-//         {
-//             @Override public void updateUI() {
-//                 super.updateUI();
-//                 ButtonColumn buttonColumn = new ButtonColumn();
-//                 TableColumn column = getColumnModel().getColumn(BUTTON_COLUMN);
-//                 column.setCellRenderer(buttonColumn);
-//                 column.setCellEditor(buttonColumn);
-//             }
-//         };
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
         sorter.setSortable(BUTTON_COLUMN, false);
@@ -46,39 +37,31 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
         model.addTest(new Test("Name 0", ""));
 
-        table.addMouseListener(new MouseAdapter() {
-            private int targetRow = -1;
-            @Override public void mousePressed(MouseEvent e) {
-                Point pt = e.getPoint();
-                int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-                int vrow = table.rowAtPoint(e.getPoint());
-                int mrow = (vrow>=0)?table.convertRowIndexToModel(vrow):-1;
-                if(mrow>=0 && mcol==BUTTON_COLUMN) {
-                    targetRow = mrow;
-                }
-            }
-            @Override public void mouseReleased(MouseEvent e) {
-                Point pt = e.getPoint();
-                int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-                int vrow = table.rowAtPoint(e.getPoint());
-                int mrow = (vrow>=0)?table.convertRowIndexToModel(vrow):-1;
-                if(targetRow==mrow && mcol==BUTTON_COLUMN) {
-                    model.removeRow(mrow);
-                }
-                targetRow = -1;
-            }
-//             @Override
-//             public void mouseClicked(MouseEvent e) {
-//                 int col = table.convertColumnIndexToModel(table.columnAtPoint(e.getPoint()));
-//                 if(col==BUTTON_COLUMN) {
-//                     System.out.println("aaa");
-//                     int row = table.convertRowIndexToModel(table.rowAtPoint(e.getPoint()));
-//                     //model.removeRow(row);
+//         table.addMouseListener(new MouseAdapter() {
+//             private int targetRow = -1;
+//             @Override public void mousePressed(MouseEvent e) {
+//                 Point pt = e.getPoint();
+//                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
+//                 int vrow = table.rowAtPoint(e.getPoint());
+//                 int mrow = (vrow>=0)?table.convertRowIndexToModel(vrow):-1;
+//                 if(mrow>=0 && mcol==BUTTON_COLUMN) {
+//                     targetRow = mrow;
 //                 }
 //             }
-        });
-        ButtonColumn buttonColumn = new ButtonColumn();
-        //ButtonColumn buttonColumn = new ButtonColumn(table);
+//             @Override public void mouseReleased(MouseEvent e) {
+//                 Point pt = e.getPoint();
+//                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
+//                 int vrow = table.rowAtPoint(e.getPoint());
+//                 int mrow = (vrow>=0)?table.convertRowIndexToModel(vrow):-1;
+//                 if(targetRow==mrow && mcol==BUTTON_COLUMN) {
+//                     model.removeRow(mrow);
+//                 }
+//                 targetRow = -1;
+//             }
+//         });
+//         ButtonColumn buttonColumn = new ButtonColumn();
+
+        ButtonColumn buttonColumn = new ButtonColumn(table);
         TableColumn column = table.getColumnModel().getColumn(BUTTON_COLUMN);
         column.setCellRenderer(buttonColumn);
         column.setCellEditor(buttonColumn);
@@ -122,24 +105,20 @@ class ButtonColumn extends AbstractCellEditor implements TableCellRenderer, Tabl
     private static final String LABEL = "X";
     private final JButton renderButton = new JButton(LABEL);
     private final JButton editorButton;
-    //public ButtonColumn(final JTable table) {
-    public ButtonColumn() {
+    public ButtonColumn(final JTable table) {
         super();
-        //table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        editorButton = new JButton(LABEL);
-        editorButton.addMouseListener(new MouseAdapter() {
-            @Override public void mouseReleased(MouseEvent e) {
+        renderButton.setBorder(BorderFactory.createEmptyBorder());
+
+        editorButton = new JButton(new AbstractAction(LABEL) {
+            @Override public void actionPerformed(ActionEvent e) {
+                int row = table.convertRowIndexToModel(table.getEditingRow());
                 fireEditingStopped();
-                //int row = table.convertRowIndexToModel(table.getSelectedRow());
-                //((DefaultTableModel)table.getModel()).removeRow(row);
+                ((DefaultTableModel)table.getModel()).removeRow(row);
             }
         });
         editorButton.setBorder(BorderFactory.createEmptyBorder());
-        renderButton.setBorder(BorderFactory.createEmptyBorder());
-        editorButton.setFocusPainted(false);
+        editorButton.setFocusable(false);
         editorButton.setRolloverEnabled(false);
-        renderButton.setToolTipText("Delete(renderButton)");
-        editorButton.setToolTipText("Delete(editorButton)");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return renderButton;
