@@ -24,21 +24,19 @@ public class MainPanel extends JPanel {
         //table.getTableHeader().setReorderingAllowed(false);
         //frame.setResizeable(false);
         //or
-        table.addMouseListener(new MouseAdapter() {
-            @Override public void mouseReleased(MouseEvent e) {
-                JTable t = (JTable)e.getComponent();
-                Point p  = e.getPoint();
-                int row  = t.rowAtPoint(p);
-                int col  = t.columnAtPoint(p);
-                if(t.convertColumnIndexToModel(col)==1) {
-                    t.getCellEditor(row, col).stopCellEditing();
-                }
-            }
-        });
+//         table.addMouseListener(new MouseAdapter() {
+//             @Override public void mouseReleased(MouseEvent e) {
+//                 JTable t = (JTable)e.getComponent();
+//                 Point p  = e.getPoint();
+//                 int row  = t.rowAtPoint(p);
+//                 int col  = t.columnAtPoint(p);
+//                 if(t.convertColumnIndexToModel(col)==1) {
+//                     t.getCellEditor(row, col).stopCellEditing();
+//                 }
+//             }
+//         });
         CheckBoxEditorRenderer cer = new CheckBoxEditorRenderer();
-        //or
-        //CheckBoxEditorRenderer2 cer = new CheckBoxEditorRenderer2(table);
-        //CheckBoxEditorRenderer3 cer = new CheckBoxEditorRenderer3();
+        //CheckBoxEditorRenderer2 cer = new CheckBoxEditorRenderer2();
         table.getColumnModel().getColumn(1).setCellRenderer(cer);
         table.getColumnModel().getColumn(1).setCellEditor(cer);
 
@@ -95,6 +93,14 @@ class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRend
     protected final String[] title = {"r", "w", "x"};
     protected final CheckBoxPanel editor = new CheckBoxPanel(title);
     protected final CheckBoxPanel renderer = new CheckBoxPanel(title);
+    protected final ActionListener al = new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            fireEditingStopped();
+        }
+    };
+    public CheckBoxEditorRenderer() {
+        for(AbstractButton b: editor.buttons) b.addActionListener(al);
+    }
     protected void updateButtons(CheckBoxPanel p, Object v) {
         Integer i = (Integer)(v==null?0:v);
         p.buttons[0].setSelected((i&(1<<2))!=0);
@@ -116,41 +122,29 @@ class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRend
         if(editor.buttons[2].isSelected()) i|=1<<0;
         return i;
     }
+//     @Override public boolean isCellEditable(EventObject anEvent) { 
+//         return true;
+//     }
+//     @Override public boolean shouldSelectCell(EventObject anEvent) { 
+//         return true;
+//     }
+//     @Override public boolean stopCellEditing() {
+//         fireEditingStopped();
+//         return true;
+//     }
+//     @Override public void cancelCellEditing() {
+//         fireEditingCanceled();
+//     }
 }
 
-class CheckBoxEditorRenderer2 extends CheckBoxEditorRenderer implements MouseListener {
-    private final JTable table;
-    public CheckBoxEditorRenderer2(JTable table) {
-        super();
-        this.table = table;
-        editor.addMouseListener(this);
-    }
-    //Copied form http://tips4java.wordpress.com/2009/07/12/table-button-column/
-    private boolean isButtonColumnEditor;
-    @Override public void mousePressed(MouseEvent e) {
-        if(table.isEditing() &&  table.getCellEditor() == this) {
-            isButtonColumnEditor = true;
-        }
-    }
-    @Override public void mouseReleased(MouseEvent e) {
-        if(isButtonColumnEditor &&  table.isEditing()) {
-            table.getCellEditor().stopCellEditing();
-        }
-        isButtonColumnEditor = false;
-    }
-    @Override public void mouseClicked(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseExited(MouseEvent e) {}
-}
-
-class CheckBoxEditorRenderer3 extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
+class CheckBoxEditorRenderer2 extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
     protected final String[] title = {"r", "w", "x"};
     protected final CheckBoxPanel editor = new CheckBoxPanel(title);
     protected final CheckBoxPanel renderer = new CheckBoxPanel(title);
     protected EditorDelegate delegate;
     protected int clickCountToStart = 1;
 
-    public CheckBoxEditorRenderer3() {
+    public CheckBoxEditorRenderer2() {
         delegate = new EditorDelegate() {
             public void setValue(Object value) {
                 updateButtons(editor, value);
@@ -222,10 +216,10 @@ class CheckBoxEditorRenderer3 extends AbstractCellEditor implements TableCellRen
             fireEditingCanceled();
         }
         @Override public void actionPerformed(ActionEvent e) {
-            CheckBoxEditorRenderer3.this.stopCellEditing();
+            CheckBoxEditorRenderer2.this.stopCellEditing();
         }
         @Override public void itemStateChanged(ItemEvent e) {
-            CheckBoxEditorRenderer3.this.stopCellEditing();
+            CheckBoxEditorRenderer2.this.stopCellEditing();
         }
     }
 }
