@@ -21,7 +21,7 @@ public class MainPanel extends JPanel{
                     int h = getHeight();
                     Graphics2D g2 = (Graphics2D)g.create();
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2.setColor(getBackground());
+                    g2.setColor(UIManager.getColor("TextField.background"));
                     g2.fillRoundRect(0, 0, w-1, h-1, h, h);
                     g2.setColor(Color.GRAY);
                     g2.drawRoundRect(0, 0, w-1, h-1, h, h);
@@ -31,6 +31,7 @@ public class MainPanel extends JPanel{
             }
         };
         textField01.setOpaque(false);
+        textField01.setBackground(new Color(0,0,0,0));
         textField01.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         textField01.setText("aaaaaaaaaaa");
 
