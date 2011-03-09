@@ -23,23 +23,23 @@ public class MainPanel extends JPanel {
         };
         JTable table = new JTable(model);
         //table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        table.addMouseListener(new MouseAdapter() {
-            @Override public void mouseReleased(MouseEvent e) {
-                JTable t = (JTable)e.getComponent();
-                Point pt = e.getPoint();
-                int row  = t.rowAtPoint(pt);
-                int col  = t.columnAtPoint(pt);
-                if(t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
-                    TableCellEditor ce = t.getCellEditor(row, col);
-                    //http://tips4java.wordpress.com/2009/07/12/table-button-column/
-                    ce.stopCellEditing();
-                    Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
-                    Point p = SwingUtilities.convertPoint(t, pt, c);
-                    Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-                    if(b instanceof JRadioButton) ((JRadioButton)b).doClick();
-                }
-            }
-        });
+//         table.addMouseListener(new MouseAdapter() {
+//             @Override public void mouseReleased(MouseEvent e) {
+//                 JTable t = (JTable)e.getComponent();
+//                 Point pt = e.getPoint();
+//                 int row  = t.rowAtPoint(pt);
+//                 int col  = t.columnAtPoint(pt);
+//                 if(t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
+//                     TableCellEditor ce = t.getCellEditor(row, col);
+//                     //http://tips4java.wordpress.com/2009/07/12/table-button-column/
+//                     ce.stopCellEditing();
+//                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
+//                     Point p = SwingUtilities.convertPoint(t, pt, c);
+//                     Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
+//                     if(b instanceof JRadioButton) ((JRadioButton)b).doClick();
+//                 }
+//             }
+//         });
         RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
         table.getColumnModel().getColumn(1).setCellRenderer(rbe);
         table.getColumnModel().getColumn(1).setCellEditor(rbe);
@@ -78,7 +78,8 @@ class RadioButtonPanel extends JPanel {
         for(int i=0;i<buttons.length;i++) {
             buttons[i] = new JRadioButton(answer[i]);
             buttons[i].setActionCommand(answer[i]);
-            buttons[i].setEnabled(true);
+            buttons[i].setFocusable(false);
+            buttons[i].setRolloverEnabled(false);
             add(buttons[i]);
             bg.add(buttons[i]);
         }
@@ -89,10 +90,16 @@ class RadioButtonEditorRenderer extends AbstractCellEditor
     private final String[] answer = { "A", "B", "C" };
     private final RadioButtonPanel editor;
     private final RadioButtonPanel renderer;
+    private final ActionListener al = new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            fireEditingStopped();
+        }
+    };
     public RadioButtonEditorRenderer() {
         super();
         this.editor   = new RadioButtonPanel(answer);
         this.renderer = new RadioButtonPanel(answer);
+        for(AbstractButton b: editor.buttons) b.addActionListener(al);
     }
     private void setSelectedButton(RadioButtonPanel p, Object v) {
         if("A".equals(v)) {
