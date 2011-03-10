@@ -87,7 +87,7 @@ class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRend
         public CheckBoxPanel(String[] t) {
             super();
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-            setOpaque(false);
+            //setOpaque(false);
             buttons = new JCheckBox[t.length];
             ActionMap am = getActionMap();
             for(int i=0; i<buttons.length; i++) {
