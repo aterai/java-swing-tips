@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         JLabel r = (JLabel)table.getDefaultRenderer(Date.class);
         r.setHorizontalAlignment(JLabel.LEFT);
-        table.setDefaultEditor(Date.class, new SpinnerCellEditor());
+        table.setDefaultEditor(Date.class, new SpinnerCellEditor(table));
         //table.setShowGrid(false);
         //table.setAutoCreateRowSorter(true);
         table.setSurrendersFocusOnKeystroke(true);
@@ -58,10 +58,21 @@ public class MainPanel extends JPanel {
 //class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
 class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     private final JSpinner.DateEditor editor;
-    public SpinnerCellEditor() {
+    public SpinnerCellEditor(final JTable table) {
         super(new SpinnerDateModel());
         setEditor(editor = new JSpinner.DateEditor(this, "yyyy/MM/dd"));
         setArrowButtonEnabled(false);
+
+        addChangeListener(new ChangeListener() {
+            @Override public void stateChanged(ChangeEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        int row = table.convertRowIndexToModel(table.getEditingRow());
+                        table.getModel().setValueAt(getValue(), row, 2);
+                    }
+                });
+            }
+        });
         addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
                 //System.out.println("spinner");
