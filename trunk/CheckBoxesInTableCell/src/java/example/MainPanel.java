@@ -64,41 +64,16 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class CheckBoxPanel extends JPanel {
-    public final JCheckBox[] buttons;
-    public CheckBoxPanel(String[] t) {
-        super();
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        buttons = new JCheckBox[t.length];
-        ActionMap am = getActionMap();
-        for(int i=0; i<buttons.length; i++) {
-            final JCheckBox b = new JCheckBox(t[i]);
-            b.setFocusable(false);
-            b.setRolloverEnabled(false);
-            buttons[i] = b;
-            add(b);
-            am.put(t[i], new AbstractAction(t[i]) {
-                public void actionPerformed(ActionEvent e) {
-                    b.setSelected(!b.isSelected());
-                }
-            });
-        }
-        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), t[0]);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), t[1]);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), t[2]);
-    }
-}
 class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
     protected final String[] title = {"r", "w", "x"};
     protected final CheckBoxPanel editor = new CheckBoxPanel(title);
     protected final CheckBoxPanel renderer = new CheckBoxPanel(title);
-    protected final ActionListener al = new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            fireEditingStopped();
-        }
-    };
     public CheckBoxEditorRenderer() {
+        ActionListener al = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+        };
         for(AbstractButton b: editor.buttons) b.addActionListener(al);
     }
     protected void updateButtons(CheckBoxPanel p, Object v) {
@@ -106,6 +81,35 @@ class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRend
         p.buttons[0].setSelected((i&(1<<2))!=0);
         p.buttons[1].setSelected((i&(1<<1))!=0);
         p.buttons[2].setSelected((i&(1<<0))!=0);
+    }
+    class CheckBoxPanel extends JPanel {
+        public final JCheckBox[] buttons;
+        public CheckBoxPanel(String[] t) {
+            super();
+            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+            setOpaque(false);
+            buttons = new JCheckBox[t.length];
+            ActionMap am = getActionMap();
+            for(int i=0; i<buttons.length; i++) {
+                final JCheckBox b = new JCheckBox(t[i]);
+                b.setOpaque(false);
+                b.setFocusable(false);
+                b.setRolloverEnabled(false);
+                b.setBackground(new Color(0,0,0,0));
+                buttons[i] = b;
+                add(b);
+                am.put(t[i], new AbstractAction(t[i]) {
+                    public void actionPerformed(ActionEvent e) {
+                        b.setSelected(!b.isSelected());
+                        fireEditingStopped();
+                    }
+                });
+            }
+            InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), t[0]);
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), t[1]);
+            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), t[2]);
+        }
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         updateButtons(renderer, value);
@@ -137,7 +141,7 @@ class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRend
 //     }
 }
 
-class CheckBoxEditorRenderer2 extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
+class CheckBoxEditorRenderer2 extends CheckBoxEditorRenderer {
     protected final String[] title = {"r", "w", "x"};
     protected final CheckBoxPanel editor = new CheckBoxPanel(title);
     protected final CheckBoxPanel renderer = new CheckBoxPanel(title);
