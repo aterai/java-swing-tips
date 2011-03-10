@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
@@ -35,10 +36,10 @@ public class MainPanel extends JPanel {
 //                 }
 //             }
 //         });
-        CheckBoxEditorRenderer cer = new CheckBoxEditorRenderer();
-        //CheckBoxEditorRenderer2 cer = new CheckBoxEditorRenderer2();
-        table.getColumnModel().getColumn(1).setCellRenderer(cer);
-        table.getColumnModel().getColumn(1).setCellEditor(cer);
+
+        table.getColumnModel().getColumn(1).setCellRenderer(new CheckBoxesRenderer());
+        table.getColumnModel().getColumn(1).setCellEditor(new CheckBoxesEditor());
+        //table.getColumnModel().getColumn(1).setCellEditor(new CheckBoxEditorRenderer2());
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 200));
@@ -64,166 +65,267 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
+
+class CheckBoxesPanel extends JPanel {
     protected final String[] title = {"r", "w", "x"};
-    protected final CheckBoxPanel editor = new CheckBoxPanel(title);
-    protected final CheckBoxPanel renderer = new CheckBoxPanel(title);
-    public CheckBoxEditorRenderer() {
+    public final JCheckBox[] buttons;
+    public CheckBoxesPanel() {
+        super();
+        setOpaque(false);
+        setBackground(new Color(0,0,0,0));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        buttons = new JCheckBox[title.length];
+        for(int i=0; i<buttons.length; i++) {
+            JCheckBox b = new JCheckBox(title[i]);
+            b.setOpaque(false);
+            b.setFocusable(false);
+            b.setRolloverEnabled(false);
+            b.setBackground(new Color(0,0,0,0));
+            buttons[i] = b;
+            add(b);
+            add(Box.createHorizontalStrut(5));
+        }
+    }
+    protected void updateButtons(Object v) {
+        Integer i = (Integer)(v==null?0:v);
+        buttons[0].setSelected((i&(1<<2))!=0);
+        buttons[1].setSelected((i&(1<<1))!=0);
+        buttons[2].setSelected((i&(1<<0))!=0);
+    }
+}
+class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, java.io.Serializable {
+    public CheckBoxesRenderer() {
+        super();
+        setName("Table.cellRenderer");
+    }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        updateButtons(value);
+        return this;
+    }
+    public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource{}
+}
+
+class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
+    public CheckBoxesEditor() {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
             }
         };
-        for(AbstractButton b: editor.buttons) b.addActionListener(al);
-    }
-    protected void updateButtons(CheckBoxPanel p, Object v) {
-        Integer i = (Integer)(v==null?0:v);
-        p.buttons[0].setSelected((i&(1<<2))!=0);
-        p.buttons[1].setSelected((i&(1<<1))!=0);
-        p.buttons[2].setSelected((i&(1<<0))!=0);
-    }
-    class CheckBoxPanel extends JPanel {
-        public final JCheckBox[] buttons;
-        public CheckBoxPanel(String[] t) {
-            super();
-            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-            //setOpaque(false);
-            buttons = new JCheckBox[t.length];
-            ActionMap am = getActionMap();
-            for(int i=0; i<buttons.length; i++) {
-                final JCheckBox b = new JCheckBox(t[i]);
-                b.setOpaque(false);
-                b.setFocusable(false);
-                b.setRolloverEnabled(false);
-                b.setBackground(new Color(0,0,0,0));
-                buttons[i] = b;
-                add(b);
-                am.put(t[i], new AbstractAction(t[i]) {
-                    public void actionPerformed(ActionEvent e) {
-                        b.setSelected(!b.isSelected());
-                        fireEditingStopped();
-                    }
-                });
-            }
-            InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), t[0]);
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), t[1]);
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), t[2]);
+        ActionMap am = getActionMap();
+        for(int i=0; i<buttons.length; i++) {
+            final JCheckBox b = buttons[i];
+            b.addActionListener(al);
+            am.put(title[i], new AbstractAction(title[i]) {
+                public void actionPerformed(ActionEvent e) {
+                    b.setSelected(!b.isSelected());
+                    fireEditingStopped();
+                }
+            });
         }
-    }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        updateButtons(renderer, value);
-        return renderer;
+        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), title[0]);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), title[1]);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), title[2]);
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        updateButtons(editor, value);
-        return editor;
+        updateButtons(value);
+        return this;
     }
     @Override public Object getCellEditorValue() {
         int i = 0;
-        if(editor.buttons[0].isSelected()) i|=1<<2;
-        if(editor.buttons[1].isSelected()) i|=1<<1;
-        if(editor.buttons[2].isSelected()) i|=1<<0;
+        if(buttons[0].isSelected()) i|=1<<2;
+        if(buttons[1].isSelected()) i|=1<<1;
+        if(buttons[2].isSelected()) i|=1<<0;
         return i;
     }
-//     @Override public boolean isCellEditable(EventObject anEvent) { 
-//         return true;
-//     }
-//     @Override public boolean shouldSelectCell(EventObject anEvent) { 
-//         return true;
-//     }
-//     @Override public boolean stopCellEditing() {
-//         fireEditingStopped();
-//         return true;
-//     }
-//     @Override public void cancelCellEditing() {
-//         fireEditingCanceled();
-//     }
-}
 
-class CheckBoxEditorRenderer2 extends CheckBoxEditorRenderer {
-    protected final String[] title = {"r", "w", "x"};
-    protected final CheckBoxPanel editor = new CheckBoxPanel(title);
-    protected final CheckBoxPanel renderer = new CheckBoxPanel(title);
-    protected EditorDelegate delegate;
-    protected int clickCountToStart = 1;
+    //Copid from AbstractCellEditor
+    protected EventListenerList listenerList = new EventListenerList();
+    transient protected ChangeEvent changeEvent = null;
 
-    public CheckBoxEditorRenderer2() {
-        delegate = new EditorDelegate() {
-            public void setValue(Object value) {
-                updateButtons(editor, value);
+    public boolean isCellEditable(EventObject e) {
+        return true;
+    } 
+    public boolean shouldSelectCell(EventObject anEvent) {
+        return true;
+    }
+    public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    public void  cancelCellEditing() {
+        fireEditingCanceled();
+    }
+    public void addCellEditorListener(CellEditorListener l) {
+        listenerList.add(CellEditorListener.class, l);
+    }
+    public void removeCellEditorListener(CellEditorListener l) {
+        listenerList.remove(CellEditorListener.class, l);
+    }
+    public CellEditorListener[] getCellEditorListeners() {
+        return (CellEditorListener[])listenerList.getListeners(
+            CellEditorListener.class);
+    }
+    protected void fireEditingStopped() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length-2; i>=0; i-=2) {
+            if (listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if (changeEvent == null)
+                  changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
-            public Object getCellEditorValue() {
-                int i = 0;
-                if(editor.buttons[0].isSelected()) i|=1<<2;
-                if(editor.buttons[1].isSelected()) i|=1<<1;
-                if(editor.buttons[2].isSelected()) i|=1<<0;
-                return i;
+        }
+    }
+    protected void fireEditingCanceled() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
-        };
-        for(AbstractButton b: editor.buttons) b.addActionListener(delegate);
-    }
-    protected void updateButtons(CheckBoxPanel p, Object v) {
-        Integer i = (Integer)(v==null?0:v);
-        p.buttons[0].setSelected((i&(1<<2))!=0);
-        p.buttons[1].setSelected((i&(1<<1))!=0);
-        p.buttons[2].setSelected((i&(1<<0))!=0);
-    }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        updateButtons(renderer, value);
-        return renderer;
-    }
-    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        updateButtons(editor, value);
-        return editor;
-    }
-    @Override public Object getCellEditorValue() {
-        return delegate.getCellEditorValue();
-    }
-    @Override public boolean isCellEditable(EventObject anEvent) { 
-        return delegate.isCellEditable(anEvent); 
-    }
-    @Override public boolean shouldSelectCell(EventObject anEvent) { 
-        return delegate.shouldSelectCell(anEvent); 
-    }
-    @Override public boolean stopCellEditing() {
-        return delegate.stopCellEditing();
-    }
-    @Override public void cancelCellEditing() {
-        delegate.cancelCellEditing();
-    }
-    protected class EditorDelegate implements ActionListener, ItemListener, java.io.Serializable {
-        protected Object value;
-        public Object getCellEditorValue() {
-            return value;
-        }
-        public void setValue(Object value) {
-            this.value = value;
-        }
-        public boolean isCellEditable(EventObject anEvent) {
-            if (anEvent instanceof MouseEvent) {
-                return ((MouseEvent)anEvent).getClickCount() >= clickCountToStart;
-            }
-            return true;
-        }
-        public boolean shouldSelectCell(EventObject anEvent) {
-            return true;
-        }
-        public boolean startCellEditing(EventObject anEvent) {
-            return true;
-        }
-        public boolean stopCellEditing() {
-            fireEditingStopped();
-            return true;
-        }
-        public void cancelCellEditing() {
-            fireEditingCanceled();
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            CheckBoxEditorRenderer2.this.stopCellEditing();
-        }
-        @Override public void itemStateChanged(ItemEvent e) {
-            CheckBoxEditorRenderer2.this.stopCellEditing();
         }
     }
 }
+
+// class CheckBoxEditorRenderer2 extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
+//     protected EditorDelegate delegate;
+//     protected int clickCountToStart = 1;
+//
+//     public CheckBoxEditorRenderer2() {
+//         delegate = new EditorDelegate() {
+//             public void setValue(Object value) {
+//                 updateButtons(value);
+//             }
+//             public Object getCellEditorValue() {
+//                 int i = 0;
+//                 if(buttons[0].isSelected()) i|=1<<2;
+//                 if(buttons[1].isSelected()) i|=1<<1;
+//                 if(buttons[2].isSelected()) i|=1<<0;
+//                 return i;
+//             }
+//         };
+//         ActionListener al = new ActionListener() {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 fireEditingStopped();
+//             }
+//         };
+//         ActionMap am = getActionMap();
+//         for(int i=0; i<buttons.length; i++) {
+//             final JCheckBox b = buttons[i];
+//             b.addActionListener(al);
+//             am.put(title[i], new AbstractAction(title[i]) {
+//                 public void actionPerformed(ActionEvent e) {
+//                     b.setSelected(!b.isSelected());
+//                     fireEditingStopped();
+//                 }
+//             });
+//         }
+//         InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+//         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), title[0]);
+//         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), title[1]);
+//         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), title[2]);
+//     }
+//     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+//         updateButtons(value);
+//         return this;
+//     }
+//
+//     protected EventListenerList listenerList = new EventListenerList();
+//     transient protected ChangeEvent changeEvent = null;
+//     public void addCellEditorListener(CellEditorListener l) {
+//         listenerList.add(CellEditorListener.class, l);
+//     }
+//     public void removeCellEditorListener(CellEditorListener l) {
+//         listenerList.remove(CellEditorListener.class, l);
+//     }
+//     public CellEditorListener[] getCellEditorListeners() {
+//         return (CellEditorListener[])listenerList.getListeners(
+//             CellEditorListener.class);
+//     }
+//     protected void fireEditingStopped() {
+//         // Guaranteed to return a non-null array
+//         Object[] listeners = listenerList.getListenerList();
+//         // Process the listeners last to first, notifying
+//         // those that are interested in this event
+//         for (int i = listeners.length-2; i>=0; i-=2) {
+//             if (listeners[i]==CellEditorListener.class) {
+//                 // Lazily create the event:
+//                 if (changeEvent == null)
+//                   changeEvent = new ChangeEvent(this);
+//                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+//             }
+//         }
+//     }
+//     protected void fireEditingCanceled() {
+//         // Guaranteed to return a non-null array
+//         Object[] listeners = listenerList.getListenerList();
+//         // Process the listeners last to first, notifying
+//         // those that are interested in this event
+//         for(int i = listeners.length-2; i>=0; i-=2) {
+//             if(listeners[i]==CellEditorListener.class) {
+//                 // Lazily create the event:
+//                 if(changeEvent == null) changeEvent = new ChangeEvent(this);
+//                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+//             }
+//         }
+//     }
+//
+//     public Object getCellEditorValue() {
+//         return delegate.getCellEditorValue();
+//     }
+//     public boolean isCellEditable(EventObject anEvent) { 
+//         return delegate.isCellEditable(anEvent); 
+//     }
+//     public boolean shouldSelectCell(EventObject anEvent) { 
+//         return delegate.shouldSelectCell(anEvent); 
+//     }
+//     public boolean stopCellEditing() {
+//         return delegate.stopCellEditing();
+//     }
+//     public void cancelCellEditing() {
+//         delegate.cancelCellEditing();
+//     }
+//     protected class EditorDelegate implements ActionListener, ItemListener, java.io.Serializable {
+//         protected Object value;
+//         public Object getCellEditorValue() {
+//             return value;
+//         }
+//         public void setValue(Object value) {
+//             this.value = value;
+//         }
+//         public boolean isCellEditable(EventObject anEvent) {
+//             if (anEvent instanceof MouseEvent) {
+//                 return ((MouseEvent)anEvent).getClickCount() >= clickCountToStart;
+//             }
+//             return true;
+//         }
+//         public boolean shouldSelectCell(EventObject anEvent) {
+//             return true;
+//         }
+//         public boolean startCellEditing(EventObject anEvent) {
+//             return true;
+//         }
+//         public boolean stopCellEditing() {
+//             fireEditingStopped();
+//             return true;
+//         }
+//         public void cancelCellEditing() {
+//             fireEditingCanceled();
+//         }
+//         @Override public void actionPerformed(ActionEvent e) {
+//             CheckBoxEditorRenderer2.this.stopCellEditing();
+//         }
+//         @Override public void itemStateChanged(ItemEvent e) {
+//             CheckBoxEditorRenderer2.this.stopCellEditing();
+//         }
+//     }
+// }
