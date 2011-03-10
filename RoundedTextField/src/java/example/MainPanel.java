@@ -87,12 +87,13 @@ class RoundTextUI extends BasicTextFieldUI {
         super.installUI(c);
         c.setBorder(new RoundBorder());
         c.setOpaque(false);
+        c.setBackground(new Color(0,0,0,0));
     }
     @Override protected void paintSafely(Graphics g) {
         JComponent c = getComponent();
         if(!c.isOpaque()) {
             Graphics2D g2 = (Graphics2D)g.create();
-            g2.setColor(c.getBackground());
+            g2.setColor(UIManager.getColor("TextField.background"));
             g2.fillRoundRect(0, 0, c.getWidth()-1, c.getHeight()-1, c.getHeight(), c.getHeight());
             g2.dispose();
         }
