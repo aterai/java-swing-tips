@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -23,6 +24,8 @@ public class MainPanel extends JPanel {
     private final JTable table  = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
+        JLabel r = (JLabel)table.getDefaultRenderer(Date.class);
+        r.setHorizontalAlignment(JLabel.LEFT);
         table.setDefaultEditor(Date.class, new SpinnerCellEditor());
         //table.setShowGrid(false);
         //table.setAutoCreateRowSorter(true);
@@ -52,14 +55,14 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
-    private final JSpinner spinner = new JSpinner(new SpinnerDateModel());
+//class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
+class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     private final JSpinner.DateEditor editor;
     public SpinnerCellEditor() {
-        editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
-        spinner.setEditor(editor);
+        super(new SpinnerDateModel());
+        setEditor(editor = new JSpinner.DateEditor(this, "yyyy/MM/dd"));
         setArrowButtonEnabled(false);
-        spinner.addFocusListener(new FocusAdapter() {
+        addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
                 //System.out.println("spinner");
                 editor.getTextField().requestFocusInWindow();
@@ -81,31 +84,79 @@ class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
                 });
             }
         });
-        spinner.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
     }
     private void setArrowButtonEnabled(boolean flag) {
-        for(Component c: spinner.getComponents()) {
+        for(Component c: getComponents()) {
             if(c instanceof JButton) {
                 ((JButton)c).setEnabled(flag);
             }
         }
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        spinner.setValue(value);
         editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
-//         JTextField tf = editor.getTextField();
-//         tf.setCaretPosition(8);
-//         tf.setSelectionStart(8);
-//         tf.setSelectionEnd(10);
-        return spinner;
+        setValue(value);
+        return this;
     }
     @Override public Object getCellEditorValue() {
-        return spinner.getValue();
+        return getValue();
     }
-    @Override public boolean isCellEditable(EventObject e) {
+
+    //Copid from AbstractCellEditor
+    protected EventListenerList listenerList = new EventListenerList();
+    transient protected ChangeEvent changeEvent = null;
+
+    public boolean isCellEditable(EventObject e) {
         if(e instanceof MouseEvent) {
             return ((MouseEvent)e).getClickCount() >= 2;
         }
         return true;
+    } 
+    public boolean shouldSelectCell(EventObject anEvent) {
+        return true;
+    }
+    public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    public void  cancelCellEditing() {
+        fireEditingCanceled();
+    }
+    public void addCellEditorListener(CellEditorListener l) {
+        listenerList.add(CellEditorListener.class, l);
+    }
+    public void removeCellEditorListener(CellEditorListener l) {
+        listenerList.remove(CellEditorListener.class, l);
+    }
+    public CellEditorListener[] getCellEditorListeners() {
+        return (CellEditorListener[])listenerList.getListeners(
+            CellEditorListener.class);
+    }
+    protected void fireEditingStopped() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length-2; i>=0; i-=2) {
+            if (listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if (changeEvent == null)
+                  changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+            }
+        }
+    }
+    protected void fireEditingCanceled() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+            }
+        }
     }
 }
