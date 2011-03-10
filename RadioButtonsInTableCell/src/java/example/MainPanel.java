@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 //http://www.crionics.com/products/opensource/faq/swing_ex/JTableExamples2.html
@@ -40,9 +41,9 @@ public class MainPanel extends JPanel {
 //                 }
 //             }
 //         });
-        RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
-        table.getColumnModel().getColumn(1).setCellRenderer(rbe);
-        table.getColumnModel().getColumn(1).setCellEditor(rbe);
+        //RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
+        table.getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
+        table.getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 200));
     }
@@ -68,10 +69,11 @@ public class MainPanel extends JPanel {
     }
 }
 
-class RadioButtonPanel extends JPanel {
+class RadioButtonsPanel extends JPanel {
+    private final String[] answer = { "A", "B", "C" };
     public final JRadioButton[] buttons;
     public final ButtonGroup bg = new ButtonGroup();
-    RadioButtonPanel(String[] answer) {
+    public RadioButtonsPanel() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         buttons = new JRadioButton[answer.length];
@@ -84,44 +86,94 @@ class RadioButtonPanel extends JPanel {
             bg.add(buttons[i]);
         }
     }
-}
-class RadioButtonEditorRenderer extends AbstractCellEditor
-                                implements TableCellRenderer, TableCellEditor{
-    private final String[] answer = { "A", "B", "C" };
-    private final RadioButtonPanel editor;
-    private final RadioButtonPanel renderer;
-    private final ActionListener al = new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            fireEditingStopped();
-        }
-    };
-    public RadioButtonEditorRenderer() {
-        super();
-        this.editor   = new RadioButtonPanel(answer);
-        this.renderer = new RadioButtonPanel(answer);
-        for(AbstractButton b: editor.buttons) b.addActionListener(al);
-    }
-    private void setSelectedButton(RadioButtonPanel p, Object v) {
+    protected void updateSelectedButton(Object v) {
         if("A".equals(v)) {
-            p.buttons[0].setSelected(true);
+            buttons[0].setSelected(true);
         }else if("B".equals(v)) {
-            p.buttons[1].setSelected(true);
+            buttons[1].setSelected(true);
         }else{
-            p.buttons[2].setSelected(true);
+            buttons[2].setSelected(true);
         }
     }
-    @Override public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected,
-        boolean hasFocus, int row, int column) {
-        setSelectedButton(renderer, value);
-        return renderer;
+}
+class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRenderer {
+    public RadioButtonsRenderer() {
+        super();
+        setName("Table.cellRenderer");
     }
-    @Override public Component getTableCellEditorComponent(
-        JTable table, Object value, boolean isSelected, int row, int column) {
-        setSelectedButton(editor, value);
-        return editor;
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        updateSelectedButton(value);
+        return this;
+    }
+}
+class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
+    public RadioButtonsEditor() {
+        super();
+        ActionListener al = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+        };
+        for(AbstractButton b: buttons) b.addActionListener(al);
+    }
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        updateSelectedButton(value);
+        return this;
     }
     @Override public Object getCellEditorValue() {
-        return editor.bg.getSelection().getActionCommand();
+        return bg.getSelection().getActionCommand();
+    }
+
+    //Copid from AbstractCellEditor
+    //protected EventListenerList listenerList = new EventListenerList();
+    transient protected ChangeEvent changeEvent = null;
+
+    @Override public boolean isCellEditable(java.util.EventObject e) {
+        return true;
+    } 
+    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+        return true;
+    }
+    @Override public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    @Override public void  cancelCellEditing() {
+        fireEditingCanceled();
+    }
+    @Override public void addCellEditorListener(CellEditorListener l) {
+        listenerList.add(CellEditorListener.class, l);
+    }
+    @Override public void removeCellEditorListener(CellEditorListener l) {
+        listenerList.remove(CellEditorListener.class, l);
+    }
+    public CellEditorListener[] getCellEditorListeners() {
+        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+    }
+    protected void fireEditingStopped() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+            }
+        }
+    }
+    protected void fireEditingCanceled() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+            }
+        }
     }
 }

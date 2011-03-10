@@ -29,11 +29,10 @@ public class MainPanel extends JPanel {
         table.setRowHeight(36);
         table.setAutoCreateRowSorter(true);
         //table.addMouseListener(new CellButtonsMouseListener());
-
-        ButtonsEditorRenderer er = new ButtonsEditorRenderer(table);
+        //ButtonsEditorRenderer er = new ButtonsEditorRenderer(table);
         TableColumn column = table.getColumnModel().getColumn(1);
-        column.setCellRenderer(er);
-        column.setCellEditor(er);
+        column.setCellRenderer(new ButtonsRenderer());
+        column.setCellEditor(new ButtonsEditor(table));
         return table;
     }
 
@@ -75,28 +74,52 @@ public class MainPanel extends JPanel {
 //     }
 // }
 
-class ButtonsEditorRenderer extends AbstractCellEditor implements TableCellRenderer,TableCellEditor{
-    private final JPanel renderer = new JPanel();
-    private final JPanel editor   = new JPanel();
-    private final JTable table;
-    private final MouseListener ml = new MouseAdapter() {
-        public void mousePressed(MouseEvent e) {
-            ButtonModel m = ((JButton)e.getSource()).getModel();
-            if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && !e.isShiftDown()) {
-                editor.setBackground(table.getBackground());
-            }
-        }
-    };
-    public ButtonsEditorRenderer(JTable t) {
+class ButtonsPanel extends JPanel {
+    public final java.util.List<JButton> buttons = java.util.Arrays.asList(new JButton("view"), new JButton("edit"));
+    public ButtonsPanel() {
         super();
-        this.table = t;
-        JButton viewButton2 = new JButton(new AbstractAction("view") {;
+        setOpaque(true);
+        for(JButton b: buttons) {
+            b.setFocusable(false);
+            b.setRolloverEnabled(false);
+            add(b);
+        }
+    }
+//     @Override public void updateUI() {
+//         super.updateUI();
+//     }
+}
+class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
+    public ButtonsRenderer() {
+        super();
+        setName("Table.cellRenderer");
+    }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        this.setBackground(isSelected?table.getSelectionBackground():table.getBackground());
+        return this;
+    }
+}
+class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
+    public ButtonsEditor(final JTable table) {
+        super();
+        MouseListener ml = new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                ButtonModel m = ((JButton)e.getSource()).getModel();
+                if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && !e.isShiftDown()) {
+                    setBackground(table.getBackground());
+                }
+            }
+        };
+
+        buttons.get(0).addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
                 JOptionPane.showMessageDialog(table, "Viewing");
             }
         });
-        JButton editButton2 = new JButton(new AbstractAction("edit") {;
+        buttons.get(0).addMouseListener(ml);
+
+        buttons.get(1).addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 //Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
                 int row = table.convertRowIndexToModel(table.getEditingRow());
@@ -105,39 +128,72 @@ class ButtonsEditorRenderer extends AbstractCellEditor implements TableCellRende
                 JOptionPane.showMessageDialog(table, "Editing: "+o);
             }
         });
-        viewButton2.addMouseListener(ml);
-        viewButton2.setFocusable(false);
-        viewButton2.setRolloverEnabled(false);
+        buttons.get(1).addMouseListener(ml);
 
-        editButton2.addMouseListener(ml);
-        editButton2.setFocusable(false);
-        editButton2.setRolloverEnabled(false);
-
-        renderer.setOpaque(true);
-        renderer.add(new JButton("view"));
-        renderer.add(new JButton("edit"));
-        editor.setOpaque(true);
-        editor.add(viewButton2);
-        editor.add(editButton2);
-        editor.addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 fireEditingStopped();
             }
         });
     }
-    @Override public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected, boolean hasFocus,
-        int row, int column) {
-        renderer.setBackground(isSelected?table.getSelectionBackground()
-                                         :table.getBackground());
-        return renderer;
-    }
-    @Override public Component getTableCellEditorComponent(
-        JTable table, Object value, boolean isSelected, int row, int column) {
-        editor.setBackground(table.getSelectionBackground());
-        return editor;
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        this.setBackground(table.getSelectionBackground());
+        return this;
     }
     @Override public Object getCellEditorValue() {
         return "";
+    }
+
+    //Copid from AbstractCellEditor
+    //protected EventListenerList listenerList = new EventListenerList();
+    transient protected ChangeEvent changeEvent = null;
+
+    @Override public boolean isCellEditable(java.util.EventObject e) {
+        return true;
+    } 
+    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+        return true;
+    }
+    @Override public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    @Override public void  cancelCellEditing() {
+        fireEditingCanceled();
+    }
+    @Override public void addCellEditorListener(CellEditorListener l) {
+        listenerList.add(CellEditorListener.class, l);
+    }
+    @Override public void removeCellEditorListener(CellEditorListener l) {
+        listenerList.remove(CellEditorListener.class, l);
+    }
+    public CellEditorListener[] getCellEditorListeners() {
+        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+    }
+    protected void fireEditingStopped() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+            }
+        }
+    }
+    protected void fireEditingCanceled() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+            }
+        }
     }
 }

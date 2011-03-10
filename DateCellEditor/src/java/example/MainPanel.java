@@ -103,45 +103,40 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     }
 
     //Copid from AbstractCellEditor
-    protected EventListenerList listenerList = new EventListenerList();
+    //protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
 
-    public boolean isCellEditable(EventObject e) {
-        if(e instanceof MouseEvent) {
-            return ((MouseEvent)e).getClickCount() >= 2;
-        }
+    @Override public boolean isCellEditable(java.util.EventObject e) {
         return true;
     } 
-    public boolean shouldSelectCell(EventObject anEvent) {
+    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
         return true;
     }
-    public boolean stopCellEditing() {
+    @Override public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     }
-    public void  cancelCellEditing() {
+    @Override public void  cancelCellEditing() {
         fireEditingCanceled();
     }
-    public void addCellEditorListener(CellEditorListener l) {
+    @Override public void addCellEditorListener(CellEditorListener l) {
         listenerList.add(CellEditorListener.class, l);
     }
-    public void removeCellEditorListener(CellEditorListener l) {
+    @Override public void removeCellEditorListener(CellEditorListener l) {
         listenerList.remove(CellEditorListener.class, l);
     }
     public CellEditorListener[] getCellEditorListeners() {
-        return (CellEditorListener[])listenerList.getListeners(
-            CellEditorListener.class);
+        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
     }
     protected void fireEditingStopped() {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==CellEditorListener.class) {
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null)
-                  changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
