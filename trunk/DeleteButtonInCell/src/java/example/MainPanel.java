@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -61,10 +62,10 @@ public class MainPanel extends JPanel {
 //         });
 //         ButtonColumn buttonColumn = new ButtonColumn();
 
-        ButtonColumn buttonColumn = new ButtonColumn(table);
+        //ButtonColumn buttonColumn = new ButtonColumn(table);
         TableColumn column = table.getColumnModel().getColumn(BUTTON_COLUMN);
-        column.setCellRenderer(buttonColumn);
-        column.setCellEditor(buttonColumn);
+        column.setCellRenderer(new DeleteButtonRenderer());
+        column.setCellEditor(new DeleteButtonEditor(table));
         column.setMinWidth(20);
         column.setMaxWidth(20);
         column.setResizable(false);
@@ -101,32 +102,93 @@ public class MainPanel extends JPanel {
 }
 //Swing - JButton inside JTable Cell
 //http://forums.sun.com/thread.jspa?threadID=680674
-class ButtonColumn extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
-    private static final String LABEL = "X";
-    private final JButton renderButton = new JButton(LABEL);
-    private final JButton editorButton;
-    public ButtonColumn(final JTable table) {
-        super();
-        renderButton.setBorder(BorderFactory.createEmptyBorder());
 
-        editorButton = new JButton(new AbstractAction(LABEL) {
+class DeleteButton extends JButton {
+    @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder());
+        setFocusable(false);
+        setRolloverEnabled(false);
+        setText("X");
+    }
+}
+class DeleteButtonRenderer extends DeleteButton implements TableCellRenderer {
+    public DeleteButtonRenderer() {
+        super();
+        setName("Table.cellRenderer");
+    }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        return this;
+    }
+}
+class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
+    public DeleteButtonEditor(final JTable table) {
+        super();
+        addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 int row = table.convertRowIndexToModel(table.getEditingRow());
                 fireEditingStopped();
                 ((DefaultTableModel)table.getModel()).removeRow(row);
             }
         });
-        editorButton.setBorder(BorderFactory.createEmptyBorder());
-        editorButton.setFocusable(false);
-        editorButton.setRolloverEnabled(false);
-    }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return renderButton;
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        return editorButton;
+        return this;
     }
     @Override public Object getCellEditorValue() {
-        return LABEL;
+        return "";
+    }
+
+    //Copid from AbstractCellEditor
+    //protected EventListenerList listenerList = new EventListenerList();
+    //transient protected ChangeEvent changeEvent = null;
+
+    @Override public boolean isCellEditable(java.util.EventObject e) {
+        return true;
+    } 
+    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+        return true;
+    }
+    @Override public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    @Override public void  cancelCellEditing() {
+        fireEditingCanceled();
+    }
+    @Override public void addCellEditorListener(CellEditorListener l) {
+        listenerList.add(CellEditorListener.class, l);
+    }
+    @Override public void removeCellEditorListener(CellEditorListener l) {
+        listenerList.remove(CellEditorListener.class, l);
+    }
+    public CellEditorListener[] getCellEditorListeners() {
+        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+    }
+    protected void fireEditingStopped() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+            }
+        }
+    }
+    protected void fireEditingCanceled() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+            }
+        }
     }
 }
