@@ -28,12 +28,11 @@ public class MainPanel extends JPanel {
     }
     private static JComboBox makeTestComboBox() {
         JComboBox combobox = new JComboBox();
-        final ListCellRenderer lcr = combobox.getRenderer();
-        combobox.setRenderer(new ListCellRenderer() {
+        combobox.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
                 MyItem item = (MyItem)value;
-                JLabel label = (JLabel)lcr.getListCellRendererComponent(list,item,index,isSelected,cellHasFocus);
+                JLabel label = (JLabel)super.getListCellRendererComponent(list,item,index,isSelected,cellHasFocus);
                 if(index!=-1 && item.hasSeparator()) {
                     label.setBorder(BorderFactory.createMatteBorder(1,0,0,0,Color.GRAY));
                 }else{
