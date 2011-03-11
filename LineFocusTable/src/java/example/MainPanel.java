@@ -13,12 +13,19 @@ public class MainPanel extends JPanel {
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model);
+        table = new JTable(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                Color sbg = UIManager.getColor("Table.selectionBackground");
+                if(sbg!=null) { //Nimbus
+                    setSelectionBackground(sbg);
+                }
+            }
+        };
 
         TableColumnModel columns = table.getColumnModel();
         for(int i=0;i<columns.getColumnCount();i++) {
-            columns.getColumn(i).setCellRenderer(new TestRenderer(
-                (DefaultTableCellRenderer)table.getDefaultRenderer(model.getColumnClass(i))));
+            columns.getColumn(i).setCellRenderer(new TestRenderer());
         }
 
         table.setRowSelectionAllowed(true);
@@ -134,15 +141,11 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class TestRenderer implements TableCellRenderer {
+class TestRenderer extends DefaultTableCellRenderer {
     private static final DotBorder dotBorder = new DotBorder(2,2,2,2);
     private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
-    private final DefaultTableCellRenderer delegate;
-    public TestRenderer(DefaultTableCellRenderer delegate) {
-        this.delegate = delegate;
-    }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = delegate.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
+        Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
         if(c instanceof JComponent) {
             int lsi = table.getSelectionModel().getLeadSelectionIndex();
             ((JComponent)c).setBorder(row==lsi?dotBorder:emptyBorder);
