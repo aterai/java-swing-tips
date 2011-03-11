@@ -23,7 +23,11 @@ public class MainPanel extends JPanel{
             }
         });
 
-        list3.setCellRenderer(new MyCellRenderer(list3.getCellRenderer()));
+        list3.setCellRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                return super.getListCellRendererComponent(list, value, index, false, false);
+            }
+        });
 
         add(new JScrollPane(list1));
         add(new JScrollPane(list2));
@@ -42,18 +46,6 @@ public class MainPanel extends JPanel{
         model.addElement("hhhhhh");
         model.addElement("iiiiiiiiiiii");
         return model;
-    }
-
-    static class MyCellRenderer implements ListCellRenderer {
-        private final ListCellRenderer renderer;
-        public MyCellRenderer(ListCellRenderer renderer) {
-            this.renderer = renderer;
-        }
-        @Override public Component getListCellRendererComponent(JList list, Object value,
-                                                      int index, boolean isSelected,
-                                                      boolean cellHasFocus) {
-            return renderer.getListCellRendererComponent(list, value, index, false, false);
-        }
     }
 
     public static void main(String[] args) {

@@ -18,7 +18,7 @@ public class MainPanel extends JPanel{
     }
     private final JTree tree       = new JTree();
     private final JTextField field = new JTextField("foo");
-    private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer(tree.getCellRenderer());
+    private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
     public JPanel makeUI() {
         field.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) {
@@ -97,14 +97,17 @@ public class MainPanel extends JPanel{
 }
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color rollOverRowColor = new Color(220, 240, 255);
-    private final TreeCellRenderer renderer;
     public String q;
-    public HighlightTreeCellRenderer(TreeCellRenderer renderer) {
-        this.renderer = renderer;
+    @Override public void updateUI() {
+        setTextSelectionColor(null);
+        setTextNonSelectionColor(null);
+        setBackgroundSelectionColor(null);
+        setBackgroundNonSelectionColor(null);
+        super.updateUI();
     }
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
                                                   boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         //DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
         if(isSelected) {
             c.setOpaque(false);

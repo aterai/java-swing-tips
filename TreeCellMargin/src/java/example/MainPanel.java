@@ -13,10 +13,10 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,3));
         JTree tree1 = new JTree();
-        tree1.setCellRenderer(new MyTreeCellRenderer(tree1.getCellRenderer()));
+        tree1.setCellRenderer(new MyTreeCellRenderer());
 
         JTree tree2 = new JTree();
-        tree2.setCellRenderer(new MyTreeCellRenderer2(tree2.getCellRenderer()));
+        tree2.setCellRenderer(new MyTreeCellRenderer2());
 
         add(makeTitledPanel("Default", new JTree()));
         add(makeTitledPanel("Margin", tree1));
@@ -51,13 +51,11 @@ public class MainPanel extends JPanel {
     }
 }
 class MyTreeCellRenderer extends DefaultTreeCellRenderer {
-    private final TreeCellRenderer renderer;
     private final Border border;
 
-    public MyTreeCellRenderer(TreeCellRenderer renderer) {
+    public MyTreeCellRenderer() {
         super();
-        this.renderer = renderer;
-        Border outside = ((JComponent)renderer).getBorder();
+        Border outside = getBorder();
         Border inside  = BorderFactory.createEmptyBorder(0,20,0,2);
         border = BorderFactory.createCompoundBorder(outside, inside);
         setOpaque(false);
@@ -173,11 +171,9 @@ class MyTreeCellRenderer2 extends DefaultTreeCellRenderer {
     private final Border emptyBorder = BorderFactory.createCompoundBorder(
                                             BorderFactory.createEmptyBorder(1,1,1,1), innerBorder);
     private final Border hasFocusBorder;
-    private final TreeCellRenderer renderer;
 
-    public MyTreeCellRenderer2(TreeCellRenderer renderer) {
+    public MyTreeCellRenderer2() {
         super();
-        this.renderer = renderer;
         Color bsColor = getBorderSelectionColor();
         Color focusBGColor = new Color(~getBackgroundSelectionColor().getRGB());
         hasFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBGColor, bsColor), innerBorder);
@@ -190,7 +186,7 @@ class MyTreeCellRenderer2 extends DefaultTreeCellRenderer {
         p.add(text);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        JLabel l = (JLabel)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         Color bColor, fColor;
         if(selected) {
             bColor = getBackgroundSelectionColor();

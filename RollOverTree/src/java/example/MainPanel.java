@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         tree.setModel(makeModel());
-        tree.setCellRenderer(new RollOverTreeCellRenderer(tree, tree.getCellRenderer()));
+        tree.setCellRenderer(new RollOverTreeCellRenderer(tree));
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 200));
     }
@@ -60,15 +60,13 @@ public class MainPanel extends JPanel {
 class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseMotionListener {
     private static final Color rollOverRowColor = new Color(220,240,255);
     private final JTree tree;
-    private final TreeCellRenderer renderer;
-    public RollOverTreeCellRenderer(JTree tree, TreeCellRenderer renderer) {
+    public RollOverTreeCellRenderer(JTree tree) {
         this.tree = tree;
-        this.renderer = renderer;
         tree.addMouseMotionListener(this);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
                                                   boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         if(row==rollOverRowIndex) {
             c.setOpaque(true);
             c.setBackground(rollOverRowColor);
