@@ -48,15 +48,14 @@ public class MainPanel extends JPanel {
         });
 
         tree.setOpaque(false);
-        final TreeCellRenderer renderer = tree.getCellRenderer();
-        ((JComponent)renderer).setOpaque(true);
-        tree.setCellRenderer(new TreeCellRenderer() {
+        tree.setCellRenderer(new DefaultTreeCellRenderer() {
             @Override public Component getTreeCellRendererComponent(
                     JTree tree, Object value, boolean selected, boolean expanded,
                     boolean leaf, int row, boolean hasFocus) {
-                JLabel l = (JLabel)renderer.getTreeCellRendererComponent(
+                JLabel l = (JLabel)super.getTreeCellRendererComponent(
                     tree, value, selected, expanded, leaf, row, hasFocus);
                 l.setBackground(selected?SELC:tree.getBackground());
+                l.setOpaque(true);
                 return l;
             }
         });

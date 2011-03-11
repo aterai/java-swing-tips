@@ -15,16 +15,15 @@ public class MainPanel extends JPanel{
 
     public MainPanel() {
         super(new BorderLayout(5,5));
-        final ListCellRenderer r = list.getCellRenderer();
-        list.setCellRenderer(new ListCellRenderer() {
+        list.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value,
                                  int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
                 if(disableIndexSet.contains(index)) {
-                    c = r.getListCellRendererComponent(list,value,index,false,false);
+                    c = super.getListCellRendererComponent(list,value,index,false,false);
                     c.setEnabled(false);
                 }else{
-                    c = r.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                    c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                 }
                 return c;
             }

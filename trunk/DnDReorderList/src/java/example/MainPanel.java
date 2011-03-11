@@ -20,7 +20,12 @@ public class MainPanel extends JPanel {
         listModel.addElement(Color.ORANGE);
         listModel.addElement(Color.PINK);
         listModel.addElement(Color.MAGENTA);
-        JList list = new JList(listModel);
+        JList list = new JList(listModel) {
+            @Override public void updateUI() {
+                setSelectionBackground(null); //Nimbus
+                super.updateUI();
+            }
+        };
         //list.setVisibleRowCount(-1);
         list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list.setTransferHandler(new ListItemTransferHandler());
@@ -30,16 +35,15 @@ public class MainPanel extends JPanel {
         //regression: ClassCastException in the DropHandler.initProperties()
         ActionMap map = list.getActionMap();
         AbstractAction dummy = new AbstractAction() {
-            @Override public void actionPerformed(java.awt.event.ActionEvent e) {}
+            @Override public void actionPerformed(ActionEvent e) {}
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
-        final ListCellRenderer r = list.getCellRenderer();
-        list.setCellRenderer(new ListCellRenderer() {
+        list.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 Color color = (Color)value;
                 ((JLabel)c).setForeground(color);
                 return c;
