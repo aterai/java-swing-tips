@@ -11,14 +11,13 @@ public class MainPanel extends JPanel{
 
     public MainPanel() {
         super(new BorderLayout());
-        final ListCellRenderer lcr = combo.getRenderer();
-        combo.setRenderer(new ListCellRenderer() {
+        combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
                 if(value instanceof JSeparator) {
-                    return (JSeparator)value;
+                    return (Component)value;
                 }else{
-                    return (JLabel)lcr.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                    return super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                 }
             }
         });

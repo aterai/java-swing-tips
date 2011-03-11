@@ -16,11 +16,9 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
 //         // MetalLookAndFeel
 //         combo01.setUI(new MetalComboBoxUI() {
-//             @Override
-//             public PropertyChangeListener createPropertyChangeListener() {
+//             @Override public PropertyChangeListener createPropertyChangeListener() {
 //                 return new MetalPropertyChangeListener() {
-//                     @Override
-//                     public void propertyChange(PropertyChangeEvent e) {
+//                     @Override public void propertyChange(PropertyChangeEvent e) {
 //                         String propertyName = e.getPropertyName();
 //                         if(propertyName=="background") {
 //                             Color color = (Color)e.getNewValue();
@@ -34,11 +32,11 @@ public class MainPanel extends JPanel{
 //             }
 //         });
         combo01.setModel(makeModel());
-        combo01.setRenderer(new MyListCellRenderer(combo01.getRenderer()));
+        combo01.setRenderer(new AlternateRowColorListCellRenderer());
         combo01.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()!=ItemEvent.SELECTED) return;
-                combo01.setBackground(getOEColor(combo01.getSelectedIndex()));
+                combo01.setBackground(getAlternateRowColor(combo01.getSelectedIndex()));
             }
         });
         combo01.setSelectedIndex(0);
@@ -49,11 +47,11 @@ public class MainPanel extends JPanel{
         field.setBackground(evenBGColor);
         combo02.setEditable(true);
         combo02.setModel(makeModel());
-        combo02.setRenderer(new MyListCellRenderer(combo02.getRenderer()));
+        combo02.setRenderer(new AlternateRowColorListCellRenderer());
         combo02.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()!=ItemEvent.SELECTED) return;
-                field.setBackground(getOEColor(combo02.getSelectedIndex()));
+                field.setBackground(getAlternateRowColor(combo02.getSelectedIndex()));
             }
         });
         combo02.setSelectedIndex(0);
@@ -73,23 +71,18 @@ public class MainPanel extends JPanel{
         p.add(c);
         return p;
     }
-    private static class MyListCellRenderer extends DefaultListCellRenderer {
-        private final ListCellRenderer lcr;
-        public MyListCellRenderer(ListCellRenderer lcr) {
-            this.lcr = lcr;
-        }
+    private static class AlternateRowColorListCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
-            JLabel cmp = (JLabel)lcr.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+            JLabel cmp = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
             cmp.setOpaque(true);
             if(!isSelected) {
-                cmp.setBackground(getOEColor(index));
+                cmp.setBackground(getAlternateRowColor(index));
             }
             return cmp;
         }
     }
-
-    private static Color getOEColor(int index) {
+    private static Color getAlternateRowColor(int index) {
         return (index%2==0)?evenBGColor:oddBGColor;
     }
     private static DefaultComboBoxModel makeModel() {
@@ -123,28 +116,3 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-// class ColorListCellRenderer implements ListCellRenderer {
-//     private static final Color evenBGColor = new Color(225,255,225);
-//     private static final Color oddBGColor  = new Color(255,255,255);
-//     private final ListCellRenderer lcr;
-//     private final JComponent c;
-//     public ColorListCellRenderer(JComponent c, ListCellRenderer lcr) {
-//         this.c = c;
-//         this.lcr = lcr;
-//         c.setOpaque(true);
-//     }
-//     public Component getListCellRendererComponent(JList list, Object value, int index,
-//                                                   boolean isSelected, boolean cellHasFocus) {
-//         JLabel l = (JLabel)lcr.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-//         l.setOpaque(true);
-//         if(index<0) {
-//             c.setBackground(getOEColor(list.getSelectedIndex()));
-//         }else if(!isSelected) {
-//             l.setBackground(getOEColor(index));
-//         }
-//         return l;
-//     }
-//     private static Color getOEColor(int index) {
-//         return (index%2==0)?evenBGColor:oddBGColor;
-//     }
-// }

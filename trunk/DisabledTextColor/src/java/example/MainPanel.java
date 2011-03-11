@@ -46,12 +46,11 @@ public class MainPanel extends JPanel {
                 }
             }
         });
-        final ListCellRenderer r = combo2.getRenderer();
-        combo2.setRenderer(new ListCellRenderer() {
+        combo2.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value,
                                                           int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = r.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                if(index==-1 && !combo1.isEnabled()) {
+                Component c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                if(index==-1 && !combo2.isEnabled()) {
                     JLabel l = (JLabel)c;
                     l.setText("<html><font color='red'>"+l.getText());
                     //c.setForeground(Color.RED);

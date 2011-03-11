@@ -211,11 +211,10 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         }
     }
     @Override protected ListCellRenderer createRenderer() {
-        final ListCellRenderer lcr = super.createRenderer();
-        return new ListCellRenderer() {
+        return new DefaultListCellRenderer() {
             public Component getListCellRendererComponent(JList list, Object value,
                                                           int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel l = (JLabel)lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                JLabel l = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if(value instanceof SearchEngine) {
                     SearchEngine se = (SearchEngine)value;
                     l.setIcon(se.favicon);

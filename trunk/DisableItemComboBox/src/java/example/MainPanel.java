@@ -77,16 +77,15 @@ public class MainPanel extends JPanel{
 class MyComboBox extends JComboBox {
     public MyComboBox() {
         super();
-        final ListCellRenderer r = getRenderer();
-        setRenderer(new ListCellRenderer() {
+        setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value,
                                  int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
                 if(disableIndexSet.contains(index)) {
-                    c = r.getListCellRendererComponent(list,value,index,false,false);
+                    c = super.getListCellRendererComponent(list,value,index,false,false);
                     c.setEnabled(false);
                 }else{
-                    c = r.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                    c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                     c.setEnabled(true);
                 }
                 return c;

@@ -17,17 +17,20 @@ public class MainPanel extends JPanel {
         Box p = Box.createVerticalBox();
         Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
 
-        JComboBox combo1 = new JComboBox(items);
-        JLabel renderer1 = (JLabel)combo1.getRenderer();
-        renderer1.setPreferredSize(new Dimension(0, 32));
+        JComboBox combo1 = new JComboBox(items) {
+            @Override public void updateUI() {
+                super.updateUI();
+                JLabel r = (JLabel)getRenderer();
+                r.setPreferredSize(new Dimension(0, 32));
+            }
+        };
 
         JComboBox combo2 = new JComboBox(items);
-        final ListCellRenderer r = combo2.getRenderer();
-        final Dimension dim = ((JLabel)r).getPreferredSize();
-        combo2.setRenderer(new ListCellRenderer() {
+        final Dimension dim = ((JLabel)combo2.getRenderer()).getPreferredSize();
+        combo2.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(
                     JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 c.setPreferredSize(new Dimension(100, (index<0)?dim.height:32));
                 return c;
             }

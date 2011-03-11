@@ -226,12 +226,11 @@ class MainPanel extends JPanel {
     }
     private static JComboBox makeTestComboBox(DefaultComboBoxModel model) {
         JComboBox combo = new JComboBox(model);
-        final ListCellRenderer lcr = combo.getRenderer();
         combo.setEditable(true);
-        combo.setRenderer(new ListCellRenderer() {
+        combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
-                JLabel c = (JLabel)lcr.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                JLabel c = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                 c.setIcon(((TestItem)value).favicon);
                 return c;
             }
