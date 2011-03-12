@@ -52,19 +52,19 @@ public class MainPanel extends JPanel {
         col.setResizable(false);
 
         final DefaultTableCellRenderer defalutRenderer = (DefaultTableCellRenderer)table.getDefaultRenderer(Object.class);
-        final TestRenderer testRenderer = new TestRenderer();
+        final UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
         final DefaultCellEditor ce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
         modelCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 if(modelCheck.isSelected()) {
-                    table.setDefaultRenderer(Object.class, testRenderer);
-                    table.addMouseListener(testRenderer);
-                    table.addMouseMotionListener(testRenderer);
+                    table.setDefaultRenderer(Object.class, underlineRenderer);
+                    table.addMouseListener(underlineRenderer);
+                    table.addMouseMotionListener(underlineRenderer);
                     ce.setClickCountToStart(1);
                 }else{
                     table.setDefaultRenderer(Object.class, defalutRenderer);
-                    table.removeMouseListener(testRenderer);
-                    table.removeMouseMotionListener(testRenderer);
+                    table.removeMouseListener(underlineRenderer);
+                    table.removeMouseMotionListener(underlineRenderer);
                     ce.setClickCountToStart(2);
                 }
             }
@@ -98,7 +98,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TestRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
+class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
     private int row = -1;
     private int col = -1;
     @Override public Component getTableCellRendererComponent(JTable table, Object value,
