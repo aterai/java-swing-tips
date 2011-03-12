@@ -49,24 +49,31 @@ public class MainPanel extends JPanel{
         s.toggleSortOrder(1);
         table.setRowSorter(s);
 
-        TableColumnModel col = table.getColumnModel();
-        for(int i=0;i<col.getColumnCount();i++) {
-            final TableCellRenderer r = table.getDefaultRenderer(model.getColumnClass(i));
-            col.getColumn(i).setCellRenderer(new TableCellRenderer() {
-                @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    JLabel l;
-                    if(row==model.getRowCount()-2) {
-                        int i = getSum(table.convertColumnIndexToModel(column));
-                        l = (JLabel)r.getTableCellRendererComponent(table, i, isSelected, hasFocus, row, column);
-                        l.setBackground(Color.ORANGE);
-                    }else{
-                        l = (JLabel)r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                        l.setBackground(Color.WHITE);
-                    }
-                    l.setForeground(Color.BLACK);
-                    return l;
+        model.addTableModelListener(new TableModelListener() {
+            @Override public void tableChanged(TableModelEvent e) {
+                if(e.getType()==TableModelEvent.UPDATE) {
+                    table.repaint();
                 }
-            });
+            }
+        });
+        TableCellRenderer renderer = new DefaultTableCellRenderer() {
+            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel l;
+                if(row==model.getRowCount()-2) {
+                    int i = getSum(table.convertColumnIndexToModel(column));
+                    l = (JLabel)super.getTableCellRendererComponent(table, i, isSelected, hasFocus, row, column);
+                    l.setBackground(Color.ORANGE);
+                }else{
+                    l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    l.setBackground(Color.WHITE);
+                }
+                l.setForeground(Color.BLACK);
+                return l;
+            }
+        };
+        TableColumnModel cm = table.getColumnModel();
+        for(int i=0;i<cm.getColumnCount();i++) {
+            cm.getColumn(i).setCellRenderer(renderer);
         }
         return table;
     }
