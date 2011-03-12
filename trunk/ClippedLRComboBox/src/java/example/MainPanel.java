@@ -82,12 +82,8 @@ public class MainPanel extends JPanel{
 class LRComboCellRenderer extends JPanel implements ListCellRenderer {
     private final JLabel leftLabel  = new JLabel();
     private final JLabel rightLabel = new JLabel();
-    private final Color cfc  = UIManager.getColor("ComboBox.foreground");
-    private final Color cbc  = UIManager.getColor("ComboBox.background");
-    private final Color csfc = UIManager.getColor("ComboBox.selectionForeground");
-    private final Color csbc = UIManager.getColor("ComboBox.selectionBackground");
-    private final Color cdfc = UIManager.getColor("ComboBox.disabledForeground");
     private final JComboBox combo;
+    private int prevwidth = -1;
     public LRComboCellRenderer(JComboBox combo, int rightWidth, int labelHeight) {
         super(new BorderLayout());
         this.combo = combo;
@@ -108,26 +104,29 @@ class LRComboCellRenderer extends JPanel implements ListCellRenderer {
         LRItem item = (LRItem)value;
         leftLabel.setText(item.getLeftText());
         rightLabel.setText(item.getRightText());
-        leftLabel.setBackground(isSelected? csbc:cbc);
-        rightLabel.setBackground(isSelected? csbc:cbc);
-        this.setBackground(isSelected? csbc:cbc);
-        leftLabel.setForeground(isSelected? csfc:cfc);
-        rightLabel.setForeground(cdfc);
 
-        if(index==-1) {
-            Dimension dim = combo.getSize();
-            if(dim.width!=oldwidth) {
-                int count = combo.getItemCount()-1;
+        leftLabel.setBackground(isSelected?  list.getSelectionBackground():list.getBackground());
+        rightLabel.setBackground(isSelected? list.getSelectionBackground():list.getBackground());
+        this.setBackground(isSelected?       list.getSelectionBackground():list.getBackground());
+
+        leftLabel.setForeground(isSelected?  list.getSelectionForeground():list.getForeground());
+        rightLabel.setForeground(Color.GRAY);
+
+        if(index<0) {
+            Dimension d = combo.getSize();
+            if(d.width!=prevwidth) {
                 Insets i = combo.getInsets();
-                int w = dim.width-i.left-i.right;
-                int h = dim.height-i.top-i.bottom;
-                list.setPreferredSize(new Dimension(w, h*count));
-                oldwidth = dim.width;
+                int w = d.width-i.left-i.right;
+                list.setPreferredSize(new Dimension(w, 0));
+                prevwidth = d.width;
             }
         }
         return this;
     }
-    private int oldwidth = -1;
+    @Override public void updateUI() {
+        prevwidth = -1;
+        super.updateUI();
+    }
 }
 class LRItem{
     private final String leftText;
