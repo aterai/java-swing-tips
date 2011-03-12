@@ -3,13 +3,22 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-//import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
         JTableHeader tableHeader = table.getTableHeader();
@@ -71,14 +80,6 @@ public class MainPanel extends JPanel {
 //         };
 //         table.getActionMap().put(im.get(tab), tabAction);
 //         //</blockquote>
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 200));

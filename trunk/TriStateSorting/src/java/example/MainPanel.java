@@ -11,8 +11,20 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final JRadioButton check1 = new JRadioButton("ASCENDING<->DESCENDING", false);
+    private final JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
     private final JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
         ButtonGroup bg = new ButtonGroup();
@@ -20,8 +32,6 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2,1));
         p.add(check1); p.add(check2);
 
-        TestModel model = new TestModel();
-        JTable table = new JTable(model);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
             @Override public void toggleSortOrder(int column) {
                 //if(column>=0 && column<getModelWrapper().getColumnCount() && isSortable(column)) {
@@ -46,14 +56,6 @@ public class MainPanel extends JPanel {
         col.setMinWidth(60);
         col.setMaxWidth(60);
         col.setResizable(false);
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
