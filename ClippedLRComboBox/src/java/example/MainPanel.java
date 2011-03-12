@@ -11,12 +11,12 @@ public class MainPanel extends JPanel{
     private final JComboBox combo2 = new JComboBox();
     public MainPanel() {
         super(new BorderLayout());
-        combo1.setRenderer(new LRComboCellRenderer(combo1, 80, 16));
+        combo1.setRenderer(new MultiColumnCellRenderer(80));
         combo1.setModel(makeModel());
         combo2.setModel(makeModel());
-        add(makeTitledBox("ClippedLRComboBox", combo1), BorderLayout.NORTH);
-        add(makeTitledBox("NomalComboBox", combo2), BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        add(makeTitledBox("MultiColumnComboBox", combo1), BorderLayout.NORTH);
+        add(makeTitledBox("DefaultComboBox", combo2), BorderLayout.SOUTH);
+        setPreferredSize(new Dimension(320, 240));
     }
     private static Box makeTitledBox(String title, JComboBox combo) {
         final JTextField leftTextField  = new JTextField();
@@ -79,22 +79,26 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-class LRComboCellRenderer extends JPanel implements ListCellRenderer {
+class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
     private final JLabel leftLabel  = new JLabel();
     private final JLabel rightLabel = new JLabel();
-    private final JComboBox combo;
     private int prevwidth = -1;
-    public LRComboCellRenderer(JComboBox combo, int rightWidth, int labelHeight) {
+
+    public MultiColumnCellRenderer(int rightWidth) {
         super(new BorderLayout());
-        this.combo = combo;
-        this.setBorder(BorderFactory.createEmptyBorder());
         this.setOpaque(true);
-        leftLabel.setOpaque(true);
+        this.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        this.setName("List.cellRenderer");
+
+        leftLabel.setOpaque(false);
         leftLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
-        rightLabel.setOpaque(true);
+
+        rightLabel.setOpaque(false);
         rightLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
-        rightLabel.setPreferredSize(new Dimension(rightWidth, labelHeight));
+        rightLabel.setForeground(Color.GRAY);
         rightLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        rightLabel.setPreferredSize(new Dimension(rightWidth, 0));
+
         this.add(leftLabel);
         this.add(rightLabel, BorderLayout.EAST);
     }
@@ -105,19 +109,16 @@ class LRComboCellRenderer extends JPanel implements ListCellRenderer {
         leftLabel.setText(item.getLeftText());
         rightLabel.setText(item.getRightText());
 
-        leftLabel.setBackground(isSelected?  list.getSelectionBackground():list.getBackground());
-        rightLabel.setBackground(isSelected? list.getSelectionBackground():list.getBackground());
-        this.setBackground(isSelected?       list.getSelectionBackground():list.getBackground());
+        leftLabel.setFont(list.getFont());
+        rightLabel.setFont(list.getFont());
 
-        leftLabel.setForeground(isSelected?  list.getSelectionForeground():list.getForeground());
-        rightLabel.setForeground(Color.GRAY);
+        leftLabel.setForeground(isSelected?list.getSelectionForeground():list.getForeground());
+        this.setBackground(isSelected?list.getSelectionBackground():list.getBackground());
 
         if(index<0) {
-            Dimension d = combo.getSize();
+            Dimension d = getSize();
             if(d.width!=prevwidth) {
-                Insets i = combo.getInsets();
-                int w = d.width-i.left-i.right;
-                list.setPreferredSize(new Dimension(w, 0));
+                list.setPreferredSize(new Dimension(d.width, 0));
                 prevwidth = d.width;
             }
         }
