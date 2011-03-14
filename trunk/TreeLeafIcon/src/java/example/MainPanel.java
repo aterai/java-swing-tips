@@ -10,7 +10,7 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     private final JCheckBox folderCheck = new JCheckBox("OpenIcon, ClosedIcon");
     private final JCheckBox leafCheck   = new JCheckBox("LeafIcon");
-    private final Icon emptyIcon = new EmptyIcon();
+    //private final Icon emptyIcon = new EmptyIcon();
     private final JTree tree = new JTree();
     public MainPanel() {
         super(new BorderLayout());
@@ -20,9 +20,9 @@ public class MainPanel extends JPanel {
         }
 
         DefaultTreeCellRenderer r = (DefaultTreeCellRenderer)tree.getCellRenderer();
-        r.setOpenIcon(emptyIcon);
-        r.setClosedIcon(emptyIcon);
-        r.setLeafIcon(emptyIcon);
+        r.setOpenIcon(null);
+        r.setClosedIcon(null);
+        r.setLeafIcon(null);
         allNodesChanged(tree);
 
         folderCheck.addActionListener(new ActionListener() {
@@ -32,8 +32,8 @@ public class MainPanel extends JPanel {
                     r.setOpenIcon(r.getDefaultOpenIcon());
                     r.setClosedIcon(r.getDefaultClosedIcon());
                 }else{
-                    r.setOpenIcon(emptyIcon);
-                    r.setClosedIcon(emptyIcon);
+                    r.setOpenIcon(null);
+                    r.setClosedIcon(null);
                 }
                 allNodesChanged(tree);
             }
@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
                 if(((JCheckBox)e.getSource()).isSelected()) {
                     r.setLeafIcon(r.getDefaultLeafIcon());
                 }else{
-                    r.setLeafIcon(emptyIcon);
+                    r.setLeafIcon(null);
                 }
                 allNodesChanged(tree);
             }
@@ -55,13 +55,13 @@ public class MainPanel extends JPanel {
 //                 super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 //                 if(leaf) {
 //                     if(!leafCheck.isSelected()) {
-//                         setIcon(emptyIcon);
+//                         setIcon(null);
 //                     }else{
 //                         setIcon(getDefaultLeafIcon());
 //                     }
 //                 }else{
 //                     if(!folderCheck.isSelected()) {
-//                         setIcon(emptyIcon);
+//                         setIcon(null);
 //                     }else{
 //                         if(expanded) {
 //                             setIcon(getDefaultOpenIcon());
@@ -114,8 +114,8 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class EmptyIcon implements Icon {
-    @Override public void paintIcon(Component c,Graphics g,int x,int y) {}
-    @Override public int getIconWidth()  { return 0; }
-    @Override public int getIconHeight() { return 0; }
-}
+// class EmptyIcon implements Icon, java.io.Serializable {
+//     @Override public void paintIcon(Component c,Graphics g,int x,int y) {}
+//     @Override public int getIconWidth()  { return 0; }
+//     @Override public int getIconHeight() { return 0; }
+// }
