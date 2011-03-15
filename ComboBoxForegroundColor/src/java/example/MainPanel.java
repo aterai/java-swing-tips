@@ -33,21 +33,24 @@ public class MainPanel extends JPanel{
         public ComboForegroundRenderer(JComboBox combo) {
             this.combo = combo;
         }
-        public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                      boolean isSelected, boolean hasFocus) {
-            ColorItem item = (ColorItem) value;
-            if(index<0 && item!=null && item.color!=null
-                       && !item.color.equals(combo.getForeground())) {
-                combo.setForeground(item.color); //Windows XP
-                list.setSelectionForeground(item.color);
-                list.setSelectionBackground(selectionBackground);
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
+            if(value!=null && value instanceof ColorItem) {
+                ColorItem item = (ColorItem) value;
+                Color ic = item.color;
+                if(index<0 && ic!=null && !ic.equals(combo.getForeground())) {
+                    combo.setForeground(ic); //Windows XP
+                    list.setSelectionForeground(ic);
+                    list.setSelectionBackground(selectionBackground);
+                }
+                JLabel l = (JLabel)super.getListCellRendererComponent(list, item.description, index, isSelected, hasFocus);
+                l.setForeground(item.color);
+                l.setBackground(isSelected?selectionBackground:list.getBackground());
+                //l.setText(item.description);
+                return l;
+            }else{
+                super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+                return this;
             }
-            JLabel l = (JLabel)super.getListCellRendererComponent(
-                list, item.description, index, isSelected, hasFocus);
-            l.setForeground(item.color);
-            l.setBackground(isSelected?selectionBackground:list.getBackground());
-            //l.setText(item.description);
-            return l;
         }
     }
     private static class ComboHtmlRenderer extends DefaultListCellRenderer {
