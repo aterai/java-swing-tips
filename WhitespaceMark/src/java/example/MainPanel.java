@@ -9,8 +9,8 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel{
     String tabTest = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-    String zsTest = "adfa　sdfasdfasdf\nffas2　　1 3 dfas\n\n知と　市八都　市は　\n";
-    String zs_tab_zsTest = "ちとし　はちと\tしはちと　しは\n";
+    String zsTest = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
+    String zs_tab_zsTest = "\u3000\u3000日本語\u3000ああああああ\t１２３４５６７８９０\u3000テスト\n";
     public MainPanel() {
         super(new BorderLayout());
         JTextPane editor = new JTextPane();
@@ -114,6 +114,7 @@ class MyParagraphView extends ParagraphView {
 }
 
 class WhitespaceLabelView extends LabelView {
+    private static final String IdeographicSpace = "\u3000";
     private static final Color pc = new Color(130, 140, 120);
     private static final BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] {1.0f}, 0.0f);
     public WhitespaceLabelView(Element elem) {
@@ -125,7 +126,7 @@ class WhitespaceLabelView extends LabelView {
         Stroke stroke = g2.getStroke();
         Rectangle alloc = (a instanceof Rectangle) ? (Rectangle)a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
-        int spaceWidth = fontMetrics.stringWidth("　");
+        int spaceWidth = fontMetrics.stringWidth(IdeographicSpace);
         int sumOfTabs  = 0;
         String text = getText(getStartOffset(),getEndOffset()).toString();
         for(int i=0;i<text.length();i++) {
@@ -133,7 +134,7 @@ class WhitespaceLabelView extends LabelView {
             int previousStringWidth = fontMetrics.stringWidth(text.substring(0,i)) + sumOfTabs;
             int sx = alloc.x+previousStringWidth;
             int sy = alloc.y+alloc.height-fontMetrics.getDescent();
-            if("　".equals(s)) {
+            if(IdeographicSpace.equals(s)) {
                 g2.setStroke(dashed);
                 g2.setPaint(pc);
                 g2.drawLine(sx+1, sy-1, sx+spaceWidth-2, sy-1);
