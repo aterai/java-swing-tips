@@ -33,7 +33,7 @@ public class MainPanel extends JPanel{
         public ComboForegroundRenderer(JComboBox combo) {
             this.combo = combo;
         }
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
+        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
             if(value!=null && value instanceof ColorItem) {
                 ColorItem item = (ColorItem) value;
                 Color ic = item.color;
@@ -55,8 +55,7 @@ public class MainPanel extends JPanel{
     }
     private static class ComboHtmlRenderer extends DefaultListCellRenderer {
         private final Color selectionBackground = new Color(240,245,250);
-        public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                      boolean isSelected, boolean hasFocus) {
+        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
             ColorItem item = (ColorItem) value;
             if(index<0) {
                 list.setSelectionBackground(selectionBackground);
