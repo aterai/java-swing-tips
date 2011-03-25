@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         };
         JButton button1 = new JButton("Hello World");
         button1.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent e) {
+            @Override public void propertyChange(PropertyChangeEvent e) {
                 String prop = e.getPropertyName();
                 JButton b = (JButton)e.getSource();
                 if(prop == AbstractButton.MNEMONIC_CHANGED_PROPERTY) {
@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
             }
         });
         JButton button2 = new JButton("abcdefghijk") {
-            public JToolTip createToolTip() {
+            @Override public JToolTip createToolTip() {
                 JToolTip tip = new MnemonicToolTip();
                 tip.setComponent(this);
                 return tip;
