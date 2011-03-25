@@ -86,12 +86,15 @@ class AnimatedToolTip extends JToolTip{
         add(iconlabel);
     }
     @Override public Dimension getPreferredSize() {
-        Insets i = getInsets();
-        Dimension d = iconlabel.getPreferredSize();
-        d.width  += i.left+i.right;
-        d.height += i.top+i.bottom;
-        return d;
+        return getLayout().preferredLayoutSize(this);
     }
+//     @Override public Dimension getPreferredSize() {
+//         Insets i = getInsets();
+//         Dimension d = iconlabel.getPreferredSize();
+//         d.width  += i.left+i.right;
+//         d.height += i.top+i.bottom;
+//         return d;
+//     }
     @Override public void setTipText(final String tipText) {
         String oldValue = iconlabel.getText();
         iconlabel.setText(tipText);

@@ -16,14 +16,16 @@ public class MainPanel extends JPanel {
             @Override public JToolTip createToolTip() {
                 final JLabel iconlabel = new JLabel(icon);
                 iconlabel.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-                LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+                //LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
                 JToolTip tip = new JToolTip() {
                     @Override public Dimension getPreferredSize() {
-                        Insets i = getInsets();
-                        Dimension d = iconlabel.getPreferredSize();
-                        d.width  += i.left+i.right;
-                        d.height += i.top+i.bottom;
-                        return d;
+//                     if(getLayout()==null) {
+//                         Insets i = getInsets();
+//                         Dimension d = iconlabel.getPreferredSize();
+//                         d.width  += i.left+i.right;
+//                         d.height += i.top+i.bottom;
+//                         return d;
+                        return getLayout().preferredLayoutSize(this);
                     }
                     @Override public void setTipText(final String tipText) {
                         String oldValue = iconlabel.getText();
