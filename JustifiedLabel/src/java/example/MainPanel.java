@@ -19,13 +19,6 @@ public class MainPanel extends JPanel {
     private final JLabel l5 = new JustifiedLabel("チーム出塁率");
     public MainPanel() {
         super(new BorderLayout());
-        //l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-//         l0.setPreferredSize(new Dimension(80, 18));
-//         l1.setPreferredSize(new Dimension(80, 18));
-//         l2.setPreferredSize(new Dimension(80, 18));
-//         l3.setPreferredSize(new Dimension(80, 18));
-//         l4.setPreferredSize(new Dimension(80, 18));
-//         l5.setPreferredSize(new Dimension(80, 18));
 
         JPanel p = new JPanel(new GridBagLayout());
         Border inside  = BorderFactory.createEmptyBorder(10,5+2,10,10+2);
@@ -54,7 +47,7 @@ public class MainPanel extends JPanel {
         c.gridy   = 5; p.add(new JTextField(), c);
 
         add(p);
-        add(new JustifiedLabel("ちとしはちとしはちとし"), BorderLayout.SOUTH);
+        add(new JustifiedLabel("あいうえおかきくけこ"), BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -83,32 +76,23 @@ public class MainPanel extends JPanel {
 
 class JustifiedLabel extends JLabel {
     private GlyphVector gvtext;
-    private boolean flg = true;
+    private int prev_width = -1;
     public JustifiedLabel() {
         this(null);
     }
     public JustifiedLabel(String str) {
         super(str);
-        addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                flg = true;
-                repaint();
-            }
-        });
     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
-        if(flg) {
-            int WRAPPING_WIDTH = getWidth()-getInsets().left-getInsets().right;
-            FontRenderContext frc = g2.getFontRenderContext();
-            gvtext = getWrappedGlyphVector(getText(), WRAPPING_WIDTH, getFont(), frc);
-            flg    = false;
+        Insets i = getInsets();
+        int w = getWidth() - i.left - i.right;
+        if(w!=prev_width) {
+            gvtext = getWrappedGlyphVector(getText(), w, getFont(), g2.getFontRenderContext());
+            prev_width = w;
         }
         if(gvtext!=null) {
-            //g2.setPaint(Color.RED);
-            g2.drawGlyphVector(gvtext,
-                               getInsets().left,
-                               getHeight()/2 + getFont().getSize()/2);
+            g2.drawGlyphVector(gvtext, i.left, (getHeight() + getFont().getSize()) / 2);
         }else{
             super.paintComponent(g);
         }
