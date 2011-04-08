@@ -92,7 +92,7 @@ class JustifiedLabel extends JLabel {
             prev_width = w;
         }
         if(gvtext!=null) {
-            g2.drawGlyphVector(gvtext, i.left, (getHeight() + getFont().getSize()) / 2);
+            g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());
         }else{
             super.paintComponent(g);
         }
