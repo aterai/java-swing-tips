@@ -111,17 +111,17 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseL
     }
     @Override public void mouseClicked(MouseEvent e) {
         if(e.getButton()==MouseEvent.BUTTON1) {
-            JList t = (JList)e.getComponent();
-            DefaultListModel m = (DefaultListModel)t.getModel();
+            JList l = (JList)e.getComponent();
+            DefaultListModel m = (DefaultListModel)l.getModel();
             Point p = e.getPoint();
-            int index  = t.locationToIndex(p);
+            int index  = l.locationToIndex(p);
             CheckBoxNode n = (CheckBoxNode)m.get(index);
-            Component c = t.getCellRenderer().getListCellRendererComponent(t, n, index, false, false);
+            Component c = l.getCellRenderer().getListCellRendererComponent(l, n, index, false, false);
             Dimension d = c.getPreferredSize();
             if(d.width>=p.x) {
                 m.set(index, new CheckBoxNode(n.text, !n.selected));
-                t.repaint();
-                t.repaint(t.getCellBounds(index, index));
+                //l.repaint();
+                l.repaint(l.getCellBounds(index, index));
             }
         }
     }
