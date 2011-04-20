@@ -117,7 +117,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
             final JCheckBox b = buttons[i];
             b.addActionListener(al);
             am.put(title[i], new AbstractAction(title[i]) {
-                public void actionPerformed(ActionEvent e) {
+                @Override public void actionPerformed(ActionEvent e) {
                     b.setSelected(!b.isSelected());
                     fireEditingStopped();
                 }

@@ -182,14 +182,14 @@ class ReorderbleList extends JList {
             Rectangle rect = getCellBounds(index,index);
             if(!rect.contains(e.getPoint())) {
                 //System.out.println("aaa:");
-                clearSelection();
-
                 JList list = (JList)e.getSource();
                 Component glassPane = list.getRootPane().getGlassPane();
                 //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 glassPane.setVisible(false);
 
-                getSelectionModel().setLeadSelectionIndex(getModel().getSize());
+                clearSelection();
+                getSelectionModel().setAnchorSelectionIndex(-1);
+                getSelectionModel().setLeadSelectionIndex(-1);
                 setFocusable(false);
                 setDragEnabled(false);
             }else{

@@ -34,12 +34,12 @@ public class MainPanel extends JPanel {
         north.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         north.add(new JButton(new AbstractAction("Min:DividerLocation") {
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 splitPane.setDividerLocation(0);
             }
         }));
         north.add(new JButton(new AbstractAction("Max:DividerLocation") {
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 Insets i = splitPane.getInsets();
                 if(splitPane.getOrientation()==JSplitPane.VERTICAL_SPLIT) {
                     splitPane.setDividerLocation(splitPane.getHeight() - (i!=null?i.bottom:0));
@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
         }));
 
         north.add(new JButton(new AbstractAction("Min:Action") {
-            public void actionPerformed(final ActionEvent e) {
+            @Override public void actionPerformed(final ActionEvent e) {
                 splitPane.requestFocusInWindow();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
@@ -79,7 +79,7 @@ public class MainPanel extends JPanel {
             }
         }));
         north.add(new JButton(new AbstractAction("Max:Action") {
-            public void actionPerformed(final ActionEvent e) {
+            @Override public void actionPerformed(final ActionEvent e) {
                 splitPane.requestFocusInWindow();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
