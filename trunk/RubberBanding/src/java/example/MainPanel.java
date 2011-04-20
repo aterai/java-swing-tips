@@ -195,8 +195,10 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
         int index = list.locationToIndex(e.getPoint());
         Rectangle rect = list.getCellBounds(index,index);
         if(!rect.contains(e.getPoint())) {
-            list.getSelectionModel().setLeadSelectionIndex(list.getModel().getSize());
             list.clearSelection();
+            list.getSelectionModel().setAnchorSelectionIndex(-1);
+            list.getSelectionModel().setLeadSelectionIndex(-1);
+            //list.getSelectionModel().setLeadSelectionIndex(list.getModel().getSize());
             list.setFocusable(false);
         }else{
             list.setFocusable(true);
@@ -297,8 +299,9 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
 //             int index = locationToIndex(e.getPoint());
 //             Rectangle rect = getCellBounds(index,index);
 //             if(!rect.contains(e.getPoint())) {
-//                 getSelectionModel().setLeadSelectionIndex(getModel().getSize());
 //                 clearSelection();
+//                 getSelectionModel().setAnchorSelectionIndex(-1);
+//                 getSelectionModel().setLeadSelectionIndex(-1);
 //                 setFocusable(false);
 //             }else{
 //                 setFocusable(true);
@@ -411,8 +414,9 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
 //             int index = locationToIndex(e.getPoint());
 //             Rectangle rect = getCellBounds(index,index);
 //             if(!rect.contains(e.getPoint())) {
-//                 getSelectionModel().setLeadSelectionIndex(getModel().getSize());
 //                 clearSelection();
+//                 getSelectionModel().setAnchorSelectionIndex(-1);
+//                 getSelectionModel().setLeadSelectionIndex(-1);
 //                 setFocusable(false);
 //             }else{
 //                 setFocusable(true);

@@ -148,7 +148,7 @@ public class MainPanel extends JPanel{
             JInternalFrame modal = optionPane.createInternalFrame(desktop, "modal3");
             removeSystemMenuListener(modal);
             modal.addInternalFrameListener(new InternalFrameAdapter() {
-                public void internalFrameClosed(InternalFrameEvent e) {
+                @Override public void internalFrameClosed(InternalFrameEvent e) {
                     glass.setVisible(false);
                     frame.setGlassPane(orgGlassPane);
                 }

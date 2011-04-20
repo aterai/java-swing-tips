@@ -114,7 +114,7 @@ class HyperlinkButton extends JButton {
 //     public void setUI(LinkViewButtonUI ui) {
 //         super.setUI(ui);
 //     }
-    public void updateUI() {
+    @Override public void updateUI() {
         super.updateUI();
         if(UIManager.get(uiClassID)!=null) {
             setUI((LinkViewButtonUI)UIManager.getUI(this));
