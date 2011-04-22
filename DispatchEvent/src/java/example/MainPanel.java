@@ -40,7 +40,7 @@ public class MainPanel extends JPanel{
                 timer.stop();
             }
         });
-        button = new JButton(new AbstractAction("Connected") {
+        button = new JButton(new AbstractAction("Connect") {
             @Override public void actionPerformed(ActionEvent e) {
                 setTestConnected(true);
                 Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
