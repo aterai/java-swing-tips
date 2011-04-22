@@ -29,7 +29,9 @@ class MainPanel extends JPanel {
     }
     @Override public void updateUI() {
         super.updateUI();
+        popup0 = new JPopupMenu();
         popup1 = new MyPopupMenu();
+        initPopupMenu(popup0);
         initPopupMenu(popup1);
     }
     private static void initPopupMenu(JPopupMenu p) {
