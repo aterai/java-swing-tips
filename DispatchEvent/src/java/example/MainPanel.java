@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel{
     private static final int DELAY = 10*1000; //10s
-    private final JLabel label = new JLabel("未接続");
+    private final JLabel label = new JLabel("Not connected");
     private final JComboBox combo = new JComboBox(makeModel());
     private final JTextField textField  = new JTextField(20);
     private final JButton button;
@@ -17,7 +17,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
 //         final EventQueue eventQueue = new EventQueue() {
-//             protected void dispatchEvent(AWTEvent e) {
+//             @Override protected void dispatchEvent(AWTEvent e) {
 //                 super.dispatchEvent(e);
 //                 if(e instanceof InputEvent) {
 //                     if(timer!=null && timer.isRunning()) timer.restart();
@@ -25,7 +25,7 @@ public class MainPanel extends JPanel{
 //             }
 //         };
         final AWTEventListener awtEvent = new AWTEventListener() {
-            public void eventDispatched(AWTEvent e) {
+            @Override public void eventDispatched(AWTEvent e) {
                 if(timer.isRunning()) {
                     System.out.println("timer.restart()");
                     timer.restart();
@@ -40,7 +40,7 @@ public class MainPanel extends JPanel{
                 timer.stop();
             }
         });
-        button = new JButton(new AbstractAction("接続") {
+        button = new JButton(new AbstractAction("Connected") {
             @Override public void actionPerformed(ActionEvent e) {
                 setTestConnected(true);
                 Toolkit.getDefaultToolkit().addAWTEventListener(awtEvent, AWTEvent.KEY_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
@@ -69,7 +69,7 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 180));
     }
     private void setTestConnected(boolean flag) {
-        label.setText("<html>状態: "+(flag?"<font color='blue'>接続済み":"<font color='red'>未接続"));
+        label.setText("<html>Status: "+(flag?"<font color='blue'>Connected":"<font color='red'>Not connected"));
         combo.setEnabled(flag);
         textField.setEnabled(flag);
         button.setEnabled(!flag);
