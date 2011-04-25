@@ -1,0 +1,154 @@
+package example;
+//-*- mode:java; encoding:utf8n; coding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+//@homepage@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
+
+public class MainPanel extends JPanel {
+    private static final String[] columnNames = {"Integer", "String", "Boolean"};
+    private static final Object[][] data = {
+        { 1, "D", true }, { 2, "B", false }, { 3, "C", false },
+        { 4, "E", false }, { 5, "A", false }
+    };
+    private static final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+        @Override public void setValueAt(Object v, int row, int column) {
+            if(v instanceof Boolean) {
+                for(int i=0; i<getRowCount(); i++) {
+                    super.setValueAt(Boolean.FALSE, i, column);
+                }
+                v = Boolean.TRUE;
+            }
+            super.setValueAt(v, row, column);
+        }
+    };
+
+    public MainPanel() {
+        super(new BorderLayout());
+        JTable table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        TableColumn c = table.getColumnModel().getColumn(2);
+        c.setCellRenderer(new RadioButtonsRenderer());
+        c.setCellEditor(new RadioButtonsEditor(model));
+        add(new JScrollPane(table));
+        setPreferredSize(new Dimension(320, 240));
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
+    public RadioButtonsRenderer() {
+        super();
+        setName("Table.cellRenderer");
+        setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if(value instanceof Boolean) {
+            setSelected((Boolean)value);
+        }
+        return this;
+    }
+}
+class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
+    public RadioButtonsEditor(final DefaultTableModel model) {
+        super();
+        setHorizontalAlignment(SwingConstants.CENTER);
+        addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+//                 for(int i=0; i<model.getRowCount(); i++) {
+//                     model.setValueAt(i==index, i, 2);
+//                 }
+            }
+        });
+    }
+    private int index = -1;
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        index = table.convertRowIndexToModel(row);
+        if(value instanceof Boolean) {
+            setSelected((Boolean)value);
+        }
+        return this;
+    }
+    @Override public Object getCellEditorValue() {
+        return isSelected();
+    }
+
+    //Copid from AbstractCellEditor
+    //protected EventListenerList listenerList = new EventListenerList();
+    //transient protected ChangeEvent changeEvent = null;
+    @Override public boolean isCellEditable(java.util.EventObject e) {
+        return true;
+    }
+    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+        return true;
+    }
+    @Override public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    @Override public void  cancelCellEditing() {
+        fireEditingCanceled();
+    }
+    @Override public void addCellEditorListener(CellEditorListener l) {
+        listenerList.add(CellEditorListener.class, l);
+    }
+    @Override public void removeCellEditorListener(CellEditorListener l) {
+        listenerList.remove(CellEditorListener.class, l);
+    }
+    public CellEditorListener[] getCellEditorListeners() {
+        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+    }
+    protected void fireEditingStopped() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+            }
+        }
+    }
+    protected void fireEditingCanceled() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==CellEditorListener.class) {
+                // Lazily create the event:
+                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+            }
+        }
+    }
+}
