@@ -15,14 +15,14 @@ public class MainPanel extends JPanel{
 
         if(combo02.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsComboBoxUI) {
             combo02.setUI(new com.sun.java.swing.plaf.windows.WindowsComboBoxUI() {
-                protected ComboPopup createPopup() {
+                @Override protected ComboPopup createPopup() {
                     return new BasicComboPopup2( comboBox );
                     //return new BasicComboPopup3( comboBox );
                 }
             });
         }else{
             combo02.setUI(new BasicComboBoxUI() {
-                protected ComboPopup createPopup() {
+                @Override protected ComboPopup createPopup() {
                     return new BasicComboPopup2( comboBox );
                     //return new BasicComboPopup3( comboBox );
                 }
@@ -84,7 +84,7 @@ class BasicComboPopup2 extends BasicComboPopup {
     public BasicComboPopup2(JComboBox combo) {
         super(combo);
     }
-    protected MouseListener createListMouseListener() {
+    @Override protected MouseListener createListMouseListener() {
         if(handler2==null) handler2 = new Handler2();
         return handler2;
     }
@@ -119,9 +119,9 @@ class BasicComboPopup3 extends BasicComboPopup {
     public BasicComboPopup3(JComboBox combo) {
         super(combo);
     }
-    protected JList createList() {
+    @Override protected JList createList() {
         return new JList( comboBox.getModel() ) {
-            public void processMouseEvent(MouseEvent e)  {
+            @Override public void processMouseEvent(MouseEvent e)  {
                 if(SwingUtilities.isRightMouseButton(e)) return;
                 if (e.isControlDown())  {
                     // Fix for 4234053. Filter out the Control Key from the list.
