@@ -48,8 +48,10 @@ public class MainPanel extends JPanel {
                     int sbInsetsH = sbInsets.top + sbInsets.bottom;
                     int sbButtonsH = decrButtonH + incrButtonH;
 
+                    //need before 1.7.0 ---->
                     int decrGap = 0;
                     int incrGap = 0;
+                    //<----
 
                     int gaps = decrGap + incrGap;
                     float trackH = sbSize.height - (sbInsetsH + sbButtonsH) - gaps;
@@ -150,8 +152,10 @@ public class MainPanel extends JPanel {
                     int sbInsetsH = sbInsets.top + sbInsets.bottom;
                     int sbButtonsH = decrButtonH + incrButtonH;
 
+                    //need before 1.7.0 ---->
                     int decrGap = 0;
                     int incrGap = 0;
+                    //<----
 
                     int gaps = decrGap + incrGap;
                     float trackH = sbSize.height - (sbInsetsH + sbButtonsH) - gaps;
