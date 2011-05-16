@@ -51,6 +51,8 @@ public class MainPanel extends JPanel {
                     //need before 1.7.0 ---->
                     int decrGap = 0;
                     int incrGap = 0;
+                    //incrGap = UIManager.getInt("ScrollBar.incrementButtonGap");
+                    //decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
                     //<----
 
                     int gaps = decrGap + incrGap;
@@ -155,6 +157,8 @@ public class MainPanel extends JPanel {
                     //need before 1.7.0 ---->
                     int decrGap = 0;
                     int incrGap = 0;
+                    //incrGap = UIManager.getInt("ScrollBar.incrementButtonGap");
+                    //decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
                     //<----
 
                     int gaps = decrGap + incrGap;
