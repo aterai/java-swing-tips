@@ -68,7 +68,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class TestRenderer extends MyJLabel implements TableCellRenderer {
+class TestRenderer extends WrappedLabel implements TableCellRenderer {
     public TestRenderer() {
         super();
         setOpaque(true);
@@ -91,21 +91,38 @@ class TestRenderer extends MyJLabel implements TableCellRenderer {
     }
 }
 
-class MyJLabel extends JLabel {
+class WrappedLabel extends JLabel {
     private GlyphVector gvtext;
-    public MyJLabel() {super();}
-    @Override protected void paintComponent(Graphics g) {
-        //super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
-        int WRAPPING_WIDTH = getWidth()-getInsets().left-getInsets().right;
-        FontRenderContext frc = g2.getFontRenderContext();
-        gvtext = getWrappedGlyphVector(getText(), WRAPPING_WIDTH, getFont(), frc);
-        g2.setPaint(getBackground());
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.setPaint(getForeground());
-        g2.drawGlyphVector(gvtext, getInsets().left, getFont().getSize()+getInsets().top);
+    public WrappedLabel() {
+        this(null);
     }
-    private GlyphVector getWrappedGlyphVector(String str, float Wrapping, Font font, FontRenderContext frc) {
+    public WrappedLabel(String str) {
+        super(str);
+    }
+    private int prevwidth = -1;
+    @Override public void doLayout() {
+        Insets i = getInsets();
+        int w = getWidth()-i.left-i.right;
+        if(w!=prevwidth) {
+            Font font = getFont();
+            FontMetrics fm = getFontMetrics(font);
+            FontRenderContext frc = fm.getFontRenderContext();
+            gvtext = getWrappedGlyphVector(getText(), w, font, frc);
+            prevwidth = w;
+        }
+        super.doLayout();
+    }
+    @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        if(gvtext!=null) {
+            Insets i = getInsets();
+            g2.setPaint(getForeground());
+            g2.drawGlyphVector(gvtext, i.left, getFont().getSize()+i.top);
+        }else{
+            super.paintComponent(g);
+        }
+    }
+    private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {
         Point2D gmPos    = new Point2D.Double(0.0d, 0.0d);
         GlyphVector gv   = font.createGlyphVector(frc, str);
         float lineheight = (float) (gv.getLogicalBounds().getHeight());
@@ -116,7 +133,7 @@ class MyJLabel extends JLabel {
         for(int i=0;i<gv.getNumGlyphs();i++) {
             gm = gv.getGlyphMetrics(i);
             advance = gm.getAdvance();
-            if(xpos<Wrapping && Wrapping<=xpos+advance) {
+            if(xpos<width && width<=xpos+advance) {
                 lineCount++;
                 xpos = 0.0f;
             }
