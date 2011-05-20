@@ -80,7 +80,9 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         };
         textArea.addMouseListener(ma);
 
-        setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
+        setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(222,222,222)),
+            BorderFactory.createLineBorder(Color.WHITE, 4)));
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
