@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -33,11 +34,16 @@ public class MainPanel extends JPanel {
             }
             private final DotBorder dotBorder = new DotBorder(2,2,2,2);
             private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
+            private void updateBorderType(DotBorder border, int column) {
+                border.type = EnumSet.noneOf(DotBorder.Type.class);
+                if(column==0) border.type.add(DotBorder.Type.START);
+                if(column==getColumnCount()-1) border.type.add(DotBorder.Type.END);
+            }
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
+                if(row==getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
                     ((JComponent)c).setBorder(dotBorder);
-                    dotBorder.setLastCellFlag(column==getColumnCount()-1);
+                    updateBorderType(dotBorder, column);
                 }else{
                     ((JComponent)c).setBorder(emptyBorder);
                 }
@@ -49,8 +55,7 @@ public class MainPanel extends JPanel {
                     JCheckBox b = (JCheckBox)c;
                     //System.out.println(b.getBorder());
                     //b.setBorder(dotBorder);
-                    DotBorder border = (DotBorder)b.getBorder();
-                    border.setLastCellFlag(column==getColumnCount()-1);
+                    updateBorderType((DotBorder)b.getBorder(), column);
                     b.setBorderPainted(true);
                     b.setBackground(getSelectionBackground());
                 }
@@ -156,6 +161,7 @@ public class MainPanel extends JPanel {
 //     }
 // }
 class DotBorder extends EmptyBorder {
+    public enum Type { START, END; }
     private static final BasicStroke dashed = new BasicStroke(
         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
         10.0f, (new float[] {1.0f}), 0.0f);
@@ -163,10 +169,7 @@ class DotBorder extends EmptyBorder {
     public DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);
     }
-    private boolean isLastCell = false;
-    public void setLastCellFlag(boolean flag) {
-        isLastCell = flag;
-    }
+    public EnumSet<Type> type = EnumSet.noneOf(Type.class);
     @Override public boolean isBorderOpaque() {
         return true;
     }
@@ -175,14 +178,13 @@ class DotBorder extends EmptyBorder {
         g2.translate(x,y);
         g2.setPaint(dotColor);
         g2.setStroke(dashed);
-        int cbx = c.getBounds().x;
-        if(cbx==0) {
+        if(type.contains(Type.START)) {
             g2.drawLine(0,0,0,h);
         }
-        if(isLastCell) {
+        if(type.contains(Type.END)) {
             g2.drawLine(w-1,0,w-1,h);
         }
-        if(cbx%2==0) {
+        if(c.getBounds().x%2==0) {
             g2.drawLine(0,0,w,0);
             g2.drawLine(0,h-1,w,h-1);
         }else{
