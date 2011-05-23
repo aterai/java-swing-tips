@@ -31,7 +31,10 @@ public class MainPanel extends JPanel{
         }
         return pallet;
     }
-    private static Color getColorFromPallet(int[] pallet, double x) {
+    private static Color getColorFromPallet(int[] pallet, float x) {
+//         if(x < 0.0 || x > 1.0) {
+//             throw new IllegalArgumentException("Parameter outside of expected range");
+//         }
         int i = (int)(pallet.length * x);
         int max = pallet.length-1;
         int index = i<0?0:i>max?max:i;
@@ -86,44 +89,20 @@ public class MainPanel extends JPanel{
         System.out.println(UIManager.get("Slider.majorTickLength"));
         System.out.println(UIManager.getInt("Slider.trackWidth"));
         System.out.println(UIManager.getInt("Slider.majorTickLength"));
-        UIManager.put("Slider.trackWidth", 7);
+        UIManager.put("Slider.trackWidth", 64);
         UIManager.put("Slider.majorTickLength", 6);
 
         JSlider slider = makeSlider();
         slider.setUI(new MetalSliderUI() {
-//             @Override public void installUI(JComponent c) {
-//                 //trackWidth = ((Integer)UIManager.get( "Slider.trackWidth" )).intValue();
-//                 //tickLength = ((Integer)UIManager.get( "Slider.majorTickLength" )).intValue();
-// //                 horizThumbIcon = new Icon() {
-// //                     @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
-// //                     @Override public int getIconWidth()  { return 15; }
-// //                     @Override public int getIconHeight() { return 64; }
-// //                 }; //SAFE_HORIZ_THUMB_ICON = UIManager.getIcon( "Slider.horizontalThumbIcon" );
-// //                 vertThumbIcon = new Icon() {
-// //                     @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
-// //                     @Override public int getIconWidth()  { return 64; }
-// //                     @Override public int getIconHeight() { return 15; }
-// //                 }; //SAFE_VERT_THUMB_ICON = UIManager.getIcon( "Slider.verticalThumbIcon" );
-//
-//                 super.installUI( c );
-//                 //thumbColor = UIManager.getColor("Slider.thumb");
-//                 //highlightColor = UIManager.getColor("Slider.highlight");
-//                 //darkShadowColor = UIManager.getColor("Slider.darkShadow");
-//                 //scrollListener.setScrollByBlock(true);
-//                 Object sliderFillProp = c.getClientProperty( SLIDER_FILL );
-//                 if(sliderFillProp != null) {
-//                     filledSlider = ((Boolean)sliderFillProp).booleanValue();
-//                 }
-//             }
             int[] pallet = makeGradientPallet();
             @Override public void paintTrack(Graphics g) {
-                //Color trackColor = new Color(100,255,100,100); //!slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
-                boolean leftToRight = true; //MetalUtils.isLeftToRight(slider);
-                Color controlDarkShadow = Color.GRAY; //MetalLookAndFeel.getControlDarkShadow();
+                //Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
+                boolean leftToRight     = true; //MetalUtils.isLeftToRight(slider);
+                Color controlDarkShadow = new Color(100,100,100); //MetalLookAndFeel.getControlDarkShadow();
                 Color controlHighlight  = new Color(200,255,200); //MetalLookAndFeel.getControlHighlight();
                 Color controlShadow     = new Color(0,100,0); //MetalLookAndFeel.getControlShadow();
 
-                g.translate( trackRect.x, trackRect.y );
+                g.translate(trackRect.x, trackRect.y);
 
                 int trackLeft = 0;
                 int trackTop = 0;
@@ -157,7 +136,7 @@ public class MainPanel extends JPanel{
                     g.setColor(controlShadow);
                     g.drawLine(trackLeft + 1, trackTop + 1, trackRight - 2, trackTop + 1);
                     g.drawLine(trackLeft + 1, trackTop + 1, trackLeft + 1, trackBottom - 2);
-                } else {
+                }else{
                     g.setColor(controlShadow);
                     g.drawRect(trackLeft, trackTop, (trackRight - trackLeft) - 1, (trackBottom - trackTop) - 1);
                 }
@@ -199,10 +178,10 @@ public class MainPanel extends JPanel{
 
                 if(slider.isEnabled()) {
                     g.setColor(slider.getBackground());
-                    g.drawLine(fillLeft, fillTop, fillRight, fillTop );
-                    g.drawLine(fillLeft, fillTop, fillLeft, fillBottom );
+                    g.drawLine(fillLeft, fillTop, fillRight, fillTop);
+                    g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
-                    double x = (fillRight - fillLeft) / (double)(trackRight - trackLeft);
+                    float x = (fillRight - fillLeft) / (float)(trackRight - trackLeft);
                     g.setColor(getColorFromPallet(pallet, x));
                     g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
                 }else{
@@ -210,10 +189,11 @@ public class MainPanel extends JPanel{
                     g.fillRect(fillLeft, fillTop, fillRight - fillLeft, trackBottom - trackTop);
                 }
 
-                int yy = trackTop + (trackBottom - trackTop) /2;
+                // Draw the highlight
+                int yy = trackTop + (trackBottom - trackTop) / 2;
                 for(int i=10;i>=0;i--) {
-                    g.setColor( new Color(1f,1f,1f,i*0.07f) );
-                    g.drawLine( trackLeft+2, yy, (trackRight - trackLeft), yy );
+                    g.setColor(new Color(1f,1f,1f,i*0.07f));
+                    g.drawLine(trackLeft + 2, yy, (trackRight - trackLeft) - 2, yy);
                     yy--;
                 }
                 g.translate(-trackRect.x, -trackRect.y);
