@@ -20,6 +20,7 @@ public class MainPanel extends JPanel{
         Color[] colors = { Color.RED, Color.YELLOW, Color.GREEN };
         g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
         g2.fillRect(0, 0, 100, 1);
+        g2.dispose();
 
         int width  = image.getWidth(null);
         int[] pallet = new int[width];
