@@ -24,7 +24,9 @@ public class MainPanel extends JPanel {
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component c = super.prepareEditor(editor, row, column);
                 if(c instanceof JCheckBox) {
-                    ((JCheckBox)c).setBackground(getSelectionBackground());
+                    JCheckBox b = (JCheckBox)c;
+                    b.setBackground(getSelectionBackground());
+                    b.setBorderPainted(true);
                 }
                 return c;
             }
