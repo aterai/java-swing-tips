@@ -9,10 +9,20 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
+        UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
         table = new JTable(model) {
             @Override public void updateUI() {
                 super.updateUI();
@@ -21,86 +31,77 @@ public class MainPanel extends JPanel {
                     setSelectionBackground(sbg);
                 }
             }
+            private final DotBorder dotBorder = new DotBorder(2,2,2,2);
+            private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if(isRowSelected(row)) {
+                    ((JComponent)c).setBorder(dotBorder);
+                    dotBorder.setLastCellFlag(column==getColumnCount()-1);
+                }else{
+                    ((JComponent)c).setBorder(emptyBorder);
+                }
+                return c;
+            }
+            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+                Component c = super.prepareEditor(editor, row, column);
+                if(c instanceof JCheckBox) {
+                    JCheckBox b = (JCheckBox)c;
+                    //System.out.println(b.getBorder());
+                    //b.setBorder(dotBorder);
+                    DotBorder border = (DotBorder)b.getBorder();
+                    border.setLastCellFlag(column==getColumnCount()-1);
+                    b.setBorderPainted(true);
+                    b.setBackground(getSelectionBackground());
+                }
+                return c;
+            }
         };
 
-        TableColumnModel columns = table.getColumnModel();
-        for(int i=0;i<columns.getColumnCount();i++) {
-            columns.getColumn(i).setCellRenderer(new TestRenderer());
-        }
+        //TableColumnModel columns = table.getColumnModel();
+        //for(int i=0;i<columns.getColumnCount();i++) {
+        //    columns.getColumn(i).setCellRenderer(new TestRenderer());
+        //}
 
         table.setRowSelectionAllowed(true);
-        //table.setCellSelectionEnabled(true);
-        table.setIntercellSpacing(new Dimension());
-        table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setPreferredWidth(0);
-        col.setMinWidth(0);
-        col.setMaxWidth(0);
-        col.setResizable(false);
-        //table.removeColumn(col);
-
-        InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        KeyStroke tab    = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-        KeyStroke enter  = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-        KeyStroke stab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK);
-        KeyStroke senter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
-        //KeyStroke sa   = KeyStroke.getKeyStroke(KeyEvent.VK_A, (InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK));
-        im.put(tab, im.get(enter));
-        im.put(stab, im.get(senter));
-
-        model.addTest(new Test("test1.jpg", "8888"));
-        model.addTest(new Test("test1234.jpg", ""));
-        model.addTest(new Test("test15354.gif", "comment..."));
-        model.addTest(new Test("t.png", "aaaa"));
-        model.addTest(new Test("tfasdfasd.jpg", "comment..."));
-        model.addTest(new Test("afsdfasdfffffffffffasdfasdf.mpg", "eadfasdf"));
-        model.addTest(new Test("fffffffffffasdfasdf", "asdf"));
-        model.addTest(new Test("test1.jpg", "fffffffff"));
-
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
+        table.setShowGrid(false);
+        table.setIntercellSpacing(new Dimension());
+        table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class TestCreateAction extends AbstractAction{
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
+        @Override public void actionPerformed(ActionEvent e) {
+            model.addRow(new Object[] {"New row", 0, true});
+            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            table.scrollRectToVisible(r);
         }
     }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("New row", ""));
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
-        table.scrollRectToVisible(r);
-    }
-
     class DeleteAction extends AbstractAction{
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    public void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
+        @Override public void actionPerformed(ActionEvent e) {
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
         }
     }
     class ClearAction extends AbstractAction{
         public ClearAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             table.clearSelection();
         }
     }
@@ -141,19 +142,19 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class TestRenderer extends DefaultTableCellRenderer {
-    private static final DotBorder dotBorder = new DotBorder(2,2,2,2);
-    private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
-    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
-        if(c instanceof JComponent) {
-            int lsi = table.getSelectionModel().getLeadSelectionIndex();
-            ((JComponent)c).setBorder(row==lsi?dotBorder:emptyBorder);
-            dotBorder.setLastCellFlag(row==lsi&&column==table.getColumnCount()-1);
-        }
-        return c;
-    }
-}
+// class TestRenderer extends DefaultTableCellRenderer {
+//     private static final DotBorder dotBorder = new DotBorder(2,2,2,2);
+//     private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
+//     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//         Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
+//         if(c instanceof JComponent) {
+//             int lsi = table.getSelectionModel().getLeadSelectionIndex();
+//             ((JComponent)c).setBorder(row==lsi?dotBorder:emptyBorder);
+//             dotBorder.setLastCellFlag(row==lsi&&column==table.getColumnCount()-1);
+//         }
+//         return c;
+//     }
+// }
 class DotBorder extends EmptyBorder {
     private static final BasicStroke dashed = new BasicStroke(
         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
