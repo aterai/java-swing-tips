@@ -8,65 +8,68 @@ import javax.swing.table.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel() {
-        @Override public boolean isCellEditable(int row, int column) {
-            return true;
-        }
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
     };
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
         table = new JTable(model) {
-            private final Color evenColor = new Color(250, 250, 250);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
+//             private final Color evenColor = new Color(250, 250, 250);
+//             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+//                 Component c = super.prepareRenderer(tcr, row, column);
+//                 if(isRowSelected(row)) {
+//                     c.setForeground(getSelectionForeground());
+//                     c.setBackground(getSelectionBackground());
+//                 }else{
+//                     c.setForeground(getForeground());
+//                     c.setBackground((row%2==0)?evenColor:getBackground());
+//                 }
+//                 return c;
+//             }
+            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+                Component c = super.prepareEditor(editor, row, column);
+                if(c instanceof JCheckBox) {
+                    JCheckBox b = (JCheckBox)c;
+                    b.setBorderPainted(true);
+                    b.setBackground(getSelectionBackground());
+                }else if(convertColumnIndexToModel(column)==1) {
+                    ((JComponent)c).setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
                 }
                 return c;
             }
         };
 
-        JTextField tf = new JTextField();
-        tf.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        table.setDefaultEditor(Object.class, new DefaultCellEditor(tf));
+        JTextField field = new JTextField();
+        field.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        table.setDefaultEditor(Object.class, new DefaultCellEditor(field));
 
-        JTextField tf2 = new JTextField();
-        tf2.setHorizontalAlignment(JTextField.RIGHT);
-        tf2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-        table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
-            @Override public boolean stopCellEditing() {
-                Object o = getCellEditorValue();
-                return (o==null)?false:super.stopCellEditing();
-            }
-            @Override public Object getCellEditorValue() {
-                Object o = super.getCellEditorValue();
-                Integer iv;
-                try{
-                    iv = Integer.valueOf(o.toString());
-                }catch(NumberFormatException nfe) {
-                    iv = null;
-                }
-                return iv;
-            }
-        });
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(60);
-        col.setMaxWidth(60);
-        col.setResizable(false);
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
+//         JTextField tf2 = new JTextField();
+//         tf2.setHorizontalAlignment(JTextField.RIGHT);
+//         tf2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+//         table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
+//             @Override public boolean stopCellEditing() {
+//                 Object o = getCellEditorValue();
+//                 return (o==null)?false:super.stopCellEditing();
+//             }
+//             @Override public Object getCellEditorValue() {
+//                 Object o = super.getCellEditorValue();
+//                 Integer iv;
+//                 try{
+//                     iv = Integer.valueOf(o.toString());
+//                 }catch(NumberFormatException nfe) {
+//                     iv = null;
+//                 }
+//                 return iv;
+//             }
+//         });
 
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
@@ -79,38 +82,29 @@ public class MainPanel extends JPanel {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
+        @Override public void actionPerformed(ActionEvent e) {
+            model.addRow(new Object[] {"New row", 0, true});
+            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            table.scrollRectToVisible(r);
         }
     }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("New row", ""));
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
-        table.scrollRectToVisible(r);
-    }
-
     class DeleteAction extends AbstractAction{
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
+        @Override public void actionPerformed(ActionEvent e) {
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
         }
     }
-    public void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
-        }
-    }
-
     private class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete", null);
         public TablePopupMenu() {
             super();
             add(new TestCreateAction("add", null));
-            //add(new ClearAction("clearSelection", null));
             addSeparator();
             add(deleteAction);
         }
