@@ -86,10 +86,10 @@ class SearchEngine{
 
 class JSearchBar extends JComboBox{
     private static final String uiClassID = "SearchBarComboBoxUI";
-    public String getUIClassID() {
+    @Override public String getUIClassID() {
         return uiClassID;
     }
-    public SearchBarComboBoxUI getUI() {
+    @Override public SearchBarComboBoxUI getUI() {
         return (SearchBarComboBoxUI)ui;
     }
 //     public void setUI(SearchBarComboBoxUI newUI) {
@@ -101,13 +101,14 @@ class JSearchBar extends JComboBox{
         }else{
             setUI(new BasicSearchBarComboBoxUI());
         }
+        UIManager.put("ComboBox.font", getFont()); //XXX: ???
         JButton arrowButton = (JButton)getComponent(0);
         SearchEngine se = (SearchEngine)getItemAt(0);
         if(se!=null) arrowButton.setIcon(se.favicon);
-        ListCellRenderer renderer = getRenderer();
-        if(renderer instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component)renderer);
-        }
+//         ListCellRenderer renderer = getRenderer();
+//         if(renderer instanceof Component) {
+//             SwingUtilities.updateComponentTreeUI((Component)renderer);
+//         }
     }
     public JSearchBar() {
         super();
