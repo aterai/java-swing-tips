@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.accessibility.*;
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
@@ -145,16 +146,26 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
                 return new Dimension(w, w);
             }
+            @Override public void setBorder(Border border) {
+                if(border instanceof CompoundBorder) {
+                    super.setBorder(border);
+                }
+            }
         };
-        button.setHorizontalAlignment(SwingConstants.LEFT);
-        button.setOpaque(true);
-        button.setBackground(UIManager.getColor("Panel.background"));
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(0,0,0,1, new Color(127,157,185)),
-            BorderFactory.createEmptyBorder(1,1,1,1)));
         return button;
+    }
+    @Override public void configureArrowButton() {
+        super.configureArrowButton();
+        if(arrowButton != null) {
+            arrowButton.setBackground(UIManager.getColor("Panel.background"));
+            arrowButton.setHorizontalAlignment(SwingConstants.LEFT);
+            arrowButton.setOpaque(true);
+            arrowButton.setFocusPainted(false);
+            arrowButton.setContentAreaFilled(false);
+            arrowButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0,0,0,1, new Color(127,157,185)),
+                BorderFactory.createEmptyBorder(1,1,1,1)));
+        }
     }
     @Override protected void installComponents() {
         //super.installComponents();
@@ -185,14 +196,15 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         ImageIcon loupe = new ImageIcon(getClass().getResource("loupe.png"));
         button.setIcon(loupe);
         button.setRolloverIcon(makeRolloverIcon(loupe));
-        button.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-        button.setName("ComboBox.loupeButton");
         return button;
     }
     public void configureLoupeButton() {
         if(loupeButton != null) {
+            loupeButton.setName("ComboBox.loupeButton");
+            loupeButton.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
             loupeButton.setEnabled(comboBox.isEnabled());
             loupeButton.setFocusable(comboBox.isFocusable());
+            loupeButton.setOpaque(false);
             loupeButton.setRequestFocusEnabled(false);
             loupeButton.setFocusPainted(false);
             loupeButton.setContentAreaFilled(false);
@@ -258,7 +270,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 //= (JButton)cb.getComponent(3);
                 if(loupeButton != null) {
                     Insets loupeInsets = loupeButton.getInsets();
-                    loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
+                    //loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
                     loupeButton.setBounds(width - (insets.right + loupeWidth), insets.top, loupeWidth, buttonHeight);
                 }
                 JTextField editor = (JTextField)cb.getEditor().getEditorComponent();
