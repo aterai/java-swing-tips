@@ -20,7 +20,17 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
+        JTable table = new JTable(model) {
+            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+                Component c = super.prepareEditor(editor, row, column);
+                if(c instanceof JCheckBox) {
+                    JCheckBox b = (JCheckBox)c;
+                    b.setBackground(getSelectionBackground());
+                    b.setBorderPainted(true);
+                }
+                return c;
+            }
+        };
         table.getColumnModel().getColumn(0).setHeaderRenderer(
             new HeaderRenderer(table.getTableHeader()));
         add(new JScrollPane(table));
