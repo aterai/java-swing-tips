@@ -21,6 +21,14 @@ public class MainPanel extends JPanel {
             }
         };
         JTable table = new JTable(model) {
+            @Override public void updateUI() {
+                super.updateUI();
+                //XXX: Nimbus
+                TableCellRenderer r = getDefaultRenderer(Boolean.class);
+                if(r instanceof JComponent) {
+                    ((JComponent)r).updateUI();
+                }
+            }
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component c = super.prepareEditor(editor, row, column);
                 if(c instanceof JCheckBox) {
@@ -31,8 +39,8 @@ public class MainPanel extends JPanel {
                 return c;
             }
         };
-        table.getColumnModel().getColumn(0).setHeaderRenderer(
-            new HeaderRenderer(table.getTableHeader()));
+        table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer(table.getTableHeader(), 0));
+        //table.getColumnModel().getColumn(1).setHeaderRenderer(new HeaderRenderer(table.getTableHeader(), 1));
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -63,48 +71,51 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class HeaderRenderer implements TableCellRenderer {
-    private final JCheckBox check = new JCheckBox("Check All");
-    public HeaderRenderer(JTableHeader header) {
-        check.setOpaque(false);
-        check.setFont(header.getFont());
+class HeaderRenderer extends JCheckBox implements TableCellRenderer {
+    public HeaderRenderer(JTableHeader header, final int targetColumnIndex) {
+        super("Check All");
+        setOpaque(false);
+        setFont(header.getFont());
         header.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                JTable table = ((JTableHeader)e.getSource()).getTable();
+                JTableHeader header = (JTableHeader)e.getSource();
+                JTable table = header.getTable();
                 TableColumnModel columnModel = table.getColumnModel();
-                int viewColumn = columnModel.getColumnIndexAtX(e.getX());
+                int viewColumn  = columnModel.getColumnIndexAtX(e.getX());
                 int modelColumn = table.convertColumnIndexToModel(viewColumn);
-                if(modelColumn == 0) {
-                    check.setSelected(!check.isSelected());
+                if(modelColumn == targetColumnIndex) {
+                    boolean b = isSelected()?false:true;
+                    setSelected(b);
                     TableModel m = table.getModel();
-                    Boolean f = check.isSelected();
-                    for(int i=0; i<m.getRowCount(); i++) m.setValueAt(f, i, 0);
-                    ((JTableHeader)e.getSource()).repaint();
+                    for(int i=0; i<m.getRowCount(); i++) m.setValueAt(b, i, modelColumn);
+                    header.repaint();
                 }
             }
         });
     }
-    @Override public Component getTableCellRendererComponent(
-            JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
+    @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
         JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
-        l.setIcon(new CheckBoxIcon(check));
+        l.setIcon(new CheckBoxIcon(this));
+        if(l.getPreferredSize().height>1000) { //XXX: Nimbus
+            System.out.println(l.getPreferredSize().height);
+            l.setPreferredSize(new Dimension(0, 28));
+        }
         return l;
     }
-    private static class CheckBoxIcon implements Icon{
-        private final JCheckBox check;
-        public CheckBoxIcon(JCheckBox check) {
-            this.check = check;
-        }
-        @Override public int getIconWidth() {
-            return check.getPreferredSize().width;
-        }
-        @Override public int getIconHeight() {
-            return check.getPreferredSize().height;
-        }
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            SwingUtilities.paintComponent(
-                g, check, (Container)c, x, y, getIconWidth(), getIconHeight());
-        }
+}
+class CheckBoxIcon implements Icon{
+    private final JCheckBox check;
+    public CheckBoxIcon(JCheckBox check) {
+        this.check = check;
+    }
+    @Override public int getIconWidth() {
+        return check.getPreferredSize().width;
+    }
+    @Override public int getIconHeight() {
+        return check.getPreferredSize().height;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        SwingUtilities.paintComponent(g, check, (Container)c, x, y, getIconWidth(), getIconHeight());
     }
 }
