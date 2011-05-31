@@ -28,6 +28,7 @@ public class MainPanel extends JPanel {
 //             }
         }
     };
+    //private final FileTableModel model = new FileTableModel();
     private final JTable table = new JTable(model);
 
     public MainPanel() {
@@ -155,6 +156,9 @@ class FileTransferHandler extends TransferHandler {
     @Override public boolean importData(TransferSupport support) {
         try{
             if(canImport(support)) {
+                //FileTableModel model = (FileTableModel)((JTable)support.getComponent()).getModel();
+                //List<?> list = (List<?>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                //model.setFiles((File[])list.toArray(new File[0]));
                 DefaultTableModel model = (DefaultTableModel)((JTable)support.getComponent()).getModel();
                 for(Object o: (List<?>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
                     if(o instanceof File) {
@@ -254,3 +258,40 @@ class FileGroupComparator extends DefaultFileComparator{
         }
     }
 }
+
+// class FileTableModel extends AbstractTableModel {
+//     private final String[] columnNames = {"Name", "Size", "Full Path"};
+//     private File[] files;
+//     public FileTableModel() {
+//         this(new File[0]);
+//     }
+//     public FileTableModel(File[] files) {
+//         this.files = files;
+//     }
+//     @Override public Object getValueAt(int row, int column) {
+//         return files[row];
+//     }
+//     @Override public int getColumnCount() {
+//         return columnNames.length;
+//     }
+//     @Override public Class<?> getColumnClass(int column) {
+//         return File.class;
+//     }
+//     @Override public String getColumnName(int column) {
+//         return columnNames[column];
+//     }
+//     @Override public int getRowCount() {
+//         return files.length;
+//     }
+//     public File getFile(int row) {
+//         return files[row];
+//     }
+//     public void setFiles(File[] files) {
+//         this.files = files;
+//         fireTableDataChanged();
+//     }
+//     //public void removeRow(int row) {
+//     //    files.removeElementAt(row);
+//     //    fireTableRowsDeleted(row, row);
+//     //}
+// }
