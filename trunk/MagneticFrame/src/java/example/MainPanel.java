@@ -2,11 +2,10 @@ package example;
 //-*- mode:java; encoding:utf8n; coding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 //@homepage@
-import java.awt.event.*;
 import java.awt.*;
+//import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+//import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     private final JDesktopPane desktop          = new JDesktopPane();
@@ -17,7 +16,6 @@ public class MainPanel extends JPanel {
         desktop.setBackground(Color.GRAY.brighter());
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         desktop.setDesktopManager(new DefaultDesktopManager() {
-            //@override
             @Override public void dragFrame(JComponent frame, int x, int y) {
                 int e = x; int n = y;
                 int w = desktop.getSize().width -frame.getSize().width -e;
@@ -31,14 +29,6 @@ public class MainPanel extends JPanel {
             private boolean isNear(int c) {
                 return (Math.abs(c)<10);
             }
-//             public void _dragFrame(JComponent frame, int x, int y) {
-//                 int e = x; int n = y;
-//                 int w = desktop.getSize().width -frame.getSize().width -e;
-//                 int s = desktop.getSize().height-frame.getSize().height-n;
-//                 x = (e<w)?((e<0)?0:e):((w<0)?w+e:e);
-//                 y = (n<s)?((n<0)?0:n):((s<0)?s+n:n);
-//                 super.dragFrame(frame, x, y);
-//             }
         });
 //         BasicInternalFrameUI ui = (BasicInternalFrameUI)magneticFrame.getUI();
 //         Component north = ui.getNorthPane();
@@ -63,7 +53,7 @@ public class MainPanel extends JPanel {
         return frame;
     }
 
-//     private class MagneticListener extends MouseInputAdapter {
+//     private class MagneticListener extends MouseAdapter {
 //         private final JInternalFrame frame;
 //         private final Point loc = new Point();
 //         public MagneticListener(JInternalFrame frame) {
