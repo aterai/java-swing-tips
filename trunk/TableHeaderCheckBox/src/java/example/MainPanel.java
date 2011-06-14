@@ -50,17 +50,27 @@ public class MainPanel extends JPanel {
                     int vci = table.convertColumnIndexToView(mci);
                     TableColumn column = table.getColumnModel().getColumn(vci);
                     String title = (String)column.getHeaderValue();
-                    if("SELECTED".equals(title)) {
+                    if(!"INDETERMINATE".equals(title)) {
                         column.setHeaderValue("INDETERMINATE");
                         table.getTableHeader().repaint();
-                    }else if("INDETERMINATE".equals(title)) {
+                    }else{
+                        int selected = 0;
+                        int deselected = 0;
                         TableModel m = table.getModel();
                         for(int i=0; i<m.getRowCount(); i++) {
                             if(Boolean.TRUE.equals(m.getValueAt(i, mci))) {
-                                return;
+                                selected++;
+                            }else{
+                                deselected++;
                             }
                         }
-                        column.setHeaderValue("DESELECTED");
+                        if(selected==0) {
+                            column.setHeaderValue("DESELECTED");
+                        }else if(deselected==0) {
+                            column.setHeaderValue("SELECTED");
+                        }else{
+                            return;
+                        }
                         table.getTableHeader().repaint();
                     }
                 }
