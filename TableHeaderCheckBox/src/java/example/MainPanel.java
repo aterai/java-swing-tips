@@ -11,7 +11,7 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"DESELECTED", "Integer", "String"};
+        Object[] columnNames = {Status.DESELECTED, "Integer", "String"};
         Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
             {true, 2, "DDD"}, {false, 5, "CCC"},
             {true, 3, "EEE"}, {false, 6, "GGG"},
@@ -49,9 +49,9 @@ public class MainPanel extends JPanel {
                     int mci = 0;
                     int vci = table.convertColumnIndexToView(mci);
                     TableColumn column = table.getColumnModel().getColumn(vci);
-                    String title = (String)column.getHeaderValue();
-                    if(!"INDETERMINATE".equals(title)) {
-                        column.setHeaderValue("INDETERMINATE");
+                    Object title = column.getHeaderValue();
+                    if(!Status.INDETERMINATE.equals(title)) {
+                        column.setHeaderValue(Status.INDETERMINATE);
                         table.getTableHeader().repaint();
                     }else{
                         int selected = 0;
@@ -65,9 +65,9 @@ public class MainPanel extends JPanel {
                             }
                         }
                         if(selected==0) {
-                            column.setHeaderValue("DESELECTED");
+                            column.setHeaderValue(Status.DESELECTED);
                         }else if(deselected==0) {
-                            column.setHeaderValue("SELECTED");
+                            column.setHeaderValue(Status.SELECTED);
                         }else{
                             return;
                         }
@@ -121,11 +121,11 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
                 int mci = table.convertColumnIndexToModel(vci);
                 if(mci == targetColumnIndex) {
                     TableColumn column = columnModel.getColumn(vci);
-                    String v = (String)column.getHeaderValue();
-                    boolean b = "DESELECTED".equals(v)?true:false;
+                    Object v = column.getHeaderValue();
+                    boolean b = Status.DESELECTED.equals(v)?true:false;
                     TableModel m = table.getModel();
                     for(int i=0; i<m.getRowCount(); i++) m.setValueAt(b, i, mci);
-                    column.setHeaderValue(b?"SELECTED":"DESELECTED");
+                    column.setHeaderValue(b?Status.SELECTED:Status.DESELECTED);
                     header.repaint();
                 }
             }
@@ -134,20 +134,17 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
         JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, "Check All", isS, hasF, row, col);
-        if("SELECTED".equals(val)) {
-            setSelected(true);
-            setEnabled(true);
-        }else if("DESELECTED".equals(val)) {
-            setSelected(false);
-            setEnabled(true);
-        }else{ //INDETERMINATE
-            setSelected(true);
-            setEnabled(false);
-        }
-        l.setIcon(new CheckBoxIcon(this));
-        if(l.getPreferredSize().height>1000) { //XXX: Nimbus
-            System.out.println(l.getPreferredSize().height);
-            l.setPreferredSize(new Dimension(0, 28));
+        if(val instanceof Status) {
+            switch((Status)val) {
+              case SELECTED:      setSelected(true);  setEnabled(true);  break;
+              case DESELECTED:    setSelected(false); setEnabled(true);  break;
+              case INDETERMINATE: setSelected(true);  setEnabled(false); break;
+            }
+            l.setIcon(new CheckBoxIcon(this));
+            if(l.getPreferredSize().height>1000) { //XXX: Nimbus
+                System.out.println(l.getPreferredSize().height);
+                l.setPreferredSize(new Dimension(0, 28));
+            }
         }
         return l;
     }
@@ -167,3 +164,4 @@ class CheckBoxIcon implements Icon{
         SwingUtilities.paintComponent(g, check, (Container)c, x, y, getIconWidth(), getIconHeight());
     }
 }
+enum Status { SELECTED, DESELECTED, INDETERMINATE }
