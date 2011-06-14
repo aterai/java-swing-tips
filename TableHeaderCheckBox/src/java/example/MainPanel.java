@@ -46,7 +46,8 @@ public class MainPanel extends JPanel {
         model.addTableModelListener(new TableModelListener() {
             @Override public void tableChanged(TableModelEvent e) {
                 if(e.getType()==TableModelEvent.UPDATE && e.getColumn()==0) {
-                    TableColumn column = table.getColumnModel().getColumn(0);
+                    int vci = table.convertColumnIndexToView(0);
+                    TableColumn column = table.getColumnModel().getColumn(vci);
                     String title = (String)column.getHeaderValue();
                     if("SELECTED".equals(title)) {
                         column.setHeaderValue("INDETERMINATE");
@@ -96,14 +97,15 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
                 JTableHeader header = (JTableHeader)e.getSource();
                 JTable table = header.getTable();
                 TableColumnModel columnModel = table.getColumnModel();
-                int viewColumn  = columnModel.getColumnIndexAtX(e.getX());
-                int modelColumn = table.convertColumnIndexToModel(viewColumn);
-                if(modelColumn == targetColumnIndex) {
-                    boolean b = isSelected()?false:true;
-                    //setSelected(b);
+                int vci = columnModel.getColumnIndexAtX(e.getX());
+                int mci = table.convertColumnIndexToModel(vci);
+                if(mci == targetColumnIndex) {
+                    TableColumn column = columnModel.getColumn(vci);
+                    String v = (String)column.getHeaderValue();
+                    boolean b = "DESELECTED".equals(v)?true:false;
                     TableModel m = table.getModel();
-                    for(int i=0; i<m.getRowCount(); i++) m.setValueAt(b, i, modelColumn);
-                    columnModel.getColumn(modelColumn).setHeaderValue(b?"SELECTED":"DESELECTED");
+                    for(int i=0; i<m.getRowCount(); i++) m.setValueAt(b, i, mci);
+                    column.setHeaderValue(b?"SELECTED":"DESELECTED");
                     header.repaint();
                 }
             }
