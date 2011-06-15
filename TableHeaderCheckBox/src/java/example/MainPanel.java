@@ -11,7 +11,7 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        Object[] columnNames = {Status.DESELECTED, "Integer", "String"};
+        Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
         Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
             {true, 2, "DDD"}, {false, 5, "CCC"},
             {true, 3, "EEE"}, {false, 6, "GGG"},
@@ -140,11 +140,14 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
               case DESELECTED:    setSelected(false); setEnabled(true);  break;
               case INDETERMINATE: setSelected(true);  setEnabled(false); break;
             }
-            l.setIcon(new CheckBoxIcon(this));
-            if(l.getPreferredSize().height>1000) { //XXX: Nimbus
-                System.out.println(l.getPreferredSize().height);
-                l.setPreferredSize(new Dimension(0, 28));
-            }
+        }else{
+            setSelected(true);
+            setEnabled(false);
+        }
+        l.setIcon(new CheckBoxIcon(this));
+        if(l.getPreferredSize().height>1000) { //XXX: Nimbus
+            System.out.println(l.getPreferredSize().height);
+            l.setPreferredSize(new Dimension(0, 28));
         }
         return l;
     }
