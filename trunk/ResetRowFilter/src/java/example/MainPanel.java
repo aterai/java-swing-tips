@@ -11,47 +11,44 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel{
     private static final int USER_SPECIFIED_NUMBER_OF_ROWS = 5;
     private final JCheckBox check = new JCheckBox("Custom Sorting");
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"AA",  1, true},{"BB",  2, false}, {"cc",  3, true},{"dd",  4, false},{"ee",  5, false},
+        {"FF", -1, true},{"GG", -2, false}, {"HH", -3, true},{"II", -4, false},{"JJ", -5, false},
+        {"KK", 11, true},{"LL", 22, false}, {"MM", 33, true},{"NN", 44, false},{"OO", 55, false},
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+    private final RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
+        @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+            int vidx = table.convertRowIndexToView(entry.getIdentifier());
+            return vidx<USER_SPECIFIED_NUMBER_OF_ROWS;
+        }
+    };
+    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
+        @Override public void toggleSortOrder(int column) {
+            super.toggleSortOrder(column);
+            if(check.isSelected()) {
+                model.fireTableDataChanged();
+                sort(); //allRowsChanged();
+            }
+//          if(check.isSelected()) {
+//              RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+//              setRowFilter(null);
+//              super.toggleSortOrder(column);
+//              setRowFilter(f);
+//          }else{
+//              super.toggleSortOrder(column);
+//          }
+        }
+    };
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"AA",  1, true},{"BB",  2, false}, {"cc",  3, true},{"dd",  4, false},{"ee",  5, false},
-            {"FF", -1, true},{"GG", -2, false}, {"HH", -3, true},{"II", -4, false},{"JJ", -5, false},
-            {"KK", 11, true},{"LL", 22, false}, {"MM", 33, true},{"NN", 44, false},{"OO", 55, false},
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        final JTable table = new JTable(model);
         table.setFillsViewportHeight(true);
-        final RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
-            @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-                int vidx = table.convertRowIndexToView(entry.getIdentifier());
-                return vidx<USER_SPECIFIED_NUMBER_OF_ROWS;
-            }
-        };
-        final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
-            @Override public void toggleSortOrder(int column) {
-                if(check.isSelected()) {
-                    //((AbstractTableModel)table.getModel()).fireTableDataChanged();
-                    allRowsChanged();
-                    super.toggleSortOrder(column);
-                    allRowsChanged(); //sort();
-                }else{
-                    super.toggleSortOrder(column);
-                }
-//                 if(check.isSelected()) {
-//                     RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
-//                     setRowFilter(null);
-//                     super.toggleSortOrder(column);
-//                     setRowFilter(f);
-//                 }else{
-//                     super.toggleSortOrder(column);
-//                 }
-            }
-        };
         //XXX: sorter.setSortsOnUpdates(true);
         table.setRowSorter(sorter);
         sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
