@@ -3,7 +3,7 @@
 <project>
  <property name="jnlp.title"    value="JST ItemをTree状に表示" />
  <property name="jnlp.Name"     value="TreeComboBox" />
- <property name="jnlp.name"     value="Treecombobox" />
+ <property name="jnlp.name"     value="treecombobox" />
  <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
  <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
 </project>
