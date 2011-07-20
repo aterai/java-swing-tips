@@ -35,6 +35,8 @@ public class MainPanel extends JPanel {
                     (Component) e.getSource(),
                     e.getID(), e.getWhen(),
                     //e.getModifiers() | InputEvent.CTRL_MASK,
+                    //select multiple objects in OS X: Command+click
+                    //pointed out by nsby
                     e.getModifiers() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
                     e.getX(), e.getY(),
                     e.getXOnScreen(), e.getYOnScreen(),
