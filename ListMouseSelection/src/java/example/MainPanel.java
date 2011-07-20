@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
                 super.processMouseMotionEvent(convertMouseEvent(e));
             }
             @Override protected void processMouseEvent(MouseEvent e) {
-                if(!getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
+                if(e.getID()==MouseEvent.MOUSE_PRESSED && !getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
                     e.consume();
                     requestFocusInWindow();
                 }else{
@@ -34,7 +34,8 @@ public class MainPanel extends JPanel {
                 return new MouseEvent(
                     (Component) e.getSource(),
                     e.getID(), e.getWhen(),
-                    e.getModifiers() | InputEvent.CTRL_MASK,
+                    //e.getModifiers() | InputEvent.CTRL_MASK,
+                    e.getModifiers() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
                     e.getX(), e.getY(),
                     e.getXOnScreen(), e.getYOnScreen(),
                     e.getClickCount(),
