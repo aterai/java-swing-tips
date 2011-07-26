@@ -21,11 +21,15 @@ public class MainPanel extends JPanel {
                 super.processMouseMotionEvent(convertMouseEvent(e));
             }
             @Override protected void processMouseEvent(MouseEvent e) {
-                if(e.getID()==MouseEvent.MOUSE_PRESSED && !getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
-                    e.consume();
-                    requestFocusInWindow();
+                if(e.getID()==MouseEvent.MOUSE_ENTERED || e.getID()==MouseEvent.MOUSE_EXITED) {
+                    super.processMouseEvent(e);
                 }else{
-                    super.processMouseEvent(convertMouseEvent(e));
+                    if(getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
+                        super.processMouseEvent(convertMouseEvent(e));
+                    }else{
+                        e.consume();
+                        requestFocusInWindow();
+                    }
                 }
             }
             private MouseEvent convertMouseEvent(MouseEvent e) {
