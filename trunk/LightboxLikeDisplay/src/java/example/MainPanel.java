@@ -10,7 +10,6 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JButton button = new JButton("open");
     public MainPanel(final JFrame frame) {
         super(new GridLayout(1,2));
         frame.setGlassPane(new LightboxGlassPane());

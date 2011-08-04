@@ -67,7 +67,12 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
         animator = new javax.swing.Timer(80, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 int i = l.getSelectedIndex();
-                if(isRunning=(i>=0)) l.repaint(l.getCellBounds(i,i));
+                if(i>=0) {
+                    isRunning = true;
+                    l.repaint(l.getCellBounds(i,i));
+                }else{
+                    isRunning = false;
+                }
             }
         });
         setOpaque(true);

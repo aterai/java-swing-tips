@@ -19,8 +19,7 @@ public class MainPanel extends JPanel {
         desktop = new JDesktopPane();
         //title, resizable, closable, maximizable, iconifiable
         immovableFrame = new JInternalFrame("immovable", false, false, true, true);
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)immovableFrame.getUI();
-        Component north = ui.getNorthPane();
+        Component north = ((BasicInternalFrameUI)immovableFrame.getUI()).getNorthPane();
         MouseMotionListener[] actions = (MouseMotionListener[])north.getListeners(MouseMotionListener.class);
         for(int i=0;i<actions.length;i++) {
             north.removeMouseMotionListener(actions[i]);

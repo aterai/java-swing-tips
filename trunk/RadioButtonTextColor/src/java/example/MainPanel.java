@@ -7,7 +7,6 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final ButtonGroup bg = new ButtonGroup();
     public MainPanel() {
         super(new GridLayout(1, 3));
         ButtonGroup bg = new ButtonGroup();
