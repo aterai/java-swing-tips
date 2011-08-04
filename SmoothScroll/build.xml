@@ -129,6 +129,7 @@
   <!-- =================================================================== -->
   <target name="compile" depends="prepare-src, prepare-resource, prepare-web">
     <javac srcdir="${build.src}"
+           includes="**/*.java"
            destdir="${build.dest}"
            encoding="${compile.encoding}"
            debug="${compile.debug}"
@@ -364,7 +365,8 @@
   <target name="pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
     <mkdir dir="${build.reports}" />
-    <pmd rulesetfiles="basic,imports,strings" encoding="${compile.encoding}">
+    <pmd rulesetfiles="basic,imports,strings" encoding="${compile.encoding}" targetjdk="${compile.source}">
+      <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <fileset dir="${src.dir}">
         <include name="**/*.java" />
