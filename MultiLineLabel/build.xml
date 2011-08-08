@@ -134,7 +134,6 @@
            encoding="${compile.encoding}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
-           source="${compile.source}"
            deprecation="${compile.deprecation}"
            includeAntRuntime="no"
            classpathref="project.class.path">
