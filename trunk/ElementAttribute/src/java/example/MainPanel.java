@@ -28,7 +28,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JTextPane editor1 = new JTextPane() {
+        JEditorPane editor1 = new JEditorPane() {
             //private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
             //    if(e != null && offset > 0 && e.getStartOffset() == offset) {
             //        try {
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
             @Override public String getToolTipText(MouseEvent e) {
                 String title = super.getToolTipText(e);
                 JEditorPane editor = (JEditorPane) e.getSource();
-                HTMLEditorKit kit = (HTMLEditorKit)editor.getEditorKit();
+                //HTMLEditorKit kit = (HTMLEditorKit)editor.getEditorKit();
                 if(!editor.isEditable()) {
                     Point pt = new Point(e.getX(), e.getY());
                     int pos = editor.getUI().viewToModel(editor, pt, bias);
@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
         editor1.setEditable(false);
         ToolTipManager.sharedInstance().registerComponent(editor1);
 
-        JTextPane editor2 = new JTextPane();
+        JEditorPane editor2 = new JEditorPane();
         editor2.setEditorKit(new TooltipEditorKit());
         editor2.setText(htmlText);
         editor2.setEditable(false);
@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
                 JEditorPane editorPane = (JEditorPane)e.getSource();
                 if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    //JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
+                    JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
                 }else if(e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
