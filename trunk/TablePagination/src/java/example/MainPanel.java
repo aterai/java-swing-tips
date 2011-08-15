@@ -59,32 +59,53 @@ public class MainPanel extends JPanel {
         //assert currentPageIndex>0;
         sorter.setRowFilter(makeRowFilter(itemsPerPage, currentPageIndex-1));
 
-        ArrayList<JRadioButton> l = new ArrayList<JRadioButton>();
+        ArrayList<JRadioButton> paginationButtons = new ArrayList<JRadioButton>();
 
         int startPageIndex = currentPageIndex-LR_PAGE_SIZE;
         if(startPageIndex<=0) startPageIndex = 1;
 
-        int maxPageIndex = (model.getRowCount()/itemsPerPage)+1;
+        System.out.println(model.getRowCount()%itemsPerPage);
+
+//#if 0
+        //int maxPageIndex = (model.getRowCount()/itemsPerPage)+1;
+//#else
+        /* "maxPageIndex" gives one blank page if the module of the division is not zero.
+         *   pointed out by erServi
+         * e.g. rowCount=100, maxPageIndex=100
+         */
+        int rowCount = model.getRowCount();
+        int maxPageIndex = (rowCount/itemsPerPage) + (rowCount%itemsPerPage==0?0:1);
+//#endif
         int endPageIndex = currentPageIndex+LR_PAGE_SIZE-1;
         if(endPageIndex>maxPageIndex) endPageIndex = maxPageIndex;
 
-        if(currentPageIndex>1)
-          l.add(makePNRadioButton(itemsPerPage, currentPageIndex-1, "Prev"));
-        for(int i=startPageIndex;i<=endPageIndex;i++)
-          l.add(makeRadioButton(itemsPerPage, currentPageIndex, i-1));
-        if(currentPageIndex<maxPageIndex)
-          l.add(makePNRadioButton(itemsPerPage, currentPageIndex+1, "Next"));
+        if(currentPageIndex>1) {
+          paginationButtons.add(makePNRadioButton(itemsPerPage, currentPageIndex-1, "Prev"));
+        }
+//         for(int i=startPageIndex;i<=endPageIndex;i++) {
+//             paginationButtons.add(makeRadioButton(itemsPerPage, currentPageIndex, i-1));
+//         }
+        //if I only have one page, Y don't want to see pagination buttons
+        //suggested by erServi
+        if(startPageIndex<endPageIndex) {
+            for(int i=startPageIndex;i<=endPageIndex;i++) {
+                paginationButtons.add(makeRadioButton(itemsPerPage, currentPageIndex, i-1));
+            }
+        }
+        if(currentPageIndex<maxPageIndex) {
+            paginationButtons.add(makePNRadioButton(itemsPerPage, currentPageIndex+1, "Next"));
+        }
 
         box.removeAll();
         ButtonGroup bg = new ButtonGroup();
         box.add(Box.createHorizontalGlue());
-        for(JRadioButton r:l) {
+        for(JRadioButton r:paginationButtons) {
             box.add(r); bg.add(r);
         }
         box.add(Box.createHorizontalGlue());
         box.revalidate();
         box.repaint();
-        l.clear();
+        paginationButtons.clear();
     }
 
     private JRadioButton makeRadioButton(final int itemsPerPage, final int current, final int target) {
