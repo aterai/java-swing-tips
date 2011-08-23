@@ -117,10 +117,10 @@
     <copy todir="${build.dir}" filtering="yes"
           encoding="${compile.encoding}"
           outputencoding="${compile.encoding}">
-      <fileset dir="${web.dir}" includes="**/*.jnlp" />
+      <fileset dir="${web.dir}" includes="**/*.jnlp **/*.html" />
     </copy>
     <copy todir="${build.dir}" filtering="no">
-      <fileset dir="${web.dir}" excludes="**/*.jnlp **/*.bak" />
+      <fileset dir="${web.dir}" excludes="**/*.jnlp **/*.html **/*.bak" />
     </copy>
   </target>
 
@@ -380,6 +380,7 @@
     <!-- include name="screenshot*.*" / -->
     <include name="*.jar" />
     <include name="src.zip" />
+    <include name="index.html" />
   </fileset>
   <target name="ftp" depends="dist">
     <property name="ftp.userid" value="terai" />
