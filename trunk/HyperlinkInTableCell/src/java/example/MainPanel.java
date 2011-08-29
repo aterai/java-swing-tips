@@ -82,13 +82,16 @@ public class MainPanel extends JPanel {
 }
 
 class URLRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
+//     private static Rectangle lrect = new Rectangle();
+//     private static Rectangle irect = new Rectangle();
+//     private static Rectangle trect = new Rectangle();
     private int row = -1;
     private int col = -1;
     @Override public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-
+// >>>> @see http://terai.xrea.jp/Swing/ClippedHtmlLabel.html
 //         int mw = table.getColumnModel().getColumnMargin();
 //         int rh = table.getRowMargin();
 //         int w  = table.getColumnModel().getColumn(column).getWidth();
@@ -115,6 +118,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 //             irect, //icon
 //             trect, //text
 //             this.getIconTextGap());
+// <<<<
         String str = value!=null?value.toString():"";
 
         if(!table.isEditing() && this.row==row && this.col==column) {
@@ -126,12 +130,28 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         }
         return this;
     }
+// >>>> @see SwingUtilities2.pointOutsidePrefSize(...)
+// >>>> @see http://terai.xrea.jp/Swing/PointInsidePrefSize.html
+//     private static boolean pointInsidePrefSize(JTable table, Point p) {
+//         int row = table.rowAtPoint(p);
+//         int col = table.columnAtPoint(p);
+//         TableCellRenderer tcr = table.getCellRenderer(row, col);
+//         Object value = table.getValueAt(row, col);
+//         Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
+//         Dimension itemSize = cell.getPreferredSize();
+//         Rectangle cellBounds = table.getCellRect(row, col, false);
+//         cellBounds.width = itemSize.width;
+//         return cellBounds.contains(p);
+//     }
+// <<<<
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
+        //if(pointInsidePrefSize(table, pt)) {
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         if(row<0 || col<0) {
+        //}else{
             row = -1;
             col = -1;
         }
@@ -146,6 +166,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     @Override public void mouseClicked(MouseEvent e) {
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
+        //if(pointInsidePrefSize(table, pt)) {
         int crow = table.rowAtPoint(pt);
         int ccol = table.columnAtPoint(pt);
         //if(table.convertColumnIndexToModel(ccol) == 2)
