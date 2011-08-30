@@ -50,18 +50,24 @@ class CustomCellEditor extends DefaultCellEditor {
     protected final JButton button = new JButton();
     public CustomCellEditor(final JTextField field) {
         super(field);
-        field.add(button);
         field.setBorder(BorderFactory.createEmptyBorder(0,2,0,BUTTON_WIDTH));
         field.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && field.isShowing()) {
                     //System.out.println("hierarchyChanged: SHOWING_CHANGED");
+                    field.removeAll();
+                    field.add(button);
                     Rectangle r = field.getBounds();
                     button.setBounds(r.width-BUTTON_WIDTH, 0, BUTTON_WIDTH, r.height);
                     //field.requestFocusInWindow();
                 }
             }
         });
+    }
+    @Override public Component getComponent() {
+        //@see JTable#updateUI()
+        SwingUtilities.updateComponentTreeUI(button);
+        return super.getComponent();
     }
 }
 //class CustomComponentCellEditor extends AbstractCellEditor implements TableCellEditor {
