@@ -54,8 +54,7 @@ class CustomCellEditor extends DefaultCellEditor {
         field.setBorder(BorderFactory.createEmptyBorder(0,2,0,BUTTON_WIDTH));
         field.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0
-                    && field.isShowing()) {
+                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && field.isShowing()) {
                     //System.out.println("hierarchyChanged: SHOWING_CHANGED");
                     Rectangle r = field.getBounds();
                     button.setBounds(r.width-BUTTON_WIDTH, 0, BUTTON_WIDTH, r.height);
@@ -125,6 +124,9 @@ class CustomComponentCellEditor extends DefaultCellEditor {
         });
         return super.isCellEditable(e);
     }
+    @Override public Component getComponent() {
+        return panel;
+    }
 }
 
 class CustomComponent extends JPanel {
@@ -167,5 +169,8 @@ class CustomComponentCellEditor2 extends DefaultCellEditor {
                                                  boolean isSelected, int row, int column) {
         component.field.setText(value!=null?value.toString():"");
         return this.component;
+    }
+    @Override public Component getComponent() {
+        return component;
     }
 }
