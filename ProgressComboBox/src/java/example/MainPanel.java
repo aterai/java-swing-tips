@@ -63,7 +63,11 @@ public class MainPanel extends JPanel {
     }
 
     class ProgressCellRenderer extends DefaultListCellRenderer {
-        private final JProgressBar bar = new JProgressBar();
+        private final JProgressBar bar = new JProgressBar() {
+            @Override public Dimension getPreferredSize() {
+                return ProgressCellRenderer.this.getPreferredSize();
+            }
+        };
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             if(index<0 && worker!=null && !worker.isDone()) {
                 bar.setFont(list.getFont());
@@ -81,12 +85,37 @@ public class MainPanel extends JPanel {
     }
 
     public JPanel createPanel(JComponent cmp, JButton btn, String str) {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        panel.add(new JLabel(str), BorderLayout.WEST);
-        panel.add(cmp);
-        panel.add(btn, BorderLayout.EAST);
-        panel.setPreferredSize(new Dimension(0, 34));
+//         JPanel panel = new JPanel(new BorderLayout(5, 5));
+//         panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+//         panel.add(new JLabel(str), BorderLayout.WEST);
+//         panel.add(cmp);
+//         panel.add(btn, BorderLayout.EAST);
+
+        GridBagConstraints c = new GridBagConstraints();
+        JPanel panel = new JPanel(new GridBagLayout());
+
+        c.gridheight = 1;
+        c.gridwidth  = 1;
+        c.gridy = 0;
+
+        c.gridx = 0;
+        c.weightx = 0.0;
+        c.insets = new Insets(5, 5, 5, 0);
+        c.anchor = GridBagConstraints.WEST;
+        panel.add(new JLabel(str), c);
+
+        c.gridx = 1;
+        c.weightx = 1.0;
+        //c.insets = new Insets(5, 5, 5, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(cmp, c);
+
+        c.gridx = 2;
+        c.weightx = 0.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.WEST;
+        panel.add(btn, c);
+
         return panel;
     }
 
