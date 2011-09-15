@@ -148,6 +148,8 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
         //if(pointInsidePrefSize(table, pt)) {
+        int prev_row = row;
+        int prev_col = col;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         if(row<0 || col<0) {
@@ -155,7 +157,23 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             row = -1;
             col = -1;
         }
-        table.repaint();
+// >>>> HyperlinkCellRenderer.java
+// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        if(row == prev_row && col == prev_col) return;
+        Rectangle repaintRect;
+        if(row >= 0 && col >= 0) {
+            Rectangle r = table.getCellRect(row, col, false);
+            if(prev_row >= 0 && prev_col >= 0) {
+                repaintRect = r.union(table.getCellRect(prev_row, prev_col, false));
+            }else{
+                repaintRect = r;
+            }
+        }else{
+            repaintRect = table.getCellRect(prev_row, prev_col, false);
+        }
+        table.repaint(repaintRect);
+// <<<<
+        //table.repaint();
     }
     @Override public void mouseExited(MouseEvent e)  {
         JTable table = (JTable)e.getSource();
