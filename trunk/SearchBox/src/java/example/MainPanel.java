@@ -66,7 +66,9 @@ public class MainPanel extends JPanel{
                             break;
                         }
                     }
-                    tree.addSelectionPath(rollOverPathLists.get(nextIndex));
+                    TreePath p = rollOverPathLists.get(nextIndex);
+                    tree.addSelectionPath(p);
+                    tree.scrollPathToVisible(p);
                 }
             }
         };
