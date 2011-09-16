@@ -12,14 +12,28 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        sp.setTopComponent(new JScrollPane(makeTable(new URLRenderer1())));
-        sp.setBottomComponent(new JScrollPane(makeTable(new URLRenderer())));
+
+        JTable table1 = makeTable();
+        URLRenderer1 renderer1 = new URLRenderer1();
+        table1.setDefaultRenderer(URL.class, renderer1);
+        table1.addMouseListener(renderer1);
+        table1.addMouseMotionListener(renderer1);
+
+        JTable table = makeTable();
+        URLRenderer renderer = new URLRenderer();
+        table.setDefaultRenderer(URL.class, renderer);
+        table.addMouseListener(renderer);
+        table.addMouseMotionListener(renderer);
+
+
+        sp.setTopComponent(new JScrollPane(table1));
+        sp.setBottomComponent(new JScrollPane(table));
         sp.setResizeWeight(0.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
     private static final Color evenColor = new Color(250, 250, 250);
-    private static JTable makeTable(URLRenderer renderer) {
+    private static JTable makeTable() {
         TestModel model = new TestModel();
         try{
             model.addTest(new Test("FrontPage", new URL("http://terai.xrea.jp/")));
@@ -49,10 +63,6 @@ public class MainPanel extends JPanel {
         col.setMaxWidth(50);
         col.setResizable(false);
 
-        table.setDefaultRenderer(URL.class, renderer);
-        table.addMouseListener(renderer);
-        table.addMouseMotionListener(renderer);
-
         return table;
     }
 
@@ -78,17 +88,96 @@ public class MainPanel extends JPanel {
     }
 }
 
+class URLRenderer1 extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
+    private int row = -1;
+    private int col = -1;
+    private boolean isRollover = false;
+    @Override public Component getTableCellRendererComponent(JTable table, Object value,
+                                                   boolean isSelected, boolean hasFocus,
+                                                   int row, int column) {
+        super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+        String str = value!=null?value.toString():"";
+
+        if(!table.isEditing() && this.row==row && this.col==column && this.isRollover) {
+            setText("<html><u><font color='blue'>"+str);
+        }else if(hasFocus) {
+            setText("<html><font color='blue'>"+str);
+        }else{
+            setText(str);
+        }
+        return this;
+    }
+    private static boolean isURLColumn(JTable table, int column) {
+        return column>=0 && table.getColumnClass(column).equals(URL.class);
+    }
+    @Override public void mouseMoved(MouseEvent e) {
+        JTable table = (JTable)e.getSource();
+        Point pt = e.getPoint();
+        int prev_row = row;
+        int prev_col = col;
+        boolean prev_ro = isRollover;
+        row = table.rowAtPoint(pt);
+        col = table.columnAtPoint(pt);
+        isRollover = isURLColumn(table, col); // && pointInsidePrefSize(table, pt);
+        if((row==prev_row && col==prev_col && Boolean.valueOf(isRollover).equals(prev_ro)) ||
+           (!isRollover && !prev_ro)) {
+            return;
+        }
+
+// >>>> HyperlinkCellRenderer.java
+// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        Rectangle repaintRect;
+        if(isRollover) {
+            Rectangle r = table.getCellRect(row, col, false);
+            repaintRect = prev_ro ? r.union(table.getCellRect(prev_row, prev_col, false)) : r;
+        }else{ //if(prev_ro) {
+            repaintRect = table.getCellRect(prev_row, prev_col, false);
+        }
+        table.repaint(repaintRect);
+// <<<<
+        //table.repaint();
+    }
+    @Override public void mouseExited(MouseEvent e)  {
+        JTable table = (JTable)e.getSource();
+        if(isURLColumn(table, col)) {
+            table.repaint(table.getCellRect(row, col, false));
+            row = -1;
+            col = -1;
+            isRollover = false;
+        }
+    }
+    @Override public void mouseClicked(MouseEvent e) {
+        JTable table = (JTable)e.getSource();
+        Point pt = e.getPoint();
+        int ccol = table.columnAtPoint(pt);
+        if(isURLColumn(table, ccol)) { // && pointInsidePrefSize(table, pt)) {
+            int crow = table.rowAtPoint(pt);
+            URL url = (URL)table.getValueAt(crow, ccol);
+            System.out.println(url);
+            //try{
+            //  Desktop.getDesktop().browse(url.toURI());
+            //}catch(Exception ex) {
+            //  ex.printStackTrace();
+            //}
+        }
+    }
+    @Override public void mouseDragged(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) {}
+    @Override public void mousePressed(MouseEvent e) {}
+    @Override public void mouseReleased(MouseEvent e) {}
+}
+
 class URLRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
     private static Rectangle lrect = new Rectangle();
     private static Rectangle irect = new Rectangle();
     private static Rectangle trect = new Rectangle();
     private int row = -1;
     private int col = -1;
+    private boolean isRollover = false;
     @Override public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-
         int mw = table.getColumnModel().getColumnMargin();
         int rh = table.getRowMargin();
         int w  = table.getColumnModel().getColumn(column).getWidth();
@@ -116,93 +205,74 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             trect, //text
             this.getIconTextGap());
 
-        if(!table.isEditing() && this.row==row && this.col==column) {
+        if(!table.isEditing() && this.row==row && this.col==column && this.isRollover) {
             setText("<html><u><font color='blue'>"+str);
         }else if(hasFocus) {
             setText("<html><font color='blue'>"+str);
         }else{
             setText(str);
-            //setText(value.toString());
         }
         return this;
+    }
+    //@see SwingUtilities2.pointOutsidePrefSize(...)
+    //private static boolean pointInsidePrefSize(JTable table, Point p) {
+    //    int row = table.rowAtPoint(p);
+    //    int col = table.columnAtPoint(p);
+    //    TableCellRenderer tcr = table.getCellRenderer(row, col);
+    //    Object value = table.getValueAt(row, col);
+    //    Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
+    //    Dimension itemSize = cell.getPreferredSize();
+    //    Insets i = ((JComponent)cell).getInsets();
+    //    Rectangle cellBounds = table.getCellRect(row, col, false);
+    //    cellBounds.width = itemSize.width-i.right-i.left;
+    //    cellBounds.translate(i.left, i.top);
+    //    return cellBounds.contains(p);
+    //}
+    private static boolean isURLColumn(JTable table, int column) {
+        return column>=0 && table.getColumnClass(column).equals(URL.class);
     }
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
+        int prev_row = row;
+        int prev_col = col;
+        boolean prev_ro = isRollover;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
-        if(row<0 || col<0) {
-            row = -1;
-            col = -1;
+        isRollover = isURLColumn(table, col); // && pointInsidePrefSize(table, pt);
+        if((row==prev_row && col==prev_col && Boolean.valueOf(isRollover).equals(prev_ro)) ||
+           (!isRollover && !prev_ro)) {
+            return;
         }
-        table.repaint();
-    }
-    @Override public void mouseExited(MouseEvent e)  {
-        JTable table = (JTable)e.getSource();
-        row = -1;
-        col = -1;
-        table.repaint();
-    }
-    @Override public void mouseClicked(MouseEvent e) {
-        JTable table = (JTable)e.getSource();
-        Point pt = e.getPoint();
-        int crow = table.rowAtPoint(pt);
-        int ccol = table.columnAtPoint(pt);
-        if(table.getColumnClass(ccol).equals(URL.class)) {
-            URL url = (URL)table.getValueAt(crow, ccol);
-            System.out.println(url);
-            //try{
-            //  Desktop.getDesktop().browse(url.toURI());
-            //}catch(Exception ex) {
-            //  ex.printStackTrace();
-            //}
-        }
-    }
-    @Override public void mouseDragged(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
-}
 
-class URLRenderer1 extends URLRenderer { //DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
-    private int row = -1;
-    private int col = -1;
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
-        super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-        if(!table.isEditing() && this.row==row && this.col==column) {
-            setText("<html><u><font color='blue'>"+value.toString());
-        }else if(hasFocus) {
-            setText("<html><font color='blue'>"+value.toString());
-        }else{
-            setText(value.toString());
+// >>>> HyperlinkCellRenderer.java
+// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        Rectangle repaintRect;
+        if(isRollover) {
+            Rectangle r = table.getCellRect(row, col, false);
+            repaintRect = prev_ro ? r.union(table.getCellRect(prev_row, prev_col, false)) : r;
+        }else{ //if(prev_ro) {
+            repaintRect = table.getCellRect(prev_row, prev_col, false);
         }
-        return this;
-    }
-    @Override public void mouseMoved(MouseEvent e) {
-        JTable table = (JTable)e.getSource();
-        Point pt = e.getPoint();
-        row = table.rowAtPoint(pt);
-        col = table.columnAtPoint(pt);
-        if(row<0 || col<0) {
-            row = -1;
-            col = -1;
-        }
-        table.repaint();
+        table.repaint(repaintRect);
+// <<<<
+        //table.repaint();
     }
     @Override public void mouseExited(MouseEvent e)  {
         JTable table = (JTable)e.getSource();
-        row = -1;
-        col = -1;
-        table.repaint();
+        if(isURLColumn(table, col)) {
+            table.repaint(table.getCellRect(row, col, false));
+            row = -1;
+            col = -1;
+            isRollover = false;
+        }
     }
     @Override public void mouseClicked(MouseEvent e) {
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
-        int crow = table.rowAtPoint(pt);
         int ccol = table.columnAtPoint(pt);
-        if(table.getColumnClass(ccol).equals(URL.class)) {
+        if(isURLColumn(table, ccol)) { // && pointInsidePrefSize(table, pt)) {
+            int crow = table.rowAtPoint(pt);
             URL url = (URL)table.getValueAt(crow, ccol);
             System.out.println(url);
             //try{
