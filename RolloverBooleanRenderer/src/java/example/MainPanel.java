@@ -30,16 +30,25 @@ public class MainPanel extends JPanel {
                 }
                 return c;
             }
+            private transient HighlightListener highlighter;
+            @Override public void updateUI() {
+                if(highlighter!=null) {
+                    addMouseListener(highlighter);
+                    addMouseMotionListener(highlighter);
+                    setDefaultRenderer(Object.class,  null);
+                    setDefaultRenderer(Number.class,  null);
+                    setDefaultRenderer(Boolean.class, null);
+                }
+                super.updateUI();
+                highlighter = new HighlightListener(this);
+                addMouseListener(highlighter);
+                addMouseMotionListener(highlighter);
+                setDefaultRenderer(Object.class,  new RolloverDefaultTableCellRenderer(highlighter));
+                setDefaultRenderer(Number.class,  new RolloverNumberRenderer(highlighter));
+                setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
+            }
         };
         table.setAutoCreateRowSorter(true);
-
-        HighlightListener highlighter = new HighlightListener(table);
-        table.addMouseListener(highlighter);
-        table.addMouseMotionListener(highlighter);
-
-        table.setDefaultRenderer(Object.class,  new RolloverDefaultTableCellRenderer(highlighter));
-        table.setDefaultRenderer(Number.class,  new RolloverNumberRenderer(highlighter));
-        table.setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                                        new JScrollPane(new JTable(model)),
@@ -86,14 +95,34 @@ class HighlightListener extends MouseAdapter {
     }
     @Override public void mouseMoved(MouseEvent e) {
         Point pt = e.getPoint();
+        int prev_row = row;
+        int prev_col = col;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         if(row<0 || col<0) row = col = -1;
-        table.repaint();
+// >>>> HyperlinkCellRenderer.java
+// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+        if(row == prev_row && col == prev_col) return;
+        Rectangle repaintRect;
+        if(row >= 0 && col >= 0) {
+            Rectangle r = table.getCellRect(row, col, false);
+            if(prev_row >= 0 && prev_col >= 0) {
+                repaintRect = r.union(table.getCellRect(prev_row, prev_col, false));
+            }else{
+                repaintRect = r;
+            }
+        }else{
+            repaintRect = table.getCellRect(prev_row, prev_col, false);
+        }
+        table.repaint(repaintRect);
+// <<<<
+        //table.repaint();
     }
     @Override public void mouseExited(MouseEvent e) {
+        if(row >= 0 && col >= 0) {
+            table.repaint(table.getCellRect(row, col, false));
+        }
         row = col = -1;
-        table.repaint();
     }
 }
 
