@@ -97,6 +97,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         int w  = table.getColumnModel().getColumn(column).getWidth();
         int h  = table.getRowHeight(row);
 
+        //TEST: this.setBorder(BorderFactory.createMatteBorder(0,16,0,16,Color.RED));
         Insets i = this.getInsets();
         lrect.x = i.left;
         lrect.y = i.top;
@@ -120,7 +121,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             this.getIconTextGap());
         //String str = value!=null?value.toString():"";
 
-        if(!table.isEditing() && this.row==row && this.col==column) {
+        if(!table.isEditing() && this.row==row && this.col==column && this.isRollover) {
             setText("<html><u><font color='blue'>"+str);
 //         }else if(hasFocus) {
 //             setText("<html><font color='blue'>"+str);
@@ -137,8 +138,10 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         Object value = table.getValueAt(row, col);
         Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
         Dimension itemSize = cell.getPreferredSize();
+        Insets i = ((JComponent)cell).getInsets();
         Rectangle cellBounds = table.getCellRect(row, col, false);
-        cellBounds.width = itemSize.width;
+        cellBounds.width = itemSize.width-i.right-i.left;
+        cellBounds.translate(i.left, i.top);
         return cellBounds.contains(p);
     }
     private boolean isRollover = false;
@@ -150,33 +153,23 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         Point pt = e.getPoint();
         int prev_row = row;
         int prev_col = col;
-
+        boolean prev_ro = isRollover;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
-
-        boolean prev_ro = isRollover;
         isRollover = isURLColumn(table, col) && pointInsidePrefSize(table, pt);
-        if(row==prev_row && col==prev_col && isRollover==prev_ro) {
+        if((row==prev_row && col==prev_col && Boolean.valueOf(isRollover).equals(prev_ro)) ||
+           (!isRollover && !prev_ro)) {
             return;
         }
-        if(!isRollover) {
-            row = -1;
-            col = -1;
-        }
+
 // >>>> HyperlinkCellRenderer.java
 // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
         Rectangle repaintRect;
-        if(row >= 0 && col >= 0) {
+        if(isRollover) {
             Rectangle r = table.getCellRect(row, col, false);
-            if(prev_row >= 0 && prev_col >= 0) {
-                repaintRect = r.union(table.getCellRect(prev_row, prev_col, false));
-            }else{
-                repaintRect = r;
-            }
-        }else if(isURLColumn(table, prev_col)) {
+            repaintRect = prev_ro ? r.union(table.getCellRect(prev_row, prev_col, false)) : r;
+        }else{ //if(prev_ro) {
             repaintRect = table.getCellRect(prev_row, prev_col, false);
-        }else{
-            return;
         }
         table.repaint(repaintRect);
 // <<<<
