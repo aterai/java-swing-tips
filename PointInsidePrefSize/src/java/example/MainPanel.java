@@ -87,6 +87,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     private static Rectangle trect = new Rectangle();
     private int row = -1;
     private int col = -1;
+    private boolean isRollover = false;
     @Override public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
@@ -144,7 +145,6 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         cellBounds.translate(i.left, i.top);
         return cellBounds.contains(p);
     }
-    private boolean isRollover = false;
     private static boolean isURLColumn(JTable table, int column) {
         return column>=0 && table.getColumnClass(column).equals(URL.class);
     }
