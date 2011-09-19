@@ -59,6 +59,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
 
         //toolBox.setLayout(new BoxLayout(toolBox, BoxLayout.X_AXIS));
         toolBox.add(Box.createGlue());
+        //http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
         toolBox.add(makeToolButton("ATTACHMENT_16x16-32.png"));
         toolBox.add(Box.createHorizontalStrut(2));
         toolBox.add(makeToolButton("RECYCLE BIN - EMPTY_16x16-32.png"));
