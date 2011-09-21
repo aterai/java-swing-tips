@@ -9,50 +9,69 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JButton button1   = new JButton("showErrorDialog");
-    private final JButton button2   = new JButton("exit");
-    private final JButton button3   = new JButton("showErrorDialog");
-    private final JButton button4   = new JButton("exit");
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
 
+        JComponent box1 = Box.createHorizontalBox();
+        box1.add(Box.createHorizontalGlue());
+        box1.add(new JButton("default"));
+        box1.add(Box.createHorizontalStrut(5));
+        box1.add(new JButton("a"));
+        //box1.add(Box.createHorizontalStrut(5));
+        box1.setBorder(BorderFactory.createEmptyBorder(5,0,5,5));
+
+        JButton button1 = new JButton("getPreferredSize");
+        JButton button2 = new JButton("xxx");
         Dimension dim = button1.getPreferredSize();
         button1.setPreferredSize(new Dimension(120, dim.height));
         button2.setPreferredSize(new Dimension(120, dim.height));
 
-        Box box1 = Box.createHorizontalBox();
-        box1.add(Box.createHorizontalGlue());
-        box1.add(button1);
-        box1.add(Box.createHorizontalStrut(5));
-        box1.add(button2);
-        box1.add(Box.createHorizontalStrut(5));
-        box1.add(Box.createRigidArea(new Dimension(0, dim.height+10)));
-
-        Box box2 = Box.createHorizontalBox();
+        JComponent box2 = Box.createHorizontalBox();
         box2.add(Box.createHorizontalGlue());
-        box2.add(button3);
+        box2.add(button1);
         box2.add(Box.createHorizontalStrut(5));
-        box2.add(button4);
-        box2.add(Box.createHorizontalStrut(5));
-        box2.add(Box.createRigidArea(new Dimension(0, dim.height+10)));
+        box2.add(button2);
+        //box2.add(Box.createHorizontalStrut(5));
+        box2.setBorder(BorderFactory.createEmptyBorder(5,0,5,5));
+        //box2.add(Box.createRigidArea(new Dimension(0, dim.height+10)));
 
-        Box box3 = createLeftAlignButtonBox(Arrays.asList(new JButton("aaa"), new JButton("bbb")), 100, dim.height, 5);
+        JComponent box3 = createLeftAlignButtonBox(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, dim.height, 5);
+
+        JComponent box4 = createLeftAlignButtonBox2(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, dim.height, 2);
 
         Box box = Box.createVerticalBox();
-        box.add(new JSeparator());
-        box.add(box3);
-        box.add(Box.createVerticalGlue());
-        box.add(new JSeparator());
-        box.add(box2);
-        box.add(Box.createVerticalGlue());
-        box.add(new JSeparator());
-        box.add(box1);
+        //box.add(Box.createVerticalGlue());
+        box.add(new JSeparator()); box.add(box4);
+        box.add(new JSeparator()); box.add(box3);
+        box.add(new JSeparator()); box.add(box2);
+        box.add(new JSeparator()); box.add(box1);
 
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static Box createLeftAlignButtonBox(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
+    private static JComponent createLeftAlignButtonBox2(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
+        SpringLayout layout = new SpringLayout();
+        JPanel p = new JPanel(layout);
+        SpringLayout.Constraints pCons = layout.getConstraints(p);
+        pCons.setConstraint(SpringLayout.SOUTH, Spring.constant(buttonHeight+gap+gap));
+
+        Spring x     = layout.getConstraint(SpringLayout.WIDTH, p);
+        Spring y     = Spring.constant(gap);
+        Spring g     = Spring.minus(Spring.constant(gap));
+        Spring width = Spring.constant(buttonWidth);
+        for(JButton b: list) {
+            SpringLayout.Constraints constraints = layout.getConstraints(b);
+            constraints.setConstraint(SpringLayout.EAST, x = Spring.sum(x, g));
+            constraints.setY(y);
+            constraints.setWidth(width);
+            p.add(b);
+            x = Spring.sum(x, Spring.minus(width));
+        }
+        return p;
+    }
+
+    private static JComponent createLeftAlignButtonBox(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout);
         SpringLayout.Constraints pCons = layout.getConstraints(p);
