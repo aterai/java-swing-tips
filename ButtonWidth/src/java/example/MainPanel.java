@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
         box2.add(Box.createHorizontalStrut(5));
         box2.add(Box.createRigidArea(new Dimension(0, dim.height+10)));
 
-        Box box3 = createLeftAlignButtonBox(Arrays.asList(new JButton(new "aaa"), new JButton("bbb")), 100, dim.height, 5);
+        Box box3 = createLeftAlignButtonBox(Arrays.asList(new JButton("aaa"), new JButton("bbb")), 100, dim.height, 5);
 
         Box box = Box.createVerticalBox();
         box.add(new JSeparator());
