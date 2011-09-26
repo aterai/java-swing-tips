@@ -16,10 +16,10 @@ public class MainPanel extends JPanel{
         JMenuBar mb = new JMenuBar() {
             private final TexturePaint texture = makeCheckerTexture();
             @Override protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D)g;
                 g2.setPaint(texture);
                 g2.fillRect(0, 0, getWidth(), getHeight());
-                super.paintComponent(g);
             }
         };
         mb.setOpaque(false);
@@ -46,7 +46,7 @@ public class MainPanel extends JPanel{
                 super.fireStateChanged();
             };
         };
-        menu.setBackground(new Color(0,0,0,0)); //XXX windows lnf?
+        //menu.setBackground(new Color(0,0,0,0)); //XXX Windows XP lnf?
         menu.add("dummy1"); menu.add("dummy2"); menu.add("dummy3");
         return menu;
     }
