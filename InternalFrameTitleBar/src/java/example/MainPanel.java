@@ -102,7 +102,7 @@ public class MainPanel extends JPanel{
         frame.setMinimumSize(new Dimension(300, 120));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
-        //JDK 1.7 frame.setBackground(new Color(0,0,0,0));
+        frame.setBackground(new Color(0,0,0,0)); //JDK 1.7
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
