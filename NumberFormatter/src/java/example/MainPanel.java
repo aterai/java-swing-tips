@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel{
@@ -30,13 +31,23 @@ public class MainPanel extends JPanel{
     private static JSpinner makeSpinner2(SpinnerNumberModel m) {
         JSpinner s = new JSpinner(m);
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s.getEditor();
-        editor.getTextField().setFormatterFactory(makeFFactory(m));
-        editor.getTextField().addFocusListener(new FocusAdapter() {
-            @Override public void focusLost(FocusEvent e) {
-                final JTextComponent tc = (JTextComponent)e.getSource();
+        final JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
+        ftf.setFormatterFactory(makeFFactory(m));
+        ftf.getDocument().addDocumentListener(new DocumentListener() {
+            private final Color color = new Color(255,200,200);
+            @Override public void changedUpdate(DocumentEvent e) {
+                updateEditValid();
+            }
+            @Override public void insertUpdate(DocumentEvent e) {
+                updateEditValid();
+            }
+            @Override public void removeUpdate(DocumentEvent e) {
+                updateEditValid();
+            }
+            private void updateEditValid() {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        tc.setBackground(Color.WHITE);
+                        ftf.setBackground(ftf.isEditValid()?Color.WHITE:color);
                     }
                 });
             }
@@ -47,29 +58,22 @@ public class MainPanel extends JPanel{
         final NumberFormat format = new DecimalFormat("####0"); //, dfs);
         NumberFormatter displayFormatter = new NumberFormatter(format);
         NumberFormatter editFormatter = new NumberFormatter(format) {
-            private final Color color = new Color(255,200,200);
             //protected DocumentFilter getDocumentFilter() {
             //    return new IntegerDocumentFilter();
             //}
             @Override public Object stringToValue(String text) throws ParseException {
-                 JFormattedTextField f = getFormattedTextField();
                  try{
                      Long.parseLong(text);
                  }catch(NumberFormatException e) {
-                     f.setBackground(color);
                      throw new ParseException("xxx", 0);
                  }
                  Object o = format.parse(text);
-                 //System.out.println(o);
                  if(o instanceof Long) {
                      Long val = (Long)format.parse(text);
                      Long max = (Long)m.getMaximum();
                      Long min = (Long)m.getMinimum();
                      if(max.compareTo(val)<0 || min.compareTo(val)>0) {
-                         f.setBackground(color);
                          throw new ParseException("xxx", 0);
-                     }else{
-                         f.setBackground(Color.WHITE);
                      }
                      return val;
                  }
