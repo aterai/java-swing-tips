@@ -45,6 +45,10 @@ public class MainPanel extends JPanel{
                 }
                 super.fireStateChanged();
             };
+            @Override public void updateUI() {
+                super.updateUI();
+                setOpaque(false); // Motif lnf
+            }
         };
         //menu.setBackground(new Color(0,0,0,0)); //XXX Windows XP lnf?
         menu.add("dummy1"); menu.add("dummy2"); menu.add("dummy3");
