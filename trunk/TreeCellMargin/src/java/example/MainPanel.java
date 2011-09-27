@@ -12,11 +12,23 @@ import javax.swing.plaf.basic.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,3));
-        JTree tree1 = new JTree();
-        tree1.setCellRenderer(new MyTreeCellRenderer());
+        JTree tree1 = new JTree() {
+            @Override public void updateUI() {
+                setCellRenderer(null);
+                super.updateUI();
+                setCellRenderer(new MyTreeCellRenderer());
+            }
+        };
+        //tree1.setCellRenderer(new MyTreeCellRenderer());
 
-        JTree tree2 = new JTree();
-        tree2.setCellRenderer(new MyTreeCellRenderer2());
+        JTree tree2 = new JTree() {
+            @Override public void updateUI() {
+                setCellRenderer(null);
+                super.updateUI();
+                setCellRenderer(new MyTreeCellRenderer2());
+            }
+        };
+        //tree2.setCellRenderer(new MyTreeCellRenderer2());
 
         add(makeTitledPanel("Default", new JTree()));
         add(makeTitledPanel("Margin", tree1));
@@ -155,12 +167,6 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
         }
         return 0;
     }
-//     public Dimension getPreferredSize() {
-//         Dimension retDimension = super.getPreferredSize();
-//         if(retDimension != null)
-//           retDimension = new Dimension(retDimension.width + w, retDimension.height);
-//         return retDimension;
-//     }
 }
 
 class MyTreeCellRenderer2 extends DefaultTreeCellRenderer {
