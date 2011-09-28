@@ -2,6 +2,7 @@
 <project name="example" default="compile" basedir=".">
   <!-- all properties are in build.properties -->
   <!--property file="build.properties" /-->
+  <property environment="env" />
   <property name="config.dir" value="config" />
   <!--native2ascii encoding="UTF-8" src="${config.dir}" dest="${config.dir}" includes="**/*.properties.utf8" ext="" /-->
   <!--property file="${config.dir}/build.properties.utf8"/-->
@@ -347,14 +348,13 @@
   <condition property="have.findbugs">
     <and>
       <available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-      <available file="C:/Program Files/Java Apps/findbugs" />
+      <available file="${env.FINDBUGS_HOME}" />
     </and>
   </condition>
   <target name="findbugs" depends="compile" if="have.findbugs">
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-    <property name="findbugs.home" value="C:/Program Files/Java Apps/findbugs" />
     <mkdir dir="${build.reports}" />
-    <findbugs home="${findbugs.home}" effort="max"
+    <findbugs home="${env.FINDBUGS_HOME}" effort="max"
             output="xml" outputFile="${build.reports}/findbugs.xml" >
       <auxClasspath refid="project.class.path" />
       <sourcePath path="${src.dir}" />
