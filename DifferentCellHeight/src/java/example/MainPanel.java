@@ -13,7 +13,10 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new GridLayout(1,0));
         list1.setCellRenderer(new TextAreaRenderer());
-
+        if(list1.getFixedCellHeight()!=-1) {
+            System.out.println(list1.getFixedCellHeight());
+            list1.setFixedCellHeight(-1);
+        }
         list1.setModel(makeListModel());
         list2.setModel(makeListModel());
 
