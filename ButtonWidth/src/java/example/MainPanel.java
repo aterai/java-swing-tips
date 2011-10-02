@@ -35,9 +35,9 @@ public class MainPanel extends JPanel {
         box2.setBorder(BorderFactory.createEmptyBorder(5,0,5,5));
         //box2.add(Box.createRigidArea(new Dimension(0, dim.height+10)));
 
-        JComponent box3 = createLeftAlignButtonBox(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, dim.height, 5);
+        JComponent box3 = createRightAlignButtonBox(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, dim.height, 5);
 
-        JComponent box4 = createLeftAlignButtonBox2(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, dim.height, 2);
+        JComponent box4 = createRightAlignButtonBox2(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, dim.height, 2);
 
         Box box = Box.createVerticalBox();
         //box.add(Box.createVerticalGlue());
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createLeftAlignButtonBox2(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
+    private static JComponent createRightAlignButtonBox2(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout);
         SpringLayout.Constraints pCons = layout.getConstraints(p);
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
         return p;
     }
 
-    private static JComponent createLeftAlignButtonBox(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
+    private static JComponent createRightAlignButtonBox(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
         SpringLayout layout = new SpringLayout();
         JPanel p = new JPanel(layout);
         SpringLayout.Constraints pCons = layout.getConstraints(p);
