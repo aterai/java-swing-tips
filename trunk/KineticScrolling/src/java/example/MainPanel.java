@@ -11,11 +11,32 @@ class MainPanel extends JPanel {
     private final JRadioButton r2    = new JRadioButton("setViewPosition");
     private final JScrollPane scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                                                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    private final JViewport viewport = scroll.getViewport();
+    private static boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
+    private final JViewport viewport; // = scroll.getViewport();
     private final JLabel label;
 
     public MainPanel() {
         super(new BorderLayout());
+
+        //JDK 1.7.0
+        viewport = new JViewport() {
+            private boolean flag = false;
+            @Override public void revalidate() {
+                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) return;
+                super.revalidate();
+            }
+            @Override public void setViewPosition(Point p) {
+                if(HEAVYWEIGHT_LIGHTWEIGHT_MIXING) {
+                    super.setViewPosition(p);
+                }else{
+                    flag = true;
+                    super.setViewPosition(p);
+                    flag = false;
+                }
+            }
+        };
+        scroll.setViewport(viewport);
+
         label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
         viewport.add(label);
         final KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
