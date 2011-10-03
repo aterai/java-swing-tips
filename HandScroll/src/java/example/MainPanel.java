@@ -8,9 +8,10 @@ import javax.swing.*;
 
 class MainPanel extends JPanel {
     private final JLabel label       = new JLabel();
-    private final JScrollPane scroll = new JScrollPane(label);
+    private final JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
     private final JRadioButton r1    = new JRadioButton("scrollRectToVisible");
     private final JRadioButton r2    = new JRadioButton("setViewPosition");
+    private static boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createHorizontalBox();
@@ -21,7 +22,27 @@ class MainPanel extends JPanel {
 
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
         HandScrollListener hsl = new HandScrollListener();
-        JViewport vport = scroll.getViewport();
+        //JViewport vport = scroll.getViewport();
+        //JDK 1.7.0
+        JViewport vport = new JViewport() {
+            private boolean flag = false;
+            @Override public void revalidate() {
+                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) return;
+                super.revalidate();
+            }
+            @Override public void setViewPosition(Point p) {
+                if(HEAVYWEIGHT_LIGHTWEIGHT_MIXING) {
+                    super.setViewPosition(p);
+                }else{
+                    flag = true;
+                    super.setViewPosition(p);
+                    flag = false;
+                }
+            }
+        };
+        vport.add(label);
+        scroll.setViewport(vport);
+
         vport.addMouseMotionListener(hsl);
         vport.addMouseListener(hsl);
         add(scroll);
