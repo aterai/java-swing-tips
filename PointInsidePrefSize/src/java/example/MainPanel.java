@@ -157,8 +157,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         isRollover = isURLColumn(table, col) && pointInsidePrefSize(table, pt);
-        if((row==prev_row && col==prev_col && Boolean.valueOf(isRollover).equals(prev_ro)) ||
-           (!isRollover && !prev_ro)) {
+        if((row==prev_row && col==prev_col && isRollover==prev_ro) || (!isRollover && !prev_ro)) {
             return;
         }
 
