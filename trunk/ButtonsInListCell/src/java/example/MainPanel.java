@@ -14,8 +14,11 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JList makeList() {
-        String[] m = {"11\n1", "222222222222222\n222222222222222", "3333333333333333333\n33333333333333333333\n33333333333333333", "444"};
-        final JList list = new JList(m);
+        DefaultListModel model = new DefaultListModel();
+        for(String s: new String[] {"11\n1", "222222222222222\n222222222222222", "3333333333333333333\n33333333333333333333\n33333333333333333", "444"}) {
+            model.addElement(s);
+        }
+        JList list = new JList(model);
         list.setFixedCellHeight(-1);
         CellButtonsMouseListener cbml = new CellButtonsMouseListener();
         list.addMouseListener(cbml);
@@ -52,7 +55,12 @@ class CellButtonsMouseListener extends MouseAdapter{
         Point pt = e.getPoint();
         int index  = list.locationToIndex(pt);
         if(!list.getCellBounds(index, index).contains(pt)) {
-            if(prevIndex>=0) list.repaint(list.getCellBounds(prevIndex, prevIndex));
+            if(prevIndex>=0) {
+                Rectangle r = list.getCellBounds(prevIndex, prevIndex);
+                if(r!=null) {
+                    list.repaint(r);
+                }
+            }
             index = -1;
             prevButton = null;
             return;
@@ -65,14 +73,21 @@ class CellButtonsMouseListener extends MouseAdapter{
                 button.getModel().setRollover(true);
                 renderer.rolloverIndex = index;
                 if(!button.equals(prevButton)) {
-                    list.repaint(list.getCellBounds(prevIndex, index));
+                    Rectangle r = list.getCellBounds(prevIndex, index);
+                    if(r!=null) {
+                        list.repaint(r);
+                    }
                 }
             }else{
                 renderer.rolloverIndex = -1;
+                Rectangle r = null;
                 if(prevIndex != index) {
-                    list.repaint(list.getCellBounds(index, index));
+                    r = list.getCellBounds(index, index);
                 }else if(prevIndex>=0 && prevButton!=null) {
-                    list.repaint(list.getCellBounds(prevIndex, prevIndex));
+                    r = list.getCellBounds(prevIndex, prevIndex);
+                }
+                if(r!=null) {
+                    list.repaint(r);
                 }
                 prevIndex = -1;
             }
@@ -105,7 +120,10 @@ class CellButtonsMouseListener extends MouseAdapter{
                 renderer.pressedIndex = -1;
                 renderer.button = null;
                 button.doClick();
-                list.repaint(list.getCellBounds(index, index));
+                Rectangle r = list.getCellBounds(index, index);
+                if(r!=null) {
+                    list.repaint(r);
+                }
             }
         }
     }
@@ -125,14 +143,19 @@ class CellButtonsMouseListener extends MouseAdapter{
 
 class ButtonsRenderer extends JPanel implements ListCellRenderer {
     public JTextArea label = new JTextArea();
-    private final JButton viewButton = new JButton(new AbstractAction("view") {
+    private final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
-            System.out.println("aaa");
+            //System.out.println("aaa");
+            DefaultListModel m = (DefaultListModel)list.getModel();
+            if(m.getSize()>1)
+              m.removeElementAt(index);
         }
     });
-    private final JButton editButton = new JButton(new AbstractAction("edit") {
+    private final JButton copyButton = new JButton(new AbstractAction("copy") {
         @Override public void actionPerformed(ActionEvent e) {
-            System.out.println("bbb");
+            //System.out.println("bbb");
+            DefaultListModel m = (DefaultListModel)list.getModel();
+            m.insertElementAt(m.getElementAt(index), index);
         }
     });
     public ButtonsRenderer() {
@@ -144,7 +167,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         add(label);
 
         Box box = Box.createHorizontalBox();
-        for(JButton b: java.util.Arrays.asList(viewButton, editButton)) {
+        for(JButton b: java.util.Arrays.asList(deleteButton, copyButton)) {
             b.setFocusable(false);
             b.setRolloverEnabled(false);
             box.add(b);
@@ -152,9 +175,13 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         }
         add(box, BorderLayout.EAST);
     }
+    private JList list;
+    private int index;
     private final Color evenColor = new Color(230,255,230);
     @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
         label.setText((value==null)?"":value.toString());
+        this.list = list;
+        this.index = index;
         if(isSelected) {
             setBackground(list.getSelectionBackground());
             label.setForeground(list.getSelectionForeground());
@@ -162,7 +189,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
             setBackground(index%2==0 ? evenColor : list.getBackground());
             label.setForeground(list.getForeground());
         }
-        for(JButton b: java.util.Arrays.asList(viewButton, editButton)) {
+        for(JButton b: java.util.Arrays.asList(deleteButton, copyButton)) {
             b.getModel().setRollover(false);
             b.getModel().setArmed(false);
             b.getModel().setPressed(false);
