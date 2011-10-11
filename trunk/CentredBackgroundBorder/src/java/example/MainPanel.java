@@ -17,6 +17,7 @@ class MainPanel extends JPanel {
         JTextArea area = new JTextArea();
         //area.setFont(new Font("Sans-serif", Font.PLAIN, 32));
         area.setForeground(Color.WHITE);
+        area.setBackground(new Color(0,0,0,0)); //Nimbus
         area.setLineWrap(true);
         area.setOpaque(false);
         area.setText(
@@ -36,7 +37,7 @@ class MainPanel extends JPanel {
         scroll.setViewportBorder(new CentredBackgroundBorder(bi));
         scroll.getVerticalScrollBar().setUnitIncrement(25);
         add(scroll);
-        scroll.setPreferredSize(new Dimension(320, 240));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private BufferedImage getFilteredImage(URL url) {
@@ -78,6 +79,7 @@ class MainPanel extends JPanel {
 }
 
 class CentredBackgroundBorder implements Border {
+    private final Insets insets = new Insets(0,0,0,0);
     private final BufferedImage image;
     public CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
@@ -88,7 +90,7 @@ class CentredBackgroundBorder implements Border {
         ((Graphics2D) g).drawRenderedImage(image, AffineTransform.getTranslateInstance(x,y));
     }
     @Override public Insets getBorderInsets(Component c) {
-        return new Insets(0,0,0,0);
+        return insets;
     }
     @Override public boolean isBorderOpaque() {
         return true;
