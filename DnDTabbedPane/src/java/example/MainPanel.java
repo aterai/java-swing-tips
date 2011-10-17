@@ -176,10 +176,7 @@ class DnDTabbedPane extends JTabbedPane {
                 lineRect.setRect(0,0,0,0);
                 dragTabIndex = -1;
                 glassPane.setVisible(false);
-                if(hasGhost()) {
-                    glassPane.setVisible(false);
-                    glassPane.setImage(null);
-                }
+                glassPane.setImage(null);
             }
             @Override public void dropActionChanged(DragSourceDragEvent e) {}
         };
