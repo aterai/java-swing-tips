@@ -34,8 +34,6 @@ class MainPanel extends JPanel{
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
                     JComboBox cbox = (JComboBox)e.getSource();
-                    texture = null;
-                    p.setOpaque(true);
                     Object o = cbox.getSelectedItem();
                     if("ImageTexturePaint".equals(o)) {
                         texture = imageTexture;
@@ -43,14 +41,23 @@ class MainPanel extends JPanel{
                     }else if("CheckerTexturePaint".equals(o)) {
                         texture = checkerTexture;
                         p.setOpaque(false);
+                    }else{
+                        texture = null;
+                        p.setOpaque(true);
                     }
-                    p.revalidate();
-                    p.repaint();
+                    Window w = SwingUtilities.getWindowAncestor(p);
+                    if(w instanceof JFrame) { //XXX: JDK 1.7.0 ???
+                        //((JFrame)w).getRootPane().repaint();
+                        ((JFrame)w).getContentPane().repaint();
+                    }else{
+                        p.revalidate();
+                        p.repaint();
+                    }
                 }
             }
         });
         p.add(combo);
-        p.setPreferredSize(new Dimension(320, 200));
+        p.setPreferredSize(new Dimension(320, 240));
         return p;
     }
     private TexturePaint makeImageTexture() {
