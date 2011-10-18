@@ -10,7 +10,7 @@ public class MainPanel extends JPanel{
     public MainPanel(JFrame frame) {
         super();
         frame.setJMenuBar(createMenubar());
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 200));
     }
     public JMenuBar createMenubar() {
         JMenuBar mb = new JMenuBar() {
@@ -50,7 +50,11 @@ public class MainPanel extends JPanel{
                 setOpaque(false); // Motif lnf
             }
         };
-        //menu.setBackground(new Color(0,0,0,0)); //XXX Windows XP lnf?
+        //System.out.println(System.getProperty("os.name")); 
+        //System.out.println(System.getProperty("os.version")); 
+        if("Windows XP".equals(System.getProperty("os.name"))) {
+            menu.setBackground(new Color(0,0,0,0)); //XXX Windows XP lnf?
+        }
         menu.add("dummy1"); menu.add("dummy2"); menu.add("dummy3");
         return menu;
     }
