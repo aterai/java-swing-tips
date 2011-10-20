@@ -105,7 +105,7 @@ public class MainPanel extends JPanel {
             }
         });
 //         checkbox.addItemListener(new ItemListener() {
-//             public void itemStateChanged(ItemEvent e) {
+//             @Override public void itemStateChanged(ItemEvent e) {
 //                 if(e.getStateChange()==ItemEvent.SELECTED) {
 //                     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 //                 }else if(e.getStateChange()==ItemEvent.DESELECTED) {

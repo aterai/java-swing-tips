@@ -31,7 +31,7 @@ class MainPanel extends JPanel{
         combo.addItemListener(new ItemListener() {
             private final TexturePaint imageTexture = makeImageTexture();
             private final TexturePaint checkerTexture = makeCheckerTexture();
-            public void itemStateChanged(ItemEvent e) {
+            @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
                     JComboBox cbox = (JComboBox)e.getSource();
                     Object o = cbox.getSelectedItem();

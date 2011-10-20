@@ -97,7 +97,7 @@ class WindowsCanWriteFileChooserUI extends com.sun.java.swing.plaf.windows.Windo
             model2.invalidateFileCache();
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
-            public boolean renameFile(File oldFile, File newFile) {
+            @Override public boolean renameFile(File oldFile, File newFile) {
                 return oldFile.canWrite()?super.renameFile(oldFile, newFile):false;
             }
         };
@@ -120,7 +120,7 @@ class CanWriteFileChooserUI extends javax.swing.plaf.metal.MetalFileChooserUI{
             model2.invalidateFileCache();
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
-            public boolean renameFile(File oldFile, File newFile) {
+            @Override public boolean renameFile(File oldFile, File newFile) {
                 return oldFile.canWrite()?super.renameFile(oldFile, newFile):false;
             }
         };
