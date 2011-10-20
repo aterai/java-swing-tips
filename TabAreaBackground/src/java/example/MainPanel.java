@@ -81,7 +81,7 @@ class MainPanel extends JPanel {
             }
         });
         combo.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
+            @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()!=ItemEvent.SELECTED) return;
                 for(Map.Entry<String,Color> entry: map.entrySet()) UIManager.put(entry.getKey(), entry.getValue());
                 if(combo.getSelectedIndex()>0) UIManager.put(combo.getSelectedItem(), Color.GREEN);

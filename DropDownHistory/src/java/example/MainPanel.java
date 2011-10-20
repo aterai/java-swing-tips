@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
         combo.setEditable(true);
 //         combo.addItemListener(new ItemListener() {
 //             private boolean adj = false;
-//             public void itemStateChanged(ItemEvent e) {
+//             @Override public void itemStateChanged(ItemEvent e) {
 //             //    if(combo.isPopupVisible()) return;
 //                 if(!adj && e.getStateChange()==ItemEvent.SELECTED) {
 //                     adj = true;
