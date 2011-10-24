@@ -17,7 +17,9 @@ class MainPanel extends JPanel{
     private final Timer timer = new Timer(1000, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             label.setText(df.format(new Date()));
-            repaintWindowAncestor(label);
+            if(label.getParent().isOpaque()) {
+                repaintWindowAncestor(label);
+            }
         }
     });
     private void repaintWindowAncestor(Component c) {
@@ -172,7 +174,7 @@ class TexturePanel extends JPanel{
     protected TexturePaint texture;
     public void setTexturePaint(TexturePaint texture) {
         this.texture = texture;
-        setOpaque(false);
+        //setOpaque(false);
         setOpaque(texture==null);
     }
     @Override public void paintComponent(Graphics g) {
