@@ -12,24 +12,49 @@ class MainPanel extends JPanel {
         int w = image.getIconWidth();
         int h = image.getIconHeight();
 
-        JTextField field = new JTextField("bbbbbbbbbb");
-        Insets m = field.getMargin();
-        field.setMargin(new Insets(m.top,m.left+w,m.bottom,m.right));
+        final JLabel label1 = new JLabel(image);
+        JTextField field1 = new JTextField("bbbbbbbbbb") {
+            @Override public void updateUI() {
+                super.updateUI();
+                add(label1);
+            }
+        };
+        Insets m = field1.getMargin();
+        field1.setMargin(new Insets(m.top,m.left+w,m.bottom,m.right));
+        label1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        label1.setBorder(BorderFactory.createEmptyBorder());
+        label1.setBounds(m.left,m.top,w,h);
 
-        JLabel label = new JLabel(image);
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        label.setBorder(null);
-        label.setBounds(m.left,m.top,w,h);
-        field.add(label);
+        final JLabel label2 = new JLabel(image);
+        label2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        label2.setBorder(BorderFactory.createEmptyBorder());
+        JTextField field2 = new JTextField("cccccccccccccccccccccccccccccccccccc") {
+            @Override public void updateUI() {
+                super.updateUI();
+                removeAll();
+                SpringLayout l = new SpringLayout();
+                setLayout(l);
+                Spring fw = l.getConstraint(SpringLayout.WIDTH,  this);
+                Spring fh = l.getConstraint(SpringLayout.HEIGHT, this);
+                SpringLayout.Constraints c = l.getConstraints(label2);
+                c.setConstraint(SpringLayout.WEST,  fw);
+                c.setConstraint(SpringLayout.SOUTH, fh);
+                add(label2);
+            }
+        };
+        m = field2.getMargin();
+        field2.setMargin(new Insets(m.top+2,m.left,m.bottom,m.right+w));
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         box.add(makePanel("Default", new JTextField("aaaaaaaaaaaa")));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("add Image(JLabel)", field));
+        box.add(makePanel("add Image(JLabel)", field1));
+        box.add(Box.createVerticalStrut(5));
+        box.add(makePanel("SpringLayout", field2));
 
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 160));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
