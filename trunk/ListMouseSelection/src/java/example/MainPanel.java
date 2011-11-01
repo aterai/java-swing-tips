@@ -67,13 +67,13 @@ public class MainPanel extends JPanel {
                 if(anchor==lead && lead>=0 && anchor>=0) {
                     if(listener.isDragging) {
                         addSelectionInterval(anchor, anchor);
-                    }else if(!listener.isInCellDragging) {
+                    }else if(!listener.isCellInsideDragging) {
                         if(isSelectedIndex(anchor)) {
                             removeSelectionInterval(anchor, anchor);
                         }else{
                             addSelectionInterval(anchor, anchor);
                         }
-                        listener.isInCellDragging = true;
+                        listener.isCellInsideDragging = true;
                     }
                 }else{
                     super.setSelectionInterval(anchor, lead);
@@ -138,7 +138,7 @@ class ClearSelectionListener extends MouseAdapter {
     private boolean startOutside = false;
     private int     startIndex = -1;
     public boolean  isDragging = false;
-    public boolean  isInCellDragging = false;
+    public boolean  isCellInsideDragging = false;
     @Override public void mousePressed(MouseEvent e) {
         JList list = (JList)e.getSource();
         startOutside = !contains(list, e.getPoint());
@@ -150,16 +150,16 @@ class ClearSelectionListener extends MouseAdapter {
     @Override public void mouseReleased(MouseEvent e) {
         startOutside = false;
         isDragging = false;
-        isInCellDragging = false;
+        isCellInsideDragging = false;
         startIndex = -1;
     }
     @Override public void mouseDragged(MouseEvent e) {
         JList list = (JList)e.getSource();
         if(!isDragging && startIndex == list.locationToIndex(e.getPoint())) {
-            isInCellDragging = true;
+            isCellInsideDragging = true;
         }else{
             isDragging = true;
-            isInCellDragging = false;
+            isCellInsideDragging = false;
         }
         if(contains(list, e.getPoint())) {
             startOutside = false;
