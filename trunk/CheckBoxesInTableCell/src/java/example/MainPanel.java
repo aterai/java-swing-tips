@@ -67,13 +67,17 @@ public class MainPanel extends JPanel {
 }
 
 class CheckBoxesPanel extends JPanel {
+    private static final String OSNAME = System.getProperty("os.name");
     protected final String[] title = {"r", "w", "x"};
-    public final JCheckBox[] buttons;
+    public JCheckBox[] buttons;
     public CheckBoxesPanel() {
         super();
         setOpaque(false);
         setBackground(new Color(0,0,0,0));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        initButtons();
+    }
+    protected void initButtons() {
         buttons = new JCheckBox[title.length];
         for(int i=0; i<buttons.length; i++) {
             JCheckBox b = new JCheckBox(title[i]);
@@ -87,6 +91,10 @@ class CheckBoxesPanel extends JPanel {
         }
     }
     protected void updateButtons(Object v) {
+        if("Windows 7".equals(OSNAME)) { //Windows aero?
+            removeAll();
+            initButtons();
+        }
         Integer i = (Integer)(v==null?0:v);
         buttons[0].setSelected((i&(1<<2))!=0);
         buttons[1].setSelected((i&(1<<1))!=0);
@@ -109,7 +117,10 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
     public CheckBoxesEditor() {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
+                //if(System.getProperty("java.version").startsWith("1.6.0")) {
+                //1.6.0_xx bug? column header click???
                 fireEditingStopped();
+                //}
             }
         };
         ActionMap am = getActionMap();
@@ -118,6 +129,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
             b.addActionListener(al);
             am.put(title[i], new AbstractAction(title[i]) {
                 @Override public void actionPerformed(ActionEvent e) {
+                    JCheckBox b = (JCheckBox)e.getSource();
                     b.setSelected(!b.isSelected());
                     fireEditingStopped();
                 }
