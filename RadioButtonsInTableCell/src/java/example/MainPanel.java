@@ -70,12 +70,17 @@ public class MainPanel extends JPanel {
 }
 
 class RadioButtonsPanel extends JPanel {
+    private static final String OSNAME = System.getProperty("os.name");
     private final String[] answer = { "A", "B", "C" };
-    public final JRadioButton[] buttons;
-    public final ButtonGroup bg = new ButtonGroup();
+    public JRadioButton[] buttons;
+    public ButtonGroup bg = new ButtonGroup();
     public RadioButtonsPanel() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        initButtons();
+    }
+    protected void initButtons() {
+        bg = new ButtonGroup();
         buttons = new JRadioButton[answer.length];
         for(int i=0;i<buttons.length;i++) {
             buttons[i] = new JRadioButton(answer[i]);
@@ -87,6 +92,10 @@ class RadioButtonsPanel extends JPanel {
         }
     }
     protected void updateSelectedButton(Object v) {
+        if("Windows 7".equals(OSNAME)) { //Windows aero?
+            removeAll();
+            initButtons();
+        }
         if("A".equals(v)) {
             buttons[0].setSelected(true);
         }else if("B".equals(v)) {
@@ -138,7 +147,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {
