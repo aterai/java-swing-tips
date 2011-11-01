@@ -22,8 +22,19 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
-        //table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        final JTable table = new JTable(model);
+        table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        if(System.getProperty("java.version").startsWith("1.6.0")) {
+            //1.6.0_xx bug? column header click -> edit cancel?
+            table.getTableHeader().addMouseListener(new MouseAdapter() {
+                @Override public void mousePressed(MouseEvent e) {
+                    if(table.isEditing()) {
+                        table.getCellEditor().stopCellEditing();
+                    }
+                }
+            });
+        }
+
 //         table.addMouseListener(new MouseAdapter() {
 //             @Override public void mouseReleased(MouseEvent e) {
 //                 JTable t = (JTable)e.getComponent();
