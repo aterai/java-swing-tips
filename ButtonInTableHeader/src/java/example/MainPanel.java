@@ -77,13 +77,13 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class HeaderRenderer extends JPanel implements TableCellRenderer {
+class HeaderRenderer extends JButton implements TableCellRenderer {
     public HeaderRenderer(JTableHeader header, final int targetColumnIndex) {
         super();
-        setOpaque(false);
-        setFont(header.getFont());
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setContentAreaFilled(false);
+        //setOpaque(false);
+        //setFont(header.getFont());
+        setBorder(BorderFactory.createEmptyBorder());
+        setContentAreaFilled(false);
         pop.add("000");
         pop.add("11111");
         pop.add("2222222");
@@ -127,16 +127,21 @@ class HeaderRenderer extends JPanel implements TableCellRenderer {
     };
     int rolloverIndex = -1;
 
-    private final JPopupMenu pop  = new JPopupMenu();
-    JButton button = new JButton(new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            System.out.println("clicked");
-        }
-    });
+    private final JPopupMenu pop = new JPopupMenu();
+    @Override public void updateUI() {
+        super.updateUI();
+        if(pop!=null) pop.updateUI();
+    }
+
+//     JButton button = new JButton(new AbstractAction() {
+//         @Override public void actionPerformed(ActionEvent e) {
+//             System.out.println("clicked");
+//         }
+//     });
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
         JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
-        button.setIcon(new MenuArrowIcon());
+        setIcon(new MenuArrowIcon());
         l.removeAll();
         int mci = tbl.convertColumnIndexToModel(col);
 
@@ -149,12 +154,12 @@ class HeaderRenderer extends JPanel implements TableCellRenderer {
             Border inside  = BorderFactory.createEmptyBorder(0,0,0,icon.getIconWidth()+1);
             Border b = BorderFactory.createCompoundBorder(outside, inside);
             l.setBorder(b);
-            l.add(button);
+            l.add(this);
             Insets i = b.getBorderInsets(l);
-            button.setBounds(w-i.right, 0, 16, h-2);
-            button.setBackground(new Color(200,200,200,100));
-            button.setOpaque(true);
-            button.setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
+            setBounds(w-i.right, 0, 16, h-2);
+            setBackground(new Color(200,200,200,100));
+            setOpaque(true);
+            setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
         }
         if(l.getPreferredSize().height>1000) { //XXX: Nimbus
             System.out.println(l.getPreferredSize().height);
