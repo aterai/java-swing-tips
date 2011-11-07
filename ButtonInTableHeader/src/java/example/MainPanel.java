@@ -12,7 +12,7 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        Object[] columnNames = {"aaa", "Integer", "String"};
+        Object[] columnNames = {"Boolean", "Integer", "String"};
         Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
             {true, 2, "DDD"}, {false, 5, "CCC"},
             {true, 3, "EEE"}, {false, 6, "GGG"},
@@ -78,6 +78,7 @@ public class MainPanel extends JPanel {
     }
 }
 class HeaderRenderer extends JButton implements TableCellRenderer {
+    private static final int BUTTON_WIDTH = 16;
     public HeaderRenderer(JTableHeader header, final int targetColumnIndex) {
         super();
         //setOpaque(false);
@@ -98,13 +99,16 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             int vci = columnModel.getColumnIndexAtX(e.getX());
             int mci = table.convertColumnIndexToModel(vci);
             TableColumn column = table.getColumnModel().getColumn(mci);
-            int w = column.getWidth();
+            //int w = column.getWidth(); //Nimbus???
             //int h = header.getHeight();
             Rectangle r = header.getHeaderRect(vci);
             Container c = (Container)getTableCellRendererComponent(table, "", true, true, -1, vci);
-            Insets i = c.getInsets();
-            r.translate(w-i.right, 0);
-            r.setSize(10, r.height);
+            //if(!isNimbus) {
+            //  Insets i = c.getInsets();
+            //  r.translate(r.width-i.right, 0);
+            //}else{
+            r.translate(r.width-BUTTON_WIDTH, 0);
+            r.setSize(BUTTON_WIDTH, r.height);
             Point pt = e.getPoint();
             if(c.getComponentCount()>0 && r.contains(pt) && pop!=null) {
                 pop.show(header, r.x, r.height);
@@ -151,12 +155,13 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         if(rolloverIndex==mci) {
             Icon icon = new MenuArrowIcon();
             Border outside = l.getBorder();
-            Border inside  = BorderFactory.createEmptyBorder(0,0,0,icon.getIconWidth()+1);
+            Border inside  = BorderFactory.createEmptyBorder(0,0,0,BUTTON_WIDTH);
             Border b = BorderFactory.createCompoundBorder(outside, inside);
             l.setBorder(b);
             l.add(this);
-            Insets i = b.getBorderInsets(l);
-            setBounds(w-i.right, 0, 16, h-2);
+            //Insets i = b.getBorderInsets(l);
+            //setBounds(w-i.right, 0, BUTTON_WIDTH, h-2);
+            setBounds(w-BUTTON_WIDTH, 0, BUTTON_WIDTH, h-2);
             setBackground(new Color(200,200,200,100));
             setOpaque(true);
             setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
