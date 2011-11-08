@@ -51,7 +51,7 @@ public class MainPanel extends JPanel{
                 frame.dispose();
             }
         });
-        clearButton.setAction(new AbstractAction("レジストリなどに保存した値をクリアして終了") {
+        clearButton.setAction(new AbstractAction("Preferences#clear() and JFrame#dispose()") {
             @Override public void actionPerformed(ActionEvent evt) {
                 try{
                     prefs.clear();
