@@ -20,7 +20,19 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
+        final JTable table = new JTable(model);
+        table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        if(System.getProperty("java.version").startsWith("1.6.0")) {
+            //1.6.0_xx bug? column header click -> edit cancel?
+            table.getTableHeader().addMouseListener(new MouseAdapter() {
+                @Override public void mousePressed(MouseEvent e) {
+                    if(table.isEditing()) {
+                        table.getCellEditor().stopCellEditing();
+                    }
+                }
+            });
+        }
+
         //http://terai.xrea.jp/Swing/TerminateEdit.html
         //table.getTableHeader().setReorderingAllowed(false);
         //frame.setResizeable(false);
@@ -114,23 +126,24 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, j
 }
 
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
+//     private final ActionListener al = new ActionListener() {
+//         @Override public void actionPerformed(ActionEvent e) {
+//             fireEditingStopped();
+//         }
+//     };
     public CheckBoxesEditor() {
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //if(System.getProperty("java.version").startsWith("1.6.0")) {
-                //1.6.0_xx bug? column header click???
-                fireEditingStopped();
-                //}
-            }
-        };
         ActionMap am = getActionMap();
         for(int i=0; i<buttons.length; i++) {
-            final JCheckBox b = buttons[i];
-            b.addActionListener(al);
-            am.put(title[i], new AbstractAction(title[i]) {
+            //buttons[i].addActionListener(al);
+            final String t = title[i];
+            am.put(t, new AbstractAction(t) {
                 @Override public void actionPerformed(ActionEvent e) {
-                    JCheckBox b = (JCheckBox)e.getSource();
-                    b.setSelected(!b.isSelected());
+                    for(JCheckBox b:buttons) {
+                        if(b.getText().equals(t)) {
+                            b.doClick();
+                            break;
+                        }
+                    }
                     fireEditingStopped();
                 }
             });
