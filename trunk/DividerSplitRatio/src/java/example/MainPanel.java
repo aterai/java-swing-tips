@@ -5,16 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
+        final SplitPaneWrapper sp = new SplitPaneWrapper();
         final JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio");
         check.setSelected(true);
-        final SplitPaneWrapper sp = new SplitPaneWrapper();
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 sp.setTestFlag(check.isSelected());
