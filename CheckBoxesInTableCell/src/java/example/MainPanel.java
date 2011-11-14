@@ -373,10 +373,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //   };
 //   JTable table = new JTable(model);
 //   public JComponent makeUI() {
-//     CheckBoxEditorRenderer cer = new CheckBoxEditorRenderer();
 //     TableColumn c = table.getColumnModel().getColumn(1);
-//     c.setCellRenderer(cer);
-//     c.setCellEditor(cer);
+//     c.setCellRenderer(new CheckBoxesRenderer());
+//     c.setCellEditor(new CheckBoxesEditor());
 //     c.setPreferredWidth(180);
 //
 //     final EnumMap<Permissions, Integer> map =
@@ -486,13 +485,6 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 // }
 //
 // class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
-//   public CheckBoxesEditor() {
-//     ActionListener al = new ActionListener() {
-//       @Override public void actionPerformed(ActionEvent e) {
-//         fireEditingStopped();
-//       }
-//     };
-//   }
 //   @Override public Component getTableCellEditorComponent(JTable table,
 //       Object value, boolean isSelected, int row, int column) {
 //     updateButtons(value);
