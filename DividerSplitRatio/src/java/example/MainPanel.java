@@ -45,6 +45,29 @@ public class MainPanel extends JPanel {
 
 class SplitPaneWrapper extends JPanel {
     private final static JTextArea log = new JTextArea();
+//     private final JSplitPane splitPane = new JSplitPane() {
+//         @Override public void setDividerLocation(double proportionalLocation) {
+//             if(proportionalLocation < 0.0 || proportionalLocation > 1.0) {
+//                 throw new IllegalArgumentException("proportional location must " + "be between 0.0 and 1.0.");
+//             }
+//             int s = ((getOrientation() == VERTICAL_SPLIT) ? getHeight() : getWidth()) - getDividerSize();
+//             setDividerLocation((int)Math.round(s * proportionalLocation));
+//         }
+// //         public void setDividerLocation(double proportionalLocation) {
+// //             if (proportionalLocation < 0.0 ||
+// //                 proportionalLocation > 1.0) {
+// //                 throw new IllegalArgumentException("proportional location must " +
+// //                                                    "be between 0.0 and 1.0.");
+// //             }
+// //             if (getOrientation() == VERTICAL_SPLIT) {
+// //                 setDividerLocation((int)((double)(getHeight() - getDividerSize()) *
+// //                                          proportionalLocation));
+// //             } else {
+// //                 setDividerLocation((int)((double)(getWidth() - getDividerSize()) *
+// //                                          proportionalLocation));
+// //             }
+// //         }
+//     };
     private final JSplitPane sp;
     public SplitPaneWrapper() {
         this(new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(log), new JScrollPane(new JTree())));
