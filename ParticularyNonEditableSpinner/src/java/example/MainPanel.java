@@ -16,14 +16,20 @@ public class MainPanel extends JPanel{
         spinner1.setEditor(editor1);
 
         JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-        JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(spinner2);
+        JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(spinner2) {
+            @Override public void updateUI() {
+                if(getComponentCount()>0) {
+                    JFormattedTextField f = getTextField();
+                    f.setBorder(null); //Nimbus
+                    super.updateUI();
+                    initTextFieldBorder(f);
+                }else{
+                    super.updateUI();
+                }
+            }
+        };
         spinner2.setEditor(editor2);
-        editor2.setOpaque(true);
-        editor2.setBackground(Color.WHITE);
-        //Border b = new StringBorder(editor2, "percent");
-        Border b = new StringBorder(editor2, "%");
-        Border c = editor2.getBorder();
-        editor2.setBorder((c==null)?b:BorderFactory.createCompoundBorder(c,b));
+        initTextFieldBorder(editor2.getTextField());
 
 //         // Component Border - Java Tips Weblog
 //         // http://tips4java.wordpress.com/2009/09/27/component-border/
@@ -39,6 +45,19 @@ public class MainPanel extends JPanel{
         add(makeTitlePanel(spinner2, "JSpinner+StringBorder"));
         setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
         setPreferredSize(new Dimension(320, 200));
+    }
+    private static void initTextFieldBorder(final JTextField textField) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Border b = new StringBorder(textField, "%");
+                if(textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
+                    Border c = textField.getBorder();
+                    textField.setBorder((c==null)?b:BorderFactory.createCompoundBorder(c, b));
+                }else{
+                    textField.setBorder(b);
+                }
+            }
+        });
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
