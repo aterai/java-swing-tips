@@ -22,19 +22,21 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        //JScrollPane s1, s2;
+        JScrollPane s1, s2;
         final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                                              new JScrollPane(new JTable(model)),
                                              new JScrollPane(new JTree()));
 
-//         s1.setPreferredSize(new Dimension(320, 200));
+//         System.out.println(s1.getPreferredSize());
+//         System.out.println(s2.getPreferredSize());
+//         s1.setPreferredSize(new Dimension(320, 100));
 //         s2.setPreferredSize(new Dimension(320, 100));
-        sp.setResizeWeight(0.5);
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 sp.setDividerLocation(0.5);
-//             }
-//         });
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                sp.setDividerLocation(0.5);
+                //sp.setResizeWeight(0.5);
+            }
+        });
         return sp;
     }
     public MainPanel() {
