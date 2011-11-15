@@ -101,6 +101,7 @@ class MainPanel extends JPanel {
 
 class KineticScrollingListener1 extends MouseAdapter implements HierarchyListener{
     private static final int SPEED = 4;
+    private static final int DELAY = 10;
     private static final double D = 0.8;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -112,7 +113,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     public KineticScrollingListener1(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.scroller = new javax.swing.Timer(10, new ActionListener() {
+        this.scroller = new javax.swing.Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
@@ -155,7 +156,8 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
 
 class KineticScrollingListener2 extends MouseAdapter implements HierarchyListener{
     private static final int SPEED = 4;
-    private static final double D = 0.7;
+    private static final int DELAY = 10;
+    private static final double D = 0.8;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final javax.swing.Timer inside;
@@ -171,7 +173,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     public KineticScrollingListener2(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.inside = new javax.swing.Timer(10, new ActionListener() {
+        this.inside = new javax.swing.Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
@@ -190,7 +192,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                 }
             }
         });
-        this.outside = new javax.swing.Timer(20, new ActionListener() {
+        this.outside = new javax.swing.Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
