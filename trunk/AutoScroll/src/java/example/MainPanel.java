@@ -48,7 +48,8 @@ class MainPanel extends JPanel {
 }
 
 class DragMoverListener extends MouseAdapter implements HierarchyListener{
-    private static final int SPEED = 2;
+    private static final int SPEED = 4;
+    private static final int DELAY = 10;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final javax.swing.Timer scroller;
@@ -59,7 +60,7 @@ class DragMoverListener extends MouseAdapter implements HierarchyListener{
     public DragMoverListener(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.scroller = new javax.swing.Timer(5, new ActionListener() {
+        this.scroller = new javax.swing.Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
