@@ -4,52 +4,49 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
 class MainPanel extends JPanel {
+    private final JTree tree = new JTree();
+    private final JTextArea textArea = new JTextArea("aaaaaaaaaa");
     public MainPanel() {
         super(new GridLayout(2, 1, 5, 5));
-        final JTree tree = new JTree();
-        final JCheckBox c = new JCheckBox("setEnabled", true);
+        //textArea.setBorder(new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder()));
+
+        JCheckBox c = new JCheckBox("setEnabled", true);
         c.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tree.setEnabled(c.isSelected());
+                tree.setEnabled(((JCheckBox)e.getSource()).isSelected());
             }
         });
-        c.setFocusPainted(false);
-        JScrollPane l1 = new JScrollPane(tree);
-        //l1.setBorder(new ComponentTitledBorder(c, l1, BorderFactory.createEtchedBorder()));
 
-        JLabel icon = new JLabel(new ImageIcon(getClass().getResource("16x16.png")));
-        icon.setOpaque(true);
-        JLabel l2 = new JLabel("<html>aaaaaaaaaaaaaaaa<br>bbbbbbbbbbbbbbbbb");
-        //l2.setBorder(new ComponentTitledBorder(icon, l2, BorderFactory.createEtchedBorder()));
-
-        final JTextArea l3 = new JTextArea("aaaaaaaaaa"); //JSplitPane(); //Label("ccccccccccccccc");
         JButton b = new JButton(new AbstractAction("Clear") {
             @Override public void actionPerformed(ActionEvent e) {
-                l3.setText("");
+                textArea.setText("");
             }
         });
-        b.setFocusPainted(false);
         b.setFocusable(false);
-        //l3.setBorder(new ComponentTitledBorder(b, l3, BorderFactory.createEtchedBorder()));
 
-        add(makePanel(l1, c));
-        //add(makePanel(l2, icon));
-        add(makePanel(l3, b));
+        add(makePanel(new JScrollPane(tree), c));
+        add(makePanel(new JScrollPane(textArea), b));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    public JComponent makePanel(JComponent l1, JComponent c) {
-        Border ib = BorderFactory.createEmptyBorder(0,0,10,0);
-        Border eb = BorderFactory.createEtchedBorder();
-        Border ob = BorderFactory.createEmptyBorder(0,0,10,0);
+    public JComponent makePanel(JComponent m, JComponent c) {
+        int ir = 20; //inset.right
+        int ch = c.getPreferredSize().height/2;
 
+//         Border ib = BorderFactory.createMatteBorder(0,0,ch,0,Color.WHITE);
+//         Border eb = BorderFactory.createEtchedBorder();
+//         Border ob = BorderFactory.createEmptyBorder(0,0,ch,0);
+//         Border bo = BorderFactory.createCompoundBorder(eb, ib);
+//         m.setBorder(BorderFactory.createCompoundBorder(ob, bo));
+
+        Border ib = BorderFactory.createEmptyBorder(0, 0, ch, 0);
+        Border eb = BorderFactory.createEtchedBorder();
         Border bo = BorderFactory.createCompoundBorder(eb, ib);
-        l1.setBorder(BorderFactory.createCompoundBorder(ob, bo));
+        m.setBorder(BorderFactory.createCompoundBorder(ib, bo));
 
         SpringLayout layout = new SpringLayout();
         JLayeredPane p = new JLayeredPane();
@@ -57,22 +54,22 @@ class MainPanel extends JPanel {
 
         Spring x     = layout.getConstraint(SpringLayout.WIDTH, p);
         Spring y     = layout.getConstraint(SpringLayout.HEIGHT, p);
-        Spring g     = Spring.minus(Spring.constant(20));
+        Spring g     = Spring.minus(Spring.constant(ir));
         Spring width = Spring.constant(c.getPreferredSize().width);
 
         SpringLayout.Constraints constraints = layout.getConstraints(c);
         constraints.setConstraint(SpringLayout.EAST,  Spring.sum(x, g));
         constraints.setConstraint(SpringLayout.SOUTH, y);
-        p.setLayer(c, 1);
+        p.setLayer(c, JLayeredPane.DEFAULT_LAYER+1);
         p.add(c);
 
-        constraints = layout.getConstraints(l1);
+        constraints = layout.getConstraints(m);
         constraints.setConstraint(SpringLayout.WEST,  Spring.constant(0));
         constraints.setConstraint(SpringLayout.NORTH, Spring.constant(0));
         constraints.setConstraint(SpringLayout.EAST,  x);
         constraints.setConstraint(SpringLayout.SOUTH, y);
-        p.setLayer(l1, 0);
-        p.add(l1);
+        p.setLayer(m, JLayeredPane.DEFAULT_LAYER);
+        p.add(m);
 
         return p;
     }
