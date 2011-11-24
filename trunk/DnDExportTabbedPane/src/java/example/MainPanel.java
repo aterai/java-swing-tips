@@ -435,9 +435,11 @@ class TabTransferHandler extends TransferHandler {
         //    System.out.println("Another JFrame");
         //    glassPane.setVisible(false);
         target.getRootPane().setGlassPane(glassPane);
+        //XXX: [http://bugs.sun.com/view_bug.do?bug_id=6700748 Cursor flickering during D&D when using CellRendererPane with validation]
+        glassPane.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
         glassPane.setVisible(true);
-        Component c = target.getRootPane().getGlassPane();
-        c.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
+        //Component c = target.getRootPane().getGlassPane();
+        //c.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
         if(isDropable) {
             //glassPane.setCursor(DragSource.DefaultMoveDrop);
             support.setShowDropLocation(true);
