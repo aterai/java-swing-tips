@@ -28,20 +28,28 @@ public class MainPanel extends JPanel {
         table2.getColumnModel().getColumn(1).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.CENTER));
         table2.getColumnModel().getColumn(2).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.RIGHT));
 
-//         final TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-//         table.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+//         //LnF NullPointerException
+//         JTable table3 = makeTable();
+//         final TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
+//         table3.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 //             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//                 JLabel l = (JLabel)r.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
-//                 l.setHorizontalAlignment(SwingConstants.CENTER);
+//                 JLabel l = (JLabel)r.getTableCellRendererComponent(
+//                     table,value,isSelected,hasFocus,row,column);
+//                 if(table.convertColumnIndexToModel(column)==0) {
+//                     l.setHorizontalAlignment(SwingConstants.CENTER);
+//                 }else{
+//                     l.setHorizontalAlignment(SwingConstants.LEFT);
+//                 }
 //                 return l;
 //             }
 //         });
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Default", new JScrollPane(makeTable()));
-        tabs.add("Test1", new JScrollPane(table0));
-        tabs.add("Test2", new JScrollPane(table1));
-        tabs.add("Test3", new JScrollPane(table2));
+        tabs.add("Test0", new JScrollPane(table0));
+        tabs.add("Test1", new JScrollPane(table1));
+        tabs.add("Test2", new JScrollPane(table2));
+        //tabs.add("Test3", new JScrollPane(table3));
 
         JMenuBar mb = new JMenuBar();
         mb.add(createLookAndFeelMenu());
