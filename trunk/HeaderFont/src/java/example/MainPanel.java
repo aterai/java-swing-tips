@@ -26,8 +26,11 @@ public class MainPanel extends JPanel{
         Font font = new Font("Sans-serif", Font.PLAIN, 32);
         table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer(font));
 
+        //all column
+        //table.getTableHeader().setFont(font);
+
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static class HeaderRenderer implements TableCellRenderer {
         private final Font font;
@@ -35,7 +38,7 @@ public class MainPanel extends JPanel{
             this.font = font;
         }
         @Override public Component getTableCellRendererComponent(JTable t, Object val, boolean isS,
-                                                       boolean hasF, int row, int col) {
+                                                                 boolean hasF, int row, int col) {
             TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
             JLabel l = (JLabel)r.getTableCellRendererComponent(t, val, isS, hasF, row, col);
             l.setFont(font);
