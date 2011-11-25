@@ -55,7 +55,6 @@ class MainPanel extends JPanel {
         Spring x     = layout.getConstraint(SpringLayout.WIDTH, p);
         Spring y     = layout.getConstraint(SpringLayout.HEIGHT, p);
         Spring g     = Spring.minus(Spring.constant(ir));
-        Spring width = Spring.constant(c.getPreferredSize().width);
 
         SpringLayout.Constraints constraints = layout.getConstraints(c);
         constraints.setConstraint(SpringLayout.EAST,  Spring.sum(x, g));
