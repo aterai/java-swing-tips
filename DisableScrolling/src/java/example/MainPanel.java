@@ -19,31 +19,45 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table       = new JTable(model);
-    private final JScrollPane scroll = new JScrollPane(table);
+    private final JScrollPane scroll = new JScrollPane(table) {
+        @Override public void updateUI() {
+            super.updateUI();
+            JPopupMenu jpm = getComponentPopupMenu();
+            if(jpm==null && pop!=null) {
+                SwingUtilities.updateComponentTreeUI(pop);
+            }
+        }
+    };
     private final JCheckBox check    = new JCheckBox("Disable Scrolling");
+    private final TablePopupMenu pop = new TablePopupMenu();
     public MainPanel() {
         super(new BorderLayout());
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(60);
-        col.setMaxWidth(60);
-        col.setResizable(false);
 
-        for(int i=0;i<100;i++) { model.addRow(
-            new Object[] {"Name "+i, Integer.valueOf(i), Boolean.FALSE}); }
+        for(int i=0;i<100;i++) {
+            model.addRow(new Object[] {"Name "+i, Integer.valueOf(i), Boolean.FALSE});
+        }
 
         check.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent ie) {
-                JCheckBox box = (JCheckBox)ie.getSource();
                 table.clearSelection();
-                boolean flag = !box.isSelected();
                 JScrollBar bar = scroll.getVerticalScrollBar();
-                bar.setEnabled(flag);
-                scroll.setWheelScrollingEnabled(flag);
-                table.setEnabled(flag);
+                if(((JCheckBox)ie.getSource()).isSelected()) {
+                    bar.setEnabled(false);
+                    scroll.setWheelScrollingEnabled(false);
+                    table.setEnabled(false);
+                    //table.getTableHeader().setEnabled(false);
+                    //scroll.setComponentPopupMenu(null);
+                }else{
+                    bar.setEnabled(true);
+                    scroll.setWheelScrollingEnabled(true);
+                    table.setEnabled(true);
+                    //table.getTableHeader().setEnabled(true);
+                    //scroll.setComponentPopupMenu(pop);
+                }
             }
         });
 
-        scroll.setComponentPopupMenu(new TablePopupMenu());
+        scroll.setComponentPopupMenu(pop);
         table.setInheritsPopupMenu(true);
 
         add(scroll);
