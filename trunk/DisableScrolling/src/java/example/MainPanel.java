@@ -36,6 +36,7 @@ public class MainPanel extends JPanel {
         for(int i=0;i<100;i++) {
             model.addRow(new Object[] {"Name "+i, Integer.valueOf(i), Boolean.FALSE});
         }
+        table.setAutoCreateRowSorter(true);
 
         check.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent ie) {
