@@ -21,7 +21,13 @@ public class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new JTable(model);
+    private final JTable table = new JTable(model) {
+        @Override public String getToolTipText(MouseEvent e) {
+            int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
+            TableModel m = getModel();
+            return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
+        }
+    };
 
     public MainPanel() {
         super(new BorderLayout());
