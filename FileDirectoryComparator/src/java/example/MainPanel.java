@@ -234,6 +234,9 @@ class FileComparator extends DefaultFileComparator{
         }
     }
 }
+
+// > dir /O:GN
+// > ls --group-directories-first
 class FileGroupComparator extends DefaultFileComparator{
     private final JTable table;
     public FileGroupComparator(JTable table, int column) {
