@@ -147,10 +147,15 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
         l.setIcon(new CheckBoxIcon(this));
         if(l.getPreferredSize().height>1000) { //XXX: Nimbus
             System.out.println(l.getPreferredSize().height);
-            l.setPreferredSize(new Dimension(0, 28));
+            Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
+            l.setPreferredSize(new Dimension(0, rect.height));
         }
         return l;
     }
+//     @Override public void updateUI() {
+//         setText(null); //XXX: Nimbus?
+//         super.updateUI();
+//     }
 }
 class CheckBoxIcon implements Icon{
     private final JCheckBox check;
