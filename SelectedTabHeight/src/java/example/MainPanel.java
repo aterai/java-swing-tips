@@ -57,9 +57,8 @@ public class MainPanel extends JPanel{
         tabbedPane.addTab("111112", new JLabel("bbbbbbbbbbbbbbbb"));
         tabbedPane.addTab("22222232", new JScrollPane(new JTree()));
         tabbedPane.addTab("3333333333", new JSplitPane());
-        tabbedPane.setPreferredSize(new Dimension(320, 200));
         add(tabbedPane);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
