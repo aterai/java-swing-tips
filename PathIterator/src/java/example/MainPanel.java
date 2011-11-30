@@ -138,6 +138,14 @@ class StarburstSVGMaker {
         label.setIcon(new StarIcon(star, antialias));
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1,r2), Math.min(r1,r2), vc);
         StringBuilder sb = makeStarburstSvg(star.getPathIterator(null), Math.max(r1,r2)*2, styleField.getText().trim(), desc);
+
+//         Font font = new Font("Monospace", Font.PLAIN, 200);
+//         FontRenderContext frc = new FontRenderContext(null, true, true);
+//         Shape copyright = new TextLayout("\u3042", font, frc).getOutline(null);
+//         Rectangle r = copyright.getBounds();
+//         AffineTransform at = AffineTransform.getTranslateInstance(0d, r.getHeight());
+//         StringBuilder sb = makeStarburstSvg(copyright.getPathIterator(at), 200, styleField.getText().trim(), desc);
+
         textArea.setText(sb.toString());
     }
     private StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
@@ -147,17 +155,23 @@ class StarburstSVGMaker {
         sb.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">\n", sz, sz));
         sb.append(String.format("  <desc>%s</desc>\n", desc));
         sb.append("  <path d=\"");
-        double[] coords = new double[6];
+        double[] c = new double[6];
         while(!pi.isDone()) {
-            int ret = pi.currentSegment(coords);
-            if(ret==PathIterator.SEG_MOVETO) {
-                sb.append(String.format("%s%.2f,%.2f ", "M", coords[0], coords[1]));
-            }else if(ret==PathIterator.SEG_LINETO) {
-                sb.append(String.format("%s%.2f,%.2f ", "L", coords[0], coords[1]));
+            switch(pi.currentSegment(c)) {
+              case PathIterator.SEG_MOVETO:
+                sb.append(String.format("M%.2f,%.2f ", c[0], c[1])); break;
+              case PathIterator.SEG_LINETO:
+                sb.append(String.format("L%.2f,%.2f ", c[0], c[1])); break;
+              case PathIterator.SEG_QUADTO:
+                sb.append(String.format("Q%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3])); break;
+              case PathIterator.SEG_CUBICTO:
+                sb.append(String.format("C%.2f,%.2f,%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3], c[4], c[5])); break;
+              case PathIterator.SEG_CLOSE:
+                sb.append("Z"); break;
             }
             pi.next();
         }
-        sb.append(String.format("Z\" style=\"%s\" />\n</svg>\n", style));
+        sb.append(String.format("\" style=\"%s\" />\n</svg>\n", style));
         return sb;
     }
     private Path2D.Double makeStar(int r1, int r2, int vc) {
