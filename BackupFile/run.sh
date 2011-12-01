@@ -23,11 +23,10 @@ fi
 
 LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}./target/classes
 for i in ./lib/*; do
-    LOCALCLASSPATH=$LOCALCLASSPATH${PS}$i
+  LOCALCLASSPATH=$LOCALCLASSPATH${PS}$i
 done
 
-echo Building with classpath $LOCALCLASSPATH
-echo
+echo Running with classpath $LOCALCLASSPATH
 echo Starting...
 echo
 
