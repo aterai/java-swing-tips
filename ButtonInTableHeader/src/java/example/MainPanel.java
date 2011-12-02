@@ -131,10 +131,14 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     };
     int rolloverIndex = -1;
 
-    private final JPopupMenu pop = new JPopupMenu();
+    private JPopupMenu pop;
     @Override public void updateUI() {
         super.updateUI();
-        if(pop!=null) pop.updateUI();
+        if(pop==null) {
+            pop = new JPopupMenu();
+        }else{
+            SwingUtilities.updateComponentTreeUI(pop);
+        }
     }
 
 //     JButton button = new JButton(new AbstractAction() {
@@ -142,6 +146,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 //             System.out.println("clicked");
 //         }
 //     });
+    private final Color BUTTONBGC = new Color(200,200,200,100);
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
         JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
@@ -162,14 +167,14 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             //Insets i = b.getBorderInsets(l);
             //setBounds(w-i.right, 0, BUTTON_WIDTH, h-2);
             setBounds(w-BUTTON_WIDTH, 0, BUTTON_WIDTH, h-2);
-            setBackground(new Color(200,200,200,100));
+            setBackground(BUTTONBGC);
             setOpaque(true);
             setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
         }
-        if(l.getPreferredSize().height>1000) { //XXX: Nimbus
-            System.out.println(l.getPreferredSize().height);
-            l.setPreferredSize(new Dimension(0, h));
-        }
+//         if(l.getPreferredSize().height>1000) { //XXX: Nimbus
+//             System.out.println(l.getPreferredSize().height);
+//             l.setPreferredSize(new Dimension(0, h));
+//         }
         return l;
     }
 }
