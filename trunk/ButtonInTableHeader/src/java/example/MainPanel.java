@@ -97,8 +97,8 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             JTable table = header.getTable();
             TableColumnModel columnModel = table.getColumnModel();
             int vci = columnModel.getColumnIndexAtX(e.getX());
-            int mci = table.convertColumnIndexToModel(vci);
-            TableColumn column = table.getColumnModel().getColumn(mci);
+            //int mci = table.convertColumnIndexToModel(vci);
+            //TableColumn column = table.getColumnModel().getColumn(mci);
             //int w = column.getWidth(); //Nimbus???
             //int h = header.getHeight();
             Rectangle r = header.getHeaderRect(vci);
@@ -153,7 +153,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         int w = column.getWidth();
         int h = tbl.getTableHeader().getHeight();
         if(rolloverIndex==mci) {
-            Icon icon = new MenuArrowIcon();
+            //Icon icon = new MenuArrowIcon();
             Border outside = l.getBorder();
             Border inside  = BorderFactory.createEmptyBorder(0,0,0,BUTTON_WIDTH);
             Border b = BorderFactory.createCompoundBorder(outside, inside);
