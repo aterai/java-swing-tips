@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
-import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
+//import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 
 public class MainPanel extends JPanel{
     private final JSpinner spinner0 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
