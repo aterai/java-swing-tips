@@ -12,16 +12,33 @@ import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 public class MainPanel extends JPanel{
     private final JSpinner spinner0 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-    private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
-    private final JSpinner spinner3 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1));
+    private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1)) {
+        @Override public void updateUI() {
+            super.updateUI();
+            setUI(new BasicSpinnerUI() {
+                @Override protected LayoutManager createLayout() {
+                    return new SpinnerLayout();
+                }
+            });
+        }
+    };
+    private final JSpinner spinner3 = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 1)) {
+        private SpinnerLayout layout;
+        @Override protected void addImpl(Component comp, Object constraints, int index) {
+            if(layout==null || !(getLayout() instanceof SpinnerLayout)) {
+                setLayout(layout = new SpinnerLayout());
+            }
+            super.addImpl(comp, constraints, index);
+        }
+    };
 
     public MainPanel() {
         super(new BorderLayout());
         spinner1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        spinner2.setUI(new MySpinnerUI());
-        if(spinner3.getUI() instanceof WindowsSpinnerUI) {
-            spinner3.setUI(new MyWinSpinnerUI());
-        }
+//         spinner2.setUI(new MySpinnerUI());
+//         if(spinner3.getUI() instanceof WindowsSpinnerUI) {
+//             spinner3.setUI(new MyWinSpinnerUI());
+//         }
         //spinner3.setLayout(new SpinnerLayout2());
 
 //         UIManager.addPropertyChangeListener(new PropertyChangeListener() {
@@ -132,34 +149,34 @@ public class MainPanel extends JPanel{
 //         }
 //     }
 
-    private static class MySpinnerUI extends BasicSpinnerUI {
-        @Override protected LayoutManager createLayout() {
-            return new SpinnerLayout();
-        }
-    }
-    private static class MyWinSpinnerUI extends WindowsSpinnerUI {
-        @Override protected LayoutManager createLayout() {
-            return new SpinnerLayout();
-        }
+//     private static class MySpinnerUI extends BasicSpinnerUI {
 //         @Override protected LayoutManager createLayout() {
-//             return new BorderLayout(0,0);
+//             return new SpinnerLayout();
 //         }
-//         @Override public void installUI(JComponent c) {
-//             this.spinner = (JSpinner)c;
-//             installDefaults();
-//             installListeners();
-//             maybeAdd(createNextButton(), "East");     //"Next");
-//             maybeAdd(createPreviousButton(), "West"); //"Previous");
-//             maybeAdd(createEditor(), "Center");       //"Editor");
-//             //updateEnabledState();
-//             installKeyboardActions();
+//     }
+//     private static class MyWinSpinnerUI extends WindowsSpinnerUI {
+//         @Override protected LayoutManager createLayout() {
+//             return new SpinnerLayout();
 //         }
-//         private void maybeAdd(Component c, String s) {
-//             if (c != null) {
-//                 spinner.add(c, s);
-//             }
-//         }
-    }
+// //         @Override protected LayoutManager createLayout() {
+// //             return new BorderLayout(0,0);
+// //         }
+// //         @Override public void installUI(JComponent c) {
+// //             this.spinner = (JSpinner)c;
+// //             installDefaults();
+// //             installListeners();
+// //             maybeAdd(createNextButton(), "East");     //"Next");
+// //             maybeAdd(createPreviousButton(), "West"); //"Previous");
+// //             maybeAdd(createEditor(), "Center");       //"Editor");
+// //             //updateEnabledState();
+// //             installKeyboardActions();
+// //         }
+// //         private void maybeAdd(Component c, String s) {
+// //             if (c != null) {
+// //                 spinner.add(c, s);
+// //             }
+// //         }
+//     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
