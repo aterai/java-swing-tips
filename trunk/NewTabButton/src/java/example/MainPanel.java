@@ -54,6 +54,7 @@ class CardLayoutTabbedPane extends JPanel {
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final ButtonGroup bg = new ButtonGroup();
 
+    //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final java.util.List<ImageIcon> icons = java.util.Arrays.asList(
         new ImageIcon(getClass().getResource("wi0009-16.png")),
         new ImageIcon(getClass().getResource("wi0054-16.png")),

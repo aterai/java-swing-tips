@@ -14,6 +14,7 @@ class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new GridLayout(3,1));
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
         SimpleAttributeSet attr = new SimpleAttributeSet();

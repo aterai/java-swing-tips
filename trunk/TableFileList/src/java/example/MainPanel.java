@@ -142,6 +142,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
     public TestRenderer(JTable table) {
         super(new BorderLayout());
         setOpaque(false);
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         sicon = new ImageIcon(createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
         textLabel = new MyLabel(new Color(~table.getSelectionBackground().getRGB()));

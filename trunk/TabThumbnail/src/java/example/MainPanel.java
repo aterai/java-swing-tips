@@ -14,6 +14,7 @@ class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-48.png"));
         tab.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");
         //addImageTab(tab, getClass().getResource("wi0124-48.png"));

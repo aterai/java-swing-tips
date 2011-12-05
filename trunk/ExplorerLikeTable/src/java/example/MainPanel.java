@@ -163,6 +163,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         textLabel = new JLabel("dummy");
         textLabel.setOpaque(true);
         textLabel.setBorder(noFocusBorder);
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         sicon = new ImageIcon(createImage(ip));

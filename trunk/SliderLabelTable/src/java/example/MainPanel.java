@@ -12,6 +12,7 @@ class MainPanel extends JPanel{
 
         Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Component>();
         int c = 0;
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         for(String s:Arrays.asList("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
                                    "wi0063-16.png", "wi0064-16.png", "wi0096-16.png",
                                    "wi0111-16.png", "wi0122-16.png", "wi0124-16.png",
