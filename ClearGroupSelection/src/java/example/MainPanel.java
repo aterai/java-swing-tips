@@ -12,6 +12,7 @@ class MainPanel extends JPanel {
     private final ButtonGroup bg = new ButtonGroup();
     public MainPanel() {
         super(new BorderLayout());
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon nicon  = new ImageIcon(getClass().getResource("wi0063-32.png"));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         ImageIcon sicon  = new ImageIcon(createImage(ip));

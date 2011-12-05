@@ -17,6 +17,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         DefaultListModel model = new DefaultListModel();
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
         model.addElement(new ListItem("test",       "wi0062-32.png"));
         model.addElement(new ListItem("adfasdf",    "wi0063-32.png"));

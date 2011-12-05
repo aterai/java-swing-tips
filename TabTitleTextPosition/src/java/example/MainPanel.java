@@ -22,6 +22,7 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         JTabbedPane t = new ClippedTitleTabbedPane();
         t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         addTab(t, "JTree",      new ImageIcon(getClass().getResource("wi0009-32.png")), new JScrollPane(new JTree()));
         addTab(t, "JTextArea",  new ImageIcon(getClass().getResource("wi0054-32.png")), new JScrollPane(new JTextArea()));
         addTab(t, "Preference", new ImageIcon(getClass().getResource("wi0062-32.png")), new JScrollPane(new JTree()));
