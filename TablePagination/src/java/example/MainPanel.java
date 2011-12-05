@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
         int startPageIndex = currentPageIndex-LR_PAGE_SIZE;
         if(startPageIndex<=0) startPageIndex = 1;
 
-        System.out.println(model.getRowCount()%itemsPerPage);
+        //System.out.println(model.getRowCount()%itemsPerPage);
 
 //#if 0
         //int maxPageIndex = (model.getRowCount()/itemsPerPage)+1;
