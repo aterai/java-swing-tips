@@ -52,10 +52,8 @@ public class MainPanel extends JPanel {
                     Object title = column.getHeaderValue();
                     if(!Status.INDETERMINATE.equals(title)) {
                         column.setHeaderValue(Status.INDETERMINATE);
-                        table.getTableHeader().repaint();
                     }else{
-                        int selected = 0;
-                        int deselected = 0;
+                        int selected = 0, deselected = 0;
                         TableModel m = table.getModel();
                         for(int i=0; i<m.getRowCount(); i++) {
                             if(Boolean.TRUE.equals(m.getValueAt(i, mci))) {
@@ -71,8 +69,8 @@ public class MainPanel extends JPanel {
                         }else{
                             return;
                         }
-                        table.getTableHeader().repaint();
                     }
+                    table.getTableHeader().repaint();
                 }
             }
         });
