@@ -201,8 +201,11 @@ public class MainPanel extends JPanel{
             }
         });
 
+        JSlider slider0 = makeSlider();
+        slider0.setModel(slider.getModel());
+
         Box box = Box.createVerticalBox();
-        box.add(createPanel(makeSlider(), "Default:"));
+        box.add(createPanel(slider0, "Default:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(slider, "Gradient translucent track JSlider:"));
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
