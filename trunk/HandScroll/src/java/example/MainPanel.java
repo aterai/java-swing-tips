@@ -21,7 +21,6 @@ class MainPanel extends JPanel {
         r1.setSelected(true);
 
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
-        HandScrollListener hsl = new HandScrollListener();
         //JViewport vport = scroll.getViewport();
         //JDK 1.7.0
         JViewport vport = new JViewport() {
@@ -43,8 +42,15 @@ class MainPanel extends JPanel {
         vport.add(label);
         scroll.setViewport(vport);
 
-        vport.addMouseMotionListener(hsl);
-        vport.addMouseListener(hsl);
+//*
+        MouseAdapter hsl1 = new HandScrollListener();
+        vport.addMouseMotionListener(hsl1);
+        vport.addMouseListener(hsl1);
+/*/
+        MouseAdapter hsl2 = new DragScrollListener();
+        label.addMouseMotionListener(hsl2);
+        label.addMouseListener(hsl2);
+//*/
         add(scroll);
         add(box, BorderLayout.NORTH);
         scroll.setPreferredSize(new Dimension(320, 240));
@@ -93,5 +99,35 @@ class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+class DragScrollListener extends MouseAdapter {
+    private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    private final Point pp = new Point();
+    @Override public void mouseDragged(MouseEvent e) {
+        final JComponent jc = (JComponent)e.getSource();
+        Container c = jc.getParent();
+        if(c instanceof JViewport) {
+            JViewport vport = (JViewport)c;
+            Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+            Point vp = vport.getViewPosition();
+            vp.translate(pp.x-cp.x, pp.y-cp.y);
+            jc.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            pp.setLocation(cp);
+        }
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        JComponent jc = (JComponent)e.getSource();
+        Container c = jc.getParent();
+        if(c instanceof JViewport) {
+            jc.setCursor(hndCursor);
+            JViewport vport = (JViewport)c;
+            Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+            pp.setLocation(cp);
+        }
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        ((JComponent)e.getSource()).setCursor(defCursor);
     }
 }
