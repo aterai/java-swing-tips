@@ -19,6 +19,7 @@ class MainPanel extends JPanel {
         tab.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");
         //addImageTab(tab, getClass().getResource("wi0124-48.png"));
         addImageTab(tab, getClass().getResource("tokeidai.jpg"));
+        // [http://sozai-free.com/ CRW_3857_JFR.jpg]
         addImageTab(tab, getClass().getResource("CRW_3857_JFR.jpg"));
         add(tab);
         setPreferredSize(new Dimension(320,240));

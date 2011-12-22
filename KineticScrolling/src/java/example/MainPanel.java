@@ -37,6 +37,7 @@ class MainPanel extends JPanel {
         };
         scroll.setViewport(viewport);
 
+        // [http://sozai-free.com/ CRW_3857_JFR.jpg]
         label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
         viewport.add(label);
         final KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
