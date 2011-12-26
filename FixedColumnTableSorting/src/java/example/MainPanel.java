@@ -1,6 +1,7 @@
 package example;
 //-*- mode:java; encoding:utf8n; coding:utf-8 -*-
 // vim:set fileencoding=utf-8:
+//@homepage@
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -86,7 +87,7 @@ public class MainPanel extends JPanel {
                 }
             }
         }), BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -104,7 +105,7 @@ public class MainPanel extends JPanel {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        final JFrame frame = new JFrame("FixedColumnTableSorting");
+        JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
