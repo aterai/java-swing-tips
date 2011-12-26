@@ -1,7 +1,7 @@
 package example;
 //-*- mode:java; encoding:utf8n; coding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-//http://terai.xrea.jp/Swing/TreeDragScroll.html
+//@homepage@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -53,7 +53,7 @@ class MainPanel extends JPanel {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        JFrame frame = new JFrame("TreeDragScroll");
+        JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
