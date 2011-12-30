@@ -136,7 +136,6 @@ class ReorderbleList extends JList {
         p.add(label, BorderLayout.SOUTH);
 
         setCellRenderer(new ListCellRenderer() {
-            //@Override
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 ListItem item = (ListItem)getModel().getElementAt(index);
                 icon.setIcon(isSelected?item.sicon:item.nicon);
