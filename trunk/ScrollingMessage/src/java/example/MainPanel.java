@@ -39,8 +39,8 @@ public class MainPanel extends JPanel {
 class MarqueePanel extends JComponent implements ActionListener {
     public final javax.swing.Timer animator;
     private final GlyphVector gv;
-    private float xx, yy;
-    private int cw, ch;
+    private final LineMetrics lm;
+    private float xx, baseline, xheight;
 
     public MarqueePanel() {
         super();
@@ -55,28 +55,48 @@ class MarqueePanel extends JComponent implements ActionListener {
             }
         });
 
-        String text = "asffdfaaAAASFDsfasdfsdfasdfasd";
+        String text = "abcdefthijklmnopqrstuvwxyz";
         Font font = new Font("serif", Font.PLAIN, 100);
         FontRenderContext frc = new FontRenderContext(null,true,true);
 
         gv = font.createGlyphVector(frc, text);
-        LineMetrics lm = font.getLineMetrics(text, frc);
-        yy = lm.getAscent()/2f + (float)gv.getVisualBounds().getY();
+        lm = font.getLineMetrics(text, frc);
+
+        GlyphMetrics xgm = gv.getGlyphMetrics(23);
+        xheight = (float)xgm.getBounds2D().getHeight();
         animator.start();
     }
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setPaint(Color.WHITE);
-        g2.draw(new Line2D.Float(0,ch/2f,cw,ch/2f));
+        int w = getWidth();
+
+        g2.setPaint(Color.RED);
+        g2.draw(new Line2D.Float(0, baseline, w, baseline));
+
+        g2.setPaint(Color.GREEN);
+        float ascent = baseline - lm.getAscent();
+        g2.draw(new Line2D.Float(0, ascent, w, ascent));
+
+        g2.setPaint(Color.BLUE);
+        float descent = baseline + lm.getDescent();
+        g2.draw(new Line2D.Float(0, descent, w, descent));
+
+        g2.setPaint(Color.ORANGE);
+        float leading = baseline + lm.getDescent() + lm.getLeading();
+        g2.draw(new Line2D.Float(0, leading, w, leading));
+
+        g2.setPaint(Color.CYAN);
+        float xh = baseline - xheight;
+        g2.draw(new Line2D.Float(0, xh, w, xh));
+
         g2.setPaint(Color.BLACK);
-        g2.drawGlyphVector(gv, cw-xx, ch/2f-yy);
+        g2.drawGlyphVector(gv, w - xx, baseline);
     }
     @Override public void actionPerformed(ActionEvent e) {
-        cw = getWidth();
-        ch = getHeight();
-        xx = (cw+gv.getVisualBounds().getWidth()-xx > 0) ? xx+2f : 0f;
+        xx = (getWidth()+gv.getVisualBounds().getWidth()-xx > 0) ? xx+2f : 0f;
+        baseline = getHeight()/2f;
         repaint();
     }
 }
