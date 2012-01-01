@@ -69,7 +69,7 @@ public class MainPanel extends JPanel{
         });
         if(slider.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSliderUI) {
             slider.setUI(new com.sun.java.swing.plaf.windows.WindowsSliderUI(slider) {
-                protected TrackListener createTrackListener(final JSlider slider) {
+                @Override protected TrackListener createTrackListener(final JSlider slider) {
                     return new TrackListener() {
                         @Override public void mouseDragged(MouseEvent e) {
                             if(!slider.getSnapToTicks() || slider.getMajorTickSpacing()==0) {
@@ -117,7 +117,7 @@ public class MainPanel extends JPanel{
             });
         }else{
             slider.setUI(new MetalSliderUI() {
-                protected TrackListener createTrackListener(final JSlider slider) {
+                @Override protected TrackListener createTrackListener(final JSlider slider) {
                     return new TrackListener() {
                         @Override public void mouseDragged(MouseEvent e) {
                             if(!slider.getSnapToTicks() || slider.getMajorTickSpacing()==0) {
