@@ -32,6 +32,9 @@ class MainPanel extends JPanel {
         dummy.setUndecorated(true);
         //dummy.setAlwaysOnTop(true);
 
+        // This code is inspired from:
+        // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
+        // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
         popup.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -84,7 +87,7 @@ class MainPanel extends JPanel {
         }
     }
 
-    //Copied from JPopupMenu.java
+    //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
     private static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
         Point p = new Point(xposition, yposition);
         if(GraphicsEnvironment.isHeadless()) return p;
