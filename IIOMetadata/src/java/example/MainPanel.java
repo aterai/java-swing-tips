@@ -28,12 +28,12 @@ class MainPanel extends JPanel {
             reader.setInput(iis, true);
 
             //ImageReadParam param = reader.getDefaultReadParam();
-            buf.append(String.format("Width: %d\n", reader.getWidth(0)));
-            buf.append(String.format("Height: %d\n", reader.getHeight(0)));
+            buf.append(String.format("Width: %d%n", reader.getWidth(0)));
+            buf.append(String.format("Height: %d%n", reader.getHeight(0)));
 
             IIOMetadata meta = reader.getImageMetadata(0);
             for(String s:meta.getMetadataFormatNames())
-              buf.append(String.format("MetadataFormatName: %s\n",s));
+              buf.append(String.format("MetadataFormatName: %s%n",s));
 
             root = (IIOMetadataNode)meta.getAsTree("javax_imageio_jpeg_image_1.0");
             //root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
@@ -41,7 +41,7 @@ class MainPanel extends JPanel {
             NodeList com = root.getElementsByTagName("com");
             if(com!=null && com.getLength()>0) {
                 String comment = ((IIOMetadataNode)com.item(0)).getAttribute("comment");
-                buf.append(String.format("Comment: %s\n", comment));
+                buf.append(String.format("Comment: %s%n", comment));
             }
             buf.append("------------\n");
             print(buf, root, 0);
@@ -70,11 +70,11 @@ class MainPanel extends JPanel {
             indent.append(" ");
             l--;
         }
-        buf.append(String.format("%s%s\n", indent, node.getNodeName()));
+        buf.append(String.format("%s%s%n", indent, node.getNodeName()));
         if(node.hasAttributes()) {
             for(int i=0;i<node.getAttributes().getLength();i++) {
                 Node attr = node.getAttributes().item(i);
-                buf.append(String.format("%s    #%s=%s\n", indent, attr.getNodeName(), attr.getNodeValue()));
+                buf.append(String.format("%s    #%s=%s%n", indent, attr.getNodeName(), attr.getNodeValue()));
             }
         }
         if(node.hasChildNodes()) {

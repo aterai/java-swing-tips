@@ -103,7 +103,7 @@ class SplitPaneWrapper extends JPanel {
                 @Override public void run() {
                     int s = getOrientedSize(sp);
                     int iv = (int)Math.round(s * proportionalLocation);
-                    log.append(String.format("DividerLocation: %d\n", iv));
+                    log.append(String.format("DividerLocation: %d%n", iv));
                     sp.setDividerLocation(iv);
                 }
             });

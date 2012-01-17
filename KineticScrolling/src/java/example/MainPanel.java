@@ -178,7 +178,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
-                //System.out.format("s: %s, %s\n", delta, vp);
+                //System.out.format("s: %s, %s%n", delta, vp);
                 vp.translate(-delta.x, -delta.y);
                 vport.setViewPosition(vp);
 
@@ -197,7 +197,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
-                //System.out.format("r: %s\n", vp);
+                //System.out.format("r: %s%n", vp);
                 if(vp.x<0) vp.x = (int)(vp.x*D);
                 if(vp.y<0) vp.y = (int)(vp.y*D);
                 if(vp.x+vport.getWidth()-label.getWidth()>0)
