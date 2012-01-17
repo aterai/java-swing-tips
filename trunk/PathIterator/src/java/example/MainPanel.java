@@ -152,8 +152,8 @@ class StarburstSVGMaker {
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         sb.append("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
-        sb.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">\n", sz, sz));
-        sb.append(String.format("  <desc>%s</desc>\n", desc));
+        sb.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz));
+        sb.append(String.format("  <desc>%s</desc>%n", desc));
         sb.append("  <path d=\"");
         double[] c = new double[6];
         while(!pi.isDone()) {
@@ -171,7 +171,7 @@ class StarburstSVGMaker {
             }
             pi.next();
         }
-        sb.append(String.format("\" style=\"%s\" />\n</svg>\n", style));
+        sb.append(String.format("\" style=\"%s\" />%n</svg>%n", style));
         return sb;
     }
     private Path2D.Double makeStar(int r1, int r2, int vc) {
