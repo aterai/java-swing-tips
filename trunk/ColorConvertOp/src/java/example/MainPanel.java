@@ -57,13 +57,15 @@ class MainPanel extends JPanel {
     }
 
     private ImageIcon makeGrayImageIcon_2(Image img) {
-        BufferedImage destination = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_BYTE_GRAY);
+        int w = img.getWidth(this);
+        int h = img.getHeight(this);
+        BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = destination.createGraphics();
+        ////g.setColor(Color.WHITE);
+        // https://forums.oracle.com/forums/thread.jspa?messageID=5798180
+        //g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
         g.drawImage(img, 0, 0, this);
         g.dispose();
-//         BufferedImage source = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_4BYTE_ABGR);
-//         BufferedImage destination = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-//         destination.createGraphics().drawImage(source, 0, 0, null);
         return new ImageIcon(destination);
     }
 
