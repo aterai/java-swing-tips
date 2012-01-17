@@ -426,7 +426,7 @@ class TabTransferHandler extends TransferHandler {
             //System.out.println("target==source");
             isDropable = target.getTabAreaBounds().contains(pt) && idx>=0 && idx!=target.dragTabIndex && idx!=target.dragTabIndex+1;
         }else{
-            //System.out.format("target!=source\n  target: %s%n  source: %s", target.getName(), source.getName());
+            //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
             if(source!=null && target!=source.getComponentAt(source.dragTabIndex)) {
                 isDropable = target.getTabAreaBounds().contains(pt) && idx>=0;
             }
