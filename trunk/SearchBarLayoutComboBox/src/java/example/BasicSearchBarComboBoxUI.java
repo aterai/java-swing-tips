@@ -15,7 +15,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     public static javax.swing.plaf.ComponentUI createUI(JComponent c) {
         return new BasicSearchBarComboBoxUI();
     }
-    protected boolean isEditable = true;
+    //protected boolean isEditable = true;
     @Override protected void installDefaults() {
         super.installDefaults();
         //comboBox.setEditable(true);
@@ -97,62 +97,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "loupe");
     }
     @Override protected JButton createArrowButton() {
-        JButton button = new JButton() {
-            private transient final Icon triangleIcon = new Icon() {
-                @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                    Graphics2D g2 = (Graphics2D)g;
-                    g2.setPaint(Color.GRAY);
-                    g2.translate(x,y);
-                    g2.drawLine( 2, 3, 6, 3 );
-                    g2.drawLine( 3, 4, 5, 4 );
-                    g2.drawLine( 4, 5, 4, 5 );
-                    g2.translate(-x,-y);
-                }
-                @Override public int getIconWidth()  { return 9; }
-                @Override public int getIconHeight() { return 9; }
-            };
-            @Override public void setIcon(Icon favicon) {
-                super.setIcon(favicon);
-                if(favicon!=null) setRolloverIcon(makeRolloverIcon(favicon));
-            }
-            @Override protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                if(getModel().isArmed()) {
-                    g2.setColor(new Color(220,220,220));
-                }else if(isRolloverEnabled() && getModel().isRollover()) {
-                    g2.setColor(new Color(220,220,220));
-                }else if(hasFocus()) {
-                    g2.setColor(new Color(220,220,220));
-                }else{
-                    g2.setColor(getBackground());
-                }
-                Rectangle r = getBounds();
-                r.grow(1,1);
-                g2.fill(r);
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-                g2.setColor(getBackground());
-                super.paintComponent(g);
-
-                Insets i = getInsets();
-                int x = r.width-i.right-triangleIcon.getIconWidth()-2;
-                int y = i.top+(r.height-i.top-i.bottom-triangleIcon.getIconHeight())/2;
-                triangleIcon.paintIcon(this, g, x, y);
-            }
-            @Override public Dimension getPreferredSize() {
-                Insets i = getInsets();
-                Icon favicon = getIcon();
-                int fw = (favicon!=null)?favicon.getIconWidth():16;
-                int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
-                return new Dimension(w, w);
-            }
-            @Override public void setBorder(Border border) {
-                if(border instanceof CompoundBorder) {
-                    super.setBorder(border);
-                }
-            }
-        };
-        return button;
+        return new TriangleArrowButton();
     }
     @Override public void configureArrowButton() {
         super.configureArrowButton();
@@ -294,5 +239,61 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         srcIcon.paintIcon(null, g, 0, 0);
         g.dispose();
         return new ImageIcon(op.filter(img, null));
+    }
+    static class TriangleIcon implements Icon {
+        @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setPaint(Color.GRAY);
+            g2.translate(x,y);
+            g2.drawLine( 2, 3, 6, 3 );
+            g2.drawLine( 3, 4, 5, 4 );
+            g2.drawLine( 4, 5, 4, 5 );
+            g2.translate(-x,-y);
+        }
+        @Override public int getIconWidth()  { return 9; }
+        @Override public int getIconHeight() { return 9; }
+    }
+    static class TriangleArrowButton extends JButton {
+        private transient Icon triangleIcon = new TriangleIcon();
+        @Override public void setIcon(Icon favicon) {
+            super.setIcon(favicon);
+            if(favicon!=null) setRolloverIcon(makeRolloverIcon(favicon));
+        }
+        @Override protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            if(getModel().isArmed()) {
+                g2.setColor(new Color(220,220,220));
+            }else if(isRolloverEnabled() && getModel().isRollover()) {
+                g2.setColor(new Color(220,220,220));
+            }else if(hasFocus()) {
+                g2.setColor(new Color(220,220,220));
+            }else{
+                g2.setColor(getBackground());
+            }
+            Rectangle r = getBounds();
+            r.grow(1,1);
+            g2.fill(r);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            g2.setColor(getBackground());
+            super.paintComponent(g);
+
+            Insets i = getInsets();
+            int x = r.width-i.right-triangleIcon.getIconWidth()-2;
+            int y = i.top+(r.height-i.top-i.bottom-triangleIcon.getIconHeight())/2;
+            triangleIcon.paintIcon(this, g, x, y);
+        }
+        @Override public Dimension getPreferredSize() {
+            Insets i = getInsets();
+            Icon favicon = getIcon();
+            int fw = (favicon!=null)?favicon.getIconWidth():16;
+            int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
+            return new Dimension(w, w);
+        }
+        @Override public void setBorder(Border border) {
+            if(border instanceof CompoundBorder) {
+                super.setBorder(border);
+            }
+        }
     }
 }
