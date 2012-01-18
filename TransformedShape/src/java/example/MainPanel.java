@@ -38,13 +38,13 @@ public class MainPanel extends JPanel{
 }
 
 class FontRotateAnimation extends JComponent implements ActionListener {
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private int rotate;
     private final Shape shape;
     private Shape s;
     public FontRotateAnimation(String str) {
         super();
-        animator = new javax.swing.Timer(10, this);
+        animator = new Timer(10, this);
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 JComponent c = (JComponent)e.getSource();

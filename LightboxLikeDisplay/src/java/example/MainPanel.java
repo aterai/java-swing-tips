@@ -6,7 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -66,7 +68,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
     private int w = 0;
     private int h = 0;
     private Rectangle rect = new Rectangle();
-    private javax.swing.Timer animator;
+    private Timer animator;
     public LightboxGlassPane() {
         setOpaque(false);
         super.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -89,7 +91,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
             w = 40;
             h = 40;
             alpha = 0.0f;
-            animator = new javax.swing.Timer(10, new ActionListener() {
+            animator = new Timer(10, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
                     animatedIcon.next();
                     repaint();
@@ -157,7 +159,7 @@ class AnimeIcon implements Icon {
     private static final double sx = 0d;
     private static final double sy = 0d;
     private static final Dimension dim = new Dimension((int)(r*8+sx*2), (int)(r*8+sy*2));
-    private final java.util.List<Shape> list = new ArrayList<Shape>(Arrays.asList(
+    private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
         new Ellipse2D.Double(sx+3*r, sy+0*r, 2*r, 2*r),
         new Ellipse2D.Double(sx+5*r, sy+1*r, 2*r, 2*r),
         new Ellipse2D.Double(sx+6*r, sy+3*r, 2*r, 2*r),

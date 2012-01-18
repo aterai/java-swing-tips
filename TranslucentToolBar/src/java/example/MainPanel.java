@@ -39,7 +39,7 @@ public class MainPanel extends JPanel {
 
 class ImageCaptionLabel extends JLabel implements HierarchyListener {
     private float alpha = 0.0f;
-    private javax.swing.Timer animator;
+    private Timer animator;
     private int yy = 0;
     private JToolBar toolBox = new JToolBar() {
         @Override protected void paintComponent(Graphics g) {
@@ -105,7 +105,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
                 if(animator!=null && animator.isRunning() ||
                    yy==toolBox.getPreferredSize().height) return;
                 final double h = (double)toolBox.getPreferredSize().height;
-                animator = new javax.swing.Timer(delay, new ActionListener() {
+                animator = new Timer(delay, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
                         double a = easeInOut(++count/h);
                         yy = (int)(.5d+a*h);
@@ -124,7 +124,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
                 if(animator!=null && animator.isRunning() ||
                    contains(e.getPoint()) && yy==toolBox.getPreferredSize().height) return;
                 final double h = (double)toolBox.getPreferredSize().height;
-                animator = new javax.swing.Timer(delay, new ActionListener() {
+                animator = new Timer(delay, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
                         double a = easeInOut(--count/h);
                         yy = (int)(.5d+a*h);

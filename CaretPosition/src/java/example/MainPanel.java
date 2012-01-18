@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Date;
+import java.util.TimeZone;
 import java.text.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -15,7 +16,7 @@ public class MainPanel extends JPanel {
     private final JButton stopButton  = new JButton("Stop");
     private final JButton clearButton = new JButton("Clear");
     private final DateFormat df = DateFormat.getDateTimeInstance();
-    private final javax.swing.Timer timer;
+    private final Timer timer;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -23,7 +24,7 @@ public class MainPanel extends JPanel {
         jtp.setEditable(false);
         stopButton.setEnabled(false);
 
-        timer = new javax.swing.Timer(200, new ActionListener() {
+        timer = new Timer(200, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 append(df.format(new Date()));
             }

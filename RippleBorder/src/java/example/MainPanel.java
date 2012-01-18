@@ -51,12 +51,12 @@ public class MainPanel extends JPanel{
 }
 
 class RippleBorder extends EmptyBorder {
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private final JComponent comp;
     public RippleBorder(JComponent c, int width) {
         super(width, width, width, width);
         this.comp = c;
-        animator = new javax.swing.Timer(80, new ActionListener() {
+        animator = new Timer(80, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 comp.repaint();
                 count+=0.9f;

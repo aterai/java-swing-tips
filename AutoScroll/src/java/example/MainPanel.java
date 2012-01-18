@@ -61,7 +61,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
     private static final int DELAY = 10;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final javax.swing.Timer scroller;
+    private final Timer scroller;
     private final JComponent label;
     private Point startPt = new Point();
     private Point move    = new Point();
@@ -69,7 +69,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
     public ViewportDragScrollListener(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.scroller = new javax.swing.Timer(DELAY, new ActionListener() {
+        this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
@@ -117,7 +117,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     private static final int DELAY = 10;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final javax.swing.Timer scroller;
+    private final Timer scroller;
     private final JComponent label;
     private Point startPt = new Point();
     private Point move    = new Point();
@@ -125,7 +125,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     public ComponentDragScrollListener(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.scroller = new javax.swing.Timer(DELAY, new ActionListener() {
+        this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 Container c = label.getParent();
                 if(c instanceof JViewport) {

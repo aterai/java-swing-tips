@@ -25,7 +25,7 @@ class MainPanel extends JPanel {
     }
 
     class Crossfade extends JComponent implements ActionListener {
-        private final javax.swing.Timer animator;
+        private final Timer animator;
         private final ImageIcon icon1;
         private final ImageIcon icon2;
         private int alpha = 10;
@@ -33,7 +33,7 @@ class MainPanel extends JPanel {
         public Crossfade(ImageIcon icon1, ImageIcon icon2) {
             this.icon1 = icon1;
             this.icon2 = icon2;
-            animator = new javax.swing.Timer(50, this);
+            animator = new Timer(50, this);
         }
         public void animationStart() {
             mode = !mode;

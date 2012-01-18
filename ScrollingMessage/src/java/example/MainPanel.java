@@ -37,14 +37,14 @@ public class MainPanel extends JPanel {
 }
 
 class MarqueePanel extends JComponent implements ActionListener {
-    public final javax.swing.Timer animator;
+    public final Timer animator;
     private final GlyphVector gv;
     private final LineMetrics lm;
     private float xx, baseline, xheight;
 
     public MarqueePanel() {
         super();
-        animator = new javax.swing.Timer(10, this);
+        animator = new Timer(10, this);
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 JComponent c = (JComponent)e.getSource();

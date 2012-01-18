@@ -56,14 +56,14 @@ public class MainPanel extends JPanel {
     }
     private void testCreateActionPerformed(ActionEvent e) {
         model.addTest(new Test("New name", ""));
-        (new javax.swing.Timer(DELAY, new ActionListener() {
+        (new Timer(DELAY, new ActionListener() {
             int i = table.convertRowIndexToView(model.getRowCount()-1);
             int h = START_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
                 if(h<END_HEIGHT) {
                     table.setRowHeight(i, h++);
                 }else{
-                    ((javax.swing.Timer)e.getSource()).stop();
+                    ((Timer)e.getSource()).stop();
                 }
             }
         })).start();
@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
     public void deleteActionPerformed(ActionEvent evt) {
         final int[] selection = table.getSelectedRows();
         if(selection==null || selection.length<=0) return;
-        (new javax.swing.Timer(DELAY, new ActionListener() {
+        (new Timer(DELAY, new ActionListener() {
             int h = END_HEIGHT;
             @Override public void actionPerformed(ActionEvent e) {
                 h--;
@@ -89,7 +89,7 @@ public class MainPanel extends JPanel {
                         table.setRowHeight(selection[i], h);
                     }
                 }else{
-                    ((javax.swing.Timer)e.getSource()).stop();
+                    ((Timer)e.getSource()).stop();
                     for(int i=selection.length-1;i>=0;i--) {
                         model.removeRow(table.convertRowIndexToModel(selection[i]));
                     }

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.net.*;
 import java.io.*;
-import java.util.*;
+import java.util.Random;
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -60,7 +60,7 @@ class MainPanel extends JPanel {
 }
 
 class RandomDissolve extends JComponent implements ActionListener {
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private final BufferedImage image1;
     private final BufferedImage image2;
     private BufferedImage srcimg, dstimg;
@@ -72,7 +72,7 @@ class RandomDissolve extends JComponent implements ActionListener {
         this.image1 = i1;
         this.image2 = i2;
         this.srcimg = copyImage(mode?image2:image1);
-        animator = new javax.swing.Timer(10, this);
+        animator = new Timer(10, this);
     }
     public boolean nextStage() {
         if(currentStage > 0) {

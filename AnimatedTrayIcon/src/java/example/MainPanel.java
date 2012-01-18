@@ -32,7 +32,7 @@ class MainPanel extends JPanel {
         //Image img = new ImageIcon(getClass().getResource("anime.gif")).getImage();
         //final TrayIcon icon   = new TrayIcon(img, "TRAY", popup);
         final TrayIcon icon   = new TrayIcon(imglist[0], "TRAY", popup);
-        final javax.swing.Timer animator = new javax.swing.Timer(100, new ActionListener() {
+        final Timer animator = new Timer(100, new ActionListener() {
             private int idx = 0;
             @Override public void actionPerformed(ActionEvent e) {
                 icon.setImage(imglist[idx]);
