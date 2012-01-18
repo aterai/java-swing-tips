@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel{
     private final JTabbedPane tab0 = new JTabbedPane();
@@ -15,15 +17,15 @@ public class MainPanel extends JPanel{
         tab0.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
         tab0.addTab("c",               new JLabel("cccccccccc"));
 
-        if(tab1.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
-            tab1.setUI(new com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI() {
+        if(tab1.getUI() instanceof WindowsTabbedPaneUI) {
+            tab1.setUI(new WindowsTabbedPaneUI() {
                 protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
                     return (i<100) ? 100 : i;
                 }
             });
         }else{
-            tab1.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+            tab1.setUI(new BasicTabbedPaneUI() {
                 protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
                     return (i<100) ? 100 : i;

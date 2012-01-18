@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel{
     private final JComboBox combo01 = new JComboBox(makeModel());
@@ -13,8 +14,8 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
 
-        if(combo02.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsComboBoxUI) {
-            combo02.setUI(new com.sun.java.swing.plaf.windows.WindowsComboBoxUI() {
+        if(combo02.getUI() instanceof WindowsComboBoxUI) {
+            combo02.setUI(new WindowsComboBoxUI() {
                 @Override protected ComboPopup createPopup() {
                     return new BasicComboPopup2( comboBox );
                     //return new BasicComboPopup3( comboBox );

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
@@ -30,7 +31,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        tree.setUI(new javax.swing.plaf.basic.BasicTreeUI() {
+        tree.setUI(new BasicTreeUI() {
             @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
                 if(tree != null && treeState != null) {
                     return getPathBounds(path, tree.getInsets(), new Rectangle());

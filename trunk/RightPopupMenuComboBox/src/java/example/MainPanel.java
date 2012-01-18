@@ -8,6 +8,7 @@ import javax.accessibility.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel{
     private final JComboBox combo00 = new JComboBox(makeModel());
@@ -25,8 +26,8 @@ public class MainPanel extends JPanel{
     }
     private final ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
     private void initComboBox(JComboBox combo2) {
-        if(combo2.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsComboBoxUI) {
-            combo2.setUI(new com.sun.java.swing.plaf.windows.WindowsComboBoxUI() {
+        if(combo2.getUI() instanceof WindowsComboBoxUI) {
+            combo2.setUI(new WindowsComboBoxUI() {
                 protected JButton createArrowButton() {
                     JButton button = new JButton(icon) {
                         public Dimension getPreferredSize() {

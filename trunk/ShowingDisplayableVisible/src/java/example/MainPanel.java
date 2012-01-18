@@ -8,6 +8,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -71,7 +72,7 @@ public class MainPanel extends JPanel {
         add(tab);
         timer = new Timer(4000, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                printInfo(new java.util.Date().toString());
+                printInfo(new Date().toString());
             }
         });
         timer.start();

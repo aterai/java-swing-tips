@@ -6,12 +6,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 public class MainPanel extends JPanel {
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {
         super(new BorderLayout());
-        fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileFilter() {
+        fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override public boolean accept(File file) {
                 if(file.isDirectory()) return true;
                 if(file.getName().toLowerCase().endsWith(".png")) return true;
@@ -21,7 +22,7 @@ public class MainPanel extends JPanel {
                 return "PNG(*.png)";
             }
         });
-        fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileFilter() {
+        fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override public boolean accept(File file) {
                 if(file.isDirectory()) return true;
                 if(file.getName().toLowerCase().endsWith(".jpg")) return true;

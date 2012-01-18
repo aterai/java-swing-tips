@@ -7,14 +7,16 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.synth.*;
 import javax.swing.text.View;
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-        if(tabbedPane.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
+        if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
             tabbedPane.setUI(new MyWindowsTabbedPaneUI());
         }else{
             tabbedPane.setUI(new MyTabbedPaneUI());
@@ -133,7 +135,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         setTabComponentAt(index, new ButtonTabComponent(this));
     }
 }
-class MyWindowsTabbedPaneUI extends com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI {
+class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     @Override protected void layoutLabel(int tabPlacement,
                                          FontMetrics metrics, int tabIndex,
                                          String title, Icon icon,
@@ -231,7 +233,7 @@ class ButtonTabComponent extends JPanel {
             int size = 17;
             setPreferredSize(new Dimension(size, size));
             setToolTipText("close this tab");
-            setUI(new javax.swing.plaf.basic.BasicButtonUI());
+            setUI(new BasicButtonUI());
             setContentAreaFilled(false);
             setFocusable(false);
             setBorder(BorderFactory.createEtchedBorder());

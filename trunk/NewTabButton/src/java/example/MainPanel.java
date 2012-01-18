@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -103,7 +104,7 @@ class CardLayoutTabbedPane extends JPanel {
                 cardLayout.show(contentsPanel, title);
             }
         });
-        tab.setIcon(icons.get(new java.util.Random().nextInt(icons.size())));
+        tab.setIcon(icons.get(new Random().nextInt(icons.size())));
         tab.setLayout(new BorderLayout());
         JButton close = new JButton(new AbstractAction("") {
             @Override public void actionPerformed(ActionEvent e) {

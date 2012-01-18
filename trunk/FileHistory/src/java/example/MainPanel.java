@@ -20,7 +20,7 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         this.frame = frame;
         barFactory = new BarFactory("resources.Main");
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
                 //exitActionPerformed();
                 frame.dispose();
