@@ -106,10 +106,10 @@ class PressAndHoldButton extends JToggleButton {
         i.paintIcon(this, g, x, y);
     }
     private class ArrowButtonHandler extends AbstractAction implements MouseListener {
-        private final javax.swing.Timer autoRepeatTimer;
+        private final Timer autoRepeatTimer;
         private AbstractButton arrowButton = null;
         public ArrowButtonHandler() {
-            autoRepeatTimer = new javax.swing.Timer(1000, new ActionListener() {
+            autoRepeatTimer = new Timer(1000, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
                     System.out.println("InitialDelay(1000)");
                     if(arrowButton!=null && arrowButton.getModel().isPressed() && autoRepeatTimer.isRunning()) {

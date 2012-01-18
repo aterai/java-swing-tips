@@ -6,7 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -163,11 +165,11 @@ class ProgressListener implements PropertyChangeListener {
 }
 
 class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener {
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private final AnimeIcon icon = new AnimeIcon();
     public AnimatedLabel() {
         super();
-        animator = new javax.swing.Timer(100, this);
+        animator = new Timer(100, this);
         setIcon(icon);
         addHierarchyListener(this);
     }
@@ -196,7 +198,7 @@ class AnimeIcon implements Icon {
     private static final double sx = 1.0d;
     private static final double sy = 1.0d;
     private static final Dimension dim = new Dimension((int)(r*8+sx*2), (int)(r*8+sy*2));
-    private final java.util.List<Shape> list = new ArrayList<Shape>(Arrays.asList(
+    private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
         new Ellipse2D.Double(sx+3*r, sy+0*r, 2*r, 2*r),
         new Ellipse2D.Double(sx+5*r, sy+1*r, 2*r, 2*r),
         new Ellipse2D.Double(sx+6*r, sy+3*r, 2*r, 2*r),

@@ -106,7 +106,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     private static final double D = 0.8;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final javax.swing.Timer scroller;
+    private final Timer scroller;
     private final JComponent label;
     private Point startPt = new Point();
     private Point delta   = new Point();
@@ -114,7 +114,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     public KineticScrollingListener1(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.scroller = new javax.swing.Timer(DELAY, new ActionListener() {
+        this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
@@ -161,8 +161,8 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     private static final double D = 0.8;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final javax.swing.Timer inside;
-    private final javax.swing.Timer outside;
+    private final Timer inside;
+    private final Timer outside;
     private final JComponent label;
     private Point startPt = new Point();
     private Point delta   = new Point();
@@ -174,7 +174,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     public KineticScrollingListener2(JComponent comp) {
         this.label = comp;
         this.dc = comp.getCursor();
-        this.inside = new javax.swing.Timer(DELAY, new ActionListener() {
+        this.inside = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
@@ -193,7 +193,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                 }
             }
         });
-        this.outside = new javax.swing.Timer(DELAY, new ActionListener() {
+        this.outside = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();

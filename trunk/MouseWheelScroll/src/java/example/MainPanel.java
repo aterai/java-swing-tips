@@ -32,9 +32,7 @@ class MainPanel extends JPanel {
             return new Dimension(dim.width, 0);
         }
     };
-    private final JViewport vport    = scroll.getViewport();
-    private final MouseAdapter ml = new DragScrollListener();
-
+    private final JViewport vport = scroll.getViewport();
     private final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling");
     private final JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
     private final JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
@@ -43,6 +41,7 @@ class MainPanel extends JPanel {
         super(new BorderLayout());
         // [http://sozai-free.com/ CRW_3857_JFR.jpg]
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
+        MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
         for(JScrollBar sb:java.util.Arrays.asList(vsb, hsb, vBar, hBar)) {

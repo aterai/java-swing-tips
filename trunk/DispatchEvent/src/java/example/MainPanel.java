@@ -12,7 +12,7 @@ public class MainPanel extends JPanel{
     private final JComboBox combo = new JComboBox(makeModel());
     private final JTextField textField  = new JTextField(20);
     private final JButton button;
-    private final javax.swing.Timer timer;
+    private final Timer timer;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -32,7 +32,7 @@ public class MainPanel extends JPanel{
                 }
             }
         };
-        timer = new javax.swing.Timer(DELAY, new ActionListener() {
+        timer = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("timeout");
                 setTestConnected(false);

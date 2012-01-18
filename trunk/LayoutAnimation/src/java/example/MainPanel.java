@@ -17,7 +17,7 @@ public class MainPanel extends JPanel{
     private final JButton button   = new JButton("Find Next(dummy)");
     private final JButton showHideButton = new JButton();
 
-    private javax.swing.Timer animator = null;
+    private Timer animator = null;
     private boolean isHidden = true;
     private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
         private int controlsHeight = 0;
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel{
             @Override public void actionPerformed(ActionEvent e) {
                 if(animator!=null && animator.isRunning()) return;
                 isHidden = controls.getHeight()==0;
-                animator = new javax.swing.Timer(5, new ActionListener() {
+                animator = new Timer(5, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
                         controls.revalidate();
                     }

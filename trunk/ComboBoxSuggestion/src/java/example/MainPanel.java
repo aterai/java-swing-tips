@@ -154,6 +154,8 @@ class ComboKeyHandler extends KeyAdapter{
           case KeyEvent.VK_ESCAPE:
             shouldHide = true;
             break;
+          default:
+            break;
         }
     }
     private static void setSuggestionModel(JComboBox comboBox, ComboBoxModel mdl, String str) {

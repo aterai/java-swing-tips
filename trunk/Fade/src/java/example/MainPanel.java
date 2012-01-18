@@ -12,7 +12,7 @@ import javax.swing.*;
 
 class MainPanel extends JPanel {
     private boolean mode = true;
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private BufferedImage icon;
 
     public MainPanel() {
@@ -24,7 +24,7 @@ class MainPanel extends JPanel {
             ioe.printStackTrace();
         }
         FadeImage fade = new FadeImage();
-        animator = new javax.swing.Timer(25, fade);
+        animator = new Timer(25, fade);
 
         JButton button1 = new JButton(new AbstractAction("Open") {
             @Override public void actionPerformed(ActionEvent ae) {

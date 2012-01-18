@@ -168,6 +168,9 @@ class StarburstSVGMaker {
                 sb.append(String.format("C%.2f,%.2f,%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3], c[4], c[5])); break;
               case PathIterator.SEG_CLOSE:
                 sb.append("Z"); break;
+              default:
+                // Should never happen
+                throw new InternalError("unrecognized path type");
             }
             pi.next();
         }

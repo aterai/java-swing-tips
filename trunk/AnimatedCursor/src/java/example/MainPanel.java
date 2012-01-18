@@ -8,7 +8,7 @@ import java.net.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private final JButton button;
     private final Toolkit tk    = Toolkit.getDefaultToolkit();
     private final Cursor[] list = new Cursor[3];
@@ -21,7 +21,7 @@ class MainPanel extends JPanel {
         list[0] = tk.createCustomCursor(tk.createImage(url00), p, "00");
         list[1] = tk.createCustomCursor(tk.createImage(url01), p, "01");
         list[2] = tk.createCustomCursor(tk.createImage(url02), p, "02");
-        animator = new javax.swing.Timer(100, new ActionListener() {
+        animator = new Timer(100, new ActionListener() {
             private int counter = 0;
             @Override public void actionPerformed(ActionEvent e) {
                 button.setCursor(list[counter]);

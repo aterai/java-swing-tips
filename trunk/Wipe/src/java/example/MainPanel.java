@@ -8,14 +8,14 @@ import javax.swing.*;
 
 class MainPanel extends JPanel {
     private boolean mode = true;
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private final ImageIcon icon;
 
     public MainPanel() {
         super(new BorderLayout());
         icon = new ImageIcon(getClass().getResource("test.png"));
         WipeImage wipe = new WipeImage();
-        animator = new javax.swing.Timer(5, wipe);
+        animator = new Timer(5, wipe);
 
         JButton button1 = new JButton(new AbstractAction("Wipe In") {
             @Override public void actionPerformed(ActionEvent ae) {

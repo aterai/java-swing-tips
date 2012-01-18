@@ -6,7 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -57,14 +59,14 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
     private static final Color selectedColor = new Color(230,230,255);
     private final AnimeIcon icon = new AnimeIcon();
     private final MarqueeLabel label = new MarqueeLabel();
-    private final javax.swing.Timer animator;
+    private final Timer animator;
     private final JList list;
     private boolean isRunning = false;
 
     public AnimeListCellRenderer(final JList l) {
         super(new BorderLayout());
         this.list = l;
-        animator = new javax.swing.Timer(80, new ActionListener() {
+        animator = new Timer(80, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 int i = l.getSelectedIndex();
                 if(i>=0) {
@@ -126,7 +128,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
         private static final double r  = 2.0d;
         private static final double sx = 1.0d;
         private static final double sy = 1.0d;
-        private final java.util.List<Shape> icons = new ArrayList<Shape>(Arrays.asList(
+        private final List<Shape> icons = new ArrayList<Shape>(Arrays.asList(
             new Ellipse2D.Double(sx+3*r, sy+0*r, 2*r, 2*r),
             new Ellipse2D.Double(sx+5*r, sy+1*r, 2*r, 2*r),
             new Ellipse2D.Double(sx+6*r, sy+3*r, 2*r, 2*r),
