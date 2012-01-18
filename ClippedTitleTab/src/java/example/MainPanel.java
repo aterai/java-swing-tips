@@ -7,6 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel {
     private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
@@ -20,8 +22,8 @@ public class MainPanel extends JPanel {
     };
     public MainPanel() {
         super(new BorderLayout());
-        if(tabbedPane.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
-            tabbedPane.setUI(new com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI() {
+        if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
+            tabbedPane.setUI(new WindowsTabbedPaneUI() {
                 @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     Insets insets = tabPane.getInsets();
                     Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
@@ -52,7 +54,7 @@ public class MainPanel extends JPanel {
                 }
             });
         }else{
-            tabbedPane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+            tabbedPane.setUI(new BasicTabbedPaneUI() {
                 @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     Insets insets = tabPane.getInsets();
                     Insets tabAreaInsets = getTabAreaInsets(tabPlacement);

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -37,7 +38,7 @@ public class MainPanel extends JPanel {
     private Box makeRadioPane() {
         final ButtonGroup bg = new ButtonGroup();
         final Box box = Box.createHorizontalBox();
-        final java.util.Map<String, JButton> map = new java.util.LinkedHashMap<String, JButton>();
+        final Map<String, JButton> map = new LinkedHashMap<String, JButton>();
         map.put("null",    null);
         map.put("Button1", b1);
         map.put("Button2", b2);

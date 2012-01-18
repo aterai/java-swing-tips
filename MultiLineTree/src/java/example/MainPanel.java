@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
@@ -187,7 +188,7 @@ class CellTextArea extends JTextArea {
     //http://www.codeguru.com/java/articles/141.shtml
     @Override public void setText(String str) {
         FontMetrics fm = getFontMetrics(getFont());
-        java.io.BufferedReader br = new java.io.BufferedReader(new java.io.StringReader(str));
+        BufferedReader br = new BufferedReader(new StringReader(str));
         String line;
         int maxWidth = 0, lines = 0;
         try{

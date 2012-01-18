@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.beans.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
@@ -67,8 +68,8 @@ public class MainPanel extends JPanel{
                 splashScreen.dispose();
             }
         };
-        worker.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            @Override public void propertyChange(java.beans.PropertyChangeEvent e) {
+        worker.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override public void propertyChange(PropertyChangeEvent e) {
                 if("progress".equals(e.getPropertyName())) {
                     progress.setValue((Integer)e.getNewValue());
                 }

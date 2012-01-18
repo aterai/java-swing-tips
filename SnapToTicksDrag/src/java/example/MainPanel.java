@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
+import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public class MainPanel extends JPanel{
     public MainPanel() {
@@ -67,8 +68,8 @@ public class MainPanel extends JPanel{
                 }
             }
         });
-        if(slider.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSliderUI) {
-            slider.setUI(new com.sun.java.swing.plaf.windows.WindowsSliderUI(slider) {
+        if(slider.getUI() instanceof WindowsSliderUI) {
+            slider.setUI(new WindowsSliderUI(slider) {
                 @Override protected TrackListener createTrackListener(final JSlider slider) {
                     return new TrackListener() {
                         @Override public void mouseDragged(MouseEvent e) {

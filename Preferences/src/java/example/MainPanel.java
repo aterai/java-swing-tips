@@ -21,7 +21,7 @@ public class MainPanel extends JPanel{
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         this.frame = frame;
         this.prefs = Preferences.userNodeForPackage(getClass());
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
                 saveLocation();
                 frame.dispose();

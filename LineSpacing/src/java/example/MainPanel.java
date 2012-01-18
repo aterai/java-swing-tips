@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
+//import javax.swing.text.html.*;
 public class MainPanel extends JPanel {
     private final JTextPane editor1 = new JTextPane();
     private final JTextPane editor2 = new JTextPane();
@@ -86,7 +86,7 @@ class BottomInsetEditorKit extends StyledEditorKit {
                     if(kind.equals(AbstractDocument.ContentElementName)) {
                         return new LabelView(elem);
                     }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
-                        return new javax.swing.text.ParagraphView(elem) {
+                        return new ParagraphView(elem) {
                             @Override protected short getBottomInset() {
                                 return 5;
                             }

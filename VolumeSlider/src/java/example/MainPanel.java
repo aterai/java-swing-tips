@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalSliderUI;
 
 public class MainPanel extends JPanel{
     public MainPanel() {
@@ -17,7 +18,7 @@ public class MainPanel extends JPanel{
         slider1.setPaintLabels(true);
 
         JSlider slider2 = new JSlider(0,100,0);
-        slider2.setUI(new javax.swing.plaf.metal.MetalSliderUI() {
+        slider2.setUI(new MetalSliderUI() {
             @Override protected void paintHorizontalLabel(Graphics g, int v, Component l) {
                 JLabel lbl = (JLabel)l;
                 lbl.setForeground(Color.GREEN);

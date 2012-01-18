@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalCheckBoxIcon;
 
 public class MainPanel extends JPanel{
     public MainPanel() {
@@ -60,7 +61,7 @@ public class MainPanel extends JPanel{
 }
 
 class MyCheckBoxIcon3 implements Icon {
-    private final Icon orgIcon = new javax.swing.plaf.metal.MetalCheckBoxIcon();
+    private final Icon orgIcon = new MetalCheckBoxIcon();
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         orgIcon.paintIcon(c, g, x, y);
         g.setColor(new Color(255, 155, 155, 100));

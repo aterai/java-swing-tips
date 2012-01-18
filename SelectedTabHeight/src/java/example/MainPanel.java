@@ -5,14 +5,16 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel{
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     public MainPanel() {
         super(new BorderLayout());
 
-        if(tabbedPane.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
-            tabbedPane.setUI(new com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI() {
+        if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
+            tabbedPane.setUI(new WindowsTabbedPaneUI() {
                 @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
                     return 32;
                 }
@@ -38,7 +40,7 @@ public class MainPanel extends JPanel{
             });
         }else{
             //t.setUI(new javax.swing.plaf.metal.MetalTabbedPaneUI() {
-            tabbedPane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+            tabbedPane.setUI(new BasicTabbedPaneUI() {
                 @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
                     return 32;
                 }
