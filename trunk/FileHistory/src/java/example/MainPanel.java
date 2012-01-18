@@ -58,8 +58,8 @@ public class MainPanel extends JPanel{
                 String num  = Integer.toString(i+1);
                 JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
                 mi.setText(num + ": "+ name);
-                byte[] bt = num.getBytes();
-                mi.setMnemonic((int) bt[0]);
+                //byte[] bt = num.getBytes();
+                mi.setMnemonic((int) num.charAt(0));
                 fileHistory.add(mi);
             }
         }
@@ -76,8 +76,8 @@ public class MainPanel extends JPanel{
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
             mi.setText(num + ": "+ name);
-            byte[] bt = num.getBytes();
-            mi.setMnemonic((int) bt[0]);
+            //byte[] bt = num.getBytes();
+            mi.setMnemonic((int) num.charAt(0));
             fileHistory.add(mi, i);
         }
     }
