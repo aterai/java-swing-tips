@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.metal.MetalSliderUI;
+import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public class MainPanel extends JPanel{
     private final JSlider slider1 = new JSlider(JSlider.VERTICAL,0,1000,500);
@@ -36,8 +37,8 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 240));
     }
     private static void setSilderUI(JSlider slider) {
-        if(slider.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSliderUI) {
-            slider.setUI(new com.sun.java.swing.plaf.windows.WindowsSliderUI(slider) {
+        if(slider.getUI() instanceof WindowsSliderUI) {
+            slider.setUI(new WindowsSliderUI(slider) {
 //                 // JSlider question: Position after leftclick - Stack Overflow
 //                 // http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
 //                 protected void scrollDueToClickInTrack(int direction) {
@@ -60,6 +61,8 @@ public class MainPanel extends JPanel{
                               case JSlider.HORIZONTAL:
                                 slider.setValue(valueForXPosition(e.getX()));
                                 break;
+                              default:
+                                throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                             }
                             super.mousePressed(e); //isDragging = true;
                             super.mouseDragged(e);
@@ -83,6 +86,8 @@ public class MainPanel extends JPanel{
                               case JSlider.HORIZONTAL:
                                 slider.setValue(valueForXPosition(e.getX()));
                                 break;
+                              default:
+                                throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
                             }
                             super.mousePressed(e); //isDragging = true;
                             super.mouseDragged(e);
