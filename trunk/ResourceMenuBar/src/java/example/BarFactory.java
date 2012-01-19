@@ -211,8 +211,8 @@ public final class BarFactory{
                 if(mitext.indexOf(tmp)<0) {
                     menu.setText(mitext+" ("+tmp+")");
                 }
-                byte[] bt = tmp.getBytes();
-                menu.setMnemonic((int) bt[0]);
+                //byte[] bt = tmp.getBytes();
+                menu.setMnemonic((int) tmp.charAt(0));
             }
         }
         for(int i=0;i<itemKeys.length;i++) {
@@ -247,8 +247,8 @@ public final class BarFactory{
                 if(mitext.indexOf(tmp)<0) {
                     mi.setText(mitext+" ("+tmp+")");
                 }
-                byte[] bt = tmp.getBytes();
-                mi.setMnemonic((int) bt[0]);
+                //byte[] bt = tmp.getBytes();
+                mi.setMnemonic((int) tmp.getChars(0));
                 //System.out.println(cmd+", "+tmp);
             }
         }

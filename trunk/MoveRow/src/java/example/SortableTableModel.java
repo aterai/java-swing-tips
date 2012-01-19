@@ -105,15 +105,16 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         if(col < 0) return;
         Integer value = null;
         Integer obj = state.get(col);
-        if(obj==null) {
-            value = DOWN;
-        }else if(obj == DOWN) {
-            value = UP;
-        }else if(obj == UP) {
-    //        value = NONE;
-    //    }else{
-            value = DOWN;
-        }
+//         if(obj==null) {
+//             value = DOWN;
+//         }else if(obj == DOWN) {
+//             value = UP;
+//         }else if(obj == UP) {
+//     //        value = NONE;
+//     //    }else{
+//             value = DOWN;
+//         }
+        value = (obj == DOWN) ? UP : DOWN;
         state.clear();
         state.put(col, value);
     }
@@ -252,6 +253,7 @@ class BevelArrowIcon implements Icon{
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         switch(direction) {
+            default:
             case DOWN: drawDownArrow(g, x, y); break;
             case   UP: drawUpArrow(g, x, y);   break;
         }
