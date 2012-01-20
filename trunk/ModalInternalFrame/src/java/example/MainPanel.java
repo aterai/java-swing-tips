@@ -240,7 +240,7 @@ class PrintGlassPane extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         JRootPane rootPane = SwingUtilities.getRootPane(this);
-        if (rootPane != null) {
+        if(rootPane != null) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
             // it is important to call print() instead of paint() here
             // because print() doesn't affect the frame's double buffer

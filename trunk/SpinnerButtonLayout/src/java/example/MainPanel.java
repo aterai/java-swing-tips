@@ -121,7 +121,7 @@ public class MainPanel extends JPanel{
 //                 int nmembers = target.getComponentCount();
 //
 //                 boolean flag = true;
-//                 for (int i = 0 ; i < nmembers ; i++) {
+//                 for(int i = 0 ; i < nmembers ; i++) {
 //                     Component c = target.getComponent(i);
 //                     //if("Next".equals(c.getName())) {
 //                     if(c instanceof JButton && flag) {
@@ -172,7 +172,7 @@ public class MainPanel extends JPanel{
 // //             installKeyboardActions();
 // //         }
 // //         private void maybeAdd(Component c, String s) {
-// //             if (c != null) {
+// //             if(c != null) {
 // //                 spinner.add(c, s);
 // //             }
 // //         }

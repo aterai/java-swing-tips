@@ -64,7 +64,7 @@ class MainPanel extends JPanel {
         }
     }
 //     private byte[] loadAudioData(final String soundFile) {
-//         if (soundFile==null) return null;
+//         if(soundFile==null) return null;
 //         byte[] buffer = (byte[])AccessController.doPrivileged(new PrivilegedAction() {
 //             public Object run() {
 //                 try{

@@ -47,7 +47,7 @@ public class MainPanel extends JPanel{
 //                 });
             }
             void uninstallListListeners() {
-                if (listener != null) {
+                if(listener != null) {
                     list.removeMouseListener(listener);
                     listener = null;
                 }

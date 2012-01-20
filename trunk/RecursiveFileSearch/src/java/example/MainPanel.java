@@ -250,7 +250,7 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
-        if ("progress".equals(strPropertyName)) {
+        if("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
             int progress = (Integer)e.getNewValue();
             progressBar.setValue(progress);

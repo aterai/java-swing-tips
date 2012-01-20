@@ -265,9 +265,9 @@ class MyLabel extends JLabel {
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
 //      //String literal pool
-//      if (propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
+//      if(propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
-        if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
+        if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
             || (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }

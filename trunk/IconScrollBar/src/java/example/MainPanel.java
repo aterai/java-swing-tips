@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
                     Color oc = null;
                     Color ic = null;
                     JScrollBar sb = (JScrollBar)c;
-                    if (!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
+                    if(!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
                         return;
                     }else if(isDragging) {
                         oc = SystemColor.activeCaption.darker();
@@ -54,7 +54,7 @@ public class MainPanel extends JPanel {
                     Color oc = null;
                     Color ic = null;
                     JScrollBar sb = (JScrollBar)c;
-                    if (!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
+                    if(!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
                         return;
                     }else if(isDragging) {
                         oc = SystemColor.activeCaption.darker();

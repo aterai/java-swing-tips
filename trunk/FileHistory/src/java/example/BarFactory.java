@@ -29,29 +29,29 @@ public final class BarFactory{
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
                 //http://java.sun.com/javase/ja/6/docs/ja/api/java/util/ResourceBundle.Control.html
                 public java.util.List<String> getFormats(String baseName) {
-                    if (baseName == null) throw new NullPointerException();
+                    if(baseName == null) throw new NullPointerException();
                     return Arrays.asList("properties");
                 }
                 public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-                    if (baseName == null || locale == null || format == null || loader == null) throw new NullPointerException();
+                    if(baseName == null || locale == null || format == null || loader == null) throw new NullPointerException();
                     ResourceBundle bundle = null;
-                    if (format.equals("properties")) {
+                    if(format.equals("properties")) {
                         String bundleName = toBundleName(baseName, locale);
                         String resourceName = toResourceName(bundleName, format);
                         InputStream stream = null;
-                        if (reload) {
+                        if(reload) {
                             URL url = loader.getResource(resourceName);
-                            if (url != null) {
+                            if(url != null) {
                                 URLConnection connection = url.openConnection();
-                                if (connection != null) {
+                                if(connection != null) {
                                     connection.setUseCaches(false);
                                     stream = connection.getInputStream();
                                 }
                             }
-                        } else {
+                        }else{
                             stream = loader.getResourceAsStream(resourceName);
                         }
-                        if (stream != null) {
+                        if(stream != null) {
                             //BufferedInputStream bis = new BufferedInputStream(stream);
                             Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
                             bundle = new PropertyResourceBundle(r);

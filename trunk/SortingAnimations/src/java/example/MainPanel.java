@@ -232,8 +232,8 @@ public class MainPanel extends JPanel {
         int i = l;
         int j = u+1;
         for(;;) {
-            do i++; while (i <= u && a[i] < a[l]);
-            do j--; while (a[j] > a[l]);
+            do i++; while(i <= u && a[i] < a[l]);
+            do j--; while(a[j] > a[l]);
             if(i > j) break;
             swap(i, j);
         }

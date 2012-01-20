@@ -75,8 +75,8 @@ public class MainPanel extends JPanel{
             }
         }
 //         int n=0;
-//         for (int y=0;y<5;y++) {
-//             for (int x=0;x<width;x++) {
+//         for(int y=0;y<5;y++) {
+//             for(int x=0;x<width;x++) {
 //                 n = y * width + x;
 //                 if(x>=5 && x<width-5) continue;
 //                 else if(y==0 && (x<5 || x>=width-5)) pix[n] = 0x0;

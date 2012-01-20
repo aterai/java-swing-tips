@@ -136,18 +136,18 @@ class MyCheckBoxIcon implements Icon {
             if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
                 //g.setColor(UIManager.getColor("CheckBox.background"));
                 g.setColor(new Color(255, 155, 155).brighter());
-            } else {
+            }else{
                 //g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
                 g.setColor(new Color(255, 155, 155));
             }
             g.fillRect(x+2, y+2, csize-4, csize-4);
-        } else {
+        }else{
             g.setColor(UIManager.getColor("CheckBox.shadow"));
             g.drawRect(x+1, y+1, csize-3, csize-3);
 
             if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
                 g.setColor(UIManager.getColor("CheckBox.background"));
-            } else {
+            }else{
                 g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
             }
             g.fillRect(x+2, y+2, csize-4, csize-4);
@@ -155,12 +155,12 @@ class MyCheckBoxIcon implements Icon {
 
         if(model.isEnabled()) {
             g.setColor(UIManager.getColor("CheckBox.foreground"));
-        } else {
+        }else{
             g.setColor(UIManager.getColor("CheckBox.shadow"));
         }
 
         // paint check
-        if (model.isSelected()) {
+        if(model.isSelected()) {
             g.setColor(Color.BLUE);
             g.drawLine(x+9, y+3, x+9, y+3);
             g.drawLine(x+8, y+4, x+9, y+4);
@@ -173,7 +173,7 @@ class MyCheckBoxIcon implements Icon {
             g.drawLine(x+3, y+6, x+4, y+6);
         }
 
-        if (model.isRollover()) {
+        if(model.isRollover()) {
             g.setColor(Color.ORANGE);
             g.drawLine(x+1, y+1, x+1+csize-3, y+1);
             g.drawLine(x+1, y+1, x+1, y+1+csize-3);

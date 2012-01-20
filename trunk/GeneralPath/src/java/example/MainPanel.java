@@ -235,7 +235,7 @@ class StarIcon2 implements Icon{
 //         double addAngle=2*Math.PI/vertexCount;
 //         double angle=startAngle;
 //         double innerAngle=startAngle+Math.PI/vertexCount;
-//         for (int i=0; i<vertexCount; i++) {
+//         for(int i=0; i<vertexCount; i++) {
 //             res[i*2]=(int)Math.round(r*Math.cos(angle))+x;
 //             angle+=addAngle;
 //             res[i*2+1]=(int)Math.round(innerR*Math.cos(innerAngle))+x;
@@ -248,7 +248,7 @@ class StarIcon2 implements Icon{
 //         double addAngle=2*Math.PI/vertexCount;
 //         double angle=startAngle;
 //         double innerAngle=startAngle+Math.PI/vertexCount;
-//         for (int i=0; i<vertexCount; i++) {
+//         for(int i=0; i<vertexCount; i++) {
 //             res[i*2]=(int)Math.round(r*Math.sin(angle))+y;
 //             angle+=addAngle;
 //             res[i*2+1]=(int)Math.round(innerR*Math.sin(innerAngle))+y;

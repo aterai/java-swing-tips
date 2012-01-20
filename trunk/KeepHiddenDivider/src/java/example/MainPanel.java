@@ -52,15 +52,15 @@ public class MainPanel extends JPanel {
 //                 BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI)splitPane.getUI();
 //                 Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
 //
-//                 if (currentLoc == insets.top) {
+//                 if(currentLoc == insets.top) {
 //                     int maxLoc = splitPane.getMaximumDividerLocation();
 //                     newLoc = Math.min(lastLoc, maxLoc);
 //                     //splitPaneUI.setKeepHidden(false);
-//                 } else {
+//                 }else{
 //                     newLoc = splitPane.getHeight() - divider.getHeight() - insets.top;
 //                     //splitPaneUI.setKeepHidden(true);
 //                 }
-//                 if (currentLoc != newLoc) {
+//                 if(currentLoc != newLoc) {
 //                     splitPane.setDividerLocation(newLoc);
 //                     splitPane.setLastDividerLocation(currentLoc);
 //                 }

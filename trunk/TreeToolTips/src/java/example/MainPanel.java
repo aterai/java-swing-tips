@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
 // //                 drawDashedFocusIndicator = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
 // //                 fillBackground = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
 //                 Insets margins = sun.swing.DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
-//                 if (margins != null) {
+//                 if(margins != null) {
 //                     setBorder(BorderFactory.createEmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
 //                 }
 //             }

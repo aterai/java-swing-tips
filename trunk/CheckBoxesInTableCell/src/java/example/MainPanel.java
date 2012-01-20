@@ -279,10 +279,10 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //         Object[] listeners = listenerList.getListenerList();
 //         // Process the listeners last to first, notifying
 //         // those that are interested in this event
-//         for (int i = listeners.length-2; i>=0; i-=2) {
-//             if (listeners[i]==CellEditorListener.class) {
+//         for(int i = listeners.length-2; i>=0; i-=2) {
+//             if(listeners[i]==CellEditorListener.class) {
 //                 // Lazily create the event:
-//                 if (changeEvent == null)
+//                 if(changeEvent == null)
 //                   changeEvent = new ChangeEvent(this);
 //                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
 //             }
@@ -326,7 +326,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //             this.value = value;
 //         }
 //         public boolean isCellEditable(EventObject anEvent) {
-//             if (anEvent instanceof MouseEvent) {
+//             if(anEvent instanceof MouseEvent) {
 //                 return ((MouseEvent)anEvent).getClickCount() >= clickCountToStart;
 //             }
 //             return true;
@@ -390,26 +390,26 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //       @Override public void actionPerformed(ActionEvent e) {
 //         StringBuilder buf = new StringBuilder(9);
 //         String M = "-";
-//         for (int i=0; i<model.getRowCount(); i++) {
+//         for(int i=0; i<model.getRowCount(); i++) {
 //           @SuppressWarnings("unchecked")
 //           EnumSet<Permissions> v = (EnumSet<Permissions>)model.getValueAt(i, 1);
 //           int flg = 0;
-//           if (v.contains(Permissions.READ)) {
+//           if(v.contains(Permissions.READ)) {
 //             flg|=map.get(Permissions.READ);
 //             buf.append("r");
-//           } else {
+//           }else{
 //             buf.append(M);
 //           }
-//           if (v.contains(Permissions.WRITE)) {
+//           if(v.contains(Permissions.WRITE)) {
 //             flg|=map.get(Permissions.WRITE);
 //             buf.append("w");
-//           } else {
+//           }else{
 //             buf.append(M);
 //           }
-//           if (v.contains(Permissions.EXECUTE)) {
+//           if(v.contains(Permissions.EXECUTE)) {
 //             flg|=map.get(Permissions.EXECUTE);
 //             buf.append("x");
-//           } else {
+//           }else{
 //             buf.append(M);
 //           }
 //           System.out.print(flg);
@@ -445,7 +445,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //     setBackground(new Color(0,0,0,0));
 //     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 //     buttons = new JCheckBox[title.length];
-//     for (int i=0; i<buttons.length; i++) {
+//     for(int i=0; i<buttons.length; i++) {
 //       JCheckBox b = new JCheckBox(title[i]);
 //       b.setOpaque(false);
 //       b.setFocusable(false);
@@ -492,16 +492,16 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //   }
 //   @Override public Object getCellEditorValue() {
 //     EnumSet<Permissions> f = EnumSet.noneOf(Permissions.class);
-//     if (buttons[0].isSelected()) f.add(Permissions.READ);
-//     if (buttons[1].isSelected()) f.add(Permissions.WRITE);
-//     if (buttons[2].isSelected()) f.add(Permissions.EXECUTE);
+//     if(buttons[0].isSelected()) f.add(Permissions.READ);
+//     if(buttons[1].isSelected()) f.add(Permissions.WRITE);
+//     if(buttons[2].isSelected()) f.add(Permissions.EXECUTE);
 //     return f;
 //   }
 // //   @Override public Object getCellEditorValue() {
 // //     int i = 0;
-// //     if (buttons[0].isSelected()) i|=1<<2;
-// //     if (buttons[1].isSelected()) i|=1<<1;
-// //     if (buttons[2].isSelected()) i|=1<<0;
+// //     if(buttons[0].isSelected()) i|=1<<2;
+// //     if(buttons[1].isSelected()) i|=1<<1;
+// //     if(buttons[2].isSelected()) i|=1<<0;
 // //     return i;
 // //   }
 //
@@ -533,18 +533,18 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //   }
 //   protected void fireEditingStopped() {
 //     Object[] listeners = listenerList.getListenerList();
-//     for (int i = listeners.length-2; i>=0; i-=2) {
-//       if (listeners[i]==CellEditorListener.class) {
-//         if (changeEvent == null) changeEvent = new ChangeEvent(this);
+//     for(int i = listeners.length-2; i>=0; i-=2) {
+//       if(listeners[i]==CellEditorListener.class) {
+//         if(changeEvent == null) changeEvent = new ChangeEvent(this);
 //         ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
 //       }
 //     }
 //   }
 //   protected void fireEditingCanceled() {
 //     Object[] listeners = listenerList.getListenerList();
-//     for (int i = listeners.length-2; i>=0; i-=2) {
-//       if (listeners[i]==CellEditorListener.class) {
-//         if (changeEvent == null) changeEvent = new ChangeEvent(this);
+//     for(int i = listeners.length-2; i>=0; i-=2) {
+//       if(listeners[i]==CellEditorListener.class) {
+//         if(changeEvent == null) changeEvent = new ChangeEvent(this);
 //         ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
 //       }
 //     }

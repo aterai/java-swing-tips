@@ -301,7 +301,7 @@ class TabLayout implements LayoutManager, java.io.Serializable {
             int ncols = ncomponents-1;
             //boolean ltr = parent.getComponentOrientation().isLeftToRight();
 
-            if (ncomponents == 0) {
+            if(ncomponents == 0) {
                 return;
             }
             int lastw = parent.getComponent(ncomponents-1).getPreferredSize().width;
@@ -311,7 +311,7 @@ class TabLayout implements LayoutManager, java.io.Serializable {
             int gap = width - w*ncols;
             int x = insets.left;
             int y = insets.top;
-            for (int i=0;i<ncomponents;i++) {
+            for(int i=0;i<ncomponents;i++) {
                 int a = (gap>0)?1:0;
                 gap--;
                 int cw = (i==ncols)?lastw:w+a;
