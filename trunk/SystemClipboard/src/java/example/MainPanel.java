@@ -22,7 +22,7 @@ public class MainPanel extends JPanel{
         add(new JScrollPane(label));
         add(new JButton(new AbstractAction("get Clipboard DataFlavor") {
             @Override public void actionPerformed(ActionEvent e) {
-                try {
+                try{
                     Transferable t = (cs==null)?Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
                                                :cs.getContents();
                     if(t==null) {

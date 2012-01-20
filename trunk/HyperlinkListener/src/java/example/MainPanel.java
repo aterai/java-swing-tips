@@ -65,11 +65,11 @@ public class MainPanel extends JPanel {
         button.setToolTipText("button: "+LINK);
         button.setOpaque(false);
         StyleConstants.setComponent(s, button);
-        try {
+        try{
             doc.insertString(doc.getLength(), "\n----\nJButton:\n", null);
             doc.insertString(doc.getLength(), LINK +"\n", doc.getStyle("button"));
             //doc.insertString(doc.getLength(), "\n", null);
-        } catch (BadLocationException ble) {
+        }catch(BadLocationException ble) {
             ble.printStackTrace();
         }
         return editorPane;

@@ -18,7 +18,7 @@ public class MainPanel extends JPanel{
 //         tr.addImage(image, 1);
 //         try{
 //             tr.waitForID(1);
-//         } catch (InterruptedException e) {
+//         }catch(InterruptedException e) {
 //             e.printStackTrace();
 //         }
 
@@ -54,7 +54,7 @@ public class MainPanel extends JPanel{
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, pix, 0, width);
         try{
             pg.grabPixels();
-        } catch (Exception e) {
+        }catch(Exception e) {
             e.printStackTrace();
         }
 

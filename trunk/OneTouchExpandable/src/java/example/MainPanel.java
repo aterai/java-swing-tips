@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
             });
         }else{
             if(splitPane.getUI() instanceof BasicSplitPaneUI) {
-                try {
+                try{
                     //splitPane.setDividerLocation(1);
                     splitPane.setDividerLocation(0);
                     Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
