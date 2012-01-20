@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
             Field field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
             field.setAccessible(true);
             label2.putClientProperty(field.get(null), Boolean.TRUE);
-        } catch (Exception ex) {
+        }catch(Exception ex) {
             ex.printStackTrace();
         }
         glass.add(label1, BorderLayout.WEST);

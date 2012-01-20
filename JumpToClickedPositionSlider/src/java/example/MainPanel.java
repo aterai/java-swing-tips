@@ -54,7 +54,7 @@ public class MainPanel extends JPanel{
                     return new TrackListener() {
                         @Override public void mousePressed(MouseEvent e) {
                             JSlider slider = (JSlider)e.getSource();
-                            switch (slider.getOrientation()) {
+                            switch(slider.getOrientation()) {
                               case JSlider.VERTICAL:
                                 slider.setValue(valueForYPosition(e.getY()));
                                 break;
@@ -79,7 +79,7 @@ public class MainPanel extends JPanel{
                     return new TrackListener() {
                         @Override public void mousePressed(MouseEvent e) {
                             JSlider slider = (JSlider)e.getSource();
-                            switch (slider.getOrientation()) {
+                            switch(slider.getOrientation()) {
                               case JSlider.VERTICAL:
                                 slider.setValue(valueForYPosition(e.getY()));
                                 break;

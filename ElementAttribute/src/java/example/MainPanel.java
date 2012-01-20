@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
         JEditorPane editor1 = new JEditorPane() {
             //private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
             //    if(e != null && offset > 0 && e.getStartOffset() == offset) {
-            //        try {
+            //        try{
             //            TextUI ui = editor.getUI();
             //            Shape s1 = ui.modelToView(editor, offset, Position.Bias.Forward);
             //            if(s1 == null) {

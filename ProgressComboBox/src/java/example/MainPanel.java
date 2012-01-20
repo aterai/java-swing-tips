@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
                     @Override public String doInBackground() {
                         int current = 0;
                         while(current<=max && !isCancelled()) {
-                            try {
+                            try{
                                 Thread.sleep(50);
                                 //setProgress(100 * current / max);
                                 count = 100 * current / max;
