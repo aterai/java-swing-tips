@@ -72,16 +72,14 @@ public class MainPanel extends JPanel {
     private JTable makeJTable() {
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
-            {"AAA", 1, true},
-            {"BBB", 2, false},
+            {"AAA", 1, true}, {"BBB", 2, false},
         };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        TableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
-        return table;
+        return new JTable(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -117,16 +115,16 @@ class DnDTabbedPane extends JTabbedPane {
         ActionMap map = getActionMap();
         if(map != null) {
             Action action = map.get(actionKey);
-            if (action != null && action.isEnabled()) {
+            if(action != null && action.isEnabled()) {
                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
             }
         }
     }
-    private static Rectangle rBackward = new Rectangle();
-    private static Rectangle rForward  = new Rectangle();
+    public static Rectangle rBackward = new Rectangle();
+    public static Rectangle rForward  = new Rectangle();
     private static int rwh = 20;
-    private static int buttonsize = 30; //xxx magic number of scroll button size
-    private void autoScrollTest(Point glassPt) {
+    private static int buttonsize = 30; //XXX 30 is magic number of scroll button size
+    public void autoScrollTest(Point glassPt) {
         Rectangle r = getTabAreaBounds();
         int tabPlacement = getTabPlacement();
         if(tabPlacement==TOP || tabPlacement==BOTTOM) {
@@ -139,10 +137,8 @@ class DnDTabbedPane extends JTabbedPane {
         rBackward = SwingUtilities.convertRectangle(getParent(), rBackward, glassPane);
         rForward  = SwingUtilities.convertRectangle(getParent(), rForward,  glassPane);
         if(rBackward.contains(glassPt)) {
-            //System.out.println(new java.util.Date() + "Backward");
             clickArrowButton("scrollTabsBackwardAction");
         }else if(rForward.contains(glassPt)) {
-            //System.out.println(new java.util.Date() + "Forward");
             clickArrowButton("scrollTabsForwardAction");
         }
     }
@@ -312,7 +308,6 @@ class DnDTabbedPane extends JTabbedPane {
         //When you drag'n'drop a disabled tab, it finishes enabled and selected.
         //pointed out by dlorde
         if(flg) setSelectedIndex(tgtindex);
-
         //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
