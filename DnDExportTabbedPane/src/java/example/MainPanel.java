@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
         DnDTabbedPane sub = new DnDTabbedPane();
         sub.addTab("Title aa", new JLabel("aaa"));
         sub.addTab("Title bb", new JScrollPane(new JTree()));
-        sub.addTab("Title cc", new JScrollPane(new JTextArea("123412341234\n46746745\n245342\n")));
+        sub.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
         tab.addTab("JTree 00",       new JScrollPane(new JTree()));
         tab.addTab("JLabel 01",      new JLabel("Test"));
@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
         DnDTabbedPane sub2 = new DnDTabbedPane();
         sub2.addTab("Title aa", new JLabel("aaa"));
         sub2.addTab("Title bb", new JScrollPane(new JTree()));
-        sub2.addTab("Title cc", new JScrollPane(new JTextArea("123412341234\n46746745\n245342\n")));
+        sub2.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
         TransferHandler handler = new TabTransferHandler();
         for(JTabbedPane t:java.util.Arrays.asList(tab, sub, sub2)) {
@@ -97,7 +97,7 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
+        }catch(Exception e) {
             e.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
