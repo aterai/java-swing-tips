@@ -108,7 +108,7 @@ class MainPanel extends JPanel {
                 }
 
                 Component editor = cb.getEditor().getEditorComponent();
-                if ( editor != null ) {
+                if( editor != null ) {
                     editor.setBounds(insets.left + labelWidth, insets.top,
                                      width  - (insets.left + insets.right + buttonWidth + labelWidth + loupeWidth),
                                      height - (insets.top  + insets.bottom));

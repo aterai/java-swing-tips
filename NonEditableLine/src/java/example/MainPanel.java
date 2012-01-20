@@ -54,9 +54,9 @@ public class MainPanel extends JPanel {
 }
 class NonEditableLineDocumentFilter extends DocumentFilter {
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if (string == null) {
+        if(string == null) {
             return;
-        } else {
+        }else{
             replace(fb, offset, 0, string, attr);
         }
     }

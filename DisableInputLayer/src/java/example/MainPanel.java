@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("Stop 5sec") {
             public void actionPerformed(ActionEvent e) {
                 layerUI.start();
-                if (!stopper.isRunning()) {
+                if(!stopper.isRunning()) {
                     stopper.start();
                 }
             }
@@ -91,7 +91,7 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
     }
     private static final String CMD_REPAINT = "repaint";
     public void start() {
-        if (isRunning) return;
+        if(isRunning) return;
         isRunning = true;
         firePropertyChange(CMD_REPAINT,false,true);
     }

@@ -23,7 +23,7 @@ class MainPanel extends JPanel {
         layerPane = new BGImageLayeredPane();
         layerPane.setImage(image);
 
-        for (int i=0; i<7; i++) {
+        for(int i=0; i<7; i++) {
             JPanel p = createPanel(i);
             p.setLocation(i*70 + 20, i*50 + 15);
             layerPane.add(p, BACKLAYER);
@@ -89,7 +89,7 @@ class MainPanel extends JPanel {
             layerPane.moveToFront(panel);
         }
         @Override public void mouseDragged(MouseEvent e) {
-            if (origin == null) return;
+            if(origin == null) return;
             //ずれた分だけ JPanel を移動させる
             int dx = e.getX() - origin.x;
             int dy = e.getY() - origin.y;
@@ -117,7 +117,7 @@ class MainPanel extends JPanel {
 
         //override
         @Override public void paint(Graphics g) {
-            if (bgImage != null) {
+            if(bgImage != null) {
                 int imageh = bgImage.getHeight(null);
                 int imagew = bgImage.getWidth(null);
 

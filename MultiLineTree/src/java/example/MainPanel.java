@@ -152,7 +152,7 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         if(isSelected) {
             bColor = renderer.getBackgroundSelectionColor();
             fColor = renderer.getTextSelectionColor();
-        } else {
+        }else{
             bColor = renderer.getBackgroundNonSelectionColor();
             fColor = renderer.getTextNonSelectionColor();
             if(bColor == null) bColor = renderer.getBackground();
@@ -192,7 +192,7 @@ class CellTextArea extends JTextArea {
         String line;
         int maxWidth = 0, lines = 0;
         try{
-            while ((line = br.readLine()) != null) {
+            while((line = br.readLine()) != null) {
                 int width = SwingUtilities.computeStringWidth(fm, line);
                 if(maxWidth < width) {
                     maxWidth = width;

@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     public MainPanel(JFrame frame) {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new EditableTabbedPane(frame);
-        //for (int i = 0; i < 5; i++) {
+        //for(int i = 0; i < 5; i++) {
         //    String title = "Tab " + i;
         //    tabbedPane.add(title, new JLabel(title));
         //    tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));

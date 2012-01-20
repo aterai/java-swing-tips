@@ -152,14 +152,14 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
 //         renderer.setSelectedColumn(col);
 //         header.repaint();
 // 
-//         if (header.getTable().isEditing()) {
+//         if(header.getTable().isEditing()) {
 //             header.getTable().getCellEditor().stopCellEditing();
 //         }
 // 
 //         boolean isAscent;
-//         if (SortButtonRenderer.DOWN == renderer.getState(col)) {
+//         if(SortButtonRenderer.DOWN == renderer.getState(col)) {
 //             isAscent = true;
-//         } else {
+//         }else{
 //             isAscent = false;
 //         }
 //         ((SortableTableModel)header.getTable().getModel())

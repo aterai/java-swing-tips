@@ -94,7 +94,7 @@ class ListItemTransferHandler extends TransferHandler {
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
-        if (!info.isDrop() || !info.isDataFlavorSupported(localObjectFlavor)) {
+        if(!info.isDrop() || !info.isDataFlavorSupported(localObjectFlavor)) {
             return false;
         }
         return true;
@@ -103,7 +103,7 @@ class ListItemTransferHandler extends TransferHandler {
         return MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @Override public boolean importData(TransferSupport info) {
-        if (!canImport(info)) {
+        if(!canImport(info)) {
             return false;
         }
         JList target = (JList)info.getComponent();
@@ -118,7 +118,7 @@ class ListItemTransferHandler extends TransferHandler {
         addIndex = index;
 
         // ???
-        //if (indices != null && index >= indices[0] - 1 && index <= indices[indices.length - 1]) {
+        //if(indices != null && index >= indices[0] - 1 && index <= indices[indices.length - 1]) {
         //    indices = null;
         //    return false;
         //}

@@ -158,9 +158,9 @@ class TriSliderUI extends javax.swing.plaf.metal.MetalSliderUI {
 //   //slider.setPaintTicks(true);
 //   slider.setPaintLabels(true);
 //   Dictionary dictionary = slider.getLabelTable();
-//   if (dictionary != null) {
+//   if(dictionary != null) {
 //     Enumeration elements = dictionary.elements();
-//     while (elements.hasMoreElements()) {
+//     while(elements.hasMoreElements()) {
 //       JLabel label = (JLabel) elements.nextElement();
 //       label.setIcon(new TickIcon());
 //       label.setIconTextGap(0);

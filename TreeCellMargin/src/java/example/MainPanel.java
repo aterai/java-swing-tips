@@ -94,28 +94,28 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
         return this;
     }
     @Override public void paint(Graphics g) {
-        if (!getComponentOrientation().isLeftToRight()) {
+        if(!getComponentOrientation().isLeftToRight()) {
             super.paint(g);
             return;
         }
 
         Color bColor;
-        if (selected) {
+        if(selected) {
             bColor = getBackgroundSelectionColor();
-        } else {
+        }else{
             bColor = getBackgroundNonSelectionColor();
-            if (bColor == null) {
+            if(bColor == null) {
                 bColor = getBackground();
             }
         }
 
         int imageOffset = -1;
-        if (bColor != null && fillBackground) {
+        if(bColor != null && fillBackground) {
             imageOffset = getLabelStart();
             g.setColor(bColor);
-            if (getComponentOrientation().isLeftToRight()) {
+            if(getComponentOrientation().isLeftToRight()) {
                 g.fillRect(imageOffset - w, 0, getWidth() + w - imageOffset, getHeight());
-//             } else {
+//             }else{
 //                 //XXX
 //                 g.fillRect(0, 0, getWidth() - imageOffset, getHeight());
             }
@@ -128,17 +128,17 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
         //g.translate(-2,0);
         //selected = flag;
 
-        if (hasFocus) {
-            if (drawsFocusBorderAroundIcon) {
+        if(hasFocus) {
+            if(drawsFocusBorderAroundIcon) {
                 imageOffset = 0;
-            } else if (imageOffset == -1) {
+            } else if(imageOffset == -1) {
                 imageOffset = getLabelStart();
             }
-            if (getComponentOrientation().isLeftToRight()) {
+            if(getComponentOrientation().isLeftToRight()) {
                 g.setColor(bColor);
                 g.fillRect(imageOffset - w, 0, w + 1, getHeight());
                 paintFocus(g, imageOffset - w, 0, getWidth() + w - imageOffset, getHeight(), bColor);
-//             } else {
+//             }else{
 //                 //XXX
 //                 paintFocus(g, 0, 0, getWidth() - imageOffset, getHeight(), bColor);
             }
@@ -147,12 +147,12 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor) {
         Color bsColor = getBorderSelectionColor();
 
-        if (bsColor != null && (selected || !drawDashedFocusIndicator)) {
+        if(bsColor != null && (selected || !drawDashedFocusIndicator)) {
             g.setColor(bsColor);
             g.drawRect(x, y, w - 1, h - 1);
         }
-        if (drawDashedFocusIndicator && notColor != null) {
-            if (treeBGColor != notColor) {
+        if(drawDashedFocusIndicator && notColor != null) {
+            if(treeBGColor != notColor) {
                 treeBGColor = notColor;
                 focusBGColor = new Color(~notColor.getRGB());
             }
@@ -162,7 +162,7 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     private int getLabelStart() {
         Icon currentI = getIcon();
-        if (currentI != null && getText() != null) {
+        if(currentI != null && getText() != null) {
             return currentI.getIconWidth() + Math.max(0, getIconTextGap() - 1);
         }
         return 0;
@@ -197,11 +197,11 @@ class MyTreeCellRenderer2 extends DefaultTreeCellRenderer {
         if(selected) {
             bColor = getBackgroundSelectionColor();
             fColor = getTextSelectionColor();
-        } else {
+        }else{
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
-            if (bColor == null) bColor = getBackground();
-            if (fColor == null) fColor = getForeground();
+            if(bColor == null) bColor = getBackground();
+            if(fColor == null) fColor = getForeground();
         }
         text.setForeground(fColor);
         text.setBackground(bColor);

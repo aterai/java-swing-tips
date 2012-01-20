@@ -66,7 +66,7 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
          if(offset==0 && doc.getLength()-length>0) {
              fb.replace(0, length+1, doc.getText(length, 1).toUpperCase(), null);
              textArea.setCaretPosition(0);
-         } else {
+         }else{
              fb.remove(offset, length);
          }
      }
