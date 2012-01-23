@@ -557,8 +557,10 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     private final Rectangle lineRect = new Rectangle();
     @Override public void paint(Graphics g, JComponent c) {
         super.paint (g, c);
-        JLayer<DnDTabbedPane> layer = (JLayer<DnDTabbedPane>)c;
-        DnDTabbedPane tabbedPane = layer.getView();
+//         JLayer<DnDTabbedPane> layer = (JLayer<DnDTabbedPane>)c;
+//         DnDTabbedPane tabbedPane = layer.getView();
+        JLayer layer = (JLayer)c;
+        DnDTabbedPane tabbedPane = (DnDTabbedPane)layer.getView();
         DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
         if(loc != null && loc.isDropable() && loc.getIndex()>=0) {
             int index = loc.getIndex();
