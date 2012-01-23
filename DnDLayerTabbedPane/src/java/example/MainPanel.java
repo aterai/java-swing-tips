@@ -404,7 +404,12 @@ enum DragImageMode {
 
 class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    private final JLabel label = new JLabel();
+    private final JLabel label = new JLabel() {
+        //[http://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html Free the pixel: GHOST drag and drop, over multiple windows]
+        @Override public boolean contains(int x, int y) {
+            return false;
+        }
+    };
     private final JWindow dialog = new JWindow();
     private DragImageMode mode = DragImageMode.Lightweight;
     public void setDragImageMode(DragImageMode mode) {
@@ -415,13 +420,13 @@ class TabTransferHandler extends TransferHandler {
         System.out.println("TabTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
         dialog.add(label);
-        //dialog.setAlwaysOnTop(true);
+        //dialog.setAlwaysOnTop(true); // Web Start
         dialog.setOpacity(0.5f);
         //com.sun.awt.AWTUtilities.setWindowOpacity(dialog, 0.5f); // JDK 1.6.0
         DragSource.getDefaultDragSource().addDragSourceMotionListener(new DragSourceMotionListener() {
             @Override public void dragMouseMoved(DragSourceDragEvent dsde) {
                 Point pt = dsde.getLocation();
-                pt.translate(5, 5);
+                pt.translate(5, 5); // offset
                 dialog.setLocation(pt);
             }
         });
