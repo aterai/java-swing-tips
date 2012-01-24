@@ -34,6 +34,32 @@ public class MainPanel extends JPanel {
         add(makeTitledPanel("JCheckBoxes as JTree Leaf Nodes", tree));
         setPreferredSize(new Dimension(320, 240));
     }
+//     protected static TreeModel getDefaultTreeModel() {
+//         DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
+//         DefaultMutableTreeNode parent;
+//
+//         parent = new DefaultMutableTreeNode("colors");
+//         root.add(parent);
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("blue",   false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("violet", false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("red",    false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("yellow", false)));
+//
+//         parent = new DefaultMutableTreeNode("sports");
+//         root.add(parent);
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("basketball", true)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("soccer",     true)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("football",   true)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hockey",     true)));
+//
+//         parent = new DefaultMutableTreeNode("food");
+//         root.add(parent);
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hot dogs", false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("pizza",    false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("ravioli",  false)));
+//         parent.add(new DefaultMutableTreeNode(new CheckBoxNode("bananas",  false)));
+//         return new DefaultTreeModel(root);
+//     }
     private JComponent makeTitledPanel(String title, JTree tree) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
