@@ -10,10 +10,21 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private final JTree tree = new JTree(getDefaultTreeModel());
     public MainPanel() {
         super(new BorderLayout());
 
+        boolean b = true;
+        JTree tree = new JTree();
+        TreeModel model = tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+        Enumeration e = root.breadthFirstEnumeration();
+        while(e.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
+            Object o = node.getUserObject();
+            if(o instanceof String) {
+                node.setUserObject(new CheckBoxNode((String)o, b=!b));
+            }
+        }
         for(int i=0;i<tree.getRowCount();i++) tree.expandRow(i);
 
         tree.setCellRenderer(new CheckBoxNodeRenderer());
@@ -28,32 +39,6 @@ public class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JScrollPane(tree));
         return p;
-    }
-    protected static TreeModel getDefaultTreeModel() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
-        DefaultMutableTreeNode parent;
-
-        parent = new DefaultMutableTreeNode("colors");
-        root.add(parent);
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("blue",   false)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("violet", false)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("red",    false)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("yellow", false)));
-
-        parent = new DefaultMutableTreeNode("sports");
-        root.add(parent);
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("basketball", true)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("soccer",     true)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("football",   true)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hockey",     true)));
-
-        parent = new DefaultMutableTreeNode("food");
-        root.add(parent);
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("hot dogs", false)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("pizza",    false)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("ravioli",  false)));
-        parent.add(new DefaultMutableTreeNode(new CheckBoxNode("bananas",  false)));
-        return new DefaultTreeModel(root);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
