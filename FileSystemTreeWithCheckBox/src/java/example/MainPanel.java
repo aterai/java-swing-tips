@@ -172,18 +172,17 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, "", true, expanded, leaf, row, true);
         //l.setEnabled(tree.isEnabled());
         //l.setFont(tree.getFont());
-        setOpaque(false); // JDK 1.7.0
+        setOpaque(false);
         if(value != null && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-//                 if(file==null && System.getProperty("java.version").startsWith("1.7.0")) {
-//                     System.out.println("XXX: Java 7, only on first run");
-//                     setSelected(!node.selected);
-//                 }else{
-//                     setSelected(node.selected);
-//                 }
-                setSelected(node.selected);
+                if(file==null && System.getProperty("java.version").startsWith("1.7.0")) {
+                    System.out.println("XXX: Java 7, only on first run");
+                    setSelected(!node.selected);
+                }else{
+                    setSelected(node.selected);
+                }
                 file = node.file;
                 l.setIcon(fileSystemView.getSystemIcon(file));
                 l.setText(fileSystemView.getSystemDisplayName(file));
