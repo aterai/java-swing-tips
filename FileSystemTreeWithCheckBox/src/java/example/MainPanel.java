@@ -167,21 +167,23 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
-        this.setOpaque(false);
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, "", true, expanded, leaf, row, true);
-        //label.setFont(tree.getFont());
+        //l.setEnabled(tree.isEnabled());
+        //l.setFont(tree.getFont());
+        setOpaque(false); // JDK 1.7.0
         if(value != null && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                if(file==null && System.getProperty("java.version").startsWith("1.7.0")) {
-                    System.out.println("XXX: Java 7, only on first run");
-                    setSelected(!node.selected);
-                }else{
-                    setSelected(node.selected);
-                }
+//                 if(file==null && System.getProperty("java.version").startsWith("1.7.0")) {
+//                     System.out.println("XXX: Java 7, only on first run");
+//                     setSelected(!node.selected);
+//                 }else{
+//                     setSelected(node.selected);
+//                 }
+                setSelected(node.selected);
                 file = node.file;
                 l.setIcon(fileSystemView.getSystemIcon(file));
                 l.setText(fileSystemView.getSystemDisplayName(file));
