@@ -248,7 +248,7 @@ public final class BarFactory{
                     mi.setText(mitext+" ("+tmp+")");
                 }
                 //byte[] bt = tmp.getBytes();
-                mi.setMnemonic((int) tmp.getChars(0));
+                mi.setMnemonic((int) tmp.charAt(0));
                 //System.out.println(cmd+", "+tmp);
             }
         }
