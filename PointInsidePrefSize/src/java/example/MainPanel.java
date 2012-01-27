@@ -191,11 +191,16 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             int crow = table.rowAtPoint(pt);
             URL url = (URL)table.getValueAt(crow, ccol);
             System.out.println(url);
-            //try{
-            //  Desktop.getDesktop().browse(url.toURI());
-            //}catch(Exception ex) {
-            //  ex.printStackTrace();
-            //}
+            try{
+                //Web Start
+                //BasicService bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
+                //bs.showDocument(url);
+                if(Desktop.isDesktopSupported()) { // JDK 1.6.0
+                    Desktop.getDesktop().browse(url.toURI());
+                }
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
     @Override public void mouseDragged(MouseEvent e) {}
