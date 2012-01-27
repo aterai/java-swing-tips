@@ -20,8 +20,7 @@ public class MainPanel extends JPanel {
         editor.setEditable(false);
         editor.addHyperlinkListener(new HyperlinkListener() {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
-                    if(!Desktop.isDesktopSupported()) return;
+                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED && Desktop.isDesktopSupported()) {
                     try{
                         Desktop.getDesktop().browse(new URI(MYSITE));
                     }catch(IOException ioe) {

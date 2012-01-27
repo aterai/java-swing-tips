@@ -20,14 +20,15 @@ public class MainPanel extends JPanel {
     private static final Action a = new AbstractAction(MYSITE) {
         @Override public void actionPerformed(ActionEvent e) {
             java.awt.Toolkit.getDefaultToolkit().beep();
-            //if(!Desktop.isDesktopSupported()) return;
-            //try{
-            //    Desktop.getDesktop().browse(new URI(MYSITE));
-            //}catch(IOException ioe) {
-            //    ioe.printStackTrace();
-            //}catch(URISyntaxException use) {
-            //    use.printStackTrace();
-            //}
+            try{
+                if(!Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(new URI(MYSITE));
+                }
+            }catch(IOException ioe) {
+                ioe.printStackTrace();
+            }catch(URISyntaxException use) {
+                use.printStackTrace();
+            }
         }
     };
 
