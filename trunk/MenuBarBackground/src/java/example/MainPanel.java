@@ -86,6 +86,8 @@ public class MainPanel extends JPanel{
         }catch(Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Menu.useMenuBarBackgroundForTopLevel: "+UIManager.getBoolean("Menu.useMenuBarBackgroundForTopLevel"));
+        //TEST: UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.FALSE);
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel(frame));
