@@ -189,7 +189,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
         listenerList.remove(CellEditorListener.class, l);
     }
     public CellEditorListener[] getCellEditorListeners() {
-        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+        return listenerList.getListeners(CellEditorListener.class);
     }
     protected void fireEditingStopped() {
         // Guaranteed to return a non-null array
@@ -271,8 +271,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //         listenerList.remove(CellEditorListener.class, l);
 //     }
 //     public CellEditorListener[] getCellEditorListeners() {
-//         return (CellEditorListener[])listenerList.getListeners(
-//             CellEditorListener.class);
+//         return listenerList.getListeners(CellEditorListener.class);
 //     }
 //     protected void fireEditingStopped() {
 //         // Guaranteed to return a non-null array
@@ -529,7 +528,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 //     listenerList.remove(CellEditorListener.class, l);
 //   }
 //   public CellEditorListener[] getCellEditorListeners() {
-//     return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+//     return listenerList.getListeners(CellEditorListener.class);
 //   }
 //   protected void fireEditingStopped() {
 //     Object[] listeners = listenerList.getListenerList();

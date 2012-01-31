@@ -123,7 +123,7 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
         listenerList.remove(CellEditorListener.class, l);
     }
     public CellEditorListener[] getCellEditorListeners() {
-        return (CellEditorListener[])listenerList.getListeners(CellEditorListener.class);
+        return listenerList.getListeners(CellEditorListener.class);
     }
     protected void fireEditingStopped() {
         // Guaranteed to return a non-null array
