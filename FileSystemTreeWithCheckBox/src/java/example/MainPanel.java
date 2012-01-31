@@ -177,12 +177,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                if(file==null && System.getProperty("java.version").startsWith("1.7.0")) {
-                    System.out.println("XXX: Java 7, only on first run");
-                    setSelected(!node.selected);
-                }else{
-                    setSelected(node.selected);
-                }
+                setSelected(node.selected);
                 file = node.file;
                 l.setIcon(fileSystemView.getSystemIcon(file));
                 l.setText(fileSystemView.getSystemDisplayName(file));
@@ -206,8 +201,14 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
             if(r==null) return false;
-            r.setSize(new Dimension(r.height, r.height));
+            Dimension d = getPreferredSize();
+            r.setSize(new Dimension(d.width, r.height));
             if(r.contains(me.getX(), me.getY())) {
+                if(file==null && System.getProperty("java.version").startsWith("1.7.0")) {
+                    System.out.println("XXX: Java 7, only on first run\n"+getBounds());
+                    setBounds(new Rectangle(0,0,d.width,r.height));
+                }
+                //System.out.println(getBounds());
                 return true;
             }
         }
