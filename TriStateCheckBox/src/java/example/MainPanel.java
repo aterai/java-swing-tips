@@ -77,6 +77,8 @@ public class MainPanel extends JPanel {
         TableColumn column = table.getColumnModel().getColumn(0);
         column.setHeaderRenderer(new HeaderRenderer(table.getTableHeader(), 0));
         column.setHeaderValue(Status.INDETERMINATE);
+        column.setResizable(false);
+        column.setMaxWidth(32);
 
         model.addTableModelListener(new TableModelListener() {
             @Override public void tableChanged(TableModelEvent e) {
@@ -223,7 +225,8 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, "Check All", isS, hasF, row, col);
+        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, "", isS, hasF, row, col);
+        l.setHorizontalAlignment(SwingConstants.CENTER);
         if(val instanceof Status) {
             switch((Status)val) {
               case SELECTED:      setSelected(true);  setIcon(null); break;
