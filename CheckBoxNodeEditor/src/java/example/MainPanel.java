@@ -186,6 +186,11 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
     private JTree tree = null;
     public CheckBoxNodeRenderer() {
         super();
+        String uiName = getUI().getClass().getName();
+        if(uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
+            System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
+            renderer.setBackgroundSelectionColor(new Color(0,0,0,0));
+        }
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
