@@ -13,7 +13,16 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JTree tree = new JTree();
+        JTree tree = new JTree() {
+            @Override public void updateUI() {
+                setCellRenderer(null);
+                setCellEditor(null);
+                super.updateUI();
+                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                setCellRenderer(new CheckBoxNodeRenderer());
+                setCellEditor(new CheckBoxNodeEditor());
+            }
+        };
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         Enumeration e = root.breadthFirstEnumeration();
@@ -24,10 +33,12 @@ public class MainPanel extends JPanel {
                 node.setUserObject(new CheckBoxNode((String)o, false));
             }
         }
-        tree.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-        tree.setCellRenderer(new CheckBoxNodeRenderer());
-        tree.setCellEditor(new CheckBoxNodeEditor());
         tree.setEditable(true);
+        tree.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+
+        //???#1: JDK 1.6.0 bug??? Nimbus LnF
+        //tree.setCellRenderer(new CheckBoxNodeRenderer());
+        //tree.setCellEditor(new CheckBoxNodeEditor());
 
         tree.expandRow(0);
         //tree.setToggleClickCount(1);
@@ -116,69 +127,23 @@ public class MainPanel extends JPanel {
     }
 }
 
-class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
-    private final JPanel panel = new JPanel(new BorderLayout());
-    public CheckBoxNodeRenderer() {
-        super();
-        panel.setFocusable(false);
-        panel.setRequestFocusEnabled(false);
-        panel.setOpaque(false);
-        panel.add(this, BorderLayout.WEST);
-        this.setOpaque(false);
-    }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        this.tree = tree;
-        if(value != null && value instanceof DefaultMutableTreeNode) {
-            this.setEnabled(tree.isEnabled());
-            this.setFont(tree.getFont());
-            this.setOpaque(false);
-            Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-            if(userObject!=null && userObject instanceof CheckBoxNode) {
-                CheckBoxNode node = (CheckBoxNode)userObject;
-                if(!node.selected && node.iv) {
-                    setIcon(new IndeterminateIcon());
-                }else{
-                    setIcon(null);
-                }
-                l.setText(node.str);
-                setSelected(node.selected);
-            }
-            panel.add(l);
-            return panel;
-        }
-        return l;
-    }
-    private JTree tree = null;
-    private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-
+class TriStateCheckBox extends JCheckBox{
     private Icon currentIcon;
     @Override public void updateUI() {
         currentIcon = getIcon();
         setIcon(null);
-
         super.updateUI();
-        if(panel!=null) panel.updateUI();
-        setName("Tree.cellRenderer");
-        //1.6.0_24 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        renderer = new DefaultTreeCellRenderer();
-        if(tree!=null) { //update all node width???
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-            java.util.Enumeration depth = root.depthFirstEnumeration();
-            while(depth.hasMoreElements()) {
-                model.nodeChanged((TreeNode)depth.nextElement());
-            }
-        }
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 if(currentIcon!=null) {
                     setIcon(new IndeterminateIcon());
                 }
+                setOpaque(false);
             }
         });
     }
 }
+
 class IndeterminateIcon implements Icon {
     private final Color color = new Color(50,20,255,200); //TEST: UIManager.getColor("CheckBox.foreground");
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
@@ -195,9 +160,80 @@ class IndeterminateIcon implements Icon {
     @Override public int getIconWidth()  { return icon.getIconWidth();  }
     @Override public int getIconHeight() { return icon.getIconHeight(); }
 }
-class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
-    private final JPanel panel = new JPanel(new BorderLayout());
+
+class CheckBoxNode{
+    public final String str;
+    public final boolean selected;
+    public final boolean indeterminate;
+    public CheckBoxNode(String str) {
+        this.str = str;
+        this.selected = false;
+        this.indeterminate = true;
+    }
+    public CheckBoxNode(String str, boolean selected) {
+        this.str = str;
+        this.selected = selected;
+        this.indeterminate = false;
+    }
+    @Override public String toString() {
+        return str;
+    }
+}
+
+class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer {
     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    private final JPanel panel = new JPanel(new BorderLayout());
+    private JTree tree = null;
+    public CheckBoxNodeRenderer() {
+        super();
+        panel.setFocusable(false);
+        panel.setRequestFocusEnabled(false);
+        panel.setOpaque(false);
+        panel.add(this, BorderLayout.WEST);
+        this.setOpaque(false);
+    }
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        this.tree = tree;
+        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        l.setFont(tree.getFont());
+        if(value != null && value instanceof DefaultMutableTreeNode) {
+            this.setEnabled(tree.isEnabled());
+            this.setFont(tree.getFont());
+            Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
+            if(userObject!=null && userObject instanceof CheckBoxNode) {
+                CheckBoxNode node = (CheckBoxNode)userObject;
+                if(!node.selected && node.indeterminate) {
+                    setIcon(new IndeterminateIcon());
+                }else{
+                    setIcon(null);
+                }
+                l.setText(node.str);
+                setSelected(node.selected);
+            }
+            //panel.add(this, BorderLayout.WEST);
+            panel.add(l);
+            return panel;
+        }
+        return l;
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        if(panel!=null) {
+            //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+            panel.updateUI();
+            //panel.add(this, BorderLayout.WEST);
+        }
+        setName("Tree.cellRenderer");
+        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+        //if(str==null && System.getProperty("java.version").startsWith("1.6.0")) {
+        //    renderer = new DefaultTreeCellRenderer();
+        //}
+    }
+}
+
+class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
+    private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    private final JPanel panel = new JPanel(new BorderLayout());
     private String str = null;
     public CheckBoxNodeEditor() {
         super();
@@ -207,35 +243,36 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
                 stopCellEditing();
             }
         });
-
         panel.setFocusable(false);
-        //panel.setRequestFocusEnabled(false);
+        panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
         panel.add(this, BorderLayout.WEST);
         this.setOpaque(false);
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, "", true, expanded, leaf, row, true);
+        //JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
         l.setFont(tree.getFont());
         if(value != null && value instanceof DefaultMutableTreeNode) {
+            this.setEnabled(tree.isEnabled());
+            this.setFont(tree.getFont());
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                setSelected(node.selected);
-                if(!node.selected && node.iv) {
+                if(!node.selected && node.indeterminate) {
                     setIcon(new IndeterminateIcon());
                 }else{
                     setIcon(null);
                 }
                 l.setText(node.str);
+                setSelected(node.selected);
                 str = node.str;
-            }else{
-                setSelected(false);
-                l.setText("");
             }
+            //panel.add(this, BorderLayout.WEST);
+            panel.add(l);
+            return panel;
         }
-        panel.add(l);
-        return panel;
+        return l;
     }
     @Override public Object getCellEditorValue() {
         return new CheckBoxNode(str, isSelected());
@@ -260,21 +297,18 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         }
         return false;
     }
-    private Icon currentIcon;
     @Override public void updateUI() {
-        currentIcon = getIcon();
-        setIcon(null);
         super.updateUI();
-        if(panel!=null) panel.updateUI();
-        //1.6.0_24 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        renderer = new DefaultTreeCellRenderer();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                if(currentIcon!=null) {
-                    setIcon(new IndeterminateIcon());
-                }
-            }
-        });
+        setName("Tree.cellEditor");
+        if(panel!=null) {
+            //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+            panel.updateUI();
+            //panel.add(this, BorderLayout.WEST);
+        }
+        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+        //if(str==null && System.getProperty("java.version").startsWith("1.6.0")) {
+        //    renderer = new DefaultTreeCellRenderer();
+        //}
     }
 
     //Copid from AbstractCellEditor
@@ -324,24 +358,5 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }
-    }
-}
-
-class CheckBoxNode {
-    public final String str;
-    public final boolean selected;
-    public final boolean iv;
-    public CheckBoxNode(String str) {
-        this.str = str;
-        this.selected = false;
-        this.iv = true;
-    }
-    public CheckBoxNode(String str, boolean selected) {
-        this.str = str;
-        this.selected = selected;
-        this.iv = false;
-    }
-    @Override public String toString() {
-        return str;
     }
 }

@@ -277,14 +277,14 @@ class CheckBoxIcon implements Icon{
 }
 
 class IndeterminateIcon implements Icon {
-    private final Color color = UIManager.getColor("CheckBox.foreground");
+    private final Color FOREGROUND = Color.BLACK; //TEST: UIManager.getColor("CheckBox.foreground");
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         icon.paintIcon(c, g, x, y);
         int w = getIconWidth(), h = getIconHeight();
         int a = 4, b = 2;
         Graphics2D g2 = (Graphics2D)g;
-        g2.setPaint(Color.BLACK);
+        g2.setPaint(FOREGROUND);
         g2.translate(x, y);
         g2.fillRect(a, (h-b)/2, w-a-a, b);
         g2.translate(-x, -y);
