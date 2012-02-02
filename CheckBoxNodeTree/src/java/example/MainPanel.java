@@ -12,9 +12,17 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-
         boolean b = true;
-        JTree tree = new JTree();
+        JTree tree = new JTree() {
+            @Override public void updateUI() {
+                setCellRenderer(null);
+                setCellEditor(null);
+                super.updateUI();
+                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                setCellRenderer(new CheckBoxNodeRenderer());
+                setCellEditor(new CheckBoxNodeEditor(this));
+            }
+        };
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         Enumeration e = root.breadthFirstEnumeration();
@@ -27,8 +35,8 @@ public class MainPanel extends JPanel {
         }
         for(int i=0;i<tree.getRowCount();i++) tree.expandRow(i);
 
-        tree.setCellRenderer(new CheckBoxNodeRenderer());
-        tree.setCellEditor(new CheckBoxNodeEditor(tree));
+        //tree.setCellRenderer(new CheckBoxNodeRenderer());
+        //tree.setCellEditor(new CheckBoxNodeEditor(tree));
         tree.setEditable(true);
 
         add(makeTitledPanel("JCheckBoxes as JTree Leaf Nodes", tree));
@@ -90,7 +98,6 @@ public class MainPanel extends JPanel {
 
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        this.tree = tree;
         if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
             this.setEnabled(tree.isEnabled());
             this.setFont(tree.getFont());
@@ -105,21 +112,14 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
         }
         return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     }
-    private JTree tree = null;
     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public void updateUI() {
         super.updateUI();
         setName("Tree.cellRenderer");
-        //1.6.0_24 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        renderer = new DefaultTreeCellRenderer();
-        if(tree!=null) { //update all node width???
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-            java.util.Enumeration depth = root.depthFirstEnumeration();
-            while(depth.hasMoreElements()) {
-                model.nodeChanged((TreeNode)depth.nextElement());
-            }
-        }
+        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+        //if(System.getProperty("java.version").startsWith("1.6.0")) {
+        //    renderer = new DefaultTreeCellRenderer();
+        //}
     }
 }
 
@@ -128,8 +128,6 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     public CheckBoxNodeEditor(JTree tree) {
         super();
         this.tree = tree;
-        setFocusable(false);
-        setRequestFocusEnabled(false);
         setOpaque(false);
         addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -162,11 +160,13 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         }
         return false;
     }
-
+    @Override public void updateUI() {
+        super.updateUI();
+        setName("Tree.cellEditor");
+    }
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //transient protected ChangeEvent changeEvent = null;
-
     @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
         return true;
     }
@@ -238,9 +238,8 @@ class CheckBoxNode {
     }
 }
 
+//TEST:
 // class CheckBoxNodeRenderer extends DefaultTreeCellRenderer {
-//     
-//     
 //     private final JCheckBox leafRenderer = new JCheckBox();
 //     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //         this.tree = tree;
@@ -272,9 +271,6 @@ class CheckBoxNode {
 // //             c.setForeground(getTextNonSelectionColor());
 // //             c.setBackground(getBackgroundNonSelectionColor());
 // //         }
-//         
-//         
-//         
 //         //c.setOpaque(false);
 //         return c;
 //     }
@@ -286,9 +282,6 @@ class CheckBoxNode {
 //             TreeCellRenderer r = tree.getCellRenderer();
 //             
 //         }
-//         
-//
-//         
 //         if(leafRenderer!=null) leafRenderer.updateUI();
 //
 //         //setLeafIcon(getDefaultLeafIcon());
