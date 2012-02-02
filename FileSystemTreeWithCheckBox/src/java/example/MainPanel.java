@@ -14,7 +14,7 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+        final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         for(File fileSystemRoot: fileSystemView.getRoots()) {
@@ -27,12 +27,21 @@ public class MainPanel extends JPanel {
             }
         }
 
-        JTree tree = new JTree(treeModel);
+        JTree tree = new JTree(treeModel) {
+            @Override public void updateUI() {
+                setCellRenderer(null);
+                setCellEditor(null);
+                super.updateUI();
+                //???#1: JDK 1.6.0 bug??? Nimbus LnF
+                setCellRenderer(new FileTreeCellRenderer(fileSystemView));
+                setCellEditor(new CheckBoxNodeEditor(fileSystemView));
+            }
+        };
         tree.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         tree.setRootVisible(false);
         tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
-        tree.setCellRenderer(new FileTreeCellRenderer(fileSystemView));
-        tree.setCellEditor(new CheckBoxNodeEditor(fileSystemView));
+        //tree.setCellRenderer(new FileTreeCellRenderer(fileSystemView));
+        //tree.setCellEditor(new CheckBoxNodeEditor(fileSystemView));
         tree.setEditable(true);
 
         tree.expandRow(0);
@@ -110,14 +119,16 @@ class FileTreeCellRenderer extends JCheckBox implements TreeCellRenderer {
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
+        panel.add(this, BorderLayout.WEST);
         this.setOpaque(false);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         this.tree = tree;
         JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        //l.setEnabled(tree.isEnabled());
-        //l.setFont(tree.getFont());
+        l.setFont(tree.getFont());
         if(value != null && value instanceof DefaultMutableTreeNode) {
+            this.setEnabled(tree.isEnabled());
+            this.setFont(tree.getFont());
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
@@ -128,7 +139,7 @@ class FileTreeCellRenderer extends JCheckBox implements TreeCellRenderer {
                 setText("");
                 setSelected(node.selected);
             }
-            panel.add(this, BorderLayout.WEST);
+            //panel.add(this, BorderLayout.WEST);
             panel.add(l);
             return panel;
         }
@@ -136,18 +147,16 @@ class FileTreeCellRenderer extends JCheckBox implements TreeCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if(panel!=null) panel.updateUI();
-        setName("Tree.cellRenderer");
-        //1.6.0_24 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        renderer = new DefaultTreeCellRenderer();
-        if(tree!=null) { //update all node width???
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-            java.util.Enumeration depth = root.depthFirstEnumeration();
-            while(depth.hasMoreElements()) {
-                model.nodeChanged((TreeNode)depth.nextElement());
-            }
+        if(panel!=null) {
+            //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+            panel.updateUI();
+            //panel.add(this, BorderLayout.WEST);
         }
+        setName("Tree.cellRenderer");
+        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+        //if(System.getProperty("java.version").startsWith("1.6.0")) {
+        //    renderer = new DefaultTreeCellRenderer();
+        //}
     }
 }
 
@@ -167,29 +176,30 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
+        panel.add(this, BorderLayout.WEST);
+        this.setOpaque(false);
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, "", true, expanded, leaf, row, true);
-        //l.setEnabled(tree.isEnabled());
-        //l.setFont(tree.getFont());
+        //JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+        l.setFont(tree.getFont());
         setOpaque(false);
         if(value != null && value instanceof DefaultMutableTreeNode) {
+            this.setEnabled(tree.isEnabled());
+            this.setFont(tree.getFont());
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                setSelected(node.selected);
                 file = node.file;
                 l.setIcon(fileSystemView.getSystemIcon(file));
                 l.setText(fileSystemView.getSystemDisplayName(file));
-            }else{
-                setSelected(false);
-                l.setText("");
+                setSelected(node.selected);
             }
+            //panel.add(this, BorderLayout.WEST);
+            panel.add(l);
+            return panel;
         }
-        panel.removeAll();
-        panel.add(this, BorderLayout.WEST);
-        panel.add(l);
-        return panel;
+        return l;
     }
     @Override public Object getCellEditorValue() {
         return new CheckBoxNode(file, isSelected());
@@ -216,9 +226,16 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if(panel!=null) panel.updateUI();
-        //1.6.0_24 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        renderer = new DefaultTreeCellRenderer();
+        setName("Tree.cellEditor");
+        if(panel!=null) {
+            //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+            panel.updateUI();
+            //panel.add(this, BorderLayout.WEST);
+        }
+        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+        //if(System.getProperty("java.version").startsWith("1.6.0")) {
+        //    renderer = new DefaultTreeCellRenderer();
+        //}
     }
 
     //Copid from AbstractCellEditor
