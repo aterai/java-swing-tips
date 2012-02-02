@@ -225,7 +225,7 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
         }
         setName("Tree.cellRenderer");
         //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        //if(str==null && System.getProperty("java.version").startsWith("1.6.0")) {
+        //if(System.getProperty("java.version").startsWith("1.6.0")) {
         //    renderer = new DefaultTreeCellRenderer();
         //}
     }
@@ -306,7 +306,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             //panel.add(this, BorderLayout.WEST);
         }
         //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        //if(str==null && System.getProperty("java.version").startsWith("1.6.0")) {
+        //if(System.getProperty("java.version").startsWith("1.6.0")) {
         //    renderer = new DefaultTreeCellRenderer();
         //}
     }
