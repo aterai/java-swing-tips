@@ -96,12 +96,10 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
-    private final JLabel leftLabel  = new JLabel();
+class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
+    private final JLabel leftLabel = new JLabel();
     private final JLabel rightLabel;
     private boolean isFirstTime = true;
-
-    private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
     public MultiColumnCellRenderer(int rightWidth) {
         super(new BorderLayout());
@@ -124,9 +122,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         this.add(leftLabel);
         this.add(rightLabel, BorderLayout.EAST);
     }
-    @Override public Component getListCellRendererComponent(JList list, Object value,
-                                                  int index, boolean isSelected,
-                                                  boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         LRItem item = (LRItem)value;
         leftLabel.setText(item.getLeftText());
         rightLabel.setText(item.getRightText());
@@ -144,8 +140,8 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
             this.setOpaque(false);
         }else{
             leftLabel.setForeground(isSelected?list.getSelectionForeground():list.getForeground());
-            this.setOpaque(true);
             this.setBackground(isSelected?list.getSelectionBackground():list.getBackground());
+            this.setOpaque(true);
         }
         return this;
     }
@@ -155,6 +151,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         isFirstTime = true;
     }
 }
+
 class LRItem{
     private final String leftText;
     private final String rightText;
