@@ -86,9 +86,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
 
     public MultiColumnCellRenderer(int rightWidth) {
         super(new BorderLayout());
-        this.setOpaque(true);
         this.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-        this.setName("List.cellRenderer");
 
         leftLabel.setOpaque(false);
         leftLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
@@ -112,21 +110,25 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         leftLabel.setFont(list.getFont());
         rightLabel.setFont(list.getFont());
 
-        leftLabel.setForeground(isSelected?list.getSelectionForeground():list.getForeground());
-        this.setBackground(isSelected?list.getSelectionBackground():list.getBackground());
-
         if(index<0) {
             Dimension d = getSize();
             if(d.width!=prevwidth) {
                 list.setPreferredSize(new Dimension(d.width, 0));
                 prevwidth = d.width;
             }
+            leftLabel.setForeground(list.getForeground());
+            this.setOpaque(false);
+        }else{
+            leftLabel.setForeground(isSelected?list.getSelectionForeground():list.getForeground());
+            this.setOpaque(true);
+            this.setBackground(isSelected?list.getSelectionBackground():list.getBackground());
         }
         return this;
     }
     @Override public void updateUI() {
         prevwidth = -1;
         super.updateUI();
+        this.setName("List.cellRenderer");
     }
 }
 class LRItem{
