@@ -12,6 +12,23 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         combo1.setRenderer(new MultiColumnCellRenderer(80));
+//         //TEST
+//         combo1.addPopupMenuListener(new PopupMenuListener() {
+//             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+//                 JComboBox combo = (JComboBox)e.getSource();
+//                 Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+//                 if(a instanceof BasicComboPopup) {
+//                     BasicComboPopup pop = (BasicComboPopup)a;
+//                     if(pop.getLayout() instanceof BoxLayout) {
+//                         Component[] c = pop.getComponents();
+//                         pop.setLayout(new BorderLayout());
+//                         pop.add(c[0]);
+//                     }
+//                 }
+//             }
+//             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+//             @Override public void popupMenuCanceled(PopupMenuEvent e) {}
+//         });
         combo1.setModel(makeModel());
         combo2.setModel(makeModel());
         add(makeTitledBox("MultiColumnComboBox", combo1), BorderLayout.NORTH);
@@ -81,8 +98,10 @@ public class MainPanel extends JPanel{
 }
 class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
     private final JLabel leftLabel  = new JLabel();
-    private final JLabel rightLabel = new JLabel();
-    private int prevwidth = -1;
+    private final JLabel rightLabel;
+    private boolean isFirstTime = true;
+
+    private DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
     public MultiColumnCellRenderer(int rightWidth) {
         super(new BorderLayout());
@@ -91,11 +110,16 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         leftLabel.setOpaque(false);
         leftLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
 
+        final Dimension dim = new Dimension(rightWidth, 0);
+        rightLabel = new JLabel() {
+            @Override public Dimension getPreferredSize() {
+                return dim;
+            }
+        };
         rightLabel.setOpaque(false);
         rightLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
         rightLabel.setForeground(Color.GRAY);
         rightLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        rightLabel.setPreferredSize(new Dimension(rightWidth, 0));
 
         this.add(leftLabel);
         this.add(rightLabel, BorderLayout.EAST);
@@ -111,10 +135,10 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         rightLabel.setFont(list.getFont());
 
         if(index<0) {
-            Dimension d = getSize();
-            if(d.width!=prevwidth) {
-                list.setPreferredSize(new Dimension(d.width, 0));
-                prevwidth = d.width;
+            if(isFirstTime) {
+                //XXX: Trick on BoxLayout
+                list.setPreferredSize(new Dimension());
+                isFirstTime = false;
             }
             leftLabel.setForeground(list.getForeground());
             this.setOpaque(false);
@@ -126,9 +150,9 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         return this;
     }
     @Override public void updateUI() {
-        prevwidth = -1;
         super.updateUI();
         this.setName("List.cellRenderer");
+        isFirstTime = true;
     }
 }
 class LRItem{
