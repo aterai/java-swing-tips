@@ -82,8 +82,6 @@ public class MainPanel extends JPanel{
 class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
     private final JLabel leftLabel = new JLabel();
     private final JLabel rightLabel;
-    private boolean isFirstTime = true;
-
     public MultiColumnCellRenderer(int rightWidth) {
         super(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
@@ -114,11 +112,6 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
         rightLabel.setFont(list.getFont());
 
         if(index<0) {
-            if(isFirstTime) {
-                //XXX: Trick on parent JScrollPane
-                list.setPreferredSize(new Dimension());
-                isFirstTime = false;
-            }
             leftLabel.setForeground(list.getForeground());
             this.setOpaque(false);
         }else{
@@ -128,10 +121,13 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
         }
         return this;
     }
+    @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        return new Dimension(0, d.height);
+    }
     @Override public void updateUI() {
         super.updateUI();
         this.setName("List.cellRenderer");
-        isFirstTime = true;
     }
 }
 
