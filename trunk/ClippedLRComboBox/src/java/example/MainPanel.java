@@ -12,23 +12,6 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         combo1.setRenderer(new MultiColumnCellRenderer(80));
-//         //TEST
-//         combo1.addPopupMenuListener(new PopupMenuListener() {
-//             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-//                 JComboBox combo = (JComboBox)e.getSource();
-//                 Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-//                 if(a instanceof BasicComboPopup) {
-//                     BasicComboPopup pop = (BasicComboPopup)a;
-//                     if(pop.getLayout() instanceof BoxLayout) {
-//                         Component[] c = pop.getComponents();
-//                         pop.setLayout(new BorderLayout());
-//                         pop.add(c[0]);
-//                     }
-//                 }
-//             }
-//             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-//             @Override public void popupMenuCanceled(PopupMenuEvent e) {}
-//         });
         combo1.setModel(makeModel());
         combo2.setModel(makeModel());
         add(makeTitledBox("MultiColumnComboBox", combo1), BorderLayout.NORTH);
@@ -132,7 +115,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
 
         if(index<0) {
             if(isFirstTime) {
-                //XXX: Trick on BoxLayout
+                //XXX: Trick on parent JScrollPane
                 list.setPreferredSize(new Dimension());
                 isFirstTime = false;
             }
