@@ -27,7 +27,9 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
         }
         return false;
     }
-    public Popup getPopup(JPopupMenu popup, int x, int y) {
+
+//*
+    @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
         Popup pp = super.getPopup(popup,x,y);
         JPanel panel = (JPanel)popup.getParent();
         if(isHeavyWeightContainer(panel)) {
@@ -41,6 +43,24 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
         panel.setOpaque(false);
         return pp;
     }
+/*/
+    //JDK 1.7.0
+    @Override public Popup getPopup(final JPopupMenu popup, int x, int y) {
+        Popup pp = super.getPopup(popup,x,y);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Window p = SwingUtilities.getWindowAncestor(popup);
+                if(p instanceof JWindow) {
+                    p.setBackground(new Color(0, true)); //JDK 1.7.0
+                }
+            }
+        });
+        JPanel panel = (JPanel)popup.getParent();
+        panel.setBorder(new ShadowBorderInPanel());
+        panel.setOpaque(false);
+        return pp;
+    }
+//*/
 
     private static int OFF = 4;
     private static int ARC = 2;
