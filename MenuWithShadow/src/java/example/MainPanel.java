@@ -7,13 +7,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel{
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        UIManager.put("PopupMenuUI","example.CustomPopupMenuUI");
-        //contrib.com.jgoodies.looks.common.ShadowPopupFactory.install();
-        frame.setJMenuBar(makeMenuBar());
         add(new JLabel(new ImageIcon(getClass().getResource("test.png"))));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 200));
     }
     private static JMenuBar makeMenuBar() {
         JMenuBar mb = new JMenuBar();
@@ -49,9 +46,13 @@ class MainPanel extends JPanel{
         }catch(Exception e) {
             e.printStackTrace();
         }
+        UIManager.put("PopupMenuUI","example.CustomPopupMenuUI");
+        //contrib.com.jgoodies.looks.common.ShadowPopupFactory.install();
+
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.setJMenuBar(makeMenuBar());
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
