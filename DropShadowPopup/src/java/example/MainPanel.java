@@ -12,7 +12,7 @@ class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("Paint Shadow", true);
     private final JLabel label = new JLabel();
     private JPopupMenu popup0;
-    private MyPopupMenu popup1;
+    private DropShadowPopupMenu popup1;
     public MainPanel() {
         super(new BorderLayout());
         label.setIcon(new ImageIcon(getClass().getResource("test.png")));
@@ -30,22 +30,22 @@ class MainPanel extends JPanel {
     @Override public void updateUI() {
         super.updateUI();
         popup0 = new JPopupMenu();
-        popup1 = new MyPopupMenu();
+        popup1 = new DropShadowPopupMenu();
         initPopupMenu(popup0);
         initPopupMenu(popup1);
     }
     private static void initPopupMenu(JPopupMenu p) {
-        p.setOpaque(false);
-        p.add(new JMenuItem("Open"));
-        p.add(new JMenuItem("Save"));
-        p.add(new JMenuItem("Close"));
+        for(JComponent c:java.util.Arrays.<JComponent>asList(new JMenuItem("Open"),
+                                                             new JMenuItem("Save"),
+                                                             new JMenuItem("Close"),
+                                                             new JSeparator(),
+                                                             new JMenuItem("Exit"))) {
+            c.setOpaque(true);
+            p.add(c);
+        }
         //Bug ID: 6595814 Nimbus LAF: Renderers, MenuSeparators, colors rollup bug
         //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6595814
         //p.addSeparator();
-        JSeparator s = new JSeparator();
-        s.setOpaque(true);
-        p.add(s);
-        p.add(new JMenuItem("Exit"));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -68,11 +68,13 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-
-class MyPopupMenu extends JPopupMenu {
+class DropShadowPopupMenu extends JPopupMenu {
     private static final int off = 4;
     private BufferedImage shadow = null;
     private Border inner = null;
+    @Override public boolean isOpaque() {
+        return false;
+    }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g); //??? 1.7.0
         ((Graphics2D)g).drawImage(shadow, 0, 0, this);
@@ -151,3 +153,50 @@ class ShadowBorder extends AbstractBorder {
         g2d.drawImage(shadow, 0, 0, c);
     }
 }
+
+/*
+//JDK 1.7.0
+class DropShadowPopupMenu extends JPopupMenu {
+    private static final int off = 4;
+    private BufferedImage shadow = null;
+    private Border border = null;
+    @Override public boolean isOpaque() {
+        return false;
+    }
+    @Override public void paintComponent(Graphics g) {
+        ((Graphics2D)g).drawImage(shadow, 0, 0, this);
+        super.paintComponent(g);
+    }
+    @Override public void show(Component c, int x, int y) {
+        if(border==null) {
+            Border inner = getBorder();
+            Border outer = BorderFactory.createEmptyBorder(0, 0, off, off);
+            border = BorderFactory.createCompoundBorder(outer, inner);
+        }
+        setBorder(border);
+        Dimension d = getPreferredSize();
+        int w = d.width, h = d.height;
+        if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
+            shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = shadow.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+            g2.setPaint(Color.BLACK);
+            for(int i=0;i<off;i++) {
+                g2.fillRoundRect(off, off, w-off-off+i, h-off-off+i, 4, 4);
+            }
+            g2.dispose();
+        }
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Window pop = SwingUtilities.getWindowAncestor(DropShadowPopupMenu.this);
+                if(pop instanceof JWindow) {
+                    System.out.println(pop instanceof JWindow);
+                    pop.setBackground(new Color(0,0,0,0)); //JDK 1.7.0
+                }
+            }
+        });
+        super.show(c, x, y);
+    }
+}
+*/
