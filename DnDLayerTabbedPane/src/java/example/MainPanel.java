@@ -237,27 +237,17 @@ class DnDTabbedPane extends JTabbedPane {
     }
     private DropMode dropMode = DropMode.INSERT;
     public DropLocation dropLocationForPoint(Point p) {
-        boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {
           case INSERT:
-            Rectangle tar = getTabAreaBounds();
             Rectangle r;
             for(int i=0; i<getTabCount(); i++) {
-                r = getBoundsAt(i);
-                if(isTB) {
-                    //r.translate(-r.width/2, 0);
-                    r.x = r.x-r.width/2;
-                    r.y = tar.y;
-                    r.height = tar.height;
-                }else{
-                    //r.translate(0, -r.height/2);
-                    r.x = tar.x;
-                    r.y = tar.y-r.height/2;
-                    r.width = tar.width;
+                if(getBoundsAt(i).contains(p)) {
+                    return new DropLocation(p, i);
                 }
-                if(r.contains(p)) return new DropLocation(p, i);
             }
-            if(tar.contains(p)) return new DropLocation(p, getTabCount());
+            if(getTabAreaBounds().contains(p)) {
+                return new DropLocation(p, getTabCount());
+            }
             break;
           case USE_SELECTION:
           case ON:
