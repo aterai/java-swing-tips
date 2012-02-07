@@ -38,12 +38,12 @@ public class MainPanel extends JPanel{
                 ColorItem item = (ColorItem) value;
                 Color ic = item.color;
                 if(index<0 && ic!=null && !ic.equals(combo.getForeground())) {
-                    combo.setForeground(ic); //Windows XP
+                    combo.setForeground(ic); //Windows, Motif Look&Feel
                     list.setSelectionForeground(ic);
                     list.setSelectionBackground(selectionBackground);
                 }
                 JLabel l = (JLabel)super.getListCellRendererComponent(list, item.description, index, isSelected, hasFocus);
-                l.setForeground(item.color);
+                l.setForeground(ic);
                 l.setBackground(isSelected?selectionBackground:list.getBackground());
                 //l.setText(item.description);
                 return l;
