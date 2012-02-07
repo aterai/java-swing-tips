@@ -102,14 +102,20 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
     public ButtonsEditor(final JTable table) {
         super();
+
+        //---->
+        //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
         MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 ButtonModel m = ((JButton)e.getSource()).getModel();
-                if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && !e.isShiftDown()) {
+                if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
                     setBackground(table.getBackground());
                 }
             }
         };
+        buttons.get(0).addMouseListener(ml);
+        buttons.get(1).addMouseListener(ml);
+        //<----
 
         buttons.get(0).addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -117,7 +123,6 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
                 JOptionPane.showMessageDialog(table, "Viewing");
             }
         });
-        buttons.get(0).addMouseListener(ml);
 
         buttons.get(1).addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -128,7 +133,6 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
                 JOptionPane.showMessageDialog(table, "Editing: "+o);
             }
         });
-        buttons.get(1).addMouseListener(ml);
 
         addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
