@@ -13,8 +13,6 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
-    private final DragSource dragSource = DragSource.getDefaultDragSource();
-
     private final URL u1 = MainPanel.class.getResource("i03-04.gif");
     private final URL u2 = MainPanel.class.getResource("i03-10.gif");
     private final ImageIcon i1 = new ImageIcon(u1);
@@ -27,10 +25,56 @@ public class MainPanel extends JPanel {
         label.setHorizontalTextPosition(JLabel.CENTER);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setBorder(BorderFactory.createTitledBorder("Drag Source JLabel"));
-
         clearFile();
-        dragSource.createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new MyDragGestureListener());
 
+//*     //JDK 1.5.0
+        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
+            @Override public void dragGestureRecognized(DragGestureEvent dge) {
+                File tmpfile = getFile();
+                if(tmpfile==null) {
+                    return;
+                }
+                DragSourceAdapter dsa = new DragSourceAdapter() {
+                    @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+                        if(dsde.getDropSuccess()) {
+                            clearFile();
+                        }
+                    }
+                };
+                dge.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpfile), dsa);
+            }
+        });
+/*/     //JDK 1.6.0
+        label.setTransferHandler(new TransferHandler() {
+            @Override public int getSourceActions(JComponent c) {
+                return COPY_OR_MOVE;
+            }
+            @Override protected Transferable createTransferable(JComponent c) {
+                File tmpfile = getFile();
+                if(tmpfile==null) {
+                    return null;
+                }else{
+                    return new TempFileTransferable(tmpfile);
+                }
+            }
+            @Override protected void exportDone(JComponent c, Transferable data, int action) {
+                cleanup(c, action == MOVE);
+            }
+            private void cleanup(JComponent c, boolean removeFile) {
+                if(removeFile) {
+                    clearFile();
+                    c.repaint();
+                }
+            }
+        });
+        label.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                System.out.println(e);
+                JComponent c = (JComponent)e.getSource();
+                c.getTransferHandler().exportAsDrag(c, e, TransferHandler.COPY);
+            }
+        });
+//*/
         final Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         box.add(Box.createHorizontalGlue());
@@ -68,40 +112,11 @@ public class MainPanel extends JPanel {
         this.file = file;
         label.setIcon(i2);
         label.setText("tmpfile#exists(): true(draggable)");
-        //label.setBorder(BorderFactory.createRaisedBevelBorder());
     }
     private void clearFile() {
         file = null;
         label.setIcon(i1);
         label.setText("tmpfile#exists(): false");
-        //label.setBorder(BorderFactory.createEmptyBorder());
-    }
-    class MyDragGestureListener implements DragGestureListener {
-        @Override public void dragGestureRecognized(DragGestureEvent dge) {
-            final File tmpfile = getFile();
-            if(tmpfile==null) {
-                return;
-            }
-            Transferable tran = new Transferable() {
-                @Override public Object getTransferData(DataFlavor flavor) {
-                    return Arrays.asList(tmpfile);
-                }
-                @Override public DataFlavor[] getTransferDataFlavors() {
-                    return new DataFlavor[] { DataFlavor.javaFileListFlavor };
-                }
-                @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-                    return flavor.equals(DataFlavor.javaFileListFlavor);
-                }
-            };
-            DragSourceAdapter dsa = new DragSourceAdapter() {
-                @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-                    if(dsde.getDropSuccess()) {
-                        clearFile();
-                    }
-                }
-            };
-            dge.startDrag(DragSource.DefaultMoveDrop, tran, dsa);
-        }
     }
 
     public static void main(String[] args) {
@@ -123,5 +138,21 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TempFileTransferable implements Transferable{
+    private final File file;
+    public TempFileTransferable(File file) {
+        this.file = file;
+    }
+    @Override public Object getTransferData(DataFlavor flavor) {
+        return Arrays.asList(file);
+    }
+    @Override public DataFlavor[] getTransferDataFlavors() {
+        return new DataFlavor[] { DataFlavor.javaFileListFlavor };
+    }
+    @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+        return flavor.equals(DataFlavor.javaFileListFlavor);
     }
 }
