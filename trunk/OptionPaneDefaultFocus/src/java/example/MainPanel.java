@@ -30,6 +30,8 @@ public class MainPanel extends JPanel{
             }
         });
         //http://forums.sun.com/thread.jspa?threadID=777887
+        //https://forums.oracle.com/forums/thread.jspa?messageID=5708627
+        //OTN Discussion Forums : Input focus
         textField4.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 e.getComponent().requestFocusInWindow();
