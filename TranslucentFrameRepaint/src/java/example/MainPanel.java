@@ -5,6 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.*;
+import java.net.*;
 import java.text.*;
 import java.util.*;
 import javax.imageio.*;
@@ -129,13 +131,39 @@ class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 240));
     }
 
+    private static Font makeFont(URL url) {
+        Font font = null;
+        InputStream is = null;
+        try{
+            is = url.openStream();
+            font = (Font.createFont(Font.TRUETYPE_FONT, is)).deriveFont(12.0f);
+            is.close();
+        }catch(IOException ioe) {
+            ioe.printStackTrace();
+        }catch(FontFormatException ffe) {
+            ffe.printStackTrace();
+        }finally{
+            if(is!=null) {
+                try{
+                    is.close();
+                }catch(IOException ioex) {
+                    ioex.printStackTrace();
+                }
+            }
+        }
+        return font;
+    }
+
     private TexturePanel makeTexturePanel() {
-        label.setFont(label.getFont().deriveFont(80.0f));
+        //http://www.yourname.jp/soft/digitalfonts-20090306.shtml
+        //Digital display font: Copyright (c) Yourname, Inc.
+        Font font = makeFont(getClass().getResource("YournameS7ScientificHalf.ttf"));
+        label.setFont(font.deriveFont(80.0f));
         label.setBackground(new Color(0,0,0,0));
         label.setOpaque(false);
         TexturePanel p = new TexturePanel(new BorderLayout(8,8));
         p.add(label);
-        p.add(new JLabel("***********************"), BorderLayout.NORTH);
+        p.add(new JLabel("Digital display fonts by Yourname, Inc."), BorderLayout.NORTH);
         p.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
         p.setBackground(new Color(.5f,.8f,.5f,.5f));
         DragWindowListener dwl = new DragWindowListener();
