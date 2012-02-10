@@ -18,10 +18,12 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         textField3.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && textField3.isShowing()) {
+                final JComponent c = (JComponent)e.getComponent();
+                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && c.isShowing()) {
                     EventQueue.invokeLater(new Runnable(){
                         @Override public void run() {
-                            textField3.requestFocusInWindow();
+                            c.requestFocusInWindow();
+                            //or textField3.requestFocusInWindow();
                         }
                     });
                 }
@@ -29,11 +31,12 @@ public class MainPanel extends JPanel{
         });
         //http://forums.sun.com/thread.jspa?threadID=777887
         textField4.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(AncestorEvent event) {
-                textField4.requestFocusInWindow();
+            @Override public void ancestorAdded(AncestorEvent e) {
+                e.getComponent().requestFocusInWindow();
+                //or textField4.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent event) {}
-            @Override public void ancestorRemoved(AncestorEvent event) {}
+            @Override public void ancestorMoved(AncestorEvent e) {}
+            @Override public void ancestorRemoved(AncestorEvent e) {}
         });
 
         JPanel p = new JPanel(new GridLayout(2,2,5,5));
