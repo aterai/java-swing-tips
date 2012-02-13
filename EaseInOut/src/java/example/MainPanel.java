@@ -149,8 +149,8 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
             animator.stop();
         }
     }
-    //http://www.gehacktes.net/2009/03/math-easein-easeout-and-easeinout/
-    //coders≫ Blog Archive ≫ Math: EaseIn EaseOut, EaseInOut and Bezier Curves
+    //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
+    //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH]
     public double easeIn(double t) {
         //range: 0.0<=t<=1.0
         return Math.pow(t, 3d);
@@ -169,4 +169,3 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
 //         return 1d - Math.sin(Math.acos(t));
 //     }
 }
-
