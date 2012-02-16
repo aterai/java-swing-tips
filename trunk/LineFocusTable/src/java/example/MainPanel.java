@@ -194,3 +194,110 @@ class DotBorder extends EmptyBorder {
         g2.translate(-x,-y);
     }
 }
+
+// //Another example test:
+// import java.awt.*;
+// import java.util.*;
+// import javax.swing.*;
+// import javax.swing.border.*;
+// import javax.swing.table.*;
+// class FocusCellHighlightBorderTest {
+//   String[] columnNames = {"String", "Integer", "Boolean"};
+//   Object[][] data = {
+//     {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}
+//   };
+//   DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+//     @Override public Class<?> getColumnClass(int column) {
+//       return getValueAt(0, column).getClass();
+//     }
+//   };
+//   public JComponent makeUI() {
+//     UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
+//     JTable table = new JTable(model) {
+//       private final DotBorder dotBorder = new DotBorder(2,2,2,2);
+//       private void updateBorderType(DotBorder border, boolean isLeadRow, int column) {
+//         border.type = EnumSet.noneOf(DotBorder.Type.class);
+//         if(isLeadRow) {
+//           border.type.add(DotBorder.Type.LEAD);
+//           if(column==0) border.type.add(DotBorder.Type.WEST);
+//           if(column==getColumnCount()-1) border.type.add(DotBorder.Type.EAST);
+//         }
+//       }
+//       @Override public Component prepareRenderer(
+//       TableCellRenderer tcr, int row, int column) {
+//         JComponent c = (JComponent)super.prepareRenderer(tcr, row, column);
+//         c.setBorder(dotBorder);
+//         updateBorderType(dotBorder, row==getSelectionModel().getLeadSelectionIndex(), column);
+//         return c;
+//       }
+//       @Override public Component prepareEditor(
+//       TableCellEditor editor, int row, int column) {
+//         Component c = super.prepareEditor(editor, row, column);
+//         if(c instanceof JCheckBox) {
+//           JCheckBox b = (JCheckBox)c;
+//           updateBorderType((DotBorder)b.getBorder(), true, column);
+//           b.setBorderPainted(true);
+//           b.setBackground(getSelectionBackground());
+//         }
+//         return c;
+//       }
+//     };
+//     table.setShowGrid(false);
+//     table.setIntercellSpacing(new Dimension());
+//     JPanel p = new JPanel(new BorderLayout());
+//     p.add(new JScrollPane(table));
+//     return p;
+//   }
+//   public static void main(String[] args) {
+//     EventQueue.invokeLater(new Runnable() {
+//       @Override public void run() {
+//         createAndShowGUI();
+//       }
+//     });
+//   }
+//   public static void createAndShowGUI() {
+//     JFrame frame = new JFrame();
+//     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//     frame.getContentPane().add(new FocusCellHighlightBorderTest().makeUI());
+//     frame.setSize(320, 240);
+//     frame.setLocationRelativeTo(null);
+//     frame.setVisible(true);
+//   }
+// }
+// class DotBorder extends EmptyBorder {
+//   public enum Type { LEAD, WEST, EAST; }
+//   public EnumSet<Type> type = EnumSet.noneOf(Type.class);
+//   private static final BasicStroke dashed = new BasicStroke(
+//     1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+//     10.0f, (new float[] {1.0f}), 0.0f);
+//   private static final Color dotColor = new Color(200,150,150);
+//   public DotBorder(int top, int left, int bottom, int right) {
+//     super(top, left, bottom, right);
+//   }
+//   @Override public boolean isBorderOpaque() {
+//     return true;
+//   }
+//   @Override public void paintBorder(
+//     Component c, Graphics g, int x, int y, int w, int h) {
+//     Graphics2D g2 = (Graphics2D)g;
+//     g2.translate(x,y);
+//     g2.setPaint(dotColor);
+//     g2.setStroke(dashed);
+//     if(type.contains(Type.WEST)) {
+//       g2.drawLine(0,0,0,h);
+//     }
+//     if(type.contains(Type.EAST)) {
+//       g2.drawLine(w-1,0,w-1,h);
+//     }
+//     if(type.contains(Type.LEAD)) {
+//       if(c.getBounds().x%2==0) {
+//         g2.drawLine(0,0,w,0);
+//         g2.drawLine(0,h-1,w,h-1);
+//       } else {
+//         g2.drawLine(1,0,w,0);
+//         g2.drawLine(1,h-1,w,h-1);
+//       }
+//     }
+//     g2.translate(-x,-y);
+//   }
+// }
