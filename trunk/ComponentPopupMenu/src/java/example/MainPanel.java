@@ -12,7 +12,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea("ComponentPopupMenu Test\naaaaaaaaaaa\nbbbbbbbbbbbbbb\ncccccccccccccc");
-        textArea.setComponentPopupMenu(new TextComponentPopupMenu(textArea));
+        textArea.setComponentPopupMenu(new TextComponentPopupMenu());
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -45,7 +45,7 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action pasteAction = new DefaultEditorKit.PasteAction();
     private final Action deleteAction;
     private final Action selectAllAction;
-    public TextComponentPopupMenu(final JTextComponent textArea) {
+    public TextComponentPopupMenu() {
         super();
 
 //         addPopupMenuListener(new PopupMenuListener() {
@@ -64,14 +64,14 @@ class TextComponentPopupMenu extends JPopupMenu {
         add(pasteAction);
         addSeparator();
         add(deleteAction = new AbstractAction("delete") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                textArea.replaceSelection(null);
+            @Override public void actionPerformed(ActionEvent e) {
+                ((JTextComponent)getInvoker()).replaceSelection(null);
             }
         });
         addSeparator();
         add(selectAllAction = new AbstractAction("select all") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                textArea.selectAll();
+            @Override public void actionPerformed(ActionEvent e) {
+                ((JTextComponent)getInvoker()).selectAll();
             }
         });
     }
