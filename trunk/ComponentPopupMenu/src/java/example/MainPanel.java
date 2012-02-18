@@ -17,6 +17,46 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 240));
     }
 
+//     //Another way:
+//     private static JPopupMenu makePopupMenu() {
+//         JPopupMenu popup = new JPopupMenu();
+//         final Action cutAction = new DefaultEditorKit.CutAction();
+//         final Action copyAction = new DefaultEditorKit.CopyAction();
+//         final Action pasteAction = new DefaultEditorKit.PasteAction();
+//         final Action deleteAction = new AbstractAction("delete") {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 JPopupMenu p = (JPopupMenu)e.getSource();
+//                 ((JTextComponent)p.getInvoker()).replaceSelection(null);
+//             }
+//         };
+//         final Action selectAllAction = new AbstractAction("select all") {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 JPopupMenu p = (JPopupMenu)e.getSource();
+//                 ((JTextComponent)p.getInvoker()).selectAll();
+//             }
+//         };
+//         popup.add(cutAction);
+//         popup.add(copyAction);
+//         popup.add(pasteAction);
+//         popup.addSeparator();
+//         popup.add(deleteAction);
+//         popup.addSeparator();
+//         popup.add(selectAllAction);
+//         popup.addPopupMenuListener(new PopupMenuListener() {
+//             public void popupMenuCanceled(PopupMenuEvent e) {}
+//             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+//             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+//                 JPopupMenu p = (JPopupMenu)e.getSource();
+//                 JTextComponent c = (JTextComponent)p.getInvoker();
+//                 boolean flg = c.getSelectedText()!=null;
+//                 cutAction.setEnabled(flg);
+//                 copyAction.setEnabled(flg);
+//                 deleteAction.setEnabled(flg);
+//             }
+//         });
+//         return popup;
+//     }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -47,18 +87,6 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action selectAllAction;
     public TextComponentPopupMenu() {
         super();
-
-//         addPopupMenuListener(new PopupMenuListener() {
-//             public void popupMenuCanceled(PopupMenuEvent e) {}
-//             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-//             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-//                 boolean flg = textArea.getSelectedText()!=null;
-//                 cutAction.setEnabled(flg);
-//                 copyAction.setEnabled(flg);
-//                 deleteAction.setEnabled(flg);
-//             }
-//         });
-
         add(cutAction);
         add(copyAction);
         add(pasteAction);
