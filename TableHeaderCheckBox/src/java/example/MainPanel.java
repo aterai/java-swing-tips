@@ -106,8 +106,9 @@ public class MainPanel extends JPanel {
     }
 }
 class HeaderRenderer extends JCheckBox implements TableCellRenderer {
+    JLabel label = new JLabel("Check All");
     public HeaderRenderer(JTableHeader header, final int targetColumnIndex) {
-        super();
+        super((String)null);
         setOpaque(false);
         setFont(header.getFont());
         header.addMouseListener(new MouseAdapter() {
@@ -131,7 +132,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, "Check All", isS, hasF, row, col);
+        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, null, isS, hasF, row, col);
         if(val instanceof Status) {
             switch((Status)val) {
               case SELECTED:      setSelected(true);  setEnabled(true);  break;
@@ -142,32 +143,39 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
             setSelected(true);
             setEnabled(false);
         }
-        l.setIcon(new CheckBoxIcon(this));
-        if(l.getPreferredSize().height>1000) { //XXX: Nimbus
-            System.out.println(l.getPreferredSize().height);
-            Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
-            l.setPreferredSize(new Dimension(0, rect.height));
-        }
+        label.setIcon(new ComponentIcon(this));
+        l.setIcon(new ComponentIcon(label));
+        l.setText(null); //XXX: Nimbus???
+
+//         System.out.println("getHeaderRect: " + tbl.getTableHeader().getHeaderRect(col));
+//         System.out.println("getPreferredSize: " + l.getPreferredSize());
+//         System.out.println("getMaximunSize: " + l.getMaximumSize());
+//         System.out.println("----");
+//         if(l.getPreferredSize().height>1000) { //XXX: Nimbus???
+//             System.out.println(l.getPreferredSize().height);
+//             Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
+//             l.setPreferredSize(new Dimension(0, rect.height));
+//         }
         return l;
     }
 //     @Override public void updateUI() {
-//         setText(null); //XXX: Nimbus?
+//         setText(null); //XXX: Nimbus???
 //         super.updateUI();
 //     }
 }
-class CheckBoxIcon implements Icon{
-    private final JCheckBox check;
-    public CheckBoxIcon(JCheckBox check) {
-        this.check = check;
+class ComponentIcon implements Icon{
+    private final JComponent cmp;
+    public ComponentIcon(JComponent cmp) {
+        this.cmp = cmp;
     }
     @Override public int getIconWidth() {
-        return check.getPreferredSize().width;
+        return cmp.getPreferredSize().width;
     }
     @Override public int getIconHeight() {
-        return check.getPreferredSize().height;
+        return cmp.getPreferredSize().height;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        SwingUtilities.paintComponent(g, check, (Container)c, x, y, getIconWidth(), getIconHeight());
+        SwingUtilities.paintComponent(g, cmp, (Container)c, x, y, getIconWidth(), getIconHeight());
     }
 }
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
