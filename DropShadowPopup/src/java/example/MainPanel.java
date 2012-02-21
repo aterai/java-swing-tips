@@ -75,9 +75,19 @@ class DropShadowPopupMenu extends JPopupMenu {
     @Override public boolean isOpaque() {
         return false;
     }
+    @Override public void updateUI() {
+        //clear shadow border
+        inner = null;
+        setBorder(null);
+        super.updateUI();
+    }
     @Override public void paintComponent(Graphics g) {
-        //super.paintComponent(g); //??? 1.7.0
-        ((Graphics2D)g).drawImage(shadow, 0, 0, this);
+        //super.paintComponent(g); //???: Windows LnF
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.drawImage(shadow, 0, 0, this);
+        g2.setPaint(getBackground()); //??? 1.7.0_03
+        g2.fillRect(0,0,getWidth()-off,getHeight()-off);
+        g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
         if(inner==null) inner = getBorder();
@@ -151,6 +161,8 @@ class ShadowBorder extends AbstractBorder {
         Graphics2D g2d = (Graphics2D)g;
         g2d.drawImage(screen, 0, 0, c);
         g2d.drawImage(shadow, 0, 0, c);
+        g2d.setPaint(c.getBackground()); //??? 1.7.0_03
+        g2d.fillRect(x,y,w-xoff,h-yoff);
     }
 }
 
@@ -162,6 +174,11 @@ class DropShadowPopupMenu extends JPopupMenu {
     private Border border = null;
     @Override public boolean isOpaque() {
         return false;
+    }
+    @Override public void updateUI() {
+        setBorder(null);
+        super.updateUI();
+        border = null;
     }
     @Override public void paintComponent(Graphics g) {
         ((Graphics2D)g).drawImage(shadow, 0, 0, this);
