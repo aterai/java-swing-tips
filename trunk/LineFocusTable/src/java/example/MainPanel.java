@@ -34,16 +34,18 @@ public class MainPanel extends JPanel {
                 setSelectionForeground(new ColorUIResource(Color.RED));
                 setSelectionBackground(new ColorUIResource(Color.RED));
                 super.updateUI();
-                updateNimbusAlternateRowColor();
+                updateRenderer();
+                updateBooleanEditor(this);
             }
-            private void updateNimbusAlternateRowColor() {
-                TableCellRenderer r = getDefaultRenderer(Boolean.class);
-                if(r instanceof JComponent) {
-                    ((JComponent)r).updateUI();
+            private void updateRenderer() {
+                for(int i=0;i<model.getColumnCount();i++) {
+                    TableCellRenderer r = getDefaultRenderer(model.getColumnClass(i));
+                    if(r instanceof JComponent) {
+                        ((JComponent)r).updateUI();
+                    }
                 }
             }
             private final DotBorder dotBorder = new DotBorder(2,2,2,2);
-            private final DotBorder dotBorder2 = new DotBorder(2,2,2,2);
             private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
             private void updateBorderType(DotBorder border, int column) {
                 border.type = EnumSet.noneOf(DotBorder.Type.class);
@@ -72,8 +74,8 @@ public class MainPanel extends JPanel {
                     b.setBorder(dotBorder);
                     updateBorderType(dotBorder, column);
                     //updateBorderType((DotBorder)b.getBorder(), column);
-                    b.setBorderPainted(true);
-                    b.setBackground(getSelectionBackground());
+                    //b.setBorderPainted(true);
+                    //b.setBackground(getSelectionBackground());
                 }
                 return c;
             }
@@ -95,7 +97,31 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-
+    private static void updateBooleanEditor(final JTable t) {
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+        checkBox.setBorderPainted(true);
+        checkBox.setOpaque(true);
+        checkBox.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                JCheckBox cb = (JCheckBox)e.getSource();
+                ButtonModel m = cb.getModel();
+                if(m.isPressed() && t.isRowSelected(t.getEditingRow()) && e.isControlDown()) {
+                    if(t.getEditingRow()%2==0) {
+                        cb.setOpaque(true);
+                        cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+                    }else{
+                        cb.setOpaque(false);
+                        //cb.setBackground(t.getBackground());
+                    }
+                }else{
+                    cb.setBackground(t.getSelectionBackground());
+                    cb.setOpaque(true);
+                }
+            }
+        });
+        t.setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
+    }
     class TestCreateAction extends AbstractAction{
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
