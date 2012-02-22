@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -26,13 +27,23 @@ public class MainPanel extends JPanel {
         UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
         table = new JTable(model) {
             @Override public void updateUI() {
+                // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+                // http://bugs.sun.com/view_bug.do?bug_id=6788475
+
+                //XXX: set dummy ColorUIResource
+                setSelectionForeground(new ColorUIResource(Color.RED));
+                setSelectionBackground(new ColorUIResource(Color.RED));
                 super.updateUI();
-                Color sbg = UIManager.getColor("Table.selectionBackground");
-                if(sbg!=null) { //Nimbus
-                    setSelectionBackground(sbg);
+                updateNimbusAlternateRowColor();
+            }
+            private void updateNimbusAlternateRowColor() {
+                TableCellRenderer r = getDefaultRenderer(Boolean.class);
+                if(r instanceof JComponent) {
+                    ((JComponent)r).updateUI();
                 }
             }
             private final DotBorder dotBorder = new DotBorder(2,2,2,2);
+            private final DotBorder dotBorder2 = new DotBorder(2,2,2,2);
             private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
             private void updateBorderType(DotBorder border, int column) {
                 border.type = EnumSet.noneOf(DotBorder.Type.class);
@@ -41,6 +52,10 @@ public class MainPanel extends JPanel {
             }
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
+                if(c instanceof JCheckBox) {
+                    JCheckBox b = (JCheckBox)c;
+                    b.setBorderPainted(true);
+                }
                 if(row==getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
                     ((JComponent)c).setBorder(dotBorder);
                     updateBorderType(dotBorder, column);
@@ -54,8 +69,9 @@ public class MainPanel extends JPanel {
                 if(c instanceof JCheckBox) {
                     JCheckBox b = (JCheckBox)c;
                     //System.out.println(b.getBorder());
-                    //b.setBorder(dotBorder);
-                    updateBorderType((DotBorder)b.getBorder(), column);
+                    b.setBorder(dotBorder);
+                    updateBorderType(dotBorder, column);
+                    //updateBorderType((DotBorder)b.getBorder(), column);
                     b.setBorderPainted(true);
                     b.setBackground(getSelectionBackground());
                 }
