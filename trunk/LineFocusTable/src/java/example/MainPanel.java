@@ -35,15 +35,47 @@ public class MainPanel extends JPanel {
                 setSelectionBackground(new ColorUIResource(Color.RED));
                 super.updateUI();
                 updateRenderer();
-                updateBooleanEditor(this);
+                remakeBooleanEditor();
             }
             private void updateRenderer() {
-                for(int i=0;i<model.getColumnCount();i++) {
-                    TableCellRenderer r = getDefaultRenderer(model.getColumnClass(i));
+                TableModel m = getModel();
+                for(int i=0;i<m.getColumnCount();i++) {
+                    TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
                     if(r instanceof JComponent) {
                         ((JComponent)r).updateUI();
                     }
                 }
+            }
+            private void remakeBooleanEditor() {
+                JCheckBox checkBox = new JCheckBox();
+                checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+                checkBox.setBorderPainted(true);
+                checkBox.setOpaque(true);
+                checkBox.addMouseListener(new MouseAdapter() {
+                    @Override public void mousePressed(MouseEvent e) {
+                        JCheckBox cb = (JCheckBox)e.getSource();
+                        ButtonModel m = cb.getModel();
+                        if(m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
+                            if(getEditingRow()%2==0) {
+                                cb.setOpaque(false);
+                                //cb.setBackground(getBackground());
+                            }else{
+                                cb.setOpaque(true);
+                                cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+                            }
+                        }else{
+                            cb.setBackground(getSelectionBackground());
+                            cb.setOpaque(true);
+                        }
+                    }
+                    @Override public void mouseExited(MouseEvent e) {
+                        //in order to drag table row selection
+                        if(isEditing() && !getCellEditor().stopCellEditing()) {
+                            getCellEditor().cancelCellEditing();
+                        }
+                    }
+                });
+                setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
             }
             private final DotBorder dotBorder = new DotBorder(2,2,2,2);
             private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
@@ -96,31 +128,6 @@ public class MainPanel extends JPanel {
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private static void updateBooleanEditor(final JTable t) {
-        JCheckBox checkBox = new JCheckBox();
-        checkBox.setHorizontalAlignment(JCheckBox.CENTER);
-        checkBox.setBorderPainted(true);
-        checkBox.setOpaque(true);
-        checkBox.addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                ButtonModel m = cb.getModel();
-                if(m.isPressed() && t.isRowSelected(t.getEditingRow()) && e.isControlDown()) {
-                    if(t.getEditingRow()%2==0) {
-                        cb.setOpaque(true);
-                        cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-                    }else{
-                        cb.setOpaque(false);
-                        //cb.setBackground(t.getBackground());
-                    }
-                }else{
-                    cb.setBackground(t.getSelectionBackground());
-                    cb.setOpaque(true);
-                }
-            }
-        });
-        t.setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
     }
     class TestCreateAction extends AbstractAction{
         public TestCreateAction(String label, Icon icon) {
