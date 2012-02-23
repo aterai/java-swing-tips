@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        final JTable table = new JTable(model) {
+        JTable table = new JTable(model) {
             @Override public void updateUI() {
                 super.updateUI();
                 //XXX: Nimbus
@@ -40,41 +40,15 @@ public class MainPanel extends JPanel {
                 return c;
             }
         };
-        table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer(table.getTableHeader(), 0));
-        //table.getColumnModel().getColumn(1).setHeaderRenderer(new HeaderRenderer(table.getTableHeader(), 1));
+        int modelColmunIndex = 0;
+        TableCellRenderer renderer = new HeaderRenderer(table.getTableHeader(), modelColmunIndex);
+//         for(int i=0;i<table.getColumnCount();i++) {
+//             table.getColumnModel().getColumn(i).setHeaderRenderer(renderer);
+//         }
+//         table.getColumnModel().getColumn(modelColmunIndex).setHeaderValue(Status.INDETERMINATE);
+        table.getColumnModel().getColumn(modelColmunIndex).setHeaderRenderer(renderer);
 
-        model.addTableModelListener(new TableModelListener() {
-            @Override public void tableChanged(TableModelEvent e) {
-                if(e.getType()==TableModelEvent.UPDATE && e.getColumn()==0) {
-                    int mci = 0;
-                    int vci = table.convertColumnIndexToView(mci);
-                    TableColumn column = table.getColumnModel().getColumn(vci);
-                    Object title = column.getHeaderValue();
-                    if(!Status.INDETERMINATE.equals(title)) {
-                        column.setHeaderValue(Status.INDETERMINATE);
-                    }else{
-                        int selected = 0, deselected = 0;
-                        TableModel m = table.getModel();
-                        for(int i=0; i<m.getRowCount(); i++) {
-                            if(Boolean.TRUE.equals(m.getValueAt(i, mci))) {
-                                selected++;
-                            }else{
-                                deselected++;
-                            }
-                        }
-                        if(selected==0) {
-                            column.setHeaderValue(Status.DESELECTED);
-                        }else if(deselected==0) {
-                            column.setHeaderValue(Status.SELECTED);
-                        }else{
-                            return;
-                        }
-                    }
-                    JTableHeader h = table.getTableHeader();
-                    h.repaint(h.getHeaderRect(vci));
-                }
-            }
-        });
+        model.addTableModelListener(new HeaderCheckBoxHandler(table, modelColmunIndex));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
@@ -107,9 +81,11 @@ public class MainPanel extends JPanel {
     }
 }
 class HeaderRenderer extends JCheckBox implements TableCellRenderer {
-    JLabel label = new JLabel("Check All");
-    public HeaderRenderer(JTableHeader header, final int targetColumnIndex) {
+    private final JLabel label = new JLabel("Check All");
+    private int targetColumnIndex;
+    public HeaderRenderer(JTableHeader header, int index) {
         super((String)null);
+        this.targetColumnIndex = index;
         setOpaque(false);
         setFont(header.getFont());
         header.addMouseListener(new MouseAdapter() {
@@ -133,20 +109,24 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, null, isS, hasF, row, col);
-        if(val instanceof Status) {
-            switch((Status)val) {
-              case SELECTED:      setSelected(true);  setEnabled(true);  break;
-              case DESELECTED:    setSelected(false); setEnabled(true);  break;
-              case INDETERMINATE: setSelected(true);  setEnabled(false); break;
+        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+        if(targetColumnIndex==tbl.convertColumnIndexToModel(col)) {
+            if(val instanceof Status) {
+                switch((Status)val) {
+                  case SELECTED:      setSelected(true);  setEnabled(true);  break;
+                  case DESELECTED:    setSelected(false); setEnabled(true);  break;
+                  case INDETERMINATE: setSelected(true);  setEnabled(false); break;
+                }
+            }else{
+                setSelected(true); setEnabled(false);
             }
-        }else{
-            setSelected(true);
-            setEnabled(false);
+            label.setIcon(new ComponentIcon(this));
+            l.setIcon(new ComponentIcon(label));
+            l.setText(null); //XXX: Nimbus???
+        //    l.setHorizontalAlignment(SwingConstants.CENTER);
+        //}else{
+        //    l.setHorizontalAlignment(SwingConstants.LEFT);
         }
-        label.setIcon(new ComponentIcon(this));
-        l.setIcon(new ComponentIcon(label));
-        l.setText(null); //XXX: Nimbus???
 
 //         System.out.println("getHeaderRect: " + tbl.getTableHeader().getHeaderRect(col));
 //         System.out.println("getPreferredSize: " + l.getPreferredSize());
@@ -163,6 +143,39 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 //         setText(null); //XXX: Nimbus???
 //         super.updateUI();
 //     }
+}
+class HeaderCheckBoxHandler implements TableModelListener{
+    private final JTable table;
+    private final int targetColumnIndex;
+    public HeaderCheckBoxHandler(JTable table, int index) {
+        this.table = table;
+        this.targetColumnIndex = index;
+    }
+    @Override public void tableChanged(TableModelEvent e) {
+        if(e.getType()==TableModelEvent.UPDATE && e.getColumn()==targetColumnIndex) {
+            int vci = table.convertColumnIndexToView(targetColumnIndex);
+            TableColumn column = table.getColumnModel().getColumn(vci);
+            if(!Status.INDETERMINATE.equals(column.getHeaderValue())) {
+                column.setHeaderValue(Status.INDETERMINATE);
+            }else{
+                boolean selected = true, deselected = true;
+                TableModel m = table.getModel();
+                for(int i=0; i<m.getRowCount(); i++) {
+                    Boolean b = (Boolean)m.getValueAt(i, targetColumnIndex);
+                    selected &= b; deselected &= !b;
+                }
+                if(selected) {
+                    column.setHeaderValue(Status.SELECTED);
+                }else if(deselected) {
+                    column.setHeaderValue(Status.DESELECTED);
+                }else{
+                    return;
+                }
+            }
+            JTableHeader h = table.getTableHeader();
+            h.repaint(h.getHeaderRect(vci));
+        }
+    }
 }
 class ComponentIcon implements Icon{
     private final JComponent cmp;
