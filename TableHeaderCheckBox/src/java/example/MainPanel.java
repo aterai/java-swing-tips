@@ -70,7 +70,8 @@ public class MainPanel extends JPanel {
                             return;
                         }
                     }
-                    table.getTableHeader().repaint();
+                    JTableHeader h = table.getTableHeader();
+                    h.repaint(h.getHeaderRect(vci));
                 }
             }
         });
@@ -125,7 +126,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
                     TableModel m = table.getModel();
                     for(int i=0; i<m.getRowCount(); i++) m.setValueAt(b, i, mci);
                     column.setHeaderValue(b?Status.SELECTED:Status.DESELECTED);
-                    header.repaint();
+                    //header.repaint();
                 }
             }
         });
