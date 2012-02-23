@@ -68,6 +68,7 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+//*
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int off = 4;
     private BufferedImage shadow = null;
@@ -165,9 +166,8 @@ class ShadowBorder extends AbstractBorder {
         g2d.fillRect(x,y,w-xoff,h-yoff);
     }
 }
-
-/*
-//JDK 1.7.0
+/*/
+//JDK 1.7.0: JPopupMenu#setBackground(new Color(0,true));
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int off = 4;
     private BufferedImage shadow = null;
@@ -181,8 +181,12 @@ class DropShadowPopupMenu extends JPopupMenu {
         border = null;
     }
     @Override public void paintComponent(Graphics g) {
-        ((Graphics2D)g).drawImage(shadow, 0, 0, this);
-        super.paintComponent(g);
+        //super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.drawImage(shadow, 0, 0, this);
+        g2.setPaint(getBackground()); //??? 1.7.0_03
+        g2.fillRect(0,0,getWidth()-off,getHeight()-off);
+        g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
         if(border==null) {
@@ -208,12 +212,11 @@ class DropShadowPopupMenu extends JPopupMenu {
             @Override public void run() {
                 Window pop = SwingUtilities.getWindowAncestor(DropShadowPopupMenu.this);
                 if(pop instanceof JWindow) {
-                    System.out.println(pop instanceof JWindow);
-                    pop.setBackground(new Color(0,0,0,0)); //JDK 1.7.0
+                    pop.setBackground(new Color(0,true)); //JDK 1.7.0
                 }
             }
         });
         super.show(c, x, y);
     }
 }
-*/
+//*/
