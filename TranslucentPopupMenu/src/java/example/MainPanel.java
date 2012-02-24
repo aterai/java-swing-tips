@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.*;
 
 public class MainPanel extends JPanel{
     private final JComponent tree = new JTree();
@@ -55,15 +56,23 @@ public class MainPanel extends JPanel{
 
 class TranslucentPopupMenu extends JPopupMenu{
     private static final Color ALPHA_ZERO = new Color(0, true);
-    private static final Color POPUP_BACK = new Color(255,200,200,200);
+    private static final Color POPUP_BACK = new Color(250,250,250,200);
+    private static final Color POPUP_LEFT = new Color(230,230,230,200);
+    private static final int LEFT_WIDTH = 24;
     @Override public boolean isOpaque() {
         return false;
     }
+    @Override public void updateUI() {
+        super.updateUI();
+        boolean isNimbus = UIManager.getBorder("PopupMenu.border")==null;
+        if(isNimbus) {
+            setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.GRAY)));
+        }
+    }
     @Override public JMenuItem add(JMenuItem menuItem) {
         menuItem.setOpaque(false);
-        menuItem.setBackground(ALPHA_ZERO);
-        super.add(menuItem);
-        return menuItem;
+        //menuItem.setBackground(ALPHA_ZERO);
+        return super.add(menuItem);
     }
     @Override public void show(Component c, int x, int y) {
         EventQueue.invokeLater(new Runnable() {
@@ -90,8 +99,10 @@ class TranslucentPopupMenu extends JPopupMenu{
     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(POPUP_LEFT);
+        g2.fillRect(0,0,LEFT_WIDTH,getHeight());
         g2.setPaint(POPUP_BACK);
-        g2.fillRect(0,0,getWidth(),getHeight());
+        g2.fillRect(LEFT_WIDTH,0,getWidth(),getHeight());
         g2.dispose();
         //super.paintComponent(g);
     }
