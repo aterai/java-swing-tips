@@ -8,6 +8,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
+/**
+@author Taka
+*/
 class MainPanel extends JPanel {
     private static final int BACKLAYER = 1;
     private static final int FORELAYER = 2;
