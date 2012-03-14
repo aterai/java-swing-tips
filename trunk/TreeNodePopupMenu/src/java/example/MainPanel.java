@@ -31,11 +31,8 @@ public class MainPanel extends JPanel {
         @Override public void show(Component c, int x, int y) {
             JTree tree = (JTree)c;
             tsp = tree.getSelectionPaths();
-            if(tsp!=null) {
-                TreePath path = tree.getPathForLocation(x, y);
-                if(path!=null && Arrays.asList(tsp).contains(path)) {
-                    super.show(c, x, y);
-                }
+            if(tsp!=null && tsp.length>0) {
+                super.show(c, x, y);
             }
         }
     }

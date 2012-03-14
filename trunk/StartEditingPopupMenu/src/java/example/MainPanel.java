@@ -12,8 +12,19 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
         JTree tree = new JTree();
+
+//         UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
+//         tree.addMouseListener(new MouseAdapter() {
+//             @Override public void mousePressed(MouseEvent e) {
+//                 JTree tree = (JTree)e.getSource();
+//                 TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+//                 if(!tree.getSelectionModel().isPathSelected(path)) {
+//                     tree.getSelectionModel().setSelectionPath(path);
+//                 }
+//             }
+//         });
+
         tree.setCellEditor(new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer)tree.getCellRenderer()) {
 //             @Override protected boolean shouldStartEditingTimer(EventObject e) {
 //                 return false;
@@ -57,14 +68,30 @@ public class MainPanel extends JPanel {
 class TreePopupMenu extends JPopupMenu {
     private TreePath path;
     private final JTextField textField = new JTextField();
-    public TreePopupMenu() {
-        super();
-        add(new JMenuItem(new AbstractAction("Edit") {
+    private final JMenuItem editAction = new JMenuItem(new AbstractAction("Edit") {
             @Override public void actionPerformed(ActionEvent e) {
                 JTree tree = (JTree)getInvoker();
                 if(path!=null) tree.startEditingAtPath(path);
             }
-        }));
+        });
+    private final JMenuItem editDialogAction = new JMenuItem(new AbstractAction("Edit Dialog") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTree tree = (JTree)getInvoker();
+            if(path==null) return;
+            Object node = path.getLastPathComponent();
+            if(node instanceof DefaultMutableTreeNode) {
+                DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
+                textField.setText(leaf.getUserObject().toString());
+                int result = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if(result==JOptionPane.OK_OPTION) {
+                    String str = textField.getText();
+                    if(!str.trim().isEmpty()) ((DefaultTreeModel)tree.getModel()).valueForPathChanged(path, str);
+                }
+            }
+        }
+    });
+    public TreePopupMenu() {
+        super();
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
@@ -72,31 +99,23 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void ancestorMoved(AncestorEvent event) {}
             @Override public void ancestorRemoved(AncestorEvent e) {}
         });
-        add(new JMenuItem(new AbstractAction("Edit Dialog") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTree tree = (JTree)getInvoker();
-                if(path==null) return;
-                Object node = path.getLastPathComponent();
-                if(node instanceof DefaultMutableTreeNode) {
-                    DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-                    textField.setText(leaf.getUserObject().toString());
-                    int result = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                    if(result==JOptionPane.OK_OPTION) {
-                        String str = textField.getText();
-                        if(!str.trim().isEmpty()) ((DefaultTreeModel)tree.getModel()).valueForPathChanged(path, str);
-                    }
-                }
-            }
-        }));
+        add(editAction);
+        add(editDialogAction);
+        add(new JMenuItem("dummy"));
     }
     @Override public void show(Component c, int x, int y) {
         JTree tree = (JTree)c;
+//         //Test:
+//         path = tree.getPathForLocation(x, y);
+//         if(tree.getSelectionModel().isPathSelected(path)) {
+//             super.show(c, x, y);
+//         }
         TreePath[] tsp = tree.getSelectionPaths();
-        if(tsp!=null && tsp.length>0) {
-            path = tree.getPathForLocation(x, y); //path = tree.getClosestPathForLocation(x, y);
-            if(tsp[tsp.length-1].equals(path)) { //Test: if(path!=null && java.util.Arrays.asList(tsp).contains(path)) {
-                super.show(c, x, y);
-            }
-        }
+        path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
+        boolean isEditable = tsp!=null && tsp.length==1 && tsp[0].equals(path);
+        //Test: if(path!=null && java.util.Arrays.asList(tsp).contains(path)) {
+        editAction.setEnabled(isEditable);
+        editDialogAction.setEnabled(isEditable);
+        super.show(c, x, y);
     }
 }
