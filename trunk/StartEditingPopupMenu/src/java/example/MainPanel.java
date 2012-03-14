@@ -12,6 +12,7 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
+        UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
         JTree tree = new JTree();
         tree.setCellEditor(new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer)tree.getCellRenderer()) {
 //             @Override protected boolean shouldStartEditingTimer(EventObject e) {
@@ -91,11 +92,9 @@ class TreePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         JTree tree = (JTree)c;
         TreePath[] tsp = tree.getSelectionPaths();
-        if(tsp!=null) {
+        if(tsp!=null && tsp.length>0) {
             path = tree.getPathForLocation(x, y); //path = tree.getClosestPathForLocation(x, y);
-//             System.out.println("  "+path);
-//             System.out.println("  "+tsp[tsp.length-1]);
-            if(tsp[tsp.length-1].equals(path)) {
+            if(tsp[tsp.length-1].equals(path)) { //Test: if(path!=null && java.util.Arrays.asList(tsp).contains(path)) {
                 super.show(c, x, y);
             }
         }
