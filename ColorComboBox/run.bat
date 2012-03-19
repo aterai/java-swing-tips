@@ -4,7 +4,7 @@ echo Swing Example
 echo -------------------
 
 if "%JAVA_HOME%" == "" goto :error
-
+set MAIN_CLASS=example.MainPanel
 set CLASSPATH=.\target\classes
 for %%i in (.\lib\*.jar) do call :setpath %%i
 goto :endsubs
@@ -17,7 +17,7 @@ goto :EOF
 
 echo Running with classpath "%CLASSPATH%"
 echo Starting...
-"%JAVA_HOME%\bin\java.exe" -classpath "%CLASSPATH%" example.MainPanel %1
+"%JAVA_HOME%\bin\java.exe" -classpath "%CLASSPATH%" %MAIN_CLASS% %*
 
 goto :end
 
