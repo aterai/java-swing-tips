@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -36,12 +37,12 @@ public class MainPanel extends JPanel{
         textField01.setText("aaaaaaaaaaa");
 
         JTextField textField02 = new JTextField(20);
-        textField02.setUI(new RoundTextUI());
+        textField02.setBorder(new RoundedCornerBorder());
         textField02.setText("bbbbbbbbbbbb");
 
         JPanel p = new JPanel(new GridLayout(2,1,5,5));
         p.add(makeTitlePanel(textField01, "Override: JTextField#paintComponent(...)"));
-        p.add(makeTitlePanel(textField02, "setUI: RoundTextUI()"));
+        p.add(makeTitlePanel(textField02, "setBorder(new RoundedCornerBorder())"));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         setPreferredSize(new Dimension(320, 200));
@@ -78,42 +79,29 @@ public class MainPanel extends JPanel{
     }
 }
 
-//http://forums.sun.com/thread.jspa?threadID=260846
-class RoundTextUI extends BasicTextFieldUI {
-    public static ComponentUI createUI(JComponent c) {
-        return new RoundTextUI();
+class RoundedCornerBorder extends AbstractBorder {
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        int r = height-1;
+        RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width-1, height-1, r, r);
+        Container parent = c.getParent();
+        if(parent!=null) {
+            g2.setColor(parent.getBackground());
+            Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
+            corner.subtract(new Area(round));
+            g2.fill(corner);
+        }
+        g2.setColor(Color.GRAY);
+        g2.draw(round);
+        g2.dispose();
     }
-    @Override public void installUI(JComponent c) {
-        super.installUI(c);
-        c.setBorder(new RoundBorder());
-        c.setOpaque(false);
-        c.setBackground(new Color(0,0,0,0));
+    @Override public Insets getBorderInsets(Component c) {
+        return new Insets(4, 8, 4, 8);
     }
-    @Override protected void paintSafely(Graphics g) {
-        JComponent c = getComponent();
-        if(!c.isOpaque()) {
-            Graphics2D g2 = (Graphics2D)g.create();
-            g2.setColor(UIManager.getColor("TextField.background"));
-            g2.fillRoundRect(0, 0, c.getWidth()-1, c.getHeight()-1, c.getHeight(), c.getHeight());
-            g2.dispose();
-        }
-        super.paintSafely(g);
-    }
-    private static class RoundBorder extends AbstractBorder {
-        @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            Graphics2D g2 = (Graphics2D)g.create();
-            g2.setColor(Color.GRAY);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.drawRoundRect(x, y, width-1, height-1, height, height);
-            g2.dispose();
-        }
-        @Override public Insets getBorderInsets(Component c) {
-            return new Insets(4, 8, 4, 8);
-        }
-        @Override public Insets getBorderInsets(Component c, Insets insets) {
-            insets.left = insets.right = 8;
-            insets.top = insets.bottom = 4;
-            return insets;
-        }
+    @Override public Insets getBorderInsets(Component c, Insets insets) {
+        insets.left = insets.right = 8;
+        insets.top = insets.bottom = 4;
+        return insets;
     }
 }
