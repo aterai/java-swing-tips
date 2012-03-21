@@ -91,8 +91,10 @@ class CardLayoutTabbedPane extends JPanel {
         add(contentsPanel);
     }
     protected JComponent createTabComponent(final String title, final Component comp) {
-        TabButton tab = new TabButton(new AbstractAction(title) {
-            @Override public void actionPerformed(ActionEvent e) {
+        TabButton tab = new TabButton(title);
+        tab.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                ((AbstractButton)e.getSource()).setSelected(true);
                 cardLayout.show(contentsPanel, title);
             }
         });
@@ -101,6 +103,7 @@ class CardLayoutTabbedPane extends JPanel {
         //tab.setPreferredSize(new Dimension(200, 24));
         JButton close = new JButton(new AbstractAction("") {
             @Override public void actionPerformed(ActionEvent e) {
+                //@See http://java-swing-tips.googlecode.com/svn/trunk/NewTabButton
                 System.out.println("close button");
             }
         });

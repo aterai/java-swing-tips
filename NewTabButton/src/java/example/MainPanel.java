@@ -85,7 +85,7 @@ class CardLayoutTabbedPane extends JPanel {
         //contentsPanel.setBackground(new Color(20,30,50));
 
         wrapPanel.add(tabPanel);
-        wrapPanel.add(new JButton("a"), BorderLayout.WEST);
+        //TEST: wrapPanel.add(new JButton("a"), BorderLayout.WEST);
 
 //         JPanel locPanel = new JPanel();
 //         wrapPanel.add(new JButton("b"), BorderLayout.SOUTH);
@@ -99,8 +99,15 @@ class CardLayoutTabbedPane extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder());
     }
     protected JComponent createTabComponent(final String title, final Component comp) {
-        final TabButton tab = new TabButton(new AbstractAction(title) {
-            @Override public void actionPerformed(ActionEvent e) {
+//         final TabButton tab = new TabButton(new AbstractAction(title) {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 cardLayout.show(contentsPanel, title);
+//             }
+//         });
+        final TabButton tab = new TabButton(title);
+        tab.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                ((AbstractButton)e.getSource()).setSelected(true);
                 cardLayout.show(contentsPanel, title);
             }
         });
