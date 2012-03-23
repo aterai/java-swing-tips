@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+//import java.lang.reflect.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
@@ -143,8 +144,30 @@ public class MainPanel extends JPanel{
         }
         @Override public void actionPerformed(ActionEvent e) {
             JOptionPane optionPane = new JOptionPane();
+//*
             optionPane.setMessage("Hello, World");
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+/*/
+            //GlassPane + JComboBox Test:
+            JComboBox combo = new JComboBox(new String[] {"Banana", "Apple", "Pear", "Grape"});
+            combo.setEditable(true);
+            try{
+                Field field;
+                if(System.getProperty("java.version").startsWith("1.6.0")) {
+                    Class clazz = Class.forName("javax.swing.PopupFactory");
+                    field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+                }else{ //1.7.0, 1.8.0
+                    Class clazz = Class.forName("javax.swing.ClientPropertyKey");
+                    field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+                }
+                field.setAccessible(true);
+                combo.putClientProperty(field.get(null), Boolean.TRUE);
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
+            optionPane.setMessage(combo);
+            optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
+//*/
             JInternalFrame modal = optionPane.createInternalFrame(desktop, "modal3");
             removeSystemMenuListener(modal);
             modal.addInternalFrameListener(new InternalFrameAdapter() {
