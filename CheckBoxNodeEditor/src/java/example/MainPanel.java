@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
             Object o = node.getUserObject();
             if(o instanceof String) {
-                node.setUserObject(new CheckBoxNode((String)o, false));
+                node.setUserObject(new CheckBoxNode((String)o, Status.DESELECTED));
             }
         }
         tree.setEditable(true);
@@ -57,34 +57,50 @@ public class MainPanel extends JPanel {
                 if(children!=null && children.length==1) {
                     node = (DefaultMutableTreeNode)children[0];
                     c = (CheckBoxNode)node.getUserObject();
-                    updateParentUserObject(model, (DefaultMutableTreeNode)parent.getLastPathComponent());
+                    DefaultMutableTreeNode n = (DefaultMutableTreeNode)parent.getLastPathComponent();
+                    while(n!=null) {
+                        updateParentUserObject(n);
+                        DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)n.getParent();
+                        if(tmp==null) {
+                            break;
+                        }else{
+                            n = tmp;
+                        }
+                    }
+                    model.nodeChanged(n);
                 }else{
                     node = (DefaultMutableTreeNode)model.getRoot();
                     c = (CheckBoxNode)node.getUserObject();
                 }
-                updateAllChildrenUserObject(model, node, c.selected);
+                updateAllChildrenUserObject(node, c.status);
+                model.nodeChanged(node);
                 adjusting = false;
             }
-            private void updateParentUserObject(DefaultTreeModel model, DefaultMutableTreeNode parent) {
-                CheckBoxNode check = (CheckBoxNode)parent.getUserObject();
+            private void updateParentUserObject(DefaultMutableTreeNode parent) {
+                String label = ((CheckBoxNode)parent.getUserObject()).label;
                 int selectedCount = 0;
+                int indeterminateCount = 0;
                 java.util.Enumeration children = parent.children();
                 while(children.hasMoreElements()) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)children.nextElement();
-                    CheckBoxNode cbn = (CheckBoxNode)node.getUserObject();
-                    if(cbn.selected) selectedCount++;
+                    CheckBoxNode check = (CheckBoxNode)node.getUserObject();
+                    if(check.status==Status.INDETERMINATE) {
+                        indeterminateCount++;
+                        break;
+                    }
+                    if(check.status==Status.SELECTED) selectedCount++;
                 }
-                if(selectedCount==0) {
-                    parent.setUserObject(new CheckBoxNode(check.str, false));
+                if(indeterminateCount>0) {
+                    parent.setUserObject(new CheckBoxNode(label));
+                }else if(selectedCount==0) {
+                    parent.setUserObject(new CheckBoxNode(label, Status.DESELECTED));
                 }else if(selectedCount==parent.getChildCount()) {
-                    parent.setUserObject(new CheckBoxNode(check.str, true));
+                    parent.setUserObject(new CheckBoxNode(label, Status.SELECTED));
                 }else{
-                    parent.setUserObject(new CheckBoxNode(check.str));
+                    parent.setUserObject(new CheckBoxNode(label));
                 }
-                model.nodeChanged(parent);
-                //model.valueForPathChanged(parent, newValue);
             }
-            private void updateAllChildrenUserObject(DefaultTreeModel model, DefaultMutableTreeNode root, boolean isSelected) {
+            private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
                 java.util.Enumeration breadth = root.breadthFirstEnumeration();
                 while(breadth.hasMoreElements()) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)breadth.nextElement();
@@ -92,8 +108,7 @@ public class MainPanel extends JPanel {
                         continue;
                     }
                     CheckBoxNode check = (CheckBoxNode)node.getUserObject();
-                    node.setUserObject(new CheckBoxNode(check.str, isSelected));
-                    model.nodeChanged(node);
+                    node.setUserObject(new CheckBoxNode(check.label, status));
                 }
             }
             @Override public void treeNodesInserted(TreeModelEvent e) {}
@@ -161,22 +176,20 @@ class IndeterminateIcon implements Icon {
     @Override public int getIconHeight() { return icon.getIconHeight(); }
 }
 
+enum Status { SELECTED, DESELECTED, INDETERMINATE }
 class CheckBoxNode{
-    public final String str;
-    public final boolean selected;
-    public final boolean indeterminate;
-    public CheckBoxNode(String str) {
-        this.str = str;
-        this.selected = false;
-        this.indeterminate = true;
+    public final String label;
+    public final Status status;
+    public CheckBoxNode(String label) {
+        this.label = label;
+        status = Status.INDETERMINATE;
     }
-    public CheckBoxNode(String str, boolean selected) {
-        this.str = str;
-        this.selected = selected;
-        this.indeterminate = false;
+    public CheckBoxNode(String label, Status status) {
+        this.label = label;
+        this.status = status;
     }
     @Override public String toString() {
-        return str;
+        return label;
     }
 }
 
@@ -209,13 +222,13 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                if(!node.selected && node.indeterminate) {
+                if(node.status==Status.INDETERMINATE) {
                     setIcon(new IndeterminateIcon());
                 }else{
                     setIcon(null);
                 }
-                l.setText(node.str);
-                setSelected(node.selected);
+                l.setText(node.label);
+                setSelected(node.status==Status.SELECTED);
             }
             //panel.add(this, BorderLayout.WEST);
             panel.add(l);
@@ -266,14 +279,14 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                if(!node.selected && node.indeterminate) {
+                if(node.status==Status.INDETERMINATE) {
                     setIcon(new IndeterminateIcon());
                 }else{
                     setIcon(null);
                 }
-                l.setText(node.str);
-                setSelected(node.selected);
-                str = node.str;
+                l.setText(node.label);
+                setSelected(node.status==Status.SELECTED);
+                str = node.label;
             }
             //panel.add(this, BorderLayout.WEST);
             panel.add(l);
@@ -282,7 +295,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         return l;
     }
     @Override public Object getCellEditorValue() {
-        return new CheckBoxNode(str, isSelected());
+        return new CheckBoxNode(str, isSelected()?Status.SELECTED:Status.DESELECTED);
     }
     @Override public boolean isCellEditable(EventObject e) {
         if(e != null && e instanceof MouseEvent && e.getSource() instanceof JTree) {
@@ -394,13 +407,13 @@ class CheckBoxNodeRenderer extends JPanel implements TreeCellRenderer {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                if(!node.selected && node.indeterminate) {
+                if(node.status==Status.INDETERMINATE) {
                     check.setIcon(new IndeterminateIcon());
                 }else{
                     check.setIcon(null);
                 }
-                l.setText(node.str);
-                check.setSelected(node.selected);
+                l.setText(node.label);
+                check.setSelected(node.status==Status.SELECTED);
             }
             //add(this, BorderLayout.WEST);
             add(l);
@@ -451,14 +464,14 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
-                if(!node.selected && node.indeterminate) {
+                if(node.status==Status.INDETERMINATE) {
                     check.setIcon(new IndeterminateIcon());
                 }else{
                     check.setIcon(null);
                 }
-                l.setText(node.str);
-                check.setSelected(node.selected);
-                str = node.str;
+                l.setText(node.label);
+                check.setSelected(node.status==Status.SELECTED);
+                str = node.label;
             }
             //add(this, BorderLayout.WEST);
             add(l);
@@ -467,7 +480,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         return l;
     }
     @Override public Object getCellEditorValue() {
-        return new CheckBoxNode(str, check.isSelected());
+        return new CheckBoxNode(str, check.isSelected()?Status.SELECTED:Status.DESELECTED);
     }
     @Override public boolean isCellEditable(EventObject e) {
         if(e != null && e instanceof MouseEvent && e.getSource() instanceof JTree) {
