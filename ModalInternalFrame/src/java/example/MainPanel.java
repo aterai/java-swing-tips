@@ -135,18 +135,18 @@ public class MainPanel extends JPanel{
     //Creating Modal Internal Frames -- Approach 1 and Approach 2
     //http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
     class ModalInternalFrameAction3 extends AbstractAction {
-        private final Component orgGlassPane;
         private final JPanel glass = new PrintGlassPane();
         public ModalInternalFrameAction3(String label) {
             super(label);
-            orgGlassPane = frame.getGlassPane();
             glass.setVisible(false);
         }
         @Override public void actionPerformed(ActionEvent e) {
             JOptionPane optionPane = new JOptionPane();
+            JInternalFrame modal = optionPane.createInternalFrame(desktop, "modal3");
 //*
             optionPane.setMessage("Hello, World");
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+            removeSystemMenuListener(modal);
 /*/
             //GlassPane + JComboBox Test:
             JComboBox combo = new JComboBox(new String[] {"Banana", "Apple", "Pear", "Grape"});
@@ -161,34 +161,27 @@ public class MainPanel extends JPanel{
                     field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
                 }
                 field.setAccessible(true);
-                combo.putClientProperty(field.get(null), Boolean.TRUE);
+                modal.putClientProperty(field.get(null), Boolean.TRUE);
             }catch(Exception ex) {
                 ex.printStackTrace();
             }
             optionPane.setMessage(combo);
             optionPane.setMessageType(JOptionPane.QUESTION_MESSAGE);
 //*/
-            JInternalFrame modal = optionPane.createInternalFrame(desktop, "modal3");
-            removeSystemMenuListener(modal);
             modal.addInternalFrameListener(new InternalFrameAdapter() {
                 @Override public void internalFrameClosed(InternalFrameEvent e) {
+                    glass.removeAll();
                     glass.setVisible(false);
-                    frame.setGlassPane(orgGlassPane);
                 }
             });
             glass.add(modal);
             Rectangle screen = desktop.getBounds();
+            modal.pack();
             modal.setLocation(screen.x + screen.width/2  - modal.getSize().width/2,
                               screen.y + screen.height/2 - modal.getSize().height/2);
             frame.setGlassPane(glass);
             glass.setVisible(true);
             modal.setVisible(true);
-            //desktop.getDesktopManager().activateFrame(modal);
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    glass.repaint();
-                }
-            });
         }
     }
 
