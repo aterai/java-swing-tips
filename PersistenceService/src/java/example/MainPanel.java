@@ -101,9 +101,11 @@ public class MainPanel extends JPanel{
 //             //Test:
 //             //ObjectInputStream d = new ObjectInputStream(appSettings.getInputStream());
 //             //WindowState cache = (WindowState)d.readObject();
-            WindowState cache = (WindowState)map.get("setting");
-            System.out.println("aaa: "+cache.getSize());
-            System.out.println("aaa: "+cache.getLocation());
+
+//             //Test:
+//             WindowState cache = (WindowState)map.get("setting");
+//             System.out.println("aaa: "+cache.getSize());
+//             System.out.println("aaa: "+cache.getLocation());
         }catch(FileNotFoundException fnfe) {
             //create the cache
             try{
