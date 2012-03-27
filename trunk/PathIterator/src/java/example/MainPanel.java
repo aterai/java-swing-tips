@@ -10,6 +10,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import java.io.*;
 import java.util.*;
+import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -48,12 +49,48 @@ class StarburstSVGMaker {
     private final JSpinner spinner1          = new JSpinner(outer);
     private final JSpinner spinner2          = new JSpinner(inner);
     private final JSpinner vcSpinner         = new JSpinner(vcModel);
-    private final JTextArea textArea         = new JTextArea();
     private final JTextField styleField      = new JTextField("stroke:none; fill:pink");
     private final JCheckBox check            = new JCheckBox("Antialias", true);
     private final JLabel label               = new JLabel();
 
+    private ClipboardService cs;
+    private final JTextArea textArea = new JTextArea() {
+        @Override public void copy() {
+            if(cs != null) {
+                cs.setContents(new StringSelection(getSelectedText()));
+            }else{
+                super.copy();
+            }
+        }
+        @Override public void cut() {
+            if(cs != null) {
+                cs.setContents(new StringSelection(getSelectedText()));
+            }else{
+                super.cut();
+            }
+        }
+        @Override public void paste() {
+            if(cs != null) {
+                Transferable tr = cs.getContents();
+                if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    try{
+                        getTransferHandler().importData(this, tr);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
+                super.paste();
+            }
+        }
+    };
+
     public JComponent makeUI() {
+        try{
+            cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
+        }catch(Throwable t) {
+            cs = null;
+        }
         initStar();
         ChangeListener cl = new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
