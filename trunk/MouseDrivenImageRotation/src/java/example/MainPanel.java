@@ -57,7 +57,7 @@ class DraggableImageMouseListener extends MouseAdapter{
     public final int width;
     public final int height;
     public final double centerX, centerY;
-    public double x = 10.0, y = 50.0, rotate = 45.0;
+    public double x = 10.0, y = 50.0, radian = 45.0 * (Math.PI / 180.0);
     public double startX, startY, startA;
     private boolean moverHover, rotatorHover;
 
@@ -78,7 +78,7 @@ class DraggableImageMouseListener extends MouseAdapter{
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-        at.rotate(rotate, centerX, centerY);
+        at.rotate(radian, centerX, centerY);
 
         g2d.setPaint(Color.WHITE);
         g2d.setStroke(borderStroke);
@@ -117,7 +117,7 @@ class DraggableImageMouseListener extends MouseAdapter{
     @Override public void mousePressed(MouseEvent e) {
         if(outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
             rotatorHover = true;
-            startA = rotate - Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
+            startA = radian - Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
             ((JComponent)e.getSource()).repaint();
         }else if(inner.contains(e.getX(), e.getY())) {
             moverHover = true;
@@ -128,7 +128,7 @@ class DraggableImageMouseListener extends MouseAdapter{
     }
     @Override public void mouseDragged(MouseEvent e) {
         if(rotatorHover) {
-            rotate = startA + Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
+            radian = startA + Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
             ((JComponent)e.getSource()).repaint();
         }else if(moverHover) {
             x += e.getX() - startX;
