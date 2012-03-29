@@ -77,12 +77,12 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     public ProgressRenderer() {
         super();
         setOpaque(true);
-        p.add(b);
 //         //TEST:
 //         UIManager.put("Table.cellNoFocusBorder", BorderFactory.createEmptyBorder(1,10,1,10));
 //         UIManager.put("Table.focusSelectedCellHighlightBorder", BorderFactory.createEmptyBorder(1,10,1,10));
 //         UIManager.put("Table.focusCellHighlightBorder", BorderFactory.createEmptyBorder(1,10,1,10));
 
+        p.add(b);
         p.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         //XXX: b.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
     }
@@ -95,9 +95,7 @@ class ProgressRenderer extends DefaultTableCellRenderer {
             text = "Canceled";
         }else if(i<100) {
             b.setValue(i);
-            b.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
-            b.revalidate();
-            return b;
+            return p;
         }
         super.getTableCellRendererComponent(table, text, isSelected, hasFocus, row, column);
         return this;
