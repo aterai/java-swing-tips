@@ -84,7 +84,7 @@ class ProgressRenderer extends DefaultTableCellRenderer {
 
         p.add(b);
         p.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        //XXX: b.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        //TEST: b.setBorder(BorderFactory.createMatteBorder(1,10,1,1,Color.RED));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus,
