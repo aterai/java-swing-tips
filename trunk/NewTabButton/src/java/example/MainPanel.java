@@ -276,9 +276,9 @@ class CloseTabIcon implements Icon {
 }
 
 class TabLayout implements LayoutManager, java.io.Serializable {
-    public void addLayoutComponent(String name, Component comp) {}
-    public void removeLayoutComponent(Component comp) {}
-    public Dimension preferredLayoutSize(Container parent) {
+    @Override public void addLayoutComponent(String name, Component comp) {}
+    @Override public void removeLayoutComponent(Component comp) {}
+    @Override public Dimension preferredLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
             int last = parent.getComponentCount()-1;
@@ -294,13 +294,13 @@ class TabLayout implements LayoutManager, java.io.Serializable {
         }
     }
 
-    public Dimension minimumLayoutSize(Container parent) {
+    @Override public Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             return new Dimension(100, 24);
         }
     }
 
-    public void layoutContainer(Container parent) {
+    @Override public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
             int ncomponents = parent.getComponentCount();
@@ -327,7 +327,7 @@ class TabLayout implements LayoutManager, java.io.Serializable {
             }
         }
     }
-    public String toString() {
+    @Override public String toString() {
         return getClass().getName();
     }
 }
