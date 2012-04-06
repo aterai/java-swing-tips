@@ -46,7 +46,7 @@ public class MainPanel extends JPanel{
                 try{
                     bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
                     ps = (PersistenceService)ServiceManager.lookup("javax.jnlp.PersistenceService");
-                }catch(UnavailableServiceException use) {
+                }catch(Throwable use) { //UnavailableServiceException use) {
                     use.printStackTrace();
                     ps = null;
                     bs = null;
