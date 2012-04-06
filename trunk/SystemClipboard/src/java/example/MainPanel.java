@@ -5,18 +5,18 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import javax.swing.*;
 import javax.jnlp.*;
+import javax.swing.*;
 
 public class MainPanel extends JPanel{
     private final JLabel label = new JLabel();
     private ClipboardService cs = null;
     public MainPanel() {
         super(new BorderLayout());
-        //if(isWebStart()) {
+
         try{
             cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(UnavailableServiceException e) {
+        }catch(Throwable t) {
             cs = null;
         }
         add(new JScrollPane(label));
@@ -45,14 +45,6 @@ public class MainPanel extends JPanel{
         }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 200));
     }
-//     private static boolean isWebStart() {
-//         try{
-//             javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
-//             return true;
-//         }catch(Exception ex) {
-//             return false;
-//         }
-//     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

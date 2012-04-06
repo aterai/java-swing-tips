@@ -416,8 +416,8 @@ class TabTransferHandler extends TransferHandler {
         int idx = dl.getIndex();
         boolean isDropable = false;
 
-//         DnDTabbedPane source = TabTransferHandler.source;
 //         if(!isWebStart()) {
+//             //System.out.println("local");
 //             try{
 //                 source = (DnDTabbedPane)support.getTransferable().getTransferData(localObjectFlavor);
 //             }catch(Exception ex) {
@@ -457,7 +457,7 @@ class TabTransferHandler extends TransferHandler {
 //         try{
 //             javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
 //             return true;
-//         }catch(Exception ex) {
+//         }catch(Throwable ex) {
 //             return false;
 //         }
 //     }

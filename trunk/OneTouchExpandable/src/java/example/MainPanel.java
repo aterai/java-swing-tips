@@ -33,8 +33,7 @@ public class MainPanel extends JPanel {
         BasicService bs;
         try{
             bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
-        }catch(UnavailableServiceException use) {
-            //use.printStackTrace();
+        }catch(Throwable ex) { //UnavailableServiceException use) {
             bs = null;
         }
         s1.setMinimumSize(new Dimension(0, 100));
