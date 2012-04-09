@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
+// http://docs.oracle.com/javase/7/docs/api/javax/swing/plaf/multi/doc-files/multi_tsc.html
+//???: Don't extend visual look and feels.
 public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.WindowsComboBoxUI {
     public static ComponentUI createUI(JComponent c) {
         return new AuxiliaryWindowsComboBoxUI();
@@ -16,6 +18,14 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
         //System.out.println("AuxiliaryWindowsComboBoxUI#createPopup");
         return new BasicComboPopup2(comboBox);
     }
+//     //???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
+//     @Override public void installUI(JComponent c) {
+//         //super.installUI( c );
+//     }
+//     @Override public void uninstallUI(JComponent c) {
+//         //super.uninstallUI( c );
+//     }
+    //Override all UI-specific methods your UI classes inherit.
     @Override protected void configureEditor() {}
     @Override protected void unconfigureEditor() {}
     @Override public void removeEditor() {}
