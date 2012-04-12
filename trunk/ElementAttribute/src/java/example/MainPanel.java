@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
       "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />" +
       "<div title='tooltip: div[@title]'>div tag: div div div div</div>" +
       "<div style='padding: 2 24;'><img src='"+ image +"' alt='16x16 favicon' />&nbsp;" +
-      "<a href='http://terai.xrea.jp/'>Java Swing Tips</a></div>" +
+      "<a href='http://terai.xrea.jp/' title='Title: JST'>Java Swing Tips</a></div>" +
       "</body></html>";
 
     public MainPanel() {
@@ -80,6 +80,27 @@ public class MainPanel extends JPanel {
         editor1.setText(htmlText);
         editor1.setEditable(false);
         ToolTipManager.sharedInstance().registerComponent(editor1);
+        editor1.addHyperlinkListener(new HyperlinkListener() {
+            private String tooltip;
+            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
+                JEditorPane editor = (JEditorPane)e.getSource();
+                if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                    JOptionPane.showMessageDialog(editor, e.getURL());
+                }else if(e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+                    tooltip = editor.getToolTipText();
+                    Element elem = e.getSourceElement();
+                    if(elem != null) {
+                        AttributeSet attr = elem.getAttributes();
+                        AttributeSet a = (AttributeSet)attr.getAttribute(HTML.Tag.A);
+                        if(a != null) {
+                            editor.setToolTipText((String)a.getAttribute(HTML.Attribute.TITLE));
+                        }
+                    }
+                }else if(e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+                    editor.setToolTipText(tooltip);
+                }
+            }
+        });
 
         JEditorPane editor2 = new JEditorPane();
         editor2.setEditorKit(new TooltipEditorKit());
