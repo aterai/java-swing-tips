@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        DefaultTreeModel treeModel = new DefaultTreeModel(root);
+        final DefaultTreeModel treeModel = new DefaultTreeModel(root);
         for(File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
             root.add(node);
@@ -50,6 +50,21 @@ public class MainPanel extends JPanel {
 
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(new JScrollPane(tree));
+        add(new JButton(new AbstractAction("test") {
+            @Override public void actionPerformed(ActionEvent ae) {
+                System.out.println("------------------");
+                DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
+                java.util.Enumeration e = root.breadthFirstEnumeration();
+                while(e.hasMoreElements()) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
+                    CheckBoxNode check = (CheckBoxNode)node.getUserObject();
+                    if(check!=null && check.status==Status.SELECTED) {
+                        System.out.println(check.file.toString());
+                    }
+                }
+            }
+        }), BorderLayout.SOUTH);
+        
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -136,8 +151,11 @@ class FolderSelectionListener implements TreeSelectionListener{
         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
 
         if(!node.isLeaf()) return;
-        final File parent = ((CheckBoxNode)node.getUserObject()).file;
+        CheckBoxNode check = (CheckBoxNode)node.getUserObject();
+        if(check==null) return;
+        final File parent = check.file;
         if(!parent.isDirectory()) return;
+        final Status parent_status = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
 
         SwingWorker<String, File> worker = new SwingWorker<String, File>() {
             @Override public String doInBackground() {
@@ -151,7 +169,7 @@ class FolderSelectionListener implements TreeSelectionListener{
             }
             @Override protected void process(java.util.List<File> chunks) {
                 for(File file: chunks) {
-                    node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, Status.DESELECTED)));
+                    node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)));
                 }
                 model.nodeStructureChanged(node);
             }
