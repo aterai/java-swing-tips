@@ -28,7 +28,7 @@ public class MainPanel extends JPanel {
         }
         treeModel.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
-        JTree tree = new JTree(treeModel) {
+        final JTree tree = new JTree(treeModel) {
             @Override public void updateUI() {
                 setCellRenderer(null);
                 setCellEditor(null);
@@ -53,19 +53,36 @@ public class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("test") {
             @Override public void actionPerformed(ActionEvent ae) {
                 System.out.println("------------------");
-                DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
-                java.util.Enumeration e = root.breadthFirstEnumeration();
-                while(e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                    CheckBoxNode check = (CheckBoxNode)node.getUserObject();
-                    if(check!=null && check.status==Status.SELECTED) {
-                        System.out.println(check.file.toString());
-                    }
-                }
+                searchTreeForCheckedNode(tree, tree.getPathForRow(0));
+//                 DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
+//                 java.util.Enumeration e = root.breadthFirstEnumeration();
+//                 while(e.hasMoreElements()) {
+//                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
+//                     CheckBoxNode check = (CheckBoxNode)node.getUserObject();
+//                     if(check!=null && check.status==Status.SELECTED) {
+//                         System.out.println(check.file.toString());
+//                     }
+//                 }
             }
         }), BorderLayout.SOUTH);
         
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static void searchTreeForCheckedNode(JTree tree, TreePath path) {
+        Object o = path.getLastPathComponent();
+        if(o==null || !(o instanceof DefaultMutableTreeNode)) return;
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)o;
+        o = node.getUserObject();
+        if(o==null || !(o instanceof CheckBoxNode)) return;
+        CheckBoxNode check = (CheckBoxNode)o;
+        if(check.status==Status.SELECTED) {
+            System.out.println(check.file.toString());
+        }else if(check.status==Status.INDETERMINATE && !node.isLeaf() && node.getChildCount()>=0) {
+            Enumeration e = node.children();
+            while(e.hasMoreElements()) {
+                searchTreeForCheckedNode(tree, path.pathByAddingChild(e.nextElement()));
+            }
+        }
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
