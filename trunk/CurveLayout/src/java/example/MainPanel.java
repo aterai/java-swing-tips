@@ -7,14 +7,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final static double a = 4.0;
+    private final static double A2 = 4.0;
     public MainPanel() {
         super(new BorderLayout());
-
-//         add(new JCheckBox(new AbstractAction("Tree.paintLines") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//             }
-//         }), BorderLayout.NORTH);
 
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel panel2 = new JPanel() {
@@ -27,7 +22,7 @@ public class MainPanel extends JPanel {
                 int px = 0;
                 int py = 0;
                 for(int x=0;x<w;x++) {
-                    int y = (int)Math.pow(x/a, 2.0);
+                    int y = (int)Math.pow(x/A2, 2.0);
                     g.drawLine(px, py, x, y);
                     px = x;
                     py = y;
@@ -36,7 +31,7 @@ public class MainPanel extends JPanel {
             }
         };
         panel2.setLayout(new FlowLayout() {
-            public void layoutContainer(Container target) {
+            @Override public void layoutContainer(Container target) {
                 synchronized(target.getTreeLock()) {
                     Insets insets = target.getInsets();
                     int nmembers  = target.getComponentCount();
@@ -53,7 +48,7 @@ public class MainPanel extends JPanel {
                             m.setSize(d.width, d.height);
                             m.setLocation(x, y);
                             y += (vgap + Math.min(rowh, d.height));
-                            x = (int)(a * Math.sqrt(y));
+                            x = (int)(A2 * Math.sqrt(y));
                         }
                     }
                 }
