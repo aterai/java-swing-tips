@@ -9,34 +9,62 @@ import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo01 = new JComboBox(makeModel());
-    private final JComboBox combo02 = new JComboBox(makeModel());
     public MainPanel() {
         super(new BorderLayout());
+//         Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+//             public void eventDispatched(AWTEvent event) {
+//                 if(event instanceof MouseWheelEvent) {
+//                     Object source = event.getSource();
+//                     if(source instanceof JScrollPane) {
+//                         System.out.println("JScrollPane");
+//                         return;
+//                     }
+//                     ((MouseWheelEvent)event).consume();
+//                 }
+//             }
+//         }, AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
-        if(combo02.getUI() instanceof WindowsComboBoxUI) {
-            combo02.setUI(new WindowsComboBoxUI() {
+        JComboBox combo1 = makeComboBox(5);
+        if(combo1.getUI() instanceof WindowsComboBoxUI) {
+            combo1.setUI(new WindowsComboBoxUI() {
                 @Override protected ComboPopup createPopup() {
-                    return new BasicComboPopup2( comboBox );
-                    //return new BasicComboPopup3( comboBox );
+                    return new BasicComboPopup2(comboBox);
                 }
             });
         }else{
-            combo02.setUI(new BasicComboBoxUI() {
+            combo1.setUI(new BasicComboBoxUI() {
                 @Override protected ComboPopup createPopup() {
-                    return new BasicComboPopup2( comboBox );
-                    //return new BasicComboPopup3( comboBox );
+                    return new BasicComboPopup2(comboBox);
+                }
+            });
+        }
+
+        JComboBox combo2 = makeComboBox(5);
+        if(combo2.getUI() instanceof WindowsComboBoxUI) {
+            combo2.setUI(new WindowsComboBoxUI() {
+                @Override protected ComboPopup createPopup() {
+                    return new BasicComboPopup3(comboBox);
+                }
+            });
+        }else{
+            combo2.setUI(new BasicComboBoxUI() {
+                @Override protected ComboPopup createPopup() {
+                    return new BasicComboPopup3(comboBox);
                 }
             });
         }
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(combo01, "default:"));
+        box.add(createPanel(makeComboBox(5), "default:"));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo02, "disable right click in drop-down list:"));
+        box.add(createPanel(makeComboBox(20), "default:"));
+        box.add(Box.createVerticalStrut(5));
+        box.add(createPanel(combo1, "disable right click in drop-down list:"));
+        box.add(Box.createVerticalStrut(5));
+        box.add(createPanel(combo2, "disable right click and scroll in drop-down list:"));
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent createPanel(JComponent cmp, String str) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -44,15 +72,13 @@ public class MainPanel extends JPanel{
         panel.add(cmp);
         return panel;
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(int size) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("aaaa");
-        model.addElement("aaaabbb");
-        model.addElement("aaaabbbcc");
-        model.addElement("1354123451234513512");
-        model.addElement("bbb1");
-        model.addElement("bbb12");
-        return model;
+        for(int i=0;i<size;i++) {
+            model.addElement("No."+i);
+        }
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -120,8 +146,27 @@ class BasicComboPopup3 extends BasicComboPopup {
     public BasicComboPopup3(JComboBox combo) {
         super(combo);
     }
+    @Override protected JScrollPane createScroller() {
+        JScrollPane sp = new JScrollPane(list,
+                                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
+            @Override protected void processEvent(AWTEvent e) {
+                if(e instanceof MouseWheelEvent) {
+                    JScrollBar toScroll = getVerticalScrollBar();
+                    if(toScroll == null || !toScroll.isVisible()) {
+                        ((MouseWheelEvent)e).consume();
+                        return;
+                    }
+                }
+                super.processEvent(e);
+            }
+        };
+        sp.setHorizontalScrollBar(null);
+        return sp;
+    }
+    @SuppressWarnings("unchecked")
     @Override protected JList createList() {
-        return new JList( comboBox.getModel() ) {
+        return new JList(comboBox.getModel()) {
             @Override public void processMouseEvent(MouseEvent e)  {
                 if(SwingUtilities.isRightMouseButton(e)) return;
                 if(e.isControlDown())  {
