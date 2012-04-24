@@ -62,41 +62,33 @@ public class MainPanel extends JPanel {
 //         }
         ArrayList<JComboBox> list = new ArrayList<JComboBox>();
         for(int i=0;i<7;i++) {
-            list.add(new JComboBox(makeModel()));
+            list.add(makeComboBox());
         }
-        Border padding = isColor
-            ? BorderFactory.createMatteBorder(0,5,0,0,new Color(1f,.8f,.8f,.5f))
-            : BorderFactory.createEmptyBorder(0,5,0,0);
-        ListCellRenderer lcr = list.get(0).getRenderer(); ((JLabel)lcr).setBorder(padding);
         JComboBox combo;
         JTextField editor;
 
         // ---- 00 ----
         combo = list.get(0);
         combo.setEditable(false);
-        combo.setRenderer(lcr);
         combo.setToolTipText("combo.setEditable(false);");
 
         // ---- 01 ----
         combo = list.get(1);
         combo.setEditable(true);
-        combo.setRenderer(lcr);
         editor = (JTextField)combo.getEditor().getEditorComponent();
-        editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), padding));
+        editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), getPaddingBorder(isColor)));
         combo.setToolTipText("editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), padding));");
 
         // ---- 02 ----
         combo = list.get(2);
         combo.setEditable(true);
-        combo.setRenderer(lcr);
         editor = (JTextField)combo.getEditor().getEditorComponent();
-        editor.setBorder(padding);
+        editor.setBorder(getPaddingBorder(isColor));
         combo.setToolTipText("editor.setBorder(padding);");
 
         // ---- 03 ----
         combo = list.get(3);
         combo.setEditable(true);
-        combo.setRenderer(lcr);
         editor = (JTextField)combo.getEditor().getEditorComponent();
         Insets i = editor.getInsets();
         editor.setMargin(new Insets(i.top,i.left+5,i.bottom,i.right));
@@ -105,7 +97,6 @@ public class MainPanel extends JPanel {
         // ---- 04 ----
         combo = list.get(4);
         combo.setEditable(true);
-        combo.setRenderer(lcr);
         editor = (JTextField)combo.getEditor().getEditorComponent();
         Insets m = editor.getMargin();
         editor.setMargin(new Insets(m.top,m.left+5,m.bottom,m.right));
@@ -114,15 +105,13 @@ public class MainPanel extends JPanel {
         // ---- 05 ----
         combo = list.get(5);
         combo.setEditable(true);
-        combo.setRenderer(lcr);
-        combo.setBorder(BorderFactory.createCompoundBorder(combo.getBorder(), padding));
+        combo.setBorder(BorderFactory.createCompoundBorder(combo.getBorder(), getPaddingBorder(isColor)));
         combo.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(combo.getBorder(), padding));");
 
         // ---- 06 ----
         combo = list.get(6);
         combo.setEditable(true);
-        combo.setRenderer(lcr);
-        combo.setBorder(BorderFactory.createCompoundBorder(padding, combo.getBorder()));
+        combo.setBorder(BorderFactory.createCompoundBorder(getPaddingBorder(isColor), combo.getBorder()));
         combo.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(padding, combo.getBorder()));");
 
         if(isColor) {
@@ -184,15 +173,23 @@ public class MainPanel extends JPanel {
         }
     }
     //</blockquote>
-
-    private static DefaultComboBoxModel makeModel() {
+    private static Border getPaddingBorder(boolean isColor) {
+        return isColor ? BorderFactory.createMatteBorder(0,5,0,0,new Color(1f,.8f,.8f,.5f))
+                       : BorderFactory.createEmptyBorder(0,5,0,0);
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaaaaaaaaaaaaaaaaaaaaaaa");
         model.addElement("aaaabbb");
         model.addElement("aaaabbbcc");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+
+        JComboBox combo = new JComboBox(model);
+        ListCellRenderer lcr = combo.getRenderer();
+        ((JLabel)lcr).setBorder(getPaddingBorder(false));
+        return combo;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -215,88 +212,3 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-
-// package example;
-// //-*- mode:java; encoding:utf8n; coding:utf-8 -*-
-// vim:set fileencoding=utf-8:
-// //@homepage@
-// import java.awt.*;
-// import javax.swing.*;
-// import javax.swing.border.*;
-//
-// class MainPanel extends JPanel {
-//     private final JComboBox combo00 = new JComboBox(makeModel());
-//     private final JComboBox combo01 = new JComboBox(makeModel());
-//     private final JComboBox combo02 = new JComboBox(makeModel());
-//     //private final Border padding = BorderFactory.createEmptyBorder(0,5,0,0);
-//     private final Border padding = BorderFactory.createMatteBorder(0,5,0,0,new Color(1f,.8f,.8f,.5f));
-//
-//     public MainPanel() {
-//         super(new BorderLayout());
-//
-//         final ListCellRenderer lcr = combo00.getRenderer();
-//         ((JLabel)lcr).setBorder(padding);
-//
-//         combo00.setRenderer(lcr);
-//         combo01.setRenderer(lcr);
-//         combo02.setRenderer(lcr);
-//
-//         combo00.setEditable(false);
-//         combo01.setEditable(true);
-//         combo02.setEditable(true);
-//
-//         JTextField editor = (JTextField) combo01.getEditor().getEditorComponent();
-//         editor.setBorder(padding);
-//         editor.setOpaque(true);
-//         //editor.setOpaque(false);
-//         //editor.setBackground(new Color(.8f,1f,.8f,.5f)); // NG
-//         editor.setBackground(new Color(.8f,1f,.8f));
-//
-//         combo02.setBorder(BorderFactory.createCompoundBorder(combo02.getBorder(), padding));
-//         //combo02.setOpaque(true);
-//         //combo02.setBackground(new Color(.9f,1f,.9f));
-//
-//         Box box = Box.createVerticalBox();
-//         box.add(combo00);
-//         box.add(Box.createVerticalStrut(5));
-//         box.add(combo01);
-//         box.add(Box.createVerticalStrut(5));
-//         box.add(combo02);
-//         box.add(Box.createRigidArea(new Dimension(320,0)));
-//
-//         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-//         add(box);
-//     }
-//
-//     private static DefaultComboBoxModel makeModel() {
-//         DefaultComboBoxModel model = new DefaultComboBoxModel();
-//         model.addElement("aaaa");
-//         model.addElement("aaaabbb");
-//         model.addElement("aaaabbbcc");
-//         model.addElement("asdfasdfasdfasdfasdf");
-//         model.addElement("bbb1");
-//         model.addElement("bbb12");
-//         return model;
-//     }
-//     public static void main(String[] args) {
-//         EventQueue.invokeLater(new Runnable() {
-//             public void run() {
-//                 createAndShowGUI();
-//             }
-//         });
-//     }
-//     public static void createAndShowGUI() {
-//         try{
-//             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(Exception e) {
-//             e.printStackTrace();
-//         }
-//         JFrame frame = new JFrame("@title@");
-//         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//         frame.getContentPane().add(new MainPanel());
-//         frame.pack();
-//         frame.setResizable(false);
-//         frame.setLocationRelativeTo(null);
-//         frame.setVisible(true);
-//     }
-// }

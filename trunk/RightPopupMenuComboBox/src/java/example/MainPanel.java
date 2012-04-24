@@ -11,8 +11,8 @@ import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo00 = new JComboBox(makeModel());
-    private final JComboBox combo01 = new JComboBox(makeModel());
+    private final JComboBox combo00 = makeComboBox();
+    private final JComboBox combo01 = makeComboBox();
     public MainPanel() {
         super(new BorderLayout());
         initComboBox(combo01);
@@ -25,9 +25,9 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 200));
     }
     private final ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
-    private void initComboBox(JComboBox combo2) {
-        if(combo2.getUI() instanceof WindowsComboBoxUI) {
-            combo2.setUI(new WindowsComboBoxUI() {
+    private void initComboBox(JComboBox combo) {
+        if(combo.getUI() instanceof WindowsComboBoxUI) {
+            combo.setUI(new WindowsComboBoxUI() {
                 protected JButton createArrowButton() {
                     JButton button = new JButton(icon) {
                         public Dimension getPreferredSize() {
@@ -41,7 +41,7 @@ public class MainPanel extends JPanel{
                 }
             });
         }else{
-            combo2.setUI(new BasicComboBoxUI() {
+            combo.setUI(new BasicComboBoxUI() {
                 protected JButton createArrowButton() {
                     JButton button = super.createArrowButton();
                     ((BasicArrowButton)button).setDirection(SwingConstants.EAST);
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel{
                 }
             });
         }
-        combo2.addPopupMenuListener(new RightPopupMenuListener());
+        combo.addPopupMenuListener(new RightPopupMenuListener());
     }
     private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
         RescaleOp op = new RescaleOp(
@@ -63,7 +63,8 @@ public class MainPanel extends JPanel{
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -71,7 +72,7 @@ public class MainPanel extends JPanel{
         model.addElement("asdfasdfas");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -95,15 +96,19 @@ public class MainPanel extends JPanel{
     }
 }
 class RightPopupMenuListener implements PopupMenuListener {
-    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        JComboBox combo = (JComboBox)e.getSource();
-        Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-        if(a instanceof BasicComboPopup) {
-            BasicComboPopup pop = (BasicComboPopup)a;
-            Point p = new Point(combo.getSize().width, 0);
-            SwingUtilities.convertPointToScreen(p, combo);
-            pop.setLocation(p);
-        }
+    @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                JComboBox combo = (JComboBox)e.getSource();
+                Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+                if(a instanceof BasicComboPopup) {
+                    BasicComboPopup pop = (BasicComboPopup)a;
+                    Point p = new Point(combo.getSize().width, 0);
+                    SwingUtilities.convertPointToScreen(p, combo);
+                    pop.setLocation(p);
+                }
+            }
+        });
     }
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
     @Override public void popupMenuCanceled(PopupMenuEvent e) {}

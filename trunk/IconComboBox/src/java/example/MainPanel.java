@@ -13,39 +13,18 @@ class MainPanel extends JPanel {
         super(new GridLayout(2,1));
         image = new ImageIcon(getClass().getResource("16x16.png"));
 
-        JComboBox combo01 = new JComboBox(makeModel());
+        JComboBox combo01 = makeComboBox();
 
-        JComboBox combo02 = new JComboBox(makeModel());
-        combo02.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
-                JLabel cmp = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                cmp.setIcon(image);
-                return cmp;
-            }
-        });
+        JComboBox combo02 = makeComboBox();
+        initComboBoxRenderer(combo02, image);
 
-        JComboBox combo03 = new JComboBox(makeModel());
+        JComboBox combo03 = makeComboBox();
         combo03.setEditable(true);
-        combo03.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
-                JLabel cmp = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                cmp.setIcon(image);
-                return cmp;
-            }
-        });
+        initComboBoxRenderer(combo03, image);
 
-        JComboBox combo04 = new JComboBox(makeModel());
+        JComboBox combo04 = makeComboBox();
         combo04.setEditable(true);
-        combo04.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
-                JLabel cmp = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                cmp.setIcon(image);
-                return cmp;
-            }
-        });
+        initComboBoxRenderer(combo04, image);
         combo04.setBorder(makeIconComboBorder(combo04, image));
 
         add(makeTitlePanel("setEditable(false)", Arrays.asList(combo01, combo02)));
@@ -73,7 +52,8 @@ class MainPanel extends JPanel {
         Border b3 = BorderFactory.createCompoundBorder(b1, b2);
         return BorderFactory.createCompoundBorder(comp.getBorder(), b3);
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -81,7 +61,17 @@ class MainPanel extends JPanel {
         model.addElement("ccccccccccccccc");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+        return new JComboBox(model);
+    }
+    @SuppressWarnings("unchecked")
+    private static void initComboBoxRenderer(JComboBox combo, final ImageIcon icon) {
+        combo.setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel l = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                l.setIcon(icon);
+                return l;
+            }
+        });
     }
     private JComponent makeTitlePanel(String title, java.util.List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());

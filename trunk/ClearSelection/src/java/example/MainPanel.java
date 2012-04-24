@@ -9,7 +9,30 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,2));
-        JList list = new JList(makeModel()) {
+        add(makeTitledPanel("Default", makeList(true)));
+        add(makeTitledPanel("clearSelection", makeList(false)));
+        setPreferredSize(new Dimension(320, 240));
+    }
+//     @SuppressWarnings("unchecked")
+//     private static DefaultListModel makeModel() {
+//         DefaultListModel model = new DefaultListModel();
+//         model.addElement("aaaaaaa");
+//         model.addElement("bbbbbbbbbbbbb");
+//         model.addElement("cccccccccc");
+//         model.addElement("ddddddddd");
+//         model.addElement("eeeeeeeeee");
+//         return model;
+//     }
+    @SuppressWarnings("unchecked")
+    private static JList makeList(boolean def) {
+        DefaultListModel model = new DefaultListModel();
+        model.addElement("aaaaaaa");
+        model.addElement("bbbbbbbbbbbbb");
+        model.addElement("cccccccccc");
+        model.addElement("ddddddddd");
+        model.addElement("eeeeeeeeee");
+        if(def) return new JList(model);
+        JList list = new JList(model) {
             private MouseAdapter listener;
             @Override public void updateUI() {
                 removeMouseListener(listener);
@@ -29,20 +52,9 @@ public class MainPanel extends JPanel {
 //     list.setFixedCellWidth(64);
 //     list.setFixedCellHeight(64);
 //     list.setVisibleRowCount(0);
+        return list;
+    }
 
-        add(makeTitledPanel("Default", new JList(makeModel())));
-        add(makeTitledPanel("clearSelection", list));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private DefaultListModel makeModel() {
-        DefaultListModel model = new DefaultListModel();
-        model.addElement("aaaaaaa");
-        model.addElement("bbbbbbbbbbbbb");
-        model.addElement("cccccccccc");
-        model.addElement("ddddddddd");
-        model.addElement("eeeeeeeeee");
-        return model;
-    }
     private static JComponent makeTitledPanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
