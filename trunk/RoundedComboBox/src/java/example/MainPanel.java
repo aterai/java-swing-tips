@@ -14,20 +14,23 @@ import java.awt.image.*;
 // import javax.imageio.*;
 
 public class MainPanel extends JPanel{
+    private final static Color BACKGROUND = Color.BLACK; //RED;
+    private final static Color FOREGROUND = Color.WHITE; //YELLOW;
+    private final static Color SELECTIONFOREGROUND = Color.CYAN;
     public MainPanel() {
         super(new BorderLayout());
-        UIManager.put("TitledBorder.titleColor", Color.WHITE);
+        UIManager.put("TitledBorder.titleColor", FOREGROUND);
         UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
-        UIManager.put("ComboBox.foreground", Color.WHITE);
-        UIManager.put("ComboBox.background", Color.BLACK);
-        UIManager.put("ComboBox.selectionForeground", Color.CYAN);
-        UIManager.put("ComboBox.selectionBackground", Color.BLACK);
+        UIManager.put("ComboBox.foreground", FOREGROUND);
+        UIManager.put("ComboBox.background", BACKGROUND);
+        UIManager.put("ComboBox.selectionForeground", SELECTIONFOREGROUND);
+        UIManager.put("ComboBox.selectionBackground", BACKGROUND);
 
-        UIManager.put("ComboBox.buttonDarkShadow", Color.BLACK);
-        UIManager.put("ComboBox.buttonBackground", Color.WHITE);
-        UIManager.put("ComboBox.buttonHighlight", Color.WHITE);
-        UIManager.put("ComboBox.buttonShadow", Color.WHITE);
+        UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
+        UIManager.put("ComboBox.buttonBackground", FOREGROUND);
+        UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
+        UIManager.put("ComboBox.buttonShadow", FOREGROUND);
 
         //UIManager.put("ComboBox.border", BorderFactory.createLineBorder(Color.WHITE));
         //UIManager.put("ComboBox.editorBorder", BorderFactory.createLineBorder(Color.GREEN));
@@ -43,7 +46,8 @@ public class MainPanel extends JPanel{
         combo02.setUI(new BasicComboBoxUI() {
             @Override protected JButton createArrowButton() {
                 JButton b = new JButton(new ArrowIcon()); //.createArrowButton();
-                b.setBackground(Color.BLACK);
+                b.setForeground(FOREGROUND);
+                b.setBackground(BACKGROUND);
                 b.setContentAreaFilled(false);
                 b.setFocusPainted(false);
                 b.setBorder(BorderFactory.createEmptyBorder());
@@ -72,11 +76,11 @@ public class MainPanel extends JPanel{
         });
 
         Object o = combo00.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,Color.WHITE));
+        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,FOREGROUND));
         o = combo01.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,Color.WHITE));
+        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,FOREGROUND));
         o = combo02.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,Color.WHITE));
+        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,FOREGROUND));
 
         Box box = Box.createVerticalBox();
         box.add(createPanel(combo00, "MetalComboBoxUI:"));
@@ -88,7 +92,7 @@ public class MainPanel extends JPanel{
 
         add(box, BorderLayout.NORTH);
         setOpaque(true);
-        setBackground(Color.BLACK);
+        setBackground(BACKGROUND);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent createPanel(JComponent cmp, String str) {
@@ -96,7 +100,7 @@ public class MainPanel extends JPanel{
         panel.setBorder(BorderFactory.createTitledBorder(str));
         panel.add(cmp);
         panel.setOpaque(true);
-        panel.setBackground(Color.BLACK);
+        panel.setBackground(BACKGROUND);
         return panel;
     }
 //     //JDK 1.7.0
@@ -136,9 +140,9 @@ class ArrowIcon implements Icon{
                 y++;
             }else{
                 if(m.isRollover()) {
-                    g2.setPaint(Color.WHITE);
+                    g2.setPaint(c.getForeground());
                 }else{
-                    g2.setPaint(Color.BLACK);
+                    g2.setPaint(c.getBackground());
                 }
             }
         }
@@ -174,7 +178,7 @@ class RoundedCornerBorder1 extends AbstractBorder {
             corner.subtract(round);
             g2.fill(corner);
         }
-        g2.setPaint(Color.WHITE);
+        g2.setPaint(c.getForeground());
         g2.draw(round);
         g2.dispose();
     }
@@ -231,7 +235,7 @@ class RoundedCornerBorder2 extends AbstractBorder {
         }
 //         g2.setPaint(tp);
 //         g2.fill(round);
-        g2.setPaint(Color.WHITE);
+        g2.setPaint(c.getForeground());
         g2.draw(round);
         g2.dispose();
     }
