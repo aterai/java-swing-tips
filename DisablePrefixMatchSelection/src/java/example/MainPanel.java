@@ -9,19 +9,18 @@ import javax.swing.*;
 import javax.swing.text.Position;
 
 public class MainPanel extends JPanel{
-    private final DefaultListModel model = new DefaultListModel();
-    private final JCheckBox check = new JCheckBox("The alphanumeric keys are pressed: Nothing to select");
-
+    private static final JCheckBox check = new JCheckBox("<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select");
     public MainPanel() {
         super(new BorderLayout(5, 5));
 
-        //UIManager.put("List.timeFactor", -1L);
-        final JList list = new JList() {
-            @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
-                return check.isSelected()?-1:super.getNextMatch(prefix, startIndex, bias);
-            }
-        };
-        list.setModel(model);
+        add(new JScrollPane(makeList()));
+        add(check, BorderLayout.NORTH);
+        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
+        DefaultListModel model = new DefaultListModel();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("abbbbbbbbbbbbbbbbbb");
         model.addElement("accccccccccc");
@@ -31,12 +30,13 @@ public class MainPanel extends JPanel{
         model.addElement("eeeeeeeeeeeeeeeeeee");
         model.addElement("fffffffffffffffffffffff");
 
-        add(new JScrollPane(list));
-        add(check, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        setPreferredSize(new Dimension(320, 240));
+        JList list = new JList(model) {
+            @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
+                return check.isSelected()?-1:super.getNextMatch(prefix, startIndex, bias);
+            }
+        };
+        return list;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

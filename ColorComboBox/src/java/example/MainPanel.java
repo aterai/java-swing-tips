@@ -9,8 +9,8 @@ import javax.swing.*;
 public class MainPanel extends JPanel{
     private static final Color evenBGColor = new Color(225,255,225);
     private static final Color oddBGColor  = new Color(255,255,255);
-    private final JComboBox combo01 = new JComboBox();
-    private final JComboBox combo02 = new JComboBox();
+    private final JComboBox combo01 = makeComboBox();
+    private final JComboBox combo02 = makeComboBox();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -31,29 +31,13 @@ public class MainPanel extends JPanel{
 //                 };
 //             }
 //         });
-        combo01.setModel(makeModel());
-        combo01.setRenderer(new AlternateRowColorListCellRenderer());
-        combo01.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) return;
-                combo01.setBackground(getAlternateRowColor(combo01.getSelectedIndex()));
-            }
-        });
         combo01.setSelectedIndex(0);
         combo01.setBackground(evenBGColor);
 
-        final JTextField field = (JTextField) combo02.getEditor().getEditorComponent();
+        JTextField field = (JTextField) combo02.getEditor().getEditorComponent();
         field.setOpaque(true);
         field.setBackground(evenBGColor);
         combo02.setEditable(true);
-        combo02.setModel(makeModel());
-        combo02.setRenderer(new AlternateRowColorListCellRenderer());
-        combo02.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) return;
-                field.setBackground(getAlternateRowColor(combo02.getSelectedIndex()));
-            }
-        });
         combo02.setSelectedIndex(0);
 
         Box box = Box.createVerticalBox();
@@ -71,6 +55,9 @@ public class MainPanel extends JPanel{
         p.add(c);
         return p;
     }
+    private static Color getAlternateRowColor(int index) {
+        return (index%2==0)?evenBGColor:oddBGColor;
+    }
     private static class AlternateRowColorListCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
@@ -82,10 +69,8 @@ public class MainPanel extends JPanel{
             return cmp;
         }
     }
-    private static Color getAlternateRowColor(int index) {
-        return (index%2==0)?evenBGColor:oddBGColor;
-    }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -93,7 +78,23 @@ public class MainPanel extends JPanel{
         model.addElement("1234123512351234");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+
+        JComboBox combo = new JComboBox(model);
+        combo.setRenderer(new AlternateRowColorListCellRenderer());
+        combo.addItemListener(new ItemListener() {
+            @Override public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()!=ItemEvent.SELECTED) return;
+                JComboBox cb = (JComboBox)e.getSource();
+                Color rc = getAlternateRowColor(cb.getSelectedIndex());
+                if(cb.isEditable()) {
+                    JTextField field = (JTextField)cb.getEditor().getEditorComponent();
+                    field.setBackground(rc);
+                }else{
+                    cb.setBackground(rc);
+                }
+            }
+        });
+        return combo;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

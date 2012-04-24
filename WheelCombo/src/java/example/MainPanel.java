@@ -11,7 +11,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
 
-        JComboBox combo = new JComboBox(makeComboBoxModel());
+        JComboBox combo = makeComboBox();
         combo.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
                 JComboBox source = (JComboBox) e.getSource();
@@ -38,15 +38,15 @@ public class MainPanel extends JPanel{
         c.weightx = 1.0;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.gridy   = 0; p.add(combo, c);
-        c.gridy   = 1; p.add(new JComboBox(makeComboBoxModel()), c);
+        c.gridy   = 1; p.add(makeComboBox(), c);
 
         textArea.setText("dummy");
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 200));
     }
-
-    private static DefaultComboBoxModel makeComboBoxModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("111111");
         model.addElement("22222222");
@@ -56,7 +56,7 @@ public class MainPanel extends JPanel{
         model.addElement("66666666666");
         model.addElement("77777777");
         model.addElement("88888888888");
-        return model;
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

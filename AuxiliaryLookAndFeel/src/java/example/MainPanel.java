@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel{
     private static final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
-    private final JComboBox combo = new JComboBox(makeModel());
+    private final JComboBox combo = makeComboBox();
     private final JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
     public MainPanel() {
         super(new BorderLayout());
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel{
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo));
         box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(new JComboBox(makeModel())));
+        box.add(createPanel(makeComboBox()));
         box.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
 
         add(box, BorderLayout.NORTH);
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel{
         return panel;
     }
     @SuppressWarnings("unchecked")
-    private static DefaultComboBoxModel makeModel() {
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -72,7 +72,7 @@ public class MainPanel extends JPanel{
         model.addElement("1354123451234513512");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+        return new JComboBox(model);
     }
     //<blockquote cite="https://swingset3.dev.java.net/svn/swingset3/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
     private ButtonGroup lookAndFeelRadioGroup;

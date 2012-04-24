@@ -7,10 +7,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo00 = new JComboBox(makeModel());
-    private final JComboBox combo01 = new JComboBox(makeModel());
-    private final JComboBox combo02 = new JComboBox(makeModel());
-    private final JComboBox combo03 = new JComboBox(makeModel());
+    private final JComboBox combo00 = makeComboBox();
+    private final JComboBox combo01 = makeComboBox();
+    private final JComboBox combo02 = makeComboBox();
+    private final JComboBox combo03 = makeComboBox();
     public MainPanel() {
         super(new BorderLayout());
         combo00.setEditable(false);
@@ -30,7 +30,8 @@ public class MainPanel extends JPanel{
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -38,7 +39,7 @@ public class MainPanel extends JPanel{
         model.addElement("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+        return new JComboBox(model);
     }
     //Swing - How to widen the drop-down list in a JComboBox
     //http://forums.sun.com/thread.jspa?threadID=570675

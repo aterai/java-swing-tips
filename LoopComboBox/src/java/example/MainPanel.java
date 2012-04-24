@@ -7,13 +7,11 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo01 = new JComboBox();
-    private final JComboBox combo02 = new JComboBox();
+    private final JComboBox combo01 = makeComboBox();
+    private final JComboBox combo02 = makeComboBox();
 
     public MainPanel() {
         super(new BorderLayout());
-        combo01.setModel(makeModel());
-        combo02.setModel(makeModel());
 
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -49,7 +47,8 @@ public class MainPanel extends JPanel{
         panel.add(cmp);
         return panel;
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -57,7 +56,7 @@ public class MainPanel extends JPanel{
         model.addElement("1354123451234513512");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return model;
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
