@@ -7,14 +7,13 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo = new JComboBox();
+    private final JComboBox combo = makeComboBox();
     private final JTextField leftTextField  = new JTextField();
     private final JTextField rightTextField = new JTextField();
     public MainPanel() {
         super(new BorderLayout());
         leftTextField.setEditable(false);
         rightTextField.setEditable(false);
-        combo.setModel(makeModel());
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
@@ -61,14 +60,15 @@ public class MainPanel extends JPanel{
             return getHtmlText();
         }
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement(new LRItem("asdfasdf", "846876"));
         model.addElement(new LRItem("bxcvzx", "asdfasd"));
         model.addElement(new LRItem("qwerqwe", "iop.ioqqadfa"));
         model.addElement(new LRItem("14234125", "64345424684"));
         model.addElement(new LRItem("hjklhjk", "asdfasdfasdfasdfasdfasd"));
-        return model;
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

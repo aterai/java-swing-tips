@@ -16,6 +16,11 @@ import javax.swing.plaf.basic.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
+        add(new JScrollPane(makeList()));
+        setPreferredSize(new Dimension(320, 200));
+    }
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
         DefaultListModel model = new DefaultListModel();
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
@@ -61,9 +66,7 @@ public class MainPanel extends JPanel{
         list.setFixedCellWidth(62);
         list.setFixedCellHeight(62);
         list.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-
-        add(new JScrollPane(list));
-        setPreferredSize(new Dimension(320, 200));
+        return list;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

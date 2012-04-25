@@ -8,7 +8,20 @@ import javax.activation.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private JList makeList(TransferHandler handler) {
+    public MainPanel() {
+        super(new BorderLayout());
+        JPanel p = new JPanel(new GridLayout(1,2,10,0));
+        TransferHandler h = new ListItemTransferHandler();
+        p.setBorder(BorderFactory.createTitledBorder("Drag & Drop between JLists"));
+        p.add(new JScrollPane(makeList(h)));
+        p.add(new JScrollPane(makeList(h)));
+        add(p);
+        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setPreferredSize(new Dimension(320, 240));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static JList makeList(TransferHandler handler) {
         DefaultListModel listModel = new DefaultListModel();
         listModel.addElement(Color.RED);
         listModel.addElement(Color.BLUE);
@@ -41,18 +54,6 @@ public class MainPanel extends JPanel {
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
 
         return list;
-    }
-
-    public MainPanel() {
-        super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(1,2,10,0));
-        TransferHandler h = new ListItemTransferHandler();
-        p.setBorder(BorderFactory.createTitledBorder("Drag & Drop between JLists"));
-        p.add(new JScrollPane(makeList(h)));
-        p.add(new JScrollPane(makeList(h)));
-        add(p);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

@@ -6,9 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final JList list1 = new JList(makeTestModel());
-    private final JList list2 = new JList(makeTestModel());
-    private final JList list3 = new JList(makeTestModel());
+    private final JList list1 = makeList();
+    private final JList list2 = makeList();
+    private final JList list3 = makeList();
 
     public MainPanel() {
         super(new GridLayout(1,0));
@@ -23,18 +23,15 @@ public class MainPanel extends JPanel{
             }
         });
 
-        list3.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                return super.getListCellRendererComponent(list, value, index, false, false);
-            }
-        });
+        setListCellRenderer(list3);
 
         add(new JScrollPane(list1));
         add(new JScrollPane(list2));
         add(new JScrollPane(list3));
         setPreferredSize(new Dimension(320, 200));
     }
-    private static ListModel makeTestModel() {
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
         DefaultListModel model = new DefaultListModel();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("bbbbb");
@@ -45,9 +42,16 @@ public class MainPanel extends JPanel{
         model.addElement("gggggggg");
         model.addElement("hhhhhh");
         model.addElement("iiiiiiiiiiii");
-        return model;
+        return new JList(model);
     }
-
+    @SuppressWarnings("unchecked")
+    private static void setListCellRenderer(JList l) {
+        l.setCellRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                return super.getListCellRendererComponent(list, value, index, false, false);
+            }
+        });
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

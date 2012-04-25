@@ -9,7 +9,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel{
     private static final int DELAY = 10*1000; //10s
     private final JLabel label = new JLabel("Not connected");
-    private final JComboBox combo = new JComboBox(makeModel());
+    private final JComboBox combo = makeComboBox();
     private final JTextField textField  = new JTextField(20);
     private final JButton button;
     private final Timer timer;
@@ -74,13 +74,14 @@ public class MainPanel extends JPanel{
         textField.setEnabled(flag);
         button.setEnabled(!flag);
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("dummy model");
         model.addElement("qerqwerew");
         model.addElement("zcxvzxcv");
         model.addElement("41234123");
-        return model;
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

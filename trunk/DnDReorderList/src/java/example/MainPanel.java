@@ -12,6 +12,15 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(new JScrollPane(makeList()));
+        p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JList"));
+        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setPreferredSize(new Dimension(320, 240));
+        add(p);
+    }
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
         DefaultListModel listModel = new DefaultListModel();
         listModel.addElement(Color.RED);
         listModel.addElement(Color.BLUE);
@@ -49,12 +58,8 @@ public class MainPanel extends JPanel {
                 return c;
             }
         });
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(new JScrollPane(list));
-        p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JList"));
-        add(p);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 240));
+
+        return list;
     }
 
     public static void main(String[] args) {
