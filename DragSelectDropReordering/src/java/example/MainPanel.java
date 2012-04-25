@@ -18,6 +18,12 @@ import javax.swing.plaf.basic.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
+        add(new JScrollPane(makeList()));
+        setPreferredSize(new Dimension(320, 240));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
         DefaultListModel model = new DefaultListModel();
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("asdasdfsd",  "wi0009-32.png"));
@@ -30,15 +36,16 @@ public class MainPanel extends JPanel{
         model.addElement(new ListItem("t467467est", "wi0122-32.png"));
         model.addElement(new ListItem("test123",    "wi0124-32.png"));
         model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
-        ReorderbleList list = new ReorderbleList(model);
+
+        ReorderbleList list = new ReorderbleList();
+        list.setModel(model);
         //list.putClientProperty("List.isFileList", Boolean.TRUE);
         list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        final ListItemTransferHandler handler = new ListItemTransferHandler();
-        list.setTransferHandler(handler);
+        //ListItemTransferHandler handler = new ListItemTransferHandler();
+        list.setTransferHandler(new ListItemTransferHandler());
         list.setDropMode(DropMode.INSERT);
         list.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        add(new JScrollPane(list));
-        setPreferredSize(new Dimension(320, 240));
+        return list;
     }
 
     public static void main(String[] args) {
@@ -116,8 +123,8 @@ class ReorderbleList extends JList {
     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Polygon polygon = new Polygon();
     private Point srcPoint = null;
-    public ReorderbleList(ListModel model) {
-        super(model);
+    public ReorderbleList() {
+        super();
         rcolor = SystemColor.activeCaption;
         pcolor = makeColor(rcolor);
         setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -150,7 +157,11 @@ class ReorderbleList extends JList {
         addMouseMotionListener(rbl);
         addMouseListener(rbl);
     }
-
+    @Override public void updateUI() {
+        setSelectionForeground(null); //Nimbus
+        setSelectionBackground(null); //Nimbus
+        super.updateUI();
+    }
     class RubberBandingListener extends MouseInputAdapter {
         @Override public void mouseDragged(MouseEvent e) {
             JList list = (JList)e.getSource();

@@ -11,11 +11,24 @@ import javax.swing.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
-        DnDList list1 = new DnDList();
-        list1.setCellRenderer(new DefaultListCellRenderer() {
+        add(new JScrollPane(makeList()));
+        setPreferredSize(new Dimension(320, 200));
+    }
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
+        DefaultListModel model = new DefaultListModel();
+        model.addElement("1111");
+        model.addElement("22222222");
+        model.addElement("333333333333");
+        model.addElement("<<<<<<---->>>>>>");
+        model.addElement("AAAAAAAAAAAAAA");
+        model.addElement("****");
+
+        DnDList list = new DnDList();
+        list.setModel(model);
+        list.setCellRenderer(new DefaultListCellRenderer() {
             private final Color ec = new Color(240, 240, 240);
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                 if(isSelected) {
                     setForeground(list.getSelectionForeground());
@@ -27,18 +40,8 @@ public class MainPanel extends JPanel{
                 return this;
             }
         });
-        DefaultListModel model = new DefaultListModel();
-        model.addElement("1111");
-        model.addElement("22222222");
-        model.addElement("333333333333");
-        model.addElement("<<<<<<---->>>>>>");
-        model.addElement("AAAAAAAAAAAAAA");
-        model.addElement("****");
-        list1.setModel(model);
-        add(new JScrollPane(list1));
-        setPreferredSize(new Dimension(320, 200));
+        return list;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -165,6 +168,7 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
             // if(isDragAcceptable(e)) e.acceptDrag(e.getDropAction());
             // else e.rejectDrag();
         }
+        @SuppressWarnings("unchecked")
         @Override public void drop(DropTargetDropEvent e) {
             DefaultListModel model = (DefaultListModel)getModel();
 //             Transferable t = e.getTransferable();

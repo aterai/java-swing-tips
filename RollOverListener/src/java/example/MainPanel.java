@@ -5,13 +5,17 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
+//import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private final JList list = new RollOverList();
-    private final DefaultListModel model = new DefaultListModel();
     public MainPanel() {
         super(new BorderLayout());
+        add(new JScrollPane(makeList()));
+        setPreferredSize(new Dimension(320, 200));
+    }
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
+        DefaultListModel model = new DefaultListModel();
         model.addElement("Name1-comment");
         model.addElement("Name2-test");
         model.addElement("asdfasd");
@@ -22,11 +26,10 @@ public class MainPanel extends JPanel {
         model.addElement("asdfffasddddddddddddddddd");
         model.addElement("asdfasdfasdfasdfas");
         model.addElement("4352345123452345234523452345234534");
+        JList list = new RollOverList();
         list.setModel(model);
-        add(new JScrollPane(list));
-        setPreferredSize(new Dimension(320, 200));
+        return list;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -50,19 +53,31 @@ public class MainPanel extends JPanel {
 }
 
 class RollOverList extends JList {
+    private static final Color ROLLOVERBACKGROUND = new Color(220,240,255);
     private int rollOverRowIndex = -1;
-    public RollOverList() {
-        super();
-        RollOverListener rol = new RollOverListener();
-        addMouseMotionListener(rol);
-        addMouseListener(rol);
-        setCellRenderer(new RollOverCellRenderer());
+    private RollOverListener rollOverListener = null;
+    @Override public void updateUI() {
+        if(rollOverListener!=null) {
+            removeMouseListener(rollOverListener);
+            removeMouseMotionListener(rollOverListener);
+        }
+        setSelectionBackground(null); //Nimbus
+        super.updateUI();
+        EventQueue.invokeLater(new Runnable() {
+            @SuppressWarnings("unchecked")
+            @Override public void run() {
+                rollOverListener = new RollOverListener();
+                addMouseMotionListener(rollOverListener);
+                addMouseListener(rollOverListener);
+                setCellRenderer(new RollOverCellRenderer());
+            }
+        });
     }
     private class RollOverCellRenderer extends DefaultListCellRenderer{
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if(index == rollOverRowIndex) {
-                c.setBackground(new Color(220,240,255));
+                c.setBackground(ROLLOVERBACKGROUND);
                 if(isSelected) c.setForeground(Color.BLACK);
                 //c.setForeground(getSelectionForeground());
                 //c.setBackground(getSelectionBackground());
@@ -70,7 +85,7 @@ class RollOverList extends JList {
             return c;
         }
     }
-    private class RollOverListener extends MouseInputAdapter {
+    private class RollOverListener extends MouseAdapter{
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             repaint();
@@ -78,8 +93,12 @@ class RollOverList extends JList {
         @Override public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
             if(row != rollOverRowIndex) {
+                Rectangle rect = getCellBounds(row,row);
+                if(rollOverRowIndex>=0) {
+                    rect.add(getCellBounds(rollOverRowIndex,rollOverRowIndex));
+                }
                 rollOverRowIndex = row;
-                repaint();
+                repaint(rect);
             }
         }
     }

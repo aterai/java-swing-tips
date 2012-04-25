@@ -7,13 +7,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo1 = new JComboBox();
-    private final JComboBox combo2 = new JComboBox();
+    private final JComboBox combo1 = makeComboBox(true);
+    private final JComboBox combo2 = makeComboBox(false);
     public MainPanel() {
         super(new BorderLayout());
-        combo1.setRenderer(new MultiColumnCellRenderer(80));
-        combo1.setModel(makeModel());
-        combo2.setModel(makeModel());
         add(makeTitledBox("MultiColumnComboBox", combo1), BorderLayout.NORTH);
         add(makeTitledBox("DefaultComboBox", combo2), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
@@ -44,7 +41,8 @@ public class MainPanel extends JPanel{
         });
         return box;
     }
-    private static DefaultComboBoxModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(boolean hasMultiColumn) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement(new LRItem("asdfasdf", "846876"));
         model.addElement(new LRItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
@@ -55,7 +53,12 @@ public class MainPanel extends JPanel{
         model.addElement(new LRItem("aaaaaaaa", "ddd"));
         model.addElement(new LRItem("bbbbbbbb", "eeeee"));
         model.addElement(new LRItem("cccccccc", "fffffff"));
-        return model;
+
+        JComboBox combo = new JComboBox(model);
+        if(hasMultiColumn) {
+            combo.setRenderer(new MultiColumnCellRenderer(80));
+        }
+        return combo;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
