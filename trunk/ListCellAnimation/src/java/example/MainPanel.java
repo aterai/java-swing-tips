@@ -14,6 +14,11 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
+        add(new JScrollPane(makeList(), ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        setPreferredSize(new Dimension(320, 200));
+    }
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
         DefaultListModel model = new DefaultListModel();
         model.addElement("asdfasdfasdfsadfas");
         model.addElement("qwerqwerqwerqwerweqr");
@@ -28,9 +33,7 @@ public class MainPanel extends JPanel {
         model.addElement("zxcvzxcvbvnvbmvbmbm");
         JList list = new JList(model);
         list.setCellRenderer(new AnimeListCellRenderer(list));
-        add(new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                  ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-        setPreferredSize(new Dimension(320, 200));
+        return list;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -56,7 +59,7 @@ public class MainPanel extends JPanel {
 }
 
 class AnimeListCellRenderer extends JPanel implements ListCellRenderer, HierarchyListener {
-    private static final Color selectedColor = new Color(230,230,255);
+    private static final Color SELECTEDCOLOR = new Color(230,230,255);
     private final AnimeIcon icon = new AnimeIcon();
     private final MarqueeLabel label = new MarqueeLabel();
     private final Timer animator;
@@ -93,7 +96,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
         }
     }
     @Override public Component getListCellRendererComponent(JList list, Object object, int index, boolean isSelected, boolean cellHasFocus) {
-        setBackground(isSelected ? selectedColor : list.getBackground());
+        setBackground(isSelected ? SELECTEDCOLOR : list.getBackground());
         label.setText((object==null) ? "" : object.toString());
         animate_index = index;
         return this;
@@ -143,12 +146,12 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
             int ih = (int)(r*8+sy*2);
             setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
             setPreferredSize(new Dimension(iw+2, ih));
-            setOpaque(true);
+            setOpaque(false);
         }
         @Override public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setPaint(getBackground());
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+            //g2d.setPaint(getBackground());
+            //g2d.fillRect(0, 0, getWidth(), getHeight());
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if(isAnimatingCell()) {
                 float alpha = 0.1f;
