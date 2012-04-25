@@ -14,19 +14,20 @@ public class MainPanel extends JPanel {
     public JProgressBar makeProgressBar(final int halign) {
         return new JProgressBar(model) {
             private final JLabel label = new JLabel(getString(), halign);
-            private final ChangeListener changeListener = new ChangeListener() {
-                @Override public void stateChanged(ChangeEvent e) {
-                    //BoundedRangeModel m = (BoundedRangeModel)e.getSource(); //label.setText(m.getValue()+"%");
-                    label.setText(getString());
-                }
-            };
+            private ChangeListener changeListener = null;
             @Override public void updateUI() {
-                removeChangeListener(changeListener);
                 removeAll();
+                if(changeListener!=null) removeChangeListener(changeListener);
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         setLayout(new BorderLayout());
+                        changeListener = new ChangeListener() {
+                            @Override public void stateChanged(ChangeEvent e) {
+                                //BoundedRangeModel m = (BoundedRangeModel)e.getSource(); //label.setText(m.getValue()+"%");
+                                label.setText(getString());
+                            }
+                        };
                         addChangeListener(changeListener);
                         add(label);
                         label.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
