@@ -131,6 +131,7 @@ class RowHeaderList extends JList {
     private final JTable table;
     private final ListSelectionModel tableSelection;
     private final ListSelectionModel rListSelection;
+    @SuppressWarnings("unchecked")
     public RowHeaderList(ListModel model, JTable table) {
         super(model);
         this.table = table;

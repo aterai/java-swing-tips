@@ -18,6 +18,7 @@ public class TestModel extends DefaultTableModel {
         super();
         rowListModel = lm;
     }
+    @SuppressWarnings("unchecked")
     public void addTest(Test t) {
         Object[] obj = {t.getName(), t.getComment()};
         super.addRow(obj);

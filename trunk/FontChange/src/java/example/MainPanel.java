@@ -13,7 +13,7 @@ public class MainPanel extends JPanel{
     private static final Font FONT32 = new Font("Sans-serif", Font.PLAIN, 32);
     private final JButton button  = new JButton("Dialog");
     private final JLabel  label   = new JLabel("Test:");
-    private final JComboBox combo = new JComboBox();
+    private final JComboBox combo = makeComboBox();
     public MainPanel() {
         super(new BorderLayout());
         button.addActionListener(new ActionListener() {
@@ -24,11 +24,16 @@ public class MainPanel extends JPanel{
                                               JOptionPane.ERROR_MESSAGE);
             }
         });
-        ((DefaultComboBoxModel)combo.getModel()).addElement("Test");
         add(createFontToolBar(), BorderLayout.NORTH);
         add(createCompButtonPanel());
         updateFont(FONT12);
         setPreferredSize(new Dimension(320, 200));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("Test");
+        return new JComboBox(model);
     }
     private void updateFont(final Font font) {
         FontUIResource fontUIResource = new FontUIResource(font);

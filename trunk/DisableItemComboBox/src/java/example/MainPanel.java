@@ -8,19 +8,11 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final MyComboBox combo = new MyComboBox();
+    private final MyComboBox combo = makeComboBox();
     private final JTextField field = new JTextField("1,2,5");
     public MainPanel() {
         super(new BorderLayout());
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("0000000000000");
-        model.addElement("111111");
-        model.addElement("222222222222");
-        model.addElement("33");
-        model.addElement("4444444444444444");
-        model.addElement("555555555555555555555555");
-        model.addElement("6666666666");
-        combo.setModel(model);
+
         combo.setDisableIndex(getDisableIndexFromTextField());
 
         Box box = Box.createHorizontalBox();
@@ -36,6 +28,21 @@ public class MainPanel extends JPanel{
         add(combo, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         setPreferredSize(new Dimension(320, 200));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static MyComboBox makeComboBox() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("0000000000000");
+        model.addElement("111111");
+        model.addElement("222222222222");
+        model.addElement("33");
+        model.addElement("4444444444444444");
+        model.addElement("555555555555555555555555");
+        model.addElement("6666666666");
+        MyComboBox combo = new MyComboBox();
+        combo.setModel(model);
+        return combo;
     }
     private HashSet<Integer> getDisableIndexFromTextField() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
@@ -75,6 +82,7 @@ public class MainPanel extends JPanel{
 }
 
 class MyComboBox extends JComboBox {
+    @SuppressWarnings("unchecked")
     public MyComboBox() {
         super();
         setRenderer(new DefaultListCellRenderer() {

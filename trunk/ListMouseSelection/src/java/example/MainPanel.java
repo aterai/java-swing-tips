@@ -7,6 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new GridLayout(1,3));
         JList list1 = new JList(makeModel()) {
@@ -85,7 +86,8 @@ public class MainPanel extends JPanel {
         add(makeTitledPanel("SelectionInterval", list2));
         setPreferredSize(new Dimension(320, 240));
     }
-    private DefaultListModel makeModel() {
+    @SuppressWarnings("unchecked")
+    private static DefaultListModel makeModel() {
         DefaultListModel model = new DefaultListModel();
         model.addElement("aaaaaaa");
         model.addElement("bbbbbbbbbbbbb");

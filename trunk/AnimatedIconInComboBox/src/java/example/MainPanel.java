@@ -13,16 +13,16 @@ class MainPanel extends JPanel {
         super(new BorderLayout());
         URL url1 = getClass().getResource("favicon.png");
         URL url2 = getClass().getResource("animated.gif");
-
         JComboBox combo1 = new JComboBox();
-        combo1.setModel(new DefaultComboBoxModel(new Object[] {
-            new ImageIcon(url1), new ImageIcon(url2)
-        }));
-
         JComboBox combo2 = new JComboBox();
-        combo2.setModel(new DefaultComboBoxModel(new Object[] {
+
+        initComboBox(combo1, new Object[] {
+            new ImageIcon(url1), new ImageIcon(url2)
+        });
+
+        initComboBox(combo2, new Object[] {
             new ImageIcon(url1), makeImageIcon(url2, combo2, 1)
-        }));
+        });
 
         JPanel p = new JPanel(new GridLayout(4,1,5,5));
         setBorder(BorderFactory.createEmptyBorder(5,20,5,20));
@@ -32,6 +32,10 @@ class MainPanel extends JPanel {
         p.add(combo2);
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
+    }
+    @SuppressWarnings("unchecked")
+    private static void initComboBox(JComboBox combo, Object[] array) {
+        combo.setModel(new DefaultComboBoxModel(array));
     }
     private static ImageIcon makeImageIcon(URL url, final JComboBox combo, final int row) {
         ImageIcon icon = new ImageIcon(url);

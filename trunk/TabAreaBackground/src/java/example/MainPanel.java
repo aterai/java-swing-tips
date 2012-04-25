@@ -42,7 +42,6 @@ class MainPanel extends JPanel {
         //UIManager.put("TabbedPane.tabRunOverlay", Boolean.FALSE);
         //UIManager.put("TabbedPane.tabsOverlapBorder", Boolean.FALSE);
         ////UIManager.put("TabbedPane.selectionFollowsFocus", Boolean.FALSE);
-
         final Map<String, Color> map = new HashMap<String, Color>();
         map.put("TabbedPane.darkShadow",            Color.GRAY);
         map.put("TabbedPane.light",                 Color.GRAY);
@@ -59,12 +58,8 @@ class MainPanel extends JPanel {
         map.put("TabbedPane.borderHightlightColor", Color.WHITE);
         for(Map.Entry<String,Color> entry: map.entrySet()) UIManager.put(entry.getKey(), entry.getValue());
 
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("gray-white");
-        for(Map.Entry<String,Color> entry: map.entrySet()) model.addElement(entry.getKey());
-
         final JTabbedPane tabs = makeTabbedPane();
-        final JComboBox combo  = new JComboBox(model);
+        final JComboBox combo  = makeComboBox(map);
         final JCheckBox opaque = new JCheckBox("JTabbedPane#setOpaque", true);
 
         GridBagConstraints c = new GridBagConstraints();
@@ -103,7 +98,8 @@ class MainPanel extends JPanel {
         add(tabs);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JTabbedPane makeTabbedPane() {
+
+    private static JTabbedPane makeTabbedPane() {
         final JTabbedPane tabs = new JTabbedPane();
         //tabs.setBackground(Color.GREEN);
         tabs.setOpaque(true);
@@ -128,6 +124,15 @@ class MainPanel extends JPanel {
         });
         return tabs;
     }
+
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Map<String, Color> map) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("gray-white");
+        for(Map.Entry<String,Color> entry: map.entrySet()) model.addElement(entry.getKey());
+        return new JComboBox(model);
+    }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

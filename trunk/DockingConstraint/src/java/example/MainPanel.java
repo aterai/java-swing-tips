@@ -4,14 +4,13 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+//import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel{
+    private final JComboBox combo  = makeComboBox();
+    private final JLabel label     = new JLabel();
     private final JToolBar toolbar = new JToolBar("toolbar");
-    private final JLabel label = new JLabel();
-    private final JComboBox combo = new JComboBox();
-    private final DefaultComboBoxModel model = new DefaultComboBoxModel();
-    private final JButton button = new JButton("button");
+    private final JButton button   = new JButton("button");
     public MainPanel() {
         super(new BorderLayout());
 //         toolbar.setUI(new BasicToolBarUI() {
@@ -24,11 +23,6 @@ public class MainPanel extends JPanel{
 //                 return p.x < c.getWidth()-iv && p.x >= iv;
 //             }
 //         });
-        model.addElement("1111111");
-        model.addElement("22222");
-        model.addElement("3333333333333333");
-        model.addElement("44444444444");
-        combo.setModel(model);
         button.setFocusable(false);
 
         toolbar.add(new JLabel("label"));
@@ -46,7 +40,15 @@ public class MainPanel extends JPanel{
         add(Box.createRigidArea(new Dimension()), BorderLayout.EAST);
         setPreferredSize(new Dimension(320, 200));
     }
-
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("1111111");
+        model.addElement("22222");
+        model.addElement("3333333333333333");
+        model.addElement("44444444444");
+        return new JComboBox(model);
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

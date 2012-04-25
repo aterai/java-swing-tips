@@ -15,8 +15,9 @@ public class MainPanel extends JPanel{
     private final MyComboBox combo  = new MyComboBox();
 
     static class MyComboBox extends JComboBox implements FontChangeListener{
+        @SuppressWarnings("unchecked")
         public MyComboBox() {
-            super();
+            super(new DefaultComboBoxModel(new Object[] {"test test"}));
             setFont(FONT12);
         }
         public void fontStateChanged(FontChangeEvent e) {
@@ -92,7 +93,6 @@ public class MainPanel extends JPanel{
 
     public MainPanel() {
         super(new BorderLayout());
-        ((DefaultComboBoxModel)combo.getModel()).addElement("test test");
 
         addFontChangeListener(button);
         //addFontChangeListener(combo);
