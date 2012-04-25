@@ -8,48 +8,30 @@ import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel{
-    private final JList list1 = new JList();
-    private final JList list2 = new JList();
     public MainPanel() {
         super(new GridLayout(1,0));
-        list1.setCellRenderer(new TextAreaRenderer());
-        if(list1.getFixedCellHeight()!=-1) {
-            System.out.println(list1.getFixedCellHeight());
-            list1.setFixedCellHeight(-1);
-        }
-        list1.setModel(makeListModel());
-        list2.setModel(makeListModel());
-
-        add(new JScrollPane(list1));
-        add(new JScrollPane(list2));
+        add(new JScrollPane(makeList(true)));
+        add(new JScrollPane(makeList(false)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private class TextAreaRenderer extends JTextArea implements ListCellRenderer {
-        private final Border focusBorder = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()),2);
-        private final Border nomalBorder = BorderFactory.createEmptyBorder(2,2,2,2);
-        private final Color evenColor = new Color(230,255,230);
-        @Override public Component getListCellRendererComponent(JList list, Object object, int index, boolean isSelected, boolean cellHasFocus) {
-            //setLineWrap(true);
-            if(isSelected) {
-                setBackground(list.getSelectionBackground());
-                setForeground(list.getSelectionForeground());
-            }else{
-                setBackground(index%2==0 ? evenColor : list.getBackground());
-                setForeground(list.getForeground());
-            }
-            setBorder(cellHasFocus ? focusBorder : nomalBorder);
-            setText((object==null) ? "" : object.toString());
-            return this;
-        }
-    }
-    private DefaultListModel makeListModel() {
+
+    @SuppressWarnings("unchecked")
+    private static JList makeList(boolean hasTextAreaRenderer) {
         DefaultListModel model = new DefaultListModel();
-        model.addElement("一行");
-        model.addElement("一行目\n二行目");
-        model.addElement("一行目\n二行目\n三行目");
-        model.addElement("四行\n以上ある\nテキスト\nの場合");
-        //model.addElement("asdfas以上ある以上ある以上ある以上ある以上ある以上ある以上ある以上ある以上ある以上ある以上あるs");
-        return model;
+        model.addElement("111");
+        model.addElement("111\n222222");
+        model.addElement("111\n222222\n333333333");
+        model.addElement("111\n222222\n333333333\n444444444444");
+
+        JList list = new JList(model);
+        if(hasTextAreaRenderer) {
+            list.setCellRenderer(new TextAreaRenderer());
+            if(list.getFixedCellHeight()!=-1) {
+                System.out.println(list.getFixedCellHeight());
+                list.setFixedCellHeight(-1);
+            }
+        }
+        return list;
     }
 
     public static void main(String[] args) {
@@ -71,6 +53,28 @@ public class MainPanel extends JPanel{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TextAreaRenderer extends JTextArea implements ListCellRenderer{
+    private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()),2);
+    private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2,2,2,2);
+    private static final Color EVEN_COLOR = new Color(230,255,230);
+    @Override public Component getListCellRendererComponent(JList list, Object object, int index, boolean isSelected, boolean cellHasFocus) {
+        //setLineWrap(true);
+        if(focusBorder==null) {
+            focusBorder = new DotBorder(new Color(~list.getSelectionBackground().getRGB()),2);
+        }
+        if(isSelected) {
+            setBackground(list.getSelectionBackground());
+            setForeground(list.getSelectionForeground());
+        }else{
+            setBackground(index%2==0 ? EVEN_COLOR : list.getBackground());
+            setForeground(list.getForeground());
+        }
+        setBorder(cellHasFocus ? focusBorder : NOMAL_BORDER);
+        setText((object==null) ? "" : object.toString());
+        return this;
     }
 }
 

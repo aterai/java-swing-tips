@@ -8,43 +8,14 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final JList list = new JList();
-    private final DefaultListModel model = new DefaultListModel();
-    private final JTextField field = new JTextField("1,2,5");
     private final HashSet<Integer> disableIndexSet = new HashSet<Integer>();
+    private final JTextField field = new JTextField("1,2,5");
+    private final JList list = makeList(disableIndexSet);
 
     public MainPanel() {
         super(new BorderLayout(5,5));
-        list.setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value,
-                                 int index, boolean isSelected, boolean cellHasFocus) {
-                Component c;
-                if(disableIndexSet.contains(index)) {
-                    c = super.getListCellRendererComponent(list,value,index,false,false);
-                    c.setEnabled(false);
-                }else{
-                    c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                }
-                return c;
-            }
-        });
 
-//         list.setSelectionModel(new DefaultListSelectionModel() {
-//             public boolean isSelectedIndex(int index) {
-//                 if(disableIndexSet.contains(index)) return false;
-//                 return super.isSelectedIndex(index);
-//             }
-//         });
-
-        list.setModel(model);
-        model.addElement("aaaaaaaaaaaa");
-        model.addElement("bbbbbbbbbbbbbbbbbb");
-        model.addElement("ccccccccccc");
-        model.addElement("dddddddddddd");
-        model.addElement("eeeeeeeeeeeeeeeeeee");
-        model.addElement("fffffffffffffffffffffff");
-        model.addElement("ggggggggg");
-
+        initDisableIndex(disableIndexSet);
         ActionMap am = list.getActionMap();
         am.put("selectNextRow", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent ae) {
@@ -68,7 +39,6 @@ public class MainPanel extends JPanel{
                 }
             }
         });
-        initDisableIndex(disableIndexSet);
 
         Box box = Box.createHorizontalBox();
         box.add(new JLabel("Disabled Item Index:"));
@@ -85,6 +55,41 @@ public class MainPanel extends JPanel{
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         setPreferredSize(new Dimension(320, 200));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static JList makeList(final HashSet<Integer> disableIndexSet) {
+        DefaultListModel model = new DefaultListModel();
+        model.addElement("aaaaaaaaaaaa");
+        model.addElement("bbbbbbbbbbbbbbbbbb");
+        model.addElement("ccccccccccc");
+        model.addElement("dddddddddddd");
+        model.addElement("eeeeeeeeeeeeeeeeeee");
+        model.addElement("fffffffffffffffffffffff");
+        model.addElement("ggggggggg");
+
+        JList list = new JList(model);
+        list.setCellRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c;
+                if(disableIndexSet.contains(index)) {
+                    c = super.getListCellRendererComponent(list,value,index,false,false);
+                    c.setEnabled(false);
+                }else{
+                    c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                }
+                return c;
+            }
+        });
+
+//         list.setSelectionModel(new DefaultListSelectionModel() {
+//             public boolean isSelectedIndex(int index) {
+//                 if(disableIndexSet.contains(index)) return false;
+//                 return super.isSelectedIndex(index);
+//             }
+//         });
+
+        return list;
     }
     private void initDisableIndex(HashSet<Integer> set) {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
