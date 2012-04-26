@@ -13,11 +13,14 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(makeList()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JList makeList() {
+    @SuppressWarnings("unchecked")
+    private static JList makeList() {
         DefaultListModel model = new DefaultListModel();
-        for(String s: new String[] {"11\n1", "222222222222222\n222222222222222", "3333333333333333333\n33333333333333333333\n33333333333333333", "444"}) {
-            model.addElement(s);
-        }
+        model.addElement("11\n1");
+        model.addElement("222222222222222\n222222222222222");
+        model.addElement("3333333333333333333\n33333333333333333333\n33333333333333333");
+        model.addElement("444");
+
         JList list = new JList(model);
         list.setFixedCellHeight(-1);
         CellButtonsMouseListener cbml = new CellButtonsMouseListener();
@@ -127,6 +130,7 @@ class CellButtonsMouseListener extends MouseAdapter{
             }
         }
     }
+    @SuppressWarnings("unchecked")
     private static JButton getButton(JList list, Point pt, int index) {
         Container c = (Container)list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
         Rectangle r = list.getCellBounds(index, index);
@@ -152,6 +156,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         }
     });
     private final JButton copyButton = new JButton(new AbstractAction("copy") {
+        @SuppressWarnings("unchecked")
         @Override public void actionPerformed(ActionEvent e) {
             //System.out.println("bbb");
             DefaultListModel m = (DefaultListModel)list.getModel();

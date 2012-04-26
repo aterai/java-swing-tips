@@ -6,18 +6,20 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(4,1,5,5));
         setBorder(BorderFactory.createEmptyBorder(5,20,5,20));
         p.add(new JLabel("Default JComboBox"));
-        p.add(new JComboBox(new DefaultComboBoxModel(new Object[] {"Google", "Yahoo!", "Bing"})));
+        p.add(new JComboBox(new String[] {"Google", "Yahoo!", "Bing"}));
         p.add(new JLabel("SearchBar JComboBox"));
         p.add(makeSearchBar());
         //p.add(new SearchBarComboBox(makeModel()));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
+    @SuppressWarnings("unchecked")
     private JComboBox makeSearchBar() {
         DefaultComboBoxModel model = new DefaultComboBoxModel() {
             @Override public void setSelectedItem(Object anObject) {
@@ -84,6 +86,7 @@ class SearchEngine{
     }
 }
 
+@SuppressWarnings("unchecked")
 class JSearchBar extends JComboBox{
     private static final String uiClassID = "SearchBarComboBoxUI";
     @Override public String getUIClassID() {

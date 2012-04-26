@@ -148,6 +148,7 @@ class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 200));
     }
+    @SuppressWarnings("unchecked")
     private TestItem getTestItemFromModel(String text) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) combo02.getModel();
         TestItem item = null;
@@ -214,6 +215,7 @@ class MainPanel extends JPanel {
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
+    @SuppressWarnings("unchecked")
     private DefaultComboBoxModel makeModel() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement(new TestItem("http://terai.xrea.jp/", image1, true));
@@ -224,12 +226,12 @@ class MainPanel extends JPanel {
         model.addElement(new TestItem("http://www.example.com/", image2, false));
         return model;
     }
+    @SuppressWarnings("unchecked")
     private static JComboBox makeTestComboBox(DefaultComboBoxModel model) {
         JComboBox combo = new JComboBox(model);
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel c = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                 c.setIcon(((TestItem)value).favicon);
                 return c;

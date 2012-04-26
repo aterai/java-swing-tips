@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
+@SuppressWarnings("unchecked")
 public class MainPanel extends JPanel {
     private static enum Vertical {
         TOP, CENTER, BOTTOM;

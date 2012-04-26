@@ -19,14 +19,6 @@ public class MainPanel extends JPanel{
             return description;
         }
     }
-    private final ColorItem[] model = new ColorItem[] {
-        new ColorItem(Color.RED,     "Red"),
-        new ColorItem(Color.GREEN,   "Green"),
-        new ColorItem(Color.BLUE,    "Blue"),
-        new ColorItem(Color.CYAN,    "Cyan"),
-        new ColorItem(Color.ORANGE,  "Orange"),
-        new ColorItem(Color.MAGENTA, "Magenta"),
-    };
     private static class ComboForegroundRenderer extends DefaultListCellRenderer {
         private final Color selectionBackground = new Color(240,245,250);
         private final JComboBox combo;
@@ -70,9 +62,10 @@ public class MainPanel extends JPanel{
             return String.format("#%06x", c.getRGB()&0xffffff);
         }
     }
-    private final JComboBox combo00 = new JComboBox(model);
-    private final JComboBox combo01 = new JComboBox(model);
-    private final JComboBox combo02 = new JComboBox(model);
+    private final JComboBox combo00 = makeComboBox();
+    private final JComboBox combo01 = makeComboBox();
+    private final JComboBox combo02 = makeComboBox();
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         combo01.setRenderer(new ComboForegroundRenderer(combo01));
@@ -87,6 +80,19 @@ public class MainPanel extends JPanel{
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        ColorItem[] model = new ColorItem[] {
+            new ColorItem(Color.RED,     "Red"),
+            new ColorItem(Color.GREEN,   "Green"),
+            new ColorItem(Color.BLUE,    "Blue"),
+            new ColorItem(Color.CYAN,    "Cyan"),
+            new ColorItem(Color.ORANGE,  "Orange"),
+            new ColorItem(Color.MAGENTA, "Magenta"),
+        };
+        JComboBox combo = new JComboBox(model);
+        return combo;
     }
     private static JComponent createPanel(JComponent cmp, String str) {
         JPanel panel = new JPanel(new BorderLayout());

@@ -9,6 +9,7 @@ import javax.swing.*;
 //import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new GridLayout(1,2));
 
@@ -103,12 +104,13 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseL
         return this;
     }
     private int rollOverRowIndex = -1;
-    private int pressedRowIndex = -3;
+    private int pressedRowIndex  = -3;
     @Override public void mouseExited(MouseEvent e) {
         rollOverRowIndex = -1;
         JList c = (JList)e.getSource();
         c.repaint();
     }
+    @SuppressWarnings("unchecked")
     @Override public void mouseClicked(MouseEvent e) {
         if(e.getButton()==MouseEvent.BUTTON1) {
             JList l = (JList)e.getComponent();
