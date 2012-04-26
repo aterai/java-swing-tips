@@ -9,8 +9,8 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        JComboBox combobox1 = makeTestComboBox();
-        JComboBox combobox2 = makeTestComboBox();
+        JComboBox combobox1 = makeComboBox();
+        JComboBox combobox2 = makeComboBox();
         combobox2.setEditable(true);
 
         Box box1 = Box.createVerticalBox();
@@ -26,11 +26,19 @@ public class MainPanel extends JPanel {
         add(box2, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    private static JComboBox makeTestComboBox() {
-        JComboBox combobox = new JComboBox();
-        combobox.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement(new MyItem("aaaa"));
+        model.addElement(new MyItem("aaaabbb"));
+        model.addElement(new MyItem("aaaabbbcc"));
+        model.addElement(new MyItem("eeeeeeeee", true));
+        model.addElement(new MyItem("bbb1"));
+        model.addElement(new MyItem("bbb12"));
+
+        JComboBox combo = new JComboBox(model);
+        combo.setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 MyItem item = (MyItem)value;
                 JLabel label = (JLabel)super.getListCellRendererComponent(list,item,index,isSelected,cellHasFocus);
                 if(index!=-1 && item.hasSeparator()) {
@@ -41,15 +49,7 @@ public class MainPanel extends JPanel {
                 return label;
             }
         });
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement(new MyItem("aaaa"));
-        model.addElement(new MyItem("aaaabbb"));
-        model.addElement(new MyItem("aaaabbbcc"));
-        model.addElement(new MyItem("eeeeeeeee", true));
-        model.addElement(new MyItem("bbb1"));
-        model.addElement(new MyItem("bbb12"));
-        combobox.setModel(model);
-        return combobox;
+        return combo;
     }
 
     static class MyItem{
