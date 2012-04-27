@@ -23,14 +23,15 @@ public class MainPanel extends JPanel {
 // Button.disabledText
     private final JCheckBox cbx1   = new JCheckBox("default", true);
     private final JCheckBox cbx2   = new JCheckBox("<html>html tag</html>", true);
-    private final JComboBox combo1 = new JComboBox(new String[] {"disabledForeground", "bb"});
-    private final JComboBox combo2 = new JComboBox(new String[] {"<html>html</html>", "renderer"});
-    private final JComboBox combo3 = new JComboBox(new String[] {"setEditable(true)", "setDisabledTextColor"});
+    private final JComboBox combo1 = makeComboBox(new String[] {"disabledForeground", "bb"});
+    private final JComboBox combo2 = makeComboBox(new String[] {"<html>html</html>", "renderer"});
+    private final JComboBox combo3 = makeComboBox(new String[] {"setEditable(true)", "setDisabledTextColor"});
     private final JLabel label     = new JLabel("label disabledForeground");
     private final JButton button   = new JButton("button disabledText");
     private final java.util.List<JComponent> list = Arrays.<JComponent>asList(cbx1, cbx2,
                                                              combo1, combo2, combo3,
                                                              label, button);
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         UIManager.put("CheckBox.disabledText", Color.RED);
@@ -47,8 +48,7 @@ public class MainPanel extends JPanel {
             }
         });
         combo2.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
                 if(index==-1 && !combo2.isEnabled()) {
                     JLabel l = (JLabel)c;
@@ -78,6 +78,10 @@ public class MainPanel extends JPanel {
         add(cbx, BorderLayout.NORTH);
         add(box);
         setPreferredSize(new Dimension(320, 240));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

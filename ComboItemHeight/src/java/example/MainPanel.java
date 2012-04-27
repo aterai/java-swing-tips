@@ -13,6 +13,7 @@ public class MainPanel extends JPanel {
         add(makeUI(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
+    @SuppressWarnings("unchecked")
     public JComponent makeUI() {
         Box p = Box.createVerticalBox();
         Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};

@@ -1,6 +1,7 @@
 package example;
 //-*- mode:java; encoding:utf8n; coding:utf-8 -*-
 // vim:set fileencoding=utf-8:
+//@homepage@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -8,7 +9,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo = new JComboBox(makeLocaleModel());
+    private final JComboBox combo = makeComboBox();
     private final JPanel panel = new JPanel(new BorderLayout(5, 5));
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {
@@ -35,7 +36,8 @@ public class MainPanel extends JPanel {
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    private static ComboBoxModel makeLocaleModel() {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
         Locale[] array = {
             Locale.ENGLISH,
             Locale.FRENCH,
@@ -59,7 +61,7 @@ public class MainPanel extends JPanel {
             Locale.CANADA,
             Locale.CANADA_FRENCH,
         };
-        return new DefaultComboBoxModel(array);
+        return new JComboBox(array);
     }
 //     private static void printLocale(JFileChooser fileChooser) {
 //         System.out.println("Locale: "+fileChooser.getLocale());

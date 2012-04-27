@@ -11,19 +11,12 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel{
     private final JTextPane jtp = new JTextPane();
     private final BasicComboPopup popup;
-    private final JComboBox combo;
-    private final String[] strArray = {
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "bbbbbbbb", "cccccccc",
-        "dddddddd", "eeeeeeeee",
-        "fff", "ggg", "hhhhhhhhh", "iii",
-    };
+    private final JComboBox combo = makeComboBox();
 
     public MainPanel() {
         super(new BorderLayout());
         JScrollPane scroll = new JScrollPane(jtp);
 
-        combo = new JComboBox(strArray);
         popup = new BasicComboPopup(combo) {
             @Override public boolean isFocusable() {
                 return true;
@@ -96,6 +89,16 @@ public class MainPanel extends JPanel{
 
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        String[] model = {
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bbbbbbbb", "cccccccc",
+            "dddddddd", "eeeeeeeee",
+            "fff", "ggg", "hhhhhhhhh", "iii",
+        };
+        return new JComboBox(model);
     }
     private void popupMenu(ActionEvent e) {
         Rectangle rect = getRect();

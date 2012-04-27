@@ -202,6 +202,7 @@ class IconTable extends JTable {
         }
         panel.setVisible(false);
     }
+    @SuppressWarnings("unchecked")
     class EditorFromList extends JList {
         private static final int ins = 2;
         public EditorFromList(Vector list) {

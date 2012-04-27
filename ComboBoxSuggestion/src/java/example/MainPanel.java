@@ -13,7 +13,7 @@ public class MainPanel extends JPanel{
         String[] array = {
             "aaaa", "aaaabbb", "aaaabbbcc", "aaaabbbccddd",
             "abcde", "abefg", "bbb1", "bbb12"};
-        JComboBox combo = new JComboBox(array);
+        JComboBox combo = makeComboBox(array);
         combo.setEditable(true);
         combo.setSelectedIndex(-1);
         JTextField field = (JTextField)combo.getEditor().getEditorComponent();
@@ -46,6 +46,10 @@ public class MainPanel extends JPanel{
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 180));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
     }
     private static JPanel makeHelpPanel() {
         JPanel lp = new JPanel(new GridLayout(2,1,2,2));
@@ -112,6 +116,7 @@ class ComboKeyHandler extends KeyAdapter{
     private boolean shouldHide = false;
     @Override public void keyTyped(final KeyEvent e) {
         EventQueue.invokeLater(new Runnable() {
+            @SuppressWarnings("unchecked")
             @Override public void run() {
                 String text = ((JTextField)e.getSource()).getText();
                 if(text.length()==0) {
@@ -158,11 +163,13 @@ class ComboKeyHandler extends KeyAdapter{
             break;
         }
     }
+    @SuppressWarnings("unchecked")
     private static void setSuggestionModel(JComboBox comboBox, ComboBoxModel mdl, String str) {
         comboBox.setModel(mdl);
         comboBox.setSelectedIndex(-1);
         ((JTextField)comboBox.getEditor().getEditorComponent()).setText(str);
     }
+    @SuppressWarnings("unchecked")
     private static ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
         for(String s: list) {

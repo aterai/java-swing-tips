@@ -23,16 +23,18 @@ public class MainPanel extends JPanel {
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
+    @SuppressWarnings("unchecked")
     private static JPanel makePanel() {
         JPanel p = new JPanel(new BorderLayout(5, 5));
-        Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
+        p.add(makeComboBox(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
 
         UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-        JComboBox comboBox = new JComboBox(items);
+        UIManager.put("ComboBox.background", new Color(0,0,0,0)); //p.getBackground());
+        Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
+        JComboBox comboBox = makeComboBox(items);
         final ListCellRenderer r = comboBox.getRenderer();
         comboBox.setRenderer(new ListCellRenderer() {
-            @Override public Component getListCellRendererComponent(
-                    JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 ((JLabel)c).setHorizontalAlignment(SwingConstants.RIGHT);
                 return c;
@@ -46,17 +48,18 @@ public class MainPanel extends JPanel {
                 return button;
             }
         });
-        comboBox.setOpaque(true);
-        comboBox.setBackground(p.getBackground());
+        comboBox.setOpaque(false);
+        //comboBox.setBackground(p.getBackground());
         comboBox.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
         comboBox.setFocusable(false);
 
-        UIManager.put("ComboBox.squareButton", Boolean.TRUE);
-
         p.add(comboBox, BorderLayout.WEST);
-        p.add(new JComboBox(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
         p.setBorder(BorderFactory.createTitledBorder("JComboBox+JComboBox"));
         return p;
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -8,10 +8,8 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel{
     private static final int GAP = 5;
-    private final DefaultComboBoxModel model = new DefaultComboBoxModel(
-        new String[] {"aaaaaa", "bbbbb"});
-    private final JComboBox combo1 = new JComboBox(model);
-    private final JComboBox combo2 = new JComboBox(model);
+    private final JComboBox combo1 = makeComboBox();
+    private final JComboBox combo2 = makeComboBox();
     private final JButton button1 = new JButton("Open");
     private final JButton button2 = new JButton("Open");
 
@@ -27,7 +25,12 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 200));
     }
 
-    private JPanel createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        return new JComboBox(new String[] {"aaaaaa", "bbbbb"});
+    }
+
+    private static JPanel createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
         JPanel panel = new JPanel(new BorderLayout(GAP, GAP));
         panel.setBorder(BorderFactory.createEmptyBorder(GAP,GAP,GAP,GAP));
         panel.add(new JLabel(str), BorderLayout.WEST);
