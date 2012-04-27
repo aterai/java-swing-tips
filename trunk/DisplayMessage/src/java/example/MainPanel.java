@@ -14,11 +14,7 @@ class MainPanel extends JPanel {
     private final Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
     private final TrayIcon icon   = new TrayIcon(image, "TRAY", popup);
     private final JTextArea log   = new JTextArea();
-    private final JComboBox messageType = new JComboBox(new Object[] {
-        TrayIcon.MessageType.ERROR,
-        TrayIcon.MessageType.INFO,
-        TrayIcon.MessageType.NONE,
-        TrayIcon.MessageType.WARNING});
+    private final JComboBox messageType = makeComboBox();
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
 
@@ -48,7 +44,6 @@ class MainPanel extends JPanel {
             }
         }));
 
-
         log.setEditable(false);
         icon.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -75,7 +70,14 @@ class MainPanel extends JPanel {
             e.printStackTrace();
         }
     }
-
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        return new JComboBox(new Object[] {
+            TrayIcon.MessageType.ERROR,
+            TrayIcon.MessageType.INFO,
+            TrayIcon.MessageType.NONE,
+            TrayIcon.MessageType.WARNING});
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

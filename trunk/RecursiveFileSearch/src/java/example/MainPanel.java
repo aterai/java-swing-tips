@@ -20,6 +20,7 @@ public class MainPanel extends JPanel {
     private final JButton openButton = new JButton(new OpenAction());
     private SwingWorker<String, Message>  worker;
 
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -50,6 +51,7 @@ public class MainPanel extends JPanel {
         add(statusPanel, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+    @SuppressWarnings("unchecked")
     public static void addItem(JComboBox dirCombo, String str, int max) {
         if(str==null || str.trim().isEmpty()) return;
         dirCombo.setVisible(false);

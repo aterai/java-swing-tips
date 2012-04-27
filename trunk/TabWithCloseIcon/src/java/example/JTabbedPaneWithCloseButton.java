@@ -20,11 +20,11 @@ public class JTabbedPaneWithCloseButton extends JTabbedPane {
 }
 
 class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
-    protected LayoutManager createLayoutManager() {
+    @Override protected LayoutManager createLayoutManager() {
         return new CloseButtonTabbedPaneLayout();
     }
     //add 40 to the tab size to allow room for the close button and 8 to the height
-    protected Insets getTabInsets(int tabPlacement,int tabIndex) {
+    @Override protected Insets getTabInsets(int tabPlacement,int tabIndex) {
         //note that the insets that are returned to us are not copies.
         Insets defaultInsets = (Insets)super.getTabInsets(tabPlacement,tabIndex).clone();
         defaultInsets.right += 40;
@@ -35,7 +35,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
         //a list of our close buttons
         ArrayList<JButton> closeButtons = new ArrayList<JButton>();
-        public void layoutContainer(Container parent) {
+        @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
             //ensure that there are at least as many close buttons as tabs
             while(tabPane.getTabCount() > closeButtons.size()) {
@@ -58,7 +58,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         }
 
         class CloseButton extends JButton implements javax.swing.plaf.UIResource {
-            public CloseButton(int index) {
+            @Override public CloseButton(int index) {
                 super(new CloseButtonAction(index));
                 setToolTipText("Close this tab");
                 setMargin(new Insets(0,0,0,0));
@@ -86,11 +86,11 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
 }
 
 class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
-    protected LayoutManager createLayoutManager() {
+    @Override protected LayoutManager createLayoutManager() {
         return new CloseButtonTabbedPaneLayout();
     }
     //add 40 to the tab size to allow room for the close button and 8 to the height
-    protected Insets getTabInsets(int tabPlacement,int tabIndex) {
+    @Override protected Insets getTabInsets(int tabPlacement,int tabIndex) {
         //note that the insets that are returned to us are not copies.
         Insets defaultInsets = (Insets)super.getTabInsets(tabPlacement,tabIndex).clone();
         defaultInsets.right += 40;
@@ -102,7 +102,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
         //a list of our close buttons
         ArrayList<JButton> closeButtons = new ArrayList<JButton>();
-        public void layoutContainer(Container parent) {
+        @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
             //ensure that there are at least as many close buttons as tabs
             while(tabPane.getTabCount() > closeButtons.size()) {

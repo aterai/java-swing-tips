@@ -107,6 +107,7 @@ class ListItemTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return MOVE; //TransferHandler.COPY_OR_MOVE;
     }
+    @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferSupport info) {
         if(!canImport(info)) {
             return false;

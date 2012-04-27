@@ -11,6 +11,7 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel{
     private final TreeComboBox combo = new TreeComboBox();
     private final JTextField field = new JTextField("1,2,5");
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         DefaultComboBoxModel model1 = new DefaultComboBoxModel();
@@ -37,6 +38,7 @@ public class MainPanel extends JPanel{
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
+    @SuppressWarnings("unchecked")
     private static void makeComboBoxModel(DefaultComboBoxModel model, DefaultMutableTreeNode node) {
         if(!node.isRoot()) {
             model.addElement(node);
@@ -97,11 +99,11 @@ public class MainPanel extends JPanel{
 
 class TreeComboBox extends JComboBox {
     //private JTree tree = new JTree();
+    @SuppressWarnings("unchecked")
     public TreeComboBox() {
         super();
         setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value,
-                                 int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JComponent c;
                 if(value instanceof DefaultMutableTreeNode) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;

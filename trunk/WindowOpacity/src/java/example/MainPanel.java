@@ -26,8 +26,7 @@ class MainPanel extends JPanel{
         p.add(new JTextField(10));
         p.add(new JButton("bbb"));
 
-        JComboBox combo = new JComboBox(new String[] {
-            "Color(.5f,.8f,.5f,.5f)", "ImageTexturePaint", "CheckerTexturePaint"});
+        JComboBox combo = makeComboBox();
         combo.addItemListener(new ItemListener() {
             private final TexturePaint imageTexture = makeImageTexture();
             private final TexturePaint checkerTexture = makeCheckerTexture();
@@ -59,6 +58,11 @@ class MainPanel extends JPanel{
         p.add(combo);
         p.setPreferredSize(new Dimension(320, 240));
         return p;
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        return new JComboBox(new String[] {
+            "Color(.5f,.8f,.5f,.5f)", "ImageTexturePaint", "CheckerTexturePaint"});
     }
     private TexturePaint makeImageTexture() {
         BufferedImage bi = null;

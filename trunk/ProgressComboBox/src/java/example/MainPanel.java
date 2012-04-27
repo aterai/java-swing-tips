@@ -11,6 +11,7 @@ public class MainPanel extends JPanel {
     private final JButton button;
     private SwingWorker<String, String> worker;
     private int count = 0;
+    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         combo.setRenderer(new ProgressCellRenderer());

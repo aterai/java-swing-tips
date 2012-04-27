@@ -123,6 +123,7 @@ class ReorderbleList extends JList {
     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Polygon polygon = new Polygon();
     private Point srcPoint = null;
+    @SuppressWarnings("unchecked")
     public ReorderbleList() {
         super();
         rcolor = SystemColor.activeCaption;
@@ -294,6 +295,7 @@ class ListItemTransferHandler extends TransferHandler {
         glassPane.setVisible(true);
         return MOVE;
     }
+    @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferSupport support) {
         if(!canImport(support)) {
             return false;

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     private final TestModel model = new TestModel();
@@ -24,14 +25,11 @@ public class MainPanel extends JPanel {
         }
     };
 
-    private final JComboBox cb = new JComboBox(new String[] {"Name 0", "Name 1", "Name 2"});
     public MainPanel() {
         super(new BorderLayout());
 
-        cb.setBorder(BorderFactory.createEmptyBorder());
-        //((JTextField)cb.getEditor().getEditorComponent()).setBorder(null);
-        //((JTextField)cb.getEditor().getEditorComponent()).setMargin(null);
-        //cb.setEditable(true);
+        UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
+        JComboBox combo = makeComboBox();
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
@@ -40,8 +38,8 @@ public class MainPanel extends JPanel {
 
         col = table.getColumnModel().getColumn(1);
         col.setCellRenderer(new ComboCellRenderer());
-        col.setCellEditor(new DefaultCellEditor(cb));
-        //table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(tf));
+        col.setCellEditor(new DefaultCellEditor(combo));
+        //table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
 
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
@@ -53,7 +51,29 @@ public class MainPanel extends JPanel {
 
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox() {
+        JComboBox combo = new JComboBox(new String[] {"Name 0", "Name 1", "Name 2"});
+        combo.setBorder(BorderFactory.createEmptyBorder());
+        //((JTextField)combo.getEditor().getEditorComponent()).setBorder(null);
+        //((JTextField)combo.getEditor().getEditorComponent()).setMargin(null);
+        //combo.setBackground(Color.WHITE);
+        //combo.setOpaque(true);
+        //combo.setEditable(true);
+        combo.setUI(new BasicComboBoxUI() {
+            @Override protected JButton createArrowButton() {
+                JButton b = super.createArrowButton();
+                b.setContentAreaFilled(false);
+                b.setBackground(UIManager.getColor("TextField.background"));
+                //b.setOpaque(false);
+                b.setBorder(BorderFactory.createEmptyBorder());
+                return b;
+            }
+        });
+        return combo;
     }
 
     public static void main(String[] args) {
@@ -80,26 +100,37 @@ public class MainPanel extends JPanel {
 class ComboCellRenderer extends JComboBox implements TableCellRenderer {
     private static final Color evenColor = new Color(240, 240, 250);
     private final JTextField editor;
+    private JButton button;
     public ComboCellRenderer() {
         super();
         setEditable(true);
         setBorder(BorderFactory.createEmptyBorder());
-
+        setUI(new BasicComboBoxUI() {
+            @Override protected JButton createArrowButton() {
+                button = super.createArrowButton();
+                button.setContentAreaFilled(false);
+                //button.setBackground(ComboCellRenderer.this.getBackground());
+                button.setBorder(BorderFactory.createEmptyBorder());
+                return button;
+            }
+        });
         editor = (JTextField) getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
     }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    @SuppressWarnings("unchecked")
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
         if(isSelected) {
             editor.setForeground(table.getSelectionForeground());
             editor.setBackground(table.getSelectionBackground());
+            button.setBackground(table.getSelectionBackground());
         }else{
             editor.setForeground(table.getForeground());
             //setBackground(table.getBackground());
-            editor.setBackground((row%2==0)?evenColor:table.getBackground());
+            Color bg = (row%2==0)?evenColor:table.getBackground();
+            editor.setBackground(bg);
+            button.setBackground(bg);
         }
         addItem((value==null)?"":value.toString());
         return this;
