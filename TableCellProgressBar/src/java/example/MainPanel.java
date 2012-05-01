@@ -16,6 +16,7 @@ public class MainPanel extends JPanel {
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
     private final JTable table;
     private final Executor executor = Executors.newCachedThreadPool();
+    //TEST: private final Executor executor = Executors.newFixedThreadPool(2);
     public MainPanel() {
         super(new BorderLayout());
         table = new JTable(model) {
