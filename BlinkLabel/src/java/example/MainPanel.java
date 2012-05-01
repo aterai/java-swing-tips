@@ -15,7 +15,7 @@ public class MainPanel extends JPanel{
         final Timer timer1 = new Timer(600, new ActionListener() {
             boolean flg = true;
             @Override public void actionPerformed(ActionEvent e) {
-                label1.setText((flg=!flg)?"○":"●");
+                label1.setText((flg=!flg)?"\u25CB":"\u25CF");
             }
         });
 
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel{
             }
         });
         JPanel p = new JPanel(new GridLayout(2,1,5,5));
-        p.add(makePanel("○<->●", label1));
+        p.add(makePanel("\u25CB<->\u25CF", label1));
         p.add(makePanel("!!!Warning!!!<->Empty", label2));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));

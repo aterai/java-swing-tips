@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
         super(new GridLayout(2,1));
 
         JPasswordField pf1 = new JPasswordField();
-        pf1.setEchoChar('★');
+        pf1.setEchoChar('\u2605');
 
         JPasswordField pf2 = new JPasswordField() {
             @Override public void updateUI() {
@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
             }
         };
 
-        add(makeTitlePanel(pf1, "setEchoChar('★')"));
+        add(makeTitlePanel(pf1, "setEchoChar('\u2605')"));
         add(makeTitlePanel(pf2, "drawEchoCharacter"));
         setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
         setPreferredSize(new Dimension(320, 200));
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
 
 class MyPasswordFieldUI extends BasicPasswordFieldUI {
     public static MyPasswordFieldUI createUI(JPasswordField c) {
-        c.setEchoChar('★'); //全角幅の文字で
+        c.setEchoChar('\u25A0'); //As wide as a CJK character cell (fullwidth)
         return new MyPasswordFieldUI();
     }
     @Override public View create(Element elem) {

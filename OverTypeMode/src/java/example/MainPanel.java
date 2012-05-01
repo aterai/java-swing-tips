@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         OvertypeTextArea textArea= new OvertypeTextArea();
         textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
-        textArea.setText("Insertキーで、挿入モードと上書きモードを\n切り替えることができます。\naaaaaaaaaaafasdfas");
+        textArea.setText("Press the INSERT key to toggle the overwrite mode.\n\u3042\u3042\u3042\naaaaaaaaaaafasdfas");
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 200));
     }
@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
 }
 
 //Swing - JTextPane edit mode (insert or overwrite)???
-//http://forums.sun.com/thread.jspa?threadID=667407
+//https://forums.oracle.com/forums/thread.jspa?threadID=1383467
 class OvertypeTextArea extends JTextArea {
     //private static Toolkit toolkit = Toolkit.getDefaultToolkit();
     private boolean isOvertypeMode;
@@ -118,7 +118,7 @@ class OvertypeTextArea extends JTextArea {
                     Rectangle r = mapper.modelToView(component, getDot());
                     g.setColor(component.getCaretColor());
                     int width = g.getFontMetrics().charWidth('w');
-                    // add---->(全角などに対応)
+                    // A patch for double-width CJK character >>>>
                     if(isOvertypeMode()) {
                         int pos = getCaretPosition();
                         if(pos<getDocument().getLength()) {
@@ -129,7 +129,7 @@ class OvertypeTextArea extends JTextArea {
                                 width = g.getFontMetrics().stringWidth(str);
                             }
                         }
-                    } // <----add
+                    } // <<<<
                     int y = r.y + r.height - 2;
                     g.drawLine(r.x, y, r.x + width - 2, y);
                 }catch(BadLocationException e) { e.printStackTrace(); }
@@ -147,7 +147,7 @@ class OvertypeTextArea extends JTextArea {
                 x = r.x;
                 y = r.y;
                 //width = component.getFontMetrics(component.getFont()).charWidth('w');
-                width = component.getFontMetrics(component.getFont()).charWidth('あ');
+                width = component.getFontMetrics(component.getFont()).charWidth('\u3042');
                 height = r.height;
                 repaint();
             }

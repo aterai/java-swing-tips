@@ -41,23 +41,20 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private JToolBar makeToolBar() {
-        JToolBar tb = new JToolBar("並べ替えツール");
+    private static JToolBar makeToolBar() {
+        JToolBar tb = new JToolBar("Sort by my order");
         tb.setFloatable(true);
-        //tb.setRollover(true);
-        tb.add(initButton(new InitAction("確定")));
-        tb.add(Box.createHorizontalStrut(5));
-        tb.addSeparator();
-        tb.add(Box.createHorizontalStrut(5));
-        tb.add(initButton(new UpAction("▲")));
-        tb.add(initButton(new DownAction("▼")));
+        tb.add(initButton(new UpAction("\u25B2")));
+        tb.add(initButton(new DownAction("\u25BC")));
         tb.add(Box.createHorizontalGlue());
+        tb.add(initButton(new InitAction("OK")));
         return tb;
     }
-    private JButton initButton(Action act) {
-        JButton jb = new JButton(act);
-        jb.setMargin(new Insets(1,1,1,1));
-        return jb;
+
+    private static JButton initButton(Action action) {
+        JButton b = new JButton(action);
+        b.setFocusable(false);
+        return b;
     }
 
     private class TablePopupMenu extends JPopupMenu {
@@ -124,7 +121,7 @@ public class MainPanel extends JPanel {
             deleteActionPerformed(evt);
         }
     }
-    public void deleteActionPerformed(ActionEvent evt) {
+    private void deleteActionPerformed(ActionEvent evt) {
         int[] selection = table.getSelectedRows();
         if(selection==null || selection.length<=0) return;
         for(int i=selection.length-1;i>=0;i--) {

@@ -31,10 +31,10 @@ public class MainPanel extends JPanel {
         box.add(smallLabel);
         box.add(Box.createHorizontalStrut(5));
         box.add(largeLabel);
+        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         add(box);
-        add(new JLabel("<html>警告:sun.awt.shell.ShellFolder は Sun が所有する"+
-                       "<br>API であり、今後のリリースで"+
-                       "<br>削除される可能性があります。"));
+        add(new JLabel("<html>warning: ShellFolder is internal proprietary API"+
+                       "<br> and may be removed in a future release"));
 
         DropTargetListener dtl = new DropTargetAdapter() {
             @Override public void dragOver(DropTargetDragEvent dtde) {
@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
             }
         };
         setDropTarget(new DropTarget(this, DnDConstants.ACTION_COPY, dtl, true));
-        setPreferredSize(new Dimension(320, 160));
+        setPreferredSize(new Dimension(320, 200));
     }
 
     public static void main(String[] args) {
