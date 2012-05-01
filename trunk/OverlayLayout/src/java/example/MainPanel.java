@@ -25,7 +25,7 @@ public class MainPanel extends JPanel{
             }
         });
         JButton b2 = new JButton();
-        b2.setAction(new AbstractAction("▼") {
+        b2.setAction(new AbstractAction("\u25BC") {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("sub");
             }

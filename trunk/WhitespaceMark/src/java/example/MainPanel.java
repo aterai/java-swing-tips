@@ -10,7 +10,7 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel{
     String tabTest = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
     String zsTest = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
-    String zs_tab_zsTest = "\u3000\u3000日本語\u3000ああああああ\t１２３４５６７８９０\u3000テスト\n";
+    String zs_tab_zsTest = "\u3000\u3000\u65E5\u672C\u8A9E\u3000\n";
     public MainPanel() {
         super(new BorderLayout());
         JTextPane editor = new JTextPane();

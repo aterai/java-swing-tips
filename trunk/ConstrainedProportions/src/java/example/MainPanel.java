@@ -23,13 +23,23 @@ public class MainPanel extends JPanel{
                 label.setText(frame.getSize().toString());
             }
         });
-        checkbox.setAction(new AbstractAction("縦横比一定、"+MW+"*"+MH+"以下は不可にする") {
+        checkbox.setAction(new AbstractAction("Fixed aspect ratio, Minimum size: "+MW+"*"+MH) {
             @Override public void actionPerformed(ActionEvent e) {
                 initFrameSize();
             }
         });
         checkbox.setSelected(true);
-        add(checkbox, BorderLayout.NORTH);
+
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        p.add(checkbox);
+        Toolkit.getDefaultToolkit().setDynamicLayout(false);
+        p.add(new JCheckBox(new AbstractAction("Toolkit.getDefaultToolkit().setDynamicLayout: ") {
+            @Override public void actionPerformed(ActionEvent e) {
+                JCheckBox cb = (JCheckBox)e.getSource();
+                Toolkit.getDefaultToolkit().setDynamicLayout(cb.isSelected());
+            }
+        }));
+        add(p, BorderLayout.NORTH);
         add(label);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -41,7 +51,6 @@ public class MainPanel extends JPanel{
         int fh = MH*fw/MW;
         frame.setSize((MW>fw)?MW:fw, (MH>fh)?MH:fh);
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
