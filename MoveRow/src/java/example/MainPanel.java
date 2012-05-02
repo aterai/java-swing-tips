@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JToolBar makeToolBar() {
+    private JToolBar makeToolBar() {
         JToolBar tb = new JToolBar("Sort by my order");
         tb.setFloatable(true);
         tb.add(initButton(new UpAction("\u25B2")));
