@@ -13,27 +13,28 @@ public class MainPanel extends JPanel {
     private final JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         final JTable table = new JTable(model);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model); // {
-//             @Override
-//             public void toggleSortOrder(int column) {
+        table.setAutoCreateRowSorter(true);
+
+//         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
+//             @Override public void toggleSortOrder(int column) {
 //                 super.toggleSortOrder(column);
 //                 if(check2.isSelected()) table.clearSelection();
 //             }
 //         };
-        table.setRowSorter(sorter);
-
+//         table.setRowSorter(sorter);
         //table.setUpdateSelectionOnSort(false);
-
-        model.addTest(new Test("Name 1", "Comment"));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", ""));
 
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
