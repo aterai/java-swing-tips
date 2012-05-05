@@ -7,8 +7,17 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel{
-    private final JTable table;
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+      {"<html>Comment<p>etc.", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    private final JTable table = new JTable(model);
     private final JTabbedPane tab = new JTabbedPane();
 
     public MainPanel() {
@@ -16,22 +25,10 @@ public class MainPanel extends JPanel{
         tab.addTab("<html>Test<p>Test</p></html>", new JLabel("Test1"));
         tab.addTab("<html>Test<p>test", new JLabel("Test2"));
 
-        table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
         table.setRowSelectionAllowed(true);
         table.setRowHeight(32);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-
-        //JTableHeader tableHeader = table.getTableHeader();
-        //tableHeader.setReorderingAllowed(false);
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
-        col.setResizable(false);
-
-        model.addTest(new Test("Name-1", "<html>Comment<p>etc."));
-        model.addTest(new Test("Name-2", "Test1"));
-        model.addTest(new Test("Name-3", "Test2"));
 
         add(tab, BorderLayout.NORTH);
         add(new JScrollPane(table));
