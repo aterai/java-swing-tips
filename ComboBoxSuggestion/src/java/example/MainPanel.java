@@ -50,6 +50,29 @@ public class MainPanel extends JPanel{
     @SuppressWarnings("unchecked")
     private static JComboBox makeComboBox(Object[] model) {
         return new JComboBox(model);
+        //Test: Remove ArrowButtn(look like a JTextField)
+//         //UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+//         return new JComboBox(model) {
+//             @Override public void updateUI() {
+//                 super.updateUI();
+//                 setUI(new javax.swing.plaf.basic.BasicComboBoxUI() {
+//                     @Override protected JButton createArrowButton() {
+//                         JButton button = new JButton() {
+//                             @Override public int getWidth() {
+//                                 return 0;
+//                             }
+//                         };
+//                         button.setBorder(BorderFactory.createEmptyBorder());
+//                         button.setVisible(false);
+//                         return button;
+//                     }
+//                     @Override public void configureArrowButton() {}
+//                 });
+//                 for(MouseListener ml:getMouseListeners()) {
+//                     removeMouseListener(ml);
+//                 }
+//             }
+//         };
     }
     private static JPanel makeHelpPanel() {
         JPanel lp = new JPanel(new GridLayout(2,1,2,2));
