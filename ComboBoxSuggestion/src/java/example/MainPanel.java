@@ -68,9 +68,11 @@ public class MainPanel extends JPanel{
 //                     }
 //                     @Override public void configureArrowButton() {}
 //                 });
+//                 //Remove click on a JComboBox Border
 //                 for(MouseListener ml:getMouseListeners()) {
 //                     removeMouseListener(ml);
 //                 }
+//                 //Or setBorder(BorderFactory.createEmptyBorder());
 //             }
 //         };
     }
