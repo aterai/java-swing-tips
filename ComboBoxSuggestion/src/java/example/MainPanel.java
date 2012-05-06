@@ -50,7 +50,7 @@ public class MainPanel extends JPanel{
     @SuppressWarnings("unchecked")
     private static JComboBox makeComboBox(Object[] model) {
         return new JComboBox(model);
-        //Test: Remove ArrowButtn(look like a JTextField)
+//         //Test: Remove ArrowButtn(look like a JTextField)
 //         //UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 //         return new JComboBox(model) {
 //             @Override public void updateUI() {
@@ -68,11 +68,17 @@ public class MainPanel extends JPanel{
 //                     }
 //                     @Override public void configureArrowButton() {}
 //                 });
-//                 //Remove click on a JComboBox Border
-//                 for(MouseListener ml:getMouseListeners()) {
-//                     removeMouseListener(ml);
-//                 }
-//                 //Or setBorder(BorderFactory.createEmptyBorder());
+// //                 //Remove click on a JComboBox Border
+// //                 for(MouseListener ml:getMouseListeners()) {
+// //                     removeMouseListener(ml);
+// //                 }
+//             }
+//             //Remove click on a JComboBox Border
+//             @Override public boolean contains(int x, int y) {
+//                 Insets i = getInsets();
+//                 int w = getWidth()  - i.left - i.right;
+//                 int h = getHeight() - i.top - i.bottom;
+//                 return (x >= i.left) && (x < w) && (y >= i.top) && (y < h);
 //             }
 //         };
     }
