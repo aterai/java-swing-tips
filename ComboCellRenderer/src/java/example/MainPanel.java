@@ -56,23 +56,30 @@ public class MainPanel extends JPanel {
 
     @SuppressWarnings("unchecked")
     private static JComboBox makeComboBox() {
-        JComboBox combo = new JComboBox(new String[] {"Name 0", "Name 1", "Name 2"});
-        combo.setBorder(BorderFactory.createEmptyBorder());
+        JComboBox combo = new JComboBox(new String[] {"Name 0", "Name 1", "Name 2"}) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setBorder(BorderFactory.createEmptyBorder());
+                setUI(new BasicComboBoxUI() {
+                    @Override protected JButton createArrowButton() {
+                        JButton button = super.createArrowButton();
+                        button.setContentAreaFilled(false);
+                        button.setBorder(BorderFactory.createEmptyBorder());
+                        return button;
+                    }
+                });
+//                 JTextField editor = (JTextField) getEditor().getEditorComponent();
+//                 editor.setBorder(BorderFactory.createEmptyBorder());
+//                 editor.setOpaque(true);
+//                 editor.setEditable(false);
+            }
+        };
+        //combo.setBorder(BorderFactory.createEmptyBorder());
         //((JTextField)combo.getEditor().getEditorComponent()).setBorder(null);
         //((JTextField)combo.getEditor().getEditorComponent()).setMargin(null);
         //combo.setBackground(Color.WHITE);
         //combo.setOpaque(true);
         //combo.setEditable(true);
-        combo.setUI(new BasicComboBoxUI() {
-            @Override protected JButton createArrowButton() {
-                JButton b = super.createArrowButton();
-                b.setContentAreaFilled(false);
-                b.setBackground(UIManager.getColor("TextField.background"));
-                //b.setOpaque(false);
-                b.setBorder(BorderFactory.createEmptyBorder());
-                return b;
-            }
-        });
         return combo;
     }
 
@@ -99,11 +106,14 @@ public class MainPanel extends JPanel {
 }
 class ComboCellRenderer extends JComboBox implements TableCellRenderer {
     private static final Color evenColor = new Color(240, 240, 250);
-    private final JTextField editor;
+    private JTextField editor;
     private JButton button;
     public ComboCellRenderer() {
         super();
         setEditable(true);
+    }
+    @Override public void updateUI() {
+        super.updateUI();
         setBorder(BorderFactory.createEmptyBorder());
         setUI(new BasicComboBoxUI() {
             @Override protected JButton createArrowButton() {
@@ -117,6 +127,7 @@ class ComboCellRenderer extends JComboBox implements TableCellRenderer {
         editor = (JTextField) getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
+        editor.setEditable(false);
     }
     @SuppressWarnings("unchecked")
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
