@@ -31,8 +31,7 @@ public class MainPanel extends JPanel{
             @Override public void actionPerformed(ActionEvent e) {
                 Window w = SwingUtilities.windowForComponent((Component)e.getSource());
                 //w.dispose();
-                w.getToolkit().getSystemEventQueue().postEvent(
-                    new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+                w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
             }
         }), BorderLayout.SOUTH);
         internal.getContentPane().add(p);

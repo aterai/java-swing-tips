@@ -66,8 +66,7 @@ class MainPanel extends JPanel {
         button.setBackground(Color.ORANGE);
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                frame.getToolkit().getSystemEventQueue().postEvent(
-                    new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
         });
 //         //javax/swing/plaf/metal/MetalTitlePane.java
