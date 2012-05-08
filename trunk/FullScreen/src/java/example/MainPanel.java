@@ -54,8 +54,7 @@ public class MainPanel extends JPanel{
 //                 }else{
 
                 ////click on the X
-                dialog.getToolkit().getSystemEventQueue().postEvent(
-                    new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+                dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
                 //triggered windowClosing
             }
         });

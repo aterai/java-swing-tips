@@ -79,8 +79,7 @@ public class MainPanel extends JPanel {
                 tray.remove(icon);
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 //frame.dispose();
-                frame.getToolkit().getSystemEventQueue().postEvent(
-                    new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
         });
         try{

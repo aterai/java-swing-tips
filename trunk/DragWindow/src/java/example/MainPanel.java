@@ -48,7 +48,8 @@ class MainPanel{
             @Override public void actionPerformed(ActionEvent e) {
                 //frame.dispose();
                 //System.exit(0);
-                frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                //frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
         }));
         JPanel p = new JPanel(new BorderLayout());
