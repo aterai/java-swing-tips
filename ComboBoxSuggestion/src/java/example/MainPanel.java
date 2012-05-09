@@ -135,6 +135,7 @@ public class MainPanel extends JPanel{
     }
 }
 
+@SuppressWarnings("unchecked")
 class ComboKeyHandler extends KeyAdapter{
     private final JComboBox comboBox;
     private final Vector<String> list = new Vector<String>();
@@ -147,7 +148,6 @@ class ComboKeyHandler extends KeyAdapter{
     private boolean shouldHide = false;
     @Override public void keyTyped(final KeyEvent e) {
         EventQueue.invokeLater(new Runnable() {
-            @SuppressWarnings("unchecked")
             @Override public void run() {
                 String text = ((JTextField)e.getSource()).getText();
                 if(text.length()==0) {
@@ -194,13 +194,11 @@ class ComboKeyHandler extends KeyAdapter{
             break;
         }
     }
-    @SuppressWarnings("unchecked")
     private static void setSuggestionModel(JComboBox comboBox, ComboBoxModel mdl, String str) {
         comboBox.setModel(mdl);
         comboBox.setSelectedIndex(-1);
         ((JTextField)comboBox.getEditor().getEditorComponent()).setText(str);
     }
-    @SuppressWarnings("unchecked")
     private static ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
         for(String s: list) {
