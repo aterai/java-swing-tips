@@ -39,8 +39,8 @@ public class MainPanel extends JPanel {
             return description;
         }
     }
-    private final JComboBox verticalOrientationChoices = new JComboBox(VerticalOrientation.values());
-    private final JComboBox justificationChoices       = new JComboBox(Justification.values());
+    private final JComboBox verticalOrientationChoices = makeComboBox(VerticalOrientation.values());
+    private final JComboBox justificationChoices       = makeComboBox(Justification.values());
     private final TitledBorder border = BorderFactory.createTitledBorder("Test Test");
     private final JPanel panel = new JPanel();
 
@@ -101,6 +101,10 @@ public class MainPanel extends JPanel {
           case TRAILING: border.setTitleJustification(TitledBorder.TRAILING); break;
         }
         panel.repaint();
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
     }
 
     public static void main(String[] args) {
