@@ -126,7 +126,11 @@ class MainPanel extends JPanel{
             return description;
         }
     }
-    private final JComboBox alignmentsChoices = new JComboBox(ButtonAlignments.values());
+    private final JComboBox alignmentsChoices = makeComboBox(ButtonAlignments.values());
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
+    }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
