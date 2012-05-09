@@ -16,7 +16,7 @@ import javax.swing.event.*;
 // From 'Programming Pearls' by Jon Bentley
 //Sorting Algorithm Animations from Programming Pearls
 //http://www.cs.bell-labs.com/cm/cs/pearls/sortanim.html
-// modified by terai@libra.club.ne.jp
+// modified by aterai at.terai@gmail.com
 
 public class MainPanel extends JPanel {
     private static enum GenerateInputs {
@@ -37,8 +37,8 @@ public class MainPanel extends JPanel {
             return description;
         }
     }
-    private final JComboBox distributionsChoices = new JComboBox(GenerateInputs.values());
-    private final JComboBox algorithmsChoices    = new JComboBox(SortAlgorithms.values());
+    private final JComboBox distributionsChoices = makeComboBox(GenerateInputs.values());
+    private final JComboBox algorithmsChoices    = makeComboBox(SortAlgorithms.values());
     private final SpinnerNumberModel model;
     private final JSpinner spinner;
     private final JButton  startButton;
@@ -108,9 +108,14 @@ public class MainPanel extends JPanel {
         box2.add(startButton); box2.add(cancelButton);
 
         JPanel p = new JPanel(new GridLayout(2,1));
+        p.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         p.add(box1); p.add(box2);
         add(p, BorderLayout.NORTH); add(panel);
         setPreferredSize(new Dimension(320, 240));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
     }
     private void setComponentEnabled(boolean flag) {
         cancelButton.setEnabled(!flag);
