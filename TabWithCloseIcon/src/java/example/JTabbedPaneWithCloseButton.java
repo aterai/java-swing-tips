@@ -58,7 +58,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         }
 
         class CloseButton extends JButton implements javax.swing.plaf.UIResource {
-            @Override public CloseButton(int index) {
+            public CloseButton(int index) {
                 super(new CloseButtonAction(index));
                 setToolTipText("Close this tab");
                 setMargin(new Insets(0,0,0,0));
