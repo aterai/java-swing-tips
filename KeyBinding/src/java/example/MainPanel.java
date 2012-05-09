@@ -62,7 +62,11 @@ public class MainPanel extends JPanel {
             this.component = component;
         }
     }
-    private final JComboBox componentChoices = new JComboBox(JComponentType.values());
+    private final JComboBox componentChoices = makeComboBox(JComponentType.values());
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
+    }
 
     private final List<Integer> focusType = Arrays.asList(
         JComponent.WHEN_FOCUSED, JComponent.WHEN_IN_FOCUSED_WINDOW,

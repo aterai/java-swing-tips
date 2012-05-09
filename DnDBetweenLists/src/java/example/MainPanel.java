@@ -87,6 +87,7 @@ class ListItemTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
     private JList source = null;
+    @SuppressWarnings("deprecation")
     @Override protected Transferable createTransferable(JComponent c) {
         source = (JList) c;
         indices = source.getSelectedIndices();
@@ -99,6 +100,7 @@ class ListItemTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return MOVE; //TransferHandler.COPY_OR_MOVE;
     }
+    @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferSupport info) {
         if(!canImport(info)) {
             return false;

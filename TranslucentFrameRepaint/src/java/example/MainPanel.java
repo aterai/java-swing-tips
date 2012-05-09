@@ -82,7 +82,12 @@ class MainPanel extends JPanel{
             return this.texture;
         }
     }
-    private final JComboBox combo = new JComboBox(TexturePaints.values());
+    private final JComboBox combo = makeComboBox(TexturePaints.values());
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
+    }
+
     private final TexturePanel tp;
 
     public MainPanel() {
