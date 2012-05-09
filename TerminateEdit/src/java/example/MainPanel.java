@@ -115,7 +115,7 @@ public class MainPanel extends JPanel {
 //         });
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        JComboBox combobox = new JComboBox(new String[] {
+        JComboBox combobox = makeComboBox(new String[] {
             "AUTO_RESIZE_OFF",
             "AUTO_RESIZE_ALL_COLUMNS"
         });
@@ -141,6 +141,10 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
+    }
+    @SuppressWarnings("unchecked")
+    private static JComboBox makeComboBox(Object[] model) {
+        return new JComboBox(model);
     }
 
     public static void main(String[] args) {
