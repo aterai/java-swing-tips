@@ -39,6 +39,10 @@ public class MainPanel extends JPanel {
     }
     private final JComboBox distributionsChoices = makeComboBox(GenerateInputs.values());
     private final JComboBox algorithmsChoices    = makeComboBox(SortAlgorithms.values());
+    //JDK 1.7.0
+    //private final JComboBox<Enum> algorithmsChoices = new JComboBox<Enum>(SortAlgorithms.values());
+    //private final JComboBox<? extends Enum> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
+
     private final SpinnerNumberModel model;
     private final JSpinner spinner;
     private final JButton  startButton;
