@@ -56,8 +56,13 @@ class MainPanel extends JPanel {
             }
         };
         frame.setUndecorated(true);
-        frame.setBackground(new Color(255,255,255,0));
-
+        if(System.getProperty("java.version").startsWith("1.6.0")) {
+            if(com.sun.awt.AWTUtilities.isWindowOpaque(frame)) {
+                com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
+            }
+        }else{
+            frame.setBackground(new Color(255,255,255,0));
+        }
         JButton button = new JButton(new CloseIcon());
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
