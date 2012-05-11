@@ -35,8 +35,8 @@ public class MainPanel extends JPanel {
         //header.setReorderingAllowed(false);
 
         TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
+        col.setMinWidth(80);
+        col.setMaxWidth(80);
 
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
@@ -49,13 +49,16 @@ public class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     class TestCreateAction extends AbstractAction{
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
+            if(table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
+            }
             testCreateActionPerformed(evt);
         }
     }
@@ -70,10 +73,13 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
+            if(table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
+            }
             deleteActionPerformed(evt);
         }
     }
-    public void deleteActionPerformed(ActionEvent evt) {
+    private void deleteActionPerformed(ActionEvent evt) {
         int[] selection = table.getSelectedRows();
         if(selection==null || selection.length<=0) return;
         for(int i=selection.length-1;i>=0;i--) {
@@ -117,5 +123,59 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+class TestModel extends SortableTableModel {
+    private static final ColumnContext[] columnArray = {
+        new ColumnContext("No.",     Integer.class, false),
+        new ColumnContext("Name",    String.class,  true),
+        new ColumnContext("Comment", String.class,  true)
+    };
+    private int number = 0;
+    public void addTest(Test t) {
+        Object[] obj = {number, t.getName(), t.getComment()};
+        super.addRow(obj);
+        number++;
+    }
+    @Override public boolean isCellEditable(int row, int col) {
+        return columnArray[col].isEditable;
+    }
+    @Override public Class<?> getColumnClass(int modelIndex) {
+        return columnArray[modelIndex].columnClass;
+    }
+    @Override public int getColumnCount() {
+        return columnArray.length;
+    }
+    @Override public String getColumnName(int modelIndex) {
+        return columnArray[modelIndex].columnName;
+    }
+    private static class ColumnContext {
+        public final String  columnName;
+        public final Class   columnClass;
+        public final boolean isEditable;
+        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+            this.columnName = columnName;
+            this.columnClass = columnClass;
+            this.isEditable = isEditable;
+        }
+    }
+}
+class Test{
+    private String name, comment;
+    public Test(String name, String comment) {
+        this.name = name;
+        this.comment = comment;
+    }
+    public void setName(String str) {
+        name = str;
+    }
+    public void setComment(String str) {
+        comment = str;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getComment() {
+        return comment;
     }
 }
