@@ -80,6 +80,7 @@ public class MainPanel extends JPanel {
                 int c = table.convertColumnIndexToModel(column);
                 switch(c) {
                   case 0:
+                    //???: WindowsLnF, Java 1.7.0
                     //if(file.isDirectory()) {
                     //    l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
                     //}else{
