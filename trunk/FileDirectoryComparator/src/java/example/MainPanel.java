@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -69,6 +70,7 @@ public class MainPanel extends JPanel {
         ((TableRowSorter<?>)table.getRowSorter()).setComparator(1, new DefaultFileComparator(1));
         ((TableRowSorter<?>)table.getRowSorter()).setComparator(2, new DefaultFileComparator(2));
 
+        final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -78,12 +80,14 @@ public class MainPanel extends JPanel {
                 int c = table.convertColumnIndexToModel(column);
                 switch(c) {
                   case 0:
-                    if(file.isDirectory()) {
-                        l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
-                    }else{
-                        l.setIcon(UIManager.getIcon("FileView.fileIcon"));
-                    }
-                    l.setText(file.getName());
+                    //if(file.isDirectory()) {
+                    //    l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
+                    //}else{
+                    //    l.setIcon(UIManager.getIcon("FileView.fileIcon"));
+                    //}
+                    l.setIcon(fileSystemView.getSystemIcon(file));
+                    l.setText(fileSystemView.getSystemDisplayName(file));
+                    //l.setText(file.getName());
                     break;
                   case 1:
                     l.setHorizontalAlignment(JLabel.RIGHT);
