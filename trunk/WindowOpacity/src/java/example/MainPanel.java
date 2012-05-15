@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.imageio.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 class MainPanel extends JPanel{
     private TexturePaint texture;
@@ -27,6 +28,11 @@ class MainPanel extends JPanel{
         p.add(new JButton("bbb"));
 
         JComboBox combo = makeComboBox();
+
+        if(System.getProperty("java.version").startsWith("1.7.0")) {
+            //XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
+            combo.addPopupMenuListener(new TranslucencyFrameComboBoxPopupMenuListener());
+        }
         combo.addItemListener(new ItemListener() {
             private final TexturePaint imageTexture = makeImageTexture();
             private final TexturePaint checkerTexture = makeCheckerTexture();
@@ -117,4 +123,19 @@ class MainPanel extends JPanel{
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+}
+class TranslucencyFrameComboBoxPopupMenuListener implements PopupMenuListener{
+    @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                JComboBox combo = (JComboBox)e.getSource();
+                Object o = combo.getAccessibleContext().getAccessibleChild(0);
+                if(o instanceof JComponent) { //BasicComboPopup
+                    ((JComponent)o).repaint();
+                }
+            }
+        });
+    }
+    @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+    @Override public void popupMenuCanceled(PopupMenuEvent e) {}
 }
