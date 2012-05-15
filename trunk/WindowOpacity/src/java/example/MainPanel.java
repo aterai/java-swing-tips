@@ -105,8 +105,12 @@ class MainPanel extends JPanel{
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("@title@");
 //         frame.setUndecorated(true);
-        com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
-        //frame.setBackground(new Color(0,0,0,0)); //1.7.0
+
+        if(System.getProperty("java.version").startsWith("1.6.0")) {
+            com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
+        }else{
+            frame.setBackground(new Color(0,0,0,0)); //1.7.0
+        }
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel().makeUI());
         frame.pack();
