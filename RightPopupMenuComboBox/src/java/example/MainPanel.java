@@ -100,7 +100,8 @@ class RightPopupMenuListener implements PopupMenuListener {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 JComboBox combo = (JComboBox)e.getSource();
-                Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+                Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
+                //Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
                 if(a instanceof BasicComboPopup) {
                     BasicComboPopup pop = (BasicComboPopup)a;
                     Point p = new Point(combo.getSize().width, 0);
