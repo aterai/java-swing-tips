@@ -9,15 +9,21 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final JFrame frame;
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer"};
+    Object[][] data = {
+        {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table;
-    private final JCheckBox checkbox = new JCheckBox("terminateEditOnFocusLost", true);
-    private final JCheckBox focusCheck = new JCheckBox("DefaultCellEditor:focusLost", true);
+    private final JCheckBox checkbox    = new JCheckBox("terminateEditOnFocusLost", true);
+    private final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
     private final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        this.frame = frame;
         table = new JTable(model) {
             private final Color evenColor = new Color(250, 250, 250);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -34,15 +40,16 @@ public class MainPanel extends JPanel {
         };
         table.setAutoCreateRowSorter(true);
 
-        frame.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosing(WindowEvent e) {
-//                 if(table.isEditing()) {
-//                     table.getCellEditor().stopCellEditing();
-//                 }
-//                 System.out.println(table.getValueAt(0,1));
-            }
-        });
-
+// Bug ID: 4330950 Lost newly entered data in the cell when resizing column width
+// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4330950
+//         frame.addWindowListener(new WindowAdapter() {
+//             @Override public void windowClosing(WindowEvent e) {
+// //                 if(table.isEditing()) {
+// //                     table.getCellEditor().stopCellEditing();
+// //                 }
+// //                 System.out.println(table.getValueAt(0,1));
+//             }
+//         });
 //         frame.addWindowStateListener(new WindowStateListener() {
 //             public void windowStateChanged(WindowEvent e) {
 //                 if(frame.getExtendedState()==JFrame.MAXIMIZED_BOTH && table.isEditing()) {
@@ -50,20 +57,6 @@ public class MainPanel extends JPanel {
 //                 }
 //             }
 //         });
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(60);
-        col.setMaxWidth(60);
-        col.setResizable(false);
-        //col.setCellEditor(tr);
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
@@ -75,9 +68,6 @@ public class MainPanel extends JPanel {
                     table.getCellEditor().stopCellEditing();
                 }
             }
-//             public void focusGained(FocusEvent e) {
-//                 System.out.println("a");
-//             }
         });
         //table.setSurrendersFocusOnKeystroke(true);
 
@@ -90,9 +80,11 @@ public class MainPanel extends JPanel {
             }
         });
 
+// Bug ID: 4330950 Lost newly entered data in the cell when resizing column width
+// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4330950
 //         table.getTableHeader().addComponentListener(new ComponentAdapter() {
 //             public void componentResized(ComponentEvent e) {
-//                 System.out.println("aaa");
+//                 System.out.println("componentResized");
 //                 if(table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();
 //                 }
@@ -104,15 +96,6 @@ public class MainPanel extends JPanel {
                 table.putClientProperty("terminateEditOnFocusLost", checkbox.isSelected());
             }
         });
-//         checkbox.addItemListener(new ItemListener() {
-//             @Override public void itemStateChanged(ItemEvent e) {
-//                 if(e.getStateChange()==ItemEvent.SELECTED) {
-//                     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-//                 }else if(e.getStateChange()==ItemEvent.DESELECTED) {
-//                     table.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
-//                 }
-//             }
-//         });
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JComboBox combobox = makeComboBox(new String[] {
@@ -162,13 +145,13 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
 
         JFrame frame2 = new JFrame("@title@"+2);
         frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame2.getContentPane().add(new MainPanel(frame2));
+        frame2.getContentPane().add(new MainPanel());
         frame2.pack();
         frame2.setLocation(frame.getX()+50, frame.getY()+50);
 
