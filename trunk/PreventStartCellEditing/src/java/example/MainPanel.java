@@ -15,45 +15,28 @@ public class MainPanel extends JPanel {
     private final JRadioButton r3 = new JRadioButton("start cell editing only F2");
     private final JRadioButton r4 = new JRadioButton("isCellEditable retrun false");
     private final ButtonGroup bg = new ButtonGroup();
-    private final TestModel model;
     public MainPanel() {
         super(new BorderLayout());
-        model = new TestModel() {
+
+        String[] columnNames = {"CellEditable:false", "Integer", "String"};
+        Object[][] data = {
+            {"aaa", 12, "eee"}, {"bbb", 5, "ggg"},
+            {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
             @Override public boolean isCellEditable(int row, int col) {
                 return (col==0)?false:!r4.isSelected();
             }
         };
-        model.addTest(new Test("Name 1", "Comment..."));
-        model.addTest(new Test("Name 2", "Test "));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", ""));
-
-        final JTable table = new JTable(model) {
-            private final Color evenColor = new Color(250, 250, 250);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-        };
+        final JTable table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
         table.setShowGrid(false);
         //table.setShowHorizontalLines(false);
         //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
-        col.setResizable(false);
 
 // //         System.out.println(table.getActionMap().get("startEditing"));
 //         InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
