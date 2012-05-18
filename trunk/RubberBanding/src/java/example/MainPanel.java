@@ -17,7 +17,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(makeList()));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     @SuppressWarnings("unchecked")
     private static JList makeList() {
@@ -32,14 +32,24 @@ public class MainPanel extends JPanel{
         model.addElement(new ListItem("22222",      "wi0062-32.png"));
         model.addElement(new ListItem("3333",       "wi0063-32.png"));
 
-        final RubberBandListCellRenderer r = new RubberBandListCellRenderer();
         JList list = new JList(model) {
+            private final RubberBandListCellRenderer r = new RubberBandListCellRenderer();
             private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
             private Color pcolor;
             @Override public void updateUI() {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
+                setCellRenderer(null);
+                removeMouseMotionListener(r);
+                removeMouseListener(r);
                 super.updateUI();
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        setCellRenderer(r);
+                        addMouseMotionListener(r);
+                        addMouseListener(r);
+                    }
+                });
                 Color c = getSelectionBackground();
                 int r = c.getRed(), g = c.getGreen(), b = c.getBlue();
                 pcolor = (r>g)?(r>b)?new Color(r,0,0):new Color(0,0,b)
@@ -57,9 +67,6 @@ public class MainPanel extends JPanel{
                 }
             }
         };
-        list.setCellRenderer(r);
-        list.addMouseMotionListener(r);
-        list.addMouseListener(r);
 
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(0);
