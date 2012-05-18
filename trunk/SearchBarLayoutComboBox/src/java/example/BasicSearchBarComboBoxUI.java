@@ -70,7 +70,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     protected Action loupeAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             comboBox.setPopupVisible(false);
-            System.out.println(listBox.getSelectedValue() + ": " +comboBox.getEditor().getItem());
+            Object o = listBox.getSelectedValue();
+            if(o==null) o = comboBox.getItemAt(0);
+            System.out.println(o + ": " +comboBox.getEditor().getItem());
         }
     };
     @Override protected void configureEditor() {
