@@ -25,10 +25,10 @@ public class MainPanel extends JPanel {
             @Override public void updateUI() {
                 setCellRenderer(null);
                 super.updateUI();
-                setCellRenderer(new MyTreeCellRenderer2());
+                setCellRenderer(new CompoundTreeCellRenderer());
             }
         };
-        //tree2.setCellRenderer(new MyTreeCellRenderer2());
+        //tree2.setCellRenderer(new CompoundTreeCellRenderer());
 
         add(makeTitledPanel("Default", new JTree()));
         add(makeTitledPanel("Margin", tree1));
@@ -169,7 +169,7 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     }
 }
 
-class MyTreeCellRenderer2 extends DefaultTreeCellRenderer {
+class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon = new JLabel();
     private final JLabel text = new JLabel();
@@ -178,7 +178,7 @@ class MyTreeCellRenderer2 extends DefaultTreeCellRenderer {
                                             BorderFactory.createEmptyBorder(1,1,1,1), innerBorder);
     private final Border hasFocusBorder;
 
-    public MyTreeCellRenderer2() {
+    public CompoundTreeCellRenderer() {
         super();
         Color bsColor = getBorderSelectionColor();
         Color focusBGColor = new Color(~getBackgroundSelectionColor().getRGB());
