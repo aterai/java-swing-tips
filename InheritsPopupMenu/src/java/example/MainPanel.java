@@ -8,34 +8,22 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final Color evenColor = new Color(250, 250, 250);
-    private final TestModel model = new TestModel();
-    private final JTable table;
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
     private final JCheckBox cb1 = new JCheckBox("InheritsPopupMenu", true);
     private final JCheckBox cb2 = new JCheckBox("FillsViewportHeight", true);
     public MainPanel() {
         super(new BorderLayout());
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:Color.WHITE);
-                }
-                return c;
-            }
-        };
-        table.setRowSorter(new TableRowSorter<TableModel>(model));
+        table.setAutoCreateRowSorter(true);
 
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBackground(Color.RED);
@@ -94,26 +82,19 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
+            model.addRow(new Object[] {"example", 0, false});
         }
     }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("example", ""));
-    }
-
     class DeleteAction extends AbstractAction{
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    public void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
         }
     }
 
