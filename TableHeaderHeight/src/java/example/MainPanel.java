@@ -33,20 +33,14 @@ public class MainPanel extends JPanel {
         JTable table2 = makeTable();
         JScrollPane scroll = new JScrollPane(table2);
         scroll.setColumnHeader(new JViewport() {
-
-            @Override public int getHeight() {
-                return HEADER_HEIGHT;
+            @Override public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                d.height = HEADER_HEIGHT;
+                return d;
             }
-
-
-//             @Override public Dimension getPreferredSize() {
-//                 Dimension d = super.getPreferredSize();
-//                 d.height = HEADER_HEIGHT;
-//                 return d;
-//             }
         });
 //         //or
-//         table2.setTableHeader(new JTableHeader(table.getColumnModel()) {
+//         table2.setTableHeader(new JTableHeader(table2.getColumnModel()) {
 //             @Override public Dimension getPreferredSize() {
 //                 Dimension d = super.getPreferredSize();
 //                 d.height = HEADER_HEIGHT;
