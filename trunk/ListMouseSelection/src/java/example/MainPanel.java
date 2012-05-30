@@ -165,6 +165,7 @@ class ClearSelectionListener extends MouseAdapter {
         }
         if(contains(list, e.getPoint())) {
             startOutside = false;
+            isDragging = true;
         }else if(startOutside) {
             clearSelectionAndFocus(list);
         }
