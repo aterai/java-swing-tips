@@ -23,7 +23,7 @@ public class MainPanel extends JPanel{
         box.setBorder(BorderFactory.createEmptyBorder(16,16,16,16));
         box.add(makePanel("JPasswordField", b));
         box.add(Box.createVerticalStrut(16));
-        box.add(makePanel("WatermarkPasswordField", field2));
+        box.add(makePanel("InputHintPasswordField", field2));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
