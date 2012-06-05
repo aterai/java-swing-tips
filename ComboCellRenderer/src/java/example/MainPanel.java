@@ -9,7 +9,16 @@ import javax.swing.table.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"Integer", "String", "Boolean"};
+    private final Object[][] data = {
+        {12, "Name 0", true}, {5, "Name 2", false},
+        {92, "Name 1", true}, {0, "Name 0", false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table = new JTable(model) {
         private final Color evenColor = new Color(240, 240, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -40,14 +49,6 @@ public class MainPanel extends JPanel {
         col.setCellRenderer(new ComboCellRenderer());
         col.setCellEditor(new DefaultCellEditor(combo));
         //table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
