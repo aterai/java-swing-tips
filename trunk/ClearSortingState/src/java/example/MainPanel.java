@@ -8,7 +8,16 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
@@ -27,7 +36,7 @@ public class MainPanel extends JPanel {
                 int column = columnModel.getColumn(viewColumn).getModelIndex();
 
                 if(column != -1 && e.isShiftDown()) {
-                //if(column != -1 && e.isControlDown()) {
+                    //if(column != -1 && e.isControlDown()) {
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
                             sorter.setSortKeys(null);
@@ -41,15 +50,6 @@ public class MainPanel extends JPanel {
         col.setMinWidth(60);
         col.setMaxWidth(60);
         col.setResizable(false);
-
-        model.addTest(new Test("Name 1", "Comment"));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", ""));
 
         add(new JLabel("Shift+Click -> Clear Sorting State"), BorderLayout.NORTH);
         add(new JScrollPane(table));

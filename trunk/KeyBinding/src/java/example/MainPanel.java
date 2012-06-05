@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final BindingMapModel model = new BindingMapModel();
     private final JTable table = new JTable(model) {
         private final Color evenColor = new Color(250, 250, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -120,15 +120,15 @@ public class MainPanel extends JPanel {
             Object actionMapKey = im.get(ks);
             Action action = am.get(actionMapKey);
             if(action!=null) {
-                model.addTest(new Test(focusType, actionMapKey.toString(), ks.toString()));
+                model.addBinding(new Binding(focusType, actionMapKey.toString(), ks.toString()));
             }else{
-                model.addTest(new Test(focusType, "____"+actionMapKey.toString(), ks.toString()));
+                model.addBinding(new Binding(focusType, "____"+actionMapKey.toString(), ks.toString()));
             }
             tmpAm.remove(actionMapKey);
         }
         if(tmpAm.allKeys()==null) return;
         for(Object actionMapKey:tmpAm.allKeys()) {
-            model.addTest(new Test(focusType, actionMapKey.toString(), ""));
+            model.addBinding(new Binding(focusType, actionMapKey.toString(), ""));
         }
     }
     // <--------
@@ -152,5 +152,71 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+class BindingMapModel extends DefaultTableModel {
+    private static final ColumnContext[] columnArray = {
+        new ColumnContext("Focus", String.class, false),
+        new ColumnContext("ActionName", String.class, false),
+        new ColumnContext("KeyDescription", String.class, false)
+    };
+    private int number = 0;
+    public void addBinding(Binding t) {
+        Integer ft = t.getFocusType();
+        String s = (ft==JComponent.WHEN_FOCUSED)?"WHEN_FOCUSED"
+          :(ft==JComponent.WHEN_IN_FOCUSED_WINDOW)?"WHEN_IN_FOCUSED_WINDOW"
+            :"WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
+        Object[] obj = {s, t.getActionName(), t.getKeyDescription()};
+        super.addRow(obj);
+        number++;
+    }
+    @Override public boolean isCellEditable(int row, int col) {
+        return columnArray[col].isEditable;
+    }
+    @Override public Class<?> getColumnClass(int modelIndex) {
+        return columnArray[modelIndex].columnClass;
+    }
+    @Override public int getColumnCount() {
+        return columnArray.length;
+    }
+    @Override public String getColumnName(int modelIndex) {
+        return columnArray[modelIndex].columnName;
+    }
+    private static class ColumnContext {
+        public final String  columnName;
+        public final Class   columnClass;
+        public final boolean isEditable;
+        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+            this.columnName = columnName;
+            this.columnClass = columnClass;
+            this.isEditable = isEditable;
+        }
+    }
+}
+class Binding{
+    private Integer focusType;
+    private String actionName, keyDescription;
+    public Binding(Integer focusType, String actionName, String keyDescription) {
+        this.focusType = focusType;
+        this.actionName = actionName;
+        this.keyDescription = keyDescription;
+    }
+    public void setFocusType(Integer focus) {
+        focusType = focus;
+    }
+    public void setActionName(String str) {
+        actionName = str;
+    }
+    public void setKeyDescription(String str) {
+        keyDescription = str;
+    }
+    public Integer getFocusType() {
+        return focusType;
+    }
+    public String getActionName() {
+        return actionName;
+    }
+    public String getKeyDescription() {
+        return keyDescription;
     }
 }

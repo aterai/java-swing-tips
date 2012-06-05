@@ -13,18 +13,19 @@ public class MainPanel extends JPanel {
     private static final Color evenColor    = new Color(245, 245, 245);
     //private static final Color oddColor     = new Color(245, 255, 245);
     //private static final Color tablebgColor = new Color(255, 255, 245);
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-
         table = new JTable(model) {
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
@@ -113,7 +114,7 @@ public class MainPanel extends JPanel {
         }
     }
     private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("example", ""));
+        model.addRow(new Object[] {"example", model.getRowCount(), false});
     }
 
     class DeleteAction extends AbstractAction{

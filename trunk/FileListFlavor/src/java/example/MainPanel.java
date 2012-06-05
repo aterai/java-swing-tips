@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final FileModel model = new FileModel();
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
@@ -33,7 +33,7 @@ public class MainPanel extends JPanel {
                         for(Object o: list) {
                             if(o instanceof File) {
                                 File file = (File) o;
-                                model.addTest(new Test(file.getName(), file.getAbsolutePath()));
+                                model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
                             }
                         }
                         dtde.dropComplete(true);
@@ -85,7 +85,7 @@ public class MainPanel extends JPanel {
         private final Action deleteAction = new DeleteAction("delete", null);
         public TablePopupMenu() {
             super();
-            //add(new TestCreateAction("add", null));
+            //add(new FileNameCreateAction("add", null));
             //add(new ClearAction("clearSelection", null));
             //addSeparator();
             add(deleteAction);
@@ -126,12 +126,12 @@ public class MainPanel extends JPanel {
 //         try{
 //             if(canImport(component, transferable.getTransferDataFlavors())) {
 //                 //DefaultTableModel model = (DefaultTableModel)((JTable)component).getModel();
-//                 TestModel model = (TestModel)((JTable)component).getModel();
+//                 FileModel model = (FileModel)((JTable)component).getModel();
 //                 for(Object o: (java.util.List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
 //                     if(o instanceof File) {
 //                         File file = (File)o;
 //                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-//                         model.addTest(new Test(file.getName(), file.getAbsolutePath()));
+//                         model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
 //                     }
 //                 }
 //                 return true;
@@ -153,3 +153,58 @@ public class MainPanel extends JPanel {
 //         return COPY;
 //     }
 // }
+
+class FileModel extends DefaultTableModel {
+    private static final ColumnContext[] columnArray = {
+        new ColumnContext("No.",       Integer.class, false),
+        new ColumnContext("Name",      String.class,  true),
+        new ColumnContext("Full Path", String.class,  true)
+    };
+    private int number = 0;
+    public void addFileName(FileName t) {
+        Object[] obj = {number, t.getName(), t.getAbsolutePath()};
+        super.addRow(obj);
+        number++;
+    }
+    @Override public boolean isCellEditable(int row, int col) {
+        return columnArray[col].isEditable;
+    }
+    @Override public Class<?> getColumnClass(int modelIndex) {
+        return columnArray[modelIndex].columnClass;
+    }
+    @Override public int getColumnCount() {
+        return columnArray.length;
+    }
+    @Override public String getColumnName(int modelIndex) {
+        return columnArray[modelIndex].columnName;
+    }
+    private static class ColumnContext {
+        public final String  columnName;
+        public final Class   columnClass;
+        public final boolean isEditable;
+        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+            this.columnName = columnName;
+            this.columnClass = columnClass;
+            this.isEditable = isEditable;
+        }
+    }
+}
+class FileName{
+    private String name, absolutePath;
+    public FileName(String name, String absolutePath) {
+        this.name = name;
+        this.absolutePath = absolutePath;
+    }
+    public void setName(String str) {
+        name = str;
+    }
+    public void setAbsolutePath(String str) {
+        absolutePath = str;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+}

@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final FileModel model = new FileModel();
     private final JTable table = new JTable(model);
 
     public MainPanel() {
@@ -143,5 +143,79 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+class FileModel extends DefaultTableModel {
+    private static final ColumnContext[] columnArray = {
+        new ColumnContext("No.",       Integer.class, false),
+        new ColumnContext("Name",      String.class,  false),
+        new ColumnContext("Full Path", String.class,  false),
+        new ColumnContext("Width",     Integer.class, false),
+        new ColumnContext("Height",    Integer.class, false)
+    };
+    private int number = 0;
+    public void addTest(Test t) {
+        Object[] obj = {
+            number, t.getName(), t.getComment(),
+            t.getWidth(), t.getHeight()
+        };
+        super.addRow(obj);
+        number++;
+    }
+    @Override public boolean isCellEditable(int row, int col) {
+        return columnArray[col].isEditable;
+    }
+    @Override public Class<?> getColumnClass(int modelIndex) {
+        return columnArray[modelIndex].columnClass;
+    }
+    @Override public int getColumnCount() {
+        return columnArray.length;
+    }
+    @Override public String getColumnName(int modelIndex) {
+        return columnArray[modelIndex].columnName;
+    }
+    private static class ColumnContext {
+        public final String  columnName;
+        public final Class   columnClass;
+        public final boolean isEditable;
+        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+            this.columnName = columnName;
+            this.columnClass = columnClass;
+            this.isEditable = isEditable;
+        }
+    }
+}
+class Test{
+    private String name, comment;
+    private int width, height;
+    public Test(String name, String comment, int width, int height) {
+        this.name    = name;
+        this.comment = comment;
+        this.width   = width;
+        this.height  = height;
+    }
+    public void setName(String str) {
+        name = str;
+    }
+    public void setComment(String str) {
+        comment = str;
+    }
+    public void setWidth(int width) {
+        this.width = width;
+    }
+    public void setHeight(int height) {
+        this.height = height;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getComment() {
+        return comment;
+    }
+    public int getWidth() {
+        return this.width;
+    }
+    public int getHeight() {
+        return this.height;
     }
 }

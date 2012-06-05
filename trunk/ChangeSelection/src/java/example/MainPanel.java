@@ -8,7 +8,24 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"A", "B", "C"};
+    private final Object[][] data = {
+        {"0,0", "0,1", "0,2"},
+        {"1,0", "1,1", "1,2"},
+        {"2,0", "2,1", "2,2"},
+        {"3,0", "3,1", "3,2"},
+        {"4,0", "4,1", "4,2"},
+        {"5,0", "5,1", "5,2"},
+        {"6,0", "6,1", "6,2"},
+        {"7,0", "7,1", "7,2"},
+        {"8,0", "8,1", "8,2"},
+        {"9,0", "9,1", "9,2"}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table;
     private final JSpinner rowField;
     private final JSpinner colField;
@@ -32,17 +49,7 @@ public class MainPanel extends JPanel {
             }
         };
         table.setCellSelectionEnabled(true);
-
-        model.addTest(new Test("0,1", "0,2"));
-        model.addTest(new Test("1,1", "1,2"));
-        model.addTest(new Test("2,1", "2,2"));
-        model.addTest(new Test("3,1", "3,2"));
-        model.addTest(new Test("4,1", "4,2"));
-        model.addTest(new Test("5,1", "5,2"));
-        model.addTest(new Test("6,1", "6,2"));
-        model.addTest(new Test("7,1", "7,2"));
-        model.addTest(new Test("8,1", "8,2"));
-        model.addTest(new Test("9,1", "9,2"));
+        //table.setAutoCreateRowSorter(true);
 
         rowField = new JSpinner(new SpinnerNumberModel(1, 0, model.getRowCount()-1, 1));
         colField = new JSpinner(new SpinnerNumberModel(2, 0, model.getColumnCount()-1, 1));

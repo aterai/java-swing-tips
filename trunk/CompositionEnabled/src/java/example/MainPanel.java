@@ -9,19 +9,20 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
-    private final TestModel model = new TestModel();
+    private final String[] columnNames = {"A", "B", "C"};
+    private final Object[][] data = {
+        {"aaa", "eeee", "l"}, {"bbb", "ff", "ggg"},
+        {"CCC", "kkk", "jj"}, {"DDD", "ii", "hhh"}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
-        model.addTest(new Test("Name 1", "Comment..."));
-        model.addTest(new Test("Name 2", "Test "));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", ""));
-
-        final JTable table = new JTable(model) {
+        table = new JTable(model) {
             private final Color evenColor = new Color(250, 250, 250);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
@@ -58,10 +59,6 @@ public class MainPanel extends JPanel {
         //table.setShowHorizontalLines(false);
         //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
-        col.setResizable(false);
         add(check, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
