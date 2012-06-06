@@ -33,37 +33,41 @@ public class MainPanel extends JPanel{
         model.addElement(new ListItem("3333",       "wi0063-32.png"));
 
         JList list = new JList(model) {
-            private final RubberBandListCellRenderer r = new RubberBandListCellRenderer();
-            private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
-            private Color pcolor;
+            private RubberBandListCellRenderer renderer;
+            private AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+            private Color PCOLOR;
             @Override public void updateUI() {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 setCellRenderer(null);
-                removeMouseMotionListener(r);
-                removeMouseListener(r);
+                if(renderer!=null) {
+                    removeMouseMotionListener(renderer);
+                    removeMouseListener(renderer);
+                }else{
+                    renderer = new RubberBandListCellRenderer();
+                }
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        setCellRenderer(r);
-                        addMouseMotionListener(r);
-                        addMouseListener(r);
+                        setCellRenderer(renderer);
+                        addMouseMotionListener(renderer);
+                        addMouseListener(renderer);
                     }
                 });
                 Color c = getSelectionBackground();
                 int r = c.getRed(), g = c.getGreen(), b = c.getBlue();
-                pcolor = (r>g)?(r>b)?new Color(r,0,0):new Color(0,0,b)
+                PCOLOR = (r>g)?(r>b)?new Color(r,0,0):new Color(0,0,b)
                               :(g>b)?new Color(0,g,0):new Color(0,0,b);
             }
             @Override public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if(r.polygon!=null) {
+                if(renderer.polygon!=null) {
                     Graphics2D g2d = (Graphics2D) g;
                     g2d.setPaint(getSelectionBackground());
-                    g2d.draw(r.polygon);
+                    g2d.draw(renderer.polygon);
                     g2d.setComposite(alcomp);
-                    g2d.setPaint(pcolor);
-                    g2d.fill(r.polygon);
+                    g2d.setPaint(PCOLOR);
+                    g2d.fill(renderer.polygon);
                 }
             }
         };
