@@ -10,31 +10,22 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private static final Color evenColor = new Color(250, 250, 250);
     private final JCheckBox modelCheck = new JCheckBox("edit the cell on single click");
-    private final TestModel model = new TestModel();
+
+    private final String[] columnNames = {"A", "B", "C"};
+    private final Object[][] data = {
+        {"aaa", "eeee", "l"}, {"bbb", "ff", "ggg"},
+        {"CCC", "kkk", "jj"}, {"DDD", "ii", "hhh"}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
-        model.addTest(new Test("Name 1", "Comment..."));
-        model.addTest(new Test("Name 2", "Test "));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", ""));
 
-        final JTable table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-        };
+        table.setAutoCreateRowSorter(true);
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         //table.setFillsViewportHeight(true);
@@ -46,10 +37,10 @@ public class MainPanel extends JPanel {
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setReorderingAllowed(false);
 
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
-        col.setResizable(false);
+//         TableColumn col = table.getColumnModel().getColumn(0);
+//         col.setMinWidth(50);
+//         col.setMaxWidth(50);
+//         col.setResizable(false);
 
         final DefaultTableCellRenderer defalutRenderer = (DefaultTableCellRenderer)table.getDefaultRenderer(Object.class);
         final UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();

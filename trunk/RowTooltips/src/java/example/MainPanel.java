@@ -10,12 +10,21 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         JTable table = new JTable(model) {
             @Override public String getToolTipText(MouseEvent e) {
                 int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
                 TableModel m = getModel();
-                return "<html>"+m.getValueAt(row, 1)+"<br>"+m.getValueAt(row, 2)+"</html>";
+                return String.format("<html>%s<br>%d<br>%s</html>", m.getValueAt(row, 0), (Integer)m.getValueAt(row, 1), m.getValueAt(row, 2));
             }
 //             public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                 Component c = super.prepareRenderer(tcr, row, column);
@@ -29,15 +38,6 @@ public class MainPanel extends JPanel {
 //                 return c;
 //             }
         };
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-
         table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

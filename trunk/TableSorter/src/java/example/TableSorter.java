@@ -360,9 +360,9 @@ public class TableSorter extends AbstractTableModel {
                 // Define null less than everything, except null.
                 if(o1 == null && o2 == null) {
                     comparison = 0;
-                } else if(o1 == null) {
+                }else if(o1 == null) {
                     comparison = -1;
-                } else if(o2 == null) {
+                }else if(o2 == null) {
                     comparison = 1;
                 }else{
                     comparison = getComparator(column).compare(o1, o2);
@@ -457,7 +457,7 @@ public class TableSorter extends AbstractTableModel {
             Vector<Object> list = new Vector<Object>();
             int[] ilist = table.getSelectedRows();
             if(ilist!=null && ilist.length>0) {
-                TestModel model = (TestModel)tableModel;
+                DefaultTableModel model = (DefaultTableModel)tableModel;
                 for(int i=ilist.length-1;i>=0;i--) {
                     list.add(model.getValueAt(modelIndex(ilist[i]), keyColIndex));
                 }

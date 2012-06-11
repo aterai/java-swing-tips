@@ -11,8 +11,21 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
+        String str0 = "Default Default Default Default";
+        String str1 = "GlyphVector GlyphVector GlyphVector GlyphVector";
+        String str2 = "JTextArea JTextArea JTextArea JTextArea";
+        String str3 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-        TestModel model = new TestModel();
+        String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
+        Object[][] data = {
+            {str0, str1, str2}, {str0, str1, str2},
+            {str3, str3, str3}, {str3, str3, str3}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         JTable table = new JTable(model);
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -22,25 +35,11 @@ public class MainPanel extends JPanel{
         tableHeader.setReorderingAllowed(false);
 
         TableColumnModel mdl = table.getColumnModel();
-        TableColumn col = mdl.getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
-        col.setResizable(false);
-
-        col = mdl.getColumn(1);
+        TableColumn col = mdl.getColumn(1);
         col.setCellRenderer(new TestRenderer());
 
         col = mdl.getColumn(2);
         col.setCellRenderer(new TextAreaCellRenderer());
-
-        model.addTest(new Test("GlyphVector GlyphVector GlyphVector GlyphVector",
-                               "JTextArea JTextArea JTextArea JTextArea JTextArea"));
-        model.addTest(new Test("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfas",
-                               "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfas"));
-        model.addTest(new Test("0123456789 0123456789 0123456789 0123456789",
-                               "0123456789 0123456789 0123456789 0123456789"));
-        model.addTest(new Test("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                               "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
@@ -74,9 +73,7 @@ class TestRenderer extends WrappedLabel implements TableCellRenderer {
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
     }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if(isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
@@ -99,25 +96,28 @@ class WrappedLabel extends JLabel {
     public WrappedLabel(String str) {
         super(str);
     }
-    private int prevwidth = -1;
+    //private int prevwidth = -1;
     @Override public void doLayout() {
         Insets i = getInsets();
         int w = getWidth()-i.left-i.right;
-        if(w!=prevwidth) {
+        //if(w!=prevwidth) {
             Font font = getFont();
             FontMetrics fm = getFontMetrics(font);
             FontRenderContext frc = fm.getFontRenderContext();
             gvtext = getWrappedGlyphVector(getText(), w, font, frc);
-            prevwidth = w;
-        }
+        //    prevwidth = w;
+        //}
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
         if(gvtext!=null) {
             Insets i = getInsets();
+            Graphics2D g2 = (Graphics2D)g.create();
+            g2.setPaint(getBackground());
+            g2.fillRect(0,0,getWidth(),getHeight());
             g2.setPaint(getForeground());
             g2.drawGlyphVector(gvtext, i.left, getFont().getSize()+i.top);
+            g2.dispose();
         }else{
             super.paintComponent(g);
         }

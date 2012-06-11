@@ -10,7 +10,16 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         JTable table = new JTable(model) {
             private final Color evenColor = new Color(250, 230, 230);
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -41,19 +50,6 @@ public class MainPanel extends JPanel {
         };
         final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(60);
-        col.setMaxWidth(60);
-        col.setResizable(false);
 
         add(new JButton(new AbstractAction("clear SortKeys") {
             @Override public void actionPerformed(ActionEvent e) {
