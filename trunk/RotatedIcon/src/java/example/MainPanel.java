@@ -66,13 +66,15 @@ class RotateIcon implements Icon{
         }else if((rotate+360)%360==270) {
             trans = AffineTransform.getTranslateInstance(0, width);
             trans.rotate(Math.toRadians(270));
-        }else{ // if((rotate+360)%360==180) {
+        }else if((rotate+360)%360==180) {
             //trans = AffineTransform.getTranslateInstance(width, height);
             //trans.rotate(Math.toRadians(180));
             trans = AffineTransform.getScaleInstance(1.0, -1.0);
             trans.translate(0, -height);
             width  = icon.getIconHeight();
             height = icon.getIconWidth();
+        }else{
+            throw new IllegalArgumentException("Rotate must be (rotate % 90 == 0)");
         }
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
