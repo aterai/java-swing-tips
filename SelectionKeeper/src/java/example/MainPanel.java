@@ -4,24 +4,25 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.table.*;
 import javax.swing.*;
+import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         TableSorter sorter = new TableSorter(model);
         JTable table = new JTable(sorter);
         sorter.setTableHeader(table.getTableHeader());
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 200));

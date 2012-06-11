@@ -11,28 +11,19 @@ public class MainPanel extends JPanel {
     private static final int START_HEIGHT = 4;
     private static final int END_HEIGHT = 24;
     private static final int DELAY = 10;
-    private static final Color evenColor = new Color(250, 250, 250);
-    private final TestModel model = new TestModel();
-    private final JTable table = new JTable(model) {
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            }else{
-                c.setForeground(getForeground());
-                c.setBackground((row%2==0)?evenColor:getBackground());
-            }
-            return c;
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
         }
     };
+    private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-
         //table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(START_HEIGHT);
@@ -55,7 +46,7 @@ public class MainPanel extends JPanel {
         }
     }
     private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("New name", ""));
+        model.addRow(new Object[] {"New name", model.getRowCount(), false});
         (new Timer(DELAY, new ActionListener() {
             int i = table.convertRowIndexToView(model.getRowCount()-1);
             int h = START_HEIGHT;

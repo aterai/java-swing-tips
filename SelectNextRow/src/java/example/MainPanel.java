@@ -10,17 +10,17 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+        String[] columnNames = {"String", "Integer", "Boolean"};
+        Object[][] data = {
+            {"aaa", 12, true}, {"bbb", 5, false},
+            {"CCC", 92, true}, {"DDD", 0, false}
+        };
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
         JTable table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
-
-        model.addTest(new Test("Name 1", "comment..."));
-        model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
 
         final InputMap im     = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         final KeyStroke tab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);

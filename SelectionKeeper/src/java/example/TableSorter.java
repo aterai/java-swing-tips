@@ -457,7 +457,7 @@ public class TableSorter extends AbstractTableModel {
             Vector<Object> list = new Vector<Object>();
             int[] ilist = table.getSelectedRows();
             if(ilist!=null && ilist.length>0) {
-                TestModel model = (TestModel)tableModel;
+                DefaultTableModel model = (DefaultTableModel)tableModel;
                 for(int i=ilist.length-1;i>=0;i--) {
                     list.add(model.getValueAt(modelIndex(ilist[i]), keyColIndex));
                 }

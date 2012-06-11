@@ -10,11 +10,19 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private final JPanel infoPanel = new JPanel();
-    private final TestModel model = new TestModel();
-    private final JTable table;
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+      {"aaa", 12, true}, {"bbb", 5, false},
+      {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         //table.setRowSorter(new TableRowSorter<TableModel>(model));
 
@@ -33,24 +41,16 @@ public class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        model.addTest(new Test("Name 1", "Comment..."));
-        model.addTest(new Test("Name 2", "Test "));
-        model.addTest(new Test("Name d", ""));
-        model.addTest(new Test("Name c", "Test cc"));
-        model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
-        model.addTest(new Test("Name 0", "Test aa"));
-        model.addTest(new Test("Name 0", ""));
-
         add(new JScrollPane(table));
         add(infoPanel, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private String getInfo() {
         int index = table.convertRowIndexToModel(table.getSelectedRow());
-        String name = (String)model.getValueAt(index, 1);
-        String comment = (String)model.getValueAt(index, 2);
-        return name+"( "+comment+" )";
+        String  str = (String)model.getValueAt(index, 0);
+        Integer idx = (Integer)model.getValueAt(index, 1);
+        Boolean flg = (Boolean)model.getValueAt(index, 2);
+        return String.format("%s, %d, %s", str, idx, flg);
     }
     private void changeInfoPanel(String str) {
         JLabel label = new JLabel(str);
