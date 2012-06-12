@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -17,7 +18,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         TestModel model = new TestModel() {
             @Override public boolean isCellEditable(int row, int col) {
-                return (col==0)?false:!modelCheck.isSelected();
+                return !modelCheck.isSelected();
             }
         };
         model.addTest(new Test("Name 1", "Comment"));
@@ -29,25 +30,7 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
         model.addTest(new Test("Name 0", ""));
 
-        table = new JTable(model) {
-            private final Color evenColor = new Color(250, 250, 250);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:table.getBackground());
-                }
-                return c;
-            }
-        };
-        table.setRowSelectionAllowed(true);
-        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-
-        JTableHeader tableHeader = table.getTableHeader();
-        tableHeader.setReorderingAllowed(false);
+        table = new JTable(model);
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(50);
@@ -63,15 +46,12 @@ public class MainPanel extends JPanel {
                 table.setEnabled(!editableCheck.isSelected());
             }
         };
-        modelCheck.addActionListener(al);
-        objectCheck.addActionListener(al);
-        editableCheck.addActionListener(al);
 
         JPanel p = new JPanel(new GridLayout(3,1));
-        p.add(modelCheck);
-        p.add(objectCheck);
-        p.add(editableCheck);
-
+        for(JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {
+            cb.addActionListener(al);
+            p.add(cb);
+        }
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
