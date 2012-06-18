@@ -151,20 +151,47 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
     }
     //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
     //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH]
+    private static int N = 3;
     public double easeIn(double t) {
         //range: 0.0<=t<=1.0
-        return Math.pow(t, 3d);
+        return Math.pow(t, N);
     }
     public double easeOut(double t) {
-        return Math.pow(t-1d, 3d) + 1d;
+        return Math.pow(t-1d, N) + 1d;
     }
     public double easeInOut(double t) {
+/*/
         if(t<0.5d) {
-            return 0.5d*Math.pow(t*2d, 3d);
+            return 0.5d*Math.pow(t*2d, N);
         }else{
-            return 0.5d*(Math.pow(t*2d-2d, 3d) + 2d);
+            return 0.5d*(Math.pow(t*2d-2d, N) + 2d);
         }
     }
+/*/
+        if(t<0.5d) {
+            return 0.5d*intpow(t*2d, N);
+        }else{
+            return 0.5d*(intpow(t*2d-2d, N) + 2d);
+        }
+    }
+    //http://d.hatena.ne.jp/pcl/20120617/p1
+    //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
+    //http://www.osix.net/modules/article/?id=696
+    public static double intpow(double a, int b) {
+        double d = 1.0;
+        if(b < 0) {
+            //return d / intpow(a, -b);
+            throw new IllegalArgumentException("B must be a positive integer or zero");
+        }
+        for(; b > 0; b >>>= 1) {
+            if((b & 1) == 1) {
+                d *= a;
+            }
+            a *= a;
+        }
+        return d;
+    }
+//*/
 //     public double delta(double t) {
 //         return 1d - Math.sin(Math.acos(t));
 //     }
