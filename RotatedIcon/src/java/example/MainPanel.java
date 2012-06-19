@@ -62,13 +62,13 @@ class RotateIcon implements Icon{
         height = icon.getIconHeight();
         if((rotate+360)%360==90) {
             trans = AffineTransform.getTranslateInstance(height, 0);
-            trans.rotate(Math.toRadians(90));
+            trans.rotate(Math.toRadians(90)); //== trans.quadrantRotate(1);
         }else if((rotate+360)%360==270) {
             trans = AffineTransform.getTranslateInstance(0, width);
-            trans.rotate(Math.toRadians(270));
+            trans.rotate(Math.toRadians(270)); //== trans.quadrantRotate(-1);
         }else if((rotate+360)%360==180) {
             //trans = AffineTransform.getTranslateInstance(width, height);
-            //trans.rotate(Math.toRadians(180));
+            //trans.rotate(Math.toRadians(180)); //== trans.quadrantRotate(2);
             trans = AffineTransform.getScaleInstance(1.0, -1.0);
             trans.translate(0, -height);
             width  = icon.getIconHeight();
