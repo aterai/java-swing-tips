@@ -35,34 +35,32 @@ public class MainPanel extends JPanel {
                         StringTokenizer st = new StringTokenizer(textArea.getText(), "\n") ;
                         while(st.hasMoreTokens()) {
                             if(st.nextToken().startsWith("#")) {
-                                count = count + 1;
+                                count++;
                             }
                         }
 
-//                         //LineNumberReader
-//                         String line = null;
-//                         LineNumberReader lnr = null;
-//                         try{
-//                             lnr = new LineNumberReader(new StringReader(textArea.getText()));
+//                         //String#split >>>>
+//                         for(String line: textArea.getText().split("\\n")) {
+//                             if(line.startsWith("#")) {
+//                                 count++;
+//                             }
+//                         }
+//                         //<<<< String#split
+
+//                         //LineNumberReader >>>>
+//                         try(LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
+//                             String line = null;
 //                             while((line = lnr.readLine()) != null) {
 //                                 if(line.startsWith("#")) {
-//                                     count = count + 1;
+//                                     count++;
 //                                 }
 //                             }
 //                         }catch(IOException ioe) {
 //                             ioe.printStackTrace();
-//                         } finally {
-//                             if(lnr!=null) {
-//                                 try{
-//                                     lnr.close();
-//                                 }catch(IOException ioe) {
-//                                     ioe.printStackTrace();
-//                                 }
-//                             }
 //                         }
-//                         //LineNumberReader
+//                         //<<<< LineNumberReader
 
-//                         //ElementCount
+//                         //ElementCount >>>>
 //                         Document doc = textArea.getDocument();
 //                         Element root = doc.getDefaultRootElement();
 //                         try{
@@ -70,14 +68,13 @@ public class MainPanel extends JPanel {
 //                                 Element elem = root.getElement(i);
 //                                 String line = doc.getText(elem.getStartOffset(), elem.getEndOffset()-elem.getStartOffset());
 //                                 if(line.startsWith("#")) {
-//                                     count = count + 1;
+//                                     count++;
 //                                 }
 //                             }
 //                         }catch(BadLocationException ble) {
 //                             ble.printStackTrace();
-//                             count = -1;
 //                         }
-//                         //ElementCount
+//                         //<<<< ElementCount
                         JOptionPane.showMessageDialog(scroll, "commented lines: "+count, "title", JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
