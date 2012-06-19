@@ -60,15 +60,19 @@ class RotateIcon implements Icon{
 
         width  = icon.getIconWidth();
         height = icon.getIconHeight();
+
+        //int numquadrants = rotate/90;
+        //System.out.println(numquadrants);
+
         if((rotate+360)%360==90) {
             trans = AffineTransform.getTranslateInstance(height, 0);
-            trans.rotate(Math.toRadians(90)); //== trans.quadrantRotate(1);
+            trans.rotate(Math.toRadians(90)); //== trans.quadrantRotate(numquadrants);
         }else if((rotate+360)%360==270) {
             trans = AffineTransform.getTranslateInstance(0, width);
-            trans.rotate(Math.toRadians(270)); //== trans.quadrantRotate(-1);
+            trans.rotate(Math.toRadians(270)); //== trans.quadrantRotate(numquadrants);
         }else if((rotate+360)%360==180) {
             //trans = AffineTransform.getTranslateInstance(width, height);
-            //trans.rotate(Math.toRadians(180)); //== trans.quadrantRotate(2);
+            //trans.rotate(Math.toRadians(180)); //== trans.quadrantRotate(numquadrants);
             trans = AffineTransform.getScaleInstance(1.0, -1.0);
             trans.translate(0, -height);
             width  = icon.getIconHeight();
