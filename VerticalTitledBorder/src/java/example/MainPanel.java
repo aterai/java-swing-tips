@@ -32,13 +32,6 @@ public class MainPanel extends JPanel{
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JTree tree) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        p.add(new JScrollPane(tree));
-        tree.setRowHeight(0);
-        return p;
-    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -69,7 +62,7 @@ class VerticalTitledBorder extends TitledBorder{
         this.label.setOpaque(true);
         //this.label.putClientProperty(BasicHTML.propertyKey, null);
     }
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
         String title = getTitle();
         if((title != null) && !title.isEmpty() && border != null) {
@@ -107,7 +100,7 @@ class VerticalTitledBorder extends TitledBorder{
             super.paintBorder(c, g, x, y, width, height);
         }
     }
-    public Insets getBorderInsets(Component c, Insets insets) {
+    @Override public Insets getBorderInsets(Component c, Insets insets) {
         Border border = getBorder();
         insets = getBorderInsets(border, c, insets);
         String title = getTitle();
