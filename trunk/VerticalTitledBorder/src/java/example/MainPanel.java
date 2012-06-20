@@ -119,7 +119,7 @@ class VerticalTitledBorder extends TitledBorder{
         return insets;
     }
 
-    //Copy from TitledBorder
+    //Copied from TitledBorder
     private Color getColor(Component c) {
         Color color = getTitleColor();
         if(color != null) {
