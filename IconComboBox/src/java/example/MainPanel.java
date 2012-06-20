@@ -28,7 +28,7 @@ class MainPanel extends JPanel {
         combo04.setBorder(makeIconComboBorder(combo04, image));
 
         add(makeTitlePanel("setEditable(false)", Arrays.asList(combo01, combo02)));
-        add(makeTitlePanel("setEditable(false)", Arrays.asList(combo03, combo04)));
+        add(makeTitlePanel("setEditable(true)",  Arrays.asList(combo03, combo04)));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 200));
     }
