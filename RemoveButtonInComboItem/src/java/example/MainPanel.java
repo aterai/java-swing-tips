@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -14,10 +14,24 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(2,1));
-        p.add(makeTitlePanel("setEditable(false)", Arrays.asList(makeComboBox(true,  false), makeComboBox(false, false))));
-        p.add(makeTitlePanel("setEditable(true)",  Arrays.asList(makeComboBox(true,  true),  makeComboBox(false, true))));
+        final JComboBox c0 = makeComboBox(true,  false);
+        final JComboBox c1 = makeComboBox(false, false);
+        final JComboBox c2 = makeComboBox(true,  true);
+        final JComboBox c3 = makeComboBox(false, true);
+
+        p.add(makeTitlePanel("setEditable(false)", Arrays.asList(c0, c1)));
+        p.add(makeTitlePanel("setEditable(true)",  Arrays.asList(c2, c3)));
         p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(p, BorderLayout.NORTH);
+        add(new JButton(new AbstractAction("add") {
+            @Override public void actionPerformed(ActionEvent e) {
+                String str = (new Date()).toString();
+                for(JComboBox c: Arrays.asList(c0, c1, c2, c3)) {
+                    MutableComboBoxModel m = (MutableComboBoxModel)c.getModel();
+                    m.insertElementAt(str, m.getSize());
+                }
+            }
+        }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     @SuppressWarnings("unchecked")
@@ -27,7 +41,7 @@ public class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 if(isDefault) return;
-                setRenderer(new ButtonsRenderer());
+                setRenderer(new ButtonsRenderer(this));
                 Accessible a = getAccessibleContext().getAccessibleChild(0);
                 if(a instanceof BasicComboPopup) {
                     BasicComboPopup pop = (BasicComboPopup)a;
@@ -170,20 +184,23 @@ class CellButtonsMouseListener extends MouseAdapter{
 }
 
 class ButtonsRenderer extends JPanel implements ListCellRenderer {
-    public JLabel label = new DefaultListCellRenderer();
-    private final JButton deleteButton = new JButton(new AbstractAction("x") {
+    private JLabel label = new DefaultListCellRenderer();
+    private JButton deleteButton = new JButton(new AbstractAction("x") {
         @Override public void actionPerformed(ActionEvent e) {
             MutableComboBoxModel m = (MutableComboBoxModel)list.getModel();
-            if(m.getSize()>1)
-              m.removeElementAt(index);
+            if(m.getSize()>1) {
+                m.removeElementAt(index);
+                comboBox.showPopup();
+            }
         }
     }) {
         @Override public Dimension getPreferredSize() {
             return new Dimension(16, 16);
         }
     };
-    public ButtonsRenderer() {
+    public ButtonsRenderer(JComboBox comboBox) {
         super(new BorderLayout(0,0));
+        this.comboBox = comboBox;
         label.setOpaque(false);
         setOpaque(true);
         add(label);
@@ -193,6 +210,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         deleteButton.setContentAreaFilled(false);
         add(deleteButton, BorderLayout.EAST);
     }
+    private final JComboBox comboBox;
     private JList list;
     private int index;
     private final Color evenColor = new Color(230,255,230);
@@ -207,7 +225,8 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
             setBackground(index%2==0 ? evenColor : list.getBackground());
             label.setForeground(list.getForeground());
         }
-        if(index<0) {
+        MutableComboBoxModel m = (MutableComboBoxModel)list.getModel();
+        if(index<0 || m.getSize()-1<=0) {
             setOpaque(false);
             deleteButton.setVisible(false);
             label.setForeground(list.getForeground());
