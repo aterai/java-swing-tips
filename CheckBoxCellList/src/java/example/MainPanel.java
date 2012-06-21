@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-//import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     @SuppressWarnings("unchecked")
@@ -15,19 +14,51 @@ public class MainPanel extends JPanel {
 
         DefaultListModel model = new DefaultListModel();
         JList list1 = new JList(model) {
+            private CheckBoxCellRenderer renderer;
             @Override public void updateUI() {
                 setForeground(null);
                 setBackground(null);
                 setSelectionForeground(null);
                 setSelectionBackground(null);
+                if(renderer!=null) {
+                    removeMouseListener(renderer);
+                    removeMouseMotionListener(renderer);
+                }
                 super.updateUI();
+                renderer = new CheckBoxCellRenderer();
+                setCellRenderer(renderer);
+                addMouseListener(renderer);
+                addMouseMotionListener(renderer);
+            }
+            //@see SwingUtilities2.pointOutsidePrefSize(...)
+            private boolean pointOutsidePrefSize(Point p) {
+                int index = locationToIndex(p);
+                DefaultListModel m = (DefaultListModel)getModel();
+                CheckBoxNode n = (CheckBoxNode)m.get(index);
+                Component c = getCellRenderer().getListCellRendererComponent(this, n, index, false, false);
+                //c.doLayout();
+                Dimension d = c.getPreferredSize();
+                Rectangle rect = getCellBounds(index, index);
+                rect.width = d.width;
+                return index < 0 || !rect.contains(p);
+            }
+            @Override protected void processMouseEvent(MouseEvent e) {
+                if(!pointOutsidePrefSize(e.getPoint())) {
+                    super.processMouseEvent(e);
+                }
+            }
+            @Override protected void processMouseMotionEvent(MouseEvent e) {
+                if(!pointOutsidePrefSize(e.getPoint())) {
+                    super.processMouseMotionEvent(e);
+                }else{
+                    e = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
+                                       e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
+                                       e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
+                    super.processMouseEvent(e);
+                }
             }
         };
         list1.putClientProperty("List.isFileList", Boolean.TRUE);
-        CheckBoxCellRenderer r = new CheckBoxCellRenderer();
-        list1.setCellRenderer(r);
-        list1.addMouseListener(r);
-        list1.addMouseMotionListener(r);
 
         Box list2 = Box.createVerticalBox();
 
@@ -91,24 +122,18 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseL
         }
         if(value instanceof CheckBoxNode) {
             this.setSelected(((CheckBoxNode)value).selected);
-            if(index==pressedRowIndex) {
-                this.getModel().setArmed(true);
-                this.getModel().setPressed(true);
-            }else{
-                this.getModel().setRollover(index==rollOverRowIndex);
-                this.getModel().setArmed(false);
-                this.getModel().setPressed(false);
-            }
+            this.getModel().setRollover(index==rollOverRowIndex);
         }
         this.setText(value.toString());
         return this;
     }
     private int rollOverRowIndex = -1;
-    private int pressedRowIndex  = -3;
     @Override public void mouseExited(MouseEvent e) {
-        rollOverRowIndex = -1;
-        JList c = (JList)e.getSource();
-        c.repaint();
+        JList l = (JList)e.getSource();
+        if(rollOverRowIndex>=0) {
+            l.repaint(l.getCellBounds(rollOverRowIndex, rollOverRowIndex));
+            rollOverRowIndex = -1;
+        }
     }
     @SuppressWarnings("unchecked")
     @Override public void mouseClicked(MouseEvent e) {
@@ -117,55 +142,25 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseL
             DefaultListModel m = (DefaultListModel)l.getModel();
             Point p = e.getPoint();
             int index  = l.locationToIndex(p);
-            CheckBoxNode n = (CheckBoxNode)m.get(index);
-            Component c = l.getCellRenderer().getListCellRendererComponent(l, n, index, false, false);
-            Dimension d = c.getPreferredSize();
-            if(d.width>=p.x) {
+            if(index>=0) {
+                CheckBoxNode n = (CheckBoxNode)m.get(index);
                 m.set(index, new CheckBoxNode(n.text, !n.selected));
-                //l.repaint();
                 l.repaint(l.getCellBounds(index, index));
             }
         }
     }
-    @Override public void mouseEntered(MouseEvent e) {}
-    private int pressStartIndex = -1;
-    @Override public void mousePressed(MouseEvent e) {
-        if(e.getButton()==MouseEvent.BUTTON1) {
-            JList c = (JList)e.getSource();
-            int row = c.locationToIndex(e.getPoint());
-            pressStartIndex = row;
-            if(row != pressedRowIndex) {
-                pressedRowIndex = row;
-                c.repaint();
-            }
-        }
-    }
-    @Override public void mouseReleased(MouseEvent e) {
-        pressedRowIndex = -1;
-        pressStartIndex = -1;
-    }
-    @Override public void mouseDragged(MouseEvent e) {
-        JList c = (JList)e.getSource();
-        int row = c.locationToIndex(e.getPoint());
-        if(row != rollOverRowIndex) {
-            rollOverRowIndex = -1;
-        }
-        if(row != pressedRowIndex) {
-            pressedRowIndex = -1;
-        }
-        if(row == pressStartIndex) {
-            pressedRowIndex = row;
-        }
-        c.repaint();
-    }
     @Override public void mouseMoved(MouseEvent e) {
-        JList c = (JList)e.getSource();
-        int row = c.locationToIndex(e.getPoint());
-        if(row != rollOverRowIndex) {
-            rollOverRowIndex = row;
-            c.repaint();
+        JList l = (JList)e.getSource();
+        int index = l.locationToIndex(e.getPoint());
+        if(index != rollOverRowIndex) {
+            rollOverRowIndex = index;
+            l.repaint();
         }
     }
+    @Override public void mouseEntered(MouseEvent e) {}
+    @Override public void mousePressed(MouseEvent e) {}
+    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e) {}
 }
 
 class CheckBoxNode {
