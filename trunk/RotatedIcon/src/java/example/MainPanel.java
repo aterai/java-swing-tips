@@ -14,9 +14,15 @@ class MainPanel extends JPanel{
         Icon i = new ImageIcon(getClass().getResource("duke.gif"));
         //Icon i = UIManager.getIcon("OptionPane.warningIcon");
         add(makeLabel("Default", i));
+//*/
         add(makeLabel("Rotate: 180", new RotateIcon(i,180)));
         add(makeLabel("Rotate: 90",  new RotateIcon(i, 90)));
         add(makeLabel("Rotate: -90", new RotateIcon(i,-90)));
+/*/
+        add(makeLabel("Rotate: 180", new QuadrantRotateIcon(i, QuadrantRotate.VERTICAL_FLIP)));
+        add(makeLabel("Rotate: 90",  new QuadrantRotateIcon(i, QuadrantRotate.CLOCKWISE)));
+        add(makeLabel("Rotate: -90", new QuadrantRotateIcon(i, QuadrantRotate.COUNTER_CLOCKWISE)));
+//*/
         setBorder(BorderFactory.createEmptyBorder(0,32,0,32));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -48,6 +54,7 @@ class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
+
 class RotateIcon implements Icon{
     private int width, height;
     private Image image;
@@ -93,5 +100,53 @@ class RotateIcon implements Icon{
     }
     @Override public int getIconHeight() {
         return width;
+    }
+}
+
+enum QuadrantRotate {
+    CLOCKWISE(1),
+    VERTICAL_FLIP(2),
+    COUNTER_CLOCKWISE(-1);
+    private final int numquadrants;
+    private QuadrantRotate(int numquadrants) {
+        this.numquadrants = numquadrants;
+    }
+    public int getNumQuadrants() {
+        return numquadrants;
+    }
+}
+class QuadrantRotateIcon implements Icon{
+    private Image image;
+    private AffineTransform trans;
+    private final QuadrantRotate rotate;
+    private final Icon icon;
+    public QuadrantRotateIcon(Icon icon, QuadrantRotate rotate) {
+        this.icon = icon;
+        this.rotate = rotate;
+        int w  = icon.getIconWidth();
+        int h = icon.getIconHeight();
+        image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        icon.paintIcon(null, g, 0, 0);
+        g.dispose();
+        switch(rotate) {
+          case CLOCKWISE:         trans = AffineTransform.getTranslateInstance(h, 0); break;
+          case VERTICAL_FLIP:     trans = AffineTransform.getTranslateInstance(w, h); break;
+          case COUNTER_CLOCKWISE: trans = AffineTransform.getTranslateInstance(0, w); break;
+        }
+        trans.quadrantRotate(rotate.getNumQuadrants());
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.translate(x, y);
+        g2.drawImage(image, trans, c);
+        g2.translate(-x, -y);
+        g2.dispose();
+    }
+    @Override public int getIconWidth()  {
+        return rotate==QuadrantRotate.VERTICAL_FLIP ? icon.getIconWidth() : icon.getIconHeight();
+    }
+    @Override public int getIconHeight() {
+        return rotate==QuadrantRotate.VERTICAL_FLIP ? icon.getIconHeight() : icon.getIconWidth();
     }
 }
