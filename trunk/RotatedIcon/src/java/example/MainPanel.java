@@ -104,15 +104,15 @@ class RotateIcon implements Icon{
 }
 
 enum QuadrantRotate {
-    CLOCKWISE(1),
-    VERTICAL_FLIP(2),
-    COUNTER_CLOCKWISE(-1);
-    private final int numquadrants;
-    private QuadrantRotate(int numquadrants) {
-        this.numquadrants = numquadrants;
+    CLOCKWISE(90),
+    VERTICAL_FLIP(180),
+    COUNTER_CLOCKWISE(-90);
+    private final int quadrants;
+    private QuadrantRotate(int quadrants) {
+        this.quadrants = quadrants;
     }
-    public int getNumQuadrants() {
-        return numquadrants;
+    public int getQuadrants() {
+        return quadrants;
     }
 }
 class QuadrantRotateIcon implements Icon{
@@ -123,24 +123,18 @@ class QuadrantRotateIcon implements Icon{
     public QuadrantRotateIcon(Icon icon, QuadrantRotate rotate) {
         this.icon = icon;
         this.rotate = rotate;
-        int w  = icon.getIconWidth();
-        int h = icon.getIconHeight();
-        image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-        icon.paintIcon(null, g, 0, 0);
-        g.dispose();
-        switch(rotate) {
-          case CLOCKWISE:         trans = AffineTransform.getTranslateInstance(h, 0); break;
-          case VERTICAL_FLIP:     trans = AffineTransform.getTranslateInstance(w, h); break;
-          case COUNTER_CLOCKWISE: trans = AffineTransform.getTranslateInstance(0, w); break;
-        }
-        trans.quadrantRotate(rotate.getNumQuadrants());
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        int w = icon.getIconWidth();
+        int h = icon.getIconHeight();
         Graphics2D g2 = (Graphics2D)g.create();
-        g2.translate(x, y);
-        g2.drawImage(image, trans, c);
-        g2.translate(-x, -y);
+        switch(rotate) {
+          case CLOCKWISE:         g2.translate(x+h, y  ); break;
+          case VERTICAL_FLIP:     g2.translate(x+w, x+h); break;
+          case COUNTER_CLOCKWISE: g2.translate(x,   y+w); break;
+        }
+        g2.rotate(Math.toRadians(rotate.getQuadrants()));
+        icon.paintIcon(c, g2, 0, 0);
         g2.dispose();
     }
     @Override public int getIconWidth()  {
