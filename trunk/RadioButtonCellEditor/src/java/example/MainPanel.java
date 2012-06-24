@@ -21,11 +21,11 @@ public class MainPanel extends JPanel {
         @Override public void setValueAt(Object v, int row, int column) {
             if(v instanceof Boolean) {
                 for(int i=0; i<getRowCount(); i++) {
-                    super.setValueAt(Boolean.FALSE, i, column);
+                    super.setValueAt(i==row, i, column);
                 }
-                v = Boolean.TRUE;
+            }else{
+                super.setValueAt(v, row, column);
             }
-            super.setValueAt(v, row, column);
         }
     };
 
@@ -88,9 +88,9 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
             }
         });
     }
-    private int index = -1;
+//     private int index = -1;
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        index = table.convertRowIndexToModel(row);
+//         index = table.convertRowIndexToModel(row);
         if(value instanceof Boolean) {
             setSelected((Boolean)value);
         }
