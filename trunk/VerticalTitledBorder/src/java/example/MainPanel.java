@@ -4,11 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.geom.*;
-// import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-// import javax.swing.tree.*;
-// import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel{
     public MainPanel() {
@@ -77,7 +74,7 @@ class VerticalTitledBorder extends TitledBorder{
             int borderH = height - edge - edge;
 
             int labelH = size.height;
-            int labelW = height - insets.top - insets.bottom;
+            int labelW = height - insets.top - insets.bottom; //TEST: - (edge * 8);
             if(labelW > size.width) {
                 labelW = size.width;
             }
@@ -92,11 +89,11 @@ class VerticalTitledBorder extends TitledBorder{
             Graphics2D g2 = (Graphics2D)g.create();
             g2.translate(0, (height+labelW)/2);
             g2.rotate(Math.toRadians(-90));
-            //g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
+            //or: g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
             label.setSize(labelW, labelH);
             label.paint(g2);
             g2.dispose();
-        } else {
+        }else{
             super.paintBorder(c, g, x, y, width, height);
         }
     }
@@ -143,10 +140,10 @@ class VerticalTitledBorder extends TitledBorder{
     private static Insets getBorderInsets(Border border, Component c, Insets insets) {
         if(border == null) {
             insets.set(0, 0, 0, 0);
-        } else if(border instanceof AbstractBorder) {
+        }else if(border instanceof AbstractBorder) {
             AbstractBorder ab = (AbstractBorder) border;
             insets = ab.getBorderInsets(c, insets);
-        } else {
+        }else{
             Insets i = border.getBorderInsets(c);
             insets.set(i.top, i.left, i.bottom, i.right);
         }
