@@ -20,10 +20,15 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
 
-        JComboBox combo = makeComboBox();
-        combo.setBorder(new RoundedCornerBorder2());
-        if(combo.getUI() instanceof WindowsComboBoxUI) {
-            combo.setUI(new WindowsComboBoxUI() {
+        JComboBox combo0 = makeComboBox();
+        JComboBox combo1 = makeComboBox();
+        JComboBox combo2 = makeComboBox();
+
+        combo0.setBorder(new RoundedCornerBorder());
+        combo1.setBorder(new KamabokoBorder());
+        combo2.setBorder(new KamabokoBorder());
+        if(combo2.getUI() instanceof WindowsComboBoxUI) {
+            combo2.setUI(new WindowsComboBoxUI() {
                 @Override protected JButton createArrowButton() {
                     JButton b = new JButton(new ArrowIcon(Color.BLACK, Color.BLUE)); //.createArrowButton();
                     b.setContentAreaFilled(false);
@@ -35,7 +40,11 @@ public class MainPanel extends JPanel{
         }
 
         Box box0 = Box.createVerticalBox();
-        box0.add(createPanel(combo, "WindowsComboBoxUI:", null));
+        box0.add(createPanel(combo0, "RoundRectangle2D:", null));
+        box0.add(Box.createVerticalStrut(5));
+        box0.add(createPanel(combo1, "Path2D:", null));
+        box0.add(Box.createVerticalStrut(5));
+        box0.add(createPanel(combo2, "WindowsComboBoxUI#createArrowButton():", null));
         box0.add(Box.createVerticalStrut(5));
         box0.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
@@ -54,12 +63,12 @@ public class MainPanel extends JPanel{
 
         //UIManager.put("ComboBox.border", BorderFactory.createLineBorder(Color.WHITE));
         //UIManager.put("ComboBox.editorBorder", BorderFactory.createLineBorder(Color.GREEN));
-        UIManager.put("ComboBox.border", new RoundedCornerBorder1());
+        UIManager.put("ComboBox.border", new KamabokoBorder());
 
         JComboBox combo00 = makeComboBox();
         JComboBox combo01 = makeComboBox();
 
-        UIManager.put("ComboBox.border", new RoundedCornerBorder2());
+        UIManager.put("ComboBox.border", new KamabokoBorder());
         JComboBox combo02 = makeComboBox();
 
         combo00.setUI(new MetalComboBoxUI());
@@ -114,7 +123,7 @@ public class MainPanel extends JPanel{
         tabbedPane.add("Windows", createPanel(box0, null, null));
 
         add(tabbedPane);
-        final List<JComboBox> list = Arrays.asList(combo00, combo01, combo02, combo);
+        final List<JComboBox> list = Arrays.asList(combo00, combo01, combo02, combo0, combo1, combo2);
         add(new JCheckBox(new AbstractAction("editable") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flag = ((JCheckBox)e.getSource()).isSelected();
@@ -180,6 +189,7 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
+
 class ArrowIcon implements Icon{
     private final Color color, rollover;
     public ArrowIcon(Color color, Color rollover) {
@@ -212,17 +222,16 @@ class ArrowIcon implements Icon{
         return 9;
     }
 }
-class RoundedCornerBorder1 extends AbstractBorder {
-    @Override public void paintBorder(
-        Component c, Graphics g, int x, int y, int width, int height) {
+
+class RoundedCornerBorder extends AbstractBorder {
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = 12;
+        int w = width  - 1;
+        int h = height - 1;
 
-        Area round = new Area(new RoundRectangle2D.Float(x, y, width-1, height-1, r, r));
-        Rectangle b = round.getBounds();
-        b.setBounds(b.x, b.y + r, b.width, b.height - r);
-        round.add(new Area(b));
+        Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
 
         Container parent = c.getParent();
         if(parent!=null) {
@@ -244,7 +253,8 @@ class RoundedCornerBorder1 extends AbstractBorder {
         return insets;
     }
 }
-class RoundedCornerBorder2 extends AbstractBorder {
+
+class KamabokoBorder extends RoundedCornerBorder {
 //     private static TexturePaint makeCheckerTexture() {
 //         int cs = 6;
 //         int sz = cs*cs;
@@ -261,12 +271,10 @@ class RoundedCornerBorder2 extends AbstractBorder {
 //         return new TexturePaint(bi, new Rectangle(0,0,sz,sz));
 //     }
 //     private static TexturePaint tp = makeCheckerTexture();
-    @Override public void paintBorder(
-        Component c, Graphics g, int x, int y, int width, int height) {
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = 12;
-
         int w = width  - 1;
         int h = height - 1;
 //*/
@@ -281,6 +289,9 @@ class RoundedCornerBorder2 extends AbstractBorder {
         Area round = new Area(p);
 /*/
         Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
+        Rectangle b = round.getBounds();
+        b.setBounds(b.x, b.y + r, b.width, b.height - r);
+        round.add(new Area(b));
 //*/
         Container parent = c.getParent();
         if(parent!=null) {
@@ -294,13 +305,5 @@ class RoundedCornerBorder2 extends AbstractBorder {
         g2.setPaint(c.getForeground());
         g2.draw(round);
         g2.dispose();
-    }
-    @Override public Insets getBorderInsets(Component c) {
-        return new Insets(4, 8, 4, 8);
-    }
-    @Override public Insets getBorderInsets(Component c, Insets insets) {
-        insets.left = insets.right = 8;
-        insets.top = insets.bottom = 4;
-        return insets;
     }
 }
