@@ -5,13 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
-
-
-import java.awt.image.*;
-// import javax.imageio.*;
+import javax.swing.plaf.metal.*;
+import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel{
     private final static Color BACKGROUND = Color.BLACK; //RED;
@@ -19,8 +19,28 @@ public class MainPanel extends JPanel{
     private final static Color SELECTIONFOREGROUND = Color.CYAN;
     public MainPanel() {
         super(new BorderLayout());
-        UIManager.put("TitledBorder.titleColor", FOREGROUND);
-        UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
+
+        JComboBox combo = makeComboBox();
+        combo.setBorder(new RoundedCornerBorder2());
+        if(combo.getUI() instanceof WindowsComboBoxUI) {
+            combo.setUI(new WindowsComboBoxUI() {
+                @Override protected JButton createArrowButton() {
+                    JButton b = new JButton(new ArrowIcon(Color.BLACK, Color.BLUE)); //.createArrowButton();
+                    b.setContentAreaFilled(false);
+                    b.setFocusPainted(false);
+                    b.setBorder(BorderFactory.createEmptyBorder());
+                    return b;
+                }
+            });
+        }
+
+        Box box0 = Box.createVerticalBox();
+        box0.add(createPanel(combo, "WindowsComboBoxUI:", null));
+        box0.add(Box.createVerticalStrut(5));
+        box0.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+        //UIManager.put("TitledBorder.titleColor", FOREGROUND);
+        //UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
         UIManager.put("ComboBox.foreground", FOREGROUND);
         UIManager.put("ComboBox.background", BACKGROUND);
@@ -42,12 +62,11 @@ public class MainPanel extends JPanel{
         UIManager.put("ComboBox.border", new RoundedCornerBorder2());
         JComboBox combo02 = makeComboBox();
 
+        combo00.setUI(new MetalComboBoxUI());
         combo01.setUI(new BasicComboBoxUI());
         combo02.setUI(new BasicComboBoxUI() {
             @Override protected JButton createArrowButton() {
-                JButton b = new JButton(new ArrowIcon()); //.createArrowButton();
-                b.setForeground(FOREGROUND);
-                b.setBackground(BACKGROUND);
+                JButton b = new JButton(new ArrowIcon(BACKGROUND, FOREGROUND));
                 b.setContentAreaFilled(false);
                 b.setFocusPainted(false);
                 b.setBorder(BorderFactory.createEmptyBorder());
@@ -82,25 +101,51 @@ public class MainPanel extends JPanel{
         o = combo02.getAccessibleContext().getAccessibleChild(0);
         ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,FOREGROUND));
 
-        Box box = Box.createVerticalBox();
-        box.add(createPanel(combo00, "MetalComboBoxUI:"));
-        box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo01, "BasicComboBoxUI:"));
-        box.add(Box.createVerticalStrut(5));
-        box.add(createPanel(combo02, "BasicComboBoxUI#createArrowButton():"));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        Box box1 = Box.createVerticalBox();
+        box1.add(createPanel(combo00, "MetalComboBoxUI:", BACKGROUND));
+        box1.add(Box.createVerticalStrut(10));
+        box1.add(createPanel(combo01, "BasicComboBoxUI:", BACKGROUND));
+        box1.add(Box.createVerticalStrut(10));
+        box1.add(createPanel(combo02, "BasicComboBoxUI#createArrowButton():", BACKGROUND));
+        box1.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        add(box, BorderLayout.NORTH);
-        setOpaque(true);
-        setBackground(BACKGROUND);
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.add("Basic, Metal", createPanel(box1, null, BACKGROUND));
+        tabbedPane.add("Windows", createPanel(box0, null, null));
+
+        add(tabbedPane);
+        final List<JComboBox> list = Arrays.asList(combo00, combo01, combo02, combo);
+        add(new JCheckBox(new AbstractAction("editable") {
+            @Override public void actionPerformed(ActionEvent e) {
+                boolean flag = ((JCheckBox)e.getSource()).isSelected();
+                for(JComboBox c:list) {
+                    c.setEditable(flag);
+                }
+                repaint();
+            }
+        }), BorderLayout.SOUTH);
+        //setOpaque(true);
+        //setBackground(BACKGROUND);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createPanel(JComponent cmp, String str) {
+    private static JComponent createPanel(JComponent cmp, String str, Color bgc) {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(str));
-        panel.add(cmp);
-        panel.setOpaque(true);
-        panel.setBackground(BACKGROUND);
+        if(cmp.getLayout() instanceof BoxLayout) {
+            panel.add(cmp, BorderLayout.NORTH);
+        }else{
+            panel.add(cmp);
+        }
+        if(str!=null) {
+            TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), str);
+            if(bgc!=null) {
+                b.setTitleColor(new Color(~bgc.getRGB()));
+            }
+            panel.setBorder(b);
+        }
+        if(bgc!=null) {
+            panel.setOpaque(true);
+            panel.setBackground(bgc);
+        }
         return panel;
     }
 //     //JDK 1.7.0
@@ -122,6 +167,11 @@ public class MainPanel extends JPanel{
         });
     }
     public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
@@ -131,18 +181,21 @@ public class MainPanel extends JPanel{
     }
 }
 class ArrowIcon implements Icon{
+    private final Color color, rollover;
+    public ArrowIcon(Color color, Color rollover) {
+        this.color = color;
+        this.rollover = rollover;
+    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g;
-        g2.setPaint(Color.WHITE);
+        g2.setPaint(color);
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             if(m.isPressed()) {
                 y++;
             }else{
                 if(m.isRollover()) {
-                    g2.setPaint(c.getForeground());
-                }else{
-                    g2.setPaint(c.getBackground());
+                    g2.setPaint(rollover);
                 }
             }
         }
@@ -216,6 +269,7 @@ class RoundedCornerBorder2 extends AbstractBorder {
 
         int w = width  - 1;
         int h = height - 1;
+//*/
         Path2D.Float p = new Path2D.Float();
         p.moveTo(x, y + h);
         p.lineTo(x, y + r);
@@ -225,7 +279,9 @@ class RoundedCornerBorder2 extends AbstractBorder {
         p.lineTo(x + w, y + h);
         p.closePath();
         Area round = new Area(p);
-
+/*/
+        Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
+//*/
         Container parent = c.getParent();
         if(parent!=null) {
             g2.setColor(parent.getBackground());
