@@ -16,8 +16,10 @@ public class MainPanel extends JPanel {
             @Override public void approveSelection() {
                 File f = getSelectedFile();
                 if(f.exists() && getDialogType() == SAVE_DIALOG) {
+                    //@see https://forums.oracle.com/forums/thread.jspa?messageID=5872486
+                    //@see http://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
                     //String m = "Replace file: " + f.getAbsolutePath() + "?";
-                    //String m = "The file exists, overwrite?"; //@see http://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
+                    //String m = "The file exists, overwrite?";
                     String m = String.format("<html>%s already exists.<br>Do you want to replace it?", f.getAbsolutePath());
                     int rv = JOptionPane.showConfirmDialog(this, m, "Save As", JOptionPane.YES_NO_OPTION);
                     if(rv!=JOptionPane.YES_OPTION) {
