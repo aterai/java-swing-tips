@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         fileChooser = new JFileChooser() {
-            @Override public void approveSelection(){
+            @Override public void approveSelection() {
                 File f = getSelectedFile();
                 if(f.exists() && getDialogType() == SAVE_DIALOG) {
                     //String m = "Replace file: " + f.getAbsolutePath() + "?";
