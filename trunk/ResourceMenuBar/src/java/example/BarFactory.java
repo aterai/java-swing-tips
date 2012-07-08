@@ -27,7 +27,7 @@ public final class BarFactory{
         ResourceBundle res;
         try{
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
-                //http://java.sun.com/javase/ja/6/docs/ja/api/java/util/ResourceBundle.Control.html
+                //http://docs.oracle.com/javase/jp/6/api/java/util/ResourceBundle.Control.html
                 public java.util.List<String> getFormats(String baseName) {
                     if(baseName == null) throw new NullPointerException();
                     return Arrays.asList("properties");

@@ -193,7 +193,7 @@ class IntegerDocumentFilter extends DocumentFilter {
 }
 
 //How to Use Formatted Text Fields
-//>http://java.sun.com/docs/books/tutorial/uiswing/components/formattedtextfield.html
+//http://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
 class NumberFormatterFactory extends DefaultFormatterFactory{
     //private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();
     //private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();

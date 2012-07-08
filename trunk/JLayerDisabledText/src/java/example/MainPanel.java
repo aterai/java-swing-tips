@@ -62,7 +62,8 @@ public class MainPanel extends JPanel {
         button.setComponentPopupMenu(pop);
         return button;
     }
-    //<blockquote cite="https://swingset3.dev.java.net/svn/swingset3/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
+
+    //<blockquote cite="http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
     private ButtonGroup lookAndFeelRadioGroup;
     private String lookAndFeel;
     protected JMenu createLookAndFeelMenu() {

@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-//Demo - BasicDnD (Drag and Drop and Data Transfer)>http://java.sun.com/docs/books/tutorial/uiswing/dnd/basicdemo.html
+//Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 //Drag and drop for non-String objects>http://www.javakb.com/Uwe/Forum.aspx/java-programmer/43866/Drag-and-drop-for-non-String-objects
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
