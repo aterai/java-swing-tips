@@ -70,7 +70,7 @@ public class MainPanel extends JPanel implements ActionListener, HierarchyListen
     }
 }
 
-//http://javagame.main.jp/index.php?%A5%E9%A5%B1%A5%C3%A5%C8%A4%F2%C6%B0%A4%AB%A4%B9
+//http://d.hatena.ne.jp/aidiary/20070601/1251545490
 class Racket {
     private static final int WIDTH  = 80;
     private static final int HEIGHT = 5;

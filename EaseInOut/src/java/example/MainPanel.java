@@ -150,7 +150,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         }
     }
     //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-    //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH]
+    //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
     private static int N = 3;
     public double easeIn(double t) {
         //range: 0.0<=t<=1.0
