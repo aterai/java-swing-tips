@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
       " We cover several Swing components, such as buttons, labels, and text areas." +
       " The handling of events is also discussed, as are layout management and accessibility." +
       " This lesson ends with a set of questions and exercises so you can test yourself on what you?ve learned.\n" +
-      "http://java.sun.com/docs/books/tutorial/uiswing/learn/index.html\n";
+      "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));

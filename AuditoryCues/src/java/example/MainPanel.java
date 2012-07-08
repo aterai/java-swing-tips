@@ -9,8 +9,8 @@ import java.io.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
 
-//Swing Changes and New Features>http://java.sun.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
-////                             http://java.sun.com/javase/ja/6/docs/ja/technotes/guides/swing/SwingChanges.html#Miscellaneous
+//Swing Changes and New Features>http://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
+////                             http://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
 //Magic with Merlin: Swinging audio>http://www.ibm.com/developerworks/java/library/j-mer0730/
 ////                                http://www.ibm.com/developerworks/jp/java/library/j-mer0730/
 class MainPanel extends JPanel {
@@ -98,7 +98,7 @@ class MainPanel extends JPanel {
 //         return buffer;
 //     }
 
-    //<blockquote cite="https://swingset3.dev.java.net/svn/swingset3/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
+    //<blockquote cite="http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
     private ButtonGroup lookAndFeelRadioGroup;
     private String lookAndFeel;
     protected JMenu createLookAndFeelMenu() {
