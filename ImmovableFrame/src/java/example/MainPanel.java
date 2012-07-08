@@ -8,9 +8,9 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 //How to Use Internal Frames
-//http://java.sun.com/docs/books/tutorial/uiswing/components/internalframe.html
+//http://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
 //Swing - Lock JInternalPane
-//http://forums.sun.com/thread.jspa?threadID=609043
+//https://forums.oracle.com/forums/thread.jspa?threadID=1390111
 public class MainPanel extends JPanel {
     private final JDesktopPane desktop;
     private final JInternalFrame immovableFrame;

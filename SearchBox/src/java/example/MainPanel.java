@@ -148,7 +148,9 @@ public class MainPanel extends JPanel{
               searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
         }
     }
-//     //<blockquote cite="http://forums.sun.com/thread.jspa?messageID=10584331#10584331">
+
+//     //<blockquote cite="https://forums.oracle.com/forums/thread.jspa?threadID=1355454"
+//     //           title="OTN Discussion Forums : how to get everything in DefaultTreeNode">
 //     public void traverse(JTree tree) {
 //         TreeModel model = tree.getModel();
 //         Object root;

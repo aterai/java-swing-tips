@@ -31,7 +31,8 @@ public class MainPanel extends JPanel {
         p.add(new JScrollPane(tree));
         return p;
     }
-    //Swing - How to sort jTree Nodes>http://forums.sun.com/thread.jspa?threadID=566391
+    //Swing - How to sort jTree Nodes
+    //https://forums.oracle.com/forums/thread.jspa?threadID=1353435
     public static DefaultMutableTreeNode sortTree(DefaultMutableTreeNode root) {
         for(int i=0;i<root.getChildCount();i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);

@@ -97,7 +97,7 @@ public class MainPanel extends JPanel {
         }
     }
     //Swing - How to Expand a JTree completely
-    //http://forums.sun.com/thread.jspa?threadID=381292
+    //https://forums.oracle.com/forums/thread.jspa?threadID=1391385
     private void expandAPath(TreePath p) {
         tree.expandPath(p);
         DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();

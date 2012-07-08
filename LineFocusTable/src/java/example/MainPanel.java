@@ -27,9 +27,8 @@ public class MainPanel extends JPanel {
         UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
         table = new JTable(model) {
             @Override public void updateUI() {
-                // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-                // http://bugs.sun.com/view_bug.do?bug_id=6788475
-
+                //Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+                //http://bugs.sun.com/view_bug.do?bug_id=6788475
                 //XXX: set dummy ColorUIResource
                 setSelectionForeground(new ColorUIResource(Color.RED));
                 setSelectionBackground(new ColorUIResource(Color.RED));
