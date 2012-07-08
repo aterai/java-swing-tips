@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
     }
 
     //Expand or collapse a JTree - Real's Java How-to
-    //http://64.18.163.122/rgagnon/javadetails/java-0210.html
+    //http://www.rgagnon.com/javadetails/java-0210.html
     private void expandAll(JTree tree) {
         int row = 0;
         while(row<tree.getRowCount()) {
