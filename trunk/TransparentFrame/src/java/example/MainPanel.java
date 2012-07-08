@@ -45,8 +45,8 @@ class MainPanel extends JPanel {
         URL url = getClass().getResource("tokeidai.jpg");
         BufferedImage bi = getFilteredImage(url);
         desktop.setBorder(new CentredBackgroundBorder(bi));
-        //D3D/OGL: Window translucency doesn't work with accelerated pipelines
-        //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6655001
+        //Bug ID: 6655001 D3D/OGL: Window translucency doesn't work with accelerated pipelines
+        //http://bugs.sun.com/view_bug.do?bug_id=6655001
         //desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         add(desktop);
         add(createMenuBar(), BorderLayout.NORTH);

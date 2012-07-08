@@ -125,7 +125,7 @@ public class MainPanel extends JPanel{
 }
 
 //Swing - Disabling word wrap for JTextPane
-//http://forums.sun.com/thread.jspa?threadID=622683
+//https://forums.oracle.com/forums/thread.jspa?threadID=1351861
 class NoWrapParagraphView extends ParagraphView {
     public NoWrapParagraphView(Element elem) {
         super(elem);
@@ -164,8 +164,6 @@ class NoWrapEditorKit2 extends StyledEditorKit {
     }
 }
 
-// //Swing - Disabling word wrap for JTextPane
-// //http://forums.sun.com/thread.jspa?threadID=622683
 // class NoWrapEditorKit1 extends StyledEditorKit{
 //     public ViewFactory getViewFactory() {
 //         return new StyledViewFactory();

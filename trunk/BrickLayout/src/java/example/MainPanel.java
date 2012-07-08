@@ -28,7 +28,8 @@ public class MainPanel extends JPanel{
                 panel.add(new JButton(" "),c);
             }
         }
-        //<blockquote cite="http://forums.sun.com/thread.jspa?threadID=5364641">
+        //<blockquote cite="https://forums.oracle.com/forums/thread.jspa?threadID=1355310"
+        //           title="OTN Discussion Forums : GridBagLayout to create a board">
         //<dummy-row>
         c.gridwidth = 1;
         c.gridy = 10;
