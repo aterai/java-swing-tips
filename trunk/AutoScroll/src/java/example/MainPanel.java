@@ -11,8 +11,7 @@ class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();
-        // [http://sozai-free.com/ CRW_3857_JFR.jpg]
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
+        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         JScrollPane scroll = new JScrollPane(label,
                                              JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                                              JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

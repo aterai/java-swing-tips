@@ -20,8 +20,7 @@ class MainPanel extends JPanel {
         box.add(r2); bg.add(r2);
         r1.setSelected(true);
 
-        // [http://sozai-free.com/ CRW_3857_JFR.jpg]
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
+        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         //JViewport vport = scroll.getViewport();
         //JDK 1.7.0
         JViewport vport = new JViewport() {

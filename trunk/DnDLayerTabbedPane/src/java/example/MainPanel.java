@@ -395,7 +395,8 @@ enum DragImageMode {
 class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private final JLabel label = new JLabel() {
-        //[http://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html Free the pixel: GHOST drag and drop, over multiple windows]
+        //Free the pixel: GHOST drag and drop, over multiple windows
+        //http://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html
         @Override public boolean contains(int x, int y) {
             return false;
         }
