@@ -491,8 +491,11 @@ class TabTransferHandler extends TransferHandler {
             c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
         }
         if(src.dragTabIndex<0) return NONE;
+//*
         glassPane.setImage(makeDragTabImage(src));
-        //setDragImage(makeDragTabImage(src)); //java 1.7.0-ea-b84
+/*/ //java 1.7.0
+        setDragImage(makeDragTabImage(src));
+//*/
         c.getRootPane().getGlassPane().setVisible(true);
         return MOVE;
     }
@@ -529,7 +532,7 @@ class TabTransferHandler extends TransferHandler {
         //source = null;
     }
 }
-
+//*
 class GhostGlassPane extends JPanel {
     private DnDTabbedPane tabbedPane;
     public GhostGlassPane(DnDTabbedPane tabbedPane) {
@@ -567,21 +570,30 @@ class GhostGlassPane extends JPanel {
         }
     }
 }
-//// java 1.7.0-ea-b84
-//class GhostGlassPane extends JPanel {
-//    private DnDTabbedPane tabbedPane;
-//    public GhostGlassPane(DnDTabbedPane tabbedPane) {
-//        this.tabbedPane = tabbedPane;
-//        setOpaque(false);
-//    }
-//    public void setTargetTabbedPane(DnDTabbedPane tab) {
-//        tabbedPane = tab;
-//    }
-//    public void paintComponent(Graphics g) {
-//        Graphics2D g2 = (Graphics2D) g;
-//        tabbedPane.paintDropLine(g2);
-//    }
-//}
+/*/ //java 1.7.0
+class GhostGlassPane extends JPanel {
+    private DnDTabbedPane tabbedPane;
+    public GhostGlassPane(DnDTabbedPane tabbedPane) {
+        this.tabbedPane = tabbedPane;
+        setOpaque(false);
+    }
+    public void setTargetTabbedPane(DnDTabbedPane tab) {
+        tabbedPane = tab;
+    }
+    @Override public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        //tabbedPane.paintDropLine(g2);
+        Rectangle rect = tabbedPane.getDropLineRect();
+        if(rect!=null) {
+            Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g2.setColor(Color.RED);
+            g2.fill(r);
+            //tabbedPane.paintDropLine(g2);
+        }
+    }
+}
+//*/
 
 //// a closeable tab test
 //// http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
