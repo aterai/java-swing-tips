@@ -5,39 +5,30 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public class MainPanel extends JPanel{
-    private final JTextArea textArea = new JTextArea();
-    private final JScrollPane scrollPane = new JScrollPane();
-    private final JLabel label = new JLabel("Unit Increment:");
-    private final JSpinner spinner;
-    private final SpinnerNumberModel model;
-    private final JSpinner.NumberEditor editor;
-    private final JButton button;
-    private static final String LF = "\n";
     public MainPanel() {
         super(new BorderLayout());
+        String LF = "\n";
         StringBuffer buf = new StringBuffer();
         for(int i=0;i<100;i++) buf.append(i+LF);
-        textArea.setText(buf.toString());
+
+        final JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.getViewport().add(textArea);
-        model = new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100000, 1);
-        spinner = new JSpinner(model);
-        editor = new JSpinner.NumberEditor(spinner, "#####0");
-        spinner.setEditor(editor);
-        button = new JButton(new AbstractAction("init") {
-            @Override public void actionPerformed(ActionEvent ae) {
-                int value = ((Integer) spinner.getValue()).intValue();
-                scrollPane.getVerticalScrollBar().setUnitIncrement(value);
+
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100000, 1));
+        spinner.setEditor(new JSpinner.NumberEditor(spinner, "#####0"));
+        spinner.addChangeListener(new ChangeListener() {
+            @Override public void stateChanged(ChangeEvent e) {
+                JSpinner s = (JSpinner)e.getSource();
+                scrollPane.getVerticalScrollBar().setUnitIncrement((Integer)s.getValue());
             }
         });
         Box box = Box.createHorizontalBox();
-        box.add(label);
+        box.add(new JLabel("Unit Increment:"));
         box.add(Box.createHorizontalStrut(2));
         box.add(spinner);
-        box.add(Box.createHorizontalStrut(2));
-        box.add(button);
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(box, BorderLayout.NORTH);
         add(scrollPane);
