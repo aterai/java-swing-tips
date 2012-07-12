@@ -15,8 +15,7 @@ class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        // [http://sozai-free.com/ CRW_3857_JFR.jpg]
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")));
+        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         vport.addMouseMotionListener(hsl);
         vport.addMouseListener(hsl);
 
