@@ -364,7 +364,7 @@
   <target name="pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
     <mkdir dir="${build.reports}" />
-    <pmd rulesetfiles="basic,imports,strings" encoding="${compile.encoding}" targetjdk="${compile.source}">
+    <pmd rulesetfiles="java-basic,java-imports,java-strings" encoding="${compile.encoding}">
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <formatter type="text" toConsole="true" />
