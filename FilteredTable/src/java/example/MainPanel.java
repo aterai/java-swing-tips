@@ -43,17 +43,17 @@ public class MainPanel extends JPanel {
 
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
+        model.addTest(new Test("Name d", "ee"));
         model.addTest(new Test("Name c", "Test cc"));
         model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
+        model.addTest(new Test("Name a", "ff"));
         model.addTest(new Test("Name 0", "Test aa"));
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", ""));
+        model.addTest(new Test("Name d", "gg"));
         model.addTest(new Test("Name c", "Test cc"));
         model.addTest(new Test("Name b", "Test bb"));
-        model.addTest(new Test("Name a", ""));
+        model.addTest(new Test("Name a", "hh"));
         model.addTest(new Test("Name 0", "Test aa"));
 
         check.addActionListener(new ActionListener() {

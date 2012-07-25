@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.*;
 import javax.swing.*;
 
@@ -86,7 +87,7 @@ public class MainPanel extends JPanel {
                         publish(new Message("The directory does not exist.",true));
                         return "Error";
                     }
-                    Vector<File> list = new Vector<File>();
+                    ArrayList<File> list = new ArrayList<File>();
                     try{
                         scount = 0;
                         recursiveSearch(dir, list);
@@ -106,7 +107,7 @@ public class MainPanel extends JPanel {
                             if(!pBar.isDisplayable()) {
                                 return "Disposed";
                             }
-                            File file = list.elementAt(current);
+                            File file = list.get(current);
                             Thread.sleep(50); //dummy
                             setProgress(100 * current / lengthOfTask);
                             publish(new Message(current+"/"+lengthOfTask + ", "+file.getAbsolutePath(),true));
@@ -117,7 +118,7 @@ public class MainPanel extends JPanel {
                     }
                     return "Done";
                 }
-                @Override protected void process(java.util.List<Message> chunks) {
+                @Override protected void process(List<Message> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     for(Message c: chunks) {
                         if(c.append) {
@@ -151,7 +152,7 @@ public class MainPanel extends JPanel {
                     appendLine(text);
                 }
                 private int scount = 0;
-                private void recursiveSearch(File dir, final Vector<File> list) throws InterruptedException {
+                private void recursiveSearch(File dir, final ArrayList<File> list) throws InterruptedException {
                     //System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
                     for(String fname: dir.list()) {
                         if(Thread.interrupted()) {
@@ -195,12 +196,13 @@ public class MainPanel extends JPanel {
             //fileChooser.setDialogTitle("...");
             fileChooser.setSelectedFile(new File((String) dirCombo.getEditor().getItem()));
             int fcSelected = fileChooser.showOpenDialog(MainPanel.this);
+            String title = "title";
             if(fcSelected==JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 if(file==null || !file.isDirectory()) {
                     Object[] obj = {"Please select directory."};
                     java.awt.Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(MainPanel.this, obj, "", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 addItem(dirCombo, file.getAbsolutePath(), 4);
@@ -210,7 +212,7 @@ public class MainPanel extends JPanel {
             }else{
                 Object[] obj = {"Error."};
                 java.awt.Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(MainPanel.this, obj, "", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }

@@ -16,9 +16,10 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JTable makeTable() {
+        String empty = "";
         String[] columnNames = {"String", "Button"};
         Object[][] data = {
-            {"AAA", ""}, {"CCC", ""}, {"BBB", ""}, {"ZZZ", ""}
+            {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty}
         };
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {

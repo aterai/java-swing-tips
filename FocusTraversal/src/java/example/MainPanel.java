@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -40,7 +41,7 @@ public class MainPanel extends JPanel{
 //         final FocusTraversalPolicy policy0 = null;
 
         FocusTraversalPolicy policy1 = new FocusTraversalPolicy() {
-            private final java.util.List<? extends Component> order = Arrays.asList(eb, wb, sb, nb);
+            private final List<? extends Component> order = Arrays.asList(eb, wb, sb, nb);
             @Override public Component getFirstComponent(Container focusCycleRoot) {
                 return order.get(0);
             }
@@ -70,7 +71,7 @@ public class MainPanel extends JPanel{
             }
         };
 
-        java.util.List<JRadioButton> rl = Arrays.asList(
+        List<JRadioButton> rl = Arrays.asList(
           new JRadioButton(new FocusTraversalPolicyChangeAction("Default", policy0)),
           new JRadioButton(new FocusTraversalPolicyChangeAction("Custom",  policy1)),
           new JRadioButton(new FocusTraversalPolicyChangeAction("Layout",  policy2)));
@@ -111,19 +112,21 @@ public class MainPanel extends JPanel{
         }
     }
     private void debugPrint() {
-        textarea.setText(debugString("frame", frame)+"\n"+
-                      debugString("this", this)+"\n"+
-                      debugString("p", p)+"\n"+
-                      debugString("box", box)+"\n"+
-                      debugString("scroll", scroll)+"\n"+
-                      debugString("textarea", textarea)+"\n"+
-                      debugString("eb", eb)+"\n");
+        textarea.setText(
+            debugString("frame",    frame)+
+            debugString("this",     this)+
+            debugString("p",        p)+
+            debugString("box",      box)+
+            debugString("scroll",   scroll)+
+            debugString("textarea", textarea)+
+            debugString("eb",       eb));
     }
     private static String debugString(String label, Container c) {
         return label+"------------------"+
           "\n  isFocusCycleRoot: "+               c.isFocusCycleRoot()+
           "\n  isFocusTraversalPolicySet: "+      c.isFocusTraversalPolicySet()+
-          "\n  isFocusTraversalPolicyProvider: "+ c.isFocusTraversalPolicyProvider();
+          "\n  isFocusTraversalPolicyProvider: "+ c.isFocusTraversalPolicyProvider()+
+          "\n";
     }
 
     public static void main(String[] args) {

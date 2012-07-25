@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.imageio.*;
@@ -67,7 +68,7 @@ class MainPanel extends JPanel {
         StringBuilder indent = new StringBuilder();
         int l = level * 2;
         while(l>0) {
-            indent.append(" ");
+            indent.append(' ');
             l--;
         }
         buf.append(String.format("%s%s%n", indent, node.getNodeName()));
@@ -150,7 +151,7 @@ class XMLTreeNode implements TreeNode {
                     }else{
                         buf.append(", ");
                     }
-                    buf.append(a.getNodeName()).append("=").append(a.getNodeValue());
+                    buf.append(a.getNodeName()).append('=').append(a.getNodeValue());
                 }
                 buf.append(']');
             }
@@ -160,7 +161,7 @@ class XMLTreeNode implements TreeNode {
         }
         return xmlNode.getNodeName();
     }
-    private java.util.List<XMLTreeNode> getChildren() {
+    private List<XMLTreeNode> getChildren() {
         if(children==null) {
             loadChildren();
         }

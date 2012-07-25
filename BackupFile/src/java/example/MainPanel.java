@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
             @Override public void stateChanged(ChangeEvent e) {
                 int i1 = ((Integer)spinner1.getValue()).intValue();
                 int i2 = ((Integer)spinner2.getValue()).intValue();
-                label.setText(""+(i1+i2));
+                label.setText(String.valueOf(i1+i2));
             }
         };
         spinner1.addChangeListener(cl);
@@ -108,7 +108,9 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-
+    private static String makeBackupFileName(String name, int num) {
+        return String.format("%s.%d~", name, num);
+    }
     private File makeBackupFile(File file, int intold, int intnew) {
         File testFile = null;
         String newfilename = file.getAbsolutePath();
@@ -122,7 +124,7 @@ public class MainPanel extends JPanel {
         }
         boolean testFileFlag = false;
         for(int i=1;i<=intold;i++) {
-            testFile = new File(file.getParentFile(), file.getName()+"."+i+"~");
+            testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
             if(!testFile.exists()) {
                 testFileFlag = true;
                 break;
@@ -130,7 +132,7 @@ public class MainPanel extends JPanel {
         }
         if(!testFileFlag) {
             for(int i=intold+1;i<=intold+intnew;i++) {
-                testFile = new File(file.getParentFile(), file.getName()+"."+i+"~");
+                testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
                 if(!testFile.exists()) {
                     testFileFlag = true;
                     break;
@@ -146,7 +148,7 @@ public class MainPanel extends JPanel {
                 return null;
             }
         }else{
-            File tmpFile3 = new File(file.getParentFile(), file.getName()+"."+(intold+1)+"~");
+            File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+1));
             append("古いバックアップファイルを削除", REGULAR);
             append("    del:"+tmpFile3.getAbsolutePath(), BLUE);
             if(!tmpFile3.delete()) {
@@ -154,8 +156,8 @@ public class MainPanel extends JPanel {
                 return null;
             }
             for(int i=intold+2;i<=intold+intnew;i++) {
-                File tmpFile1 = new File(file.getParentFile(), file.getName()+"."+i+"~");
-                File tmpFile2 = new File(file.getParentFile(), file.getName()+"."+(i-1)+"~");
+                File tmpFile1 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
+                File tmpFile2 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i-1));
                 if(!tmpFile1.renameTo(tmpFile2)) {
                     append("ファイルのリネームに失敗", ERROR);
                     return null;
@@ -163,7 +165,7 @@ public class MainPanel extends JPanel {
                 append("古いバックアップファイルの番号を更新", REGULAR);
                 append("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), BLUE);
             }
-            File tmpFile = new File(file.getParentFile(), file.getName()+"."+(intold+intnew)+"~");
+            File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+intnew));
             append("古い同名ファイルをリネーム", REGULAR);
             append("    "+file.getName()+" -> "+tmpFile.getName(), BLUE);
             if(!file.renameTo(tmpFile)) {

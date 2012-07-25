@@ -55,19 +55,19 @@ public class MainPanel extends JPanel {
                     int flg = 0;
                     if(v.contains(Permissions.READ)) {
                         flg|=map.get(Permissions.READ);
-                        buf.append("r");
+                        buf.append('r');
                     }else{
                         buf.append(M);
                     }
                     if(v.contains(Permissions.WRITE)) {
                         flg|=map.get(Permissions.WRITE);
-                        buf.append("w");
+                        buf.append('w');
                     }else{
                         buf.append(M);
                     }
                     if(v.contains(Permissions.EXECUTE)) {
                         flg|=map.get(Permissions.EXECUTE);
-                        buf.append("x");
+                        buf.append('x');
                     }else{
                         buf.append(M);
                     }
@@ -190,10 +190,10 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
     //protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         return true;
     }
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

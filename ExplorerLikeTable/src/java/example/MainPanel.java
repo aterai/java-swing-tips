@@ -52,8 +52,8 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("t.png", "comment"));
         model.addTest(new Test("tfasdfasd.jpg", "123"));
         model.addTest(new Test("afsdfasdfffffffffffasdfasdf.mpg", "test"));
-        model.addTest(new Test("fffffffffffasdfasdf", ""));
-        model.addTest(new Test("test1.jpg", ""));
+        model.addTest(new Test("fffffffffffasdfasdf", "456"));
+        model.addTest(new Test("test1.jpg", "789"));
 
         final Color orgColor = table.getSelectionBackground();
         final Color tflColor = this.getBackground();
