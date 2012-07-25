@@ -245,7 +245,6 @@ class DnDTabbedPane extends JTabbedPane {
         }
         private boolean isDragAcceptable(DropTargetDragEvent e) {
             Transferable t = e.getTransferable();
-            if(t==null) return false;
             DataFlavor[] f = e.getCurrentDataFlavors();
             if(t.isDataFlavorSupported(f[0]) && dragTabIndex>=0) {
                 return true;
@@ -254,7 +253,6 @@ class DnDTabbedPane extends JTabbedPane {
         }
         private boolean isDropAcceptable(DropTargetDropEvent e) {
             Transferable t = e.getTransferable();
-            if(t==null) return false;
             DataFlavor[] f = t.getTransferDataFlavors();
             if(t.isDataFlavorSupported(f[0]) && dragTabIndex>=0) {
                 return true;
@@ -403,8 +401,8 @@ class DnDTabbedPane extends JTabbedPane {
                 g2.fill(rForward);
             }
             if(draggingGhost != null) {
-                double xx = location.getX() - (draggingGhost.getWidth(this) /2d);
-                double yy = location.getY() - (draggingGhost.getHeight(this)/2d);
+                double xx = location.getX() - draggingGhost.getWidth(this) /2d;
+                double yy = location.getY() - draggingGhost.getHeight(this)/2d;
                 g2.drawImage(draggingGhost, (int)xx, (int)yy , null);
             }
             if(dragTabIndex>=0) {
