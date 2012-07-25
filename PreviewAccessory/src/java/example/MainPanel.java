@@ -67,7 +67,6 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
             return;
         }
         ImageIcon tmpIcon = new ImageIcon(file.getPath());
-        if(tmpIcon == null) return;
         if(tmpIcon.getIconWidth()>PREVIEW_WIDTH) {
             //Image img = tmpIcon.getImage().getScaledInstance(PREVIEW_WIDTH,-1,Image.SCALE_DEFAULT);
             //The Perils of Image.getScaledInstance() | Java.net
