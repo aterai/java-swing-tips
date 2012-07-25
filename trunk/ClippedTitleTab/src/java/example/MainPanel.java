@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -86,7 +88,7 @@ public class MainPanel extends JPanel {
                 }
             });
         }
-        final java.util.List<? extends JTabbedPane> list = java.util.Arrays.asList(
+        final List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTab(new JTabbedPane()),
             makeTestTab(tabbedPane));
         JPanel p = new JPanel(new GridLayout(2,1));

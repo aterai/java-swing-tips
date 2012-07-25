@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -22,12 +23,12 @@ class MainPanel extends JPanel {
         JButton b2 = new JButton(rss);
         b2.setRolloverIcon(makeRolloverIcon(rss));
 
-        final java.util.List<JButton> list = Arrays.asList(b1, b2);
+        final List<JButton> list = Arrays.asList(b1, b2);
         final JPanel p = new JPanel();
         p.add(b1);
         p.add(b2);
 
-        java.util.List<JCheckBox> clist = Arrays.asList(
+        List<JCheckBox> clist = Arrays.asList(
             new JCheckBox(new AbstractAction("setFocusPainted") {
                 @Override public void actionPerformed(ActionEvent e) {
                     boolean flg = ((JCheckBox)e.getSource()).isSelected();
@@ -87,7 +88,7 @@ class MainPanel extends JPanel {
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
-    private JComponent makeTitlePanel(String title, java.util.List<? extends JComponent> list) {
+    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

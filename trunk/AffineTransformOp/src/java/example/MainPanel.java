@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.imageio.*;
 
@@ -45,7 +47,7 @@ class MainPanel extends JPanel {
                 }
             }
         };
-        java.util.List<AbstractAction> list = java.util.Arrays.asList(
+        List<AbstractAction> list = Arrays.asList(
             new AbstractAction("NONE") {
                 @Override public void actionPerformed(ActionEvent e) {
                     mode = Flip.NONE;

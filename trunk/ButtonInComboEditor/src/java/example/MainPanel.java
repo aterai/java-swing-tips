@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -76,7 +77,7 @@ class MainPanel extends JPanel {
                 int width        = cb.getWidth();
                 int height       = cb.getHeight();
                 Insets insets    = cb.getInsets();
-                int buttonHeight = height - (insets.top + insets.bottom);
+                int buttonHeight = height - insets.top - insets.bottom;
                 int buttonWidth  = buttonHeight;
                 int labelWidth   = buttonHeight;
                 int loupeWidth   = buttonHeight;
@@ -85,7 +86,7 @@ class MainPanel extends JPanel {
                 if(arrowButton != null) {
                     Insets arrowInsets = arrowButton.getInsets();
                     buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-                    arrowButton.setBounds(width - (insets.right + buttonWidth), insets.top, buttonWidth, buttonHeight);
+                    arrowButton.setBounds(width - insets.right - buttonWidth, insets.top, buttonWidth, buttonHeight);
                 }
                 if(label != null) {
                     Insets labelInsets = label.getInsets();
@@ -102,7 +103,7 @@ class MainPanel extends JPanel {
                 if(rssButton != null && rssButton.isVisible()) {
                     Insets loupeInsets = rssButton.getInsets();
                     loupeWidth = rssButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
-                    rssButton.setBounds(width - (insets.right + loupeWidth + buttonWidth), insets.top, loupeWidth, buttonHeight);
+                    rssButton.setBounds(width - insets.right - loupeWidth - buttonWidth, insets.top, loupeWidth, buttonHeight);
                 }else{
                     loupeWidth = 0;
                 }
@@ -110,8 +111,8 @@ class MainPanel extends JPanel {
                 Component editor = cb.getEditor().getEditorComponent();
                 if( editor != null ) {
                     editor.setBounds(insets.left + labelWidth, insets.top,
-                                     width  - (insets.left + insets.right + buttonWidth + labelWidth + loupeWidth),
-                                     height - (insets.top  + insets.bottom));
+                                     width  - insets.left - insets.right - buttonWidth - labelWidth - loupeWidth,
+                                     height - insets.top  - insets.bottom);
                 }
             }
         });
@@ -138,7 +139,7 @@ class MainPanel extends JPanel {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         Object o = combo02.getSelectedItem();
-                        TestItem i = (o instanceof TestItem)?(TestItem)o:getTestItemFromModel(o.toString());
+                        TestItem i = o instanceof TestItem ? (TestItem)o : getTestItemFromModel(o.toString());
                         label.setIcon(i.favicon);
                     }
                 });
@@ -252,7 +253,7 @@ class MainPanel extends JPanel {
             return url;
         }
     }
-    private JComponent makeTitlePanel(String title, java.util.List<? extends JComponent> list) {
+    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder(title));
         for(JComponent cmp:list) {

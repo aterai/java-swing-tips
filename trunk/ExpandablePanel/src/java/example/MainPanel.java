@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
@@ -14,7 +15,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         JPanel panel = new JPanel(new BorderLayout());
-        final java.util.List<ExpansionPanel> panelList = makeList();
+        final List<ExpansionPanel> panelList = makeList();
         ExpansionListener rl = new ExpansionListener() {
             public void expansionStateChanged(ExpansionEvent e) {
                 initComps(panelList, e);
@@ -35,7 +36,7 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 240));
     }
 
-    public void initComps(java.util.List<ExpansionPanel> list, ExpansionEvent e) {
+    public void initComps(List<ExpansionPanel> list, ExpansionEvent e) {
         setVisible(false);
         centerBox.removeAll();
         northBox.removeAll();
@@ -57,7 +58,7 @@ public class MainPanel extends JPanel{
         setVisible(true);
     }
 
-    private java.util.List<ExpansionPanel> makeList() {
+    private List<ExpansionPanel> makeList() {
         return Arrays.<ExpansionPanel>asList(
             new ExpansionPanel("Panel1") {
                 public Container makePanel() {
@@ -173,7 +174,7 @@ abstract class ExpansionPanel extends JPanel {
     }
 }
 
-class ExpansionEvent extends java.util.EventObject{
+class ExpansionEvent extends EventObject{
     public ExpansionEvent(Object source) {
         super(source);
     }

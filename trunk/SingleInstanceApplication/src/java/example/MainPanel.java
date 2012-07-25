@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
-import java.util.*;
 import javax.swing.*;
 //import com.sun.tools.attach.*;
 
@@ -90,8 +89,8 @@ public class MainPanel extends JPanel{
 // }
 //
 // final class FinderUtil {
-//     public static final <T> java.util.List<T> findAll(java.util.List<T> list, IPredicate<T> match) {
-//         java.util.List<T> temp = new ArrayList<T>();
+//     public static final <T> List<T> findAll(List<T> list, IPredicate<T> match) {
+//         List<T> temp = new ArrayList<T>();
 //         for(T t : list) {
 //             if(match.evaluate(t)){
 //                 temp.add(t);

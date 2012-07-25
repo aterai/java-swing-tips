@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
@@ -20,7 +21,7 @@ class MainPanel extends JPanel {
         JToggleButton t2 = new JToggleButton(nicon);
         t1.setSelectedIcon(sicon);
         t2.setSelectedIcon(sicon);
-        java.util.List<AbstractButton> l = Arrays.<AbstractButton>asList(
+        List<AbstractButton> l = Arrays.<AbstractButton>asList(
             new JRadioButton("RadioButton1"),
             new JRadioButton("RadioButton2"),
             t1, t2);

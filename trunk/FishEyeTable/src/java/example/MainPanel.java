@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -22,7 +23,7 @@ public class MainPanel extends JPanel {
     private static TableModel makeTestModel() {
         TestModel m = new TestModel();
         for(int i=0;i<20;i++) {
-            m.addTest(new Test("Name:"+i, (i%2==0?"Comment":"")));
+            m.addTest(new Test("Name:"+i, i%2==0?"Comment":""));
         }
         return m;
     }
@@ -58,7 +59,7 @@ class FishEyeRowContext{
     }
 }
 class FishEyeTable extends JTable {
-    private final java.util.List<FishEyeRowContext> fishEyeRowList;
+    private final List<FishEyeRowContext> fishEyeRowList;
     private final Font font_s;
     private int prev_row = 0;
     private int prev_height = 0;
@@ -77,7 +78,7 @@ class FishEyeTable extends JTable {
         Color color24 = new Color(240,240,240);
         Color color32 = new Color(230,230,250);
 
-        fishEyeRowList = java.util.Arrays.asList(
+        fishEyeRowList = Arrays.asList(
             new FishEyeRowContext(12,font12,color12),
             new FishEyeRowContext(18,font18,color18),
             new FishEyeRowContext(24,font24,color24),
@@ -196,7 +197,8 @@ class FishEyeTable extends JTable {
                 crh = fishEyeRowList.get(index).height;
             }else{
                 if(i<0) continue;
-                crh = rest_rh+(a>0?1:0);
+                int b = a>0?1:0;
+                crh = rest_rh+b;
                 a = a-1;
             }
             setRowHeight(i, crh);
