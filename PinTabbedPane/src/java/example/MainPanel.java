@@ -96,14 +96,20 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             if(check.isSelected()) {
                 for(i=0;i<idx;i++) {
                     String s = t.getTitleAt(i);
-                    if(s==null || s.length()==0) continue;
-                    break;
+                    if(s==null || s.length()==0) {
+                        continue;
+                    }else{
+                        break;
+                    }
                 }
             }else{
                 for(i=t.getTabCount()-1;i>idx;i--) {
                     String s = t.getTitleAt(i);
-                    if(s!=null && s.length()>0) continue;
-                    break;
+                    if(s!=null && s.length()>0) {
+                        continue;
+                    }else{
+                        break;
+                    }
                 }
             }
             t.remove(idx);
