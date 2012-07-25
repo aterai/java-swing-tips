@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.synth.*;
@@ -12,7 +13,7 @@ import javax.swing.plaf.synth.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
-        final java.util.List<? extends JTabbedPane> list = Arrays.asList(
+        final List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTabbedPane(new JTabbedPane()),
             makeTestTabbedPane(new ClippedTitleTabbedPane()));
 
@@ -105,14 +106,15 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             break;
           case BOTTOM: case TOP: default:
             tabWidth = areaWidth / tabCount;
-            gap = areaWidth - (tabWidth * tabCount);
+            gap = areaWidth - tabWidth * tabCount;
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
         for(int i=0;i<tabCount;i++) {
             JComponent l = (JComponent)getTabComponentAt(i);
             if(l==null) break;
-            l.setPreferredSize(new Dimension(tabWidth+(i<gap?1:0), l.getPreferredSize().height));
+            int b = i<gap?1:0;
+            l.setPreferredSize(new Dimension(tabWidth+b, l.getPreferredSize().height));
         }
         super.doLayout();
     }

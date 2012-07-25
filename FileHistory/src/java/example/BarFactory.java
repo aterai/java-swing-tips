@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 public final class BarFactory{
@@ -28,7 +29,7 @@ public final class BarFactory{
         try{
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
                 //http://docs.oracle.com/javase/jp/6/api/java/util/ResourceBundle.Control.html
-                public java.util.List<String> getFormats(String baseName) {
+                public List<String> getFormats(String baseName) {
                     if(baseName == null) throw new NullPointerException();
                     return Arrays.asList("properties");
                 }

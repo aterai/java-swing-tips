@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -12,7 +13,7 @@ class MainPanel extends JPanel {
     private final JSpinner spinner02 = new JSpinner();
     private final JSpinner spinner03 = new JSpinner();
     private final JSpinner spinner04 = new JSpinner();
-    private final java.util.List<String> weeks = Arrays.asList("Sun","Mon","Tue","Wed","Thu","Sat");
+    private final List<String> weeks = Arrays.asList("Sun","Mon","Tue","Wed","Thu","Sat");
     public MainPanel() {
         super(new GridLayout(2,1));
         spinner01.setModel(new SpinnerNumberModel(20, 0, 59, 1));
@@ -40,7 +41,7 @@ class MainPanel extends JPanel {
             public Object getPreviousValue() {
                 Object o = super.getPreviousValue();
                 if(o==null) {
-                    java.util.List list = getList();
+                    List list = getList();
                     o = list.get(list.size()-1);
                 }
                 return o;
@@ -51,7 +52,7 @@ class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 200));
     }
-    private JComponent makeTitlePanel(String title, java.util.List<? extends JComponent> list) {
+    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

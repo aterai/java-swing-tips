@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
-import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
                     }
                     return "Done";
                 }
-                @Override protected void process(java.util.List<String> chunks) {
+                @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     for(String message : chunks) {
                         monitor.setNote(message);

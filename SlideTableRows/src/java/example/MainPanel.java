@@ -105,7 +105,7 @@ public class MainPanel extends JPanel {
 //                 }
 //                 return null;
 //             }
-//             @Override protected void process(java.util.List<Integer> chunks) {
+//             @Override protected void process(List<Integer> chunks) {
 //                 for(Integer height: chunks) {
 //                     for(int i=selection.length-1;i>=0;i--) {
 //                         table.setRowHeight(selection[i], height);

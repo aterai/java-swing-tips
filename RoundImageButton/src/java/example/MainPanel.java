@@ -5,6 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -24,8 +26,8 @@ class MainPanel extends JPanel{
       //};
     public MainPanel() {
         super(new BorderLayout());
-        final java.util.List<JButton> l = makeButtonArray1(getClass()); //Override JButton
-        //final java.util.List<JButton> l = makeButtonArray2(getClass()); //Set ButtonUI
+        final List<JButton> l = makeButtonArray1(getClass()); //Override JButton
+        //final List<JButton> l = makeButtonArray2(getClass()); //Set ButtonUI
 
         box.setOpaque(true);
         box.setBackground(new Color(120,120,160));
@@ -60,8 +62,8 @@ class MainPanel extends JPanel{
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 180));
     }
-    private static java.util.List<JButton> makeButtonArray1(final Class clazz) {
-        return java.util.Arrays.<JButton>asList(
+    private static List<JButton> makeButtonArray1(final Class clazz) {
+        return Arrays.<JButton>asList(
             new RoundButton(new ImageIcon(clazz.getResource("005.png"))) {{
                 setPressedIcon(new ImageIcon(clazz.getResource("005d.png")));
                 setRolloverIcon(new ImageIcon(clazz.getResource("005g.png")));
@@ -83,8 +85,8 @@ class MainPanel extends JPanel{
                 setRolloverIcon(new ImageIcon(clazz.getResource("004g.png")));
             }});
     }
-    private static java.util.List<JButton> makeButtonArray2(final Class clazz) {
-        return java.util.Arrays.asList(
+    private static List<JButton> makeButtonArray2(final Class clazz) {
+        return Arrays.asList(
             new JButton(new ImageIcon(clazz.getResource("005.png"))) {{
                 setPressedIcon(new ImageIcon(clazz.getResource("005d.png")));
                 setRolloverIcon(new ImageIcon(clazz.getResource("005g.png")));

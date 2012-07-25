@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -87,7 +88,7 @@ public class MainPanel extends JPanel {
                 }
                 return sleepDummy*lengthOfTask;
             }
-            @Override protected void process(java.util.List<Integer> c) {
+            @Override protected void process(List<Integer> c) {
                 model.setValueAt(c.get(c.size()-1), key, 2);
                 //for(Integer value : chunks) {
                 //    model.setValueAt(value, key, 2);
@@ -103,7 +104,7 @@ public class MainPanel extends JPanel {
                 }else{
                     try{
                         i = get();
-                        text = (i>=0)?"Done":"Disposed";
+                        text = i>=0?"Done":"Disposed";
                     }catch(Exception ignore) {
                         ignore.printStackTrace();
                         text = ignore.getMessage();
@@ -181,7 +182,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void show(Component c, int x, int y) {
             int[] l = table.getSelectedRows();
-            boolean flag = (l!=null && l.length>0);
+            boolean flag = l!=null && l.length>0;
             cancelAction.setEnabled(flag);
             deleteAction.setEnabled(flag);
             super.show(c, x, y);

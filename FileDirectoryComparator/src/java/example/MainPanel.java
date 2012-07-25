@@ -186,7 +186,7 @@ class FileTransferHandler extends TransferHandler {
 //         try{
 //             if(canImport(component, transferable.getTransferDataFlavors())) {
 //                 DefaultTableModel model = (DefaultTableModel)((JTable)component).getModel();
-//                 for(Object o: (java.util.List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+//                 for(Object o: (List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
 //                     if(o instanceof File) {
 //                         File file = (File)o;
 //                         model.addRow(new Object[] {file, file, file});
@@ -250,7 +250,7 @@ class FileGroupComparator extends DefaultFileComparator{
     }
     public int compare(File a, File b) {
         int flag = 1;
-        java.util.List<? extends TableRowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
+        List<? extends TableRowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
         if(!keys.isEmpty()) {
             TableRowSorter.SortKey sortKey = keys.get(0);
             if(sortKey.getColumn()==column && sortKey.getSortOrder()==SortOrder.DESCENDING) {

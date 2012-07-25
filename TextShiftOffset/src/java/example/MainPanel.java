@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 class MainPanel extends JPanel{
@@ -13,7 +14,7 @@ class MainPanel extends JPanel{
         //System.out.println(UIManager.getInt("Button.textShiftOffset"));
         UIManager.put("Button.textShiftOffset", 0);
 
-        java.util.List<JRadioButton> rl = Arrays.asList(
+        List<JRadioButton> rl = Arrays.asList(
           new JRadioButton(new TextShiftOffsetAction(0)),
           new JRadioButton(new TextShiftOffsetAction(1)),
           new JRadioButton(new TextShiftOffsetAction(-1)));

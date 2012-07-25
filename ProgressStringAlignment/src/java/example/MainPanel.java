@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -39,7 +40,7 @@ public class MainPanel extends JPanel {
 
     private final JProgressBar progressBar1 = makeProgressBar(SwingConstants.RIGHT);
     private final JProgressBar progressBar2 = makeProgressBar(SwingConstants.LEFT);
-    private final java.util.List<JProgressBar> list = Arrays.<JProgressBar>asList(progressBar1, progressBar2);
+    private final List<JProgressBar> list = Arrays.<JProgressBar>asList(progressBar1, progressBar2);
     public MainPanel() {
         super(new BorderLayout());
 

@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -28,7 +29,7 @@ public class MainPanel extends JPanel {
     private final JComboBox combo3 = makeComboBox(new String[] {"setEditable(true)", "setDisabledTextColor"});
     private final JLabel label     = new JLabel("label disabledForeground");
     private final JButton button   = new JButton("button disabledText");
-    private final java.util.List<JComponent> list = Arrays.<JComponent>asList(cbx1, cbx2,
+    private final List<JComponent> list = Arrays.<JComponent>asList(cbx1, cbx2,
                                                              combo1, combo2, combo3,
                                                              label, button);
     @SuppressWarnings("unchecked")

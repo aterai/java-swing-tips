@@ -3,13 +3,15 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
-        java.util.List<String> list = java.util.Arrays.asList(
+        List<String> list = Arrays.asList(
             "no_disposal_specified",
             "do_not_dispose",
             "restore_to_background_color",

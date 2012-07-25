@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
@@ -12,7 +13,7 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
-        final java.util.List<JSlider> list = Arrays.asList(
+        final List<JSlider> list = Arrays.asList(
             makeSilder("Default SnapToTicks"),
             makeSilder("Custom SnapToTicks"));
         Box b = Box.createVerticalBox();
@@ -81,7 +82,7 @@ public class MainPanel extends JPanel{
                             int halfThumbWidth = thumbRect.width / 2;
                             final int trackLength = trackRect.width;
                             final int trackLeft   = trackRect.x - halfThumbWidth;
-                            final int trackRight  = trackRect.x + (trackRect.width - 1) + halfThumbWidth;
+                            final int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
                             int xPos = e.getX();
                             int snappedPos = xPos;
                             if(xPos <= trackLeft) {
@@ -101,7 +102,7 @@ public class MainPanel extends JPanel{
                                                       : slider.getMinorTickSpacing();
                                 float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
                                 xPos -= trackLeft;
-                                snappedPos = (int) ((Math.round(xPos/actualPixelsForOneTick) * actualPixelsForOneTick) + 0.5) + trackLeft;
+                                snappedPos = (int) (Math.round(xPos/actualPixelsForOneTick) * actualPixelsForOneTick + 0.5) + trackLeft;
                                 offset = 0;
                                 //System.out.println(snappedPos);
                             }
@@ -129,7 +130,7 @@ public class MainPanel extends JPanel{
                             int halfThumbWidth = thumbRect.width / 2;
                             final int trackLength = trackRect.width;
                             final int trackLeft   = trackRect.x - halfThumbWidth;
-                            final int trackRight  = trackRect.x + (trackRect.width - 1) + halfThumbWidth;
+                            final int trackRight  = trackRect.x + trackRect.width - 1 + halfThumbWidth;
                             int xPos = e.getX();
                             int snappedPos = xPos;
                             if(xPos <= trackLeft) {
@@ -149,7 +150,7 @@ public class MainPanel extends JPanel{
                                                       : slider.getMinorTickSpacing();
                                 float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
                                 xPos -= trackLeft;
-                                snappedPos = (int) ((Math.round(xPos/actualPixelsForOneTick) * actualPixelsForOneTick) + 0.5) + trackLeft;
+                                snappedPos = (int) (Math.round(xPos/actualPixelsForOneTick) * actualPixelsForOneTick + 0.5) + trackLeft;
                                 offset = 0;
                                 //System.out.println(snappedPos);
                             }

@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -37,7 +38,7 @@ class MainPanel extends JPanel {
         final int h = icon.getIconHeight();
         final Insets is = comp.getInsets();
         final int ch = comp.getPreferredSize().height-is.top-is.bottom;
-        final int yy = (ch-h>0)?(ch-h)/2:0;
+        final int yy = ch-h>0?(ch-h)/2:0;
         ImageIcon wrappedicon = new ImageIcon() {
             @Override public int getIconWidth()  { return w;  }
             @Override public int getIconHeight() { return ch; }
@@ -73,7 +74,7 @@ class MainPanel extends JPanel {
             }
         });
     }
-    private JComponent makeTitlePanel(String title, java.util.List<? extends JComponent> list) {
+    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();

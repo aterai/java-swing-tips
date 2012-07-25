@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileSystemView;
@@ -100,7 +100,7 @@ class FolderSelectionListener implements TreeSelectionListener{
                 }
                 return "done";
             }
-            @Override protected void process(java.util.List<File> chunks) {
+            @Override protected void process(List<File> chunks) {
                 for(File file: chunks) {
                     node.add(new DefaultMutableTreeNode(file));
                 }

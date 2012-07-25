@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileSystemView;
@@ -55,7 +56,7 @@ public class MainPanel extends JPanel {
                 System.out.println("------------------");
                 searchTreeForCheckedNode(tree, tree.getPathForRow(0));
 //                 DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
-//                 java.util.Enumeration e = root.breadthFirstEnumeration();
+//                 Enumeration e = root.breadthFirstEnumeration();
 //                 while(e.hasMoreElements()) {
 //                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
 //                     CheckBoxNode check = (CheckBoxNode)node.getUserObject();
@@ -184,7 +185,7 @@ class FolderSelectionListener implements TreeSelectionListener{
                 }
                 return "done";
             }
-            @Override protected void process(java.util.List<File> chunks) {
+            @Override protected void process(List<File> chunks) {
                 for(File file: chunks) {
                     node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)));
                 }
@@ -345,7 +346,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
 //     protected EventListenerList listenerList = new EventListenerList();
 //     transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {
@@ -434,7 +435,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener{
         File file = ((CheckBoxNode)userObject).file;
         int selectedCount = 0;
         int indeterminateCount = 0;
-        java.util.Enumeration children = parent.children();
+        Enumeration children = parent.children();
         while(children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)children.nextElement();
             CheckBoxNode check = (CheckBoxNode)node.getUserObject();
@@ -455,7 +456,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener{
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
-        java.util.Enumeration breadth = root.breadthFirstEnumeration();
+        Enumeration breadth = root.breadthFirstEnumeration();
         while(breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)breadth.nextElement();
             if(root==node) {
