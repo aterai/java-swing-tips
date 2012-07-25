@@ -12,10 +12,10 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"Integer", "String"};
+        String[] columnNames = {"Integer", "Answer"};
         Object[][] data = {
-            { 1, "A" }, { 2, "B" }, { 3, "C" },
-            { 4, "B" }, { 5, "A" }
+            { 1, Answer.A }, { 2, Answer.B }, { 3, Answer.C },
+            { 4, Answer.C }, { 5, Answer.A }
         };
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
 
 class RadioButtonsPanel extends JPanel {
     private static final String OSNAME = System.getProperty("os.name");
-    private final String[] answer = { "A", "B", "C" };
+    private final String[] answer = { Answer.A.toString(), Answer.B.toString(), Answer.C.toString() };
     public JRadioButton[] buttons;
     public ButtonGroup bg = new ButtonGroup();
     public RadioButtonsPanel() {
@@ -197,3 +197,4 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         }
     }
 }
+enum Answer {A, B, C}

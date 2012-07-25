@@ -12,7 +12,10 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         String LF = "\n";
         StringBuffer buf = new StringBuffer();
-        for(int i=0;i<100;i++) buf.append(i+LF);
+        for(int i=0;i<100;i++) {
+            String s = i + LF;
+            buf.append(s);
+        }
 
         final JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

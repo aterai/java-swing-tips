@@ -10,8 +10,8 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "String"};
     private final Object[][] data = {
-        {"aaa", 1, ""}, {"bbb", 2, ""},
-        {"CCC", 0, ""}, {"DDD", 3, ""}
+        {"aaa", 1, "eee"}, {"bbb", 2, "FFF"},
+        {"CCC", 0, "GGG"}, {"DDD", 3, "hhh"}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {

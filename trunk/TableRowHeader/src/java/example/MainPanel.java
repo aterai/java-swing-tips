@@ -16,12 +16,12 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         model.addTest(new Test("Name 1", "comment"));
         model.addTest(new Test("Name 2", "test"));
-        model.addTest(new Test("Name d", ""));
+        model.addTest(new Test("Name d", "ee"));
         model.addTest(new Test("Name c", "test cc"));
         model.addTest(new Test("Name b", "test bb"));
-        model.addTest(new Test("Name a", ""));
+        model.addTest(new Test("Name a", "ff"));
         model.addTest(new Test("Name 0", "test aa"));
-        model.addTest(new Test("Name 0", ""));
+        model.addTest(new Test("Name 0", "gg"));
 
         table.setCellSelectionEnabled(true);
 
