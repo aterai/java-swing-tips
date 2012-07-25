@@ -4,7 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -24,8 +26,9 @@ public class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(p, BorderLayout.NORTH);
         add(new JButton(new AbstractAction("add") {
+            @SuppressWarnings("unchecked")
             @Override public void actionPerformed(ActionEvent e) {
-                String str = (new Date()).toString();
+                String str = new Date().toString();
                 for(JComboBox c: Arrays.asList(c0, c1, c2, c3)) {
                     MutableComboBoxModel m = (MutableComboBoxModel)c.getModel();
                     m.insertElementAt(str, m.getSize());
@@ -55,7 +58,7 @@ public class MainPanel extends JPanel {
         comboBox.setEditable(isEditable);
         return comboBox;
     }
-    private JComponent makeTitlePanel(String title, java.util.List<? extends JComponent> list) {
+    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         GridBagConstraints c = new GridBagConstraints();
