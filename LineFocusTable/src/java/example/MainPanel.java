@@ -212,7 +212,7 @@ class DotBorder extends EmptyBorder {
     public enum Type { START, END; }
     private static final BasicStroke dashed = new BasicStroke(
         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-        10.0f, (new float[] {1.0f}), 0.0f);
+        10.0f, new float[] {1.0f}, 0.0f);
     private static final Color dotColor = new Color(200,150,150);
     public DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);

@@ -21,14 +21,14 @@ public class MainPanel extends JPanel{
             tab1.setUI(new WindowsTabbedPaneUI() {
                 protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-                    return (i<100) ? 100 : i;
+                    return i<100 ? 100 : i;
                 }
             });
         }else{
             tab1.setUI(new BasicTabbedPaneUI() {
                 protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-                    return (i<100) ? 100 : i;
+                    return i<100 ? 100 : i;
                 }
             });
         }

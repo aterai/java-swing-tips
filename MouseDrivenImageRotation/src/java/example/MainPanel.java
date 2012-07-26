@@ -67,10 +67,10 @@ class DraggableImageMouseListener extends MouseAdapter{
         height  = ii.getIconHeight();
         centerX = width/2.0;
         centerY = height/2.0;
-        inner.x = (x+centerX-ir/2);
-        inner.y = (y+centerY-ir/2);
-        outer.x = (x+centerX-or/2);
-        outer.y = (y+centerY-or/2);
+        inner.x = x+centerX-ir/2;
+        inner.y = y+centerY-ir/2;
+        outer.x = x+centerX-or/2;
+        outer.y = y+centerY-or/2;
         border  = new RoundRectangle2D.Double(0, 0, width, height, 10.0, 10.0);
     }
     public void paint(Graphics g, ImageObserver ior) {
@@ -133,10 +133,10 @@ class DraggableImageMouseListener extends MouseAdapter{
         }else if(moverHover) {
             x += e.getX() - startX;
             y += e.getY() - startY;
-            inner.x = (x+centerX-ir/2);
-            inner.y = (y+centerY-ir/2);
-            outer.x = (x+centerX-or/2);
-            outer.y = (y+centerY-or/2);
+            inner.x = x+centerX-ir/2;
+            inner.y = y+centerY-ir/2;
+            outer.x = x+centerX-or/2;
+            outer.y = y+centerY-or/2;
             startX = e.getX();
             startY = e.getY();
             ((JComponent)e.getSource()).repaint();

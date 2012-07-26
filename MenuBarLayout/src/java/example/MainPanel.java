@@ -41,7 +41,7 @@ public class MainPanel extends JPanel{
                     Insets insets = target.getInsets();
                     int hgap = getHgap();
                     int vgap = getVgap();
-                    int maxWidth = targetWidth - (insets.left + insets.right);
+                    int maxWidth = targetWidth - insets.left - insets.right;
                     int height   = vgap;
                     int rowWidth = hgap, rowHeight = 0;
                     int nmembers = target.getComponentCount();

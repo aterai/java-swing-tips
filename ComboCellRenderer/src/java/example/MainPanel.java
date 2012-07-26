@@ -154,7 +154,7 @@ class ComboCellRenderer extends JComboBox implements TableCellRenderer {
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {

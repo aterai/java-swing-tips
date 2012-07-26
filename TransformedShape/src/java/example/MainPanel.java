@@ -85,6 +85,6 @@ class FontRotateAnimation extends JComponent implements ActionListener {
         Shape s1 = at.createTransformedShape(shape);
         s = toCenterAT.createTransformedShape(s1);
         repaint(s.getBounds());
-        rotate = (rotate>=360) ? 0 : rotate+2;
+        rotate = rotate>=360 ? 0 : rotate+2;
     }
 }

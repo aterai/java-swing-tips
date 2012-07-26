@@ -45,7 +45,7 @@ public class MainPanel extends JPanel{
         final Timer timer = new Timer(200, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 String s = new Date().toString();
-                jta.append((jta.getDocument().getLength()>0)?"\n"+s:s);
+                jta.append(jta.getDocument().getLength()>0 ? "\n"+s : s);
             }
         });
         jta.addHierarchyListener(new HierarchyListener() {

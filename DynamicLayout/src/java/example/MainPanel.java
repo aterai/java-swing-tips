@@ -48,7 +48,7 @@ public class MainPanel extends JPanel{
             @Override public void componentResized(ComponentEvent e) {
                 int fw = frame.getSize().width;
                 int fh = frame.getSize().height;
-                frame.setSize((mw>fw)?mw:fw, (mh>fh)?mh:fh);
+                frame.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
             }
         });
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

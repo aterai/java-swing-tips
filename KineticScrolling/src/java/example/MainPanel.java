@@ -167,8 +167,8 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     private Point delta   = new Point();
     private static boolean isInside(JViewport vport, JComponent comp) {
         Point vp = vport.getViewPosition();
-        return (vp.x>=0 && vp.x+vport.getWidth()-comp.getWidth()<=0 &&
-                vp.y>=0 && vp.y+vport.getHeight()-comp.getHeight()<=0);
+        return vp.x>=0 && vp.x+vport.getWidth() -comp.getWidth() <=0 &&
+               vp.y>=0 && vp.y+vport.getHeight()-comp.getHeight()<=0;
     }
     public KineticScrollingListener2(JComponent comp) {
         this.label = comp;

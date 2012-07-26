@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
                     if(bias[0] == Position.Bias.Backward && pos > 0) {
                         pos--;
                     }
-                    if(pos >= 0 &&(editor.getDocument() instanceof HTMLDocument)) {
+                    if(pos >= 0 && editor.getDocument() instanceof HTMLDocument) {
                         HTMLDocument hdoc = (HTMLDocument)editor.getDocument();
                         Element elem = hdoc.getCharacterElement(pos);
                         //if(!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {

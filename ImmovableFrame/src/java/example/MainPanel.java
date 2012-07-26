@@ -70,7 +70,7 @@ public class MainPanel extends JPanel {
     static int openFrameCount = 0;
     static class MyInternalFrame extends JInternalFrame{
         public MyInternalFrame() {
-            super("Document #" + (++openFrameCount), true, true, true, true);
+            super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
             setSize(160, 100);
             setLocation(30*openFrameCount, 30*openFrameCount);
         }

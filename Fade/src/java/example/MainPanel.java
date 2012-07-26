@@ -69,7 +69,7 @@ class MainPanel extends JPanel {
             repaint();
         }
         private AlphaComposite makeAlphaComposite(float alpha) {
-            return (AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            return AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
         }
     }
 

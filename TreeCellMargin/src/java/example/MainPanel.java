@@ -146,8 +146,8 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor) {
         Color bsColor = getBorderSelectionColor();
-
-        if(bsColor != null && (selected || !drawDashedFocusIndicator)) {
+        boolean b = selected || !drawDashedFocusIndicator;
+        if(bsColor != null && b) {
             g.setColor(bsColor);
             g.drawRect(x, y, w - 1, h - 1);
         }

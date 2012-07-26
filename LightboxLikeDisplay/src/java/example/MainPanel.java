@@ -87,7 +87,8 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         if(rootPane!=null && isVisible()!=oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
-        if(isVisible && (animator==null || !animator.isRunning())) {
+        boolean b = animator==null || !animator.isRunning();
+        if(isVisible && b) {
             w = 40;
             h = 40;
             alpha = 0.0f;

@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
                     if(nmembers<=0) return;
                     int vgap = getVgap();
                     int hgap = getHgap();
-                    int rowh = (target.getHeight() - (insets.top + insets.bottom + vgap*2))/nmembers;
+                    int rowh = (target.getHeight() - insets.top - insets.bottom - vgap*2) / nmembers;
                     int x = insets.left + hgap;
                     int y = insets.top  + vgap;
                     for(int i=0;i<nmembers;i++) {
@@ -47,7 +47,7 @@ public class MainPanel extends JPanel {
                             Dimension d = m.getPreferredSize();
                             m.setSize(d.width, d.height);
                             m.setLocation(x, y);
-                            y += (vgap + Math.min(rowh, d.height));
+                            y += vgap + Math.min(rowh, d.height);
                             x = (int)(A2 * Math.sqrt(y));
                         }
                     }

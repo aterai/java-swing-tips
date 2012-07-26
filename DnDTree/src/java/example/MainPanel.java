@@ -221,7 +221,7 @@ class DnDTree extends JTree implements DragSourceListener, DropTargetListener, D
             }
         }
         @Override public boolean isDataFlavorSupported(DataFlavor df) {
-            return (df.getHumanPresentableName().equals(NAME));
+            return df.getHumanPresentableName().equals(NAME);
             //return (df.equals(localObjectFlavor));
         }
         @Override public DataFlavor[] getTransferDataFlavors() {
@@ -249,8 +249,8 @@ class DnDTree extends JTree implements DragSourceListener, DropTargetListener, D
         @Override public Component getTreeCellRendererComponent(JTree tree, Object value,
                                                       boolean isSelected, boolean isExpanded, boolean isLeaf,
                                                       int row, boolean hasFocus) {
-            isTargetNode = (value == dropTargetNode);
-            isTargetNodeLeaf = (isTargetNode && ((TreeNode)value).isLeaf());
+            isTargetNode = value == dropTargetNode;
+            isTargetNodeLeaf = isTargetNode && ((TreeNode)value).isLeaf();
             // isLastItem = (index == list.getModel().getSize()-1);
             //boolean showSelected = isSelected & (dropTargetNode == null);
             return super.getTreeCellRendererComponent(tree, value, isSelected, isExpanded, isLeaf, row, hasFocus);

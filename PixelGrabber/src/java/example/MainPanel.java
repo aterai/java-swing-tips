@@ -61,17 +61,17 @@ public class MainPanel extends JPanel{
         //NW
         for(int y=0;y<5;y++) {
             for(int x=0;x<5;x++) {
-                if((y==0 && x<5) || (y==1 && x<3) ||
-                   (y==2 && x<2) || (y==3 && x<1) ||
-                   (y==4 && x<1) ) pix[y*width+x] = 0x0;
+                if(y==0 && x<5 || y==1 && x<3 ||
+                   y==2 && x<2 || y==3 && x<1 ||
+                   y==4 && x<1 ) pix[y*width+x] = 0x0;
             }
         }
         //NE
         for(int y=0;y<5;y++) {
             for(int x=width-5;x<width;x++) {
-                if((y==0 && x>=width-5) || (y==1 && x>=width-3) ||
-                   (y==2 && x>=width-2) || (y==3 && x>=width-1) ||
-                   (y==4 && x>=width-1) ) pix[y*width+x] = 0x0;
+                if(y==0 && x>=width-5 || y==1 && x>=width-3 ||
+                   y==2 && x>=width-2 || y==3 && x>=width-1 ||
+                   y==4 && x>=width-1 ) pix[y*width+x] = 0x0;
             }
         }
 //         int n=0;

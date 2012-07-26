@@ -60,7 +60,7 @@ public class MainPanel extends JPanel {
                                 int mh = 480;
                                 int fw = dialog.getSize().width;
                                 int fh = dialog.getSize().height;
-                                dialog.setSize((mw>fw)?mw:fw, (mh>fh)?mh:fh);
+                                dialog.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
                             }
                         });
                         return dialog;

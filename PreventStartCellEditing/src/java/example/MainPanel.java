@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JRadioButton rb = (JRadioButton)e.getSource();
                 table.putClientProperty("JTable.autoStartsEdit", rb!=r1 && rb!=r3);
-                ce.setClickCountToStart((rb==r2 || rb==r3)?Integer.MAX_VALUE:2);
+                ce.setClickCountToStart(rb==r2 || rb==r3 ? Integer.MAX_VALUE : 2);
             }
         };
         r0.setSelected(true);

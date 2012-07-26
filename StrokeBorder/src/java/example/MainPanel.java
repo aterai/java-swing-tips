@@ -19,7 +19,7 @@ public class MainPanel extends JPanel{
         int i=0;
         try{
             while(st.hasMoreTokens()) {
-                list[i] = (new Float(st.nextToken())).floatValue();
+                list[i] = Float.valueOf(st.nextToken());
                 i++;
             }
         }catch(final NumberFormatException nfe) {

@@ -21,13 +21,13 @@ public class MainPanel extends JPanel {
                 int w = desktop.getSize().width -frame.getSize().width -e;
                 int s = desktop.getSize().height-frame.getSize().height-n;
                 if(isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
-                    x = (e<w)?(isNear(e)?0:e):(isNear(w)?w+e:e);
-                    y = (n<s)?(isNear(n)?0:n):(isNear(s)?s+n:n);
+                    x = e<w ? isNear(e)?0:e : isNear(w)?w+e:e;
+                    y = n<s ? isNear(n)?0:n : isNear(s)?s+n:n;
                 }
                 super.dragFrame(frame, x, y);
             }
             private boolean isNear(int c) {
-                return (Math.abs(c)<10);
+                return Math.abs(c)<10;
             }
         });
 //         BasicInternalFrameUI ui = (BasicInternalFrameUI)magneticFrame.getUI();

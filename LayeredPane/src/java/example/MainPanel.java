@@ -87,7 +87,7 @@ class MyInternalFrame extends JInternalFrame{
     static final int xOffset = 10, yOffset = 10;
     public MyInternalFrame() {
         //title, resizable, closable, maximizable, iconifiable
-        super("Document #" + (++openFrameCount), true, true, true, true);
+        super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
         setSize(180, 60);
         setLocation(xOffset*openFrameCount, yOffset*openFrameCount);
     }

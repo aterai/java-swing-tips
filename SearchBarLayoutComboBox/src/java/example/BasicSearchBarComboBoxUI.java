@@ -197,7 +197,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 int width        = cb.getWidth();
                 int height       = cb.getHeight();
                 Insets insets    = cb.getInsets();
-                int buttonHeight = height - (insets.top + insets.bottom);
+                int buttonHeight = height - insets.top - insets.bottom;
                 int buttonWidth  = buttonHeight;
                 int loupeWidth   = buttonHeight;
 
@@ -218,14 +218,14 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 if(loupeButton != null) {
                     Insets loupeInsets = loupeButton.getInsets();
                     //loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
-                    loupeButton.setBounds(width - (insets.right + loupeWidth), insets.top, loupeWidth, buttonHeight);
+                    loupeButton.setBounds(width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight);
                 }
                 JTextField editor = (JTextField)cb.getEditor().getEditorComponent();
                 //JTextField editor = (JTextField)cb.getComponent(1);
                 if(editor != null) {
                     editor.setBounds(insets.left + buttonWidth, insets.top,
-                                     width  - (insets.left + insets.right + buttonWidth + loupeWidth),
-                                     height - (insets.top  + insets.bottom));
+                                     width  - insets.left - insets.right - buttonWidth - loupeWidth,
+                                     height - insets.top  - insets.bottom);
                 }
             }
         };

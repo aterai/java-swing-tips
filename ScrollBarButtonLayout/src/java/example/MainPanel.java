@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
                     /*
                      * Width and left edge of the buttons and thumb.
                      */
-                    int itemW = sbSize.width - (sbInsets.left + sbInsets.right);
+                    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
                     int itemX = sbInsets.left;
 
                     /* Nominal locations of the buttons, assuming their preferred
@@ -38,8 +38,8 @@ public class MainPanel extends JPanel {
                     int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
 
                     //int decrButtonY = sbInsets.top;
-                    int decrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH + decrButtonH);
-                    int incrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH);
+                    int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
+                    int incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
 
                     /* The thumb must fit within the height left over after we
                      * subtract the preferredSize of the buttons and the insets
@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
                     //<----
 
                     int gaps = decrGap + incrGap;
-                    float trackH = sbSize.height - (sbInsetsH + sbButtonsH) - gaps;
+                    float trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
 
                     /* Compute the height and origin of the thumb.   The case
                      * where the thumb is at the bottom edge is handled specially
@@ -70,24 +70,24 @@ public class MainPanel extends JPanel {
                     //float value = getValue(sb);
                     float value = sb.getValue();
 
-                    int thumbH = (range <= 0) ? getMaximumThumbSize().height : (int)(trackH * (extent / range));
+                    int thumbH = range <= 0 ? getMaximumThumbSize().height : (int)(trackH * (extent / range));
                     thumbH = Math.max(thumbH, getMinimumThumbSize().height);
                     thumbH = Math.min(thumbH, getMaximumThumbSize().height);
 
                     int thumbY = incrButtonY - incrGap - thumbH;
                     if(value < (sb.getMaximum() - sb.getVisibleAmount())) {
                         float thumbRange = trackH - thumbH;
-                        thumbY = (int)(0.5f + (thumbRange * ((value - min) / (range - extent))));
+                        thumbY = (int)(0.5f + thumbRange * ((value - min) / (range - extent)));
                         //thumbY +=  decrButtonY + decrButtonH + decrGap;
                     }
 
                     /* If the buttons don't fit, allocate half of the available
                      * space to each and move the lower one (incrButton) down.
                      */
-                    int sbAvailButtonH = (sbSize.height - sbInsetsH);
+                    int sbAvailButtonH = sbSize.height - sbInsetsH;
                     if(sbAvailButtonH < sbButtonsH) {
                         incrButtonH = decrButtonH = sbAvailButtonH / 2;
-                        incrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH);
+                        incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
                     }
                     decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
                     incrButton.setBounds(itemX, incrButtonY, itemW, incrButtonH);
@@ -133,7 +133,7 @@ public class MainPanel extends JPanel {
                     /*
                      * Width and left edge of the buttons and thumb.
                      */
-                    int itemW = sbSize.width - (sbInsets.left + sbInsets.right);
+                    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
                     int itemX = sbInsets.left;
 
                     /* Nominal locations of the buttons, assuming their preferred
@@ -144,8 +144,8 @@ public class MainPanel extends JPanel {
                     int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
 
                     //int decrButtonY = sbInsets.top;
-                    int decrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH + decrButtonH);
-                    int incrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH);
+                    int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
+                    int incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
 
                     /* The thumb must fit within the height left over after we
                      * subtract the preferredSize of the buttons and the insets
@@ -162,7 +162,7 @@ public class MainPanel extends JPanel {
                     //<----
 
                     int gaps = decrGap + incrGap;
-                    float trackH = sbSize.height - (sbInsetsH + sbButtonsH) - gaps;
+                    float trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
 
                     /* Compute the height and origin of the thumb.   The case
                      * where the thumb is at the bottom edge is handled specially
@@ -176,24 +176,24 @@ public class MainPanel extends JPanel {
                     //float value = getValue(sb);
                     float value = sb.getValue();
 
-                    int thumbH = (range <= 0) ? getMaximumThumbSize().height : (int)(trackH * (extent / range));
+                    int thumbH = range <= 0 ? getMaximumThumbSize().height : (int)(trackH * (extent / range));
                     thumbH = Math.max(thumbH, getMinimumThumbSize().height);
                     thumbH = Math.min(thumbH, getMaximumThumbSize().height);
 
                     int thumbY = incrButtonY - incrGap - thumbH;
                     if(value < (sb.getMaximum() - sb.getVisibleAmount())) {
                         float thumbRange = trackH - thumbH;
-                        thumbY = (int)(0.5f + (thumbRange * ((value - min) / (range - extent))));
+                        thumbY = (int)(0.5f + thumbRange * ((value - min) / (range - extent)));
                         //thumbY +=  decrButtonY + decrButtonH + decrGap;
                     }
 
                     /* If the buttons don't fit, allocate half of the available
                      * space to each and move the lower one (incrButton) down.
                      */
-                    int sbAvailButtonH = (sbSize.height - sbInsetsH);
+                    int sbAvailButtonH = sbSize.height - sbInsetsH;
                     if(sbAvailButtonH < sbButtonsH) {
                         incrButtonH = decrButtonH = sbAvailButtonH / 2;
-                        incrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH);
+                        incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
                     }
                     decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
                     incrButton.setBounds(itemX, incrButtonY, itemW, incrButtonH);

@@ -56,8 +56,8 @@ public class MainPanel extends JPanel{
                 });
                 Color c = getSelectionBackground();
                 int r = c.getRed(), g = c.getGreen(), b = c.getBlue();
-                PCOLOR = (r>g)?(r>b)?new Color(r,0,0):new Color(0,0,b)
-                              :(g>b)?new Color(0,g,0):new Color(0,0,b);
+                PCOLOR = r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
+                             : g>b ? new Color(0,g,0) : new Color(0,0,b);
             }
             @Override public void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -352,9 +352,8 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
 //         int r = c.getRed();
 //         int g = c.getGreen();
 //         int b = c.getBlue();
-//         return (r>g)
-//           ?(r>b)?new Color(r,0,0):new Color(0,0,b)
-//           :(g>b)?new Color(0,g,0):new Color(0,0,b);
+//         return r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
+//                    : g>b ? new Color(0,g,0) : new Color(0,0,b);
 //     }
 // }
 // class MyList2 extends JList {
@@ -467,8 +466,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
 //         int r = c.getRed();
 //         int g = c.getGreen();
 //         int b = c.getBlue();
-//         return (r>g)
-//           ?(r>b)?new Color(r,0,0):new Color(0,0,b)
-//           :(g>b)?new Color(0,g,0):new Color(0,0,b);
+//         return r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
+//                    : g>b ? new Color(0,g,0) : new Color(0,0,b);
 //     }
 // }

@@ -98,7 +98,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
             }
         }
-        boolean isPressed = (modelColumn == pushedColumn);
+        boolean isPressed = modelColumn == pushedColumn;
         getModel().setPressed(isPressed);
         getModel().setArmed(isPressed);
         return this;
@@ -118,7 +118,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         }
         Integer value = null;
         Integer obj = state.get(col);
-        value = (obj != null && obj == DOWN) ? UP : DOWN;
+        value = obj != null && obj == DOWN ? UP : DOWN;
         state.clear();
         state.put(col, value);
     }

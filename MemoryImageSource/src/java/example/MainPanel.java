@@ -100,7 +100,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
             pixels[p.x + p.y * 320] = penc;
             for(int n=-1;n<=1;n++) {
                 for(int m=-1;m<=1;m++) {
-                    int t = (p.x+n) + (p.y+m) * 320;
+                    int t = p.x + n + (p.y + m) * 320;
                     if(t>=0 && t<320*240) {
                         pixels[t] = penc;
                     }

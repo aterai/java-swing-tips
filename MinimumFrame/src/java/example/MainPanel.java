@@ -34,7 +34,7 @@ public class MainPanel extends JPanel{
         });
         checkbox2.setAction(new AbstractAction("the minimum size of this window(since 1.6): "+MW+"x"+MH2) {
             @Override public void actionPerformed(ActionEvent e) {
-                frame.setMinimumSize((checkbox2.isSelected())?new Dimension(MW, MH2):null);
+                frame.setMinimumSize(checkbox2.isSelected() ? new Dimension(MW, MH2) : null);
             }
         });
         checkbox1.setSelected(true);
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel{
         if(!checkbox1.isSelected()) return;
         int fw = frame.getSize().width;
         int fh = frame.getSize().height;
-        frame.setSize((MW>fw)?MW:fw, (MH1>fh)?MH1:fh);
+        frame.setSize(MW>fw?MW:fw, MH1>fh?MH1:fh);
     }
 
     public static void main(String[] args) {

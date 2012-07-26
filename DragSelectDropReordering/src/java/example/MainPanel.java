@@ -246,8 +246,8 @@ class ReorderbleList extends JList {
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
-        return (r>g)?(r>b)?new Color(r,0,0):new Color(0,0,b)
-                    :(g>b)?new Color(0,g,0):new Color(0,0,b);
+        return r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
+                   : g>b ? new Color(0,g,0) : new Color(0,0,b);
     }
 }
 

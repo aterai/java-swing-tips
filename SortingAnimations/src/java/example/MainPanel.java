@@ -129,8 +129,8 @@ public class MainPanel extends JPanel {
         algorithmsChoices.setEnabled(flag);
     }
     private void genArray(int n) {
-        factorx = ((float) MAXX-MINX) / n;
-        factory = ((float) MAXY-MINY);
+        factorx = (MAXX-MINX) / (float)n;
+        factory = MAXY-MINY;
         GenerateInputs gi = (GenerateInputs)distributionsChoices.getSelectedItem();
         for(int i = 0; i < n; i++) {
             switch(gi) {

@@ -124,7 +124,7 @@ class WhitespaceLabelView extends LabelView {
         super.paint(g,a);
         Graphics2D g2 = (Graphics2D)g;
         Stroke stroke = g2.getStroke();
-        Rectangle alloc = (a instanceof Rectangle) ? (Rectangle)a : a.getBounds();
+        Rectangle alloc = a instanceof Rectangle ? (Rectangle)a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
         int spaceWidth = fontMetrics.stringWidth(IdeographicSpace);
         int sumOfTabs  = 0;

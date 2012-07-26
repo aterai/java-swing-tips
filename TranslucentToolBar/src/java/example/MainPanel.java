@@ -87,8 +87,8 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
                 //Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
                 if(ncomponents == 0) return;
-                int width = parent.getWidth(); // - (insets.left + insets.right);
-                int height = parent.getHeight(); // - (insets.left + insets.right);
+                int width = parent.getWidth(); // - insets.left - insets.right;
+                int height = parent.getHeight(); // - insets.left - insets.right;
                 int x = 0; //insets.left; int y = insets.top;
                 //for(int i=0;i<ncomponents;i++) {
                 Component c = parent.getComponent(0); //= toolBox;

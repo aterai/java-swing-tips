@@ -107,7 +107,7 @@ class MainPanel extends JPanel {
     private static int col = 0;
     class MyInternalFrame extends JInternalFrame{
         public MyInternalFrame() {
-            super("Document #" + (++openFrameCount), true, true, true, true);
+            super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
             row = row + 1;
             setSize(240, 120);
             setLocation(20*row+20*col, 20*row);

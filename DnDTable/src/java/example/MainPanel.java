@@ -146,7 +146,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
         int modelSize  = getRowCount();
         targetIndex = -1;
         for(int i=0;i<modelSize;i++) {
-            testArea.setRect(0, cellHeight*i-(cellHeight/2), lineWidht, cellHeight);
+            testArea.setRect(0, cellHeight*i-cellHeight/2, lineWidht, cellHeight);
             if(testArea.contains(p)) {
                 targetIndex = i;
                 targetLine.setRect(0, i*cellHeight, lineWidht, lineHeight);
@@ -243,7 +243,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
                 if(targetIndex==draggedIndex) {
                     setRowSelectionInterval(targetIndex,targetIndex);
                 }else{
-                    int tg = (targetIndex<draggedIndex)?targetIndex:targetIndex-1;
+                    int tg = targetIndex<draggedIndex ? targetIndex : targetIndex-1;
                     model.moveRow(draggedIndex,draggedIndex,tg);
                     setRowSelectionInterval(tg,tg);
                 }
