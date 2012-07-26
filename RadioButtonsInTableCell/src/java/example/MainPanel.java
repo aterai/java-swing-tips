@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -148,10 +149,10 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
     //protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         return true;
     } 
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

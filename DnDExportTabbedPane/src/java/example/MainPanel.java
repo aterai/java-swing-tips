@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.beans.*;
+import java.io.IOException;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -363,7 +364,8 @@ class DnDTabbedPane extends JTabbedPane {
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
             //disabled tab, null component problem.
             //pointed out by daryl. NullPointerException: i.e. addTab("Tab",null)
-            startPt = (idx<0 || !src.isEnabledAt(idx) || src.getComponentAt(idx)==null)?null:tabPt;
+            boolean flag = idx<0 || !src.isEnabledAt(idx) || src.getComponentAt(idx)==null;
+            startPt = flag ? null : tabPt;
         }
         private Point startPt;
         int gestureMotionThreshold = DragSource.getDragThreshold();
@@ -516,7 +518,7 @@ class TabTransferHandler extends TransferHandler {
             return true;
         }catch(UnsupportedFlavorException ufe) {
             ufe.printStackTrace();
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
         }
         return false;
@@ -564,8 +566,8 @@ class GhostGlassPane extends JPanel {
                 //tabbedPane.paintDropLine(g2);
             }
             //Point p = SwingUtilities.convertPoint(tabbedPane, dl.getDropPoint(), this);
-            double xx = p.getX() - (draggingGhost.getWidth(this) /2d);
-            double yy = p.getY() - (draggingGhost.getHeight(this)/2d);
+            double xx = p.getX() - draggingGhost.getWidth(this) /2d;
+            double yy = p.getY() - draggingGhost.getHeight(this)/2d;
             g2.drawImage(draggingGhost, (int)xx, (int)yy , this);
         }
     }

@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
@@ -112,7 +113,7 @@ class LeafTreeCellEditor extends DefaultTreeCellEditor {
     public LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
     }
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         boolean b = super.isCellEditable(e);
         Object o = tree.getLastSelectedPathComponent();
         if(b && o!=null && o instanceof TreeNode) {
@@ -202,7 +203,7 @@ class CellTextArea extends JTextArea {
         }catch(Exception ex) {
             ex.printStackTrace();
         }
-        lines = (lines < 1) ? 1 : lines;
+        lines = lines < 1 ? 1 : lines;
         int height = fm.getHeight() * lines;
         Insets i = getInsets();
         setPreferredSize(new Dimension(maxWidth + i.left+i.right, height+i.top+i.bottom));

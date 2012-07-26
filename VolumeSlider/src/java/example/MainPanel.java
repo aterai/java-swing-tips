@@ -71,7 +71,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class TriSliderUI extends javax.swing.plaf.metal.MetalSliderUI {
+class TriSliderUI extends MetalSliderUI {
     @Override public void paintThumb(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -86,7 +86,7 @@ class TriSliderUI extends javax.swing.plaf.metal.MetalSliderUI {
             Graphics2D g2 = (Graphics2D)g;
             pad = trackBuffer;
             cx = pad;
-            cy = (trackBounds.height / 2) - 2;
+            cy = -2 + trackBounds.height / 2;
             cw = trackBounds.width;
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -111,7 +111,7 @@ class TriSliderUI extends javax.swing.plaf.metal.MetalSliderUI {
             int fillLeft = 0;
             int fillRight = 0;
 
-            middleOfThumb = thumbRect.x + (thumbRect.width / 2);
+            middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
             //fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
             //fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;

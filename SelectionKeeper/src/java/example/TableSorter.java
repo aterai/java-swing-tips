@@ -36,6 +36,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 
@@ -105,7 +106,7 @@ public class TableSorter extends AbstractTableModel {
 
     private static Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
 
-    private static class ComparableComparator implements Comparator, java.io.Serializable {
+    private static class ComparableComparator implements Comparator, Serializable {
         @SuppressWarnings("unchecked")
         public int compare(Object o1, Object o2) {
             return ((Comparable)o1).compareTo(o2);
@@ -447,7 +448,8 @@ public class TableSorter extends AbstractTableModel {
                 }
                 // Cycle the sorting states through {NOT_SORTED, ASCENDING, DESCENDING} or
                 // {NOT_SORTED, DESCENDING, ASCENDING} depending on whether shift is pressed.
-                status = status + (e.isShiftDown() ? -1 : 1);
+                int d = e.isShiftDown() ? -1 : 1;
+                status = status + d;
                 status = (status + 4) % 3 - 1; // signed mod, returning {-1, 0, 1}
                 setSortingStatus(column, status);
                 loadSelectedRow(h.getTable(), list, keyCol);
@@ -492,7 +494,8 @@ public class TableSorter extends AbstractTableModel {
             int dx = (int)(size/2d*Math.pow(0.8, priority));
             int dy = descending ? dx : -dx;
             // Align icon (roughly) with font baseline.
-            y = y + 5*size/6 + (descending ? -dy : 0);
+            int d = descending ? -dy : 0;
+            y = y + 5*size/6 + d;
             int shift = descending ? 1 : -1;
             g.translate(x, y);
 

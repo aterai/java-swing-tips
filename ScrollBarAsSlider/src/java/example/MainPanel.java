@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         scrollbar = new JScrollBar(JScrollBar.HORIZONTAL, value, extent, min, max+extent);
         scrollbar.setUnitIncrement(step);
         scrollbar.getModel().addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(javax.swing.event.ChangeEvent e) {
+            @Override public void stateChanged(ChangeEvent e) {
                 BoundedRangeModel m = (BoundedRangeModel)e.getSource();
                 spinner.setValue(m.getValue());
             }

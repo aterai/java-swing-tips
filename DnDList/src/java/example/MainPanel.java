@@ -177,7 +177,7 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
 //                 Component comp = (Component) t.getTransferData(f[0]);
 //             }catch(UnsupportedFlavorException ex) {
 //                     e.dropComplete(false);
-//             }catch(java.io.IOException ie) {
+//             }catch(IOException ie) {
 //                 e.dropComplete(false);
 //             }
             if(isDropAcceptable(e)) {

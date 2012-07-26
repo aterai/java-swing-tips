@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.imageio.*;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -15,7 +16,7 @@ public class MainPanel extends JPanel {
         BufferedImage bi = null;
         try{
             bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
             throw new RuntimeException(ioe);
         }
@@ -178,7 +179,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
-        setSelected((value != null && ((Boolean)value).booleanValue()));
+        setSelected(value != null && ((Boolean)value).booleanValue());
         if(hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
         }else{
@@ -200,14 +201,15 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
         //String literal pool
         //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-        if(("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue) {
+        boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
+        if(flag && oldValue != newValue) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

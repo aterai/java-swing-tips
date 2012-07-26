@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -101,7 +102,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
         });
         return panel;
     }
-    @Override public boolean isCellEditable(final java.util.EventObject e) {
+    @Override public boolean isCellEditable(final EventObject e) {
         //System.out.println("isCellEditable");
 //         if(e instanceof KeyEvent) {
 //             //System.out.println("KeyEvent");

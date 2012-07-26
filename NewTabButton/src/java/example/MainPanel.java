@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -56,7 +57,7 @@ class CardLayoutTabbedPane extends JPanel {
     protected final ButtonGroup bg = new ButtonGroup();
 
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-    private final java.util.List<ImageIcon> icons = java.util.Arrays.asList(
+    private final List<ImageIcon> icons = Arrays.asList(
         new ImageIcon(getClass().getResource("wi0009-16.png")),
         new ImageIcon(getClass().getResource("wi0054-16.png")),
         new ImageIcon(getClass().getResource("wi0062-16.png")),
@@ -312,16 +313,16 @@ class TabLayout implements LayoutManager, java.io.Serializable {
                 return;
             }
             int lastw = parent.getComponent(ncomponents-1).getPreferredSize().width;
-            int width = parent.getWidth() - (insets.left + insets.right) - lastw;
-            int h = parent.getHeight() - (insets.top + insets.bottom);
-            int w = (width>100*(ncomponents-1))?100:width/ncols;
+            int width = parent.getWidth() - insets.left - insets.right - lastw;
+            int h = parent.getHeight() - insets.top - insets.bottom;
+            int w = width>100*(ncomponents-1) ? 100 : width/ncols;
             int gap = width - w*ncols;
             int x = insets.left;
             int y = insets.top;
             for(int i=0;i<ncomponents;i++) {
-                int a = (gap>0)?1:0;
+                int a = gap>0 ? 1 : 0;
                 gap--;
-                int cw = (i==ncols)?lastw:w+a;
+                int cw = i==ncols ? lastw : w+a;
                 parent.getComponent(i).setBounds(x, y, cw, h);
                 x += w + a;
             }
@@ -343,8 +344,8 @@ class DummyIcon implements Icon {
 
         viewRect.x      = i.left;
         viewRect.y      = i.top;
-        viewRect.width  = size.width  - (i.right  + viewRect.x);
-        viewRect.height = size.height - (i.bottom + viewRect.y);
+        viewRect.width  = size.width  - i.right  - viewRect.x;
+        viewRect.height = size.height - i.bottom - viewRect.y;
         OperaTabViewButtonUI.tabPainter(g2, viewRect);
 
         g2.setPaint(Color.WHITE);

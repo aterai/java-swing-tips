@@ -4,13 +4,15 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel{
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-    private final java.util.List<String> icons = java.util.Arrays.asList(
+    private final List<String> icons = Arrays.asList(
         "wi0009-16.png",
         "wi0054-16.png",
         "wi0062-16.png",

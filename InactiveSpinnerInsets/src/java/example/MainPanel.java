@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -57,7 +58,7 @@ public class MainPanel extends JPanel{
             }
         };
 
-        final java.util.List<JSpinner> list = Arrays.asList(spinner0,spinner1,spinner2,spinner3);
+        final List<JSpinner> list = Arrays.asList(spinner0,spinner1,spinner2,spinner3);
         Box box = Box.createVerticalBox();
         for(JSpinner s:list) s.setEnabled(false);
 

@@ -7,6 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -31,7 +32,7 @@ public class MainPanel extends JPanel {
                     if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                         dtde.acceptDrop(DnDConstants.ACTION_COPY);
                         Transferable transferable = dtde.getTransferable();
-                        java.util.List list = (java.util.List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                        List list = (List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
                         for(Object o: list) {
                             if(o instanceof File) {
                                 File file = (File)o;

@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.activation.*;
 //import javax.activation.DataHandler;
 import javax.swing.*;
@@ -141,7 +142,7 @@ class ListItemTransferHandler extends TransferHandler {
             return true;
         }catch(UnsupportedFlavorException ufe) {
             ufe.printStackTrace();
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
         }
         return false;

@@ -86,8 +86,8 @@ class ColorRadioButton extends JRadioButton {
         setPressedIcon(new PressedIcon());
         setSelectedIcon(new SelectedIcon());
         setRolloverIcon(new RolloverIcon());
-//         addChangeListener(new javax.swing.event.ChangeListener() {
-//             public void stateChanged(javax.swing.event.ChangeEvent e) {
+//         addChangeListener(new ChangeListener() {
+//             public void stateChanged(ChangeEvent e) {
 //                 ButtonModel model = getModel();
 //                 if(!model.isEnabled()) {
 //                     setForeground(Color.GRAY);

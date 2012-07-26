@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -24,7 +25,7 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
             @Override public boolean isCellEditable(int row, int column) {
-                return (column!=0);
+                return column!=0;
             }
         };
         JTable table = new JTable(model);
@@ -79,7 +80,7 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable. //System.out.println(p.getClass());
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
@@ -128,10 +129,10 @@ class SliderEditor extends JSlider implements TableCellEditor {
     //protected EventListenerList listenerList = new EventListenerList();
     //transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         return true;
     } 
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

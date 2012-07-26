@@ -9,6 +9,7 @@ package example;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -20,7 +21,7 @@ public class SortableTableModel extends DefaultTableModel {
     }
 }
 
-class ColumnComparator implements Comparator, java.io.Serializable {
+class ColumnComparator implements Comparator, Serializable {
     protected final int index;
     protected final boolean ascending;
     public ColumnComparator(int index, boolean ascending) {
@@ -133,7 +134,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
             }
         }
-        boolean isPressed = (modelColumn == pushedColumn);
+        boolean isPressed = modelColumn == pushedColumn;
         getModel().setPressed(isPressed);
         getModel().setArmed(isPressed);
         return this;
@@ -157,7 +158,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         if(col < 0) return;
         Integer value = null;
         Integer obj = state.get(col);
-        value = (obj != null && obj == DOWN) ? UP : DOWN;
+        value = obj != null && obj == DOWN ? UP : DOWN;
         state.clear();
         state.put(col, value);
     }

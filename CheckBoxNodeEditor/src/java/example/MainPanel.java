@@ -160,7 +160,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener{
         String label = ((CheckBoxNode)parent.getUserObject()).label;
         int selectedCount = 0;
         int indeterminateCount = 0;
-        java.util.Enumeration children = parent.children();
+        Enumeration children = parent.children();
         while(children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)children.nextElement();
             CheckBoxNode check = (CheckBoxNode)node.getUserObject();
@@ -181,7 +181,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener{
         }
     }
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
-        java.util.Enumeration breadth = root.breadthFirstEnumeration();
+        Enumeration breadth = root.breadthFirstEnumeration();
         while(breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)breadth.nextElement();
             if(root==node) {
@@ -337,7 +337,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
     //Copid from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
 //     transient protected ChangeEvent changeEvent = null;
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {
@@ -522,7 +522,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
     //Copid from AbstractCellEditor
     protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

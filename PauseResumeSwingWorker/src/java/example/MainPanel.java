@@ -5,7 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 //import java.beans.*;
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
@@ -96,7 +97,7 @@ public class MainPanel extends JPanel{
                         current++;
                     }
                 }
-                @Override protected void process(java.util.List<Progress> chunks) {
+                @Override protected void process(List<Progress> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     for(Progress s: chunks) {
                         switch(s.component) {
@@ -282,7 +283,7 @@ class Progress {
 //                         current++;
 //                     }
 //                 }
-//                 @Override protected void process(java.util.List<String> chunks) {
+//                 @Override protected void process(List<String> chunks) {
 //                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
 //                     for(String message: chunks) {
 //                         appendLine(message);
