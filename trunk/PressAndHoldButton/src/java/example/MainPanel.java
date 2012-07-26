@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.*;
 import java.net.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -86,8 +88,8 @@ class PressAndHoldButton extends JToggleButton {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+i.getIconWidth()));
     }
-    private java.util.List<MenuContext> makeIconList() {
-        return java.util.Arrays.asList(
+    private List<MenuContext> makeIconList() {
+        return Arrays.asList(
             new MenuContext("BLUE",    Color.BLUE),
             new MenuContext("CYAN",    Color.CYAN),
             new MenuContext("GREEN",   Color.GREEN),

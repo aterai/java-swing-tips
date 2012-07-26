@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.image.*;
+import java.io.IOException;
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -15,7 +16,7 @@ class MainPanel extends JPanel{
         BufferedImage bi = null;
         try{
             bi = ImageIO.read(getClass().getResource("16x16.png"));
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
             throw new RuntimeException(ioe);
         }

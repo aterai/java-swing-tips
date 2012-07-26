@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.io.Serializable;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -115,7 +116,7 @@ class CheckBoxesPanel extends JPanel {
     }
 }
 
-class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, java.io.Serializable {
+class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, Serializable {
     public CheckBoxesRenderer() {
         super();
         setName("Table.cellRenderer");
@@ -127,7 +128,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, j
     public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource{}
 }
 
-class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
+class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Serializable {
 //     private final ActionListener al = new ActionListener() {
 //         @Override public void actionPerformed(ActionEvent e) {
 //             fireEditingStopped();
@@ -171,10 +172,10 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
     //protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         return true;
     } 
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

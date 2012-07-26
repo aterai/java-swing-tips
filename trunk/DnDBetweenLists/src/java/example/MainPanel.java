@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import javax.activation.*;
 import javax.swing.*;
 
@@ -47,7 +49,7 @@ public class MainPanel extends JPanel {
         //http://bugs.sun.com/view_bug.do?bug_id=6603243
         ActionMap map = list.getActionMap();
         AbstractAction dummy = new AbstractAction() {
-            @Override public void actionPerformed(java.awt.event.ActionEvent e) {}
+            @Override public void actionPerformed(ActionEvent e) {}
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
@@ -127,7 +129,7 @@ class ListItemTransferHandler extends TransferHandler {
             return true;
         }catch(UnsupportedFlavorException ufe) {
             ufe.printStackTrace();
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
         }
         return false;

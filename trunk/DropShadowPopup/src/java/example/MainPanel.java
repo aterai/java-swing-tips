@@ -139,7 +139,7 @@ class ShadowBorder extends AbstractBorder {
             Robot robot = new Robot();
             Dimension d = c.getPreferredSize();
             screen = robot.createScreenCapture(new Rectangle(p.x, p.y, d.width+xoff, d.height+yoff));
-        }catch (java.awt.AWTException ex) {
+        }catch(AWTException ex) {
             ex.printStackTrace();
         }
     }

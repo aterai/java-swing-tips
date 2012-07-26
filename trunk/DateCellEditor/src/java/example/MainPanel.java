@@ -117,10 +117,10 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     //protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         return true;
     } 
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

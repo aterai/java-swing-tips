@@ -169,7 +169,7 @@ abstract class ExpansionPanel extends JPanel{
     }
     protected void initPanel() {
         panel.setVisible(!panel.isVisible());
-        label.setText((panel.isVisible()?"\u25B3 ":"\u25BC ")+title);
+        label.setText(String.format("%s %s", panel.isVisible()?"\u25B3":"\u25BC", title));
         revalidate();
         fireExpansionEvent();
         EventQueue.invokeLater(new Runnable() {
@@ -197,7 +197,7 @@ abstract class ExpansionPanel extends JPanel{
     }
 }
 
-class ExpansionEvent extends java.util.EventObject{
+class ExpansionEvent extends EventObject{
     public ExpansionEvent(Object source) {
         super(source);
     }

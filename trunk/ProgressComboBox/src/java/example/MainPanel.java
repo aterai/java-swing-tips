@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -37,7 +38,7 @@ public class MainPanel extends JPanel {
                         }
                         return "Done";
                     }
-                    @Override protected void process(java.util.List<String> chunks) {
+                    @Override protected void process(List<String> chunks) {
                         DefaultComboBoxModel m = (DefaultComboBoxModel)combo.getModel();
                         for(String s: chunks) {
                             m.addElement(s);

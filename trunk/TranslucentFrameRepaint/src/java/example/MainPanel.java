@@ -44,7 +44,7 @@ class MainPanel extends JPanel{
         try{
             //http://www.viva-edo.com/komon/edokomon.html
             bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
             throw new RuntimeException(ioe);
         }
@@ -141,7 +141,7 @@ class MainPanel extends JPanel{
         InputStream is = null;
         try{
             is = url.openStream();
-            font = (Font.createFont(Font.TRUETYPE_FONT, is)).deriveFont(12.0f);
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
             is.close();
         }catch(IOException ioe) {
             ioe.printStackTrace();

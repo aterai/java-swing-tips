@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -54,7 +55,7 @@ class LeafTreeCellEditor extends DefaultTreeCellEditor {
     public LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
     }
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         boolean b = super.isCellEditable(e);
         Object o = tree.getLastSelectedPathComponent();
         if(b && o!=null && o instanceof TreeNode) {

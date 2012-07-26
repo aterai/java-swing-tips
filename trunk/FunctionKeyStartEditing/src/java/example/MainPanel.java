@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
                 }
                 return super.editCellAt(row, column, e);
             }
-//             private java.util.List ignoreKeyList = java.util.Arrays.asList(
+//             private List ignoreKeyList = Arrays.asList(
 //                 KeyEvent.VK_F1, KeyEvent.VK_F4, KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7,
 //                 KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11,KeyEvent.VK_F12);
 //             @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "beep");
 
-//         for(int ks: java.util.Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
+//         for(int ks: Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
 //                                             KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8,
 //                                             KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11,KeyEvent.VK_F12)) {
 //             InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

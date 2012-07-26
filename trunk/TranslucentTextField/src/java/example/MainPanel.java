@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import java.io.IOException;
 import java.net.*;
 import javax.imageio.*;
 import javax.swing.*;
@@ -66,7 +67,7 @@ class MainPanel extends JPanel{
         try{
             bfimage = ImageIO.read(url);
             //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1.0f,1.0f,0.5f});
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
             throw new RuntimeException(ioe);
         }

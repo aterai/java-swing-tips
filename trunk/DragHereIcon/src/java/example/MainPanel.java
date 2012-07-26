@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 import java.io.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -122,7 +123,7 @@ class FileDropTargetAdapter extends DropTargetAdapter{
             if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                 dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 Transferable t = dtde.getTransferable();
-                java.util.List list = (java.util.List)t.getTransferData(DataFlavor.javaFileListFlavor);
+                List list = (List)t.getTransferData(DataFlavor.javaFileListFlavor);
                 for(Object o: list) {
                     if(o instanceof File) {
                         File f = (File) o;
@@ -145,7 +146,7 @@ class FileDropTargetAdapter extends DropTargetAdapter{
 //     @Override public boolean importData(TransferSupport support) {
 //         try{
 //             if(canImport(support)) {
-//                 for(Object o: (java.util.List)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
+//                 for(Object o: (List)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
 //                     if(o instanceof File) {
 //                         File file = (File)o;
 //                         System.out.println(file.getAbsolutePath());

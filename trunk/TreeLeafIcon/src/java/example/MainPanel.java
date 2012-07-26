@@ -114,7 +114,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-// class EmptyIcon implements Icon, java.io.Serializable {
+// class EmptyIcon implements Icon, Serializable {
 //     @Override public void paintIcon(Component c,Graphics g,int x,int y) {}
 //     @Override public int getIconWidth()  { return 0; }
 //     @Override public int getIconHeight() { return 0; }

@@ -232,7 +232,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
 //                 c = (Component) t.getTransferData(f[0]);
 //             }catch(UnsupportedFlavorException ex) {
 //                 e.dropComplete(false);
-//             }catch(java.io.IOException ie) {
+//             }catch(IOException ie) {
 //                 e.dropComplete(false);
 //             }
 //             if(c!=null && c instanceof JTable) {

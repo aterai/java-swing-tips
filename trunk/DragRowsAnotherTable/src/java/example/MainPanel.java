@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.activation.*;
@@ -40,7 +41,7 @@ public class MainPanel extends JPanel {
         //http://bugs.sun.com/view_bug.do?bug_id=6603243
         ActionMap map = t.getActionMap();
         AbstractAction dummy = new AbstractAction() {
-            @Override public void actionPerformed(java.awt.event.ActionEvent e) {}
+            @Override public void actionPerformed(ActionEvent e) {}
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
@@ -129,7 +130,7 @@ class TableRowTransferHandler extends TransferHandler {
             return true;
         }catch(UnsupportedFlavorException ufe) {
             ufe.printStackTrace();
-        }catch(java.io.IOException ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
         }
         return false;

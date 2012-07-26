@@ -8,6 +8,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.plaf.metal.*;
 import javax.swing.filechooser.*;
 
 public class MainPanel extends JPanel {
@@ -107,7 +108,7 @@ class WindowsCanWriteFileChooserUI extends com.sun.java.swing.plaf.windows.Windo
     }
 }
 
-class CanWriteFileChooserUI extends javax.swing.plaf.metal.MetalFileChooserUI{
+class CanWriteFileChooserUI extends MetalFileChooserUI{
     protected CanWriteFileChooserUI(JFileChooser chooser) {
         super(chooser);
     }

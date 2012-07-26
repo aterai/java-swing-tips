@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -37,7 +38,7 @@ public class MainPanel extends JPanel {
             private boolean isSortingColumn(int column) {
                 RowSorter sorter = getRowSorter();
                 if(sorter!=null) {
-                    java.util.List list = sorter.getSortKeys();
+                    List list = sorter.getSortKeys();
                     if(list.size()>0) {
                         RowSorter.SortKey key0 = (RowSorter.SortKey)list.get(0);
                         if(column==convertColumnIndexToView(key0.getColumn())) {

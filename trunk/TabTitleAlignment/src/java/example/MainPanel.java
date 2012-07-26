@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import javax.swing.plaf.synth.*;
 import javax.swing.text.View;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
@@ -171,7 +172,7 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         textRect.y += yNudge;
     }
 }
-class MyTabbedPaneUI extends javax.swing.plaf.metal.MetalTabbedPaneUI {
+class MyTabbedPaneUI extends MetalTabbedPaneUI {
     @Override protected void layoutLabel(int tabPlacement,
                                          FontMetrics metrics, int tabIndex,
                                          String title, Icon icon,

@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 //import java.beans.*;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{

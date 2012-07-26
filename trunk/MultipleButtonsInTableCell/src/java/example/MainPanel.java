@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -76,7 +78,7 @@ public class MainPanel extends JPanel {
 // }
 
 class ButtonsPanel extends JPanel {
-    public final java.util.List<JButton> buttons = java.util.Arrays.asList(new JButton("view"), new JButton("edit"));
+    public final List<JButton> buttons = Arrays.asList(new JButton("view"), new JButton("edit"));
     public ButtonsPanel() {
         super();
         setOpaque(true);
@@ -153,10 +155,10 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
     //protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;
 
-    @Override public boolean isCellEditable(java.util.EventObject e) {
+    @Override public boolean isCellEditable(EventObject e) {
         return true;
     } 
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {
