@@ -22,7 +22,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
 //     }
     private static boolean isHeavyWeightContainer(Component contents) {
         for(Container p=contents.getParent();p!=null;p=p.getParent()) {
-            if((p instanceof JWindow) || (p instanceof Panel)) {
+            if(p instanceof JWindow || p instanceof Panel) {
                 return true;
             }
         }

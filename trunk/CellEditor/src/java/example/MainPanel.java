@@ -42,7 +42,7 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 table.clearSelection();
                 if(table.isEditing()) table.getCellEditor().stopCellEditing();
-                table.setDefaultEditor(Object.class, (objectCheck.isSelected())?null:dce);
+                table.setDefaultEditor(Object.class, objectCheck.isSelected()?null:dce);
                 table.setEnabled(!editableCheck.isSelected());
             }
         };

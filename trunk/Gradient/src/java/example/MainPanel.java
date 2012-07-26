@@ -126,11 +126,11 @@ class GradientSeparatorUI extends BasicSeparatorUI{
     private Color bgc,ssc,shc;
     private void updateColors(JComponent j) {
         Color c = UIManager.getColor("Panel.background");
-        bgc = (c instanceof ColorUIResource)? c:j.getBackground();
+        bgc = c instanceof ColorUIResource ? c : j.getBackground();
         c = UIManager.getColor("Separator.shadow");
-        ssc = (c instanceof ColorUIResource)? c:j.getBackground().brighter();
+        ssc = c instanceof ColorUIResource ? c : j.getBackground().brighter();
         c = UIManager.getColor("Separator.highlight");
-        shc = (c instanceof ColorUIResource)? c:j.getBackground().darker();
+        shc = c instanceof ColorUIResource ? c : j.getBackground().darker();
     }
     @Override public void installUI(JComponent c) {
         super.installUI(c);

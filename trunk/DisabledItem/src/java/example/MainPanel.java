@@ -96,7 +96,7 @@ public class MainPanel extends JPanel{
         set.clear();
         try{
             while(st.hasMoreTokens()) {
-                set.add(new Integer(st.nextToken().trim()));
+                set.add(Integer.valueOf(st.nextToken()));
             }
         }catch(NumberFormatException nfe) {
             java.awt.Toolkit.getDefaultToolkit().beep();

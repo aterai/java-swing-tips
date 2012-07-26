@@ -74,7 +74,8 @@ public class MainPanel extends JPanel {
          * e.g. rowCount=100, maxPageIndex=100
          */
         int rowCount = model.getRowCount();
-        int maxPageIndex = (rowCount/itemsPerPage) + (rowCount%itemsPerPage==0?0:1);
+        int v = rowCount%itemsPerPage==0 ? 0 : 1;
+        int maxPageIndex = rowCount/itemsPerPage + v;
 //#endif
         int endPageIndex = currentPageIndex+LR_PAGE_SIZE-1;
         if(endPageIndex>maxPageIndex) endPageIndex = maxPageIndex;
@@ -109,7 +110,7 @@ public class MainPanel extends JPanel {
     }
 
     private JRadioButton makeRadioButton(final int itemsPerPage, final int current, final int target) {
-        JRadioButton radio = new JRadioButton(""+(target+1)) {
+        JRadioButton radio = new JRadioButton(String.valueOf(target+1)) {
             @Override protected void fireStateChanged() {
                 ButtonModel model = getModel();
                 if(!model.isEnabled()) {
@@ -151,7 +152,7 @@ public class MainPanel extends JPanel {
         return new RowFilter<TableModel,Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 int ei = entry.getIdentifier();
-                return (target*itemsPerPage<=ei && ei<target*itemsPerPage+itemsPerPage);
+                return target*itemsPerPage<=ei && ei<target*itemsPerPage+itemsPerPage;
             }
         };
     }
@@ -213,8 +214,8 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
         size = b.getSize(size);
         viewRect.x = i.left;
         viewRect.y = i.top;
-        viewRect.width = size.width - (i.right + viewRect.x);
-        viewRect.height = size.height - (i.bottom + viewRect.y);
+        viewRect.width = size.width - i.right - viewRect.x;
+        viewRect.height = size.height - i.bottom - viewRect.y;
         iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
         textRect.x = textRect.y = textRect.width = textRect.height = 0;
 

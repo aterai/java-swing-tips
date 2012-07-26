@@ -149,18 +149,18 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         iconLabel = new JLabel(nicon) {
             //Overridden for performance reasons. ---->
             @Override public boolean isOpaque() {
-                Color back = getBackground();
-                Component p = getParent();
-                if(p != null) {
-                    p = p.getParent();
-                } // p should now be the JTable.
-                boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+                //Color back = getBackground();
+                //Component p = getParent();
+                //if(p != null) {
+                //    p = p.getParent();
+                //} // p should now be the JTable.
+                //boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
                 return false; //!colorMatch && super.isOpaque();
             }
             @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
                 //String literal pool
                 //if(propertyName == "labelFor" || ((propertyName=="icon" || propertyName == "foreground") && oldValue != newValue)) {
-                if("labelFor".equals(propertyName) || (("icon".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue)) {
+                if("labelFor".equals(propertyName) || oldValue != newValue && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
                     //System.out.println(propertyName);
                     super.firePropertyChange(propertyName, oldValue, newValue);
                 }
@@ -185,7 +185,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         FontMetrics fm = table.getFontMetrics(table.getFont());
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth()-iconLabel.getPreferredSize().width;
-        textLabel.setPreferredSize(new Dimension((swidth>cwidth)?cwidth:swidth, 10000)); //height:10000 is dummy
+        textLabel.setPreferredSize(new Dimension(swidth>cwidth ? cwidth : swidth, 10000)); //height:10000 is dummy
         if(isSelected) {
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());
@@ -195,7 +195,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         }
         textLabel.setFocusedBorder(hasFocus);
         textLabel.setFont(table.getFont());
-        iconLabel.setIcon((isSelected)?sicon:nicon);
+        iconLabel.setIcon(isSelected ? sicon : nicon);
         return this;
     }
     //Overridden for performance reasons. ---->
@@ -205,7 +205,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {}
@@ -234,7 +234,7 @@ class MyLabel extends JLabel {
         return focusflag;
     }
     public void setFocusedBorder(boolean flag) {
-        setBorder((flag)?dotBorder:empBorder);
+        setBorder(flag ? dotBorder : empBorder);
         focusflag = flag;
     }
     private class DotBorder extends LineBorder {
@@ -259,7 +259,7 @@ class MyLabel extends JLabel {
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
@@ -267,8 +267,8 @@ class MyLabel extends JLabel {
 //      //String literal pool
 //      if(propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
-        if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
-            || (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
+        if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName) ||
+                oldValue != newValue && ("font".equals(propertyName) && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
@@ -393,8 +393,7 @@ class MyTable extends JTable {
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
-        return (r>g)
-          ?(r>b)?new Color(r,0,0):new Color(0,0,b)
-          :(g>b)?new Color(0,g,0):new Color(0,0,b);
+        return r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
+                   : g>b ? new Color(0,g,0) : new Color(0,0,b);
     }
 }

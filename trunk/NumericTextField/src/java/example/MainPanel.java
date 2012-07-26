@@ -174,8 +174,8 @@ class IntegerDocumentFilter extends DocumentFilter {
         String currentContent = doc.getText(0, currentLength);
         String before = currentContent.substring(0, offset);
         String after = currentContent.substring(length+offset, currentLength);
-        String newValue = before + (text == null ? "" : text) + after;
-        //currentValue =
+        String str = text == null ? "" : text;
+        String newValue = before + str + after;
         checkInput(newValue, offset);
         fb.replace(offset, length, text, attrs);
     }

@@ -121,7 +121,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
                 LineMetrics lm = getFont().getLineMetrics(getText(), frc);
                 float yy = lm.getAscent()/2f + (float)gv.getVisualBounds().getY();
                 g2d.drawGlyphVector(gv, cw-xx, getHeight()/2f-yy);
-                xx = (cw+gv.getVisualBounds().getWidth()-xx > 0) ? xx+8f : 0f;
+                xx = cw+gv.getVisualBounds().getWidth()-xx > 0 ? xx+8f : 0f;
             }else{
                 super.paintComponent(g2d);
             }

@@ -49,7 +49,7 @@ public class MainPanel extends JPanel{
         if(!checkbox.isSelected()) return;
         int fw = frame.getSize().width;
         int fh = MH*fw/MW;
-        frame.setSize((MW>fw)?MW:fw, (MH>fh)?MH:fh);
+        frame.setSize(MW>fw?MW:fw, MH>fh?MH:fh);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

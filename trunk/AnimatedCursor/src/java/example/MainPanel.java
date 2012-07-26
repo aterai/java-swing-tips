@@ -25,7 +25,7 @@ class MainPanel extends JPanel {
             private int counter = 0;
             @Override public void actionPerformed(ActionEvent e) {
                 button.setCursor(list[counter]);
-                counter = (counter<list.length-1)?counter+1:0;
+                counter = counter<list.length-1 ? counter+1 : 0;
             }
         });
         button = new JButton(new AbstractAction("Start") {

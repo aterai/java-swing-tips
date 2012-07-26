@@ -66,7 +66,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener{
                 }else if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
                     cancelEditing();
                 }else{
-                    editor.setPreferredSize((editor.getText().length()>len)?null:dim);
+                    editor.setPreferredSize(editor.getText().length()>len ? null : dim);
                     tabbedPane.revalidate();
                 }
             }

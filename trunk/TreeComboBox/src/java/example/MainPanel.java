@@ -107,7 +107,7 @@ class TreeComboBox extends JComboBox {
                 JComponent c;
                 if(value instanceof DefaultMutableTreeNode) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-                    int indent = 2 + (index<0?0:(node.getPath().length-2)*16);
+                    int indent = 2 + index<0 ? 0 : (node.getPath().length-2)*16;
                     //String str = node.toString();
                     if(node.isLeaf()) {
                         c = (JComponent)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);

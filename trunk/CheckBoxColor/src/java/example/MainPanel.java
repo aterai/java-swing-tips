@@ -133,19 +133,20 @@ class MyCheckBoxIcon implements Icon {
             g.drawLine(x+11, y+1, x+11, y+10);
 
             // inside box
-            if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
+            Color color = new Color(255, 155, 155);
+            if(model.isPressed() && model.isArmed()) {
                 //g.setColor(UIManager.getColor("CheckBox.background"));
-                g.setColor(new Color(255, 155, 155).brighter());
+                g.setColor(color.brighter());
             }else{
                 //g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
-                g.setColor(new Color(255, 155, 155));
+                g.setColor(color);
             }
             g.fillRect(x+2, y+2, csize-4, csize-4);
         }else{
             g.setColor(UIManager.getColor("CheckBox.shadow"));
             g.drawRect(x+1, y+1, csize-3, csize-3);
 
-            if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
+            if(model.isPressed() && model.isArmed()) {
                 g.setColor(UIManager.getColor("CheckBox.background"));
             }else{
                 g.setColor(UIManager.getColor("CheckBox.interiorBackground"));

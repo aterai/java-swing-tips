@@ -429,7 +429,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * @return an int specifying the fixed width of the icon.
          */
         @Override public int getIconWidth() {
-            return width + (fileIcon != null ? fileIcon.getIconWidth() : 0);
+            return fileIcon != null ? width + fileIcon.getIconWidth() : width;
         }
 
         /**

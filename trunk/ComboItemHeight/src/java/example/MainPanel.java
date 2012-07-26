@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
             @Override public Component getListCellRendererComponent(
                     JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                c.setPreferredSize(new Dimension(100, (index<0)?dim.height:32));
+                c.setPreferredSize(new Dimension(100, index<0?dim.height:32));
                 return c;
             }
         });

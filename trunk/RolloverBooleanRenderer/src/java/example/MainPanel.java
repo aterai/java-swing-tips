@@ -179,7 +179,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
             setBackground(table.getBackground());
             //setBackground(row%2==0?table.getBackground():Color.WHITE); //Nimbus
         }
-        setSelected((value != null && ((Boolean)value).booleanValue()));
+        setSelected(value != null && ((Boolean)value).booleanValue());
 
         if(hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
@@ -195,7 +195,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {

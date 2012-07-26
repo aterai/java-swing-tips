@@ -49,7 +49,7 @@ public class MainPanel extends JPanel{
         HashSet<Integer> set = new HashSet<Integer>();
         try{
             while(st.hasMoreTokens()) {
-                set.add(new Integer(st.nextToken().trim()));
+                set.add(Integer.valueOf(st.nextToken()));
             }
         }catch(NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();

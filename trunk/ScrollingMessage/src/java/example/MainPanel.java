@@ -95,7 +95,7 @@ class MarqueePanel extends JComponent implements ActionListener {
         g2.drawGlyphVector(gv, w - xx, baseline);
     }
     @Override public void actionPerformed(ActionEvent e) {
-        xx = (getWidth()+gv.getVisualBounds().getWidth()-xx > 0) ? xx+2f : 0f;
+        xx = getWidth()+gv.getVisualBounds().getWidth()-xx > 0 ? xx+2f : 0f;
         baseline = getHeight()/2f;
         repaint();
     }

@@ -68,7 +68,7 @@ public class MainPanel extends JPanel{
                     JTextField tf = (JTextField)combo.getEditor().getEditorComponent();
                     insets = tf.getMargin();
                     //availableWidth -= insets.left;
-                    availableWidth -= (insets.left + insets.right);
+                    availableWidth -= insets.left + insets.right;
                 }
                 String cellText = (value!=null)?value.toString():"";
                 //<blockquote cite="http://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">

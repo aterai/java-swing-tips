@@ -112,13 +112,13 @@ public class MainPanel extends JPanel{
 
                 // Draw the track
                 if(slider.getOrientation() == JSlider.HORIZONTAL) {
-                    trackBottom = (trackRect.height - 1) - getThumbOverhang();
-                    trackTop = trackBottom - (getTrackWidth() - 1);
+                    trackBottom = trackRect.height - 1 - getThumbOverhang();
+                    trackTop = trackBottom - getTrackWidth() + 1;
                     trackRight = trackRect.width - 1;
                 }else{
                     if(leftToRight) {
-                        trackLeft = (trackRect.width - getThumbOverhang()) - getTrackWidth();
-                        trackRight = (trackRect.width - getThumbOverhang()) - 1;
+                        trackLeft = trackRect.width - getThumbOverhang() - getTrackWidth();
+                        trackRight = trackRect.width - getThumbOverhang() - 1;
                     }else{
                         trackLeft = getThumbOverhang();
                         trackRight = getThumbOverhang() + getTrackWidth() - 1;
@@ -128,7 +128,7 @@ public class MainPanel extends JPanel{
 
                 if(slider.isEnabled()) {
                     g.setColor(controlDarkShadow);
-                    g.drawRect(trackLeft, trackTop, (trackRight - trackLeft) - 1, (trackBottom - trackTop) - 1);
+                    g.drawRect(trackLeft, trackTop, trackRight - trackLeft - 1, trackBottom - trackTop - 1);
 
                     g.setColor(controlHighlight);
                     g.drawLine(trackLeft + 1, trackBottom, trackRight, trackBottom);
@@ -139,7 +139,7 @@ public class MainPanel extends JPanel{
                     g.drawLine(trackLeft + 1, trackTop + 1, trackLeft + 1, trackBottom - 2);
                 }else{
                     g.setColor(controlShadow);
-                    g.drawRect(trackLeft, trackTop, (trackRight - trackLeft) - 1, (trackBottom - trackTop) - 1);
+                    g.drawRect(trackLeft, trackTop, trackRight - trackLeft - 1, trackBottom - trackTop - 1);
                 }
 
                 // Draw the fill
@@ -150,7 +150,7 @@ public class MainPanel extends JPanel{
                 int fillRight = 0;
 
                 if(slider.getOrientation() == JSlider.HORIZONTAL) {
-                    middleOfThumb = thumbRect.x + (thumbRect.width / 2);
+                    middleOfThumb = thumbRect.x + thumbRect.width / 2;
                     middleOfThumb -= trackRect.x; // To compensate for the g.translate()
                     fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
                     fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
@@ -163,7 +163,7 @@ public class MainPanel extends JPanel{
                         fillRight = !slider.isEnabled() ? trackRight - 1 : trackRight - 2;
                     }
                 }else{
-                    middleOfThumb = thumbRect.y + (thumbRect.height / 2);
+                    middleOfThumb = thumbRect.y + thumbRect.height / 2;
                     middleOfThumb -= trackRect.y; // To compensate for the g.translate()
                     fillLeft = !slider.isEnabled() ? trackLeft : trackLeft + 1;
                     fillRight = !slider.isEnabled() ? trackRight - 1 : trackRight - 2;
@@ -194,7 +194,7 @@ public class MainPanel extends JPanel{
                 int yy = trackTop + (trackBottom - trackTop) / 2;
                 for(int i=10;i>=0;i--) {
                     g.setColor(new Color(1f,1f,1f,i*0.07f));
-                    g.drawLine(trackLeft + 2, yy, (trackRight - trackLeft) - 2, yy);
+                    g.drawLine(trackLeft + 2, yy, trackRight - trackLeft - 2, yy);
                     yy--;
                 }
                 g.translate(-trackRect.x, -trackRect.y);

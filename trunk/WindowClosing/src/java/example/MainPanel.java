@@ -22,7 +22,7 @@ public class MainPanel extends JPanel{
             @Override public void propertyChange(PropertyChangeEvent e) {
                 if(ASTERISK_TITLEBAR.equals(e.getPropertyName())) {
                     Boolean unsaved = (Boolean)e.getNewValue();
-                    frame.setTitle((unsaved?"* ":"")+title);
+                    frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
                 }
             }
         });

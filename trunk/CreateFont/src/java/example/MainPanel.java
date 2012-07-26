@@ -38,7 +38,7 @@ class MainPanel extends JPanel {
         InputStream is = null;
         try{
             is = url.openStream();
-            font = (Font.createFont(Font.TRUETYPE_FONT, is)).deriveFont(12.0f);
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
             is.close();
         }catch(IOException ioe) {
             ioe.printStackTrace();

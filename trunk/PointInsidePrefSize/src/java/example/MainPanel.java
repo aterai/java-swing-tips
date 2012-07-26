@@ -102,8 +102,8 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         Insets i = this.getInsets();
         lrect.x = i.left;
         lrect.y = i.top;
-        lrect.width  = w - (mw + i.right  + lrect.x);
-        lrect.height = h - (rh + i.bottom + lrect.y);
+        lrect.width  = w - mw - i.right  - lrect.x;
+        lrect.height = h - rh - i.bottom - lrect.y;
         irect.x = irect.y = irect.width = irect.height = 0;
         trect.x = trect.y = trect.width = trect.height = 0;
 
@@ -157,7 +157,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         isRollover = isURLColumn(table, col) && pointInsidePrefSize(table, pt);
-        if((row==prev_row && col==prev_col && isRollover==prev_ro) || (!isRollover && !prev_ro)) {
+        if(row==prev_row && col==prev_col && isRollover==prev_ro || !isRollover && !prev_ro) {
             return;
         }
 

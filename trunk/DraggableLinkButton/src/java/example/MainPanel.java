@@ -134,7 +134,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setTransferHandler(new TransferHandler("text") {
             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-                return (flavors.length>0 && flavors[0].equals(uriflavor));
+                return flavors.length>0 && flavors[0].equals(uriflavor);
             }
             public Transferable createTransferable(JComponent c) {
                 return new Transferable() {
@@ -179,8 +179,8 @@ class LinkViewButtonUI extends BasicButtonUI {
         size = b.getSize(size);
         viewRect.x = i.left;
         viewRect.y = i.top;
-        viewRect.width = size.width - (i.right + viewRect.x);
-        viewRect.height = size.height - (i.bottom + viewRect.y);
+        viewRect.width = size.width - i.right - viewRect.x;
+        viewRect.height = size.height - i.bottom - viewRect.y;
         iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
         textRect.x = textRect.y = textRect.width = textRect.height = 0;
 

@@ -35,7 +35,7 @@ public class MainPanel extends JPanel{
                     setBackground(list.getSelectionBackground());
                 }else{
                     setForeground(list.getForeground());
-                    setBackground(((index%2==0))?ec:list.getBackground());
+                    setBackground(index%2==0 ? ec : list.getBackground());
                 }
                 return this;
             }
@@ -93,7 +93,7 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
         int modelSize  = getModel().getSize();
         targetIndex = -1;
         for(int i=0;i<modelSize;i++) {
-            testArea.setRect(0, cellHeight*i-(cellHeight/2), lineWidht, cellHeight);
+            testArea.setRect(0, cellHeight*i-cellHeight/2, lineWidht, cellHeight);
             if(testArea.contains(p)) {
                 targetIndex = i;
                 targetLine.setRect(0, i*cellHeight, lineWidht, lineHeight);

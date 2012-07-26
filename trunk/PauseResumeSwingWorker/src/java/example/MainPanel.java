@@ -166,10 +166,9 @@ public class MainPanel extends JPanel{
         public PauseAction() {
             super("pause");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            isPaused = (worker!=null && !worker.isCancelled() && !isPaused);
-            JButton b = (JButton)evt.getSource();
-            b.setText(isPaused?"resume":"pause");
+        @Override public void actionPerformed(ActionEvent e) {
+            isPaused = worker!=null && !worker.isCancelled() && !isPaused;
+            ((JButton)e.getSource()).setText(isPaused ? "resume" : "pause");
         }
     }
 //     private void appendLine(String str) {

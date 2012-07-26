@@ -127,13 +127,13 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         if(p != null) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = (back != null) && (p != null) && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //String literal pool
         //if(propertyName=="document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
-        if("document".equals(propertyName) || (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue)) {
+        if("document".equals(propertyName) || oldValue != newValue && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
