@@ -11,32 +11,31 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel{
     private final JPanel panel = new JPanel(new GridLayout(2,1));
-//     private final JPanel panel = new JPanel(new GridLayout(3,1));
-//     private final JTextPane   textPane;
+    //private final JTextPane   textPane;
     private final JEditorPane editorPane;
     private final JTextArea   textArea;
     private final ExecutorService threadPool;
-    //private String text = null;
     public MainPanel(final ExecutorService threadPool) {
         super(new BorderLayout());
         this.threadPool = threadPool;
-//         textPane = new JTextPane() {
-//             //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
-//             //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
-//             @Override
-//             public boolean getScrollableTracksViewportWidth() {
-//                 Component p = getParent();
-//                 if(p==null) return true;
-//                 int ewidth = getUI().getPreferredSize(this).width;
-//                 return ewidth<=p.getSize().width;
-//             }
-//         };
         editorPane = new JEditorPane();
         textArea = new JTextArea();
-
-        //textPane.setEditorKit(new NoWrapEditorKit1());
+/*
+        textPane = new JTextPane() {
+            //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
+            //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
+            @Override
+            public boolean getScrollableTracksViewportWidth() {
+                Component p = getParent();
+                if(p==null) return true;
+                int ewidth = getUI().getPreferredSize(this).width;
+                return ewidth<=p.getSize().width;
+            }
+        };
+        textPane.setEditorKit(new NoWrapEditorKit1());
+/*/
         editorPane.setEditorKit(new NoWrapEditorKit2());
-
+//*/
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
 //         box.add(new JButton(new AbstractAction("JTextPane") {
@@ -70,13 +69,14 @@ public class MainPanel extends JPanel{
                 textArea.setText("");
             }
         }));
-
-        //addEditor(textPane, "NoWrapTextPane(JTextPane)");
-        addEditor(editorPane, "NoWrapEditorKit(JEditorPane)");
-        addEditor(textArea, "JTextArea");
-
+/*
+        addEditor(textPane, "NoWrapTextPane(JTextPane)");
         //System.out.println(textPane.getDocument().toString());
-        //textPane.setText(text);
+        textPane.setText(text);
+/*/
+        addEditor(editorPane, "NoWrapEditorKit(JEditorPane)");
+//*/
+        addEditor(textArea, "JTextArea");
 
         add(box, BorderLayout.NORTH);
         add(panel);
@@ -124,23 +124,59 @@ public class MainPanel extends JPanel{
     }
 }
 
+/*
+class NoWrapEditorKit1 extends StyledEditorKit{
+    @Override public ViewFactory getViewFactory() {
+        return new StyledViewFactory();
+    }
+    static class StyledViewFactory implements ViewFactory{
+        @Override public View create(Element elem) {
+            String kind = elem.getName();
+            if(kind != null) {
+                if(kind.equals(AbstractDocument.ContentElementName)) {
+                    return new LabelView(elem);
+                }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+                    return new ParagraphView(elem);
+                }else if(kind.equals(AbstractDocument.SectionElementName)) {
+                    return new NoWrapBoxView(elem, View.Y_AXIS);
+                }else if(kind.equals(StyleConstants.ComponentElementName)) {
+                    return new ComponentView(elem);
+                }else if(kind.equals(StyleConstants.IconElementName)) {
+                    return new IconView(elem);
+                }
+            }
+            return new LabelView(elem);
+        }
+    }
+    static class NoWrapBoxView extends BoxView {
+        public NoWrapBoxView(Element elem, int axis) {
+            super(elem, axis);
+        }
+        @Override public void layout(int width, int height) {
+            super.layout(Integer.MAX_VALUE-64, height);
+            //??? Integer.MAX_VALUE-64 = error?
+            //??? Integer.MAX_VALUE-64 = ok?
+        }
+    }
+}
+/*/
 //Swing - Disabling word wrap for JTextPane
 //https://forums.oracle.com/forums/thread.jspa?threadID=1351861
 class NoWrapParagraphView extends ParagraphView {
     public NoWrapParagraphView(Element elem) {
         super(elem);
     }
-    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
+    @Override protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
         SizeRequirements req = super.calculateMinorAxisRequirements(axis, r);
         req.minimum = req.preferred;
         return req;
     }
-    public int getFlowSpan(int index) {
+    @Override public int getFlowSpan(int index) {
         return Integer.MAX_VALUE;
     }
 }
 class NoWrapViewFactory implements ViewFactory {
-    public View create(Element elem) {
+    @Override public View create(Element elem) {
         String kind = elem.getName();
         if(kind != null) {
             if(kind.equals(AbstractDocument.ContentElementName)) {
@@ -159,42 +195,8 @@ class NoWrapViewFactory implements ViewFactory {
     }
 }
 class NoWrapEditorKit2 extends StyledEditorKit {
-    public ViewFactory getViewFactory() {
+    @Override public ViewFactory getViewFactory() {
         return new NoWrapViewFactory();
     }
 }
-
-// class NoWrapEditorKit1 extends StyledEditorKit{
-//     public ViewFactory getViewFactory() {
-//         return new StyledViewFactory();
-//     }
-//     static class StyledViewFactory implements ViewFactory{
-//         public View create(Element elem) {
-//             String kind = elem.getName();
-//             if(kind != null) {
-//                 if(kind.equals(AbstractDocument.ContentElementName)) {
-//                     return new LabelView(elem);
-//                 }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
-//                     return new ParagraphView(elem);
-//                 }else if(kind.equals(AbstractDocument.SectionElementName)) {
-//                     return new NoWrapBoxView(elem, View.Y_AXIS);
-//                 }else if(kind.equals(StyleConstants.ComponentElementName)) {
-//                     return new ComponentView(elem);
-//                 }else if(kind.equals(StyleConstants.IconElementName)) {
-//                     return new IconView(elem);
-//                 }
-//             }
-//             return new LabelView(elem);
-//         }
-//     }
-//     static class NoWrapBoxView extends BoxView {
-//         public NoWrapBoxView(Element elem, int axis) {
-//             super(elem, axis);
-//         }
-//         public void layout(int width, int height) {
-//             super.layout(Integer.MAX_VALUE-64, height);
-//             //??? Integer.MAX_VALUE-64 = error?
-//             //??? Integer.MAX_VALUE-64 = ok?
-//         }
-//     }
-// }
+//*/
