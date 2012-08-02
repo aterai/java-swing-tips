@@ -17,7 +17,7 @@
 <property name="compile.nowarn"      value="off" />
 <property name="compile.deprecation" value="on" />
 <property name="compile.verbose"     value="off" />
-<property name="compile.source"      value="1.7" />
+<property name="compile.source"      value="1.6" />
 <property name="compile.encoding"    value="UTF-8" />
 
 <!-- javadoc -->
