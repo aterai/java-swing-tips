@@ -152,9 +152,9 @@ public class MainPanel extends JPanel {
     }
 }
 class TooltipEditorKit extends HTMLEditorKit {
-    public ViewFactory getViewFactory() {
+    @Override public ViewFactory getViewFactory() {
         return new HTMLFactory() {
-            public View create(Element elem) {
+            @Override public View create(Element elem) {
                 AttributeSet attrs = elem.getAttributes();
                 Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
                 Object o = (elementName != null) ? null : attrs.getAttribute(StyleConstants.NameAttribute);
