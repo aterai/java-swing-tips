@@ -46,7 +46,7 @@ public class MainPanel extends JPanel{
 
 class MyEditorKit extends StyledEditorKit {
     private final SimpleAttributeSet attrs = new SimpleAttributeSet();
-    public void install(JEditorPane c) {
+    @Override public void install(JEditorPane c) {
         FontMetrics fm = c.getFontMetrics(c.getFont());
         int tabLength = fm.charWidth('m') * 4;
         TabStop[] tabs = new TabStop[100];
@@ -57,10 +57,10 @@ class MyEditorKit extends StyledEditorKit {
         StyleConstants.setTabSet(attrs, tabSet);
         super.install(c);
     }
-    public ViewFactory getViewFactory() {
+    @Override public ViewFactory getViewFactory() {
         return new MyViewFactory();
     }
-    public Document createDefaultDocument() {
+    @Override public Document createDefaultDocument() {
         Document d = super.createDefaultDocument();
         if(d instanceof StyledDocument) {
             ((StyledDocument)d).setParagraphAttributes(0, d.getLength(), attrs, false);
@@ -69,7 +69,7 @@ class MyEditorKit extends StyledEditorKit {
     }
 }
 class MyViewFactory implements ViewFactory {
-    public View create(Element elem) {
+    @Override public View create(Element elem) {
         String kind = elem.getName();
         if(kind!=null) {
             if(kind.equals(AbstractDocument.ContentElementName)) {
