@@ -175,6 +175,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         }
     }
     //http://d.hatena.ne.jp/pcl/20120617/p1
+    //http://d.hatena.ne.jp/rexpit/20110328/1301305266
     //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
     //http://www.osix.net/modules/article/?id=696
     public static double intpow(double a, int b) {
@@ -183,11 +184,10 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
             //return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
-        for(; b > 0; b >>>= 1) {
-            if((b & 1) == 1) {
+        for(; b > 0; a *= a, b >>>= 1) {
+            if((b & 1) != 0) {
                 d *= a;
             }
-            a *= a;
         }
         return d;
     }
