@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
 
         JTable table1 = makeTable();
         table1.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
                 setHorizontalAlignment(SwingConstants.CENTER);
                 return this;
@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 //         JTable table3 = makeTable();
 //         final TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
 //         table3.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
-//             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //                 JLabel l = (JLabel)r.getTableCellRendererComponent(
 //                     table,value,isSelected,hasFocus,row,column);
 //                 if(table.convertColumnIndexToModel(column)==0) {
@@ -147,7 +147,7 @@ class HorizontalAlignmentHeaderRenderer implements TableCellRenderer{
     public HorizontalAlignmentHeaderRenderer(int horizontalAlignment) {
         this.horizontalAlignment = horizontalAlignment;
     }
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
         JLabel l = (JLabel)r.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
         l.setHorizontalAlignment(horizontalAlignment);
