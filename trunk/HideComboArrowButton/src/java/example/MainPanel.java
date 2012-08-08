@@ -25,18 +25,26 @@ public class MainPanel extends JPanel {
     }
     @SuppressWarnings("unchecked")
     private static JPanel makePanel() {
-        JPanel p = new JPanel(new BorderLayout(5, 5));
+        final JPanel p = new JPanel(new BorderLayout(5, 5));
         p.add(makeComboBox(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
 
+        final Color bgc = UIManager.getColor("ComboBox.background");
         UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-        UIManager.put("ComboBox.background", new Color(0,0,0,0)); //p.getBackground());
+        UIManager.put("ComboBox.background",   p.getBackground());
         Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
         JComboBox comboBox = makeComboBox(items);
         final ListCellRenderer r = comboBox.getRenderer();
         comboBox.setRenderer(new ListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                ((JLabel)c).setHorizontalAlignment(SwingConstants.RIGHT);
+                JLabel c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                c.setHorizontalAlignment(SwingConstants.RIGHT);
+                if(isSelected) {
+                    c.setForeground(list.getSelectionForeground());
+                    c.setBackground(list.getSelectionBackground());
+                }else{
+                    c.setForeground(list.getForeground());
+                    c.setBackground(bgc);
+                }
                 return c;
             }
         });
