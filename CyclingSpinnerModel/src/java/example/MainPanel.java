@@ -19,26 +19,26 @@ class MainPanel extends JPanel {
         spinner01.setModel(new SpinnerNumberModel(20, 0, 59, 1));
         spinner02.setModel(new SpinnerListModel(weeks));
         spinner03.setModel(new SpinnerNumberModel(20, 0, 59, 1) {
-            public Object getNextValue() {
+            @Override public Object getNextValue() {
                 Object n = super.getNextValue();
                 if(n==null) n = getMinimum();
                 return n;
             }
-            public Object getPreviousValue() {
+            @Override public Object getPreviousValue() {
                 Object n = super.getPreviousValue();
                 if(n==null) n = getMaximum();
                 return n;
             }
         });
         spinner04.setModel(new SpinnerListModel(weeks) {
-            public Object getNextValue() {
+            @Override public Object getNextValue() {
                 Object o = super.getNextValue();
                 if(o==null) {
                     o = getList().get(0);
                 }
                 return o;
             }
-            public Object getPreviousValue() {
+            @Override public Object getPreviousValue() {
                 Object o = super.getPreviousValue();
                 if(o==null) {
                     List list = getList();
