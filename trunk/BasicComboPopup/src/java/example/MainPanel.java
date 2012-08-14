@@ -23,7 +23,6 @@ public class MainPanel extends JPanel{
             }
             MouseAdapter listener = null;
             @Override protected void installListListeners() {
-                //System.out.println("aaa");
                 super.installListListeners();
                 listener = new MouseAdapter() {
                     @Override public void mouseClicked(MouseEvent e) {
@@ -32,18 +31,17 @@ public class MainPanel extends JPanel{
                         append((String)combo.getSelectedItem());
                     }
                 };
-                if(listener!=null) list.addMouseListener(listener);
-//                 list.addMouseListener(new MouseAdapter() {
-//                     public void mouseClicked(MouseEvent e) {
-//                         append((String)combo.getSelectedItem());
-//                     }
-//                 });
+                if(listener!=null) {
+                    list.addMouseListener(listener);
+                }
             }
-            void uninstallListListeners() {
+            //void uninstallListListeners() {
+            @Override public void uninstallingUI() {
                 if(listener != null) {
                     list.removeMouseListener(listener);
                     listener = null;
                 }
+                super.uninstallingUI();
             }
         };
         //popup.setFocusCycleRoot(true);
@@ -121,7 +119,7 @@ public class MainPanel extends JPanel{
 //             System.out.println("----------------------------");
 //             popup.show(jtp, rect.x, rect.y + rect.height);
 //             EventQueue.invokeLater(new Runnable() {
-//                 public void run() {
+//                 @Override public void run() {
 //                     JPanel parent = (JPanel)popup.getParent();
 //                     System.out.println(parent);
 //                     SwingUtilities.getWindowAncestor(popup).toFront();
