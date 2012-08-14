@@ -10,6 +10,10 @@ import java.util.List;
 import java.io.*;
 import javax.swing.*;
 
+//import java.nio.file.*;
+//import java.nio.file.attribute.*;
+//import static java.nio.file.FileVisitResult.*;
+
 public class MainPanel extends JPanel {
     private final JFileChooser fileChooser = new JFileChooser();
     private final JTextArea textArea = new JTextArea();
@@ -88,10 +92,13 @@ public class MainPanel extends JPanel {
                         return "Error";
                     }
                     ArrayList<File> list = new ArrayList<File>();
+                    //ArrayList<Path> list = new ArrayList<>();
                     try{
                         scount = 0;
                         recursiveSearch(dir, list);
                     }catch(InterruptedException ie) {
+                        //recursiveSearch(dir.toPath(), list);
+                    //}catch(Exception ie) {
                         publish(new Message("The search was canceled",true));
                         return "Interrupted1";
                     }
@@ -108,6 +115,7 @@ public class MainPanel extends JPanel {
                                 return "Disposed";
                             }
                             File file = list.get(current);
+                            //Path path = list.get(current);
                             Thread.sleep(50); //dummy
                             setProgress(100 * current / lengthOfTask);
                             publish(new Message(current+"/"+lengthOfTask + ", "+file.getAbsolutePath(),true));
@@ -152,6 +160,7 @@ public class MainPanel extends JPanel {
                     appendLine(text);
                 }
                 private int scount = 0;
+//*
                 private void recursiveSearch(File dir, final ArrayList<File> list) throws InterruptedException {
                     //System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
                     for(String fname: dir.list()) {
@@ -168,6 +177,21 @@ public class MainPanel extends JPanel {
                         }
                     }
                 }
+/*/             //http://docs.oracle.com/javase/tutorial/essential/io/walk.html
+                private void recursiveSearch(Path dir, final ArrayList<Path> list) throws IOException {
+                    Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
+                        @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                             if(Thread.interrupted()) {
+                                 throw new IOException();
+                             }
+                             if(attrs.isRegularFile()) {
+                                list.add(file);
+                            }
+                            return FileVisitResult.CONTINUE;
+                        }
+                    });
+                }
+//*/
             };
             worker.addPropertyChangeListener(new ProgressListener(pBar));
             worker.execute();
