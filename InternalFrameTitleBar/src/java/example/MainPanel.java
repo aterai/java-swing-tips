@@ -68,7 +68,7 @@ public class MainPanel extends JPanel{
 //             }
 //         });
 //         EventQueue.invokeLater(new Runnable() {
-//             public void run() {
+//             @Override public void run() {
 //                 try{
 //                     internal.setSelected(true);
 //                 }catch(java.beans.PropertyVetoException ex) {
