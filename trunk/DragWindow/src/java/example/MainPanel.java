@@ -17,7 +17,7 @@ class MainPanel{
         createSplashScreen("splash.png");
         showSplashScreen();
         (new Thread() {
-            public void run() {
+            @Override public void run() {
                 try{
                     //dummy long task
                     Thread.sleep(6000);

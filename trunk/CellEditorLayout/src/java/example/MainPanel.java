@@ -107,7 +107,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 //         if(e instanceof KeyEvent) {
 //             //System.out.println("KeyEvent");
 //             EventQueue.invokeLater(new Runnable() {
-//                 public void run() {
+//                 @Override public void run() {
 //                     char kc = ((KeyEvent)e).getKeyChar();
 //                     if(!Character.isIdentifierIgnorable(kc)) {
 //                         field.setText(field.getText()+kc);
