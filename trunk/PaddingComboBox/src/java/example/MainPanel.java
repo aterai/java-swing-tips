@@ -54,10 +54,12 @@ public class MainPanel extends JPanel {
             c.fill    = GridBagConstraints.HORIZONTAL;
             c.gridy   = i; p2.add(list.get(i), c);
         }
+        p2.revalidate(); //??? JDK 1.7.0 Nimbus ???
     }
 
     private ArrayList<JComboBox> initComboBoxes(boolean isColor) {
 //         if(uiCheck.isSelected()) {
+//             // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7158712
 //             UIManager.put("ComboBox.padding", new javax.swing.plaf.InsetsUIResource(1,15,1,1));
 //         }
         ArrayList<JComboBox> list = new ArrayList<JComboBox>();
