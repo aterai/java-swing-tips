@@ -200,7 +200,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+        JLabel l = (JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
         if(targetColumnIndex==tbl.convertColumnIndexToModel(col)) {
             if(val instanceof Status) {
                 switch((Status)val) {

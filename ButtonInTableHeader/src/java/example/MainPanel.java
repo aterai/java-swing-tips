@@ -149,7 +149,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     private final Color BUTTONBGC = new Color(200,200,200,100);
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l =(JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+        JLabel l = (JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
         setIcon(new MenuArrowIcon());
         l.removeAll();
         int mci = tbl.convertColumnIndexToModel(col);
