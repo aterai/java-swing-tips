@@ -4,10 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
 
 public class MainPanel extends JPanel{
     public MainPanel() {
@@ -15,16 +12,20 @@ public class MainPanel extends JPanel{
 
         JLabel label1 = new JLabel("Mail Adress:", SwingConstants.RIGHT);
         label1.setDisplayedMnemonic('M');
-        JTextComponent textField1 = new JTextField(12);
+        JComponent textField1 = new JTextField(12);
         label1.setLabelFor(textField1);
 
         JLabel label2 = new JLabel("Password:", SwingConstants.RIGHT);
         label2.setDisplayedMnemonic('P');
-        JTextComponent textField2 = new JPasswordField(12);
+        JComponent textField2 = new JPasswordField(12);
         label2.setLabelFor(textField2);
 
         JLabel label3 = new JLabel("Dummy:", SwingConstants.RIGHT);
-        JTextComponent textField3 = new JTextField(12);
+        JComponent textField3 = new JTextField(12);
+
+        JLabel label4 = new JLabel("ComboBox:", SwingConstants.RIGHT);
+        label4.setDisplayedMnemonic('C');
+        final JComponent comboBox = new JComboBox();
 
         GridBagConstraints c = new GridBagConstraints();
         JPanel panel = new JPanel(new GridBagLayout());
@@ -40,18 +41,14 @@ public class MainPanel extends JPanel{
         c.gridy = 2;
         addRow(label3, textField3, panel, c);
 
+        c.gridy = 3;
+        addRow(label4, comboBox, panel, c);
 
-
-
-
-
-
-
-
-
-
-        panel.setBorder(BorderFactory.createEmptyBorder(16,16,16,16));
-
+        add(new JButton(new AbstractAction("JComboBox#requestFocusInWindow() Test") {
+            @Override public void actionPerformed(ActionEvent e) {
+                comboBox.requestFocusInWindow();
+            }
+        }), BorderLayout.SOUTH);
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -88,43 +85,4 @@ public class MainPanel extends JPanel{
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-}
-
-class WatermarkPasswordField extends JPasswordField implements FocusListener, DocumentListener {
-    private boolean showWatermark = true;
-    public WatermarkPasswordField() {
-        super();
-        addFocusListener(this);
-        getDocument().addDocumentListener(this);
-    }
-    @Override public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if(showWatermark) {
-            Graphics2D g2 = (Graphics2D)g.create();
-            Insets i = getInsets();
-            Font font = getFont();
-            FontRenderContext frc = g2.getFontRenderContext();
-            TextLayout tl = new TextLayout("Password", font, frc);
-            g2.setPaint(hasFocus()?Color.GRAY:Color.BLACK);
-            int baseline = getBaseline(getWidth(), getHeight());
-            tl.draw(g2, i.left+1, baseline);
-            g2.dispose();
-        }
-    }
-    @Override public void focusGained(FocusEvent e) {
-        repaint();
-    }
-    @Override public void focusLost(FocusEvent e) {
-        showWatermark = getPassword().length==0;
-        repaint();
-    }
-    @Override public void insertUpdate(DocumentEvent e) {
-        showWatermark = e.getDocument().getLength()==0;
-        repaint();
-    }
-    @Override public void removeUpdate(DocumentEvent e) {
-        showWatermark = e.getDocument().getLength()==0;
-        repaint();
-    }
-    @Override public void changedUpdate(DocumentEvent e) {}
 }
