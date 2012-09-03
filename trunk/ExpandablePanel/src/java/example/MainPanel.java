@@ -118,23 +118,22 @@ abstract class ExpansionPanel extends JPanel {
 
     private final JButton button;
     private final Container panel;
-    private final JScrollPane scroll = new JScrollPane();
+    private final JScrollPane scroll;
     private final String title;
     private boolean openFlag = false;
 
-    public ExpansionPanel(String title_) {
+    public ExpansionPanel(String title) {
         super(new BorderLayout());
-        title = title_;
+        this.title = title;
         button = new JButton(new AbstractAction(title) {
             @Override public void actionPerformed(ActionEvent e) {
-                openFlag = !openFlag;
-                initPanel();
+                setSelected(!isSelected());
                 fireExpansionEvent();
             }
         });
-        panel = makePanel();
+        panel  = makePanel();
+        scroll = new JScrollPane(panel);
         scroll.getVerticalScrollBar().setUnitIncrement(25);
-        scroll.getViewport().add(panel);
         add(button, BorderLayout.NORTH);
     }
 
@@ -143,17 +142,11 @@ abstract class ExpansionPanel extends JPanel {
     }
     public void setSelected(boolean flg) {
         openFlag = flg;
-        initPanel();
-    }
-    protected void initPanel() {
         if(openFlag) {
             add(scroll);
-            setPreferredSize(new Dimension(getSize().width, button.getSize().height+panel.getSize().height));
         }else{
             remove(scroll);
-            setPreferredSize(new Dimension(getSize().width, button.getSize().height));
         }
-        revalidate();
     }
 //*
     private final EventListenerList listenerList = new EventListenerList();
