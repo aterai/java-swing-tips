@@ -13,7 +13,7 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        Vector list = makeIconList();
+        DefaultListModel list = makeIconList();
         TestModel model = new TestModel(list);
         IconTable table = new IconTable(model, list);
         JPanel p = new JPanel(new GridBagLayout());
@@ -22,8 +22,8 @@ public class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private Vector makeIconList() {
-        Vector<MyIcon> list = new Vector<MyIcon>();
+    private DefaultListModel makeIconList() {
+        DefaultListModel list = new DefaultListModel();
         list.addElement(new MyIcon("wi0009"));
         list.addElement(new MyIcon("wi0054"));
         list.addElement(new MyIcon("wi0062"));
@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
     }
 }
 class TestModel extends DefaultTableModel {
-    public TestModel(Vector list) {
+    public TestModel(DefaultListModel list) {
         super();
         addRow(new Object[] {list.elementAt(0), list.elementAt(1), list.elementAt(2) });
         addRow(new Object[] {list.elementAt(3), list.elementAt(4), list.elementAt(5) });
@@ -100,7 +100,7 @@ class IconTable extends JTable {
     private final EditorFromList editor;
     private Rectangle rect;
 
-    public IconTable(TableModel model, Vector list) {
+    public IconTable(TableModel model, DefaultListModel list) {
         super(model);
         setDefaultRenderer(Object.class, new TestRenderer());
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -205,7 +205,7 @@ class IconTable extends JTable {
     @SuppressWarnings("unchecked")
     class EditorFromList extends JList {
         private static final int ins = 2;
-        public EditorFromList(Vector list) {
+        public EditorFromList(DefaultListModel list) {
             super(list);
             ImageIcon icon = ((MyIcon)list.elementAt(0)).small;
             int iw = ins+icon.getIconWidth();
