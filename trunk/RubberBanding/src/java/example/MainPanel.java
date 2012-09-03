@@ -221,7 +221,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
     }
     private int[] getIntersectsIcons(JList l, Shape p) {
         ListModel model = l.getModel();
-        Vector<Integer> list = new Vector<Integer>(model.getSize());
+        ArrayList<Integer> list = new ArrayList<Integer>(model.getSize());
         for(int i=0;i<model.getSize();i++) {
             Rectangle r = l.getCellBounds(i,i);
             if(p.intersects(r)) {
