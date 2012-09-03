@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 
 public class MainPanel extends JPanel{
     private Box northBox  = Box.createVerticalBox();
@@ -35,19 +36,18 @@ public class MainPanel extends JPanel{
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public void initComps(List<ExpansionPanel> list, ExpansionEvent e) {
         setVisible(false);
         centerBox.removeAll();
         northBox.removeAll();
         southBox.removeAll();
         ExpansionPanel es = (ExpansionPanel) e.getSource();
-        boolean flag = false;
+        boolean insertSouth = false;
         for(ExpansionPanel exp: list) {
             if(exp==es && exp.isSelected()) {
                 centerBox.add(exp);
-                flag = true;
-            }else if(flag) {
+                insertSouth = true;
+            }else if(insertSouth) {
                 exp.setSelected(false);
                 southBox.add(exp);
             }else{
@@ -155,7 +155,35 @@ abstract class ExpansionPanel extends JPanel {
         }
         revalidate();
     }
-
+//*
+    private final EventListenerList listenerList = new EventListenerList();
+    private ExpansionEvent expansionEvent = null;
+    public void addExpansionListener(ExpansionListener l) {
+        listenerList.add(ExpansionListener.class, l);
+    }
+    public void removeExpansionListener(ExpansionListener l) {
+        listenerList.remove(ExpansionListener.class, l);
+    }
+    // Notify all listeners that have registered interest for
+    // notification on this event type.The event instance
+    // is lazily created using the parameters passed into
+    // the fire method.
+    protected void fireExpansionEvent() {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==ExpansionListener.class) {
+                // Lazily create the event:
+                if(expansionEvent == null) {
+                    expansionEvent = new ExpansionEvent(this);
+                }
+                ((ExpansionListener)listeners[i+1]).expansionStateChanged(expansionEvent);
+            }
+        }
+    }
+/*/
     protected Vector<ExpansionListener> listenerList = new Vector<ExpansionListener>();
     public void addExpansionListener(ExpansionListener listener) {
         if(!listenerList.contains(listener)) listenerList.add(listener);
@@ -172,6 +200,7 @@ abstract class ExpansionPanel extends JPanel {
             listener.expansionStateChanged(e);
         }
     }
+//*/
 }
 
 class ExpansionEvent extends EventObject{
@@ -180,6 +209,6 @@ class ExpansionEvent extends EventObject{
     }
 }
 
-interface ExpansionListener{
+interface ExpansionListener extends EventListener{
     public void expansionStateChanged(ExpansionEvent e);
 }
