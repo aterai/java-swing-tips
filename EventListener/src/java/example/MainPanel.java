@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 
 public class MainPanel extends JPanel{
     private static final Font FONT12 = new Font("Sans-serif", Font.PLAIN, 12);
@@ -42,36 +43,36 @@ public class MainPanel extends JPanel{
             setFont(e.getFont());
         }
     }
-
-//     //http://docs.oracle.com/javase/jp/6/api/javax/swing/event/EventListenerList.html
-//     javax.swing.event.EventListenerList listenerList = new javax.swing.event.EventListenerList();
-//     //FontChangeEvent fontChangeEvent = null;
-//     public void addFontChangeListener(FontChangeListener l) {
-//         listenerList.add(FontChangeListener.class, l);
-//     }
-//     public void removeFontChangeListener(FontChangeListener l) {
-//         listenerList.remove(FontChangeListener.class, l);
-//     }
-//     // Notify all listeners that have registered interest for
-//     // notification on this event type.The event instance
-//     // is lazily created using the parameters passed into
-//     // the fire method.
-//     protected void fireFontChangeEvent(String cmd, Font font) {
-//         // Guaranteed to return a non-null array
-//         Object[] listeners = listenerList.getListenerList();
-//         FontChangeEvent evt = new FontChangeEvent(this, cmd, font);
-//         // Process the listeners last to first, notifying
-//         // those that are interested in this event
-//         for(int i = listeners.length-2; i>=0; i-=2) {
-//             if(listeners[i]==FontChangeListener.class) {
-//                 // Lazily create the event:
-// //                 if(fontChangeEvent == null)
-// //                   fontChangeEvent = new FontChangeEvent(this);
-//                 ((FontChangeListener)listeners[i+1]).fontStateChanged(evt);
-//             }
-//         }
-//     }
-
+//*
+    //http://docs.oracle.com/javase/jp/6/api/javax/swing/event/EventListenerList.html
+    EventListenerList listenerList = new EventListenerList();
+    //FontChangeEvent fontChangeEvent = null;
+    public void addFontChangeListener(FontChangeListener l) {
+        listenerList.add(FontChangeListener.class, l);
+    }
+    public void removeFontChangeListener(FontChangeListener l) {
+        listenerList.remove(FontChangeListener.class, l);
+    }
+    // Notify all listeners that have registered interest for
+    // notification on this event type.The event instance
+    // is lazily created using the parameters passed into
+    // the fire method.
+    protected void fireFontChangeEvent(String cmd, Font font) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        FontChangeEvent evt = new FontChangeEvent(this, cmd, font);
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for(int i = listeners.length-2; i>=0; i-=2) {
+            if(listeners[i]==FontChangeListener.class) {
+                // Lazily create the event:
+//                 if(fontChangeEvent == null)
+//                   fontChangeEvent = new FontChangeEvent(this);
+                ((FontChangeListener)listeners[i+1]).fontStateChanged(evt);
+            }
+        }
+    }
+/*/
     // http://www.asahi-net.or.jp/~dp8t-asm/java/tips/Event.html
     private final Vector<FontChangeListener> listenerList = new Vector<FontChangeListener>();
     public void addFontChangeListener(FontChangeListener listener) {
@@ -90,7 +91,7 @@ public class MainPanel extends JPanel{
         }
         revalidate();
     }
-
+//*/
     public MainPanel() {
         super(new BorderLayout());
 
