@@ -106,15 +106,15 @@ public final class BarFactory{
     }
 
     private String[] tokenize(String input) {
-        Vector<String> v = new Vector<String>();
+        ArrayList<String> v = new ArrayList<String>();
         StringTokenizer t = new StringTokenizer(input);
         String[] cmd;
         while(t.hasMoreTokens()) {
-            v.addElement(t.nextToken());
+            v.add(t.nextToken());
         }
         cmd = new String[v.size()];
         for(int i=0;i<cmd.length;i++) {
-            cmd[i] = v.elementAt(i);
+            cmd[i] = v.get(i);
         }
         return cmd;
     }

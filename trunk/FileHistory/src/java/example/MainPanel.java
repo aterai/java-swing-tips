@@ -12,7 +12,7 @@ public class MainPanel extends JPanel{
     private final BarFactory barFactory;
     private final JFrame frame;
 
-    private Vector<String> fh = new Vector<String>();
+    private ArrayList<String> fh = new ArrayList<String>();
     private JMenuItem noFile = new JMenuItem("なし");
     private JMenu fileHistory;
 
@@ -54,7 +54,7 @@ public class MainPanel extends JPanel{
         }else{
             fm.remove(noFile);
             for(int i=0;i<fh.size();i++) {
-                String name = fh.elementAt(i);
+                String name = fh.get(i);
                 String num  = Integer.toString(i+1);
                 JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
                 mi.setText(num + ": "+ name);
@@ -67,11 +67,11 @@ public class MainPanel extends JPanel{
     private int MAXHISTORY = 3;
     private void updateHistory(String str) {
         fileHistory.removeAll();
-        fh.removeElement(str);
-        fh.insertElementAt(str, 0);
+        fh.remove(str);
+        fh.add(0, str);
         if(fh.size()>MAXHISTORY) fh.remove(fh.size()-1);
         for(int i=0;i<fh.size();i++) {
-            String name = fh.elementAt(i);
+            String name = fh.get(i);
             String num  = Integer.toString(i+1);
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
