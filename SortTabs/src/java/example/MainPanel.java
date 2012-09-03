@@ -88,11 +88,11 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            final Vector<ComparableTab> list = makeSortedVector(tab);
+            final ArrayList<ComparableTab> list = makeSortedList(tab);
             setSortedTab(tab, list);
         }
-        private Vector<ComparableTab> makeSortedVector(JTabbedPane t) {
-            Vector<ComparableTab> l = new Vector<ComparableTab>();
+        private ArrayList<ComparableTab> makeSortedList(JTabbedPane t) {
+            ArrayList<ComparableTab> l = new ArrayList<ComparableTab>();
             for(int i=0;i<t.getTabCount();i++) {
                 l.add(new ComparableTab(t.getTitleAt(i), t.getComponentAt(i)));
             }
@@ -105,7 +105,7 @@ public class MainPanel extends JPanel {
 //             });
             return l;
         }
-        private void setSortedTab(JTabbedPane tabbedPane, Vector<ComparableTab> list) {
+        private void setSortedTab(JTabbedPane tabbedPane, ArrayList<ComparableTab> list) {
             tabbedPane.setVisible(false);
             tabbedPane.removeAll();
             for(ComparableTab c: list) {
