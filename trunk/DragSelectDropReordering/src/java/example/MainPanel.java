@@ -218,7 +218,7 @@ class ReorderbleList extends JList {
         }
         private int[] getIntersectsIcons(Shape p) {
             ListModel model = getModel();
-            Vector<Integer> list = new Vector<Integer>(model.getSize());
+            ArrayList<Integer> list = new ArrayList<Integer>(model.getSize());
             for(int i=0;i<model.getSize();i++) {
                 Rectangle r = getCellBounds(i,i);
                 if(p.intersects(r)) {
