@@ -122,13 +122,13 @@ class TestModel extends DefaultTableModel {
             this.isEditable = isEditable;
         }
     }
-    private final Vector<Test> list = new Vector<Test>();
+    private final ArrayList<Test> list = new ArrayList<Test>();
     public void filterRows(boolean flg) {
         //dataVector.clear();
         setRowCount(0);
         for(int i=0;i<list.size();i++) {
             if(flg && i%2==0) continue;
-            Test t = list.elementAt(i);
+            Test t = list.get(i);
             addRow(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
             //dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
         }
