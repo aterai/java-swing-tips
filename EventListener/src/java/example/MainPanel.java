@@ -45,7 +45,7 @@ public class MainPanel extends JPanel{
     }
 //*
     //http://docs.oracle.com/javase/jp/6/api/javax/swing/event/EventListenerList.html
-    EventListenerList listenerList = new EventListenerList();
+    private final EventListenerList listenerList = new EventListenerList();
     //FontChangeEvent fontChangeEvent = null;
     public void addFontChangeListener(FontChangeListener l) {
         listenerList.add(FontChangeListener.class, l);
