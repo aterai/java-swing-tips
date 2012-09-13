@@ -11,33 +11,36 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
         Color pbc = UIManager.getColor("Panel.background");
-        Box box1 = Box.createVerticalBox();
-        box1.setBorder(makeTitledSeparator("TitledBorder", pbc, pbc.darker(), pbc.brighter(), 2, TitledBorder.DEFAULT_POSITION));
-        box1.add(new JCheckBox("JCheckBox 0"));
-        box1.add(new JCheckBox("JCheckBox 1"));
+        Box box = Box.createVerticalBox();
+        box.add(makeTitledSeparator("TitledBorder", pbc, pbc.darker(), pbc.brighter(), 2, TitledBorder.DEFAULT_POSITION));
+        box.add(new JCheckBox("JCheckBox 0"));
+        box.add(new JCheckBox("JCheckBox 1"));
+        box.add(Box.createVerticalStrut(10));
 
         Color c = new Color(100,180,200);
-        Box box2 = Box.createVerticalBox();
-        box2.setBorder(makeTitledSeparator("TitledBorder ABOVE TOP", pbc, c.darker(), c.brighter(), 2, TitledBorder.ABOVE_TOP));
-        box2.add(new JCheckBox("JCheckBox 2"));
-        box2.add(new JCheckBox("JCheckBox 3"));
+        box.add(makeTitledSeparator("TitledBorder ABOVE TOP", pbc, c.darker(), c.brighter(), 2, TitledBorder.ABOVE_TOP));
+        box.add(new JCheckBox("JCheckBox 2"));
+        box.add(new JCheckBox("JCheckBox 3"));
+        box.add(Box.createVerticalStrut(10));
 
-        Box box3 = Box.createVerticalBox();
-        box3.add(new JSeparator());
-        box3.add(new JCheckBox("JCheckBox 4"));
-        box3.add(new JCheckBox("JCheckBox 5"));
+        box.add(new JSeparator());
+        box.add(new JCheckBox("JCheckBox 4"));
+        box.add(new JCheckBox("JCheckBox 5"));
+        //box.add(Box.createVerticalStrut(8));
 
-        JPanel p = new JPanel(new GridLayout(0, 1));
-        p.add(box1);
-        p.add(box2);
-        p.add(box3);
-
-        add(p, BorderLayout.NORTH);
+        add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static Border makeTitledSeparator(String title, final Color color, final Color darker, final Color brighter, final int height, int titlePosition) {
-        return BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(height, 0, 0, 0, new Icon() {
+    private static JComponent makeTitledSeparator(String title, final Color color, final Color darker, final Color brighter, final int height, int titlePosition) {
+        JLabel l = new JLabel() {
+            @Override public Dimension getMaximumSize() {
+                Dimension d = super.getPreferredSize();
+                d.width = Short.MAX_VALUE;
+                return d;
+            }
+        };
+        l.setBorder(BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(height, 0, 0, 0, new Icon() {
             private int width = -1;
             private Paint painter1, painter2;
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -60,9 +63,9 @@ public class MainPanel extends JPanel{
             }
             @Override public int getIconWidth()  { return 200; } //dummy width
             @Override public int getIconHeight() { return height; }
-        }), title, TitledBorder.DEFAULT_JUSTIFICATION, titlePosition);
+        }), title, TitledBorder.DEFAULT_JUSTIFICATION, titlePosition));
+        return l;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
