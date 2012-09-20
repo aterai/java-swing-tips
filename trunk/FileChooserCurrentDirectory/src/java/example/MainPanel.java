@@ -104,7 +104,7 @@ public class MainPanel extends JPanel{
         }catch(Exception e) {
             e.printStackTrace();
         }
-        JFrame frame = new JFrame("FileChooserCurrentDirectory");
+        JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
