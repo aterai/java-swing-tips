@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
             //@see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
             @Override public void actionPerformed(ActionEvent e) {
                 JTextComponent target = getTextComponent(e);
-                if((target != null) && (target.isEditable())) {
+                if(target != null && target.isEditable()) {
                     Caret caret = target.getCaret();
                     int dot = caret.getDot();
                     int mark = caret.getMark();
@@ -42,12 +42,12 @@ public class MainPanel extends JPanel {
             //@see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
             @Override public void actionPerformed(ActionEvent e) {
                 JTextComponent target = getTextComponent(e);
-                if((target != null) && (target.isEditable())) {
+                if(target != null && target.isEditable()) {
                     Document doc = target.getDocument();
                     Caret caret = target.getCaret();
                     int dot = caret.getDot();
                     int mark = caret.getMark();
-                    if(dot==mark && (doc.getLength()==0 || doc.getLength()==dot)) {
+                    if(dot==mark && doc.getLength()==0 || doc.getLength()==dot) {
                         return;
                     }
                 }
