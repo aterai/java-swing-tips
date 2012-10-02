@@ -47,7 +47,7 @@ public class MainPanel extends JPanel {
                     Caret caret = target.getCaret();
                     int dot = caret.getDot();
                     int mark = caret.getMark();
-                    if(dot==mark && doc.getLength()==0 || doc.getLength()==dot) {
+                    if(dot==mark && doc.getLength()==dot) {
                         return;
                     }
                 }
