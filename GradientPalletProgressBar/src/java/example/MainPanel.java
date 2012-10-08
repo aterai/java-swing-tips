@@ -43,8 +43,6 @@ public class MainPanel extends JPanel {
 
         c.gridx = 1;
         c.weightx = 0.0;
-        //c.insets = new Insets(5, 5, 5, 5);
-        //c.anchor = GridBagConstraints.WEST;
         p.add(new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {
                 final JButton b = (JButton)e.getSource();
@@ -151,13 +149,13 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI{
     }
     @Override public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth  = progressBar.getWidth()  - (b.right + b.left);
-        int barRectHeight = progressBar.getHeight() - (b.top + b.bottom);
+        int barRectWidth  = progressBar.getWidth()  - b.right - b.left;
+        int barRectHeight = progressBar.getHeight() - b.top   - b.bottom;
         if(barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }
-        int cellLength = getCellLength();
-        int cellSpacing = getCellSpacing();
+        //int cellLength = getCellLength();
+        //int cellSpacing = getCellSpacing();
         // amount of progress to draw
         int amountFull = getAmountFull(b, barRectWidth, barRectHeight);
 
@@ -168,7 +166,9 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI{
             g.fillRect(b.left, b.top, amountFull, barRectHeight);
 
         }else{ // VERTICAL
-            //...
+            //XXX
+            super.paintDeterminate(g, c);
+            return;
         }
         // Deal with possible text painting
         if(progressBar.isStringPainted()) {
