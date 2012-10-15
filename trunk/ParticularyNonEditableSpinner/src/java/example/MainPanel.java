@@ -50,7 +50,8 @@ public class MainPanel extends JPanel{
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 Border b = new StringBorder(textField, "%");
-                if(textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
+                //if(textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
+                if(textField.getUI().getClass().getName().startsWith("Synth")) {
                     Border c = textField.getBorder();
                     textField.setBorder((c==null)?b:BorderFactory.createCompoundBorder(c, b));
                 }else{
