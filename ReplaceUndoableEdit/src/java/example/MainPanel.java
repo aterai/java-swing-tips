@@ -17,8 +17,12 @@ public class MainPanel extends JPanel {
     private final UndoManager undoManager = new UndoManager();
     private final Document doc = new PlainDocument() {
         @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-            undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
-            replaceIgnoringUndo(offset, length, text, attrs);
+             if(length!=0) { //replace
+                 undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
+                 replaceIgnoringUndo(offset, length, text, attrs);
+             }else{ //insert
+                 super.replace(offset, length, text, attrs);
+             }
         }
         private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
             /*
