@@ -17,10 +17,11 @@ public class MainPanel extends JPanel {
     private final UndoManager undoManager = new UndoManager();
     private final Document doc = new PlainDocument() {
         @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-             undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
-             replaceIgnoringUndo(offset, length, text, attrs);
-         }
+            undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
+            replaceIgnoringUndo(offset, length, text, attrs);
+        }
         private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            /*
             for(UndoableEditListener uel: getUndoableEditListeners()) {
                 removeUndoableEditListener(uel);
             }
@@ -28,6 +29,11 @@ public class MainPanel extends JPanel {
             for(UndoableEditListener uel: getUndoableEditListeners()) {
                 addUndoableEditListener(uel);
             }
+            /*/
+            removeUndoableEditListener(undoManager);
+            super.replace(offset, length, text, attrs);
+            addUndoableEditListener(undoManager);
+            //*/
         }
         class ReplaceUndoableEdit extends AbstractUndoableEdit {
             private final String oldValue;
@@ -45,19 +51,19 @@ public class MainPanel extends JPanel {
                 this.offset = offset;
             }
             @Override public void undo() throws CannotUndoException {
-                 try{
-                     replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
-                 }catch(BadLocationException ex) {
-                     throw new CannotUndoException();
-                 }
-             }
+                try{
+                    replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
+                }catch(BadLocationException ex) {
+                    throw new CannotUndoException();
+                }
+            }
             @Override public void redo() throws CannotRedoException {
-                 try{
-                     replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
-                 }catch(BadLocationException ex) {
-                     throw new CannotUndoException();
-                 }
-             }
+                try{
+                    replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
+                }catch(BadLocationException ex) {
+                    throw new CannotUndoException();
+                }
+            }
             @Override public boolean canUndo() {
                 return true;
             }
@@ -74,7 +80,7 @@ public class MainPanel extends JPanel {
         doc.addUndoableEditListener(undoManager);
         field.setDocument(doc);
 
-        field.setText("init");
+        field.setText("aaaaaaaaaaa");
         tf.setText("default");
 
         JPanel p = new JPanel();
