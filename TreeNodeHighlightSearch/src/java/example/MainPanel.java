@@ -108,11 +108,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     boolean rollOver = false;
     @Override public Color getBackgroundNonSelectionColor() {
-        if(rollOver) {
-            return rollOverRowColor;
-        }else{
-            return super.getBackgroundNonSelectionColor();
-        }
+        return rollOver ? rollOverRowColor : super.getBackgroundNonSelectionColor();
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
                                                   boolean expanded, boolean leaf, int row, boolean hasFocus) {
