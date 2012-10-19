@@ -126,7 +126,7 @@ public class MainPanel extends JPanel {
 class TestRenderer extends JPanel implements TableCellRenderer {
     private static class SelectedImageFilter extends RGBImageFilter {
         //public SelectedImageFilter() {
-        //    canFilterIndexColorModel = true;
+        //    canFilterIndexColorModel = false;
         //}
         @Override public int filterRGB(int x, int y, int argb) {
             int r = (argb >> 16) & 0xff;

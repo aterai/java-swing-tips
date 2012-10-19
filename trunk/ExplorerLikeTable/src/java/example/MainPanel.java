@@ -200,7 +200,7 @@ class TestRenderer extends Box implements TableCellRenderer {
     }
     private static class SelectedImageFilter extends RGBImageFilter {
         //public SelectedImageFilter() {
-        //    canFilterIndexColorModel = true;
+        //    canFilterIndexColorModel = false;
         //}
         @Override public int filterRGB(int x, int y, int argb) {
             //Color color = new Color(argb,true);
