@@ -41,7 +41,7 @@ class MainPanel extends JPanel {
         label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         label.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
         button.setRolloverIcon(makeFilteredImage(rss));
-        button.setRolloverIcon(makeFilteredImage2(rss));
+        //button.setRolloverIcon(makeFilteredImage2(rss));
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("clicked...");
@@ -183,7 +183,7 @@ class MainPanel extends JPanel {
     }
     static class SelectedImageFilter extends RGBImageFilter {
         //public SelectedImageFilter() {
-        //    canFilterIndexColorModel = true;
+        //    canFilterIndexColorModel = false;
         //}
         private static final float scale = 1.2f;
         @Override public int filterRGB(int x, int y, int argb) {
@@ -205,11 +205,17 @@ class MainPanel extends JPanel {
         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
     }
     private static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
+        //*
         RescaleOp op = new RescaleOp(
             new float[] { 1.2f,1.2f,1.2f,1.0f },
             new float[] { 0f,0f,0f,0f }, null);
         BufferedImage img = new BufferedImage(
             srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        /*/
+        RescaleOp op = new RescaleOp(1.2f, 0.0f, null);
+        BufferedImage img = new BufferedImage(
+            srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+        //*/
         Graphics g = img.getGraphics();
         //g.drawImage(srcIcon.getImage(), 0, 0, null);
         srcIcon.paintIcon(null, g, 0, 0);
