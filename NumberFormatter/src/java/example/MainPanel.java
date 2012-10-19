@@ -62,22 +62,22 @@ public class MainPanel extends JPanel{
             //    return new IntegerDocumentFilter();
             //}
             @Override public Object stringToValue(String text) throws ParseException {
-                 try{
-                     Long.parseLong(text);
-                 }catch(NumberFormatException e) {
-                     throw new ParseException("xxx", 0);
-                 }
-                 Object o = format.parse(text);
-                 if(o instanceof Long) {
-                     Long val = (Long)format.parse(text);
-                     Long max = (Long)m.getMaximum();
-                     Long min = (Long)m.getMinimum();
-                     if(max.compareTo(val)<0 || min.compareTo(val)>0) {
-                         throw new ParseException("xxx", 0);
-                     }
-                     return val;
-                 }
-                 throw new ParseException("xxx", 0);
+                try{
+                    Long.parseLong(text);
+                }catch(NumberFormatException e) {
+                    throw new ParseException("xxx", 0);
+                }
+                Object o = format.parse(text);
+                if(o instanceof Long) {
+                    Long val = (Long)format.parse(text);
+                    Long max = (Long)m.getMaximum();
+                    Long min = (Long)m.getMinimum();
+                    if(max.compareTo(val)<0 || min.compareTo(val)>0) {
+                        throw new ParseException("xxx", 0);
+                    }
+                    return val;
+                }
+                throw new ParseException("xxx", 0);
             }
         };
         //editFormatter.setAllowsInvalid(false);

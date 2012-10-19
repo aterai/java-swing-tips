@@ -13,13 +13,13 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
     };
     private final JTable table;
     public MainPanel() {
@@ -341,7 +341,7 @@ class DotBorder extends EmptyBorder {
 //       if(c.getBounds().x%2==0) {
 //         g2.drawLine(0,0,w,0);
 //         g2.drawLine(0,h-1,w,h-1);
-//       } else {
+//       }else{
 //         g2.drawLine(1,0,w,0);
 //         g2.drawLine(1,h-1,w,h-1);
 //       }

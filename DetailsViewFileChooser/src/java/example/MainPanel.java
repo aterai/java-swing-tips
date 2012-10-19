@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
 //             Component comp = container.getComponent(i);
 //             if(cls.isInstance(comp)) {
 //                 return comp;
-//             } else if(comp instanceof Container) {
+//             }else if(comp instanceof Container) {
 //                 Component c = findChildComponent((Container)comp, cls);
 //                 if(c != null) {
 //                     return c;
