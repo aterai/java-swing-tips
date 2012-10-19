@@ -158,7 +158,7 @@ class SelectedImageFilter extends RGBImageFilter {
     private final float[] filter;
     public SelectedImageFilter(float[] filter) {
         this.filter = filter;
-        canFilterIndexColorModel = true;
+        canFilterIndexColorModel = false;
     }
 //     @Override public int filterRGB(int x, int y, int argb) {
 //         Color color = new Color(argb, true);
