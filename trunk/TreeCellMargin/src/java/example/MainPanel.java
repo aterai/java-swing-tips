@@ -131,7 +131,7 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
         if(hasFocus) {
             if(drawsFocusBorderAroundIcon) {
                 imageOffset = 0;
-            } else if(imageOffset == -1) {
+            }else if(imageOffset == -1) {
                 imageOffset = getLabelStart();
             }
             if(getComponentOrientation().isLeftToRight()) {

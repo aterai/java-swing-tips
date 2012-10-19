@@ -195,20 +195,20 @@ class ComboCellRenderer extends JComboBox implements TableCellRenderer{
         editor.setOpaque(true);
     }
     @SuppressWarnings("unchecked")
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-          removeAllItems();
-          if(isSelected) {
-              editor.setForeground(table.getSelectionForeground());
-              editor.setBackground(table.getSelectionBackground());
-              //button.setBackground(table.getSelectionBackground());
-          }else{
-              editor.setForeground(table.getForeground());
-              editor.setBackground(table.getBackground());
-              //button.setBackground(bg);
-          }
-          addItem((value==null)?"":value.toString());
-          return this;
-      }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        removeAllItems();
+        if(isSelected) {
+            editor.setForeground(table.getSelectionForeground());
+            editor.setBackground(table.getSelectionBackground());
+            //button.setBackground(table.getSelectionBackground());
+        }else{
+            editor.setForeground(table.getForeground());
+            editor.setBackground(table.getBackground());
+            //button.setBackground(bg);
+        }
+        addItem((value==null)?"":value.toString());
+        return this;
+    }
     //Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
@@ -220,17 +220,17 @@ class ComboCellRenderer extends JComboBox implements TableCellRenderer{
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //         System.out.println(propertyName);
-        //         if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-        //             super.firePropertyChange(propertyName, oldValue, newValue);
-        //         }
+        //System.out.println(propertyName);
+        //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        //    super.firePropertyChange(propertyName, oldValue, newValue);
+        //}
     }
-    //     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
+    //@Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
     @Override public void repaint(long tm, int x, int y, int width, int height) {}
     @Override public void repaint(Rectangle r) {}
     @Override public void repaint() {}
-    //     @Override public void invalidate() {}
-    //     @Override public void validate() {}
+    //@Override public void invalidate() {}
+    //@Override public void validate() {}
     @Override public void revalidate() {}
     //<---- Overridden for performance reasons.
 }

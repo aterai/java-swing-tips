@@ -45,7 +45,7 @@ public class MainPanel extends JPanel{
 //                     int value = slider.getValue();
 //                     if(slider.getOrientation() == JSlider.HORIZONTAL) {
 //                         value = this.valueForXPosition(slider.getMousePosition().x);
-//                     } else if(slider.getOrientation() == JSlider.VERTICAL) {
+//                     }else if(slider.getOrientation() == JSlider.VERTICAL) {
 //                         value = this.valueForYPosition(slider.getMousePosition().y);
 //                     }
 //                     slider.setValue(value);

@@ -17,7 +17,7 @@ class MainPanel extends JPanel {
     private static final Object[] optionPaneAuditoryCues = {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"
-      };
+    };
     private final JPanel panel = new JPanel(new GridLayout(2,1,5,5));
     public MainPanel() {
         super(new BorderLayout());

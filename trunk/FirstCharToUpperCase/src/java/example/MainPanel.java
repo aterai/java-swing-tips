@@ -58,22 +58,22 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
         this.textArea = textArea;
     }
     @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attrs) throws BadLocationException {
-         if(text==null) return;
-         replace(fb, offset, 0, text, attrs);
-     }
+        if(text==null) return;
+        replace(fb, offset, 0, text, attrs);
+    }
     @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-         Document doc = fb.getDocument();
-         if(offset==0 && doc.getLength()-length>0) {
-             fb.replace(0, length+1, doc.getText(length, 1).toUpperCase(), null);
-             textArea.setCaretPosition(0);
-         }else{
-             fb.remove(offset, length);
-         }
-     }
+        Document doc = fb.getDocument();
+        if(offset==0 && doc.getLength()-length>0) {
+            fb.replace(0, length+1, doc.getText(length, 1).toUpperCase(), null);
+            textArea.setCaretPosition(0);
+        }else{
+            fb.remove(offset, length);
+        }
+    }
     @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-         if(offset==0 && text!=null && text.length()>0) {
-             text = text.substring(0,1).toUpperCase()+text.substring(1);
-         }
-         fb.replace(offset, length, text, attrs);
-     }
+        if(offset==0 && text!=null && text.length()>0) {
+            text = text.substring(0,1).toUpperCase()+text.substring(1);
+        }
+        fb.replace(offset, length, text, attrs);
+    }
 }

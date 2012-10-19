@@ -116,7 +116,11 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) if ("Nimbus".equals(laf.getName())) UIManager.setLookAndFeel(laf.getClassName());
+            for(UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
+                if("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                }
+            }
         }catch(Exception e) {
             e.printStackTrace();
         }
