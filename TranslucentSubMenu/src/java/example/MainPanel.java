@@ -89,6 +89,21 @@ class TranslucentPopupMenu extends JPopupMenu {
         menuItem.setOpaque(false);
         return super.add(menuItem);
     }
+//     @Override public void show(Component c, int x, int y) {
+//         EventQueue.invokeLater(new Runnable() {
+//             @Override public void run() {
+//                 Window p = SwingUtilities.getWindowAncestor(TranslucentPopupMenu.this);
+//                 if(p!=null && p instanceof JWindow) {
+//                     System.out.println("Heavy weight");
+//                     JWindow w = (JWindow)p;
+//                     w.setBackground(ALPHA_ZERO);
+//                 }else{
+//                     System.out.println("Light weight");
+//                 }
+//             }
+//         });
+//         super.show(c, x, y);
+//     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(POPUP_LEFT);
@@ -191,6 +206,7 @@ class TranslucentPopup extends Popup {
         //parent.setBorder(new ShadowPopupBorder());
     }
     @Override public void show() {
+        System.out.println("Always Heavy weight!");
         this.popupWindow.setVisible(true);
         this.popupWindow.pack();
         // mark the window as non-opaque, so that the
