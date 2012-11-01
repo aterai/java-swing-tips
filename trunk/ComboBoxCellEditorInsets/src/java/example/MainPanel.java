@@ -67,6 +67,7 @@ public class MainPanel extends JPanel {
     }
 }
 
+//*
 @SuppressWarnings("unchecked")
 class ComboBoxPanel extends JPanel {
     public final JComboBox comboBox = new JComboBox(new String[] {"aaaaaa", "bbb", "c"});
@@ -84,6 +85,23 @@ class ComboBoxPanel extends JPanel {
         comboBox.setSelectedIndex(0);
     }
 }
+/*/
+class ComboBoxPanel extends JPanel {
+    private String[] m = new String[] {"a", "b", "c"};
+    protected JComboBox<String> comboBox = new JComboBox<String>(m) {
+        @Override public Dimension getPreferredSize() {
+            Dimension d = super.getPreferredSize();
+            return new Dimension(40, d.height);
+        }
+    };
+    public ComboBoxPanel() {
+        super();
+        setOpaque(true);
+        comboBox.setEditable(true);
+        add(comboBox);
+    }
+}
+//*/
 class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
     public ComboBoxCellRenderer() {
         super();
