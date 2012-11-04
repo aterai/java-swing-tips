@@ -121,7 +121,7 @@ public class MainPanel extends JPanel {
             this.title = title;
             this.comp  = comp;
         }
-        public int compareTo(ComparableTab o) {
+        @Override public int compareTo(ComparableTab o) {
             return title.compareTo(o.title);
         }
         @Override public boolean equals(Object o) {
