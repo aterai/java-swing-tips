@@ -82,13 +82,27 @@ class JustifiedLabel extends JLabel {
     }
     public JustifiedLabel(String str) {
         super(str);
+//         Dimension d = getPreferredSize();
+//         int baseline = getBaseline(d.width, d.height);
+//         setAlignmentY(baseline/(float)d.height);
     }
+//     @Override public Dimension getMinimumSize() {
+//         return getPreferredSize();
+//     }
+//     @Override public Dimension getPreferredSize() {
+//         Dimension d = super.getPreferredSize();
+//         d.width = getWidth();
+//         return d;
+//     }
+//     @Override public int getWidth() {
+//         return 120;
+//     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
         if(w!=prev_width) {
-            gvtext = getWrappedGlyphVector(getText(), w, getFont(), g2.getFontRenderContext());
+            gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
             prev_width = w;
         }
         if(gvtext!=null) {
@@ -97,15 +111,14 @@ class JustifiedLabel extends JLabel {
             super.paintComponent(g);
         }
     }
-    private GlyphVector getWrappedGlyphVector(String str, float wrapping, Font font, FontRenderContext frc) {
-        GlyphVector gv   = font.createGlyphVector(frc, str);
-        float ga = 0.0f;
-        for(int i=0;i<gv.getNumGlyphs();i++) {
-            ga = ga + gv.getGlyphMetrics(i).getAdvance();
-        }
-        if(wrapping<ga) return null;
+    private GlyphVector getJustifiedGlyphVector(String str, Font font, FontRenderContext frc) {
+        GlyphVector gv = font.createGlyphVector(frc, str);
+        Rectangle2D r = gv.getVisualBounds();
+        float jwidth = (float)getWidth();
+        float vwidth = (float)r.getWidth();
+        if(jwidth<vwidth) return null;
 
-        float xx = (wrapping-ga) / (float)(gv.getNumGlyphs()-1);
+        float xx = (jwidth-vwidth) / (float)(gv.getNumGlyphs()-1);
         float xpos = 0.0f;
         Point2D gmPos = new Point2D.Double(0.0d, 0.0d);
         for(int i=0;i<gv.getNumGlyphs();i++) {
