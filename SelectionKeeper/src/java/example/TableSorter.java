@@ -1,5 +1,5 @@
 package example;
-//-*- mode:java; encoding:utf8n; coding:utf-8 -*-
+//-*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
