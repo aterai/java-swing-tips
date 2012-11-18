@@ -47,9 +47,9 @@ public class MainPanel extends JPanel {
         radio.setVerticalTextPosition(SwingConstants.CENTER);
         radio.setHorizontalAlignment(SwingConstants.CENTER);
         radio.setHorizontalTextPosition(SwingConstants.CENTER);
+        radio.setBorder(BorderFactory.createEmptyBorder());
         radio.setContentAreaFilled(false);
         radio.setFocusPainted(false);
-        radio.setBorder(BorderFactory.createEmptyBorder());
         //radio.setBackground(new Color(cc));
         radio.setForeground(Color.WHITE);
         return radio;
@@ -64,14 +64,14 @@ public class MainPanel extends JPanel {
             r.setBackground(color);
             if(round) {
                 if(i==0) {
-                    r.setIcon(new BaseIcon(Location.FIRST));
+                    r.setIcon(new ToggleButtonBarCellIcon(Location.FIRST));
                 }else if(i==size-1) {
-                    r.setIcon(new BaseIcon(Location.LAST));
+                    r.setIcon(new ToggleButtonBarCellIcon(Location.LAST));
                 }else{
-                    r.setIcon(new BaseIcon(Location.CENTER));
+                    r.setIcon(new ToggleButtonBarCellIcon(Location.CENTER));
                 }
             }else{
-                r.setIcon(new BaseIcon1());
+                r.setIcon(new CellIcon());
             }
             bg.add(r);
             p.add(r);
@@ -101,11 +101,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-enum Location{
-    FIRST, CENTER, LAST;
-}
-
-class BaseIcon1 implements Icon{
+class CellIcon implements Icon{
     //http://weboook.blog22.fc2.com/blog-entry-342.html
     //Webpark 2012.11.15
     private static final Color TL = new Color(1f,1f,1f,.2f);
@@ -151,7 +147,11 @@ class BaseIcon1 implements Icon{
     }
 }
 
-class BaseIcon implements Icon{
+enum Location{
+    FIRST, CENTER, LAST;
+}
+
+class ToggleButtonBarCellIcon implements Icon{
     private static final Color TL = new Color(1f,1f,1f,.2f);
     private static final Color BR = new Color(0f,0f,0f,.2f);
     private static final Color ST = new Color(1f,1f,1f,.4f);
@@ -160,16 +160,16 @@ class BaseIcon implements Icon{
     private Color ssc;
     private Color bgc;
     private Location l;
-    public BaseIcon() {
+    public ToggleButtonBarCellIcon() {
         this(Location.CENTER);
     }
-    public BaseIcon(Location l) {
+    public ToggleButtonBarCellIcon(Location l) {
         this.l = l;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int r = 8;
-        int w = c.getWidth(); // - 1;
-        int h = c.getHeight(); // - 1;
+        int w = c.getWidth();
+        int h = c.getHeight();
 
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
