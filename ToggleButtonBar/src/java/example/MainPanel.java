@@ -135,7 +135,7 @@ class CellIcon implements Icon{
         g2.setPaint(TL);
         g2.fillRect(x, y, 1, h);
         g2.setPaint(BR);
-        g2.fillRect(x+w-1, y, 1, h);
+        g2.fillRect(x+w, y, 1, h);
 
         g2.dispose();
     }
