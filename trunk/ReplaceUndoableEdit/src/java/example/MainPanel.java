@@ -120,7 +120,7 @@ public class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         box.add(makePanel("Default", tf));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("add Image(JLabel)", field));
+        box.add(makePanel("replace ignoring undo", field));
 
         add(box, BorderLayout.NORTH);
         add(p, BorderLayout.SOUTH);
