@@ -14,30 +14,11 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super();
 
-        add(makeToggleButtonBar(Arrays.asList(
-            makeRadioButton("left"),
-            makeRadioButton("center"),
-            makeRadioButton("right")), 0xff7400, true));
-
-        add(makeToggleButtonBar(Arrays.asList(
-            makeRadioButton("left"),
-            makeRadioButton("center"),
-            makeRadioButton("right")), 0x555555, false));
-
-        add(makeToggleButtonBar(Arrays.asList(
-            makeRadioButton("left"),
-            makeRadioButton("center"),
-            makeRadioButton("right")), 0x006400, true));
-
-        add(makeToggleButtonBar(Arrays.asList(
-            makeRadioButton("left"),
-            makeRadioButton("center"),
-            makeRadioButton("right")), 0x8b0000, false));
-
-        add(makeToggleButtonBar(Arrays.asList(
-            makeRadioButton("left"),
-            makeRadioButton("center"),
-            makeRadioButton("right")), 0x001e43, true));
+        add(makeToggleButtonBar(0xff7400, true));
+        add(makeToggleButtonBar(0x555555, false));
+        add(makeToggleButtonBar(0x006400, true));
+        add(makeToggleButtonBar(0x8b0000, false));
+        add(makeToggleButtonBar(0x001e43, true));
 
         setPreferredSize(new Dimension(320, 240));
     }
@@ -54,7 +35,11 @@ public class MainPanel extends JPanel {
         radio.setForeground(Color.WHITE);
         return radio;
     }
-    private static JPanel makeToggleButtonBar(List<JRadioButton> list, int cc, boolean round) {
+    private static JPanel makeToggleButtonBar(int cc, boolean round) {
+        List<JRadioButton> list = Arrays.asList(
+            makeRadioButton("left"),
+            makeRadioButton("center"),
+            makeRadioButton("right"));
         int size = list.size();
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(1, size, 0, 0));
@@ -175,25 +160,29 @@ class ToggleButtonBarCellIcon implements Icon{
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         Path2D.Float p = new Path2D.Float();
-        if(Location.CENTER.equals(l)) {
+        switch(l) {
+          case CENTER:
             p.moveTo(x, y);
             p.lineTo(x + w, y);
             p.lineTo(x + w, y + h);
             p.lineTo(x, y + h);
-        }else if(Location.FIRST.equals(l)) {
+            break;
+          case FIRST:
             p.moveTo(x, y + r);
             p.quadTo(x, y, x + r, y);
             p.lineTo(x + w, y);
             p.lineTo(x + w, y + h);
             p.lineTo(x + r, y + h);
             p.quadTo(x, y + h, x, y + h - r);
-        }else if(Location.LAST.equals(l)) {
+            break;
+          case LAST:
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);
             p.quadTo(x + w, y, x + w, y + r);
             p.lineTo(x + w, y + h - r);
             p.quadTo(x + w, y + h, x + w -r, y + h);
             p.lineTo(x, y + h);
+            break;
         }
         p.closePath();
         Area area = new Area(p);
