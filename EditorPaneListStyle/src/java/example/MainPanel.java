@@ -23,7 +23,8 @@ public class MainPanel extends JPanel{
             HTMLEditorKit htmlEditorKit = (HTMLEditorKit)pane.getEditorKit();
             StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
             String u = getClass().getResource(bullet).toString();
-            styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;", u));
+            styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;}", u));
+
             //styleSheet.addRule("ul{list-style-type:circle;margin:0px 20px;}");
             //styleSheet.addRule("ul{list-style-type:disc;margin:0px 20px;}");
             //styleSheet.addRule("ul{list-style-type:square;margin:0px 20px;}");
