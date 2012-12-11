@@ -48,13 +48,7 @@ public class MainPanel extends JPanel {
             JRadioButton r = list.get(i);
             r.setBackground(color);
             if(round) {
-                if(i==0) {
-                    r.setIcon(new ToggleButtonBarCellIcon(Location.FIRST));
-                }else if(i==size-1) {
-                    r.setIcon(new ToggleButtonBarCellIcon(Location.LAST));
-                }else{
-                    r.setIcon(new ToggleButtonBarCellIcon(Location.CENTER));
-                }
+                r.setIcon(new ToggleButtonBarCellIcon());
             }else{
                 r.setIcon(new CellIcon());
             }
@@ -132,10 +126,6 @@ class CellIcon implements Icon{
     }
 }
 
-enum Location{
-    FIRST, CENTER, LAST;
-}
-
 class ToggleButtonBarCellIcon implements Icon{
     private static final Color TL = new Color(1f,1f,1f,.2f);
     private static final Color BR = new Color(0f,0f,0f,.2f);
@@ -144,45 +134,41 @@ class ToggleButtonBarCellIcon implements Icon{
 
     private Color ssc;
     private Color bgc;
-    private Location l;
-    public ToggleButtonBarCellIcon() {
-        this(Location.CENTER);
-    }
-    public ToggleButtonBarCellIcon(Location l) {
-        this.l = l;
-    }
+
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int r = 8;
         int w = c.getWidth();
         int h = c.getHeight();
+        Container parent = c.getParent();
+        if(parent==null) {
+            return;
+        }
 
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         Path2D.Float p = new Path2D.Float();
-        switch(l) {
-          case CENTER:
-            p.moveTo(x, y);
-            p.lineTo(x + w, y);
-            p.lineTo(x + w, y + h);
-            p.lineTo(x, y + h);
-            break;
-          case FIRST:
+
+        if(c==parent.getComponent(0)) {
+            //:first-child
             p.moveTo(x, y + r);
             p.quadTo(x, y, x + r, y);
             p.lineTo(x + w, y);
             p.lineTo(x + w, y + h);
             p.lineTo(x + r, y + h);
             p.quadTo(x, y + h, x, y + h - r);
-            break;
-          case LAST:
+        }else if(c==parent.getComponent(parent.getComponentCount()-1)) {
+            //:last-child
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);
             p.quadTo(x + w, y, x + w, y + r);
             p.lineTo(x + w, y + h - r);
             p.quadTo(x + w, y + h, x + w -r, y + h);
             p.lineTo(x, y + h);
-            break;
+        }else{
+            p.moveTo(x, y);
+            p.lineTo(x + w, y);
+            p.lineTo(x + w, y + h);
+            p.lineTo(x, y + h);
         }
         p.closePath();
         Area area = new Area(p);
