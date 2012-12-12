@@ -21,6 +21,7 @@ public class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
+    @SuppressWarnings("unchecked")
     private DefaultListModel makeIconList() {
         DefaultListModel list = new DefaultListModel();
         list.addElement(new MyIcon("wi0009"));
