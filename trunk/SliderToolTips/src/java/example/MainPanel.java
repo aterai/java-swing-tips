@@ -152,6 +152,7 @@ class SliderPopupListener extends MouseAdapter{
             Point pt = me.getPoint();
             pt.y = -size.height;
             SwingUtilities.convertPointToScreen(pt, (Component)me.getSource());
+            pt.translate(-size.width/2, 0);
             toolTip.setLocation(pt);
         }
         prevValue = intValue;
