@@ -39,9 +39,9 @@ public class MainPanel extends JPanel {
 
 //         JComboBox combo3 = new JComboBox(items);
 //         combo3.setUI(new BasicComboBoxUI() {
-//             protected ComboPopup createPopup() {
+//             @Override protected ComboPopup createPopup() {
 //                 return new BasicComboPopup(combo) {
-//                     protected void configureList() {
+//                     @Override protected void configureList() {
 //                         super.configureList();
 //                         list.setFixedCellHeight(60);
 //                     }

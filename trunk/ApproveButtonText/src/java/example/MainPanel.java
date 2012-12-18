@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 final JFileChooser fileChooser = new JFileChooser();
 //                 fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
-//                     public void propertyChange(PropertyChangeEvent e) {
+//                     @Override public void propertyChange(PropertyChangeEvent e) {
 //                         String prop = e.getPropertyName();
 //                         System.out.println("----\n"+prop);
 //                         if(prop==JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||

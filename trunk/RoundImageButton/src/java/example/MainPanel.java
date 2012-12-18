@@ -15,7 +15,7 @@ class MainPanel extends JPanel{
     private final Box box = Box.createHorizontalBox();
       // JDK 5
       //new Box(BoxLayout.X_AXIS) {
-      //    protected void paintComponent(Graphics g) {
+      //    @Override protected void paintComponent(Graphics g) {
       //        if(ui != null) {
       //            super.paintComponent(g);
       //        }else if(isOpaque()) {

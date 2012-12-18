@@ -236,7 +236,7 @@ class StarburstSVGMaker {
         return p;
     }
 //     class MyDragGestureListener implements DragGestureListener {
-//         public void dragGestureRecognized(DragGestureEvent dge) {
+//         @Override public void dragGestureRecognized(DragGestureEvent dge) {
 //             File outfile;
 //             try{
 //                 outfile = File.createTempFile("starburst",".svg");
@@ -251,18 +251,18 @@ class StarburstSVGMaker {
 //             if(outfile==null) return;
 //             final File tmpfile = outfile;
 //             Transferable tran = new Transferable() {
-//                 public Object getTransferData(DataFlavor flavor) {
+//                 @Override public Object getTransferData(DataFlavor flavor) {
 //                     return Arrays.asList(tmpfile);
 //                 }
-//                 public DataFlavor[] getTransferDataFlavors() {
+//                 @Override public DataFlavor[] getTransferDataFlavors() {
 //                     return new DataFlavor[] { DataFlavor.javaFileListFlavor };
 //                 }
-//                 public boolean isDataFlavorSupported(DataFlavor flavor) {
+//                 @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //                     return flavor.equals(DataFlavor.javaFileListFlavor);
 //                 }
 //             };
 //             DragSourceAdapter dsa = new DragSourceAdapter() {
-//                 public void dragDropEnd(DragSourceDropEvent dsde) {
+//                 @Override public void dragDropEnd(DragSourceDropEvent dsde) {
 //                     if(dsde.getDropSuccess()) {
 //                         System.out.println(dsde);
 //                     }

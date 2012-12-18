@@ -80,7 +80,7 @@ public class MainPanel extends JPanel{
 //         }
 //         r2 = r;
 //         frame.getRootPane().addComponentListener(new ComponentAdapter() {
-//             public void componentResized(ComponentEvent e) {
+//             @Override public void componentResized(ComponentEvent e) {
 //                 Point loc   = frame.getLocationOnScreen();
 //                 Point mouse = MouseInfo.getPointerInfo().getLocation();
 //                 if(r2!=null && (mouse.getX()>loc.getX()+MAX ||

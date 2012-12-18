@@ -125,7 +125,7 @@ class MainPanel extends JPanel {
             //JComponent c = (JComponent)frame.getContentPane();
             //ActionMap am = frame.getActionMap();
             //Action a = new AbstractAction() {
-            //    public void actionPerformed(ActionEvent e) {
+            //    @Override public void actionPerformed(ActionEvent e) {
             //        try{
             //            frame.setClosed(true);
             //        }catch(java.beans.PropertyVetoException ex) {

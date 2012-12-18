@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         frame.getGlassPane().setVisible(true);
 
 //         add(new JButton(new AbstractAction("show GlassPane") {
-//             public void actionPerformed(ActionEvent e) {
+//             @Override public void actionPerformed(ActionEvent e) {
 //                 final JButton button = (JButton)e.getSource();
 //                 button.setEnabled(false);
 //                 frame.getGlassPane().setVisible(true);

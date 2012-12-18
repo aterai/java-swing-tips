@@ -59,12 +59,12 @@ public class MainPanel extends JPanel {
 //         public MagneticListener(JInternalFrame frame) {
 //             this.frame = frame;
 //         }
-//         public void mousePressed(MouseEvent e) {
+//         @Override public void mousePressed(MouseEvent e) {
 //             Point p1 = frame.getLocation();
 //             Point p2 = SwingUtilities.convertPoint(frame, e.getPoint(), frame.getDesktopPane());
 //             loc.setLocation(p2.x-p1.x, p2.y-p1.y);
 //         }
-//         public void mouseDragged(MouseEvent me) {
+//         @Override public void mouseDragged(MouseEvent me) {
 //             JDesktopPane desktop = frame.getDesktopPane();
 //             Point ep = me.getPoint();
 //             Point pt = SwingUtilities.convertPoint(frame, ep.x-loc.x, ep.y-loc.y, desktop);

@@ -95,7 +95,7 @@ class JSearchBar extends JComboBox{
     @Override public SearchBarComboBoxUI getUI() {
         return (SearchBarComboBoxUI)ui;
     }
-//     public void setUI(SearchBarComboBoxUI newUI) {
+//     @Override public void setUI(SearchBarComboBoxUI newUI) {
 //         super.setUI(newUI);
 //     }
     @Override public void updateUI() {

@@ -60,10 +60,10 @@ public class MainPanel extends JPanel {
 //         final DataFlavor uriflavor  = new DataFlavor(String.class, "text/uri-list");
 //         final JLabel label = new JLabel(MYSITE);
 //         label.setTransferHandler(new TransferHandler("text") {
-//             public boolean canImport(JComponent c, DataFlavor[] flavors) {
+//             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
 //                 return (flavors.length>0 && flavors[0].equals(uriflavor));
 //             }
-//             public Transferable createTransferable(JComponent c) {
+//             @Override public Transferable createTransferable(JComponent c) {
 //                 return new Transferable() {
 //                     public Object getTransferData(DataFlavor flavor) {
 //                         return MYSITE;
@@ -78,7 +78,7 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 //         label.addMouseListener(new MouseAdapter() {
-//             public void mousePressed(MouseEvent e) {
+//             @Override public void mousePressed(MouseEvent e) {
 //                 JComponent l = (JComponent)e.getSource();
 //                 TransferHandler handler = l.getTransferHandler();
 //                 handler.exportAsDrag(l, e, TransferHandler.COPY);
@@ -86,15 +86,15 @@ public class MainPanel extends JPanel {
 //         });
 //         //DragGestureListener
 //         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_COPY, new DragGestureListener() {
-//             public void dragGestureRecognized(DragGestureEvent dge) {
+//             @Override public void dragGestureRecognized(DragGestureEvent dge) {
 //                 Transferable t = new Transferable() {
-//                     public Object getTransferData(DataFlavor flavor) {
+//                     @Override public Object getTransferData(DataFlavor flavor) {
 //                         return MYSITE;
 //                     }
-//                     public DataFlavor[] getTransferDataFlavors() {
+//                     @Override public DataFlavor[] getTransferDataFlavors() {
 //                         return new DataFlavor[] { uriflavor };
 //                     }
-//                     public boolean isDataFlavorSupported(DataFlavor flavor) {
+//                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //                         return flavor.equals(uriflavor);
 //                     }
 //                 };

@@ -65,7 +65,7 @@ class TreePopupMenu extends JPopupMenu {
             }
         });
         add(new JMenuItem(new AbstractAction("edit") {
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 JTree tree = (JTree)getInvoker();
                 DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
                 //if(path==null) return;

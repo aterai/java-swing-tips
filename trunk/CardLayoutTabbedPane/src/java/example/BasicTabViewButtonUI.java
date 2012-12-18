@@ -32,7 +32,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         super.uninstallUI(c);
         this.tabViewButton = null;
     }
-//     public void installDefaults() {}
+//     @Override public void installDefaults() {}
 
     private static Dimension size = new Dimension();
     private static Rectangle viewRect = new Rectangle();

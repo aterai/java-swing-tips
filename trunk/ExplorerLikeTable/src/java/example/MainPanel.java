@@ -236,8 +236,7 @@ class TestRenderer extends Box implements TableCellRenderer {
 //         public DotBorder(Color color, int thickness) {
 //             super(color, thickness);
 //         }
-//         @Override
-//         public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+//         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //             Graphics2D g2 = (Graphics2D)g;
 //             g2.translate(x,y);
 //             if(isFocusedBorder()) {

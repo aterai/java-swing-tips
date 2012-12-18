@@ -24,8 +24,7 @@ public class MainPanel extends JPanel{
         textPane = new JTextPane() {
             //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
             //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
-            @Override
-            public boolean getScrollableTracksViewportWidth() {
+            @Override public boolean getScrollableTracksViewportWidth() {
                 Component p = getParent();
                 if(p==null) return true;
                 int ewidth = getUI().getPreferredSize(this).width;
@@ -39,7 +38,7 @@ public class MainPanel extends JPanel{
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
 //         box.add(new JButton(new AbstractAction("JTextPane") {
-//             public void actionPerformed(ActionEvent e) {
+//             @Override public void actionPerformed(ActionEvent e) {
 //                 textPane.setText(text);
 //             }
 //         }));

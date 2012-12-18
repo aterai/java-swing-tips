@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 //         KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
 //         final Action oldTabAction = table.getActionMap().get(im.get(tab));
 //         Action tabAction = new AbstractAction() {
-//             public void actionPerformed(ActionEvent e) {
+//             @Override public void actionPerformed(ActionEvent e) {
 //                 oldTabAction.actionPerformed(e);
 //                 JTable table = (JTable)e.getSource();
 //                 int rowCount = table.getRowCount();

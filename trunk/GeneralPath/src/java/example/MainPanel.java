@@ -103,7 +103,7 @@ class StarPanel3 extends JPanel{
     }
 }
 // class StarPanel4 extends JPanel{
-//     public void paintComponent(Graphics g) {
+//     @Override public void paintComponent(Graphics g) {
 //         Graphics2D g2 = (Graphics2D)g;
 //         int w = getWidth();
 //         int h = getHeight();
@@ -159,7 +159,7 @@ class StarIcon1 implements Icon{
     private static final int R = 40;
     private final AffineTransform at;
     private final Shape star;
-      public StarIcon1() {
+    public StarIcon1() {
         double agl = 0.0;
         double add = 2*Math.PI/5;
         Path2D.Double p = new Path2D.Double();

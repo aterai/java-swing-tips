@@ -10,7 +10,7 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     private transient final MouseListener ml = new MouseAdapter() {
-        public void mousePressed(MouseEvent e) {
+        @Override public void mousePressed(MouseEvent e) {
             JTree tree = (JTree)e.getSource();
             if(tree.getRowForLocation(e.getX(), e.getY())<0) {
                 tree.clearSelection();

@@ -109,7 +109,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         //---->
         //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
         MouseListener ml = new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+            @Override public void mousePressed(MouseEvent e) {
                 ButtonModel m = ((JButton)e.getSource()).getModel();
                 if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
                     setBackground(table.getBackground());

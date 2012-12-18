@@ -195,10 +195,10 @@ class EditableTabbedPane extends JTabbedPane {
                     startEditing();
                 }
             }
-//             public void mousePressed(MouseEvent e) {
+//             @Override public void mousePressed(MouseEvent e) {
 //                 dragTab = getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY());
 //             }
-//             public void mouseReleased(MouseEvent e) {
+//             @Override public void mouseReleased(MouseEvent e) {
 //                 if(dragTab>=0) {
 //                     if(dragTab!=getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY())) {
 //                         convertTab(dragTab, getTargetTabIndex(e.getPoint()));
@@ -210,7 +210,7 @@ class EditableTabbedPane extends JTabbedPane {
 //             }
         });
 //         addMouseMotionListener(new MouseMotionAdapter() {
-//             public void mouseDragged(MouseEvent e) {
+//             @Override public void mouseDragged(MouseEvent e) {
 //                 int next = getTargetTabIndex(e.getPoint());
 //                 if(next<0 || dragTab==next || next-dragTab==1) {
 //                     lineRect.setRect(0,0,0,0);
@@ -243,7 +243,7 @@ class EditableTabbedPane extends JTabbedPane {
         panel.setVisible(false);
     }
 
-//     public void paintComponent(Graphics g) {
+//     @Override public void paintComponent(Graphics g) {
 //         Graphics2D g2 = (Graphics2D)g;
 //         g2.setPaint(this.getBackground());
 //         g2.fillRect(0,0,500,50);

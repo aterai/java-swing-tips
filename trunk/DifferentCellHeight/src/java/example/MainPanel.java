@@ -103,7 +103,7 @@ class DotBorder extends LineBorder {
 //     public DotBorder(int top, int left, int bottom, int right) {
 //         super(top, left, bottom, right);
 //     }
-//     public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+//     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //         Graphics2D g2 = (Graphics2D)g;
 //         g2.setPaint(c.getForeground());
 //         g2.setStroke(dashed);
@@ -111,7 +111,7 @@ class DotBorder extends LineBorder {
 //         g2.drawRect(0, 0, w-1, h-1);
 //         g2.translate(-x,-y);
 //     }
-//     //public Insets getBorderInsets()
-//     //public Insets getBorderInsets(Component c)
-//     //public Insets getBorderInsets(Component c, Insets insets)
+//     //@Override public Insets getBorderInsets()
+//     //@Override public Insets getBorderInsets(Component c)
+//     //@Override public Insets getBorderInsets(Component c, Insets insets)
 // }

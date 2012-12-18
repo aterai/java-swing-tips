@@ -31,23 +31,21 @@ public class MainPanel extends JPanel {
         frame.getRootPane().setDefaultButton(eb);
 
 //         frame.addWindowListener(new WindowAdapter() {
-//             @Override
-//             public void windowOpened(WindowEvent e) {
+//             @Override public void windowOpened(WindowEvent e) {
 //                 System.out.println("windowOpened");
 //                 field.requestFocus();
 //             }
 //         });
 
 //         frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
-//             @Override
-//             public Component getInitialComponent(Window w) {
+//             @Override public Component getInitialComponent(Window w) {
 //                 System.out.println("getInitialComponent");
 //                 return field;
 //             }
 //         });
 
 //         frame.addComponentListener(new ComponentAdapter() {
-//             public void componentShown(ComponentEvent e) {
+//             @Override public void componentShown(ComponentEvent e) {
 //                 System.out.println("componentShown");
 //                 field.requestFocusInWindow();
 //             }
@@ -55,7 +53,7 @@ public class MainPanel extends JPanel {
 
 //         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 //         focusManager.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-//             public void propertyChange(java.beans.PropertyChangeEvent e) {
+//             @Override public void propertyChange(java.beans.PropertyChangeEvent e) {
 //                 String prop = e.getPropertyName();
 //                 if("activeWindow".equals(prop) && e.getNewValue()!=null) {
 //                     System.out.println("activeWindow");
