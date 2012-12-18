@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
         });
 
 //         table.getTableHeader().addMouseListener(new MouseAdapter() {
-//             public void mousePressed(MouseEvent e) {
+//             @Override public void mousePressed(MouseEvent e) {
 //                 JTable table = ((JTableHeader)e.getSource()).getTable();
 //                 if(table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();

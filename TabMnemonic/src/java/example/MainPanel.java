@@ -56,8 +56,7 @@ public class MainPanel extends JPanel {
 //     public MyJTabbedPane() {
 //         super();
 //     }
-//     @Override
-//     public void addTab(String title, final Component content) {
+//     @Override public void addTab(String title, final Component content) {
 //         JPanel tab = new JPanel(new BorderLayout());
 //         tab.setOpaque(false);
 //         JLabel label = new JLabel(title);
@@ -66,7 +65,7 @@ public class MainPanel extends JPanel {
 //         button.setPreferredSize(new Dimension(icon.getIconWidth(),
 //                                               icon.getIconHeight()));
 //         button.addActionListener(new ActionListener() {
-//             public void actionPerformed(ActionEvent e) {
+//             @Override public void actionPerformed(ActionEvent e) {
 //                 removeTabAt(indexOfComponent(content));
 //             }
 //         });
@@ -84,8 +83,7 @@ public class MainPanel extends JPanel {
 //             width  = 16;
 //             height = 16;
 //         }
-//         @Override
-//         public void paintIcon(Component c, Graphics g, int x, int y) {
+//         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //             g.translate(x, y);
 //             g.setColor(Color.BLACK);
 //             g.drawLine(4,  4, 11, 11);
@@ -102,7 +100,7 @@ public class MainPanel extends JPanel {
 //         @Override public int getIconHeight() {
 //             return height;
 //         }
-// //         public Rectangle getBounds() {
+// //         @Override public Rectangle getBounds() {
 // //             return new Rectangle(0, 0, width, height);
 // //         }
 //     }

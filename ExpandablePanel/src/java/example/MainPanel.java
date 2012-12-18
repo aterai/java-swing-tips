@@ -18,7 +18,7 @@ public class MainPanel extends JPanel{
         JPanel panel = new JPanel(new BorderLayout());
         final List<ExpansionPanel> panelList = makeList();
         ExpansionListener rl = new ExpansionListener() {
-            public void expansionStateChanged(ExpansionEvent e) {
+            @Override public void expansionStateChanged(ExpansionEvent e) {
                 initComps(panelList, e);
             }
         };

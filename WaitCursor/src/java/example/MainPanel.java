@@ -116,8 +116,7 @@ class LockingGlassPane extends JComponent {
 //             requestFocusInWindow();
 //             super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //         }
-//         @Override
-//         public void setVisible(boolean flag) {
+//         @Override public void setVisible(boolean flag) {
 //             super.setVisible(flag);
 //             setFocusTraversalPolicyProvider(flag);
 //         }

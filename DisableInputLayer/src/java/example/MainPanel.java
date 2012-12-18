@@ -14,14 +14,14 @@ public class MainPanel extends JPanel {
         final DisableInputLayerUI layerUI = new DisableInputLayerUI();
         final JLayer<JPanel> jlayer = new JLayer<JPanel>(p, layerUI);
         final Timer stopper = new Timer(5000, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 layerUI.stop();
             }
         });
         p.add(new JCheckBox());
         p.add(new JTextField(10));
         p.add(new JButton(new AbstractAction("Stop 5sec") {
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 layerUI.start();
                 if(!stopper.isRunning()) {
                     stopper.start();

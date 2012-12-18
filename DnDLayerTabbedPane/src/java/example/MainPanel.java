@@ -585,7 +585,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 //         this.pane = pane;
 //         setOpaque(false);
 //         JLabel label = new JLabel() {
-//             public String getText() {
+//             @Override public String getText() {
 //                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
 //                 if(i != -1) {
 //                     return pane.getTitleAt(i);
@@ -613,12 +613,12 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 //             setRolloverEnabled(true);
 //             addActionListener(this);
 //         }
-//         public void actionPerformed(ActionEvent e) {
+//         @Override public void actionPerformed(ActionEvent e) {
 //             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
 //             if(i != -1) pane.remove(i);
 //         }
-//         public void updateUI() {}
-//         protected void paintComponent(Graphics g) {
+//         @Override public void updateUI() {}
+//         @Override protected void paintComponent(Graphics g) {
 //             super.paintComponent(g);
 //             Graphics2D g2 = (Graphics2D) g.create();
 //             g2.setStroke(new BasicStroke(2));
@@ -636,14 +636,14 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 //         }
 //     }
 //     private final static MouseListener buttonMouseListener = new MouseAdapter() {
-//         public void mouseEntered(MouseEvent e) {
+//         @Override public void mouseEntered(MouseEvent e) {
 //             Component component = e.getComponent();
 //             if(component instanceof AbstractButton) {
 //                 AbstractButton button = (AbstractButton) component;
 //                 button.setBorderPainted(true);
 //             }
 //         }
-//         public void mouseExited(MouseEvent e) {
+//         @Override public void mouseExited(MouseEvent e) {
 //             Component component = e.getComponent();
 //             if(component instanceof AbstractButton) {
 //                 AbstractButton button = (AbstractButton) component;

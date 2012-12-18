@@ -35,7 +35,7 @@ class MainPanel extends JPanel {
             return;
         }
         sequencer.addMetaEventListener(new MetaEventListener() {
-            public void meta(MetaMessage meta) {
+            @Override public void meta(MetaMessage meta) {
                 if(meta.getType() == 47) {
                     tickpos = 0;
                     start.setEnabled(true);

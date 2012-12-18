@@ -23,7 +23,7 @@ public class MainPanel extends JPanel{
 //         InputMap im = combo.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enterPressed2");
 //         combo.getActionMap().put("enterPressed2", new AbstractAction() {
-//             public void actionPerformed(ActionEvent e) {
+//             @Override public void actionPerformed(ActionEvent e) {
 //                 String text = field.getText();
 //                 if(!model.contains(text)) {
 //                     model.addElement(text);

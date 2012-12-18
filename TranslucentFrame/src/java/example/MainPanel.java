@@ -24,13 +24,13 @@ public class MainPanel extends JPanel{
         p2.setOpaque(false);
 
 //         d.put("InternalFrame[Enabled].backgroundPainter", new Painter() {
-//             public void paint(Graphics2D g, Object o, int w, int h) {
+//             @Override public void paint(Graphics2D g, Object o, int w, int h) {
 //                 g.setColor(new Color(100,200,100,100));
 //                 g.fillRoundRect(0,0,w-1,h-1,15,15);
 //             }
 //         });
 //         d.put("InternalFrame[Enabled+WindowFocused].backgroundPainter", new Painter() {
-//             public void paint(Graphics2D g, Object o, int w, int h) {
+//             @Override public void paint(Graphics2D g, Object o, int w, int h) {
 //                 g.setColor(new Color(100,250,120,100));
 //                 g.fillRoundRect(0,0,w-1,h-1,15,15);
 //             }

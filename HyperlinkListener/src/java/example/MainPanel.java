@@ -104,7 +104,7 @@ public class MainPanel extends JPanel {
 //         href = str;
 //         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //         addMouseListener(new MouseAdapter() {
-//             public void mousePressed(MouseEvent e) {
+//             @Override public void mousePressed(MouseEvent e) {
 //                 java.awt.Toolkit.getDefaultToolkit().beep();
 //             }
 //         });
@@ -113,10 +113,10 @@ public class MainPanel extends JPanel {
 
 class HyperlinkButton extends JButton {
     private static final String uiClassID = "LinkViewButtonUI";
-//     public String getUIClassID() {
+//     @Override public String getUIClassID() {
 //         return uiClassID;
 //     }
-//     public void setUI(LinkViewButtonUI ui) {
+//     @Override public void setUI(LinkViewButtonUI ui) {
 //         super.setUI(ui);
 //     }
     @Override public void updateUI() {

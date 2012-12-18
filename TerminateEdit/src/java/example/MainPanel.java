@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 //         frame.addWindowStateListener(new WindowStateListener() {
-//             public void windowStateChanged(WindowEvent e) {
+//             @Override public void windowStateChanged(WindowEvent e) {
 //                 if(frame.getExtendedState()==JFrame.MAXIMIZED_BOTH && table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();
 //                 }
@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
 // Bug ID: 4330950 Lost newly entered data in the cell when resizing column width
 // http://bugs.sun.com/view_bug.do?bug_id=4330950
 //         table.getTableHeader().addComponentListener(new ComponentAdapter() {
-//             public void componentResized(ComponentEvent e) {
+//             @Override public void componentResized(ComponentEvent e) {
 //                 System.out.println("componentResized");
 //                 if(table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();

@@ -91,7 +91,7 @@ public class MainPanel extends JPanel{
 //         final JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
 //         ftf.setFormatterFactory(makeFFactory2(m));
 //         ftf.addFocusListener(new  FocusAdapter() {
-//             public void focusLost(final FocusEvent e) {
+//             @Override public void focusLost(final FocusEvent e) {
 //                 //JTextComponent textField = (JTextComponent)e.getSource();
 //                 System.out.println(ftf.getText());
 // //                 try{
@@ -151,8 +151,7 @@ public class MainPanel extends JPanel{
     }
 }
 // class IntegerDocumentFilter extends DocumentFilter {
-//     @Override
-//     public void insertString(DocumentFilter.FilterBypass fb,
+//     @Override public void insertString(DocumentFilter.FilterBypass fb,
 //                              int offset, String string, AttributeSet attr) throws BadLocationException {
 //         if(string == null) {
 //             return;
@@ -160,13 +159,11 @@ public class MainPanel extends JPanel{
 //             replace(fb, offset, 0, string, attr);
 //         }
 //     }
-//     @Override
-//     public void remove(DocumentFilter.FilterBypass fb, int offset, int length)
+//     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length)
 //     throws BadLocationException {
 //         replace(fb, offset, length, "", null);
 //     }
-//     @Override
-//     public void replace(DocumentFilter.FilterBypass fb, int offset, int length,
+//     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length,
 //                         String text, AttributeSet attrs) throws BadLocationException {
 //         Document doc = fb.getDocument();
 //         int currentLength = doc.getLength();

@@ -15,10 +15,10 @@ import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 public class MainPanel extends JPanel {
     private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
     private final JTabbedPane tabbedPane = new JTabbedPane() {
-        public String getToolTipTextAt(int index) {
+        @Override public String getToolTipTextAt(int index) {
             return getTitleAt(index);
         }
-        public void insertTab(String title, Icon icon, Component component, String tip, int index) {
+        @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
             super.insertTab(title, icon, component, title, index);
         }
     };

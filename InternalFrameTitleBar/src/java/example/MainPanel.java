@@ -54,13 +54,13 @@ public class MainPanel extends JPanel{
         });
 
 //         frame.addWindowListener(new WindowAdapter() {
-//             public void windowLostFocus(FocusEvent e) {
+//             @Override public void windowLostFocus(FocusEvent e) {
 //                 System.out.println("bbbbbbbbb");
 //                 try{
 //                     internal.setSelected(false);
 //                 }catch(PropertyVetoException ex) { ex.printStackTrace(); }
 //             }
-//             public void windowGainedFocus(FocusEvent e) {
+//             @Override public void windowGainedFocus(FocusEvent e) {
 //                 System.out.println("aaaaaaaa");
 //                 try{
 //                     internal.setSelected(true);

@@ -185,14 +185,14 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //     public static ComponentUI createUI(JComponent b) {
 //         return radioButtonUI;
 //     }
-//     protected void installDefaults(AbstractButton b){
+//     @Override protected void installDefaults(AbstractButton b){
 //         super.installDefaults(b);
 //         if(!defaults_initialized) {
 //             icon = null; //UIManager.getIcon(getPropertyPrefix() + "icon");
 //             defaults_initialized = true;
 //         }
 //     }
-//     protected void uninstallDefaults(AbstractButton b){
+//     @Override protected void uninstallDefaults(AbstractButton b){
 //         super.uninstallDefaults(b);
 //         defaults_initialized = false;
 //     }

@@ -58,7 +58,7 @@ class MainPanel extends JPanel {
                 }
             })
 //             new JCheckBox(new AbstractAction("setBorder(null:BorderFactory.createLineBorder)") {
-//                 public void actionPerformed(ActionEvent e) {
+//                 @Override public void actionPerformed(ActionEvent e) {
 //                     boolean flg = ((JCheckBox)e.getSource()).isSelected();
 //                     Border border = (flg)?BorderFactory.createLineBorder(Color.RED, 5):null;
 //                     for(JButton b:list) b.setBorder(border);

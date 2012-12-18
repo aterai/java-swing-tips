@@ -78,12 +78,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         offImage = new java.awt.image.BufferedImage(320, 240,
 //                        java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
 //     }
-//     @Override
-//     public void paintComponent(Graphics g) {
+//     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
 //         if(offImage!=null) ((Graphics2D)g).drawImage(offImage, 0, 0, this);
 //     }
-//     public void mouseDragged(MouseEvent e) {
+//     @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();
 //         Graphics2D g2d = (Graphics2D)offImage.createGraphics();
 //         g2d.setStroke(new BasicStroke(3.0F));
@@ -102,17 +101,17 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         polygon.addPoint(srcPoint.x,  destPoint.y);
 //         return polygon.getBounds();
 //     }
-//     public void mousePressed(MouseEvent e) {
+//     @Override public void mousePressed(MouseEvent e) {
 //         startPoint = e.getPoint();
 // //         if(offImage==null) { //resized
 // //             offImage = (BufferedImage)createImage(getWidth(), getHeight());
 // //         }
 //     }
-//     public void mouseMoved(MouseEvent e) {}
-//     public void mouseExited(MouseEvent e) {}
-//     public void mouseEntered(MouseEvent e) {}
-//     public void mouseReleased(MouseEvent e) {}
-//     public void mouseClicked(MouseEvent e) {}
+//     @Override public void mouseMoved(MouseEvent e) {}
+//     @Override public void mouseExited(MouseEvent e) {}
+//     @Override public void mouseEntered(MouseEvent e) {}
+//     @Override public void mouseReleased(MouseEvent e) {}
+//     @Override public void mouseClicked(MouseEvent e) {}
 // }
 // class PaintPanel3 extends JPanel implements MouseMotionListener, MouseListener {
 //     java.util.ArrayList<Shape> list = new java.util.ArrayList<Shape>();
@@ -123,26 +122,26 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         addMouseMotionListener(this);
 //         addMouseListener(this);
 //     }
-//     public void mousePressed(MouseEvent e) {
+//     @Override public void mousePressed(MouseEvent e) {
 //         list.add(path = new Path2D.Double());
 //         Point p = e.getPoint();
 //         path.moveTo(p.x, p.y);
 //         repaint();
 //     }
-//     public void mouseDragged(MouseEvent e) {
+//     @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();
 //         path.lineTo(p.x, p.y);
 //         repaint();
 //     }
-//     public void paintComponent (Graphics g) {
+//     @Override public void paintComponent (Graphics g) {
 //         Graphics2D g2d = (Graphics2D)g;
 //         g2d.setPaint(Color.BLACK);
 //         g2d.setStroke(stroke);
 //         for(Shape s:list) g2d.draw(s);
 //     }
-//     public void mouseMoved(MouseEvent e) {}
-//     public void mouseExited(MouseEvent e) {}
-//     public void mouseEntered(MouseEvent e) {}
-//     public void mouseReleased(MouseEvent e) {}
-//     public void mouseClicked(MouseEvent e) {}
+//     @Override public void mouseMoved(MouseEvent e) {}
+//     @Override public void mouseExited(MouseEvent e) {}
+//     @Override public void mouseEntered(MouseEvent e) {}
+//     @Override public void mouseReleased(MouseEvent e) {}
+//     @Override public void mouseClicked(MouseEvent e) {}
 // }

@@ -43,9 +43,9 @@ public class MainPanel extends JPanel{
 //         popup.addSeparator();
 //         popup.add(selectAllAction);
 //         popup.addPopupMenuListener(new PopupMenuListener() {
-//             public void popupMenuCanceled(PopupMenuEvent e) {}
-//             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-//             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+//             @Override public void popupMenuCanceled(PopupMenuEvent e) {}
+//             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+//             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 //                 JPopupMenu p = (JPopupMenu)e.getSource();
 //                 JTextComponent c = (JTextComponent)p.getInvoker();
 //                 boolean flg = c.getSelectedText()!=null;

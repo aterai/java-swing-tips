@@ -12,7 +12,7 @@ public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
 //         Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-//             public void eventDispatched(AWTEvent event) {
+//             @Override public void eventDispatched(AWTEvent event) {
 //                 if(event instanceof MouseWheelEvent) {
 //                     Object source = event.getSource();
 //                     if(source instanceof JScrollPane) {

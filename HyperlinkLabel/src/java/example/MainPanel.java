@@ -109,10 +109,10 @@ class URILabel extends JLabel {
 
 class HyperlinkButton extends JButton {
     private static final String uiClassID = "LinkViewButtonUI";
-//     public String getUIClassID() {
+//     @Override public String getUIClassID() {
 //         return uiClassID;
 //     }
-//     public void setUI(LinkViewButtonUI ui) {
+//     @Override public void setUI(LinkViewButtonUI ui) {
 //         super.setUI(ui);
 //     }
     @Override public void updateUI() {

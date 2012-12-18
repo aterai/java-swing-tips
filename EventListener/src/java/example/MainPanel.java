@@ -21,7 +21,7 @@ public class MainPanel extends JPanel{
             super(new DefaultComboBoxModel(new Object[] {"test test"}));
             setFont(FONT12);
         }
-        public void fontStateChanged(FontChangeEvent e) {
+        @Override public void fontStateChanged(FontChangeEvent e) {
             setFont(e.getFont());
         }
     }
@@ -30,7 +30,7 @@ public class MainPanel extends JPanel{
             super(str);
             setFont(FONT12);
         }
-        public void fontStateChanged(FontChangeEvent e) {
+        @Override public void fontStateChanged(FontChangeEvent e) {
             setFont(e.getFont());
         }
     }
@@ -39,7 +39,7 @@ public class MainPanel extends JPanel{
             super(str);
             setFont(FONT12);
         }
-        public void fontStateChanged(FontChangeEvent e) {
+        @Override public void fontStateChanged(FontChangeEvent e) {
             setFont(e.getFont());
         }
     }

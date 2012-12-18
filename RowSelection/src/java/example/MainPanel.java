@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         //table.setRowSorter(new TableRowSorter<TableModel>(model));
 
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
+            @Override public void valueChanged(ListSelectionEvent e) {
                 if(e.getValueIsAdjusting()) return;
                 int sc = table.getSelectedRowCount();
                 changeInfoPanel((sc==1)?getInfo():" ");

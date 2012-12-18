@@ -153,7 +153,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         JButton b = new JButton();
         b.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
 //         b.addChangeListener(new javax.swing.event.ChangeListener() {
-//             public void stateChanged(ChangeEvent e) {
+//             @Override public void stateChanged(ChangeEvent e) {
 //                 JButton button = (JButton)e.getSource();
 //                 ButtonModel model = button.getModel();
 //                 if(button.isRolloverEnabled() && model.isRollover()) {
