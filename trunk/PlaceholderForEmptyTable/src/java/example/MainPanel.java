@@ -50,6 +50,13 @@ public class MainPanel extends JPanel {
         table.setComponentPopupMenu(new TablePopupMenu());
         table.setLayout(new GridBagLayout());
 
+        model.addTableModelListener(new TableModelListener() {
+            @Override public void tableChanged(TableModelEvent e) {
+                DefaultTableModel model = (DefaultTableModel)e.getSource();
+                editor.setVisible(model.getRowCount()==0);
+            }
+        });
+
         editor.setOpaque(false);
         editor.setEditable(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -73,7 +80,7 @@ public class MainPanel extends JPanel {
                 model.addRow(new Object[] {0, "aaa", Boolean.FALSE});
                 Rectangle rect = table.getCellRect(model.getRowCount()-1, 0, true);
                 table.scrollRectToVisible(rect);
-                if(table.getRowCount()>0) editor.setVisible(false);
+                //if(table.getRowCount()>0) editor.setVisible(false);
             }
         };
         private final Action deleteAction = new AbstractAction("delete") {
@@ -85,7 +92,7 @@ public class MainPanel extends JPanel {
                 for(int i=selection.length-1;i>=0;i--) {
                     model.removeRow(table.convertRowIndexToModel(selection[i]));
                 }
-                if(table.getRowCount()==0) editor.setVisible(true);
+                //if(table.getRowCount()==0) editor.setVisible(true);
             }
         };
         public TablePopupMenu() {
