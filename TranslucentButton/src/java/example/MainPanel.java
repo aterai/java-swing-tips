@@ -16,6 +16,7 @@ import javax.swing.border.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super();
+        //Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
         URL url = getClass().getResource("RECYCLE BIN - EMPTY_16x16-32.png");
         Icon icon = new ImageIcon(url);
 
