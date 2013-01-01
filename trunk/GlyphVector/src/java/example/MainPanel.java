@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
+import java.text.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.*;
@@ -14,24 +15,27 @@ public class MainPanel extends JPanel {
     private static final String TEXT = "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも";
     private final JLabel    lbl1 = new JLabel(TEXT);
     private final JLabel    lbl2 = new WrappedLabel(TEXT);
-    private final JTextArea lbl3 = new JTextArea(TEXT);
+    private final JLabel    lbl3 = new WrappingLabel(TEXT);
+    private final JTextArea lbl4 = new JTextArea(TEXT);
     private GlyphVector gvtext;
     private boolean flg = true;
     public MainPanel() {
-        super(new GridLayout(3,1));
+        super(new GridLayout(4,1,0,0));
         lbl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.YELLOW, 5), "JLabel"));
         lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN,  5), "GlyphVector"));
-        lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.ORANGE, 5), "JTextArea"));
+        lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN,   5), "LineBreakMeasurer"));
+        lbl4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.ORANGE, 5), "JTextArea"));
 
         //lbl2.setFont(new Font("serif", Font.TRUETYPE_FONT, 20));
-        lbl3.setFont(lbl1.getFont());
-        lbl3.setEditable(false);
-        lbl3.setLineWrap(true);
-        lbl3.setBackground(lbl1.getBackground());
+        lbl4.setFont(lbl1.getFont());
+        lbl4.setEditable(false);
+        lbl4.setLineWrap(true);
+        lbl4.setBackground(lbl1.getBackground());
 
         add(lbl1);
         add(lbl2);
         add(lbl3);
+        add(lbl4);
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -57,6 +61,31 @@ public class MainPanel extends JPanel {
     }
 }
 
+class WrappingLabel extends JLabel {
+    public WrappingLabel(String text) {
+        super(text);
+    }
+    @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(getForeground());
+        Insets i = getInsets();
+        float x = i.left;
+        float y = i.top;
+        int w = getWidth() - i.left - i.right;
+        AttributedString as = new AttributedString(getText());
+        as.addAttribute(TextAttribute.FONT, getFont());
+        AttributedCharacterIterator aci = as.getIterator();
+        FontRenderContext frc = g2.getFontRenderContext();
+        LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
+        while(lbm.getPosition() < aci.getEndIndex()) {
+            TextLayout tl = lbm.nextLayout(w);
+            tl.draw(g2, x, y + tl.getAscent());
+            y += tl.getDescent() + tl.getLeading() + tl.getAscent();
+        }
+        g2.dispose();
+    }
+}
+
 class WrappedLabel extends JLabel {
     private GlyphVector gvtext;
     public WrappedLabel() {
@@ -65,16 +94,16 @@ class WrappedLabel extends JLabel {
     public WrappedLabel(String str) {
         super(str);
     }
-    private int prevwidth = -1;
+    private int width = -1;
     @Override public void doLayout() {
         Insets i = getInsets();
         int w = getWidth()-i.left-i.right;
-        if(w!=prevwidth) {
+        if(w!=width) {
             Font font = getFont();
             FontMetrics fm = getFontMetrics(font);
             FontRenderContext frc = fm.getFontRenderContext();
             gvtext = getWrappedGlyphVector(getText(), w, font, frc);
-            prevwidth = w;
+            width = w;
         }
         super.doLayout();
     }
