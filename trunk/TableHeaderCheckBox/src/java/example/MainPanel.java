@@ -69,6 +69,11 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//             for(UIManager.LookAndFeelInfo laf:UIManager.getInstalledLookAndFeels()) {
+//                 if("Nimbus".equals(laf.getName())) {
+//                     UIManager.setLookAndFeel(laf.getClassName());
+//                 }
+//             }
         }catch(Exception e) {
             e.printStackTrace();
         }
@@ -139,10 +144,10 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 //         }
         return l;
     }
-//     @Override public void updateUI() {
-//         setText(null); //XXX: Nimbus???
-//         super.updateUI();
-//     }
+    @Override public void updateUI() {
+        setText(null); //XXX: Nimbus??? Header height bug???
+        super.updateUI();
+    }
 }
 class HeaderCheckBoxHandler implements TableModelListener{
     private final JTable table;
