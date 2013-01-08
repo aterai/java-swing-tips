@@ -5,12 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSliderUI;
+//import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public class MainPanel extends JPanel {
-    private static String str = "Can only edit last line, version 0.0\n";
     public MainPanel() {
         super(new BorderLayout());
         JSlider slider1 = makeSlider();
