@@ -68,7 +68,7 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
                 if(cmd.isEmpty()) {
                     text = "";
                 }else{
-                    text = String.format("\n%s: command not found", cmd);
+                    text = String.format("%n%s: command not found", cmd);
                 }
                 text += "\n"+PROMPT;
             }
