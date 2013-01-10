@@ -11,6 +11,18 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
+        String str = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
+        final JEditorPane editor = new JEditorPane("text/html", str);
+        editor.setOpaque(false);
+        editor.setEditable(false);
+        editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+        editor.addHyperlinkListener(new HyperlinkListener() {
+            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
+                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
+                    java.awt.Toolkit.getDefaultToolkit().beep();
+                }
+            }
+        });
 
         String[] columnNames = {"Integer", "String", "Boolean"};
         DefaultTableModel model = new DefaultTableModel(null, columnNames) {
@@ -34,19 +46,6 @@ public class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
         table.setLayout(new GridBagLayout());
-
-        String str = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
-        JEditorPane editor = new JEditorPane("text/html", str);
-        editor.setOpaque(false);
-        editor.setEditable(false);
-        editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-        editor.addHyperlinkListener(new HyperlinkListener() {
-            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
-                    java.awt.Toolkit.getDefaultToolkit().beep();
-                }
-            }
-        });
         table.add(editor);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
