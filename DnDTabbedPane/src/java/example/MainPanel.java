@@ -205,6 +205,7 @@ class DnDTabbedPane extends JTabbedPane {
                 }
             }
         };
+        glassPane.setName("GlassPane");
         new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
         //DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
@@ -215,7 +216,10 @@ class DnDTabbedPane extends JTabbedPane {
             if(isDragAcceptable(e)) e.acceptDrag(e.getDropAction());
             else e.rejectDrag();
         }
-        @Override public void dragExit(DropTargetEvent e) {}
+        @Override public void dragExit(DropTargetEvent e) {
+            Component c = e.getDropTargetContext().getComponent();
+            System.out.println("DropTargetListener#dragExit: "+c.getName());
+        }
         @Override public void dropActionChanged(DropTargetDragEvent e) {}
 
         private Point _glassPt = new Point();
