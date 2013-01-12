@@ -44,24 +44,24 @@ public class MainPanel extends JPanel {
 
         DropTargetListener dtl = new DropTargetAdapter() {
             private void clearDropLocationPaint(Component c) {
-                System.out.println("mouseExited from "+ c.getName());
                 if(c instanceof DnDTabbedPane) {
                     DnDTabbedPane t = (DnDTabbedPane)c;
                     t.setDropLocation(null, null, false);
                 }
             }
             @Override public void drop(DropTargetDropEvent dtde) {
-                System.out.println("DropTargetListener#drop");
                 Component c = dtde.getDropTargetContext().getComponent();
+                System.out.println("DropTargetListener#drop: "+c.getName());
                 clearDropLocationPaint(c);
             }
             @Override public void dragExit(DropTargetEvent dte) {
-                System.out.println("DropTargetListener#dragExit");
                 Component c = dte.getDropTargetContext().getComponent();
+                System.out.println("DropTargetListener#dragExit: "+c.getName());
                 clearDropLocationPaint(c);
             }
             @Override public void dragEnter(DropTargetDragEvent dtde) {
-                System.out.println("DropTargetListener#dragEnter");
+                Component c = dtde.getDropTargetContext().getComponent();
+                System.out.println("DropTargetListener#dragEnter"+c.getName());
             }
 //             @Override public void dragOver(DropTargetDragEvent dtde) {
 //                 //System.out.println("dragOver");
