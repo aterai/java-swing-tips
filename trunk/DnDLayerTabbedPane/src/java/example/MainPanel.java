@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
 
         DropTargetListener dtl = new DropTargetAdapter() {
             private void clearDropLocationPaint(Component c) {
-                System.out.println("------------------- "+ c.getName());
+                System.out.println("mouseExited from "+ c.getName());
                 if(c instanceof DnDTabbedPane) {
                     DnDTabbedPane t = (DnDTabbedPane)c;
                     t.setDropLocation(null, null, false);
@@ -70,9 +70,9 @@ public class MainPanel extends JPanel {
 //                 System.out.println("dropActionChanged");
 //             }
         };
-        tab.setName("000");
-        sub.setName("111");
-        sub2.setName("222");
+        tab.setName("JTabbedPane#main");
+        sub.setName("JTabbedPane#sub1");
+        sub2.setName("JTabbedPane#sub2");
 
         try{
             for(JTabbedPane t:java.util.Arrays.asList(tab, sub, sub2)) {
