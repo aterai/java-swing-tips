@@ -32,8 +32,10 @@ public class MainPanel extends JPanel {
       " so you can test yourself on what you've learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-    private final JTextArea textArea  = new JTextArea();
-    private final JCheckBox check = new JCheckBox(new AbstractAction("LineWrap") {
+    private final JTextArea textArea   = new JTextArea();
+    private final JScrollPane scroll   = new JScrollPane(textArea);
+    private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
+    private final JCheckBox check      = new JCheckBox(new AbstractAction("LineWrap") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox)e.getSource();
             textArea.setLineWrap(c.isSelected());
@@ -41,12 +43,9 @@ public class MainPanel extends JPanel {
     });
     public MainPanel() {
         super(new BorderLayout());
-        //textArea.setLineWrap(true);
-        //textArea.setEditable(false);
+        textArea.setEditable(false);
         textArea.setText(initTxt+initTxt+initTxt);
 
-        final JScrollPane scroll = new JScrollPane(textArea);
-        final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
         scrollbar.setUnitIncrement(10);
 
         if(scrollbar.getUI() instanceof WindowsScrollBarUI) {
@@ -58,12 +57,8 @@ public class MainPanel extends JPanel {
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     g.setColor(Color.YELLOW);
-                    Document doc = textArea.getDocument();
-                    Element root = doc.getDefaultRootElement();
                     try{
                         for(Integer pos: poslist) {
-                            int index = root.getElementIndex(pos);
-                            Element elem = root.getElement(index);
                             Rectangle r = textArea.modelToView(pos);
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
@@ -83,12 +78,8 @@ public class MainPanel extends JPanel {
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     g.setColor(Color.YELLOW);
-                    Document doc = textArea.getDocument();
-                    Element root = doc.getDefaultRootElement();
                     try{
                         for(Integer pos: poslist) {
-                            int index = root.getElementIndex(pos);
-                            Element elem = root.getElement(index);
                             Rectangle r = textArea.modelToView(pos);
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
@@ -113,12 +104,8 @@ public class MainPanel extends JPanel {
                 double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
                 AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                 g.setColor(Color.RED);
-                Document doc = textArea.getDocument();
-                Element root = doc.getDefaultRootElement();
                 try{
                     for(Integer pos: poslist) {
-                        int index = root.getElementIndex(pos);
-                        Element elem = root.getElement(index);
                         Rectangle r = textArea.modelToView(pos);
                         Rectangle s = at.createTransformedShape(r).getBounds();
                         int h = 2; //Math.max(2, s.height-2);
