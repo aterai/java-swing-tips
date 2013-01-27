@@ -42,10 +42,11 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         //textArea.setLineWrap(true);
-        textArea.setEditable(false);
+        //textArea.setEditable(false);
         textArea.setText(initTxt+initTxt+initTxt);
 
-        JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
+        final JScrollPane scroll = new JScrollPane(textArea);
+        final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
         scrollbar.setUnitIncrement(10);
 
         if(scrollbar.getUI() instanceof WindowsScrollBarUI) {
@@ -54,29 +55,7 @@ public class MainPanel extends JPanel {
                     super.paintTrack(g, c, trackBounds);
 
                     Rectangle rect   = textArea.getBounds();
-                    Dimension sbSize = scrollbar.getSize();
-                    Insets sbInsets  = scrollbar.getInsets();
-                    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
-                    //boolean squareButtons = DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
-                    boolean squareButtons = UIManager.getBoolean("ScrollBar.squareButtons");
-                    int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
-                    int decrButtonY = sbInsets.top;
-                    int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
-                    int incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
-
-                    if(DEBUG) {
-                        g.setColor(Color.RED);
-                        g.fillRect(trackBounds.x, decrButtonY + decrButtonH, trackBounds.width, 2);
-                        g.fillRect(trackBounds.x, incrButtonY - 2,           trackBounds.width, 2);
-
-                        System.out.format("t: %d%n", decrButtonY + decrButtonH);
-                        System.out.format("b: %d%n", incrButtonY - 2);
-                        System.out.println(trackBounds.height - decrButtonH - incrButtonH);
-                        System.out.println(incrButtonY - decrButtonH - decrButtonY);
-                        System.out.println(rect.height);
-                    }
-
-                    double sy = (incrButtonY - decrButtonH - decrButtonY) / rect.getHeight();
+                    double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     g.setColor(Color.YELLOW);
                     Document doc = textArea.getDocument();
@@ -88,7 +67,7 @@ public class MainPanel extends JPanel {
                             Rectangle r = textArea.modelToView(pos);
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
-                            g.fillRect(trackBounds.x, decrButtonH+s.y, trackBounds.width, h);
+                            g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
                         }
                     }catch(BadLocationException e) {
                         e.printStackTrace();
@@ -101,29 +80,7 @@ public class MainPanel extends JPanel {
                     super.paintTrack(g, c, trackBounds);
 
                     Rectangle rect   = textArea.getBounds();
-                    Dimension sbSize = scrollbar.getSize();
-                    Insets sbInsets  = scrollbar.getInsets();
-                    int itemW = sbSize.width - sbInsets.left - sbInsets.right;
-                    //boolean squareButtons = DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
-                    boolean squareButtons = UIManager.getBoolean("ScrollBar.squareButtons");
-                    int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
-                    int decrButtonY = sbInsets.top;
-                    int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
-                    int incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
-
-                    if(DEBUG) {
-                        g.setColor(Color.RED);
-                        g.fillRect(trackBounds.x, decrButtonY + decrButtonH, trackBounds.width, 2);
-                        g.fillRect(trackBounds.x, incrButtonY - 2,           trackBounds.width, 2);
-
-                        System.out.format("t: %d%n", decrButtonY + decrButtonH);
-                        System.out.format("b: %d%n", incrButtonY - 2);
-                        System.out.println(trackBounds.height - decrButtonH - incrButtonH);
-                        System.out.println(incrButtonY - decrButtonH - decrButtonY);
-                        System.out.println(rect.height);
-                    }
-
-                    double sy = (incrButtonY - decrButtonH - decrButtonY) / rect.getHeight();
+                    double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     g.setColor(Color.YELLOW);
                     Document doc = textArea.getDocument();
@@ -135,7 +92,7 @@ public class MainPanel extends JPanel {
                             Rectangle r = textArea.modelToView(pos);
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
-                            g.fillRect(trackBounds.x, decrButtonH+s.y, trackBounds.width, h);
+                            g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
                         }
                     }catch(BadLocationException e) {
                         e.printStackTrace();
@@ -144,8 +101,53 @@ public class MainPanel extends JPanel {
             });
         }
 
-        JScrollPane scroll = new JScrollPane(textArea);
+        JLabel label = new JLabel();
+        label.setBorder(BorderFactory.createMatteBorder(0, 4, 0, 0, new Icon() {
+            private final Color THUMB_COLOR = new Color(0,0,255,50);
+            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+                if(poslist.isEmpty()) return;
+
+                Rectangle rect   = textArea.getBounds();
+                Dimension sbSize = scrollbar.getSize();
+                Insets sbInsets  = scrollbar.getInsets();
+                double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
+                AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+                g.setColor(Color.RED);
+                Document doc = textArea.getDocument();
+                Element root = doc.getDefaultRootElement();
+                try{
+                    for(Integer pos: poslist) {
+                        int index = root.getElementIndex(pos);
+                        Element elem = root.getElement(index);
+                        Rectangle r = textArea.modelToView(pos);
+                        Rectangle s = at.createTransformedShape(r).getBounds();
+                        int h = 2; //Math.max(2, s.height-2);
+                        g.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
+                    }
+
+                    //paint Thumb
+                    JViewport vport = scroll.getViewport();
+                    Rectangle vrect = c.getBounds();
+                    vrect.y = vport.getViewPosition().y;
+                    g.setColor(THUMB_COLOR);
+                    Rectangle rr = at.createTransformedShape(vrect).getBounds();
+                    g.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
+                }catch(BadLocationException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override public int getIconWidth() {
+                return 4;
+            }
+            @Override public int getIconHeight() {
+                return scrollbar.getHeight();
+            }
+        }));
+
         scroll.setVerticalScrollBar(scrollbar);
+        JViewport vp = new JViewport();
+        vp.setView(label);
+        scroll.setRowHeader(vp);
         add(scroll);
 
         Box box = Box.createHorizontalBox();
