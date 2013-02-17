@@ -58,15 +58,18 @@ public class MainPanel extends JPanel{
     }
     private static void visitAll(Container p, MouseListener l) {
         for(Component comp: p.getComponents()) {
-            if(comp instanceof Container) {
-                Container c = (Container)comp;
-                if(c.getComponentCount()>0) {
-                    visitAll(c, l);
-                }
-                if(c instanceof JMenu) {
-                    c.addMouseListener(l);
-                }
+            if(comp instanceof JMenu) {
+                ((JMenu)comp).addMouseListener(l);
             }
+//             if(comp instanceof Container) {
+//                 Container c = (Container)comp;
+//                 if(c.getComponentCount()>0) {
+//                     visitAll(c, l);
+//                 }
+//                 if(c instanceof JMenu) {
+//                     c.addMouseListener(l);
+//                 }
+//             }
         }
     }
     private static ActionListener al = new ActionListener() {
