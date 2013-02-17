@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private static JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor");
+    private static JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor", true);
     public MainPanel() {
         super(new BorderLayout());
         add(check, BorderLayout.SOUTH);
