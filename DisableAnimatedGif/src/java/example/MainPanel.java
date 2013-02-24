@@ -10,7 +10,7 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel();
     private final JLabel label2 = new JLabel() {
-        public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
+        @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
             if(!isEnabled()) {
                 infoflags &= ~FRAMEBITS;
             }
@@ -29,10 +29,12 @@ class MainPanel extends JPanel {
         label2.setBorder(BorderFactory.createTitledBorder("Override imageUpdate(...)"));
 
         JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox)e.getSource();
                 label1.setEnabled(c.isSelected());
                 label2.setEnabled(c.isSelected());
+                //if(disabledIcon==null) makeDisabledIcon(label2.getIcon());
+                //label2.setDisabledIcon(c.isSelected()?null:disabledIcon);
             }
         });
         JPanel p = new JPanel(new GridLayout(1, 2));
@@ -61,6 +63,7 @@ class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
