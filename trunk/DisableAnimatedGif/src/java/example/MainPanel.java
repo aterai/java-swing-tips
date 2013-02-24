@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+//import java.awt.color.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
@@ -17,9 +18,10 @@ class MainPanel extends JPanel {
             return super.imageUpdate(img, infoflags, x, y, w, h);
         }
     };
+    private final JLabel label3 = new JLabel();
     private MainPanel() {
         super(new BorderLayout());
-        Icon icon = new ImageIcon(getClass().getResource("duke.running.gif"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("duke.running.gif"));
         label1.setIcon(icon);
         label1.setEnabled(false);
         label1.setBorder(BorderFactory.createTitledBorder("Default"));
@@ -28,24 +30,40 @@ class MainPanel extends JPanel {
         label2.setEnabled(false);
         label2.setBorder(BorderFactory.createTitledBorder("Override imageUpdate(...)"));
 
+        label3.setIcon(icon);
+        label3.setEnabled(false);
+        label3.setBorder(BorderFactory.createTitledBorder("setDisabledIcon"));
+        ImageIcon i = new ImageIcon(getClass().getResource("duke.running_frame_0001.gif"));
+        label3.setDisabledIcon(makeDisabledIcon(i));
+
         JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox)e.getSource();
                 label1.setEnabled(c.isSelected());
                 label2.setEnabled(c.isSelected());
-                //if(disabledIcon==null) makeDisabledIcon(label2.getIcon());
-                //label2.setDisabledIcon(c.isSelected()?null:disabledIcon);
+                label3.setEnabled(c.isSelected());
             }
         });
-        JPanel p = new JPanel(new GridLayout(1, 2));
+        JPanel p = new JPanel(new GridLayout(2, 2));
         p.add(label1);
         p.add(label2);
+        p.add(label3);
         add(check, BorderLayout.NORTH);
         add(p);
         //setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
         setPreferredSize(new Dimension(320, 240));
     }
-
+    private static Icon makeDisabledIcon(ImageIcon icon) {
+        Image img = icon.getImage();
+//         BufferedImage source = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+//         Graphics g = source.createGraphics();
+//         g.drawImage(img, 0, 0, null);
+//         g.dispose();
+//         ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+//         BufferedImage destination = colorConvert.filter(source, null);
+//         return new ImageIcon(destination);
+        return new ImageIcon(GrayFilter.createDisabledImage(img));
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -63,7 +81,7 @@ class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
-        frame.setResizable(false);
+        //frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
