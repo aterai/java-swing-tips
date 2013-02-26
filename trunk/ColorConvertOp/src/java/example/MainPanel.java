@@ -47,7 +47,7 @@ class MainPanel extends JPanel {
     }
 
     private ImageIcon makeGrayImageIcon_1(Image img) {
-        BufferedImage source = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage source = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_INT_ARGB);
         Graphics g = source.createGraphics();
         g.drawImage(img, 0, 0, this);
         g.dispose();

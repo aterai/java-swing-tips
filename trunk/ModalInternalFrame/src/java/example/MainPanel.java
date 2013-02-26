@@ -272,7 +272,7 @@ class TextureFactory{
     private static final Color defaultColor = new Color(100,100,100,100);
     public static TexturePaint createCheckerTexture(int cs, Color color) {
         int size = cs*cs;
-        BufferedImage img = new BufferedImage(size,size,BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage img = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0,0,size,size);

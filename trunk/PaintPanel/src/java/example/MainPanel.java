@@ -76,7 +76,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         addMouseMotionListener(this);
 //         addMouseListener(this);
 //         offImage = new java.awt.image.BufferedImage(320, 240,
-//                        java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
+//                        java.awt.image.BufferedImage.TYPE_INT_ARGB);
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
