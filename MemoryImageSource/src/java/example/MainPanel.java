@@ -47,7 +47,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         super();
         addMouseMotionListener(this);
         addMouseListener(this);
-        backImage = new BufferedImage(320, 240, BufferedImage.TYPE_4BYTE_ABGR);
+        backImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = backImage.createGraphics();
         g2.setPaint(texture);
         g2.fillRect(0,0,320,240);
@@ -56,7 +56,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private static BufferedImage makeBGImage() {
         Color color = new Color(200,150,100,50);
         int cs = 6, sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0,0,sz,sz);
@@ -135,8 +135,8 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         super();
 //         addMouseMotionListener(this);
 //         addMouseListener(this);
-//         currentImage = new BufferedImage(320, 240, BufferedImage.TYPE_4BYTE_ABGR);
-//         backImage = new BufferedImage(320, 240, BufferedImage.TYPE_4BYTE_ABGR);
+//         currentImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
+//         backImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 //         Graphics2D g2 = backImage.createGraphics();
 //         g2.setPaint(texture);
 //         g2.fillRect(0,0,320,240);
@@ -145,7 +145,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     private static BufferedImage makeBGImage() {
 //         Color color = new Color(200,150,100,50);
 //         int cs = 6, sz = cs*cs;
-//         BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_4BYTE_ABGR);
+//         BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
 //         Graphics2D g2 = img.createGraphics();
 //         g2.setPaint(color);
 //         g2.fillRect(0,0,sz,sz);

@@ -98,7 +98,7 @@ class MainPanel extends JPanel {
     }
 
     private static TexturePaint makeTexturePaint() {
-        BufferedImage img = new BufferedImage(16,16,BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage img = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(new Color(100,120,100,100));
         g2.fillRect(0,0,16,16);

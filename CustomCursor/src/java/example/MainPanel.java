@@ -14,14 +14,14 @@ public class MainPanel extends JPanel{
     private final Point centerpt = new Point(16, 16);
     public MainPanel() {
         super(new BorderLayout());
-        BufferedImage bi1 = new BufferedImage(32,32,BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage bi1 = new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d1 = bi1.createGraphics();
         g2d1.setPaint(Color.BLACK);
         g2d1.drawString("?",16,28);
         g2d1.dispose();
         label1.setCursor(getToolkit().createCustomCursor(bi1, centerpt, "?"));
 
-        BufferedImage bi2 = new BufferedImage(32,32,BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage bi2 = new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d2 = bi2.createGraphics();
         g2d2.setPaint(Color.RED);
         g2d2.drawOval(8,8,16,16);
@@ -31,7 +31,7 @@ public class MainPanel extends JPanel{
 
         Icon icon = new GreenBlueIcon();
         BufferedImage bi3 = new BufferedImage(icon.getIconWidth(),icon.getIconHeight(),
-                                              BufferedImage.TYPE_4BYTE_ABGR);
+                                              BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d3 = bi3.createGraphics();
         icon.paintIcon(null, g2d3, 0, 0);
         g2d3.dispose();

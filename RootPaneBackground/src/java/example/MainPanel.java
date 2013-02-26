@@ -154,7 +154,7 @@ public class MainPanel extends JPanel {
     private static TexturePaint makeCheckerTexture() {
         int cs = 6;
         int sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(new Color(120,120,120));
         g2.fillRect(0,0,sz,sz);

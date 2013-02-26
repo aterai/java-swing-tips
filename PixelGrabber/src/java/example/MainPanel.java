@@ -33,7 +33,7 @@ public class MainPanel extends JPanel{
         int width  = image.getWidth(p);
         int height = image.getHeight(p);
 
-//         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+//         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 //         Graphics2D g2d = bi.createGraphics();
 //         g2d.drawImage(image, 0, 0, null);
 //         g2d.setComposite(AlphaComposite.Clear);
@@ -88,7 +88,7 @@ public class MainPanel extends JPanel{
 //         }
         MemoryImageSource producer = new MemoryImageSource(width, height, pix, 0, width);
         Image img = p.createImage(producer);
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         g.drawImage(img, 0, 0, null);
         g.dispose();
