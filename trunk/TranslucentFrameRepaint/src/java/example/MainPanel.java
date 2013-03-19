@@ -110,8 +110,8 @@ class MainPanel extends JPanel{
                     frame = new JFrame();
                     frame.setUndecorated(true);
                     //frame.setAlwaysOnTop(true);
-                    com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
-                    //frame.setBackground(new Color(0,0,0,0)); //1.7.0
+                    //com.sun.awt.AWTUtilities.setWindowOpaque(frame, false); //JDK 1.6.0
+                    frame.setBackground(new Color(0,0,0,0)); //JDK 1.7.0
                     frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                     frame.getContentPane().add(tp);
                     frame.pack();
@@ -224,14 +224,21 @@ class DragWindowListener extends MouseAdapter {
     private MouseEvent start;
     private Window window;
     @Override public void mousePressed(MouseEvent me) {
+        if(window==null) {
+            Object o = me.getSource();
+            if(o instanceof Window) {
+                window = (Window)o;
+            }else if(o instanceof JComponent) {
+                window = SwingUtilities.windowForComponent(me.getComponent());
+            }
+        }
         start = me;
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window==null) {
-            window = SwingUtilities.windowForComponent(me.getComponent());
+        if(window!=null) {
+            Point eventLocationOnScreen = me.getLocationOnScreen();
+            window.setLocation(eventLocationOnScreen.x - start.getX(),
+                               eventLocationOnScreen.y - start.getY());
         }
-        Point eventLocationOnScreen = me.getLocationOnScreen();
-        window.setLocation(eventLocationOnScreen.x - start.getX(),
-                           eventLocationOnScreen.y - start.getY());
     }
 }

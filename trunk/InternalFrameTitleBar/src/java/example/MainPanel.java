@@ -109,21 +109,23 @@ public class MainPanel extends JPanel{
 }
 class DragWindowListener extends MouseAdapter {
     private MouseEvent start;
-    //private Point  loc;
     private Window window;
     @Override public void mousePressed(MouseEvent me) {
+        if(window==null) {
+            Object o = me.getSource();
+            if(o instanceof Window) {
+                window = (Window)o;
+            }else if(o instanceof JComponent) {
+                window = SwingUtilities.windowForComponent(me.getComponent());
+            }
+        }
         start = me;
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window==null) {
-            window = SwingUtilities.windowForComponent(me.getComponent());
+        if(window!=null) {
+            Point eventLocationOnScreen = me.getLocationOnScreen();
+            window.setLocation(eventLocationOnScreen.x - start.getX(),
+                               eventLocationOnScreen.y - start.getY());
         }
-        Point eventLocationOnScreen = me.getLocationOnScreen();
-        window.setLocation(eventLocationOnScreen.x - start.getX(),
-                           eventLocationOnScreen.y - start.getY());
-        //loc = window.getLocation(loc);
-        //int x = loc.x - start.getX() + me.getX();
-        //int y = loc.y - start.getY() + me.getY();
-        //window.setLocation(x, y);
     }
 }
