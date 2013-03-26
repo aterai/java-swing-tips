@@ -33,6 +33,7 @@ class MainPanel extends JPanel {
     //         doc.setLogicalStyle(0, style);
     //         textpane.setDocument(doc);
 
+//*
     private static Font makeFont(URL url) {
         Font font = null;
         InputStream is = null;
@@ -55,6 +56,17 @@ class MainPanel extends JPanel {
         }
         return font;
     }
+/*/ // JDK 1.7.0
+    private static Font makeFont(URL url) {
+        Font font = null;
+        try(InputStream is = url.openStream()) {
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+        }catch(IOException | FontFormatException ex) {
+            ex.printStackTrace();
+        }
+        return font;
+    }
+//*/
 
     private static Document makeDocument(URL url, String encoding) {
         DefaultStyledDocument doc = new DefaultStyledDocument();
