@@ -76,8 +76,7 @@ class DragHandler extends MouseAdapter{
         }
         startPt = e.getPoint();
     }
-    @Override
-    public void mouseDragged(MouseEvent e) {
+    @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
         JComponent parent = (JComponent)e.getComponent();
 
@@ -118,15 +117,15 @@ class DragHandler extends MouseAdapter{
         for(int i=0; i<parent.getComponentCount(); i++) {
             Component c = parent.getComponent(i);
             Rectangle r = c.getBounds();
-            Rectangle r1 = new Rectangle(r.x, r.y, r.width/2, r.height);
-            Rectangle r2 = new Rectangle(r.x+r.width/2, r.y, r.width/2, r.height);
+            int wd2 = r.width/2;
+            Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
+            Rectangle r2 = new Rectangle(r.x+wd2, r.y, wd2, r.height);
             if(r1.contains(pt)) {
                 if(c==gap) {
                     return;
                 }
-                int n = i-1>=0 ? i : 0;
                 parent.remove(gap);
-                parent.add(gap, n);
+                parent.add(gap, i-1>0 ? i : 0);
                 parent.revalidate();
                 parent.repaint();
                 return;
@@ -146,8 +145,7 @@ class DragHandler extends MouseAdapter{
         parent.repaint();
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
+    @Override public void mouseReleased(MouseEvent e) {
         startPt = null;
         if(!window.isVisible() || draggingComonent==null) {
             return;
@@ -162,12 +160,12 @@ class DragHandler extends MouseAdapter{
         for(int i=0; i<parent.getComponentCount(); i++) {
             Component c = parent.getComponent(i);
             Rectangle r = c.getBounds();
-            Rectangle r1 = new Rectangle(r.x, r.y, r.width/2, r.height);
-            Rectangle r2 = new Rectangle(r.x+r.width/2, r.y, r.width/2, r.height);
+            int wd2 = r.width/2;
+            Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
+            Rectangle r2 = new Rectangle(r.x+wd2, r.y, wd2, r.height);
             if(r1.contains(pt)) {
-                int n = i-1>=0 ? i : 0;
                 parent.remove(gap);
-                parent.add(cmp, n);
+                parent.add(cmp, i-1>0 ? i : 0);
                 parent.revalidate();
                 parent.repaint();
                 return;
