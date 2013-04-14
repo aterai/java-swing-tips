@@ -111,12 +111,6 @@ public class MainPanel extends JPanel {
             worker.execute();
         }
     }
-    private static JPanel makePanel(String title, JComponent c) {
-        JPanel p = new JPanel();
-        p.add(new JLabel(title));
-        p.add(c);
-        return p;
-    }
     private static JSpinner makeSpinner(int num, int min, int max, int step) {
         return new JSpinner(new SpinnerNumberModel(num, min, max, step));
     }
