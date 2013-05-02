@@ -19,7 +19,7 @@ class MainPanel extends JPanel {
 
         Box p = Box.createHorizontalBox();
         p.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
-        
+
         try(InputStream source = getClass().getResourceAsStream("duke.running.gif");
             ImageInputStream iis = ImageIO.createImageInputStream(source)) {
             for(BufferedImage image: loadFromStream(iis)) {

@@ -26,7 +26,7 @@ public class MainPanel extends JPanel{
 //             BorderFactory.createLineBorder(new Color(127,157,185)),
 //             BorderFactory.createLineBorder(
 //                 UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
- 
+
         JSpinner spinner2 = new JSpinner();
         spinner2.setBorder(BorderFactory.createEmptyBorder());
         JSpinner.DefaultEditor editor2 = (JSpinner.DefaultEditor)spinner2.getEditor();

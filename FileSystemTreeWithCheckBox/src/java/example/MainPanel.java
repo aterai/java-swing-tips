@@ -66,7 +66,7 @@ public class MainPanel extends JPanel {
 //                 }
             }
         }), BorderLayout.SOUTH);
-        
+
         setPreferredSize(new Dimension(320, 240));
     }
     private static void searchTreeForCheckedNode(JTree tree, TreePath path) {

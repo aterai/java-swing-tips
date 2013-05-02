@@ -78,7 +78,7 @@ public class MainPanel extends JPanel{
         });
         return slider;
     }
-    
+
     public MainPanel() {
         super(new BorderLayout());
         UIManager.put("Slider.horizontalThumbIcon", new Icon() {
