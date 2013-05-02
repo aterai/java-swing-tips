@@ -50,8 +50,8 @@ public class MainPanel extends JPanel{
                 setOpaque(false); // Motif lnf
             }
         };
-        //System.out.println(System.getProperty("os.name")); 
-        //System.out.println(System.getProperty("os.version")); 
+        //System.out.println(System.getProperty("os.name"));
+        //System.out.println(System.getProperty("os.version"));
         if("Windows XP".equals(System.getProperty("os.name"))) {
             menu.setBackground(new Color(0,0,0,0)); //XXX Windows XP lnf?
         }
