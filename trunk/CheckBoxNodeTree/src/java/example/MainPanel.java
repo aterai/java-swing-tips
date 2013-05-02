@@ -280,7 +280,7 @@ class CheckBoxNode {
 //             tree.setCellRenderer(null);
 //             super.updateUI();
 //             TreeCellRenderer r = tree.getCellRenderer();
-//             
+//
 //         }
 //         if(leafRenderer!=null) leafRenderer.updateUI();
 //

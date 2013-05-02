@@ -66,7 +66,7 @@ class HighlightListener extends MouseAdapter {
                 return highlight2;
             }
         }
-        return null; 
+        return null;
     }
     private void setHighlighTableCell(Point pt) {
         row = table.rowAtPoint(pt);

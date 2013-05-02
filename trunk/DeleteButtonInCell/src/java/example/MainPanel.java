@@ -147,7 +147,7 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
 
     @Override public boolean isCellEditable(EventObject e) {
         return true;
-    } 
+    }
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
