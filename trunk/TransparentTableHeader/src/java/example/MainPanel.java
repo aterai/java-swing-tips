@@ -60,7 +60,7 @@ public class MainPanel extends JPanel {
         table.setRowHeight(24);
         table.setSelectionForeground(table.getForeground());
         table.setSelectionBackground(new Color(0,0,100,50));
-        
+
         JCheckBox checkBox = new JCheckBox() {
             @Override public void paintComponent(Graphics g) {
                 g.setColor(new Color(0,0,100,50));

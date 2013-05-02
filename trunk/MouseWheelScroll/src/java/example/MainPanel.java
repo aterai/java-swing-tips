@@ -79,7 +79,7 @@ class MainPanel extends JPanel {
         for(AbstractButton b:java.util.Arrays.asList(r0, r1, r2)) {
             b.addActionListener(al); bg.add(b);
         }
-        
+
         Box b = Box.createHorizontalBox();
         JPanel p = new JPanel(new GridLayout(2,1));
         b.add(r1); b.add(r2);
