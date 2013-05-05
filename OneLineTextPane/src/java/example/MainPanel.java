@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
@@ -32,7 +33,7 @@ public class MainPanel extends JPanel {
 
     public JComponent makeOneLineTextPane(String text) {
         JTextPane textPane = new JTextPane() {
-            //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
+            // @see http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
             @Override public boolean getScrollableTracksViewportWidth() {
                 Component parent = getParent();
                 ComponentUI ui = getUI();
@@ -54,16 +55,34 @@ public class MainPanel extends JPanel {
         InputMap im = textPane.getInputMap(JComponent.WHEN_FOCUSED);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                //Do nothing
+                // Do nothing
+            }
+        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                // Do nothing
             }
         });
 
-        //http://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
-        //textPane.addCaretListener(new VisibleCaretListener());
+        // @see http://terai.xrea.jp/Swing/FocusTraversalKeys.html
+        Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(textPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
+        forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK));
+        textPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+
+        //// @see http://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/
+        // textPane.addCaretListener(new VisibleCaretListener());
 
         JScrollPane scrollPane = new JScrollPane(
-            textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+              textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+              ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
+            @Override public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                d.width = 100;
+                return d;
+            }
+        };
+
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
 
@@ -90,7 +109,8 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-//From: http://www.discoverteenergy.com/files/SyntaxDocument.java
+
+//@see http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
