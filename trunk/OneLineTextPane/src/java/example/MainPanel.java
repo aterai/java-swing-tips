@@ -33,18 +33,16 @@ public class MainPanel extends JPanel {
 
     public JComponent makeOneLineTextPane(String text) {
         JTextPane textPane = new JTextPane() {
-            // @see http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
-            @Override public boolean getScrollableTracksViewportWidth() {
-                Component parent = getParent();
-                ComponentUI ui = getUI();
-                return parent != null ? (ui.getPreferredSize(this).width<=parent.getSize().width) : true;
-            }
             @Override public void scrollRectToVisible(Rectangle rect) {
                 int r = getBorder().getBorderInsets(this).right;
                 rect.grow(r, 0);
                 super.scrollRectToVisible(rect);
             }
         };
+
+        // @see http://terai.xrea.jp/Swing/NoWrapTextPane.html
+        textPane.setEditorKit(new NoWrapEditorKit());
+
         AbstractDocument doc = new SimpleSyntaxDocument();
         textPane.setDocument(doc);
         try{
@@ -76,10 +74,8 @@ public class MainPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(
               textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
               ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
-            @Override public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                d.width = 100;
-                return d;
+            @Override public Dimension getMinimumSize() {
+                return super.getPreferredSize();
             }
         };
 
@@ -193,5 +189,45 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     String operands = ".,";
     protected boolean isDelimiter(String character) {
         return Character.isWhitespace(character.charAt(0)) || operands.indexOf(character)!=-1;
+    }
+}
+
+class NoWrapParagraphView extends ParagraphView {
+    public NoWrapParagraphView(Element elem) {
+        super(elem);
+    }
+    @Override protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
+        SizeRequirements req = super.calculateMinorAxisRequirements(axis, r);
+        req.minimum = req.preferred;
+        return req;
+    }
+    @Override public int getFlowSpan(int index) {
+        return Integer.MAX_VALUE;
+    }
+}
+
+class NoWrapViewFactory implements ViewFactory {
+    @Override public View create(Element elem) {
+        String kind = elem.getName();
+        if(kind != null) {
+            if(kind.equals(AbstractDocument.ContentElementName)) {
+                return new LabelView(elem);
+            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+                return new NoWrapParagraphView(elem);
+            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+                return new BoxView(elem, View.Y_AXIS);
+            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+                return new ComponentView(elem);
+            }else if(kind.equals(StyleConstants.IconElementName)) {
+                return new IconView(elem);
+            }
+        }
+        return new LabelView(elem);
+    }
+}
+
+class NoWrapEditorKit extends StyledEditorKit {
+    @Override public ViewFactory getViewFactory() {
+        return new NoWrapViewFactory();
     }
 }
