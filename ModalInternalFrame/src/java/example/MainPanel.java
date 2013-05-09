@@ -149,7 +149,9 @@ public class MainPanel extends JPanel{
             removeSystemMenuListener(modal);
 /*/
             //GlassPane + JComboBox Test:
-            JComboBox combo = new JComboBox(new String[] {"Banana", "Apple", "Pear", "Grape"});
+            String[] items = {"Banana", "Apple", "Pear", "Grape", "Kiwi"};
+            //JComboBox<String> combo = new JComboBox<>(items);
+            JComboBox combo = new JComboBox(items);
             combo.setEditable(true);
             try{
                 Field field;
@@ -175,10 +177,10 @@ public class MainPanel extends JPanel{
                 }
             });
             glass.add(modal);
-            Rectangle screen = desktop.getBounds();
             modal.pack();
-            modal.setLocation(screen.x + screen.width/2  - modal.getSize().width/2,
-                              screen.y + screen.height/2 - modal.getSize().height/2);
+//             Rectangle screen = desktop.getBounds();
+//             modal.setLocation(screen.x + screen.width/2  - modal.getSize().width/2,
+//                               screen.y + screen.height/2 - modal.getSize().height/2);
             frame.setGlassPane(glass);
             glass.setVisible(true);
             modal.setVisible(true);
