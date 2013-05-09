@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
     private static enum JComponentType {
         JComboBox(new JComboBox()),
         JFormattedTextField(new JFormattedTextField()),
-        ////JFileChooser(new JFileChooser()),
+        JFileChooser(new JFileChooser()),
         //JInternalFrame(new JInternalFrame()),
         //JLabel(new JLabel()),
         //JLayeredPane(new JLayeredPane()),
