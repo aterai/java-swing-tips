@@ -16,8 +16,8 @@ public class MainPanel extends JPanel{
             {null, null}, //XXX: dummy
             {new Test("errorIcon",       UIManager.getIcon("OptionPane.errorIcon"),       "public static final int ERROR_MESSAGE\nUsed for error messages."), see},
             {new Test("informationIcon", UIManager.getIcon("OptionPane.informationIcon"), "public static final int INFORMATION_MESSAGE\nUsed for information messages."), see},
-            {new Test("questionIcon",    UIManager.getIcon("OptionPane.questionIcon"),    "public static final int WARNING_MESSAGE\nUsed for warning messages."), see},
-            {new Test("warningIcon",     UIManager.getIcon("OptionPane.warningIcon"),     "public static final int QUESTION_MESSAGE\nUsed for questions."), see},
+            {new Test("questionIcon",    UIManager.getIcon("OptionPane.questionIcon"),    "public static final int QUESTION_MESSAGE\nUsed for questions."), see},
+            {new Test("warningIcon",     UIManager.getIcon("OptionPane.warningIcon"),     "public static final int WARNING_MESSAGE\nUsed for warning messages."), see},
         };
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override public boolean isCellEditable(int row, int column) {
@@ -34,9 +34,10 @@ public class MainPanel extends JPanel{
         //table.setAutoCreateRowSorter(true);
         table.getTableHeader().setReorderingAllowed(false);
         table.setRowSelectionAllowed(true);
+//         table.setFocusable(false);
+//         table.setCellSelectionEnabled(false);
         table.setFillsViewportHeight(true);
         table.setShowVerticalLines(false);
-        table.setFocusable(false);
         table.setIntercellSpacing(new Dimension(0,1));
         //XXX: table.setRowHeight(56);
         //XXX: Flickering on first row only
@@ -88,11 +89,15 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer{
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setViewportBorder(BorderFactory.createEmptyBorder());
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+
         textArea.setBorder(BorderFactory.createEmptyBorder());
         textArea.setMargin(new Insets(0,0,0,0));
         textArea.setForeground(Color.RED);
         textArea.setEditable(false);
         textArea.setFocusable(false);
+        textArea.setOpaque(false);
 
         iconLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
         iconLabel.setOpaque(false);
@@ -102,6 +107,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer{
         label.setBorder(BorderFactory.createCompoundBorder(b2, b1));
 
         setBackground(textArea.getBackground());
+        setOpaque(true);
         add(label, BorderLayout.NORTH);
         //add(iconLabel, BorderLayout.WEST);
         add(scroll);
@@ -131,6 +137,12 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer{
             cr.x -= iconLabel.getPreferredSize().width;
         }
         textArea.scrollRectToVisible(cr);
+
+        if(isSelected) {
+            setBackground(Color.ORANGE);
+        }else{
+            setBackground(Color.WHITE);
+        }
         return this;
     }
 }
