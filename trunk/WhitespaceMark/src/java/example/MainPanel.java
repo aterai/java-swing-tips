@@ -15,7 +15,7 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         JTextPane editor = new JTextPane();
 
-        editor.setFont(new Font("monospaced", Font.PLAIN, 12));
+        editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         editor.setEditorKit(new MyEditorKit());
         editor.setText(zsTest+zs_tab_zsTest+tabTest);
 

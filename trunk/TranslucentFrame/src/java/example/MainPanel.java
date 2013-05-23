@@ -167,6 +167,6 @@ class TranslucentSynthSytle extends SynthStyle {
         return null; //Color.RED;
     }
     @Override public Font getFontForState(SynthContext context) {
-        return null; //new Font("MONOSPACE", Font.ITALIC, 24);
+        return null; //new Font(Font.MONOSPACED, Font.ITALIC, 24);
     }
 }

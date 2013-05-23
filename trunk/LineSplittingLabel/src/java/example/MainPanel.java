@@ -41,7 +41,7 @@ class TricoloreLabel extends JComponent {
     private final GlyphVector gv;
     public TricoloreLabel(String str) {
         super();
-        Font font = new Font("serif", Font.PLAIN, 64);
+        Font font = new Font(Font.SERIF, Font.PLAIN, 64);
         FontRenderContext frc = new FontRenderContext(null, true, true);
         gv = font.createGlyphVector(frc, str);
     }
@@ -84,7 +84,7 @@ class LineSplittingLabel extends JComponent {
     private final Shape shape;
     public LineSplittingLabel(String str) {
         super();
-        Font font = new Font("serif", Font.PLAIN, 64);
+        Font font = new Font(Font.SERIF, Font.PLAIN, 64);
         FontRenderContext frc = new FontRenderContext(null, true, true);
         shape = new TextLayout(str, font, frc).getOutline(null);
     }

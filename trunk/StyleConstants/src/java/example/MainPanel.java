@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
 //             sas = new SimpleAttributeSet();
 //             StyleConstants.setForeground(sas, Color.RED);
 //             //StyleConstants.setBold(sas, true);
-//             //StyleConstants.setFontFamily(sas, "Monospaced");
+//             //StyleConstants.setFontFamily(sas, Font.MONOSPACED);
 //             //StyleConstants.setFontSize(sas, 32);
 //             //StyleConstants.setForeground(sas, Color.GREEN);
 //         }

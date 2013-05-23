@@ -54,7 +54,7 @@ class FontRotateAnimation extends JComponent implements ActionListener {
                 }
             }
         });
-        Font font = new Font("serif", Font.PLAIN, 200);
+        Font font = new Font(Font.SERIF, Font.PLAIN, 200);
         FontRenderContext frc = new FontRenderContext(null, true, true);
         shape = new TextLayout(str, font, frc).getOutline(null);
         s = shape;

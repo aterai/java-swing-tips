@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN,   5), "LineBreakMeasurer"));
         lbl4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.ORANGE, 5), "JTextArea"));
 
-        //lbl2.setFont(new Font("serif", Font.TRUETYPE_FONT, 20));
+        //lbl2.setFont(new Font(Font.SERIF, Font.TRUETYPE_FONT, 20));
         lbl4.setFont(lbl1.getFont());
         lbl4.setEditable(false);
         lbl4.setLineWrap(true);
