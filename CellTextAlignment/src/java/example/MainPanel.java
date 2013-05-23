@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     static class HeaderRenderer implements TableCellRenderer {
-        private final Font font = new Font("Sans-serif", Font.BOLD, 14);
+        private final Font font = new Font(Font.SANS_SERIF, Font.BOLD, 14);
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             JLabel l = (JLabel)table.getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             l.setHorizontalAlignment(JLabel.CENTER);

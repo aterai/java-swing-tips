@@ -39,7 +39,7 @@ public class MainPanel extends JPanel {
 
 class TextLayoutPanel extends JComponent {
     String text = "abcdefthijklmnopqrstuvwxyz";
-    Font font = new Font("serif", Font.ITALIC, 64);
+    Font font = new Font(Font.SERIF, Font.ITALIC, 64);
     FontRenderContext frc = new FontRenderContext(null,true,true);
     TextLayout tl = new TextLayout(text, font, frc);
     @Override public void paintComponent(Graphics g) {
@@ -73,7 +73,7 @@ class TextLayoutPanel extends JComponent {
 
 class GlyphVectorPanel extends JComponent {
     String text = "abcdefthijklmnopqrstuvwxyz";
-    Font font = new Font("serif", Font.ITALIC, 64);
+    Font font = new Font(Font.SERIF, Font.ITALIC, 64);
     FontRenderContext frc = new FontRenderContext(null,true,true);
     GlyphVector gv = font.createGlyphVector(frc, text);
     LineMetrics lm = font.getLineMetrics(text, frc);

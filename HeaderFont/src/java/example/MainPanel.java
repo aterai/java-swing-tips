@@ -23,7 +23,7 @@ public class MainPanel extends JPanel{
         JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 
-        Font font = new Font("Sans-serif", Font.PLAIN, 32);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
         table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer(font));
 
         //all column

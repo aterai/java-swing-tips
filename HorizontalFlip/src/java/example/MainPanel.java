@@ -11,7 +11,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel{
     public MainPanel() {
         super(new BorderLayout());
-        Font font = new Font("Monospace", Font.BOLD, 200);
+        Font font = new Font(Font.MONOSPACED, Font.BOLD, 200);
         FontRenderContext frc = new FontRenderContext(null, true, true);
         Shape copyright = new TextLayout("\u00a9", font, frc).getOutline(null);
         AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);

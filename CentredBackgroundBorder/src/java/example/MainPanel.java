@@ -15,7 +15,7 @@ class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JTextArea area = new JTextArea();
-        //area.setFont(new Font("Sans-serif", Font.PLAIN, 32));
+        //area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 32));
         area.setForeground(Color.WHITE);
         area.setBackground(new Color(0,0,0,0)); //Nimbus
         area.setLineWrap(true);

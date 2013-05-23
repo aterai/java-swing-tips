@@ -8,9 +8,9 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 
 public class MainPanel extends JPanel{
-    private static final Font FONT12 = new Font("Sans-serif", Font.PLAIN, 12);
-    private static final Font FONT24 = new Font("Sans-serif", Font.PLAIN, 24);
-    private static final Font FONT32 = new Font("Sans-serif", Font.PLAIN, 32);
+    private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    private static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+    private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
     private final JButton button  = new JButton("Dialog");
     private final JLabel  label   = new JLabel("Test:");
     private final JComboBox combo = makeComboBox();

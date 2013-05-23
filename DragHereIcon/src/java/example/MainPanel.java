@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
         label.setVerticalTextPosition(SwingConstants.BOTTOM);
         label.setHorizontalTextPosition(SwingConstants.CENTER);
         label.setForeground(Color.GRAY);
-        label.setFont(new Font("serif", Font.PLAIN, 24));
+        label.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
 
         label.setDropTarget(new DropTarget(label, DnDConstants.ACTION_COPY, new FileDropTargetAdapter(), true));
         //Test: label.setTransferHandler(new FileTransferHandler());
@@ -61,7 +61,7 @@ class DragHereIcon implements Icon {
         BORDER_WIDTH,BORDER_WIDTH,
         ICON_SIZE-2*BORDER_WIDTH-1,ICON_SIZE-2*BORDER_WIDTH-1,
         ARC_SIZE,ARC_SIZE);
-    private static Font font = new Font("Monospace", Font.BOLD, ICON_SIZE);
+    private static Font font = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
     private static FontRenderContext frc = new FontRenderContext(null, true, true);
     private static Shape ARROW = new TextLayout("\u21E9", font, frc).getOutline(null); //DOWNWARDS WHITE ARROW
     //private static Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); //DOWNWARDS BLACK ARROW

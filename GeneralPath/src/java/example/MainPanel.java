@@ -90,7 +90,7 @@ class StarPanel3 extends JPanel{
     public StarPanel3() {
         super();
         FontRenderContext frc = new FontRenderContext(null,true,true);
-        Font font = new Font("serif", Font.PLAIN, FONTSIZE);
+        Font font = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
         shape = new TextLayout("\u2605", font, frc).getOutline(null);
     }
     @Override public void paintComponent(Graphics g) {

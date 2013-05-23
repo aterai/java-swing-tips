@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        textpane.setFont(new Font("monospaced", Font.PLAIN, 12));
+        textpane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         FontMetrics fm = textpane.getFontMetrics(textpane.getFont());
         int charWidth = fm.charWidth('m');
         int tabWidth = charWidth * 4;
