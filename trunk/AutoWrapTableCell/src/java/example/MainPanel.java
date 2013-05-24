@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -23,53 +25,53 @@ public class MainPanel extends JPanel{
         };
         TableModel model = new DefaultTableModel(data, columnNames);
         final JTable table = new JTable(model) {
-            private final Color evenColor = new Color(230, 240, 255);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-            @Override public void doLayout() {
-                //System.out.println("doLayout");
-                initPreferredHeight();
-                super.doLayout();
-            }
-            @Override public void columnMarginChanged(final ChangeEvent e) {
-                //System.out.println("columnMarginChanged");
-                super.columnMarginChanged(e);
-                initPreferredHeight();
-            }
-            private void initPreferredHeight() {
-                for(int row=0;row<getRowCount();row++) {
-                    int maximum_height = 0;
-                    for(int col=0;col<getColumnModel().getColumnCount();col++) {
-                        Component c = prepareRenderer(getCellRenderer(row, col), row, col);
-                        if(c instanceof JTextArea) {
-                            JTextArea a = (JTextArea)c;
-                            int h = getPreferredHeight(a); // + getIntercellSpacing().height;
-                            maximum_height = Math.max(maximum_height, h);
-                        }
-                    }
-                    setRowHeight(row, maximum_height);
-                }
-            }
-            //http://tips4java.wordpress.com/2008/10/26/text-utilities/
-            private int getPreferredHeight(JTextComponent c) {
-                Insets insets = c.getInsets();
-                //Insets margin = c.getMargin();
-                //System.out.println(insets);
-                View view = c.getUI().getRootView(c).getView(0);
-                float f = view.getPreferredSpan(View.Y_AXIS);
-                //System.out.println(f);
-                int preferredHeight = (int)f;
-                return preferredHeight + insets.top + insets.bottom;
-            }
+//             private final Color evenColor = new Color(230, 240, 255);
+//             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+//                 Component c = super.prepareRenderer(tcr, row, column);
+//                 if(isRowSelected(row)) {
+//                     c.setForeground(getSelectionForeground());
+//                     c.setBackground(getSelectionBackground());
+//                 }else{
+//                     c.setForeground(getForeground());
+//                     c.setBackground((row%2==0)?evenColor:getBackground());
+//                 }
+//                 return c;
+//             }
+//             @Override public void doLayout() {
+//                 //System.out.println("doLayout");
+//                 initPreferredHeight();
+//                 super.doLayout();
+//             }
+//             @Override public void columnMarginChanged(final ChangeEvent e) {
+//                 //System.out.println("columnMarginChanged");
+//                 super.columnMarginChanged(e);
+//                 initPreferredHeight();
+//             }
+//             private void initPreferredHeight() {
+//                 for(int row=0;row<getRowCount();row++) {
+//                     int maximum_height = 0;
+//                     for(int col=0;col<getColumnModel().getColumnCount();col++) {
+//                         Component c = prepareRenderer(getCellRenderer(row, col), row, col);
+//                         if(c instanceof JTextArea) {
+//                             JTextArea a = (JTextArea)c;
+//                             int h = getPreferredHeight(a); // + getIntercellSpacing().height;
+//                             maximum_height = Math.max(maximum_height, h);
+//                         }
+//                     }
+//                     setRowHeight(row, maximum_height);
+//                 }
+//             }
+//             //http://tips4java.wordpress.com/2008/10/26/text-utilities/
+//             private int getPreferredHeight(JTextComponent c) {
+//                 Insets insets = c.getInsets();
+//                 //Insets margin = c.getMargin();
+//                 //System.out.println(insets);
+//                 View view = c.getUI().getRootView(c).getView(0);
+//                 float f = view.getPreferredSpan(View.Y_AXIS);
+//                 //System.out.println(f);
+//                 int preferredHeight = (int)f;
+//                 return preferredHeight + insets.top + insets.bottom;
+//             }
         };
         table.setEnabled(false);
         table.setShowGrid(false);
@@ -118,8 +120,48 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
                                                    int row, int column) {
         setFont(table.getFont());
         setText((value ==null) ? "" : value.toString());
+        adjustRowHeight(table, row, column);
         return this;
     }
+
+    /**
+     * Calculate the new preferred height for a given row, and sets the height on the table.
+     * http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
+     */
+    private ArrayList<ArrayList<Integer>> rowColHeight = new ArrayList<ArrayList<Integer>>();
+    private void adjustRowHeight(JTable table, int row, int column) {
+        //The trick to get this to work properly is to set the width of the column to the
+        //textarea. The reason for this is that getPreferredSize(), without a width tries
+        //to place all the text in one line. By setting the size with the with of the column,
+        //getPreferredSize() returnes the proper height which the row should have in
+        //order to make room for the text.
+        //int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+        //int cWidth = table.getCellRect(row, column, false).width; //Ignore IntercellSpacing
+        //setSize(new Dimension(cWidth, 1000));
+
+        setBounds(table.getCellRect(row, column, false));
+        //doLayout();
+
+        int prefH = getPreferredSize().height;
+        while (rowColHeight.size() <= row) {
+            rowColHeight.add(new ArrayList<Integer>(column));
+        }
+        List<Integer> colHeights = rowColHeight.get(row);
+        while (colHeights.size() <= column) {
+            colHeights.add(0);
+        }
+        colHeights.set(column, prefH);
+        int maxH = prefH;
+        for (Integer colHeight : colHeights) {
+            if (colHeight > maxH) {
+                maxH = colHeight;
+            }
+        }
+        if (table.getRowHeight(row) != maxH) {
+            table.setRowHeight(row, maxH);
+        }
+    }
+
     //Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
