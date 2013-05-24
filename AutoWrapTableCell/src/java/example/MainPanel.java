@@ -7,9 +7,9 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.event.*;
+// import javax.swing.event.*;
 import javax.swing.table.*;
-import javax.swing.text.*;
+// import javax.swing.text.*;
 
 public class MainPanel extends JPanel{
     private static final int AUTOWRAP_COLUMN = 1;
