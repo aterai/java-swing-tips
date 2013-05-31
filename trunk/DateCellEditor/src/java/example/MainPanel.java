@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         JLabel r = (JLabel)table.getDefaultRenderer(Date.class);
         r.setHorizontalAlignment(JLabel.LEFT);
-        table.setDefaultEditor(Date.class, new SpinnerCellEditor(table));
+        table.setDefaultEditor(Date.class, new SpinnerCellEditor());
         //table.setShowGrid(false);
         //table.setAutoCreateRowSorter(true);
         table.setSurrendersFocusOnKeystroke(true);
@@ -58,21 +58,12 @@ public class MainPanel extends JPanel {
 //class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
 class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     private final JSpinner.DateEditor editor;
-    public SpinnerCellEditor(final JTable table) {
+    public SpinnerCellEditor() {
         super(new SpinnerDateModel());
         setEditor(editor = new JSpinner.DateEditor(this, "yyyy/MM/dd"));
         setArrowButtonEnabled(false);
+        editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
 
-        addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        int row = table.convertRowIndexToModel(table.getEditingRow());
-                        table.getModel().setValueAt(getValue(), row, 2);
-                    }
-                });
-            }
-        });
         addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
                 //System.out.println("spinner");
@@ -105,11 +96,17 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         }
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
         setValue(value);
         return this;
     }
     @Override public Object getCellEditorValue() {
+        try{
+            commitEdit();
+        }catch(Exception pe) {
+            // Edited value is invalid, spinner.getValue() will return
+            // the last valid value, you could revert the spinner to show that:
+            editor.getTextField().setValue(getValue());
+        }
         return getValue();
     }
 
