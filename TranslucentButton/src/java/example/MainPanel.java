@@ -156,6 +156,7 @@ class TranslucentButton extends JButton{
         super.updateUI();
         setContentAreaFilled(false);
         setFocusPainted(false);
+        setBorderPainted(false);
         setOpaque(false);
         setForeground(Color.WHITE);
     }
