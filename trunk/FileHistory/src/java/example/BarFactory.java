@@ -10,11 +10,11 @@ import java.util.List;
 import javax.swing.*;
 
 public final class BarFactory{
-    final static private String  imageSuffix  = "Image";
-    final static private String  labelSuffix  = "Label";
-    final static private String  actionSuffix = "Action";
-    final static private String  tipSuffix    = "Tooltip";
-    final static private String  mneSuffix    = "Mnemonic";
+    final static private String imageSuffix  = "Image";
+    final static private String labelSuffix  = "Label";
+    final static private String actionSuffix = "Action";
+    final static private String tipSuffix    = "Tooltip";
+    final static private String mneSuffix    = "Mnemonic";
 
     private final ResourceBundle resources;
 

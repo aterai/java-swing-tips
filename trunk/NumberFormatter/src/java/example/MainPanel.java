@@ -90,7 +90,7 @@ public class MainPanel extends JPanel{
 //         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s.getEditor();
 //         final JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
 //         ftf.setFormatterFactory(makeFFactory2(m));
-//         ftf.addFocusListener(new  FocusAdapter() {
+//         ftf.addFocusListener(new FocusAdapter() {
 //             @Override public void focusLost(final FocusEvent e) {
 //                 //JTextComponent textField = (JTextComponent)e.getSource();
 //                 System.out.println(ftf.getText());

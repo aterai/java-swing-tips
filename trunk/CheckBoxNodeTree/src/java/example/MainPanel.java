@@ -174,7 +174,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {
