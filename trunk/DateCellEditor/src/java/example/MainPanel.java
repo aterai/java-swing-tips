@@ -100,13 +100,6 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         return this;
     }
     @Override public Object getCellEditorValue() {
-        try{
-            commitEdit();
-        }catch(Exception pe) {
-            // Edited value is invalid, spinner.getValue() will return
-            // the last valid value, you could revert the spinner to show that:
-            editor.getTextField().setValue(getValue());
-        }
         return getValue();
     }
 
@@ -121,10 +114,19 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         return true;
     }
     @Override public boolean stopCellEditing() {
+        try{
+            commitEdit();
+        }catch(Exception pe) {
+            Toolkit.getDefaultToolkit().beep();
+            return false;
+//             // Edited value is invalid, spinner.getValue() will return
+//             // the last valid value, you could revert the spinner to show that:
+//             editor.getTextField().setValue(getValue());
+        }
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {
