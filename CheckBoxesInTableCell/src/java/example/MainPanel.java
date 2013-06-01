@@ -182,7 +182,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Seria
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {
