@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
                 g2.fillRect(0,0,getWidth(),getHeight());
 
                 int code = ((Integer)spinner.getValue()).intValue();
-                char[] ca = Character.toChars(code);
+                //char[] ca = Character.toChars(code);
                 //int len = Character.charCount(code);
                 //http://docs.oracle.com/javase/tutorial/i18n/text/usage.html
                 String str = new String(Character.toChars(code)); //, 0, len);
