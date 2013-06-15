@@ -13,7 +13,7 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         add(makeUI());
         setOpaque(false);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public JComponent makeUI() {
         final JInternalFrame internal = new JInternalFrame("@title@");
@@ -90,13 +90,14 @@ public class MainPanel extends JPanel{
         try{
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             for(UIManager.LookAndFeelInfo laf:UIManager.getInstalledLookAndFeels()) {
-                if("Nimbus".equals(laf.getName()))
-                  UIManager.setLookAndFeel(laf.getClassName());
+                if("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                }
             }
         }catch(Exception e) {
             e.printStackTrace();
         }
-        JFrame frame = new JFrame("@title@");
+        JFrame frame = new JFrame();
         frame.setUndecorated(true);
         frame.setMinimumSize(new Dimension(300, 120));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -123,9 +124,10 @@ class DragWindowListener extends MouseAdapter {
     }
     @Override public void mouseDragged(MouseEvent me) {
         if(window!=null) {
-            Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - start.getX(),
-                               eventLocationOnScreen.y - start.getY());
+            Point pt = me.getLocationOnScreen();
+            int x = pt.x - start.getX();
+            int y = pt.y - start.getY();
+            window.setLocation(x, y);
         }
     }
 }
