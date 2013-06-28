@@ -83,7 +83,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
-        JRootPane rootPane = SwingUtilities.getRootPane(this);
+        JRootPane rootPane = getRootPane();
         if(rootPane!=null && isVisible()!=oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
@@ -105,7 +105,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         animatedIcon.setRunning(isVisible);
     }
     @Override public void paintComponent(Graphics g) {
-        JRootPane rootPane = SwingUtilities.getRootPane(this);
+        JRootPane rootPane = getRootPane();
         if(rootPane!=null) {
             rootPane.getLayeredPane().print(g);
         }

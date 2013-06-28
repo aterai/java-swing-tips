@@ -44,8 +44,10 @@ public class MainPanel extends JPanel {
         map.put("Button2", b2);
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                SwingUtilities.getRootPane(box).setDefaultButton(
-                    map.get(bg.getSelection().getActionCommand()));
+                JRootPane rootPane = box.getRootPane();
+                if(rootPane!=null) {
+                    rootPane.setDefaultButton(map.get(bg.getSelection().getActionCommand()));
+                }
             }
         };
         for(String key:map.keySet()) {

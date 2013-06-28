@@ -251,13 +251,13 @@ class PrintGlassPane extends JPanel {
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
-        JRootPane rootPane = SwingUtilities.getRootPane(this);
+        JRootPane rootPane = getRootPane();
         if(rootPane!=null && isVisible()!=oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
     @Override public void paintComponent(Graphics g) {
-        JRootPane rootPane = SwingUtilities.getRootPane(this);
+        JRootPane rootPane = getRootPane();
         if(rootPane != null) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
             // it is important to call print() instead of paint() here

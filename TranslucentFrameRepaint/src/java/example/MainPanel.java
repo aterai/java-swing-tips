@@ -24,21 +24,27 @@ class MainPanel extends JPanel{
             }
         }
     });
-    private void repaintWindowAncestor(Component c) {
-        Window w = SwingUtilities.getWindowAncestor(c);
-        if(w instanceof JFrame) {
-            JFrame f = (JFrame)w;
-            JComponent cp = (JComponent)f.getContentPane();
-            //cp.repaint();
-            Rectangle r = c.getBounds();
-            r = SwingUtilities.convertRectangle(c, r, cp);
-            cp.repaint(r.x, r.y, r.width, r.height);
-            //r = SwingUtilities.convertRectangle(c, r, f);
-            //f.repaint(r.x, r.y, r.width, r.height);
-        }else{
-            c.repaint();
-        }
+    private void repaintWindowAncestor(JComponent c) {
+        JRootPane root = c.getRootPane();
+        Rectangle r = c.getBounds();
+        r = SwingUtilities.convertRectangle(c, r, root);
+        root.repaint(r.x, r.y, r.width, r.height);
     }
+//     private void repaintWindowAncestor(Component c) {
+//         Window w = SwingUtilities.getWindowAncestor(c);
+//         if(w instanceof JFrame) {
+//             JFrame f = (JFrame)w;
+//             JComponent cp = (JComponent)f.getContentPane();
+//             //cp.repaint();
+//             Rectangle r = c.getBounds();
+//             r = SwingUtilities.convertRectangle(c, r, cp);
+//             cp.repaint(r.x, r.y, r.width, r.height);
+//             //r = SwingUtilities.convertRectangle(c, r, f);
+//             //f.repaint(r.x, r.y, r.width, r.height);
+//         }else{
+//             c.repaint();
+//         }
+//     }
     private static TexturePaint makeImageTexture() {
         BufferedImage bi = null;
         try{
