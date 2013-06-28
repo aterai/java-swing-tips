@@ -24,6 +24,8 @@ class MainPanel extends JPanel {
         progress01.setStringPainted(true);
         progress02.setStringPainted(true);
 
+        progress04.setOpaque(true); //for NimbusLookAndFeel
+
         p.add(makeTitlePanel("setStringPainted(true)",  Arrays.asList(progress01, progress02)));
         p.add(makeTitlePanel("setStringPainted(false)", Arrays.asList(progress03, new JLayer<JProgressBar>(progress04, layerUI))));
 
