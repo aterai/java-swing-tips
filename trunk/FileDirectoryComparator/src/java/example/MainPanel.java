@@ -216,7 +216,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable{
     public DefaultFileComparator(int column) {
         this.column = column;
     }
-    public int compare(File a, File b) {
+    @Override public int compare(File a, File b) {
         switch(column) {
           default:
           case 0: return a.getName().compareToIgnoreCase(b.getName());
@@ -229,7 +229,7 @@ class FileComparator extends DefaultFileComparator{
     public FileComparator(int column) {
         super(column);
     }
-    public int compare(File a, File b) {
+    @Override public int compare(File a, File b) {
         if(a.isDirectory() && !b.isDirectory()) {
             return -1;
         }else if(!a.isDirectory() && b.isDirectory()) {
@@ -248,7 +248,7 @@ class FileGroupComparator extends DefaultFileComparator{
         super(column);
         this.table  = table;
     }
-    public int compare(File a, File b) {
+    @Override public int compare(File a, File b) {
         int flag = 1;
         List<? extends TableRowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
         if(!keys.isEmpty()) {

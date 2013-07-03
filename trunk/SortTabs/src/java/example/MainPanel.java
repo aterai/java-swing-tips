@@ -99,7 +99,7 @@ public class MainPanel extends JPanel {
             Collections.sort(l);
             //Collections.<ComparableTab>sort(l);
 //             Collections.sort(l, new Comparator<ComparableTab>() {
-//                 public int compare(ComparableTab o1, ComparableTab o2) {
+//                 @Override public int compare(ComparableTab o1, ComparableTab o2) {
 //                     return o1.compareTo(o2);
 //                 }
 //             });
