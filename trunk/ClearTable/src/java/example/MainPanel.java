@@ -28,11 +28,14 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
+
+    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
     public MainPanel() {
         super(new BorderLayout());
 
         //table.setAutoCreateRowSorter(true);
-        table.setRowSorter(new TableRowSorter<TableModel>(model));
+        //table.setRowSorter(new TableRowSorter<TableModel>(model));
+        table.setRowSorter(sorter);
 
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
@@ -59,7 +62,9 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             if(model.getRowCount()==0) {
-                table.setRowSorter(new TableRowSorter<TableModel>(model));
+                //table.setRowSorter(new TableRowSorter<TableModel>(model));
+                table.setRowSorter(sorter);
+                model.fireTableDataChanged();
             }
             model.addRow(new Object[] {"", model.getRowCount(), false});
             Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
