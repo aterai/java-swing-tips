@@ -15,41 +15,56 @@ public class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
+            switch(column) {
+              case 0:
+                return String.class;
+              case 1:
+                return Number.class;
+              case 2:
+                return Boolean.class;
+              default:
+                return Object.class;
+            }
         }
     };
     private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
 
-        table.setAutoCreateRowSorter(true);
+        //table.setAutoCreateRowSorter(true);
+        table.setRowSorter(new TableRowSorter<TableModel>(model));
+
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
 
         add(new JButton(new AbstractAction("remove all rows") {
             @Override public void actionPerformed(ActionEvent ae) {
                 //model.clear();
+                //ArrayIndexOutOfBoundsException:  0 >= 0
+                //Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+                //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6967479
+                table.setRowSorter(null);
+                table.getTableHeader().repaint();
                 model.setRowCount(0);
                 //table.setAutoCreateColumnsFromModel(false);
                 //table.setModel(new DefaultTableModel());
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
-
     private class TestCreateAction extends AbstractAction{
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
+            if(model.getRowCount()==0) {
+                table.setRowSorter(new TableRowSorter<TableModel>(model));
+            }
+            model.addRow(new Object[] {"", model.getRowCount(), false});
+            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            table.scrollRectToVisible(r);
         }
-    }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addRow(new Object[] {"", model.getRowCount(), false});
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
-        table.scrollRectToVisible(r);
     }
 
     private class DeleteAction extends AbstractAction{
@@ -57,14 +72,15 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    public void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+            if(model.getRowCount()==0) {
+                table.setRowSorter(null);
+                table.getTableHeader().repaint();
+            }
         }
     }
 
