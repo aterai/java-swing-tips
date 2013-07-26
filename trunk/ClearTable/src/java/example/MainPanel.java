@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
               case 2:
                 return Boolean.class;
               default:
-                return Object.class;
+                return super.getColumnClass(column);
             }
         }
     };
