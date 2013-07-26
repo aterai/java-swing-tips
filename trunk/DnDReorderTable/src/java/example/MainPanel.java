@@ -36,8 +36,8 @@ public class MainPanel extends JPanel {
         table.setTransferHandler(new TableRowTransferHandler());
         table.setDropMode(DropMode.INSERT_ROWS);
         table.setDragEnabled(true);
-        //Bug ID: 6603243 regression: ClassCastException in the DropHandler.initProperties()
-        //http://bugs.sun.com/view_bug.do?bug_id=6603243
+
+        //Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
         AbstractAction dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {}

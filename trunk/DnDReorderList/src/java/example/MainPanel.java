@@ -41,8 +41,8 @@ public class MainPanel extends JPanel {
         list.setTransferHandler(new ListItemTransferHandler());
         list.setDropMode(DropMode.INSERT);
         list.setDragEnabled(true);
-        //Bug ID: 6603243 regression: ClassCastException in the DropHandler.initProperties()
-        //http://bugs.sun.com/view_bug.do?bug_id=6603243
+
+        //Disable row Cut, Copy, Paste
         ActionMap map = list.getActionMap();
         AbstractAction dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {}
