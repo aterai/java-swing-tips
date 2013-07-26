@@ -37,8 +37,9 @@ public class MainPanel extends JPanel {
         t.setDropMode(DropMode.INSERT_ROWS);
         t.setDragEnabled(true);
         t.setFillsViewportHeight(true);
-        //Bug ID: 6603243 regression: ClassCastException in the DropHandler.initProperties()
-        //http://bugs.sun.com/view_bug.do?bug_id=6603243
+        t.setAutoCreateRowSorter(true);
+
+        //Disable row Cut, Copy, Paste
         ActionMap map = t.getActionMap();
         AbstractAction dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {}
