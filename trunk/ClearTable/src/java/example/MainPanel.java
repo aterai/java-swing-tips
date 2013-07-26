@@ -15,6 +15,10 @@ public class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
+            //ArrayIndexOutOfBoundsException:  0 >= 0
+            //Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+            //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6967479
+            //return getValueAt(0, column).getClass();
             switch(column) {
               case 0:
                 return String.class;
@@ -23,10 +27,7 @@ public class MainPanel extends JPanel {
               case 2:
                 return Boolean.class;
               default:
-                //ArrayIndexOutOfBoundsException:  0 >= 0
-                //Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
-                //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6967479
-                return null;
+                return Object.class;
             }
         }
     };
