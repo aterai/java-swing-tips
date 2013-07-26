@@ -23,21 +23,38 @@ public class MainPanel extends JPanel {
               case 2:
                 return Boolean.class;
               default:
+                //ArrayIndexOutOfBoundsException:  0 >= 0
+                //Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+                //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6967479
                 return null;
             }
         }
     };
     private final JTable table = new JTable(model);
+    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private static boolean DEBUG = false;
     public MainPanel() {
         super(new BorderLayout());
 
-        table.setAutoCreateRowSorter(true);
+        if(DEBUG) {
+            //table.setRowSorter(new TableRowSorter<TableModel>(model));
+            table.setRowSorter(sorter);
+        }else{
+            table.setAutoCreateRowSorter(true);
+        }
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
 
         add(new JButton(new AbstractAction("remove all rows") {
             @Override public void actionPerformed(ActionEvent ae) {
                 //model.clear();
+                if(DEBUG) {
+                    //ArrayIndexOutOfBoundsException:  0 >= 0
+                    //Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+                    //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6967479
+                    table.setRowSorter(null);
+                    table.getTableHeader().repaint();
+                }
                 model.setRowCount(0);
                 //table.setAutoCreateColumnsFromModel(false);
                 //table.setModel(new DefaultTableModel());
@@ -52,6 +69,11 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
+            if(DEBUG && model.getRowCount()==0) {
+                //table.setRowSorter(new TableRowSorter<TableModel>(model));
+                table.setRowSorter(sorter);
+                model.fireTableDataChanged();
+            }
             model.addRow(new Object[] {"", model.getRowCount(), false});
             Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
             table.scrollRectToVisible(r);
@@ -67,6 +89,10 @@ public class MainPanel extends JPanel {
             if(selection==null || selection.length<=0) return;
             for(int i=selection.length-1;i>=0;i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+            if(DEBUG && model.getRowCount()==0) {
+                table.setRowSorter(null);
+                table.getTableHeader().repaint();
             }
         }
     }
@@ -94,6 +120,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
