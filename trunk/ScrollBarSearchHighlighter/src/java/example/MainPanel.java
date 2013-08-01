@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
@@ -14,10 +15,10 @@ import javax.swing.plaf.metal.MetalScrollBarUI;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public class MainPanel extends JPanel {
-    private static final boolean DEBUG = false;
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private static final String pattern = "Swing";
-    private static final String initTxt =
+    private static final boolean DEBUG = false;
+    private static final String PATTERN = "Swing";
+    private static final String INITTXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
       "This lesson explains the concepts you need to\n" +
@@ -44,7 +45,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         textArea.setEditable(false);
-        textArea.setText(initTxt+initTxt+initTxt);
+        textArea.setText(INITTXT+INITTXT+INITTXT);
 
         scrollbar.setUnitIncrement(10);
 
@@ -142,7 +143,7 @@ public class MainPanel extends JPanel {
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("highlight") {
             @Override public void actionPerformed(ActionEvent e) {
-                setHighlight(textArea, pattern);
+                setHighlight(textArea, PATTERN);
             }
         }));
         box.add(Box.createHorizontalStrut(2));
@@ -163,10 +164,13 @@ public class MainPanel extends JPanel {
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
-            while((pos = text.indexOf(pattern, pos)) >= 0) {
-                poslist.add(pos);
-                hilite.addHighlight(pos, pos+pattern.length(), highlightPainter);
-                pos += pattern.length();
+            Matcher matcher = Pattern.compile(pattern).matcher(text);
+            while(matcher.find(pos)) {
+                int start = matcher.start();
+                int end   = matcher.end();
+                poslist.add(start);
+                hilite.addHighlight(start, end, highlightPainter);
+                pos = end;
             }
         }catch(BadLocationException e) {
             e.printStackTrace();
