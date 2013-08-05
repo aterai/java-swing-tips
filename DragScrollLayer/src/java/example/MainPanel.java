@@ -46,11 +46,11 @@ class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(5));
         box.add(tab2);
         box.add(Box.createVerticalStrut(5));
-        box.add(new JButton("ccccc"));
+        box.add(new JSlider(0, 100, 50));
         box.add(Box.createVerticalStrut(5));
         box.add(new JScrollPane(tree));
         box.add(Box.createVerticalStrut(5));
-        box.add(new JLabel("ddddddddddddddd"));
+        box.add(new JButton("ccccc"));
         box.add(Box.createVerticalGlue());
 
         return box;
@@ -121,23 +121,25 @@ class DragScrollLayerUI extends LayerUI<JScrollPane> {
         super.uninstallUI(c);
     }
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
-        if(e.getComponent() instanceof JScrollBar) {
+        Component c = e.getComponent();
+        if(c instanceof JScrollBar || c instanceof JSlider) {
             return;
         }
         if(e.getID()==MouseEvent.MOUSE_PRESSED) {
             JViewport vport = l.getView().getViewport();
-            Point cp = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), vport);
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             pp.setLocation(cp);
         }
     }
     @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
-        if(e.getComponent() instanceof JScrollBar) {
+        Component c = e.getComponent();
+        if(c instanceof JScrollBar || c instanceof JSlider) {
             return;
         }
         if(e.getID()==MouseEvent.MOUSE_DRAGGED) {
             JViewport vport = l.getView().getViewport();
             JComponent cmp = (JComponent)vport.getView();
-            Point cp = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), vport);
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             Point vp = vport.getViewPosition();
             vp.translate(pp.x-cp.x, pp.y-cp.y);
             cmp.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
