@@ -10,14 +10,38 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel{
+    private static enum TabPlacements {
+        TOP(JTabbedPane.TOP), BOTTOM(JTabbedPane.BOTTOM), LEFT(JTabbedPane.LEFT), RIGHT(JTabbedPane.RIGHT);
+        public final int tabPlacement;
+        private TabPlacements(int tabPlacement) {
+            this.tabPlacement = tabPlacement;
+        }
+    }
+    private final JComboBox<TabPlacements> comboBox = new JComboBox<>(TabPlacements.values());
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+
     public MainPanel() {
         super(new BorderLayout());
 
+        comboBox.addItemListener(new ItemListener() {
+            @Override public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                    tabbedPane.setTabPlacement(((TabPlacements)e.getItem()).tabPlacement);
+                }
+            }
+        });
+        Box box = Box.createHorizontalBox();
+        box.add(Box.createHorizontalGlue());
+        box.add(new JLabel("TabPlacement: "));
+        box.add(Box.createHorizontalStrut(2));
+        box.add(comboBox);
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
         if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
             tabbedPane.setUI(new WindowsTabbedPaneUI() {
+                private final int tabAreaHeight = 32;
                 @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-                    return 32;
+                    return tabAreaHeight; //super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
                 }
                 //@Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
                 //    Rectangle tabRect = super.getTabBounds(pane, i);
@@ -26,31 +50,30 @@ public class MainPanel extends JPanel{
                 //    return tabRect;
                 //}
                 @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-                    //Rectangle tabRect  = rects[tabIndex];
-                    int selectedIndex  = tabPane.getSelectedIndex();
-                    boolean isSelected = selectedIndex == tabIndex;
-                    if(!isSelected) {
-                        //JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT
-                        rects[tabIndex].y = 16+3;
-                        rects[tabIndex].height = 16;
-                        //rects[tabIndex].y += 16;
-                        //rects[tabIndex].height -= 16;
+                    if(tabPane.getSelectedIndex()!=tabIndex && tabPlacement!=JTabbedPane.LEFT && tabPlacement!=JTabbedPane.RIGHT) {
+                        int tabHeight = tabAreaHeight/2 + 3;
+                        rects[tabIndex].height = tabHeight;
+                        if(tabPlacement==JTabbedPane.TOP) {
+                            rects[tabIndex].y = tabAreaHeight - tabHeight + 3;
+                        }
                     }
-                    super.paintTab(g,tabPlacement,rects,tabIndex,iconRect,textRect);
+                    super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
                 }
             });
         }else{
             //t.setUI(new javax.swing.plaf.metal.MetalTabbedPaneUI() {
             tabbedPane.setUI(new BasicTabbedPaneUI() {
+                private final int tabAreaHeight = 32;
                 @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-                    return 32;
+                    return tabAreaHeight;
                 }
                 @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-                    int selectedIndex  = tabPane.getSelectedIndex();
-                    boolean isSelected = selectedIndex == tabIndex;
-                    if(!isSelected) {
-                        rects[tabIndex].y = 16;
-                        rects[tabIndex].height = 16;
+                    if(tabPane.getSelectedIndex()!=tabIndex && tabPlacement!=JTabbedPane.LEFT && tabPlacement!=JTabbedPane.RIGHT) {
+                        int tabHeight = tabAreaHeight/2 + 3;
+                        rects[tabIndex].height = tabHeight;
+                        if(tabPlacement==JTabbedPane.TOP) {
+                            rects[tabIndex].y = tabAreaHeight - tabHeight + 3;
+                        }
                     }
                     super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
                 }
@@ -61,6 +84,7 @@ public class MainPanel extends JPanel{
         tabbedPane.addTab("22222232", new JScrollPane(new JTree()));
         tabbedPane.addTab("3333333333", new JSplitPane());
         add(tabbedPane);
+        add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
