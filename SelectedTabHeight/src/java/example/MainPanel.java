@@ -39,7 +39,7 @@ public class MainPanel extends JPanel{
 
         if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
             tabbedPane.setUI(new WindowsTabbedPaneUI() {
-                private final int tabAreaHeight = 32;
+                private static final int tabAreaHeight = 32;
                 @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
                     return tabAreaHeight; //super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
                 }
@@ -63,7 +63,7 @@ public class MainPanel extends JPanel{
         }else{
             //t.setUI(new javax.swing.plaf.metal.MetalTabbedPaneUI() {
             tabbedPane.setUI(new BasicTabbedPaneUI() {
-                private final int tabAreaHeight = 32;
+                private static final int tabAreaHeight = 32;
                 @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
                     return tabAreaHeight;
                 }
