@@ -28,9 +28,9 @@ public class MainPanel extends JPanel{
     private void initComboBox(JComboBox combo) {
         if(combo.getUI() instanceof WindowsComboBoxUI) {
             combo.setUI(new WindowsComboBoxUI() {
-                protected JButton createArrowButton() {
+                @Override protected JButton createArrowButton() {
                     JButton button = new JButton(icon) {
-                        public Dimension getPreferredSize() {
+                        @Override public Dimension getPreferredSize() {
                             return new Dimension(14, 14);
                         }
                     };
@@ -42,7 +42,7 @@ public class MainPanel extends JPanel{
             });
         }else{
             combo.setUI(new BasicComboBoxUI() {
-                protected JButton createArrowButton() {
+                @Override protected JButton createArrowButton() {
                     JButton button = super.createArrowButton();
                     ((BasicArrowButton)button).setDirection(SwingConstants.EAST);
                     return button;
