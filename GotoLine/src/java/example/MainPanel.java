@@ -80,20 +80,25 @@ public class MainPanel extends JPanel {
 
 class LineNumberView extends JComponent {
     private static final int MARGIN = 5;
-    private final JTextArea text;
+    private final JTextArea textArea;
     private final FontMetrics fontMetrics;
-    private final int topInset;
+    //private final int topInset;
     private final int fontAscent;
     private final int fontHeight;
+    private final int fontDescent;
+    private final int fontLeading;
 
     public LineNumberView(JTextArea textArea) {
-        text = textArea;
-        Font font   = text.getFont();
+        this.textArea = textArea;
+        Font font   = textArea.getFont();
         fontMetrics = getFontMetrics(font);
         fontHeight  = fontMetrics.getHeight();
         fontAscent  = fontMetrics.getAscent();
-        topInset    = text.getInsets().top;
-        text.getDocument().addDocumentListener(new DocumentListener() {
+        fontDescent = fontMetrics.getDescent();
+        fontLeading = fontMetrics.getLeading();
+        //topInset    = textArea.getInsets().top;
+
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) {
                 repaint();
             }
@@ -102,49 +107,54 @@ class LineNumberView extends JComponent {
             }
             @Override public void changedUpdate(DocumentEvent e) {}
         });
-        text.addComponentListener(new ComponentAdapter() {
+        textArea.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
                 revalidate();
                 repaint();
             }
         });
-        setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
+        Insets i = textArea.getInsets();
+        setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
+            BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
         setOpaque(true);
         setBackground(Color.WHITE);
+        setFont(font);
     }
-
     private int getComponentWidth() {
-        Document doc  = text.getDocument();
+        Document doc  = textArea.getDocument();
         Element root  = doc.getDefaultRootElement();
         int lineCount = root.getElementIndex(doc.getLength());
-        int maxDigits =  Math.max(3, String.valueOf(lineCount).length());
-        return maxDigits*fontMetrics.stringWidth("0")+MARGIN*2;
+        int maxDigits = Math.max(3, String.valueOf(lineCount).length());
+        Insets i = getBorder().getBorderInsets(this);
+        return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
+        //return 48;
     }
-
-    public int getLineAtPoint(int y) {
-        Element root = text.getDocument().getDefaultRootElement();
-        int pos = text.viewToModel(new Point(0, y));
+    private int getLineAtPoint(int y) {
+        Element root = textArea.getDocument().getDefaultRootElement();
+        int pos = textArea.viewToModel(new Point(0, y));
         return root.getElementIndex(pos);
     }
-
-    public Dimension getPreferredSize() {
-        return new Dimension(getComponentWidth(), text.getHeight());
+    @Override public Dimension getPreferredSize() {
+        return new Dimension(getComponentWidth(), textArea.getHeight());
     }
-
     @Override public void paintComponent(Graphics g) {
-        Rectangle clip = g.getClipBounds();
         g.setColor(getBackground());
+        Rectangle clip = g.getClipBounds();
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
+
         g.setColor(getForeground());
-        int base  = clip.y - topInset;
+        int base  = clip.y;
         int start = getLineAtPoint(base);
-        int end   = getLineAtPoint(base+clip.height);
-        int y = topInset-fontHeight+fontAscent+start*fontHeight;
+        int end   = getLineAtPoint(base + clip.height);
+        int y     = start * fontHeight;
+        int rmg   = getBorder().getBorderInsets(this).right;
         for(int i=start;i<=end;i++) {
-            String text = String.valueOf(i+1);
-            int x = getComponentWidth()-MARGIN-fontMetrics.stringWidth(text);
-            y = y + fontHeight;
+            String text = String.valueOf(i + 1);
+            int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
+            y += fontAscent;
             g.drawString(text, x, y);
+            y += fontDescent + fontLeading;
         }
     }
 }
