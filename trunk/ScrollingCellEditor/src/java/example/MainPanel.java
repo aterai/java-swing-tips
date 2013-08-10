@@ -60,7 +60,12 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
     private final JScrollPane scroll;
     public TextAreaCellEditor() {
         scroll = new JScrollPane(this);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        //scroll.setViewportBorder(BorderFactory.createEmptyBorder());
+
         setLineWrap(true);
+        setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
+
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_MASK);
         getInputMap(JComponent.WHEN_FOCUSED).put(enter, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -158,7 +163,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     TextAreaCellRenderer() {
         super();
         setLineWrap(true);
-        setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
         //setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value,
