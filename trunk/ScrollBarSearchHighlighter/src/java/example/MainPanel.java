@@ -93,8 +93,7 @@ public class MainPanel extends JPanel {
             });
         }
 
-        JLabel label = new JLabel();
-        label.setBorder(BorderFactory.createMatteBorder(0, 4, 0, 0, new Icon() {
+        JLabel label = new JLabel(new Icon() {
             private final Color THUMB_COLOR = new Color(0,0,255,50);
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
                 if(poslist.isEmpty()) return;
@@ -104,25 +103,28 @@ public class MainPanel extends JPanel {
                 Insets sbInsets  = scrollbar.getInsets();
                 double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
                 AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
-                g.setColor(Color.RED);
+
+                Graphics2D g2 = (Graphics2D)g.create();
+                //g2.translate(x, y);
+                g2.setColor(Color.RED);
                 try{
                     for(Integer pos: poslist) {
                         Rectangle r = textArea.modelToView(pos);
                         Rectangle s = at.createTransformedShape(r).getBounds();
                         int h = 2; //Math.max(2, s.height-2);
-                        g.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
+                        g2.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
                     }
-
                     //paint Thumb
                     JViewport vport = scroll.getViewport();
                     Rectangle vrect = c.getBounds();
                     vrect.y = vport.getViewPosition().y;
-                    g.setColor(THUMB_COLOR);
+                    g2.setColor(THUMB_COLOR);
                     Rectangle rr = at.createTransformedShape(vrect).getBounds();
-                    g.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
+                    g2.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
                 }catch(BadLocationException e) {
                     e.printStackTrace();
                 }
+                g2.dispose();
             }
             @Override public int getIconWidth() {
                 return 4;
@@ -130,12 +132,10 @@ public class MainPanel extends JPanel {
             @Override public int getIconHeight() {
                 return scrollbar.getHeight();
             }
-        }));
+        });
 
         scroll.setVerticalScrollBar(scrollbar);
-        JViewport vp = new JViewport();
-        vp.setView(label);
-        scroll.setRowHeader(vp);
+        scroll.setRowHeaderView(label);
         add(scroll);
 
         Box box = Box.createHorizontalBox();
