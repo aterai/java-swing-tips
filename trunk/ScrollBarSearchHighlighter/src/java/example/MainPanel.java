@@ -57,7 +57,6 @@ public class MainPanel extends JPanel {
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     Highlighter highlighter = textArea.getHighlighter();
-                    Highlighter.Highlight[] hilites = highlighter.getHighlights();
                     g.setColor(Color.YELLOW);
                     try{
                         for(Highlighter.Highlight hh: highlighter.getHighlights()) {
@@ -163,14 +162,15 @@ public class MainPanel extends JPanel {
         box.add(Box.createHorizontalStrut(2));
         box.add(new JButton(new AbstractAction("clear") {
             @Override public void actionPerformed(ActionEvent e) {
-                removeHighlights(textArea);
+                textArea.getHighlighter().removeAllHighlights();
+                scroll.repaint();
             }
         }));
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public void setHighlight(JTextComponent jtc, String pattern) {
-        removeHighlights(jtc);
+        jtc.getHighlighter().removeAllHighlights();
         try{
             Highlighter highlighter = jtc.getHighlighter();
             Document doc = jtc.getDocument();
@@ -185,16 +185,6 @@ public class MainPanel extends JPanel {
             }
         }catch(BadLocationException e) {
             e.printStackTrace();
-        }
-        repaint();
-    }
-    public void removeHighlights(JTextComponent jtc) {
-        Highlighter highlighter = jtc.getHighlighter();
-        Highlighter.Highlight[] hilites = highlighter.getHighlights();
-        for(int i=0;i<hilites.length;i++) {
-            if(hilites[i].getPainter() instanceof DefaultHighlighter.DefaultHighlightPainter) {
-                highlighter.removeHighlight(hilites[i]);
-            }
         }
         repaint();
     }
