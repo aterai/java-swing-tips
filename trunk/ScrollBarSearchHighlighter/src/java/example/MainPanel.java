@@ -57,10 +57,12 @@ public class MainPanel extends JPanel {
                     Rectangle rect   = textArea.getBounds();
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+                    Highlighter highlighter = textArea.getHighlighter();
+                    Highlighter.Highlight[] hilites = highlighter.getHighlights();
                     g.setColor(Color.YELLOW);
                     try{
-                        for(Integer pos: poslist) {
-                            Rectangle r = textArea.modelToView(pos);
+                        for(int i=0;i<hilites.length;i++) {
+                            Rectangle r = textArea.modelToView(hilites[i].getStartOffset());
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
                             g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
@@ -78,10 +80,12 @@ public class MainPanel extends JPanel {
                     Rectangle rect   = textArea.getBounds();
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+                    Highlighter highlighter = textArea.getHighlighter();
+                    Highlighter.Highlight[] hilites = highlighter.getHighlights();
                     g.setColor(Color.YELLOW);
                     try{
-                        for(Integer pos: poslist) {
-                            Rectangle r = textArea.modelToView(pos);
+                        for(int i=0;i<hilites.length;i++) {
+                            Rectangle r = textArea.modelToView(hilites[i].getStartOffset());
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
                             g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
@@ -96,34 +100,36 @@ public class MainPanel extends JPanel {
         JLabel label = new JLabel(new Icon() {
             private final Color THUMB_COLOR = new Color(0,0,255,50);
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                if(poslist.isEmpty()) return;
-
                 Rectangle rect   = textArea.getBounds();
                 Dimension sbSize = scrollbar.getSize();
                 Insets sbInsets  = scrollbar.getInsets();
                 double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
                 AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+                Highlighter highlighter = textArea.getHighlighter();
+                Highlighter.Highlight[] hilites = highlighter.getHighlights();
 
                 Graphics2D g2 = (Graphics2D)g.create();
                 //g2.translate(x, y);
                 g2.setColor(Color.RED);
                 try{
-                    for(Integer pos: poslist) {
-                        Rectangle r = textArea.modelToView(pos);
+                    for(int i=0;i<hilites.length;i++) {
+                        Rectangle r = textArea.modelToView(hilites[i].getStartOffset());
                         Rectangle s = at.createTransformedShape(r).getBounds();
                         int h = 2; //Math.max(2, s.height-2);
                         g2.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
                     }
-                    //paint Thumb
-                    JViewport vport = scroll.getViewport();
-                    Rectangle vrect = c.getBounds();
-                    vrect.y = vport.getViewPosition().y;
-                    g2.setColor(THUMB_COLOR);
-                    Rectangle rr = at.createTransformedShape(vrect).getBounds();
-                    g2.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
                 }catch(BadLocationException e) {
                     e.printStackTrace();
                 }
+
+                //paint Thumb
+                JViewport vport = scroll.getViewport();
+                Rectangle vrect = c.getBounds();
+                vrect.y = vport.getViewPosition().y;
+                g2.setColor(THUMB_COLOR);
+                Rectangle rr = at.createTransformedShape(vrect).getBounds();
+                g2.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
+
                 g2.dispose();
             }
             @Override public int getIconWidth() {
@@ -170,12 +176,10 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private final ArrayList<Integer> poslist = new ArrayList<Integer>();
     public void setHighlight(JTextComponent jtc, String pattern) {
         removeHighlights(jtc);
-        poslist.clear();
         try{
-            Highlighter hilite = jtc.getHighlighter();
+            Highlighter highlighter = jtc.getHighlighter();
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
@@ -183,8 +187,7 @@ public class MainPanel extends JPanel {
             while(matcher.find(pos)) {
                 int start = matcher.start();
                 int end   = matcher.end();
-                poslist.add(start);
-                hilite.addHighlight(start, end, highlightPainter);
+                highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
         }catch(BadLocationException e) {
@@ -193,12 +196,11 @@ public class MainPanel extends JPanel {
         repaint();
     }
     public void removeHighlights(JTextComponent jtc) {
-        poslist.clear();
-        Highlighter hilite = jtc.getHighlighter();
-        Highlighter.Highlight[] hilites = hilite.getHighlights();
+        Highlighter highlighter = jtc.getHighlighter();
+        Highlighter.Highlight[] hilites = highlighter.getHighlights();
         for(int i=0;i<hilites.length;i++) {
             if(hilites[i].getPainter() instanceof DefaultHighlighter.DefaultHighlightPainter) {
-                hilite.removeHighlight(hilites[i]);
+                highlighter.removeHighlight(hilites[i]);
             }
         }
         repaint();
