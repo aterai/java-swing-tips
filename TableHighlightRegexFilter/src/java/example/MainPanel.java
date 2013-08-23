@@ -121,17 +121,12 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
         setBackground(Color.WHITE);
         setEditable(false);
     }
-    public void clearHighlights() {
-        Highlighter highlighter = getHighlighter();
-        for(Highlighter.Highlight h: highlighter.getHighlights()) {
-            highlighter.removeHighlight(h);
-        }
-    }
     @Override public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected,
         boolean hasFocus, int row, int column) {
         String txt = value!=null ? value.toString() : "";
-        clearHighlights();
+        Highlighter highlighter = getHighlighter();
+        highlighter.removeAllHighlights();
         setText(txt);
         setBackground(isSelected ? backgroundSelectionColor : Color.WHITE);
         if(pattern!=null && !pattern.isEmpty() && !pattern.equals(prev)) {
@@ -140,7 +135,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
                 int start = matcher.start();
                 int end   = matcher.end();
                 try{
-                    getHighlighter().addHighlight(start, end, highlightPainter);
+                    highlighter.addHighlight(start, end, highlightPainter);
                 }catch(BadLocationException e) {
                     e.printStackTrace();
                 }

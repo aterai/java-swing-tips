@@ -82,36 +82,27 @@ public class MainPanel extends JPanel {
     private void searchActionPerformed() {
         String pattern = (String)combo.getEditor().getItem();
         if(addItem(combo, pattern, 4)) {
-        //    pattern = pattern.trim();
-        //    combo.getEditor().setItem(pattern);
+            //pattern = pattern.trim();
+            //combo.getEditor().setItem(pattern);
             setHighlight(textArea, pattern);
         }else{
-        //    combo.getEditor().setItem("");
-            removeHighlights(textArea);
+            //combo.getEditor().setItem("");
+            textArea.getHighlighter().removeAllHighlights();
         }
     }
     public void setHighlight(JTextComponent jtc, String pattern) {
-        removeHighlights(jtc);
+        Highlighter highlighter = jtc.getHighlighter();
+        highlighter.removeAllHighlights();
         try{
-            Highlighter hilite = jtc.getHighlighter();
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
             while((pos = text.indexOf(pattern, pos)) >= 0) {
-                hilite.addHighlight(pos, pos+pattern.length(), highlightPainter);
+                highlighter.addHighlight(pos, pos+pattern.length(), highlightPainter);
                 pos += pattern.length();
             }
         }catch(BadLocationException e) {
             e.printStackTrace();
-        }
-    }
-    public void removeHighlights(JTextComponent jtc) {
-        Highlighter hilite = jtc.getHighlighter();
-        Highlighter.Highlight[] hilites = hilite.getHighlights();
-        for(int i=0;i<hilites.length;i++) {
-            if(hilites[i].getPainter() instanceof DefaultHighlighter.DefaultHighlightPainter) {
-                hilite.removeHighlight(hilites[i]);
-            }
         }
     }
 

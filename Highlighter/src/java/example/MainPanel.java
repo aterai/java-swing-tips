@@ -35,7 +35,7 @@ public class MainPanel extends JPanel{
         }));
         box.add(new JButton(new AbstractAction("clear") {
             @Override public void actionPerformed(ActionEvent e) {
-                removeHighlights(jta);
+                jta.getHighlighter().removeAllHighlights();
             }
         }));
         add(new JScrollPane(jta));
@@ -44,7 +44,7 @@ public class MainPanel extends JPanel{
     }
 
     public void setHighlight(JTextComponent jtc, String pattern) {
-        removeHighlights(jtc);
+        jtc.getHighlighter().removeAllHighlights();
         try{
             Highlighter hilite = jtc.getHighlighter();
             Document doc = jtc.getDocument();
@@ -56,16 +56,6 @@ public class MainPanel extends JPanel{
             }
         }catch(BadLocationException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void removeHighlights(JTextComponent jtc) {
-        Highlighter hilite = jtc.getHighlighter();
-        Highlighter.Highlight[] hilites = hilite.getHighlights();
-        for(int i=0;i<hilites.length;i++) {
-            if(hilites[i].getPainter() instanceof DefaultHighlighter.DefaultHighlightPainter) {
-                hilite.removeHighlight(hilites[i]);
-            }
         }
     }
 
