@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.*;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -54,15 +53,15 @@ public class MainPanel extends JPanel {
                 @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
                     super.paintTrack(g, c, trackBounds);
 
-                    Rectangle rect   = textArea.getBounds();
+                    Rectangle rect = textArea.getBounds();
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     Highlighter highlighter = textArea.getHighlighter();
                     Highlighter.Highlight[] hilites = highlighter.getHighlights();
                     g.setColor(Color.YELLOW);
                     try{
-                        for(int i=0;i<hilites.length;i++) {
-                            Rectangle r = textArea.modelToView(hilites[i].getStartOffset());
+                        for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+                            Rectangle r = textArea.modelToView(hh.getStartOffset());
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
                             g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
@@ -77,15 +76,14 @@ public class MainPanel extends JPanel {
                 @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
                     super.paintTrack(g, c, trackBounds);
 
-                    Rectangle rect   = textArea.getBounds();
+                    Rectangle rect = textArea.getBounds();
                     double sy = trackBounds.getHeight() / rect.getHeight();
                     AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                     Highlighter highlighter = textArea.getHighlighter();
-                    Highlighter.Highlight[] hilites = highlighter.getHighlights();
                     g.setColor(Color.YELLOW);
                     try{
-                        for(int i=0;i<hilites.length;i++) {
-                            Rectangle r = textArea.modelToView(hilites[i].getStartOffset());
+                        for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+                            Rectangle r = textArea.modelToView(hh.getStartOffset());
                             Rectangle s = at.createTransformedShape(r).getBounds();
                             int h = 2; //Math.max(2, s.height-2);
                             g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
@@ -106,17 +104,14 @@ public class MainPanel extends JPanel {
                 double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
                 AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
                 Highlighter highlighter = textArea.getHighlighter();
-                Highlighter.Highlight[] hilites = highlighter.getHighlights();
 
-                Graphics2D g2 = (Graphics2D)g.create();
-                //g2.translate(x, y);
-                g2.setColor(Color.RED);
+                g.setColor(Color.RED);
                 try{
-                    for(int i=0;i<hilites.length;i++) {
-                        Rectangle r = textArea.modelToView(hilites[i].getStartOffset());
+                    for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+                        Rectangle r = textArea.modelToView(hh.getStartOffset());
                         Rectangle s = at.createTransformedShape(r).getBounds();
                         int h = 2; //Math.max(2, s.height-2);
-                        g2.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
+                        g.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
                     }
                 }catch(BadLocationException e) {
                     e.printStackTrace();
@@ -126,11 +121,9 @@ public class MainPanel extends JPanel {
                 JViewport vport = scroll.getViewport();
                 Rectangle vrect = c.getBounds();
                 vrect.y = vport.getViewPosition().y;
-                g2.setColor(THUMB_COLOR);
+                g.setColor(THUMB_COLOR);
                 Rectangle rr = at.createTransformedShape(vrect).getBounds();
-                g2.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
-
-                g2.dispose();
+                g.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
             }
             @Override public int getIconWidth() {
                 return 4;
