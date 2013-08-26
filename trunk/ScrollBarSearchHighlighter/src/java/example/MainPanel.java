@@ -170,13 +170,13 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     public void setHighlight(JTextComponent jtc, String pattern) {
-        jtc.getHighlighter().removeAllHighlights();
+        Highlighter highlighter = jtc.getHighlighter();
+        highlighter.removeAllHighlights();
+        Document doc = jtc.getDocument();
         try{
-            Highlighter highlighter = jtc.getHighlighter();
-            Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
-            int pos = 0;
             Matcher matcher = Pattern.compile(pattern).matcher(text);
+            int pos = 0;
             while(matcher.find(pos)) {
                 int start = matcher.start();
                 int end   = matcher.end();
