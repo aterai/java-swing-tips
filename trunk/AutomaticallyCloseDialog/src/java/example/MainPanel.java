@@ -11,7 +11,7 @@ import javax.swing.event.*;
 public class MainPanel extends JPanel{
     private static final int SECONDS = 5;
     private final JTextArea textArea = new JTextArea();
-    private final JLabel label = new JLabel(String.format("Closing in %d seconds", SECONDS));
+    private final JLabel label = new JLabel();
 
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
