@@ -10,6 +10,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -18,7 +19,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    private final DnDTabbedPane tab = new DnDTabbedPane();
+    private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
     public MainPanel(TransferHandler handler, LayerUI<DnDTabbedPane> layerUI) {
         super(new BorderLayout());
         DnDTabbedPane sub = new DnDTabbedPane();
@@ -26,16 +27,20 @@ public class MainPanel extends JPanel {
         sub.addTab("Title bb", new JScrollPane(new JTree()));
         sub.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
-        tab.addTab("JTree 00",       new JScrollPane(new JTree()));
-        tab.addTab("JLabel 01",      new JLabel("Test"));
-        tab.addTab("JTable 02",      new JScrollPane(makeJTable()));
-        tab.addTab("JTextArea 03",   new JScrollPane(makeJTextArea()));
-        tab.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
-        tab.addTab("null 05",        null);
-        tab.addTab("JTabbedPane 06", new JLayer<DnDTabbedPane>(sub, layerUI));
-        tab.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
-        ////ButtonTabComponent
-        //for(int i=0;i<tab.getTabCount();i++) tab.setTabComponentAt(i, new ButtonTabComponent(tab));
+        tabbedPane.addTab("JTree 00",       new JScrollPane(new JTree()));
+        tabbedPane.addTab("JLabel 01",      new JLabel("Test"));
+        tabbedPane.addTab("JTable 02",      new JScrollPane(makeJTable()));
+        tabbedPane.addTab("JTextArea 03",   new JScrollPane(makeJTextArea()));
+        tabbedPane.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
+        tabbedPane.addTab("null 05",        null);
+        tabbedPane.addTab("JTabbedPane 06", new JLayer<DnDTabbedPane>(sub, layerUI));
+        tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
+
+        //ButtonTabComponent
+        for(int i=0;i<tabbedPane.getTabCount();i++) {
+            tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
+            tabbedPane.setToolTipTextAt(i, "tooltip: "+i);
+        }
 
         DnDTabbedPane sub2 = new DnDTabbedPane();
         sub2.addTab("Title aa", new JLabel("aaa"));
@@ -70,12 +75,12 @@ public class MainPanel extends JPanel {
 //                 System.out.println("dropActionChanged");
 //             }
         };
-        tab.setName("JTabbedPane#main");
+        tabbedPane.setName("JTabbedPane#main");
         sub.setName("JTabbedPane#sub1");
         sub2.setName("JTabbedPane#sub2");
 
         try{
-            for(JTabbedPane t:java.util.Arrays.asList(tab, sub, sub2)) {
+            for(JTabbedPane t:Arrays.asList(tabbedPane, sub, sub2)) {
                 t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                 t.setTransferHandler(handler);
                 t.getDropTarget().addDropTargetListener(dtl);
@@ -85,7 +90,7 @@ public class MainPanel extends JPanel {
         }
 
         JPanel p = new JPanel(new GridLayout(2,1));
-        p.add(new JLayer<DnDTabbedPane>(tab,  layerUI));
+        p.add(new JLayer<DnDTabbedPane>(tabbedPane, layerUI));
         p.add(new JLayer<DnDTabbedPane>(sub2, layerUI));
         add(p);
         add(makeCheckBoxPanel(), BorderLayout.NORTH);
@@ -95,13 +100,13 @@ public class MainPanel extends JPanel {
         final JCheckBox tcheck  = new JCheckBox("Top", true);
         tcheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setTabPlacement(tcheck.isSelected()?JTabbedPane.TOP:JTabbedPane.RIGHT);
+                tabbedPane.setTabPlacement(tcheck.isSelected()?JTabbedPane.TOP:JTabbedPane.RIGHT);
             }
         });
         final JCheckBox scheck  = new JCheckBox("SCROLL_TAB_LAYOUT", true);
         scheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setTabLayoutPolicy(scheck.isSelected()?JTabbedPane.SCROLL_TAB_LAYOUT:JTabbedPane.WRAP_TAB_LAYOUT);
+                tabbedPane.setTabLayoutPolicy(scheck.isSelected()?JTabbedPane.SCROLL_TAB_LAYOUT:JTabbedPane.WRAP_TAB_LAYOUT);
             }
         });
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -291,12 +296,17 @@ class DnDTabbedPane extends JTabbedPane {
         remove(dragIndex);
         target.insertTab(str, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, flg);
-        ////ButtonTabComponent
-        //if(tab instanceof ButtonTabComponent) tab = new ButtonTabComponent(target);
+        
+        //ButtonTabComponent
+        if(tab instanceof ButtonTabComponent) {
+            tab = new ButtonTabComponent(target);
+        }
+        
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
-        if(tab!=null && tab instanceof JComponent)
+        if(tab!=null && tab instanceof JComponent) {
             ((JComponent)tab).scrollRectToVisible(tab.getBounds());
+        }
     }
 
     public void convertTab(int prev, int next) {
@@ -573,82 +583,98 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     }
 }
 
-//// a closeable tab test
-//// http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
-// class ButtonTabComponent extends JPanel {
-//     private final JTabbedPane pane;
-//     public ButtonTabComponent(final JTabbedPane pane) {
-//         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-//         if(pane == null) {
-//             throw new NullPointerException("TabbedPane is null");
-//         }
-//         this.pane = pane;
-//         setOpaque(false);
-//         JLabel label = new JLabel() {
-//             @Override public String getText() {
-//                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-//                 if(i != -1) {
-//                     return pane.getTitleAt(i);
-//                 }
-//                 return null;
-//             }
-//         };
-//         add(label);
-//         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-//         JButton button = new TabButton();
-//         add(button);
-//         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
-//     }
-//     private class TabButton extends JButton implements ActionListener {
-//         public TabButton() {
-//             int size = 17;
-//             setPreferredSize(new Dimension(size, size));
-//             setToolTipText("close this tab");
-//             setUI(new javax.swing.plaf.basic.BasicButtonUI());
-//             setContentAreaFilled(false);
-//             setFocusable(false);
-//             setBorder(BorderFactory.createEtchedBorder());
-//             setBorderPainted(false);
-//             addMouseListener(buttonMouseListener);
-//             setRolloverEnabled(true);
-//             addActionListener(this);
-//         }
-//         @Override public void actionPerformed(ActionEvent e) {
-//             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-//             if(i != -1) pane.remove(i);
-//         }
-//         @Override public void updateUI() {}
-//         @Override protected void paintComponent(Graphics g) {
-//             super.paintComponent(g);
-//             Graphics2D g2 = (Graphics2D) g.create();
-//             g2.setStroke(new BasicStroke(2));
-//             g2.setColor(Color.BLACK);
-//             if(getModel().isRollover()) {
-//                 g2.setColor(Color.ORANGE);
-//             }
-//             if(getModel().isPressed()) {
-//                 g2.setColor(Color.BLUE);
-//             }
-//             int delta = 6;
-//             g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-//             g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
-//             g2.dispose();
-//         }
-//     }
-//     private final static MouseListener buttonMouseListener = new MouseAdapter() {
-//         @Override public void mouseEntered(MouseEvent e) {
-//             Component component = e.getComponent();
-//             if(component instanceof AbstractButton) {
-//                 AbstractButton button = (AbstractButton) component;
-//                 button.setBorderPainted(true);
-//             }
-//         }
-//         @Override public void mouseExited(MouseEvent e) {
-//             Component component = e.getComponent();
-//             if(component instanceof AbstractButton) {
-//                 AbstractButton button = (AbstractButton) component;
-//                 button.setBorderPainted(false);
-//             }
-//         }
-//     };
-// }
+// a closeable tab test
+// http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
+class ButtonTabComponent extends JPanel {
+    private final JTabbedPane pane;
+    public ButtonTabComponent(final JTabbedPane pane) {
+        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        if(pane == null) {
+            throw new NullPointerException("TabbedPane is null");
+        }
+        this.pane = pane;
+        setOpaque(false);
+        JLabel label = new JLabel() {
+            @Override public String getText() {
+                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                if(i != -1) {
+                    return pane.getTitleAt(i);
+                }
+                return null;
+            }
+            @Override public void setToolTipText(String text) {
+                //MUST use JTabbedPane#setToolTipTextAt(int, String) instead of this method.
+            }
+            @Override public String getToolTipText() {
+                return null;
+            }
+        };
+        add(label);
+        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        ////Pointed out by ron190jSQL
+        //label.setToolTipText("label tooltip test");
+        //label.setOpaque(false);
+        //setToolTipText("panel tooltip test");
+        JButton button = new TabButton();
+        add(button);
+        setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+    }
+    @Override public void setToolTipText(String text) {
+        //MUST use JTabbedPane#setToolTipTextAt(int, String) instead of this method.
+    }
+    @Override public String getToolTipText() {
+        return null;
+    }
+    private class TabButton extends JButton implements ActionListener {
+        public TabButton() {
+            int size = 17;
+            setPreferredSize(new Dimension(size, size));
+            setToolTipText("close this tab");
+            setUI(new javax.swing.plaf.basic.BasicButtonUI());
+            setContentAreaFilled(false);
+            setFocusable(false);
+            setBorder(BorderFactory.createEtchedBorder());
+            setBorderPainted(false);
+            addMouseListener(buttonMouseListener);
+            setRolloverEnabled(true);
+            addActionListener(this);
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            if(i != -1) pane.remove(i);
+        }
+        @Override public void updateUI() {}
+        @Override protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setStroke(new BasicStroke(2));
+            g2.setColor(Color.BLACK);
+            if(getModel().isRollover()) {
+                g2.setColor(Color.ORANGE);
+            }
+            if(getModel().isPressed()) {
+                g2.setColor(Color.BLUE);
+            }
+            int delta = 6;
+            g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
+            g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
+            g2.dispose();
+        }
+    }
+    private final static MouseListener buttonMouseListener = new MouseAdapter() {
+        @Override public void mouseEntered(MouseEvent e) {
+            Component component = e.getComponent();
+            if(component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(true);
+            }
+        }
+        @Override public void mouseExited(MouseEvent e) {
+            Component component = e.getComponent();
+            if(component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(false);
+            }
+        }
+    };
+}
