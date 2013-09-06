@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
@@ -105,7 +106,7 @@ class MainPanel extends JPanel {
     private static int openFrameCount = 0;
     private static int row = 0;
     private static int col = 0;
-    class MyInternalFrame extends JInternalFrame{
+    class MyInternalFrame extends JInternalFrame implements InternalFrameListener {
         public MyInternalFrame() {
             super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
             row = row + 1;
@@ -122,6 +123,7 @@ class MainPanel extends JPanel {
                     }
                 }
             });
+            addInternalFrameListener(this);
             //JComponent c = (JComponent)frame.getContentPane();
             //ActionMap am = frame.getActionMap();
             //Action a = new AbstractAction() {
@@ -136,6 +138,27 @@ class MainPanel extends JPanel {
             //am.put("myTest", a);
             //InputMap im  = frame.getInputMap();
             //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "myTest");
+        }
+        @Override public void internalFrameClosing(InternalFrameEvent e) {
+            System.out.println("internalFrameClosing: " + getTitle());
+        }
+        @Override public void internalFrameClosed(InternalFrameEvent e) {
+            System.out.println("internalFrameClosed: " + getTitle());
+        }
+        @Override public void internalFrameOpened(InternalFrameEvent e) {
+            System.out.println("internalFrameOpened: " + getTitle());
+        }
+        @Override public void internalFrameIconified(InternalFrameEvent e) {
+            System.out.println("internalFrameIconified: " + getTitle());
+        }
+        @Override public void internalFrameDeiconified(InternalFrameEvent e) {
+            System.out.println("internalFrameDeiconified: " + getTitle());
+        }
+        @Override public void internalFrameActivated(InternalFrameEvent e) {
+            //System.out.println("internalFrameActivated: " + getTitle());
+        }
+        @Override public void internalFrameDeactivated(InternalFrameEvent e) {
+            System.out.println("internalFrameDeactivated: " + getTitle());
         }
     }
 
