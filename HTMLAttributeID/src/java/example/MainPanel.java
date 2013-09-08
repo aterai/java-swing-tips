@@ -57,14 +57,14 @@ public class MainPanel extends JPanel {
                     highlighter.removeAllHighlights();
                 }
             }
-        }), BorderLayout.SOUTH);
+        }));
         p.add(new JButton(new AbstractAction("ParserDelegator") {
             @Override public void actionPerformed(ActionEvent e) {
                 textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
                 final String id = field.getText().trim();
                 final String text = editorPane.getText();
                 ParserDelegator delegator = new ParserDelegator();
-                try {
+                try{
                     delegator.parse(new StringReader(text), new HTMLEditorKit.ParserCallback() {
                         @Override public void handleStartTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
                             Object attrid = a.getAttribute(HTML.Attribute.ID);
@@ -76,11 +76,11 @@ public class MainPanel extends JPanel {
                             }
                         }
                     }, Boolean.TRUE);
-                } catch(Exception ex) {
+                }catch(Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        }), BorderLayout.NORTH);
+        }));
         add(sp);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
