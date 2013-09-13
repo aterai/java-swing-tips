@@ -15,8 +15,7 @@ public class MainPanel extends JPanel {
         final JLabel label0 = new JLabel("JLabel JLabel");
         final JLabel label1 = new JLabel(HTML_TEXT);
         final JLabel label2 = new JLabel(HTML_TEXT) {
-            //Swing - JLabel with html tag can not be disabled or setForegroud?!
-            //https://forums.oracle.com/forums/thread.jspa?threadID=1375943
+            // https://forums.oracle.com/thread/1377943 JLabel with html tag can not be disabled or setForegroud?!
             @Override public void setEnabled(boolean b) {
                 super.setEnabled(b);
                 setForeground(b ? UIManager.getColor("Label.foreground")

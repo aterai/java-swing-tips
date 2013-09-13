@@ -34,8 +34,7 @@ public class MainPanel extends JPanel {
                 }
             }
             private MouseEvent convertMouseEvent(MouseEvent e) {
-                //Thread: JList where mouse click acts like ctrl-mouse click
-                //http://forums.oracle.com/forums/thread.jspa?messageID=5692411
+                // https://forums.oracle.com/thread/1351452 JList where mouse click acts like ctrl-mouse click
                 return new MouseEvent(
                     (Component) e.getSource(),
                     e.getID(), e.getWhen(),

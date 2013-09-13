@@ -102,9 +102,8 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-//Swing - JButton inside JTable Cell
-//https://forums.oracle.com/forums/thread.jspa?threadID=1355722
 
+// https://forums.oracle.com/thread/1357722 JButton inside JTable Cell
 class DeleteButton extends JButton {
     @Override public void updateUI() {
         super.updateUI();
