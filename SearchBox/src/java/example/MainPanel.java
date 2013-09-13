@@ -149,8 +149,8 @@ public class MainPanel extends JPanel{
         }
     }
 
-//     //<blockquote cite="https://forums.oracle.com/forums/thread.jspa?threadID=1355454"
-//     //           title="OTN Discussion Forums : how to get everything in DefaultTreeNode">
+//     //<blockquote cite="https://forums.oracle.com/thread/1357454"
+//     //           title="how to get everything in DefaultTreeNode">
 //     public void traverse(JTree tree) {
 //         TreeModel model = tree.getModel();
 //         Object root;

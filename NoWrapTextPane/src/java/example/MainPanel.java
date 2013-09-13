@@ -159,8 +159,7 @@ class NoWrapEditorKit1 extends StyledEditorKit{
     }
 }
 /*/
-//Swing - Disabling word wrap for JTextPane
-//https://forums.oracle.com/forums/thread.jspa?threadID=1351861
+// https://forums.oracle.com/thread/1353861 Disabling word wrap for JTextPane
 class NoWrapParagraphView extends ParagraphView {
     public NoWrapParagraphView(Element elem) {
         super(elem);

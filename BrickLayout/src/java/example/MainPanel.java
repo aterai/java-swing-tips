@@ -28,13 +28,14 @@ public class MainPanel extends JPanel{
                 panel.add(new JButton(" "),c);
             }
         }
-        //<blockquote cite="https://forums.oracle.com/forums/thread.jspa?threadID=1355310"
-        //           title="OTN Discussion Forums : GridBagLayout to create a board">
+        //<blockquote cite="https://forums.oracle.com/thread/1357310"
+        //           title="GridBagLayout to create a board">
         //<dummy-row>
         c.gridwidth = 1;
         c.gridy = 10;
-        for(c.gridx=0; c.gridx<=2*SIZE; c.gridx++)
-          panel.add(Box.createHorizontalStrut(24), c);
+        for(c.gridx=0; c.gridx<=2*SIZE; c.gridx++) {
+            panel.add(Box.createHorizontalStrut(24), c);
+        }
         //</dummy-row>
         //</blockquote>
         return panel;

@@ -169,8 +169,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-// Swing - How can I use TextArea with Background Picture ?
-// https://forums.oracle.com/forums/thread.jspa?threadID=1393763
+// https://forums.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
 class CentredBackgroundBorder implements Border {
     private final BufferedImage image;
     public CentredBackgroundBorder(BufferedImage image) {

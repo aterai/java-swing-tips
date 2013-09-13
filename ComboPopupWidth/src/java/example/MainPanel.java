@@ -41,8 +41,7 @@ public class MainPanel extends JPanel{
         model.addElement("bbb12");
         return new JComboBox(model);
     }
-    //Swing - How to widen the drop-down list in a JComboBox
-    //https://forums.oracle.com/forums/thread.jspa?threadID=1366300
+    // https://forums.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
     private static class WidePopupMenuListener implements PopupMenuListener{
         private static final int POPUP_MIN_WIDTH = 300;
         private boolean adjusting = false;

@@ -102,8 +102,7 @@ public class MainPanel extends JPanel {
     private static int swap_count = 0;
     private static final TreeNodeComparator tnc = new TreeNodeComparator();
 
-    //Swing - How to sort jTree Nodes
-    //https://forums.oracle.com/forums/thread.jspa?threadID=1353435
+    // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
     public static final boolean DEBUG = true;
     public static void sortTree0(DefaultMutableTreeNode root) {
         for(int i=0;i<root.getChildCount();i++) {
@@ -125,8 +124,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    //Swing - How to sort jTree Nodes
-    //https://forums.oracle.com/forums/thread.jspa?threadID=1353435
+    // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
     public static void sortTree1(DefaultMutableTreeNode root) {
         int n = root.getChildCount();
         for(int i=0;i<n-1;i++) {

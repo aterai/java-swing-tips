@@ -62,7 +62,7 @@ class MainPanel extends JPanel {
         BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = destination.createGraphics();
         ////g.setColor(Color.WHITE);
-        // https://forums.oracle.com/forums/thread.jspa?messageID=5798180
+        // https://forums.oracle.com/thread/1373262 Color to Grayscale to Binary
         //g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
         g.drawImage(img, 0, 0, this);
         g.dispose();

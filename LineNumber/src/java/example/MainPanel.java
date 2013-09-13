@@ -41,10 +41,9 @@ public class MainPanel extends JPanel {
     }
 }
 
-//Swing [Archive] - Advice for editor gutter implementation...
-//https://forums.oracle.com/forums/thread.jspa?threadID=1477759
-//Original author: Alan Moore
-//Modified by: TERAI Atsuhiro
+// https://forums.oracle.com/thread/1479759 Advice for editor gutter implementation...
+// Original author: Alan Moore
+// Modified by: TERAI Atsuhiro
 class LineNumberView extends JComponent {
     private static final int MARGIN = 5;
     private final JTextArea textArea;

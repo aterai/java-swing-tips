@@ -5,8 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-//Swing - JTabbedPane with non-tabbed text
-//https://forums.oracle.com/forums/thread.jspa?threadID=1390495
+// https://forums.oracle.com/thread/1392495 JTabbedPane with non-tabbed text
 public class MainPanel extends JPanel{
     private static final String text = "<--1234567890";
     public MainPanel() {

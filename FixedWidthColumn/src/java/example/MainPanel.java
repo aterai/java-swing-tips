@@ -46,8 +46,8 @@ public class MainPanel extends JPanel {
 //         col = table.getColumnModel().getColumn(1);
 //         col.setMinWidth(0);
 //         col.setMaxWidth(0);
-//         //<blockquote cite="https://forums.oracle.com/forums/thread.jspa?threadID=1482284"
-//         //           title="OTN Discussion Forums : JTable skiping the cells disableds">
+//         //<blockquote cite="https://forums.oracle.com/thread/1484284"
+//         //           title="JTable skiping the cells disableds">
 //         InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //         KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
 //         final Action oldTabAction = table.getActionMap().get(im.get(tab));

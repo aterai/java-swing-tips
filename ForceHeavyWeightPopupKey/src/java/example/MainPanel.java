@@ -18,8 +18,7 @@ public class MainPanel extends JPanel {
         try{
             Field field;
             if(System.getProperty("java.version").startsWith("1.6.0")) {
-                //Swing - ComboBox scroll and selected/highlight on glasspane
-                //https://forums.oracle.com/forums/thread.jspa?threadID=1355949
+                // https://forums.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
                 Class clazz = Class.forName("javax.swing.PopupFactory");
                 field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
             }else{ //JDK 1.7.0, 1.8.0
