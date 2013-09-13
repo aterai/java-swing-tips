@@ -51,8 +51,8 @@ class MainPanel extends JPanel {
             c.setOpaque(true);
             p.add(c);
         }
-        //Bug ID: 6595814 Nimbus LAF: Renderers, MenuSeparators, colors rollup bug
-        //http://bugs.sun.com/view_bug.do?bug_id=6595814
+        // Bug ID: 6595814 Nimbus LAF: Renderers, MenuSeparators, colors rollup bug
+        // http://bugs.sun.com/view_bug.do?bug_id=6595814
         //p.addSeparator();
     }
     public static void main(String[] args) {

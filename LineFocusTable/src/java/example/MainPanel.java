@@ -18,9 +18,9 @@ public class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            //ArrayIndexOutOfBoundsException:  0 >= 0
-            //Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
-            //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6967479
+            // ArrayIndexOutOfBoundsException:  0 >= 0
+            // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+            // http://bugs.sun.com/view_bug.do?bug_id=6967479
             //return getValueAt(0, column).getClass();
             switch(column) {
               case 0:
@@ -40,8 +40,8 @@ public class MainPanel extends JPanel {
         UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
         table = new JTable(model) {
             @Override public void updateUI() {
-                //Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-                //http://bugs.sun.com/view_bug.do?bug_id=6788475
+                // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+                // http://bugs.sun.com/view_bug.do?bug_id=6788475
                 //XXX: set dummy ColorUIResource
                 setSelectionForeground(new ColorUIResource(Color.RED));
                 setSelectionBackground(new ColorUIResource(Color.RED));
