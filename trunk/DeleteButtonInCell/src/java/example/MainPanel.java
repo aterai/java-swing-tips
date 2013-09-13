@@ -16,8 +16,8 @@ public class MainPanel extends JPanel {
         final TestModel model = new TestModel();
 //         final JTable table = new JTable(model) {
 //             @Override public int rowAtPoint(Point pt) {
-//                 //Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
-//                 //http://bugs.sun.com/view_bug.do?bug_id=6291631
+//                 // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
+//                 // http://bugs.sun.com/view_bug.do?bug_id=6291631
 //                 return (pt.y<0)?-1:super.rowAtPoint(pt);
 //             }
 //         };

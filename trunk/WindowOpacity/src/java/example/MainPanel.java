@@ -31,10 +31,10 @@ class MainPanel extends JPanel{
         JComboBox combo = makeComboBox();
 
 //         if(System.getProperty("java.version").startsWith("1.7.0")) {
-//             //XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
-//             //http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
-//             //http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7156657
-//             //Bug ID: 7156657 Version 7 doesn't support translucent popup menus against a translucent window
+//             // XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
+//             // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
+//             // Bug ID: 7156657 Version 7 doesn't support translucent popup menus against a translucent window
+//             // http://bugs.sun.com/view_bug.do?bug_id=7156657
 //             combo.addPopupMenuListener(new TranslucencyFrameComboBoxPopupMenuListener());
 //         }
         combo.addItemListener(new ItemListener() {
@@ -128,9 +128,9 @@ class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-//http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
-//http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7156657
-//Bug ID: 7156657 Version 7 doesn't support translucent popup menus against a translucent window
+// // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
+// // Bug ID: 7156657 Version 7 doesn't support translucent popup menus against a translucent window
+// // http://bugs.sun.com/view_bug.do?bug_id=7156657
 // class TranslucencyFrameComboBoxPopupMenuListener implements PopupMenuListener{
 //     @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 //         EventQueue.invokeLater(new Runnable() {

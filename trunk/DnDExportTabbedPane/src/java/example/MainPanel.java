@@ -437,8 +437,8 @@ class TabTransferHandler extends TransferHandler {
         }
         glassPane.setVisible(false);
         target.getRootPane().setGlassPane(glassPane);
-        //Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
-        //http://bugs.sun.com/view_bug.do?bug_id=6700748
+        // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
+        // http://bugs.sun.com/view_bug.do?bug_id=6700748
         glassPane.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
         glassPane.setVisible(true);
         target.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
@@ -541,8 +541,8 @@ class GhostGlassPane extends JPanel {
         this.tabbedPane = tabbedPane;
         //System.out.println("new GhostGlassPane");
         setOpaque(false);
-        //Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
-        //http://bugs.sun.com/view_bug.do?bug_id=6700748
+        // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
+        // http://bugs.sun.com/view_bug.do?bug_id=6700748
         //setCursor(null); //XXX
     }
     private BufferedImage draggingGhost = null;
