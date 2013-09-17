@@ -13,6 +13,8 @@ public class MainPanel extends JPanel {
     private static final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
     public MainPanel() {
         super(new GridLayout(4,6,0,0));
+        // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
+        // http://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels
         String[] pieces = {
             "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
             "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
