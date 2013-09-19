@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs title="tooltable" />
+    <UserPref name="folder" datatype="string" required="true" />
+    <UserPref name="dir"    datatype="string" required="true" />
+    <UserPref name="img"    datatype="string" required="true" />
+    <Content type="html">
+<![CDATA[
+//   <div id="content_div" style='color: #CC0099; font-family: serif; font-size: 120%;'></div>
+//   <script type="text/javascript"> 
+//     var prefs = new gadgets.Prefs();
+//     var options = {
+//       folder: prefs.getString("folder"),
+//       dir:    prefs.getString("dir").toLowerCase(),
+//       img:    prefs.getString("img"),
+//     };
+//     var html = "";
+//     if (items.length == 0) {
+//       html += "Edit the userprefs to add items to the list.";
+//     } else {
+//       for (var i = 0; i < items.length ; i++) {
+//         var term = (items[i]);
+//         html += term + "<br />";
+//       }
+//     }
+//     document.getElementById("content_div").innerHTML = html;
+<table width="100%">
+<tr>
+<td width="80%" align="left" valign="top">
+<ul>
+<li><a href="http://terai.xrea.jp/swing/__UP_dir__/example.jnlp" title="Java Web Start で起動" onclick="_gaq.push(['_trackEvent', 'WebStart', 'Launch', 'Swing/__UP_folder__']);">&#xFEFF;</a></li>
+<li><a href="http://terai.xrea.jp/swing/__UP_dir__/example.jar" onclick="_gaq.push(['_trackEvent', 'Jar', 'Download', 'Swing/__UP_folder__']);">Runnable JARファイル(example.jar)</a></li>
+<li><a href="http://terai.xrea.jp/swing/__UP_dir__/src.zip" onclick="_gaq.push(['_trackEvent', 'Source', 'Download', 'Swing/__UP_folder__']);">ソースコード(src.zip)</a></li>
+<li><a href="http://java-swing-tips.googlecode.com/svn/trunk/__UP_folder__"  onclick="_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/__UP_folder__']);">リポジトリ(svn repository)</a></li>
+</ul>
+<p><img src="__UP_img__" /></p>
+</td>
+<td align="right" valign="top">
+<!-- xrea, 336x280, 09/11/04 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-6939179021013694"
+     data-ad-slot="9248548235"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</td>
+</tr>
+]]>
+    </Content>
+</Module>
