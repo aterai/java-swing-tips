@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
     <ModulePrefs title="tooltable" />
-    <UserPref name="img"    datatype="string" required="true" />
+    <UserPref name="img" datatype="string" required="true" />
+    <UserPref name="jws" datatype="bool" default_value="true" />
     <Content type="html">
 <![CDATA[
 <table width="96%">
@@ -38,6 +39,11 @@
     var elm = document.getElementById("jws");
     elm.setAttribute("href", BASE + dir + "/example.jnlp");
     elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'WebStart', 'Launch', 'Swing/" + folder + "']);");
+
+    if(prefs.getBool("jws")==false) {
+       var p = elm.parentNode;
+       p.parentNode.removeChild(p);
+    }
 
     elm = document.getElementById("jar");
     elm.setAttribute("href", BASE + dir + "/example.jar");
