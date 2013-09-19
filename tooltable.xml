@@ -6,24 +6,6 @@
     <UserPref name="img"    datatype="string" required="true" />
     <Content type="html">
 <![CDATA[
-//   <div id="content_div" style='color: #CC0099; font-family: serif; font-size: 120%;'></div>
-//   <script type="text/javascript"> 
-//     var prefs = new gadgets.Prefs();
-//     var options = {
-//       folder: prefs.getString("folder"),
-//       dir:    prefs.getString("dir").toLowerCase(),
-//       img:    prefs.getString("img"),
-//     };
-//     var html = "";
-//     if (items.length == 0) {
-//       html += "Edit the userprefs to add items to the list.";
-//     } else {
-//       for (var i = 0; i < items.length ; i++) {
-//         var term = (items[i]);
-//         html += term + "<br />";
-//       }
-//     }
-//     document.getElementById("content_div").innerHTML = html;
 <table width="100%">
 <tr>
 <td width="80%" align="left" valign="top">
