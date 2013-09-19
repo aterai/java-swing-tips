@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
     <ModulePrefs title="tooltable" />
-    <UserPref name="folder" datatype="string" required="true" />
-    <UserPref name="dir"    datatype="string" required="true" />
     <UserPref name="img"    datatype="string" required="true" />
     <Content type="html">
 <![CDATA[
@@ -10,10 +8,10 @@
 <tr>
 <td width="50%" align="left" valign="top">
 <ul>
-<li><a href="http://terai.xrea.jp/swing/__UP_dir__/example.jnlp" title="Java Web Start で起動" onclick="_gaq.push(['_trackEvent', 'WebStart', 'Launch', 'Swing/__UP_folder__']);"><img width="88" height="23" src="http://lh4.ggpht.com/_9Z4BYR88imo/TRD2KGq73BI/AAAAAAAAAwA/N8-6EXongNk/s800/webstart.png" title="Java Web Start" alt="Launch" /></a></li>
-<li><a href="http://terai.xrea.jp/swing/__UP_dir__/example.jar" onclick="_gaq.push(['_trackEvent', 'Jar', 'Download', 'Swing/__UP_folder__']);">Runnable JARファイル(example.jar)</a></li>
-<li><a href="http://terai.xrea.jp/swing/__UP_dir__/src.zip" onclick="_gaq.push(['_trackEvent', 'Source', 'Download', 'Swing/__UP_folder__']);">ソースコード(src.zip)</a></li>
-<li><a href="http://java-swing-tips.googlecode.com/svn/trunk/__UP_folder__"  onclick="_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/__UP_folder__']);">リポジトリ(svn repository)</a></li>
+<li><a id="jws" title="Java Web Start で起動"><img width="88" height="23" src="http://lh4.ggpht.com/_9Z4BYR88imo/TRD2KGq73BI/AAAAAAAAAwA/N8-6EXongNk/s800/webstart.png" title="Java Web Start" alt="Launch" /></a></li>
+<li><a id="jar">Runnable JARファイル(example.jar)</a></li>
+<li><a id="src">ソースコード(src.zip)</a></li>
+<li><a id="svn">リポジトリ(svn repository)</a></li>
 </ul>
 <p><img src="__UP_img__" /></p>
 </td>
@@ -30,6 +28,29 @@
 </td>
 </tr>
 </table>
+<script type="text/javascript">
+    var BASE = "http://terai.xrea.jp/swing/";
+    var prefs = new gadgets.Prefs();
+    var imgpath = prefs.getString("img");
+    var folder = imgpath.substring(imgpath.lastIndexOf("/"), imgpath.lastIndexOf("."));
+    var dir = folder.toLowerCase();
+
+    var elm = document.getElementById("jws");
+    elm.setAttribute("href", BASE + dir + "/example.jnlp");
+    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'WebStart', 'Launch', 'Swing/" + folder + "']);");
+
+    elm = document.getElementById("jar");
+    elm.setAttribute("href", BASE + dir + "/example.jar");
+    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Jar', 'Download', 'Swing/" + folder + "']);");
+
+    elm = document.getElementById("src");
+    elm.setAttribute("href", BASE + dir + "/src.zip");
+    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Source', 'Download', 'Swing/" + folder + "']);");
+
+    elm = document.getElementById("svn");
+    elm.setAttribute("href", "http://java-swing-tips.googlecode.com/svn/trunk/" + folder);
+    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/" + folder + "']);");
+</script>
 ]]>
     </Content>
 </Module>
