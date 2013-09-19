@@ -4,7 +4,7 @@
     <UserPref name="img"    datatype="string" required="true" />
     <Content type="html">
 <![CDATA[
-<table width="100%">
+<table width="98%">
 <tr>
 <td width="50%" align="left" valign="top">
 <ul>
