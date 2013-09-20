@@ -20,6 +20,9 @@
 </td>
 <td align="right" valign="top">
 <script type="text/javascript"><!--
+document = parent.document;
+//--></script>
+<script type="text/javascript"><!--
 google_ad_client = "ca-pub-6939179021013694";
 /* Google Project Hosting */
 google_ad_slot = "9869349935";
