@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-    <ModulePrefs title="tooltable">
-      <Require feature="dynamic-height"/>
+    <ModulePrefs title="tooltable" height="380">
+      <Require feature="dynamic-height" />
     </ModulePrefs>
     <UserPref name="img" datatype="string" required="true" />
     <UserPref name="jws" datatype="bool" default_value="true" />
