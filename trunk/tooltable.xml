@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-    <ModulePrefs title="tooltable" />
+    <ModulePrefs title="tooltable">
+      <Require feature="dynamic-height"/>
+    </ModulePrefs>
     <UserPref name="img" datatype="string" required="true" />
     <UserPref name="jws" datatype="bool" default_value="true" />
     <Content type="html">
@@ -56,6 +58,7 @@
     elm = document.getElementById("svn");
     elm.setAttribute("href", "http://java-swing-tips.googlecode.com/svn/trunk/" + folder);
     elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/" + folder + "']);");
+    gadgets.window.adjustHeight()
 </script>
 ]]>
     </Content>
