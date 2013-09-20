@@ -58,7 +58,10 @@
     elm = document.getElementById("svn");
     elm.setAttribute("href", "http://java-swing-tips.googlecode.com/svn/trunk/" + folder);
     elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/" + folder + "']);");
-    gadgets.window.adjustHeight()
+
+    gadgets.util.registerOnLoadHandler(function() {
+       gadgets.window.adjustHeight();
+    });
 </script>
 ]]>
     </Content>
