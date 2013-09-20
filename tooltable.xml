@@ -11,10 +11,10 @@
 <tr>
 <td width="50%" align="left" valign="top">
 <ul>
-<li><a id="jws" title="Java Web Start で起動"><img width="88" height="23" src="http://lh4.ggpht.com/_9Z4BYR88imo/TRD2KGq73BI/AAAAAAAAAwA/N8-6EXongNk/s800/webstart.png" title="Java Web Start" alt="Launch" /></a></li>
-<li><a id="jar">Runnable JARファイル(example.jar)</a></li>
-<li><a id="src">ソースコード(src.zip)</a></li>
-<li><a id="svn">リポジトリ(svn repository)</a></li>
+<li><a id="jws" title="Java Web Start"><img width="88" height="23" src="http://lh4.ggpht.com/_9Z4BYR88imo/TRD2KGq73BI/AAAAAAAAAwA/N8-6EXongNk/s800/webstart.png" title="Java Web Start" alt="Launch" /></a></li>
+<li><a id="jar">Runnable JAR(example.jar)</a></li>
+<li><a id="src">Source code(src.zip)</a></li>
+<li><a id="svn">Repository(svn repository)</a></li>
 </ul>
 <p><img src="__UP_img__" /></p>
 </td>
