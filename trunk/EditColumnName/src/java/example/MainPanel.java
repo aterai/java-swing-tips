@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        final String[] columnNames = {"AAA", "BBB", "CCC"};
+        String[] columnNames = {"AAA", "BBB", "CCC"};
         Object[][] data = {
             {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
             {"CCC", "g", "hh"}, {"DDD", "iiii", "j"}
@@ -22,7 +22,8 @@ public class MainPanel extends JPanel {
                 return String.class;
             }
         };
-        final JTable table = new JTable(model);
+        JTable table = new JTable(model);
+        //table.setAutoCreateColumnsFromModel(true);
         table.setFillsViewportHeight(true);
         table.getTableHeader().setComponentPopupMenu(new TablePopupMenu(columnNames));
         //table.getTableHeader().setReorderingAllowed(false);
@@ -110,9 +111,12 @@ class TablePopupMenu extends JPopupMenu {
     }
     
     @Override public void show(Component c, int x, int y) {
-        final JTableHeader header = (JTableHeader)c;
+        JTableHeader header = (JTableHeader)c;
         header.setDraggedColumn(null); // bookmark_1
-        header.getTable().repaint(); //if(header.getDraggedColumn()!=null) remain dirty area
+        //if(header.getDraggedColumn()!=null) remain dirty area >>>
+        header.repaint();
+        header.getTable().repaint();
+        //<<<
         index = header.columnAtPoint(new Point(x, y));
         super.show(c, x, y);
     }
