@@ -7,7 +7,7 @@
     <UserPref name="jws" datatype="bool" default_value="true" />
     <Content type="html">
 <![CDATA[
-<table width="96%">
+<table role="presentation" width="96%">
 <tr height="380px">
 <td width="50%" align="left" valign="top">
 <ul>
