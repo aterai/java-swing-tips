@@ -61,7 +61,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
     elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Source', 'Download', 'Swing/" + folder + "']);");
 
     elm = document.getElementById("svn");
-    elm.setAttribute("href", "http://java-swing-tips.googlecode.com/svn/trunk/" + folder);
+    elm.setAttribute("href", "http://java-swing-tips.googlecode.com/svn/trunk" + folder);
     elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/" + folder + "']);");
 
     gadgets.util.registerOnLoadHandler(function() {
