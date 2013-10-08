@@ -10,34 +10,44 @@ import javax.swing.event.*;
 import javax.swing.plaf.synth.*;
 
 class MainPanel extends JPanel {
-    private final JTabbedPane tabs;
+    private final ClippedTitleTabbedPane tabs;
     public MainPanel() {
         super(new BorderLayout());
 
         //famfamfam.com: Mini Icons>http://www.famfamfam.com/lab/icons/mini/
         ImageIcon icon = new ImageIcon(getClass().getResource("page_new.gif"));
 
-        JButton b = new ToolBarButton(icon);
+        final JButton b = new ToolBarButton(icon);
         b.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 tabs.addTab("qwerqwer", new JLabel("yetyet"));
             }
         });
-        b.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+        //b.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+        //UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets(b));
 
-        UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets(b));
-        tabs = new ClippedTitleTabbedPane();
+        tabs = new ClippedTitleTabbedPane() {
+            @Override public void updateUI() {
+                UIManager.put("TabbedPane.tabAreaInsets", null); //uninstall
+                super.updateUI();
+                setAlignmentX(0.0f);
+                setAlignmentY(0.0f);
+                b.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+                b.setAlignmentX(0.0f);
+                b.setAlignmentY(0.0f);
+                tabAreaInsets = getTabAreaInsets();
+                UIManager.put("TabbedPane.tabAreaInsets",
+                              getButtonPaddingTabAreaInsets(b, getTabInsets(), tabAreaInsets));
+                super.updateUI();
+            }
+            private Insets tabAreaInsets = null;
+        };
         tabs.addTab("asdfasd", new JLabel("456746"));
         tabs.addTab("1234123", new JScrollPane(new JTree()));
         tabs.addTab("6780969", new JLabel("zxcvzxc"));
 
-        final JPanel p = new JPanel();
+        JPanel p = new JPanel();
         p.setLayout(new OverlayLayout(p));
-
-        b.setAlignmentX(0.0f);
-        b.setAlignmentY(0.0f);
-        tabs.setAlignmentX(0.0f);
-        tabs.setAlignmentY(0.0f);
         p.add(b);
         p.add(tabs);
 
@@ -54,38 +64,14 @@ class MainPanel extends JPanel {
 
         add(menubar, BorderLayout.NORTH);
         add(p);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
-    public Insets getButtonPaddingTabAreaInsets(JButton b) {
-        Insets ti = getTabInsets();
-        Insets ai = getTabAreaInsets();
+    public Insets getButtonPaddingTabAreaInsets(JButton b, Insets ti, Insets ai) {
         FontMetrics fm = b.getFontMetrics(b.getFont());
         int tih = b.getPreferredSize().height-fm.getHeight()-ti.top-ti.bottom-ai.bottom;
         return new Insets(Math.max(ai.top, tih), b.getPreferredSize().width+ai.left, ai.bottom, ai.right);
+        //NO EFFECT?: return new javax.swing.plaf.InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width+ai.left, ai.bottom, ai.right);
     }
-    private static Insets getTabInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabInsets");
-        if(i!=null) {
-            return i;
-        }else{
-            JTabbedPane tabbedPane = new JTabbedPane();
-            SynthStyle style = SynthLookAndFeel.getStyle(tabbedPane, Region.TABBED_PANE_TAB);
-            SynthContext context = new SynthContext(tabbedPane, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
-            return style.getInsets(context, null);
-        }
-    }
-    private static Insets getTabAreaInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(i!=null) {
-            return i;
-        }else{
-            JTabbedPane tabbedPane = new JTabbedPane();
-            SynthStyle style = SynthLookAndFeel.getStyle(tabbedPane, Region.TABBED_PANE_TAB_AREA);
-            SynthContext context = new SynthContext(tabbedPane, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
-            return style.getInsets(context, null);
-        }
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -125,6 +111,7 @@ class ToolBarButton extends JButton {
         });
     }
 }
+
 class ClippedTitleTabbedPane extends JTabbedPane {
     public ClippedTitleTabbedPane() {
         super();
@@ -132,7 +119,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     public ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
-    private Insets getTabInsets() {
+    protected Insets getTabInsets() {
         Insets i = UIManager.getInsets("TabbedPane.tabInsets");
         if(i!=null) {
             return i;
@@ -142,7 +129,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             return style.getInsets(context, null);
         }
     }
-    private Insets getTabAreaInsets() {
+    protected Insets getTabAreaInsets() {
         Insets i = UIManager.getInsets("TabbedPane.tabAreaInsets");
         if(i!=null) {
             return i;
