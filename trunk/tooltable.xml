@@ -37,7 +37,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 </table>
 <script type="text/javascript">
-    var BASE = "http://terai.xrea.jp/swing/";
+    var BASE = "http://terai.xrea.jp/swing";
     var prefs = new gadgets.Prefs();
     var imgpath = prefs.getString("img");
     var folder = imgpath.substring(imgpath.lastIndexOf("/"), imgpath.lastIndexOf("."));
