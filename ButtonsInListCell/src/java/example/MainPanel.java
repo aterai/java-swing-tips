@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -135,7 +136,8 @@ class CellButtonsMouseListener extends MouseAdapter{
         Container c = (Container)list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
-        pt.translate(0,-r.y);
+        //c.doLayout(); //may be needed for mone LayoutManager
+        pt.translate(-r.x, -r.y);
         Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
         if(b instanceof JButton) {
             return (JButton)b;
@@ -172,7 +174,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         add(label);
 
         Box box = Box.createHorizontalBox();
-        for(JButton b: java.util.Arrays.asList(deleteButton, copyButton)) {
+        for(JButton b: Arrays.asList(deleteButton, copyButton)) {
             b.setFocusable(false);
             b.setRolloverEnabled(false);
             box.add(b);
@@ -194,7 +196,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
             setBackground(index%2==0 ? evenColor : list.getBackground());
             label.setForeground(list.getForeground());
         }
-        for(JButton b: java.util.Arrays.asList(deleteButton, copyButton)) {
+        for(JButton b: Arrays.asList(deleteButton, copyButton)) {
             b.getModel().setRollover(false);
             b.getModel().setArmed(false);
             b.getModel().setPressed(false);

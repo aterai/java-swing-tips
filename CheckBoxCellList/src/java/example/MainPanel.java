@@ -37,15 +37,13 @@ public class MainPanel extends JPanel {
             }
             //@see SwingUtilities2.pointOutsidePrefSize(...)
             private boolean pointOutsidePrefSize(Point p) {
-                int index = locationToIndex(p);
+                int i = locationToIndex(p);
                 DefaultListModel m = (DefaultListModel)getModel();
-                CheckBoxNode n = (CheckBoxNode)m.get(index);
-                Component c = getCellRenderer().getListCellRendererComponent(this, n, index, false, false);
-                //c.doLayout();
-                Dimension d = c.getPreferredSize();
-                Rectangle rect = getCellBounds(index, index);
-                rect.width = d.width;
-                return index < 0 || !rect.contains(p);
+                CheckBoxNode n = (CheckBoxNode)m.get(i);
+                Component c = getCellRenderer().getListCellRendererComponent(this, n, i, false, false);
+                Rectangle r = getCellBounds(i, i);
+                r.width = c.getPreferredSize().width;
+                return i < 0 || !r.contains(p);
             }
             @Override protected void processMouseEvent(MouseEvent e) {
                 if(!pointOutsidePrefSize(e.getPoint())) {
@@ -122,12 +120,7 @@ public class MainPanel extends JPanel {
 }
 
 class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseListener, MouseMotionListener {
-    @Override public Component getListCellRendererComponent(
-        JList list,
-        Object value,
-        int index,
-        boolean isSelected,
-        boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         this.setOpaque(true);
         if(isSelected) {
             this.setBackground(list.getSelectionBackground());
@@ -193,9 +186,7 @@ class CheckBoxNode {
 
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer{
     private TreeCellRenderer renderer = new DefaultTreeCellRenderer();
-    @Override public Component getTreeCellRendererComponent(
-        JTree tree, Object value, boolean selected, boolean expanded,
-        boolean leaf, int row, boolean hasFocus) {
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
             this.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
