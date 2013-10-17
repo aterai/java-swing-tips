@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-//import javax.swing.plaf.basic.*;
+// import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel{
     private final JComboBox combo  = makeComboBox();
@@ -13,18 +13,23 @@ public class MainPanel extends JPanel{
     private final JButton button   = new JButton("button");
     public MainPanel() {
         super(new BorderLayout());
-//         toolbar.setUI(new BasicToolBarUI() {
-//             public boolean canDock(Component c, Point p) {
-//                 return super.canDock(c, p) ? isHorizontalDockingConstraint(c, p) : false;
-//             }
-//             private boolean isHorizontalDockingConstraint(Component c, Point p) {
-//                 if(!c.contains(p)) return false;
-//                 int iv = (toolBar.getOrientation() == JToolBar.HORIZONTAL) ? toolBar.getSize().height : toolBar.getSize().width;
-//                 return p.x < c.getWidth()-iv && p.x >= iv;
-//             }
-//         });
-        button.setFocusable(false);
+/*
+        toolbar.setUI(new BasicToolBarUI() {
+            @Override public boolean canDock(Component c, Point p) {
+                return super.canDock(c, p) ? isHorizontalDockingConstraint(c, p) : false;
+            }
+            private boolean isHorizontalDockingConstraint(Component c, Point p) {
+                if(!c.contains(p)) return false;
+                int iv = (toolBar.getOrientation() == JToolBar.HORIZONTAL) ? toolBar.getSize().height : toolBar.getSize().width;
+                return p.x < c.getWidth()-iv && p.x >= iv;
+            }
+        });
+/*/
+        add(Box.createRigidArea(new Dimension()), BorderLayout.WEST);
+        add(Box.createRigidArea(new Dimension()), BorderLayout.EAST);
+//*/
 
+        button.setFocusable(false);
         toolbar.add(new JLabel("label"));
         toolbar.add(Box.createRigidArea(new Dimension(5,5)));
         toolbar.add(button);
@@ -36,9 +41,7 @@ public class MainPanel extends JPanel{
         label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(toolbar, BorderLayout.NORTH);
         add(label);
-        add(Box.createRigidArea(new Dimension()), BorderLayout.WEST);
-        add(Box.createRigidArea(new Dimension()), BorderLayout.EAST);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     @SuppressWarnings("unchecked")
     private static JComboBox makeComboBox() {
