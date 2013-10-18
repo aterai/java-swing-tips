@@ -85,12 +85,11 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 
     int w = 2; // < 3
 
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
-                                                  boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, false);
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, false);
         //this.tree = tree;
         this.hasFocus = hasFocus;
-        this.selected = sel;
+        this.selected = selected;
         return this;
     }
     @Override public void paint(Graphics g) {

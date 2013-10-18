@@ -215,14 +215,12 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor{
             }
         });
     }
-    @Override public Component getTreeCellEditorComponent(
-        JTree tree, Object value, boolean isSelected, boolean expanded,
-        boolean leaf, int row) {
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
             if(userObject!=null && userObject instanceof CheckBoxNode) {
                 this.setSelected(((CheckBoxNode)userObject).selected);
-            } else {
+            }else{
                 this.setSelected(false);
             }
             this.setText(value.toString());

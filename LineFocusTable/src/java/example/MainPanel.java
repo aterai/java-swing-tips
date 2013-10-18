@@ -284,15 +284,13 @@ class DotBorder extends EmptyBorder {
 //           if(column==getColumnCount()-1) border.type.add(DotBorder.Type.EAST);
 //         }
 //       }
-//       @Override public Component prepareRenderer(
-//       TableCellRenderer tcr, int row, int column) {
+//       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //         JComponent c = (JComponent)super.prepareRenderer(tcr, row, column);
 //         c.setBorder(dotBorder);
 //         updateBorderType(dotBorder, row==getSelectionModel().getLeadSelectionIndex(), column);
 //         return c;
 //       }
-//       @Override public Component prepareEditor(
-//       TableCellEditor editor, int row, int column) {
+//       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
 //         Component c = super.prepareEditor(editor, row, column);
 //         if(c instanceof JCheckBox) {
 //           JCheckBox b = (JCheckBox)c;

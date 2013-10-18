@@ -92,9 +92,7 @@ public class MainPanel extends JPanel {
 class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
     private int row = -1;
     private int col = -1;
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if(!table.isEditing() && this.row==row && this.col==column) {
             setText("<html><u>"+value.toString());

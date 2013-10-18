@@ -83,8 +83,7 @@ public class MainPanel extends JPanel {
     }
 }
 class ListIconRenderer extends JPanel implements TableCellRenderer{
-    @Override public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAll();
         setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         if(value != null && value instanceof List<?>) {

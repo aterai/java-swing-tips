@@ -37,10 +37,9 @@ public class MainPanel extends JPanel{
         public HeaderRenderer(Font font) {
             this.font = font;
         }
-        @Override public Component getTableCellRendererComponent(JTable t, Object val, boolean isS,
-                                                                 boolean hasF, int row, int col) {
-            TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
-            JLabel l = (JLabel)r.getTableCellRendererComponent(t, val, isS, hasF, row, col);
+        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+            JLabel l = (JLabel)r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             l.setFont(font);
             return l;
         }

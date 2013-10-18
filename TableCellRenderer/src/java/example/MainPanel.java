@@ -153,9 +153,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
         //setName("Table.cellRenderer");
     }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if(isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());

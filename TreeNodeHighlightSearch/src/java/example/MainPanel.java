@@ -110,8 +110,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     @Override public Color getBackgroundNonSelectionColor() {
         return rollOver ? rollOverRowColor : super.getBackgroundNonSelectionColor();
     }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
-                                                  boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         if(isSelected) {
             c.setForeground(getTextSelectionColor());
@@ -134,8 +133,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         setBackgroundNonSelectionColor(null);
         super.updateUI();
     }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
-                                                  boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         //DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
         if(isSelected) {

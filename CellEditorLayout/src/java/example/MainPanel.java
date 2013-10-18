@@ -90,8 +90,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 //         //System.out.println("  "+field.getText());
 //         return field.getText();
 //     }
-    @Override public Component getTableCellEditorComponent(JTable table, Object value,
-                                                 boolean isSelected, int row, int column) {
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         //System.out.println("getTableCellEditorComponent");
         field.setText(value!=null?value.toString():"");
         EventQueue.invokeLater(new Runnable() {
@@ -172,8 +171,7 @@ class CustomComponentCellEditor2 extends DefaultCellEditor {
         super(component.field);
         this.component = component;
     }
-    @Override public Component getTableCellEditorComponent(JTable table, Object value,
-                                                 boolean isSelected, int row, int column) {
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         component.field.setText(value!=null?value.toString():"");
         return this.component;
     }
