@@ -141,21 +141,21 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         //doLayout();
 
         int prefH = getPreferredSize().height;
-        while (rowColHeight.size() <= row) {
+        while(rowColHeight.size() <= row) {
             rowColHeight.add(new ArrayList<Integer>(column));
         }
         List<Integer> colHeights = rowColHeight.get(row);
-        while (colHeights.size() <= column) {
+        while(colHeights.size() <= column) {
             colHeights.add(0);
         }
         colHeights.set(column, prefH);
         int maxH = prefH;
-        for (Integer colHeight : colHeights) {
-            if (colHeight > maxH) {
+        for(Integer colHeight : colHeights) {
+            if(colHeight > maxH) {
                 maxH = colHeight;
             }
         }
-        if (table.getRowHeight(row) != maxH) {
+        if(table.getRowHeight(row) != maxH) {
             table.setRowHeight(row, maxH);
         }
     }
