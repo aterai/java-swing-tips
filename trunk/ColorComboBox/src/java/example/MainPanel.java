@@ -59,8 +59,7 @@ public class MainPanel extends JPanel{
         return (index%2==0)?evenBGColor:oddBGColor;
     }
     private static class AlternateRowColorListCellRenderer extends DefaultListCellRenderer {
-        @Override public Component getListCellRendererComponent(JList list, Object value, int index,
-                                                      boolean isSelected, boolean cellHasFocus) {
+        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel cmp = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
             cmp.setOpaque(true);
             if(!isSelected) {

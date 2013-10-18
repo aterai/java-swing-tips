@@ -88,9 +88,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     private int row = -1;
     private int col = -1;
     private boolean isRollover = false;
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 // >>>> @see http://terai.xrea.jp/Swing/ClippedHtmlLabel.html
 //         int mw = table.getColumnModel().getColumnMargin();

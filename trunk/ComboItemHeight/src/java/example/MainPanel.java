@@ -29,8 +29,7 @@ public class MainPanel extends JPanel {
         JComboBox combo2 = new JComboBox(items);
         final Dimension dim = ((JLabel)combo2.getRenderer()).getPreferredSize();
         combo2.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(
-                    JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 c.setPreferredSize(new Dimension(100, index<0?dim.height:32));
                 return c;

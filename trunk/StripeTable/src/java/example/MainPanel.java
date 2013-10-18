@@ -125,9 +125,7 @@ public class MainPanel extends JPanel {
 
 class StripeTableRenderer extends DefaultTableCellRenderer {
     private static final Color evenColor = new Color(240, 240, 255);
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus,
-                                                   int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if(isSelected) {
             setForeground(table.getSelectionForeground());

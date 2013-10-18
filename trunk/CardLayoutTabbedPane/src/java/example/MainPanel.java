@@ -247,8 +247,7 @@ class TableHeaderTabbedPane extends JPanel {
         final TabButton l = new TabButton();
 //         final TableCellRenderer hr = header.getDefaultRenderer();
         header.setDefaultRenderer(new TableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable tbl, Object val,
-                                                           boolean isS, boolean hasF, int row, int col) {
+            @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
                 l.setText((String)val);
                 l.setSelected(val==selectedColumn || col==rolloverColumn);
                 return l;

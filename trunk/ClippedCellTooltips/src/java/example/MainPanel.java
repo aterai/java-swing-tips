@@ -76,17 +76,14 @@ public class MainPanel extends JPanel {
 
 class ToolTipHeaderRenderer implements TableCellRenderer {
     private final Icon icon = UIManager.getIcon("Table.ascendingSortIcon");
-    @Override public Component getTableCellRendererComponent(JTable table,Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         TableCellRenderer renderer = table.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel)renderer.getTableCellRendererComponent(
-            table, value, isSelected, hasFocus, row, column);
+        JLabel l = (JLabel)renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         Insets i = l.getInsets();
         Rectangle rect = table.getCellRect(row, column, false);
         rect.width -= i.left + i.right;
         RowSorter<? extends TableModel> sorter = table.getRowSorter();
-        if(sorter!=null && !sorter.getSortKeys().isEmpty()
-                        && sorter.getSortKeys().get(0).getColumn()==column) {
+        if(sorter!=null && !sorter.getSortKeys().isEmpty() && sorter.getSortKeys().get(0).getColumn()==column) {
             rect.width -= icon.getIconWidth() + 2; //XXX
         }
         FontMetrics fm = l.getFontMetrics(l.getFont());

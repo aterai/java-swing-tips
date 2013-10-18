@@ -123,9 +123,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
         this.renderer = renderer;
         this.fileSystemView = fileSystemView;
     }
-    public Component getTreeCellRendererComponent(JTree tree, Object value,
-                                                  boolean isSelected, boolean expanded,
-                                                  boolean leaf, int row, boolean hasFocus) {
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel c = (JLabel)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         if(isSelected) {
             c.setOpaque(false);

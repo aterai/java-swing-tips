@@ -133,8 +133,7 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
         super();
         this.highlighter = highlighter;
     }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                             boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if(highlighter.isHighlightableCell(row, column)) {
             setText("<html><u>"+value.toString());
@@ -167,8 +166,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
         setRolloverEnabled(true);
         setOpaque(true);
     }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,
-                                                             boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         getModel().setRollover(highlighter.isHighlightableCell(row, column));
 
         if(isSelected) {
