@@ -26,9 +26,8 @@ public class MainPanel extends JPanel {
         add(box2, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
     private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        DefaultComboBoxModel<MyItem> model = new DefaultComboBoxModel<>();
         model.addElement(new MyItem("aaaa"));
         model.addElement(new MyItem("aaaabbb"));
         model.addElement(new MyItem("aaaabbbcc"));
@@ -36,7 +35,7 @@ public class MainPanel extends JPanel {
         model.addElement(new MyItem("bbb1"));
         model.addElement(new MyItem("bbb12"));
 
-        JComboBox combo = new JComboBox(model);
+        JComboBox<MyItem> combo = new JComboBox<>(model);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 MyItem item = (MyItem)value;
@@ -62,11 +61,11 @@ public class MainPanel extends JPanel {
             item = str;
             flag = flg;
         }
-        public String toString() {
-            return item;
-        }
         public boolean hasSeparator() {
             return flag;
+        }
+        @Override public String toString() {
+            return item;
         }
     }
 

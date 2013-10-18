@@ -7,13 +7,20 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel{
-    private final JComboBox combo = makeComboBox();
     private final JTextField leftTextField  = new JTextField();
     private final JTextField rightTextField = new JTextField();
     public MainPanel() {
         super(new BorderLayout());
         leftTextField.setEditable(false);
         rightTextField.setEditable(false);
+
+        DefaultComboBoxModel<LRItem> model = new DefaultComboBoxModel<>();
+        model.addElement(new LRItem("asdfasdf", "846876"));
+        model.addElement(new LRItem("bxcvzx", "asdfasd"));
+        model.addElement(new LRItem("qwerqwe", "iop.ioqqadfa"));
+        model.addElement(new LRItem("14234125", "64345424684"));
+        model.addElement(new LRItem("hjklhjk", "asdfasdfasdfasdfasdfasd"));
+        JComboBox<LRItem> combo = new JComboBox<>(model);
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
@@ -42,7 +49,7 @@ public class MainPanel extends JPanel{
         private final String leftText;
         private final String rightText;
         public LRItem(String strLeft, String strRight) {
-            leftText = strLeft;
+            leftText  = strLeft;
             rightText = strRight;
         }
         public String getHtmlText() {
@@ -56,19 +63,9 @@ public class MainPanel extends JPanel{
         public String getRightText() {
             return rightText;
         }
-        public String toString() {
+        @Override public String toString() {
             return getHtmlText();
         }
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement(new LRItem("asdfasdf", "846876"));
-        model.addElement(new LRItem("bxcvzx", "asdfasd"));
-        model.addElement(new LRItem("qwerqwe", "iop.ioqqadfa"));
-        model.addElement(new LRItem("14234125", "64345424684"));
-        model.addElement(new LRItem("hjklhjk", "asdfasdfasdfasdfasdfasd"));
-        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
