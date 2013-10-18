@@ -25,17 +25,18 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         final JTextArea jta  = new JTextArea();
         jta.setLineWrap(true);
-        jta.setEditable(false);
         jta.setText(initTxt);
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("highlight") {
             @Override public void actionPerformed(ActionEvent e) {
+                jta.setEditable(false);
                 setHighlight(jta, pattern);
             }
         }));
         box.add(new JButton(new AbstractAction("clear") {
             @Override public void actionPerformed(ActionEvent e) {
+                jta.setEditable(true);
                 jta.getHighlighter().removeAllHighlights();
             }
         }));
