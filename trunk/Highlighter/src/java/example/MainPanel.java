@@ -25,6 +25,7 @@ public class MainPanel extends JPanel{
         super(new BorderLayout());
         final JTextArea jta  = new JTextArea();
         jta.setLineWrap(true);
+        jta.setEditable(false);
         jta.setText(initTxt);
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());

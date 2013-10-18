@@ -99,8 +99,7 @@ public class MainPanel extends JPanel {
 
 class HighlightTableCellRenderer extends JTextField implements TableCellRenderer {
     private static final Color backgroundSelectionColor = new Color(220, 240, 255);
-    private static final Highlighter.HighlightPainter highlightPainter
-        = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private String pattern = "";
     private String prev = null;
 
