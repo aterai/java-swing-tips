@@ -128,7 +128,7 @@ class LabelTransferHandler extends TransferHandler {
                 }
                 return list.toArray(dh.getTransferDataFlavors());
             }
-            public boolean isDataFlavorSupported(DataFlavor flavor) {
+            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
                 for(DataFlavor f: getTransferDataFlavors()) {
                     if(flavor.equals(f)) {
                         return true;
@@ -136,7 +136,7 @@ class LabelTransferHandler extends TransferHandler {
                 }
                 return false;
             }
-            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
                 if(flavor.equals(DataFlavor.stringFlavor)) {
                     return ss.getTransferData(flavor);
                 }else if(flavor.equals(DataFlavor.plainTextFlavor)) {

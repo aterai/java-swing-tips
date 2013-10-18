@@ -197,7 +197,7 @@ class DnDTabbedPane extends JTabbedPane {
         public boolean isDropable() {
             return dropable;
         }
-//         public String toString() {
+//         @Override public String toString() {
 //             return getClass().getName()
 //                    + "[dropPoint=" + getDropPoint() + ","
 //                    + "index=" + index + ","

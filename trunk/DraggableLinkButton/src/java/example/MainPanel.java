@@ -65,13 +65,13 @@ public class MainPanel extends JPanel {
 //             }
 //             @Override public Transferable createTransferable(JComponent c) {
 //                 return new Transferable() {
-//                     public Object getTransferData(DataFlavor flavor) {
+//                     @Override public Object getTransferData(DataFlavor flavor) {
 //                         return MYSITE;
 //                     }
-//                     public DataFlavor[] getTransferDataFlavors() {
+//                     @Override public DataFlavor[] getTransferDataFlavors() {
 //                         return new DataFlavor[] { uriflavor };
 //                     }
-//                     public boolean isDataFlavorSupported(DataFlavor flavor) {
+//                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //                         return flavor.equals(uriflavor);
 //                     }
 //                 };

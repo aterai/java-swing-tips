@@ -57,9 +57,8 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 200));
     }
 
-    @SuppressWarnings("unchecked")
     private static JList makeList(final HashSet<Integer> disableIndexSet) {
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("bbbbbbbbbbbbbbbbbb");
         model.addElement("ccccccccccc");
@@ -68,7 +67,7 @@ public class MainPanel extends JPanel{
         model.addElement("fffffffffffffffffffffff");
         model.addElement("ggggggggg");
 
-        JList list = new JList(model);
+        JList<String> list = new JList<>(model);
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
@@ -83,7 +82,7 @@ public class MainPanel extends JPanel{
         });
 
 //         list.setSelectionModel(new DefaultListSelectionModel() {
-//             public boolean isSelectedIndex(int index) {
+//             @Override public boolean isSelectedIndex(int index) {
 //                 if(disableIndexSet.contains(index)) return false;
 //                 return super.isSelectedIndex(index);
 //             }

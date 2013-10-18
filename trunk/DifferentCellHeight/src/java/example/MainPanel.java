@@ -15,15 +15,14 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @SuppressWarnings("unchecked")
     private static JList makeList(boolean hasTextAreaRenderer) {
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("111");
         model.addElement("111\n222222");
         model.addElement("111\n222222\n333333333");
         model.addElement("111\n222222\n333333333\n444444444444");
 
-        JList list = new JList(model);
+        JList<String> list = new JList<>(model);
         if(hasTextAreaRenderer) {
             list.setCellRenderer(new TextAreaRenderer());
             if(list.getFixedCellHeight()!=-1) {
@@ -56,11 +55,11 @@ public class MainPanel extends JPanel{
     }
 }
 
-class TextAreaRenderer extends JTextArea implements ListCellRenderer{
+class TextAreaRenderer extends JTextArea implements ListCellRenderer<String> {
     private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()),2);
     private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2,2,2,2);
     private static final Color EVEN_COLOR = new Color(230,255,230);
-    @Override public Component getListCellRendererComponent(JList list, Object object, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList list, String str, int index, boolean isSelected, boolean cellHasFocus) {
         //setLineWrap(true);
         if(focusBorder==null) {
             focusBorder = new DotBorder(new Color(~list.getSelectionBackground().getRGB()),2);
@@ -73,7 +72,7 @@ class TextAreaRenderer extends JTextArea implements ListCellRenderer{
             setForeground(list.getForeground());
         }
         setBorder(cellHasFocus ? focusBorder : NOMAL_BORDER);
-        setText((object==null) ? "" : object.toString());
+        setText((str==null) ? "" : str);
         return this;
     }
 }
@@ -82,7 +81,7 @@ class DotBorder extends LineBorder {
     public DotBorder(Color color, int thickness) {
         super(color, thickness);
     }
-    @Override public boolean isBorderOpaque() {return true;}
+    @Override public boolean isBorderOpaque() { return true; }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         Graphics2D g2 = (Graphics2D)g;
         g2.translate(x,y);
@@ -96,13 +95,13 @@ class DotBorder extends LineBorder {
 //     private static final BasicStroke dashed = new BasicStroke(
 //         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
 //         new float[]{1.0f}, 0.0f);
-//     public boolean isBorderOpaque() {return true;}
 //     public DotBorder(Insets borderInsets) {
 //         super(borderInsets);
 //     }
 //     public DotBorder(int top, int left, int bottom, int right) {
 //         super(top, left, bottom, right);
 //     }
+//     @Override public boolean isBorderOpaque() { return true; }
 //     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //         Graphics2D g2 = (Graphics2D)g;
 //         g2.setPaint(c.getForeground());
