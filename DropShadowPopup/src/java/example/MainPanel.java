@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -35,19 +36,19 @@ class MainPanel extends JPanel {
         initPopupMenu(popup1);
     }
     private static void initPopupMenu(JPopupMenu p) {
-        for(JComponent c:java.util.Arrays.<JComponent>asList(new JMenuItem("Open(dummy)"),
-                                                             new JMenuItem("Save(dummy)"),
-                                                             new JMenuItem("Close(dummy)"),
-                                                             new JSeparator(),
-                                                             new JMenuItem(new AbstractAction("Exit") {
-                                                                 @Override public void actionPerformed(ActionEvent e) {
-                                                                     JMenuItem m = (JMenuItem)e.getSource();
-                                                                     JPopupMenu popup = (JPopupMenu)m.getParent();
-                                                                     JComponent invoker = (JComponent)popup.getInvoker();
-                                                                     Window f = SwingUtilities.getWindowAncestor(invoker);
-                                                                     if(f!=null) f.dispose();
-                                                                 }
-                                                             }))) {
+        for(JComponent c:Arrays.<JComponent>asList(new JMenuItem("Open(dummy)"),
+                                                   new JMenuItem("Save(dummy)"),
+                                                   new JMenuItem("Close(dummy)"),
+                                                   new JSeparator(),
+                                                   new JMenuItem(new AbstractAction("Exit") {
+                                                       @Override public void actionPerformed(ActionEvent e) {
+                                                           JMenuItem m = (JMenuItem)e.getSource();
+                                                           JPopupMenu popup = (JPopupMenu)m.getParent();
+                                                           JComponent invoker = (JComponent)popup.getInvoker();
+                                                           Window f = SwingUtilities.getWindowAncestor(invoker);
+                                                           if(f!=null) f.dispose();
+                                                       }
+                                                   }))) {
             c.setOpaque(true);
             p.add(c);
         }

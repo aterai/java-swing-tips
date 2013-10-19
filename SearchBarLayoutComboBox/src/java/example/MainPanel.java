@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Vector;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -128,7 +129,7 @@ class JSearchBar extends JComboBox {
         setModel(new DefaultComboBoxModel(items));
         init();
     }
-    public JSearchBar(java.util.Vector<?> items) {
+    public JSearchBar(Vector<?> items) {
         super();
         setModel(new DefaultComboBoxModel(items));
         init();

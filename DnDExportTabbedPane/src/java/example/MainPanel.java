@@ -10,6 +10,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -75,7 +76,7 @@ public class MainPanel extends JPanel {
 
         TransferHandler handler = new TabTransferHandler();
         try{
-            for(JTabbedPane t:java.util.Arrays.asList(tab, sub, sub2)) {
+            for(JTabbedPane t:Arrays.asList(tab, sub, sub2)) {
                 t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                 t.setTransferHandler(handler);
                 t.getDropTarget().addDropTargetListener(dtl);

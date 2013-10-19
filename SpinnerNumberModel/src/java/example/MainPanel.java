@@ -5,10 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    List<SpinnerNumberModel> list1 = java.util.Arrays.asList(
+    List<SpinnerNumberModel> list1 = Arrays.asList(
         new SpinnerNumberModel(Byte.valueOf((byte)Byte.MAX_VALUE),
                                Byte.valueOf((byte)0),
                                Byte.valueOf((byte)Byte.MAX_VALUE),
@@ -26,7 +27,7 @@ public class MainPanel extends JPanel {
                                Long.valueOf(Long.MAX_VALUE),
                                Long.valueOf(1))
         );
-    List<SpinnerNumberModel> list2 = java.util.Arrays.asList(
+    List<SpinnerNumberModel> list2 = Arrays.asList(
         new SpinnerNumberModel(Long.valueOf(Byte.MAX_VALUE),
                                Long.valueOf(0),
                                Long.valueOf(Byte.MAX_VALUE),

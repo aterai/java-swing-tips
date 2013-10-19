@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.prefs.Preferences;
+import java.util.prefs.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
                 try{
                     prefs.clear();
                     prefs.flush();
-                }catch(java.util.prefs.BackingStoreException e) {
+                }catch(BackingStoreException e) {
                     e.printStackTrace();
                 }
                 frame.dispose();
@@ -92,7 +92,7 @@ public class MainPanel extends JPanel {
         prefs.putInt(PREFIX+"dimh", dim.height);
         try{
             prefs.flush();
-        }catch(java.util.prefs.BackingStoreException e) {
+        }catch(BackingStoreException e) {
             e.printStackTrace();
         }
     }

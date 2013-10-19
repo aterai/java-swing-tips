@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -86,7 +87,7 @@ public class MainPanel extends JPanel {
     private static void allNodesChanged(JTree tree) {
         DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-        java.util.Enumeration depth = root.depthFirstEnumeration();
+        Enumeration depth = root.depthFirstEnumeration();
         while(depth.hasMoreElements()) {
             model.nodeChanged((TreeNode)depth.nextElement());
         }

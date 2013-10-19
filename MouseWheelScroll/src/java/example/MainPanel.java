@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -43,7 +44,7 @@ class MainPanel extends JPanel {
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
-        for(JScrollBar sb:java.util.Arrays.asList(vsb, hsb, vBar, hBar)) {
+        for(JScrollBar sb:Arrays.asList(vsb, hsb, vBar, hBar)) {
             sb.setUnitIncrement(25);
         }
 
@@ -76,7 +77,7 @@ class MainPanel extends JPanel {
             }
         };
         ButtonGroup bg = new ButtonGroup();
-        for(AbstractButton b:java.util.Arrays.asList(r0, r1, r2)) {
+        for(AbstractButton b:Arrays.asList(r0, r1, r2)) {
             b.addActionListener(al); bg.add(b);
         }
 

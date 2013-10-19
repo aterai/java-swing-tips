@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Arrays;
 import java.net.*;
 import javax.swing.*;
 
@@ -41,7 +42,7 @@ class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder("frame.setIconImage(img)"));
         ButtonGroup bg = new ButtonGroup();
-        for(AbstractButton b: java.util.Arrays.asList(r1,r2,r3,r4)) {
+        for(AbstractButton b: Arrays.asList(r1,r2,r3,r4)) {
             b.addActionListener(al);
             bg.add(b);
             box.add(b);

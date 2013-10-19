@@ -231,12 +231,12 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         return new CheckBoxNode(getText(), isSelected());
     }
     @Override public boolean isCellEditable(EventObject e) {
-        return (e != null && e instanceof MouseEvent);
+        return e != null && e instanceof MouseEvent;
     }
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //transient protected ChangeEvent changeEvent = null;
-    @Override public boolean shouldSelectCell(java.util.EventObject anEvent) {
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
     @Override public boolean stopCellEditing() {

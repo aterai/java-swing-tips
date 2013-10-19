@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -59,7 +60,7 @@ public class MainPanel extends JPanel {
         };
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
-        for(JRadioButton r:java.util.Arrays.asList(leftRadio,centerRadio,rightRadio,customRadio)) {
+        for(JRadioButton r:Arrays.asList(leftRadio,centerRadio,rightRadio,customRadio)) {
             bg.add(r); p.add(r); r.addActionListener(al);
         }
 

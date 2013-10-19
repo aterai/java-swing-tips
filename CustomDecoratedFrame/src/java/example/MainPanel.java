@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 //import javax.swing.event.*;
@@ -100,7 +101,7 @@ class MainPanel extends JPanel {
         //title.add(iconify, BorderLayout.WEST);
 
         ResizeWindowListener rwl = new ResizeWindowListener(frame);
-        for(JLabel l:java.util.Arrays.asList(
+        for(JLabel l:Arrays.asList(
             left         = new JLabel(), right        = new JLabel(),
             top          = new JLabel(), bottom       = new JLabel(),
             topleft      = new JLabel(), topright     = new JLabel(),
