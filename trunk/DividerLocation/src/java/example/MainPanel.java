@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -57,7 +58,7 @@ public class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
         p.add(new JLabel("JSplitPane#setResizeWeight: "));
-        for(JRadioButton r: java.util.Arrays.asList(r0, r1, r2)) {
+        for(JRadioButton r: Arrays.asList(r0, r1, r2)) {
             r.addActionListener(al);
             bg.add(r);
             p.add(r);
