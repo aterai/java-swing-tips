@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,3,5,5));
 
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class VerticalTitledBorder extends TitledBorder{
+class VerticalTitledBorder extends TitledBorder {
     private final JLabel label;
     public VerticalTitledBorder(String title) {
         super(title);

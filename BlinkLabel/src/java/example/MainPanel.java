@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel();
     private final JLabel label2 = new JLabel();
     public MainPanel() {

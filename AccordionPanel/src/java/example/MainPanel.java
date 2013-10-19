@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     //private final Box box = Box.createVerticalBox();
     //private final Component glue = Box.createVerticalGlue();
     public MainPanel() {
@@ -111,7 +111,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-abstract class ExpansionPanel extends JPanel{
+abstract class ExpansionPanel extends JPanel {
     abstract public JPanel makePanel();
     private final String title;
     private final JLabel label;
@@ -190,12 +190,12 @@ abstract class ExpansionPanel extends JPanel{
 //     }
 }
 
-// class ExpansionEvent extends EventObject{
+// class ExpansionEvent extends EventObject {
 //     public ExpansionEvent(Object source) {
 //         super(source);
 //     }
 // }
 //
-// interface ExpansionListener{
+// interface ExpansionListener {
 //     public void expansionStateChanged(ExpansionEvent e);
 // }

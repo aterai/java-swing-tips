@@ -93,7 +93,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class ProgressListener implements PropertyChangeListener{
+class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;

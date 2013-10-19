@@ -11,7 +11,7 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private final JCheckBox checkBox = new JCheckBox("TriState JCheckBox") {
         protected TriStateActionListener listener = null;
-        class TriStateActionListener implements ActionListener{
+        class TriStateActionListener implements ActionListener {
             protected Icon icon;
             public void setIcon(Icon icon) {
                 this.icon = icon;
@@ -262,7 +262,7 @@ class IndeterminateIcon implements Icon {
     @Override public int getIconHeight() { return icon.getIconHeight(); }
 }
 
-class HeaderCheckBoxHandler implements TableModelListener{
+class HeaderCheckBoxHandler implements TableModelListener {
     private final JTable table;
     private final int targetColumnIndex;
     public HeaderCheckBoxHandler(JTable table, int index) {
@@ -296,7 +296,7 @@ class HeaderCheckBoxHandler implements TableModelListener{
         }
     }
 }
-class ComponentIcon implements Icon{
+class ComponentIcon implements Icon {
     private final JComponent cmp;
     public ComponentIcon(JComponent cmp) {
         this.cmp = cmp;

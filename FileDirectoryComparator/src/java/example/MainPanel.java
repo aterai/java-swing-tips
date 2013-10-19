@@ -111,7 +111,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
@@ -211,7 +211,7 @@ class FileTransferHandler extends TransferHandler {
         return COPY;
     }
 }
-class DefaultFileComparator implements Comparator<File>, Serializable{
+class DefaultFileComparator implements Comparator<File>, Serializable {
     protected final int column;
     public DefaultFileComparator(int column) {
         this.column = column;
@@ -225,7 +225,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable{
         }
     }
 }
-class FileComparator extends DefaultFileComparator{
+class FileComparator extends DefaultFileComparator {
     public FileComparator(int column) {
         super(column);
     }
@@ -242,7 +242,7 @@ class FileComparator extends DefaultFileComparator{
 
 // > dir /O:GN
 // > ls --group-directories-first
-class FileGroupComparator extends DefaultFileComparator{
+class FileGroupComparator extends DefaultFileComparator {
     private final JTable table;
     public FileGroupComparator(JTable table, int column) {
         super(column);

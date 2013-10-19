@@ -93,7 +93,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -110,7 +110,7 @@ public class MainPanel extends JPanel {
         table.scrollRectToVisible(r);
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -129,7 +129,7 @@ public class MainPanel extends JPanel {
             model.removeRow(selection[i]);
         }
     }
-    class UpAction extends AbstractAction{
+    class UpAction extends AbstractAction {
         public UpAction(String str) {
             super(str);
         }
@@ -154,7 +154,7 @@ public class MainPanel extends JPanel {
         }
         scrollSelectedRow();
     }
-    class DownAction extends AbstractAction{
+    class DownAction extends AbstractAction {
         public DownAction(String str) {
             super(str);
         }
@@ -185,7 +185,7 @@ public class MainPanel extends JPanel {
             table.scrollRectToVisible(rect);
         }
     }
-    class InitAction extends AbstractAction{
+    class InitAction extends AbstractAction {
         public InitAction(String str) {
             super(str);
         }
@@ -276,7 +276,7 @@ class TestModel extends SortableTableModel {
         }
     }
 }
-class Test{
+class Test {
     private String name, comment;
     public Test(String name, String comment) {
         this.name = name;

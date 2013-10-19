@@ -70,7 +70,7 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
     @Override public View create(Element elem) {
         return new MyPasswordView(elem);
     }
-    private static class MyPasswordView extends PasswordView{
+    private static class MyPasswordView extends PasswordView {
         @Override protected int drawEchoCharacter(Graphics g, int x, int y, char c) {
             Graphics2D g2d = (Graphics2D) g;
 
@@ -96,7 +96,7 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
     static StarIcon icon = new StarIcon();
 }
 
-class StarIcon implements Icon{
+class StarIcon implements Icon {
     private final Shape star;
     public StarIcon() {
         star = makeStar(6,3,8);

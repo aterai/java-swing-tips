@@ -8,7 +8,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(makeUI());

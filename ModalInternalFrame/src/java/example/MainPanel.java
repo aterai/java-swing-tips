@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final JFrame frame;
     private final JMenuBar dummyBar = new JMenuBar();
@@ -270,7 +270,7 @@ class PrintGlassPane extends JPanel {
     }
 }
 
-class TextureFactory{
+class TextureFactory {
     private static final Color defaultColor = new Color(100,100,100,100);
     public static TexturePaint createCheckerTexture(int cs, Color color) {
         int size = cs*cs;

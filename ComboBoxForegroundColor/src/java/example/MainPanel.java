@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
-    private static class ColorItem{
+public class MainPanel extends JPanel {
+    private static class ColorItem {
         public final Color color;
         public final String description;
         public ColorItem(Color color, String description) {

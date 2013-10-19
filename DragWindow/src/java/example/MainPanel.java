@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 //import javax.swing.event.*;
 
-class MainPanel{
+class MainPanel {
     private JFrame frame;
     private JWindow splashScreen;
     private JLabel  splashLabel;

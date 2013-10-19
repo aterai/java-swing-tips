@@ -10,7 +10,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     private TexturePaint texture;
     public JComponent makeUI() {
         final JPanel p = new JPanel() {
@@ -131,7 +131,7 @@ class MainPanel extends JPanel{
 // // http://www.oracle.com/technetwork/java/javase/2col/7u6-bugfixes-1733378.html
 // // Bug ID: 7156657 Version 7 doesn't support translucent popup menus against a translucent window
 // // http://bugs.sun.com/view_bug.do?bug_id=7156657
-// class TranslucencyFrameComboBoxPopupMenuListener implements PopupMenuListener{
+// class TranslucencyFrameComboBoxPopupMenuListener implements PopupMenuListener {
 //     @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {

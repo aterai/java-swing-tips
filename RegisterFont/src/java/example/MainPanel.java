@@ -8,7 +8,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static Font makeFont(URL url) {
         Font font = null;
         InputStream is = null;

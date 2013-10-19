@@ -328,7 +328,7 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test{
+class Test {
     private String name;
     private URL url;
     public Test(String name, URL url) {

@@ -93,7 +93,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class CellButtonsMouseListener extends MouseAdapter{
+class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
     private JButton prevButton = null;
     @Override public void mouseMoved(MouseEvent e) {

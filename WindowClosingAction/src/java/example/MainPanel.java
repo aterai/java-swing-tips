@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
         add(toolBar, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static class ExitAction extends AbstractAction{
+    private static class ExitAction extends AbstractAction {
         public ExitAction() {
             super("Exit");
         }

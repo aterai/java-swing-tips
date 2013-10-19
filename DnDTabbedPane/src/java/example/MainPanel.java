@@ -211,7 +211,7 @@ class DnDTabbedPane extends JTabbedPane {
         //DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
     }
 
-    class CDropTargetListener implements DropTargetListener{
+    class CDropTargetListener implements DropTargetListener {
         @Override public void dragEnter(DropTargetDragEvent e) {
             if(isDragAcceptable(e)) e.acceptDrag(e.getDropAction());
             else e.rejectDrag();

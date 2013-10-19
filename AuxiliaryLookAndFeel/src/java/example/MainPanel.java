@@ -8,7 +8,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
     private final JComboBox combo = makeComboBox();
     private final JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");

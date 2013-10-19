@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.net.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final String path = "/toolbarButtonGraphics/general/";
     private final JToolBar toolbar = new JToolBar("ToolBarButton");
     public MainPanel() {
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class DragHandler extends MouseAdapter{
+class DragHandler extends MouseAdapter {
     private final JWindow window = new JWindow();
     private Component draggingComonent = null;
     private int index = -1;

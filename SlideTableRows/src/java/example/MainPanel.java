@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -73,7 +73,7 @@ public class MainPanel extends JPanel {
         })).start();
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }

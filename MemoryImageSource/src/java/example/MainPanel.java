@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(new PaintPanel());

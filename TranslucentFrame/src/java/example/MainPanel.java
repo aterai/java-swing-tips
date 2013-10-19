@@ -8,7 +8,7 @@ import javax.swing.plaf.synth.*;
 //import com.sun.java.swing.Painter; // 1.6.0
 //import javax.swing.Painter; // 1.7.0
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     public MainPanel() {
         super(new BorderLayout());
@@ -59,7 +59,7 @@ public class MainPanel extends JPanel{
         desktop.getDesktopManager().activateFrame(frame);
         return frame;
     }
-    static class MyInternalFrame extends JInternalFrame{
+    static class MyInternalFrame extends JInternalFrame {
         public MyInternalFrame() {
             super("title", true, true, true, true);
             setSize(160, 100);

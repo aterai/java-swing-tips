@@ -89,7 +89,7 @@ class MainPanel extends JPanel {
     }
 
     private static int openFrameCount = 0;
-    private static class MyInternalFrame extends JInternalFrame{
+    private static class MyInternalFrame extends JInternalFrame {
         public MyInternalFrame() {
             super(String.format("Frame #%s", ++openFrameCount), true, true, true, true);
             setSize(160, 100);

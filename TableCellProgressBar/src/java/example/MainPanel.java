@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -117,7 +117,7 @@ public class MainPanel extends JPanel {
         executor.execute(worker);
         //worker.execute();
     }
-    class CancelAction extends AbstractAction{
+    class CancelAction extends AbstractAction {
         public CancelAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -139,7 +139,7 @@ public class MainPanel extends JPanel {
         table.repaint();
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -255,7 +255,7 @@ class WorkerModel extends DefaultTableModel {
         }
     }
 }
-class Test{
+class Test {
     private String name;
     private Integer progress;
     public Test(String name, Integer progress) {

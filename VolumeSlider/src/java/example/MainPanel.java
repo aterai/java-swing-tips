@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(5,5));
 

@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JPanel panel = new JPanel(new GridLayout(2,1));
     //private final JTextPane   textPane;
     private final JEditorPane editorPane;
@@ -124,11 +124,11 @@ public class MainPanel extends JPanel{
 }
 
 /*
-class NoWrapEditorKit1 extends StyledEditorKit{
+class NoWrapEditorKit1 extends StyledEditorKit {
     @Override public ViewFactory getViewFactory() {
         return new StyledViewFactory();
     }
-    static class StyledViewFactory implements ViewFactory{
+    static class StyledViewFactory implements ViewFactory {
         @Override public View create(Element elem) {
             String kind = elem.getName();
             if(kind != null) {

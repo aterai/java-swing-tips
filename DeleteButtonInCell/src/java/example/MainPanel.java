@@ -229,7 +229,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
-class Test{
+class Test {
     private String name, comment;
     public Test(String name, String comment) {
         this.name = name;

@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final TreeComboBox combo = new TreeComboBox();
     private final JTextField field = new JTextField("1,2,5");
     @SuppressWarnings("unchecked")

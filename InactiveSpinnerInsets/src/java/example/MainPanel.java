@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(5, 5));
         //UIManager.put("FormattedTextField.inactiveBackground", Color.RED);

@@ -161,7 +161,7 @@ class MainPanel extends JPanel {
             return clazz;
         }
     }
-    private static class ChangeLookAndFeelAction extends AbstractAction{
+    private static class ChangeLookAndFeelAction extends AbstractAction {
         private final String lnf;
         private final JComponent[] list;
         protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, JComponent... list) {

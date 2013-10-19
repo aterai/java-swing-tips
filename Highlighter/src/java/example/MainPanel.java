@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
 //    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(SystemColor.textHighlight);
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private static final String pattern = "Swing";

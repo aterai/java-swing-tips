@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 // import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextArea textarea = new JTextArea();
     private final JFrame frame;
     private final JButton b;

@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
         dirCombo.setSelectedIndex(0);
         dirCombo.setVisible(true);
     }
-    class RunAction extends AbstractAction{
+    class RunAction extends AbstractAction {
         public RunAction() {
             super("Run");
         }
@@ -197,7 +197,7 @@ public class MainPanel extends JPanel {
             worker.execute();
         }
     }
-    class CancelAction extends AbstractAction{
+    class CancelAction extends AbstractAction {
         public CancelAction() {
             super("Cancel");
         }
@@ -211,7 +211,7 @@ public class MainPanel extends JPanel {
     private boolean isCancelled() {
         return (worker!=null)?worker.isCancelled():true;
     }
-    class OpenAction extends AbstractAction{
+    class OpenAction extends AbstractAction {
         public OpenAction() {
             super("Choose...");
         }

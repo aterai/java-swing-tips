@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();

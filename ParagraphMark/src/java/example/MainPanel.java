@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JEditorPane editor = new JEditorPane();

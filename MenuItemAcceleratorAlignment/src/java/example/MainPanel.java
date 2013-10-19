@@ -9,7 +9,7 @@ import javax.swing.*;
 // import javax.swing.plaf.basic.*;
 import sun.swing.*;
 
-public class MainPanel{
+public class MainPanel {
     private static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu0 = new JMenu("Default");
@@ -106,7 +106,7 @@ public class MainPanel{
 }
 
 //@see javax/swing/plaf/basic/BasicMenuItemUI.java
-class MenuItemUIHelper{
+class MenuItemUIHelper {
     public static void paintIcon(Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr, Color holdc) {
         if(lh.getIcon() != null) {
             Icon icon;

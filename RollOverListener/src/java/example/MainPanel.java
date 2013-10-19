@@ -73,7 +73,7 @@ class RollOverList extends JList {
             }
         });
     }
-    private class RollOverCellRenderer extends DefaultListCellRenderer{
+    private class RollOverCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if(index == rollOverRowIndex) {
@@ -85,7 +85,7 @@ class RollOverList extends JList {
             return c;
         }
     }
-    private class RollOverListener extends MouseAdapter{
+    private class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             repaint();

@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.Position;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         String[] columnNames = {"String", "Integer", "Boolean"};
@@ -57,7 +57,7 @@ public class MainPanel extends JPanel{
 
 //@see javax/swing/plaf/basic/BasicListUI.Handler
 //@see javax/swing/plaf/basic/BasicTreeUI.Handler
-class TableNextMatchKeyHandler extends KeyAdapter{
+class TableNextMatchKeyHandler extends KeyAdapter {
     private static final int TARGET_COLUMN = 0;
     private String prefix;
     private String typedString;

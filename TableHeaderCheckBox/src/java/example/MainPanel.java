@@ -149,7 +149,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
         super.updateUI();
     }
 }
-class HeaderCheckBoxHandler implements TableModelListener{
+class HeaderCheckBoxHandler implements TableModelListener {
     private final JTable table;
     private final int targetColumnIndex;
     public HeaderCheckBoxHandler(JTable table, int index) {
@@ -183,7 +183,7 @@ class HeaderCheckBoxHandler implements TableModelListener{
         }
     }
 }
-class ComponentIcon implements Icon{
+class ComponentIcon implements Icon {
     private final JComponent cmp;
     public ComponentIcon(JComponent cmp) {
         this.cmp = cmp;

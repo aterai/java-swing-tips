@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final MyComboBox combo = makeComboBox();
     private final JTextField field = new JTextField("1,2,5");
     public MainPanel() {

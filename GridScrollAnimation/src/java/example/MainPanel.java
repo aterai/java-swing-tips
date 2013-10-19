@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private Timer scroller;
     public MainPanel() {
         super(new BorderLayout());
@@ -80,7 +80,7 @@ class GridPanel extends JPanel implements Scrollable {
     }
 }
 
-class ScrollAction extends AbstractAction{
+class ScrollAction extends AbstractAction {
     private static Timer scroller;
     private final Point vec;
     private final JScrollPane scrollPane;

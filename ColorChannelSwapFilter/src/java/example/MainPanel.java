@@ -150,7 +150,7 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar>{
     }
 }
 
-class RedGreenChannelSwapFilter extends RGBImageFilter{
+class RedGreenChannelSwapFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (int)((argb >> 16) & 0xff);
         int g = (int)((argb >>  8) & 0xff);
@@ -158,7 +158,7 @@ class RedGreenChannelSwapFilter extends RGBImageFilter{
         return (argb & 0xff000000) | (g<<16) | (r<<8) | (b);
     }
 }
-class ProgressListener implements PropertyChangeListener{
+class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;

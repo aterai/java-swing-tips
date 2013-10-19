@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     static private int count = 0;
-    class NewTabAction extends AbstractAction{
+    class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
             count++;
         }
     }
-    class ClosePageAction extends AbstractAction{
+    class ClosePageAction extends AbstractAction {
         public ClosePageAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
             tab.remove(tab.getSelectedIndex());
         }
     }
-    class CloseAllAction extends AbstractAction{
+    class CloseAllAction extends AbstractAction {
         public CloseAllAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -66,7 +66,7 @@ public class MainPanel extends JPanel {
             tab.removeAll();
         }
     }
-    class CloseAllButActiveAction extends AbstractAction{
+    class CloseAllButActiveAction extends AbstractAction {
         public CloseAllButActiveAction(String label, Icon icon) {
             super(label,icon);
         }

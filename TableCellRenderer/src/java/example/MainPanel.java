@@ -8,7 +8,7 @@ import java.awt.font.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         String str0 = "Default Default Default Default";
@@ -146,7 +146,7 @@ class WrappedLabel extends JLabel {
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
-    //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
+    //public static class UIResource extends TextAreaCellRenderer implements UIResource {}
     public TextAreaCellRenderer() {
         super();
         setLineWrap(true);

@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     private final JButton button = new JButton("RoundedCornerButtonUI");
     public MainPanel() {
         super();
@@ -328,7 +328,7 @@ class ShapeButton extends JButton {
     @Override public boolean contains(int x, int y) {
         return shape.contains(x, y);
     }
-    private static class DummySizeIcon implements Icon{
+    private static class DummySizeIcon implements Icon {
         private final Shape shape;
         public DummySizeIcon(Shape s) {
             shape = s;

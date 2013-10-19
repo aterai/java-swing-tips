@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final int SECONDS = 5;
     private final JTextArea textArea = new JTextArea();
     private final JLabel label = new JLabel();

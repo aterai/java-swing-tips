@@ -60,7 +60,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-// class CellButtonsMouseListener extends MouseAdapter{
+// class CellButtonsMouseListener extends MouseAdapter {
 //     @Override public void mouseReleased(MouseEvent e) {
 //         JTable t = (JTable)e.getComponent();
 //         Point pt = e.getPoint();

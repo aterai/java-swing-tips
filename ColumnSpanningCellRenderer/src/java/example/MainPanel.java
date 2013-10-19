@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         String see = "See Also: Constan Field Values";
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer{
+class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
     private final JTextArea textArea = new JTextArea(2, 999999);
     private final JLabel label = new JLabel();
     private final JLabel iconLabel = new JLabel();
@@ -140,7 +140,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer{
     }
 }
 
-class Test{
+class Test {
     public final String title;
     public final Icon icon;
     public final String text;

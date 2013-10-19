@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    class RunAction extends AbstractAction{
+    class RunAction extends AbstractAction {
         public RunAction() {
             super("Load");
         }
@@ -153,7 +153,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Chunk{
+class Chunk {
     public final String line;
     public final String note;
     public Chunk(String line, String note) {

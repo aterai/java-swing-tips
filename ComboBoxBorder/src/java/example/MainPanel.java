@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         UIManager.put("ComboBox.foreground", Color.WHITE);
@@ -118,7 +118,7 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-class ArrowIcon implements Icon{
+class ArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(Color.WHITE);

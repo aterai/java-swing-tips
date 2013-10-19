@@ -34,7 +34,7 @@ class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     // https://forums.oracle.com/thread/1271862 Reading gif animation frame rates and such?
-    private ArrayList<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException{
+    private ArrayList<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
         ImageReader reader = null;
         Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
         while(readers.hasNext()) {

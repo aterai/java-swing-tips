@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class MyInternalFrame extends JInternalFrame{
+class MyInternalFrame extends JInternalFrame {
     static int openFrameCount = 0;
     static final int xOffset = 10, yOffset = 10;
     public MyInternalFrame() {

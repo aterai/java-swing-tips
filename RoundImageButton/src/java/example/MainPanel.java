@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     private final Box box = Box.createHorizontalBox();
       // JDK 5
       //new Box(BoxLayout.X_AXIS) {

@@ -11,7 +11,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(makePanel());

@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final String KEY = "full-screen";
     private JDialog dialog;
     public MainPanel(JDialog frame) {

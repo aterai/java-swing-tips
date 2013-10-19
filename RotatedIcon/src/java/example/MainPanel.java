@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     public MainPanel() {
         super();
         Icon i = new ImageIcon(getClass().getResource("duke.gif"));
@@ -56,7 +56,7 @@ class MainPanel extends JPanel{
     }
 }
 
-class RotateIcon implements Icon{
+class RotateIcon implements Icon {
     private int width, height;
     private Image image;
     private AffineTransform trans;
@@ -113,7 +113,7 @@ enum QuadrantRotate {
         return numquadrants;
     }
 }
-class QuadrantRotateIcon implements Icon{
+class QuadrantRotateIcon implements Icon {
     private final QuadrantRotate rotate;
     private final Icon icon;
     public QuadrantRotateIcon(Icon icon, QuadrantRotate rotate) {

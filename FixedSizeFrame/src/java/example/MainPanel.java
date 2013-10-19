@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JCheckBox checkbox = new JCheckBox("setResizable:", true);
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());

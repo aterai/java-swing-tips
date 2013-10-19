@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
         return combo;
     }
 
-    static class MyItem{
+    static class MyItem {
         private final String  item;
         private final boolean flag;
         public MyItem(String str) {

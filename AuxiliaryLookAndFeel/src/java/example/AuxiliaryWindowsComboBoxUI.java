@@ -64,7 +64,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         if(handler2==null) handler2 = new Handler2();
         return handler2;
     }
-    private class Handler2 implements MouseListener{
+    private class Handler2 implements MouseListener {
         @Override public void mouseEntered(MouseEvent e) {}
         @Override public void mouseExited(MouseEvent e)  {}
         @Override public void mouseClicked(MouseEvent e) {}

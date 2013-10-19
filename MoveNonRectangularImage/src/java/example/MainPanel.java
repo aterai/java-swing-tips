@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     public MainPanel() {
         super((LayoutManager)null);
         add(makeLabelIcon());

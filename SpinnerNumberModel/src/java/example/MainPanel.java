@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     List<SpinnerNumberModel> list1 = java.util.Arrays.asList(
         new SpinnerNumberModel(Byte.valueOf((byte)Byte.MAX_VALUE),
                                Byte.valueOf((byte)0),

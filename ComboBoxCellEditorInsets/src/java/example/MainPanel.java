@@ -200,7 +200,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         }
     }
 }
-class ComboCellRenderer extends JComboBox implements TableCellRenderer{
+class ComboCellRenderer extends JComboBox implements TableCellRenderer {
     private final JTextField editor;
     //private JButton button;
     public ComboCellRenderer() {

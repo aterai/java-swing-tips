@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
 // import javax.swing.event.*;
+import javax.swing.plaf.UIResource;
 import javax.swing.table.*;
 // import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final int AUTOWRAP_COLUMN = 1;
     public MainPanel() {
         super(new BorderLayout());
@@ -105,7 +106,7 @@ public class MainPanel extends JPanel{
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
-    public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
+    public static class UIResource extends TextAreaCellRenderer implements UIResource {}
     public TextAreaCellRenderer() {
         super();
         setLineWrap(true);

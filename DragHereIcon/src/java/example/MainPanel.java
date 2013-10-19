@@ -110,7 +110,7 @@ class DragHereIcon implements Icon {
     }
 }
 
-class FileDropTargetAdapter extends DropTargetAdapter{
+class FileDropTargetAdapter extends DropTargetAdapter {
     @Override public void dragOver(DropTargetDragEvent dtde) {
         if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
             dtde.acceptDrag(DnDConstants.ACTION_COPY);
@@ -142,7 +142,7 @@ class FileDropTargetAdapter extends DropTargetAdapter{
     }
 }
 
-// class FileTransferHandler extends TransferHandler{
+// class FileTransferHandler extends TransferHandler {
 //     @Override public boolean importData(TransferSupport support) {
 //         try{
 //             if(canImport(support)) {

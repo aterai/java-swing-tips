@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.*;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         final List<JSlider> list = Arrays.asList(

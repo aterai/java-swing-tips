@@ -12,7 +12,7 @@ import javax.activation.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel{
+public class MainPanel {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

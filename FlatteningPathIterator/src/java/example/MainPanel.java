@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class ShapeIcon implements Icon{
+class ShapeIcon implements Icon {
     private final Shape shape;
     public ShapeIcon(Shape s) {
         shape = s;

@@ -8,7 +8,7 @@ import java.text.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextField field = new JTextField(30);
     private final JTextField outf  = new JTextField(30);
     private final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);

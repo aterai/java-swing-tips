@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextField leftTextField  = new JTextField();
     private final JTextField rightTextField = new JTextField();
     public MainPanel() {
@@ -45,7 +45,7 @@ public class MainPanel extends JPanel{
         leftTextField.setText(item.getLeftText());
         rightTextField.setText(item.getRightText());
     }
-    static class LRItem{
+    static class LRItem {
         private final String leftText;
         private final String rightText;
         public LRItem(String strLeft, String strRight) {
