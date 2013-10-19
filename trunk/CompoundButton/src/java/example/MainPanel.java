@@ -57,7 +57,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-enum ButtonLocation{
+enum ButtonLocation {
     CENTER(0f),
     NOTH(45f),
     EAST(135f),

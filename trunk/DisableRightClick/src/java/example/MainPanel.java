@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 //         Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
@@ -115,7 +115,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         if(handler2==null) handler2 = new Handler2();
         return handler2;
     }
-    private class Handler2 implements MouseListener{
+    private class Handler2 implements MouseListener {
         @Override public void mouseEntered(MouseEvent e) {}
         @Override public void mouseExited(MouseEvent e)  {}
         @Override public void mouseClicked(MouseEvent e) {}

@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextField textField = new JTextField("soccer");
     public MainPanel() {
         super(new BorderLayout());

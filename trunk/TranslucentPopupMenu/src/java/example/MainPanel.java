@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JComponent tree = new JTree();
     public MainPanel() {
         super(new BorderLayout());
@@ -54,7 +54,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class TranslucentPopupMenu extends JPopupMenu{
+class TranslucentPopupMenu extends JPopupMenu {
     private static final Color ALPHA_ZERO = new Color(0, true);
     private static final Color POPUP_BACK = new Color(250,250,250,200);
     private static final Color POPUP_LEFT = new Color(230,230,230,200);

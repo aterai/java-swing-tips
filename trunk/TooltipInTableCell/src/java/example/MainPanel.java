@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class ListIconRenderer extends JPanel implements TableCellRenderer{
+class ListIconRenderer extends JPanel implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAll();
         setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());

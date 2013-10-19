@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -98,7 +98,7 @@ public class MainPanel extends JPanel {
             model.addRow(new Object[] {"example", 0, false});
         }
     }
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }

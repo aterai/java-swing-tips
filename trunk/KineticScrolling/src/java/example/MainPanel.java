@@ -99,7 +99,7 @@ class MainPanel extends JPanel {
     }
 }
 
-class KineticScrollingListener1 extends MouseAdapter implements HierarchyListener{
+class KineticScrollingListener1 extends MouseAdapter implements HierarchyListener {
     private static final int SPEED = 4;
     private static final int DELAY = 10;
     private static final double D = 0.8;
@@ -154,7 +154,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     }
 }
 
-class KineticScrollingListener2 extends MouseAdapter implements HierarchyListener{
+class KineticScrollingListener2 extends MouseAdapter implements HierarchyListener {
     private static final int SPEED = 4;
     private static final int DELAY = 10;
     private static final double D = 0.8;

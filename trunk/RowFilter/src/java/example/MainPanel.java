@@ -96,7 +96,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 180));
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -108,7 +108,7 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("example", ""));
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -201,7 +201,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
-class Test{
+class Test {
     private String name, comment;
     public Test(String name, String comment) {
         this.name = name;

@@ -8,7 +8,7 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final BarFactory barFactory;
     private final JFrame frame;
 
@@ -81,7 +81,7 @@ public class MainPanel extends JPanel{
             fileHistory.add(mi, i);
         }
     }
-    class HistoryAction extends AbstractAction{
+    class HistoryAction extends AbstractAction {
 //         private final File file;
 //         public HistoryAction(File file_) {
 //             super();
@@ -141,7 +141,7 @@ public class MainPanel extends JPanel{
         return barFactory.getAction(cmd);
     }
 
-    private static class NewAction extends AbstractAction{
+    private static class NewAction extends AbstractAction {
         public NewAction() {
             super("new");
         }
@@ -150,7 +150,7 @@ public class MainPanel extends JPanel{
         }
     }
 
-    private class OpenAction extends AbstractAction{
+    private class OpenAction extends AbstractAction {
         private int count = 0;
         public OpenAction() {
             super("open");
@@ -173,7 +173,7 @@ public class MainPanel extends JPanel{
         }
     }
 
-    private static class SaveAsAction extends AbstractAction{
+    private static class SaveAsAction extends AbstractAction {
         public SaveAsAction() {
             super("saveAs");
         }
@@ -182,7 +182,7 @@ public class MainPanel extends JPanel{
         }
     }
 
-    private class ExitAction extends AbstractAction{
+    private class ExitAction extends AbstractAction {
         public ExitAction() {
             super("exit");
         }
@@ -196,7 +196,7 @@ public class MainPanel extends JPanel{
 //     protected void exitActionPerformed() {
 //     }
 
-    protected static class HelpAction extends AbstractAction{
+    protected static class HelpAction extends AbstractAction {
         public HelpAction() {
             super("help");
         }
@@ -209,7 +209,7 @@ public class MainPanel extends JPanel{
     private static final String APP_NAME  = "@title@";
     private static final String VERSION   = "0.0";
     private static final int    RELEASE   = 1;
-    protected class VersionAction extends AbstractAction{
+    protected class VersionAction extends AbstractAction {
         public VersionAction() {
             super("version");
         }

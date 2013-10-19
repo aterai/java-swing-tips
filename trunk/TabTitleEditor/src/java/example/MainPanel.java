@@ -48,7 +48,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TabTitleEditListener extends MouseAdapter implements ChangeListener{
+class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     private final JTextField editor = new JTextField();
     private final JTabbedPane tabbedPane;
     public TabTitleEditListener(final JTabbedPane tabbedPane) {

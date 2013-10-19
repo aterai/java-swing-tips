@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import static javax.swing.GroupLayout.Alignment;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextField tf1 = new JTextField();
     private final JTextField tf2 = new JTextField();
     private final JTextField tf3 = new JTextField();

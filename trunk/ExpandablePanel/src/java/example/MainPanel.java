@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private Box northBox  = Box.createVerticalBox();
     private Box centerBox = Box.createVerticalBox();
     private Box southBox  = Box.createVerticalBox();
@@ -196,12 +196,12 @@ abstract class ExpansionPanel extends JPanel {
 //*/
 }
 
-class ExpansionEvent extends EventObject{
+class ExpansionEvent extends EventObject {
     public ExpansionEvent(Object source) {
         super(source);
     }
 }
 
-interface ExpansionListener extends EventListener{
+interface ExpansionListener extends EventListener {
     public void expansionStateChanged(ExpansionEvent e);
 }

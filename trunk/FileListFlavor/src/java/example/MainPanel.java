@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -190,7 +190,7 @@ class FileModel extends DefaultTableModel {
         }
     }
 }
-class FileName{
+class FileName {
     private String name, absolutePath;
     public FileName(String name, String absolutePath) {
         this.name = name;

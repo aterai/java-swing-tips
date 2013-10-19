@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-class TitledSeparator extends JLabel{
+class TitledSeparator extends JLabel {
     private Color color;
     private final String title;
     private final Color target;

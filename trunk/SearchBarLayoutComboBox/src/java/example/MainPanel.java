@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
@@ -72,7 +72,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class SearchEngine{
+class SearchEngine {
     public final String name;
     public final String url;
     public final ImageIcon favicon;
@@ -87,7 +87,7 @@ class SearchEngine{
 }
 
 @SuppressWarnings("unchecked")
-class JSearchBar extends JComboBox{
+class JSearchBar extends JComboBox {
     private static final String uiClassID = "SearchBarComboBoxUI";
     @Override public String getUIClassID() {
         return uiClassID;

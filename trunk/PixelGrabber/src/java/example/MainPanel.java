@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel p = new JPanel(cardLayout);
     public MainPanel() {

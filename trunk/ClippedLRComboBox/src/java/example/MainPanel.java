@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JComboBox combo1 = makeComboBox(true);
     private final JComboBox combo2 = makeComboBox(false);
     public MainPanel() {
@@ -82,7 +82,7 @@ public class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
+class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
     private final JLabel leftLabel = new JLabel();
     private final JLabel rightLabel;
     public MultiColumnCellRenderer(int rightWidth) {
@@ -134,7 +134,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer{
     }
 }
 
-class LRItem{
+class LRItem {
     private final String leftText;
     private final String rightText;
     public LRItem(String strLeft, String strRight) {

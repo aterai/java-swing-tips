@@ -8,7 +8,7 @@ import java.awt.image.*;
 import java.net.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     private final URL url = getClass().getResource("16x16transparent.png");
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());

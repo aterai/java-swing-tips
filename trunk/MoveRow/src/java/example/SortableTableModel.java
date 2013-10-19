@@ -127,7 +127,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         return (i == null) ? NONE : i;
     }
 }
-class HeaderMouseListener extends MouseAdapter{
+class HeaderMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         JTableHeader h = (JTableHeader) e.getSource();
         TableColumnModel columnModel = h.getColumnModel();

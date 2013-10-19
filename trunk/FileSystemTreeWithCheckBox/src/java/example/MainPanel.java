@@ -107,7 +107,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TriStateCheckBox extends JCheckBox{
+class TriStateCheckBox extends JCheckBox {
     private Icon currentIcon;
     @Override public void updateUI() {
         currentIcon = getIcon();
@@ -142,7 +142,7 @@ class IndeterminateIcon implements Icon {
 }
 
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
-class CheckBoxNode{
+class CheckBoxNode {
     public final File file;
     public final Status status;
     public CheckBoxNode(File file) {
@@ -158,7 +158,7 @@ class CheckBoxNode{
     }
 }
 
-class FolderSelectionListener implements TreeSelectionListener{
+class FolderSelectionListener implements TreeSelectionListener {
     private final FileSystemView fileSystemView;
     public FolderSelectionListener(FileSystemView fileSystemView) {
         this.fileSystemView = fileSystemView;
@@ -393,7 +393,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
     }
 }
 
-class CheckBoxStatusUpdateListener implements TreeModelListener{
+class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting = false;
     @Override public void treeNodesChanged(TreeModelEvent e) {
         if(adjusting) return;

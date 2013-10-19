@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextArea log = new JTextArea();
     private final JTextField field = new JTextField(24);
     private final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");

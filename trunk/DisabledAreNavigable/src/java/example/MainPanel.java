@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static JCheckBox check = new JCheckBox(new AbstractAction("MenuItem.disabledAreNavigable") {
         @Override public void actionPerformed(ActionEvent e) {
             Boolean b = ((JCheckBox)e.getSource()).isSelected();
@@ -60,7 +60,7 @@ public class MainPanel extends JPanel{
         }
         return menu;
     }
-    private static class ExitAction extends AbstractAction{
+    private static class ExitAction extends AbstractAction {
         public ExitAction() {
             super("Exit");
         }
@@ -141,7 +141,7 @@ public class MainPanel extends JPanel{
         }
     }
 
-    private static class ChangeLookAndFeelAction extends AbstractAction{
+    private static class ChangeLookAndFeelAction extends AbstractAction {
         private final String laf;
         protected ChangeLookAndFeelAction(String laf) {
             super("ChangeTheme");

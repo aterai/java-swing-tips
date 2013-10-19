@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JComboBox combo00 = makeComboBox();
     private final JComboBox combo01 = makeComboBox();
     private final JComboBox combo02 = makeComboBox();
@@ -42,7 +42,7 @@ public class MainPanel extends JPanel{
         return new JComboBox(model);
     }
     // https://forums.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
-    private static class WidePopupMenuListener implements PopupMenuListener{
+    private static class WidePopupMenuListener implements PopupMenuListener {
         private static final int POPUP_MIN_WIDTH = 300;
         private boolean adjusting = false;
         @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {

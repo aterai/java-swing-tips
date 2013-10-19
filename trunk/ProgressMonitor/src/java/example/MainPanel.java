@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 180));
     }
-    class RunAction extends AbstractAction{
+    class RunAction extends AbstractAction {
         public RunAction() {
             super("run");
         }

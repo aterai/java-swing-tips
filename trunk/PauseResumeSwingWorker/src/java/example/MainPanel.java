@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextArea area      = new JTextArea();
     private final JPanel statusPanel  = new JPanel(new BorderLayout());
     private final JButton runButton   = new JButton(new RunAction());
@@ -35,7 +35,7 @@ public class MainPanel extends JPanel{
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class RunAction extends AbstractAction{
+    class RunAction extends AbstractAction {
         public RunAction() {
             super("run");
         }
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel{
                     return "Done";
                 }
                 private final Random r = new Random();
-                private void convertFileToSomething() throws InterruptedException{
+                private void convertFileToSomething() throws InterruptedException {
                     boolean blinking = false;
                     int current = 0;
                     int lengthOfTask = 10+r.nextInt(50); //long lengthOfTask = file.length();
@@ -148,7 +148,7 @@ public class MainPanel extends JPanel{
             worker.execute();
         }
     }
-    class CancelAction extends AbstractAction{
+    class CancelAction extends AbstractAction {
         public CancelAction() {
             super("cancel");
         }
@@ -162,7 +162,7 @@ public class MainPanel extends JPanel{
             pauseButton.setEnabled(false);
         }
     }
-    class PauseAction extends AbstractAction{
+    class PauseAction extends AbstractAction {
         public PauseAction() {
             super("pause");
         }
@@ -231,7 +231,7 @@ class Progress {
 //         setPreferredSize(new Dimension(320, 240));
 //     }
 //
-//     class RunAction extends AbstractAction{
+//     class RunAction extends AbstractAction {
 //         public RunAction() {
 //             super("run");
 //         }
@@ -272,7 +272,7 @@ class Progress {
 //                     return "Done";
 //                 }
 //                 private final Random r = new Random();
-//                 private void convertFileToSomething() throws InterruptedException{
+//                 private void convertFileToSomething() throws InterruptedException {
 //                     int current = 0;
 //                     int lengthOfTask = 10+r.nextInt(50); //long lengthOfTask = file.length();
 //                     while(current<=lengthOfTask && !isCancelled()) {
@@ -315,7 +315,7 @@ class Progress {
 //             worker.execute();
 //         }
 //     }
-//     class CancelAction extends AbstractAction{
+//     class CancelAction extends AbstractAction {
 //         public CancelAction() {
 //             super("cancel");
 //         }

@@ -9,7 +9,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 

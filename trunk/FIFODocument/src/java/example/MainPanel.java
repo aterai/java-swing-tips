@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final int MAX_LINES = 10;
     private final JTextArea jta = new JTextArea();
     private final JButton start = new JButton("Start");

@@ -77,7 +77,7 @@ public class MainPanel extends JPanel {
         }
     }
     static private int count = 0;
-    class NewTabAction extends AbstractAction{
+    class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
             count++;
         }
     }
-    class CloseAllAction extends AbstractAction{
+    class CloseAllAction extends AbstractAction {
         public CloseAllAction(String label, Icon icon) {
             super(label,icon);
         }

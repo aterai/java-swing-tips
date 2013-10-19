@@ -6,7 +6,7 @@ import java.awt.*;
 import java.net.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     JTextField field = new JTextField("example/test.png");
 
     public MainPanel() {

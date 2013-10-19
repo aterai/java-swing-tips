@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextField pf1 = new JTextField(25);
     private final JTextField pf2;
     public MainPanel() {

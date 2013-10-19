@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
@@ -57,7 +58,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
             }
         }
 
-        class CloseButton extends JButton implements javax.swing.plaf.UIResource {
+        class CloseButton extends JButton implements UIResource {
             public CloseButton(int index) {
                 super(new CloseButtonAction(index));
                 setToolTipText("Close this tab");
@@ -124,7 +125,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
             }
         }
 
-        class CloseButton extends JButton implements javax.swing.plaf.UIResource {
+        class CloseButton extends JButton implements UIResource {
             public CloseButton(int index) {
                 super(new CloseButtonAction(index));
                 setToolTipText("Close this tab");

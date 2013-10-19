@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JComboBox combo00 = makeComboBox();
     private final JComboBox combo01 = makeComboBox();
     public MainPanel() {

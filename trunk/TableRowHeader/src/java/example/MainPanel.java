@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -73,7 +73,7 @@ public class MainPanel extends JPanel {
         table.scrollRectToVisible(rect);
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -175,7 +175,7 @@ class RowHeaderList extends JList {
     }
     private int rollOverRowIndex = -1;
     private int pressedRowIndex  = -1;
-    class RollOverListener extends MouseAdapter{
+    class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             if(pressedRowIndex<0) {
                 //pressedRowIndex  = -1;
@@ -276,7 +276,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
-class Test{
+class Test {
     private String name, comment;
     public Test(String name, String comment) {
         this.name = name;

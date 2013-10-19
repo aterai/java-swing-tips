@@ -72,7 +72,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TriStateCheckBox extends JCheckBox{
+class TriStateCheckBox extends JCheckBox {
     private Icon currentIcon;
     @Override public void updateUI() {
         currentIcon = getIcon();
@@ -107,7 +107,7 @@ class IndeterminateIcon implements Icon {
 }
 
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
-class CheckBoxNode{
+class CheckBoxNode {
     public final String label;
     public final Status status;
     public CheckBoxNode(String label) {
@@ -123,7 +123,7 @@ class CheckBoxNode{
     }
 }
 
-class CheckBoxStatusUpdateListener implements TreeModelListener{
+class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting = false;
     @Override public void treeNodesChanged(TreeModelEvent e) {
         if(adjusting) return;

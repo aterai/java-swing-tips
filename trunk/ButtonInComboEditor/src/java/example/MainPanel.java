@@ -246,7 +246,7 @@ class MainPanel extends JPanel {
         });
         return combo;
     }
-    private static class TestItem{
+    private static class TestItem {
         public final String url;
         public final ImageIcon favicon;
         public final boolean hasRSS;

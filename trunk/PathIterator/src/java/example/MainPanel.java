@@ -272,7 +272,7 @@ class StarburstSVGMaker {
 //         }
 //     }
 }
-class StarIcon implements Icon{
+class StarIcon implements Icon {
     private final Shape star;
     private final boolean antialias;
     public StarIcon(Shape s, boolean a) {
@@ -297,7 +297,7 @@ class StarIcon implements Icon{
         g2d.translate(-x, -y);
     }
 }
-// class FileWriter{
+// class FileWriter {
 //     private final File file;
 //     public FileWriter(File file){
 //         this.file = file;

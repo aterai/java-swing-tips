@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final int USER_SPECIFIED_NUMBER_OF_ROWS = 5;
     private final JCheckBox check = new JCheckBox("Custom Sorting");
     private final String[] columnNames = {"String", "Integer", "Boolean"};

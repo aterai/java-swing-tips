@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 180));
     }
 
-    class RunAction extends AbstractAction{
+    class RunAction extends AbstractAction {
         public RunAction() {
             super("run");
         }
@@ -109,7 +109,7 @@ public class MainPanel extends JPanel {
             worker.execute();
         }
     }
-    class CancelAction extends AbstractAction{
+    class CancelAction extends AbstractAction {
         public CancelAction() {
             super("cancel");
         }

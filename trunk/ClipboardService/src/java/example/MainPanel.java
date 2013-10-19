@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class TextComponentPopupMenu extends JPopupMenu{
+class TextComponentPopupMenu extends JPopupMenu {
     private final Action cutAction   = new DefaultEditorKit.CutAction();
     private final Action copyAction  = new DefaultEditorKit.CopyAction();
     private final Action pasteAction = new DefaultEditorKit.PasteAction();

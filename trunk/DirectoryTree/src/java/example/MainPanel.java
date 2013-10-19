@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class FolderSelectionListener implements TreeSelectionListener{
+class FolderSelectionListener implements TreeSelectionListener {
 //     private JFrame frame = null;
     private final FileSystemView fileSystemView;
     public FolderSelectionListener(FileSystemView fileSystemView) {

@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class StarPanel1 extends JPanel{
+class StarPanel1 extends JPanel {
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         int w = getWidth();
@@ -66,7 +66,7 @@ class StarPanel1 extends JPanel{
         g2.draw(p);
     }
 }
-class StarPanel2 extends JPanel{
+class StarPanel2 extends JPanel {
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         int w = getWidth();
@@ -84,7 +84,7 @@ class StarPanel2 extends JPanel{
         g2.draw(p);
     }
 }
-class StarPanel3 extends JPanel{
+class StarPanel3 extends JPanel {
     private static final int FONTSIZE = 80;
     private final Shape shape;
     public StarPanel3() {
@@ -102,7 +102,7 @@ class StarPanel3 extends JPanel{
         g2.draw(shape);
     }
 }
-// class StarPanel4 extends JPanel{
+// class StarPanel4 extends JPanel {
 //     @Override public void paintComponent(Graphics g) {
 //         Graphics2D g2 = (Graphics2D)g;
 //         int w = getWidth();
@@ -122,7 +122,7 @@ class StarPanel3 extends JPanel{
 //         g2.draw(p);
 //     }
 // }
-class StarIcon0 implements Icon{
+class StarIcon0 implements Icon {
     private final GeneralPath path = new GeneralPath();
     public StarIcon0() {
         //<blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
@@ -155,7 +155,7 @@ class StarIcon0 implements Icon{
         g2d.translate(-x, -y);
     }
 }
-class StarIcon1 implements Icon{
+class StarIcon1 implements Icon {
     private static final int R = 40;
     private final AffineTransform at;
     private final Shape star;
@@ -188,7 +188,7 @@ class StarIcon1 implements Icon{
         g2d.translate(-x, -y);
     }
 }
-class StarIcon2 implements Icon{
+class StarIcon2 implements Icon {
     private static final int R2 = 40;
     private static final int R1 = 20;
     //private static final double R1 = R2*Math.sin(Math.PI/10.0)/Math.cos(Math.PI/5.0); //=15.0;

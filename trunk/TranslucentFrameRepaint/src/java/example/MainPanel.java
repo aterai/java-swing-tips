@@ -13,7 +13,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
     private final JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
     private final Timer timer = new Timer(1000, new ActionListener() {
@@ -203,7 +203,7 @@ class MainPanel extends JPanel{
         frame.setVisible(true);
     }
 }
-class TexturePanel extends JPanel{
+class TexturePanel extends JPanel {
     public TexturePanel() {
         super();
     }

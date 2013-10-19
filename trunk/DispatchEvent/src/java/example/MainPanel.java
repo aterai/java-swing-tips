@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final int DELAY = 10*1000; //10s
     private final JLabel label = new JLabel("Not connected");
     private final JComboBox combo = makeComboBox();

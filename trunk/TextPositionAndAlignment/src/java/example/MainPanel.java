@@ -120,7 +120,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class StarburstIcon implements Icon{
+class StarburstIcon implements Icon {
     private static final int R2 = 24;
     private static final int R1 = 20;
     private static final int VC = 18;

@@ -94,7 +94,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -186,7 +186,7 @@ class FileModel extends DefaultTableModel {
         }
     }
 }
-class Test{
+class Test {
     private String name, comment;
     private int width, height;
     public Test(String name, String comment, int width, int height) {

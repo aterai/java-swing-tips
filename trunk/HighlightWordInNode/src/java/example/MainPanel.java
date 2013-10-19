@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTree tree       = new JTree();
     private final JTextField field = new JTextField("foo");
     private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
@@ -95,7 +95,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer{
+class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
     private static final Color backgroundSelectionColor = new Color(220, 240, 255);
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     public String q;

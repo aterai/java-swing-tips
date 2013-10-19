@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class CellIcon implements Icon{
+class CellIcon implements Icon {
     //http://weboook.blog22.fc2.com/blog-entry-342.html
     //Webpark 2012.11.15
     private static final Color TL = new Color(1f,1f,1f,.2f);
@@ -126,7 +126,7 @@ class CellIcon implements Icon{
     }
 }
 
-class ToggleButtonBarCellIcon implements Icon{
+class ToggleButtonBarCellIcon implements Icon {
     private static final Color TL = new Color(1f,1f,1f,.2f);
     private static final Color BR = new Color(0f,0f,0f,.2f);
     private static final Color ST = new Color(1f,1f,1f,.4f);

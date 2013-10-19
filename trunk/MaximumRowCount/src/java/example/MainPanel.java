@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JComboBox comboBox = makeComboBox();
     private final JSpinner spinner   = new JSpinner(new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1));
     public MainPanel() {

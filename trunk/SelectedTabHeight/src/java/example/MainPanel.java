@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static enum TabPlacements {
         TOP(JTabbedPane.TOP), BOTTOM(JTabbedPane.BOTTOM), LEFT(JTabbedPane.LEFT), RIGHT(JTabbedPane.RIGHT);
         public final int tabPlacement;

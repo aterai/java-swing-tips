@@ -93,7 +93,7 @@ class MainPanel extends JPanel {
     }
 }
 
-class LevelBar extends JPanel implements MouseListener, MouseMotionListener{
+class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
     private final int gap;
     protected final List<ImageIcon> iconList;
     protected final List<JLabel> labelList = Arrays.asList(

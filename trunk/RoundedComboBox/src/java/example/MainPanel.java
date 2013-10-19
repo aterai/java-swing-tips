@@ -13,7 +13,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final static Color BACKGROUND = Color.BLACK; //RED;
     private final static Color FOREGROUND = Color.WHITE; //YELLOW;
     private final static Color SELECTIONFOREGROUND = Color.CYAN;
@@ -190,7 +190,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class ArrowIcon implements Icon{
+class ArrowIcon implements Icon {
     private final Color color, rollover;
     public ArrowIcon(Color color, Color rollover) {
         this.color = color;

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final String PREFIX = "xxx_";
     private final Preferences prefs;
     private final JFrame frame;

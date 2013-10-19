@@ -211,7 +211,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable{
+    static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
             compare_count++;
             if(a.isLeaf() && !b.isLeaf()) {

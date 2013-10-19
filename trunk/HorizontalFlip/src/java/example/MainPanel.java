@@ -8,7 +8,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Font font = new Font(Font.MONOSPACED, Font.BOLD, 200);

@@ -11,7 +11,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.jnlp.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 //         //Test

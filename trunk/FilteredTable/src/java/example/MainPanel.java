@@ -136,7 +136,7 @@ class TestModel extends DefaultTableModel {
         fireTableDataChanged();
     }
 }
-class Test{
+class Test {
     private String name, comment;
     public Test(String name, String comment) {
         this.name = name;

@@ -184,7 +184,7 @@ class CheckBoxNode {
     }
 }
 
-class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer{
+class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
     private TreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
@@ -202,7 +202,7 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer{
     }
 }
 
-class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor{
+class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     private final JTree tree;
     public CheckBoxNodeEditor(JTree tree) {
         super();

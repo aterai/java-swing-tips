@@ -9,7 +9,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     private final JToolBar toolbar = new JToolBar("toolbar");
     private final JPopupMenu pop1  = new JPopupMenu();
     private final JPopupMenu pop2  = new JPopupMenu();

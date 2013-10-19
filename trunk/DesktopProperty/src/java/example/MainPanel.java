@@ -7,7 +7,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     String[] columnNames = {"Name", "Class", "Value"};
     DefaultTableModel model = new DefaultTableModel(null, columnNames);
     JTable table = new JTable(model);

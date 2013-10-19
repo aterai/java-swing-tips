@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class DraggableImageMouseListener extends MouseAdapter{
+class DraggableImageMouseListener extends MouseAdapter {
     private static final Color color = new Color(100,255,200,100);
     private static final int ir = 40, or = ir*3;
     private static final BasicStroke borderStroke = new BasicStroke(4.0f);

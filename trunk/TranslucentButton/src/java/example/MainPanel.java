@@ -138,7 +138,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TranslucentButton extends JButton{
+class TranslucentButton extends JButton {
     private static final Color TL = new Color(1f,1f,1f,.2f);
     private static final Color BR = new Color(0f,0f,0f,.4f);
     private static final Color ST = new Color(1f,1f,1f,.2f);
@@ -187,7 +187,7 @@ class TranslucentButton extends JButton{
     }
 }
 
-class TranslucentButtonIcon implements Icon{
+class TranslucentButtonIcon implements Icon {
     private static final Color TL = new Color(1f,1f,1f,.2f);
     private static final Color BR = new Color(0f,0f,0f,.4f);
     private static final Color ST = new Color(1f,1f,1f,.2f);

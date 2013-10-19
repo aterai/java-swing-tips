@@ -78,7 +78,7 @@ class MainPanel extends JPanel {
     }
 }
 
-class AnimatedToolTip extends JToolTip{
+class AnimatedToolTip extends JToolTip {
     private final JLabel iconlabel;
     public AnimatedToolTip(JLabel label) {
         this.iconlabel = label;

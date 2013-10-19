@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JList list1 = makeList();
     private final JList list2 = makeList();
     private final JList list3 = makeList();

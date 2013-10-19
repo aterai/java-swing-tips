@@ -139,7 +139,7 @@ class IconTable extends JTable {
         }
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
-    class MyGlassPane extends JPanel{
+    class MyGlassPane extends JPanel {
         public MyGlassPane() {
             super((LayoutManager)null);
             setOpaque(false);

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JPanel p = new JPanel(new BorderLayout(2,2));
     private final JTextArea textarea = new JTextArea();
     private final JButton nb = new JButton("NORTH");

@@ -8,14 +8,14 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
     private final MyButton   button = new MyButton("dummy");
     private final MyLabel    label  = new MyLabel("test");
     private final MyComboBox combo  = new MyComboBox();
 
-    static class MyComboBox extends JComboBox implements FontChangeListener{
+    static class MyComboBox extends JComboBox implements FontChangeListener {
         @SuppressWarnings("unchecked")
         public MyComboBox() {
             super(new DefaultComboBoxModel(new Object[] {"test test"}));
@@ -25,7 +25,7 @@ public class MainPanel extends JPanel{
             setFont(e.getFont());
         }
     }
-    static class MyLabel extends JLabel implements FontChangeListener{
+    static class MyLabel extends JLabel implements FontChangeListener {
         public MyLabel(String str) {
             super(str);
             setFont(FONT12);
@@ -34,7 +34,7 @@ public class MainPanel extends JPanel{
             setFont(e.getFont());
         }
     }
-    static class MyButton extends JButton implements FontChangeListener{
+    static class MyButton extends JButton implements FontChangeListener {
         public MyButton(String str) {
             super(str);
             setFont(FONT12);
@@ -150,10 +150,10 @@ public class MainPanel extends JPanel{
     }
 }
 
-interface FontChangeListener extends EventListener{
+interface FontChangeListener extends EventListener {
     public void fontStateChanged(FontChangeEvent e);
 }
-class FontChangeEvent extends EventObject{
+class FontChangeEvent extends EventObject {
     private final String command;
     private final Font font;
     public String getCommand() {

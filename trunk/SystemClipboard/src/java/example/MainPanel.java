@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.jnlp.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
     private ClipboardService cs = null;
     public MainPanel() {

@@ -131,7 +131,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class SliderPopupListener extends MouseAdapter{
+class SliderPopupListener extends MouseAdapter {
     private final JWindow toolTip = new JWindow();
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final Dimension size = new Dimension(30, 20);

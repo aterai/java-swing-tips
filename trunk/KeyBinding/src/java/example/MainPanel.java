@@ -193,7 +193,7 @@ class BindingMapModel extends DefaultTableModel {
         }
     }
 }
-class Binding{
+class Binding {
     private Integer focusType;
     private String actionName, keyDescription;
     public Binding(Integer focusType, String actionName, String keyDescription) {

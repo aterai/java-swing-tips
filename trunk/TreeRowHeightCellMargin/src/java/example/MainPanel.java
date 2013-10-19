@@ -124,7 +124,7 @@ class DotBorder extends LineBorder {
         //g2.translate(-x,-y);
     }
 }
-class ColorIcon implements Icon{
+class ColorIcon implements Icon {
     private final Color color;
     public ColorIcon(Color color) {
         this.color = color;

@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final Color evenBGColor = new Color(225,255,225);
     private static final Color oddBGColor  = new Color(255,255,255);
     private final JComboBox combo01 = makeComboBox();

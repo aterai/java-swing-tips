@@ -8,7 +8,7 @@ import java.text.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
@@ -86,7 +86,7 @@ public class MainPanel extends JPanel{
 //Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
 //>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 //Validating with Input Verifiers
-class IntegerInputVerifier extends InputVerifier{
+class IntegerInputVerifier extends InputVerifier {
     @Override public boolean verify(JComponent c) {
         boolean verified = false;
         JTextField textField = (JTextField)c;
@@ -194,7 +194,7 @@ class IntegerDocumentFilter extends DocumentFilter {
 
 //How to Use Formatted Text Fields
 //http://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
-class NumberFormatterFactory extends DefaultFormatterFactory{
+class NumberFormatterFactory extends DefaultFormatterFactory {
     //private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();
     //private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();
     //private static MaskFormatter mf;

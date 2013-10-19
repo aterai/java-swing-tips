@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     public MainPanel(JFrame frame) {
         super(new BorderLayout());

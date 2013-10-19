@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         String[] array = {
@@ -136,7 +136,7 @@ public class MainPanel extends JPanel{
 }
 
 @SuppressWarnings("unchecked")
-class ComboKeyHandler extends KeyAdapter{
+class ComboKeyHandler extends KeyAdapter {
     private final JComboBox comboBox;
     private final Vector<String> list = new Vector<String>();
     public ComboKeyHandler(JComboBox combo) {
@@ -233,7 +233,7 @@ class ComboKeyHandler extends KeyAdapter{
 //             editor.removeKeyListener(editorKeyListener);
 //         }
 //     }
-//     class ComboKeyHandler extends KeyAdapter{
+//     class ComboKeyHandler extends KeyAdapter {
 //         private boolean shouldHide = false;
 //         @Override public void keyTyped(final KeyEvent e) {
 //             EventQueue.invokeLater(new Runnable() {

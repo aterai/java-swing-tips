@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel{
+class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final List<String> icons = Arrays.asList(

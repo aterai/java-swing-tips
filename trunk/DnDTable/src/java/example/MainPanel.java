@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class TestCreateAction extends AbstractAction{
+    class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
         table.scrollRectToVisible(r);
     }
 
-    class DeleteAction extends AbstractAction{
+    class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
@@ -195,7 +195,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
         return flavor.getHumanPresentableName().equals(NAME);
     }
 
-    class CDropTargetListener implements DropTargetListener{
+    class CDropTargetListener implements DropTargetListener {
         // DropTargetListener interface
         @Override public void dragExit(DropTargetEvent e) {
             targetIndex = -1;

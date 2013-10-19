@@ -89,7 +89,7 @@ public class MainPanel extends JPanel {
         }
     }
 }
-class StarIcon implements Icon{
+class StarIcon implements Icon {
     private final Shape star;
     public StarIcon() {
         star = makeStar(8,4,5);

@@ -15,7 +15,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(makeList()));
@@ -70,7 +70,7 @@ public class MainPanel extends JPanel{
     }
 }
 
-class ListItem{
+class ListItem {
     private static final ImageFilter filter = new SelectedImageFilter();
     public final ImageIcon nicon;
     public final ImageIcon sicon;

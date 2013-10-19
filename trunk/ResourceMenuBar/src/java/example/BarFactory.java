@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
-public final class BarFactory{
+public final class BarFactory {
     final static private String imageSuffix  = "Image";
     final static private String labelSuffix  = "Label";
     final static private String actionSuffix = "Action";

@@ -141,7 +141,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TempFileTransferable implements Transferable{
+class TempFileTransferable implements Transferable {
     private final File file;
     public TempFileTransferable(File file) {
         this.file = file;

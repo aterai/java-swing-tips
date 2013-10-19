@@ -103,7 +103,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class JResizer extends JComponent { // implements Serializable{
+class JResizer extends JComponent { // implements Serializable {
     private transient MouseInputListener resizeListener;
 
     public JResizer(Component comp) {
@@ -116,8 +116,8 @@ class JResizer extends JComponent { // implements Serializable{
         setBorder(border);
     }
 //     private void writeObject(java.io.ObjectOutputStream out) throws IOException {}
-//     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException{}
-//     private void readObjectNoData() throws ObjectStreamException{}
+//     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {}
+//     private void readObjectNoData() throws ObjectStreamException {}
 //     private void readObject() {
 //         this.resizeListener = new ResizeMouseListener();
 //     }
@@ -333,7 +333,7 @@ class JResizer extends JComponent { // implements Serializable{
 
 //Resizable Components - Santhosh Kumar's Weblog
 //http://www.jroller.com/santhosh/entry/resizable_components
-interface ResizableBorder extends Border{
+interface ResizableBorder extends Border {
     public int getResizeCursor(MouseEvent e);
 }
 

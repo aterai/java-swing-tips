@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static final String dummy = "Hello";
     private final JTextArea textArea = new JTextArea();
     private final JTextField textField1 = new JTextField(dummy);

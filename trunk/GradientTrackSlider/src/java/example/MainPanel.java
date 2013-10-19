@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private static int[] makeGradientPallet() {
         BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2  = image.createGraphics();

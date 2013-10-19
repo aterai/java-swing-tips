@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 
-public class WindowState implements Serializable{
+public class WindowState implements Serializable {
     private static final long serialVersionUID = 1415435143L;
     private Point location = new Point(0, 0);
     private Dimension size = new Dimension(320, 240);

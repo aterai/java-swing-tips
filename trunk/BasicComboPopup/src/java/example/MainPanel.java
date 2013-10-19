@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextPane jtp = new JTextPane();
     private final BasicComboPopup popup;
     private final JComboBox combo = makeComboBox();

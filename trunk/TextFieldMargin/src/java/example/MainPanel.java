@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel {
     private final JTextField field00 = new JTextField("aaaaaaaaaaaaaaaa");
     private final JTextField field01 = new JTextField("bbbbbbb");
     private final JTextField field02 = new JTextField("ccccccccccccc");
