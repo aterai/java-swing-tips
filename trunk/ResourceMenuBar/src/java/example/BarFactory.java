@@ -29,11 +29,11 @@ public final class BarFactory{
         try{
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
                 //http://docs.oracle.com/javase/jp/6/api/java/util/ResourceBundle.Control.html
-                public List<String> getFormats(String baseName) {
+                @Override public List<String> getFormats(String baseName) {
                     if(baseName == null) throw new NullPointerException();
                     return Arrays.asList("properties");
                 }
-                public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+                @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
                     if(baseName == null || locale == null || format == null || loader == null) throw new NullPointerException();
                     ResourceBundle bundle = null;
                     if(format.equals("properties")) {
@@ -148,11 +148,11 @@ public final class BarFactory{
         JButton b;
         if(url!=null) {
             b = new JButton(new ImageIcon(url)) {
-                public float getAlignmentY() { return 0.5f; }
+                @Override public float getAlignmentY() { return 0.5f; }
             };
         }else{
             b = new JButton(getResourceString(key + labelSuffix)) {
-                public float getAlignmentY() { return 0.5f; }
+                @Override public float getAlignmentY() { return 0.5f; }
             };
         }
         b.setFocusPainted(false);

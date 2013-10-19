@@ -241,7 +241,7 @@ class MyLabel extends JLabel {
         public DotBorder(Color color, int thickness) {
             super(color, thickness);
         }
-        @Override public boolean isBorderOpaque() {return true;}
+        @Override public boolean isBorderOpaque() { return true; }
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
             Graphics2D g2 = (Graphics2D)g;
             g2.translate(x,y);
@@ -266,9 +266,9 @@ class MyLabel extends JLabel {
         //System.out.println(propertyName);
 //      //String literal pool
 //      if(propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
-//          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey) != null)) {
+//          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(BasicHTML.propertyKey) != null)) {
         if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName) ||
-                oldValue != newValue && ("font".equals(propertyName) && getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
+                oldValue != newValue && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

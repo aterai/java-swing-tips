@@ -58,7 +58,7 @@ public class MainPanel extends JPanel{
         final NumberFormat format = new DecimalFormat("####0"); //, dfs);
         NumberFormatter displayFormatter = new NumberFormatter(format);
         NumberFormatter editFormatter = new NumberFormatter(format) {
-            //protected DocumentFilter getDocumentFilter() {
+            //@Override protected DocumentFilter getDocumentFilter() {
             //    return new IntegerDocumentFilter();
             //}
             @Override public Object stringToValue(String text) throws ParseException {
@@ -151,20 +151,17 @@ public class MainPanel extends JPanel{
     }
 }
 // class IntegerDocumentFilter extends DocumentFilter {
-//     @Override public void insertString(DocumentFilter.FilterBypass fb,
-//                              int offset, String string, AttributeSet attr) throws BadLocationException {
+//     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
 //         if(string == null) {
 //             return;
 //         }else{
 //             replace(fb, offset, 0, string, attr);
 //         }
 //     }
-//     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length)
-//     throws BadLocationException {
+//     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
 //         replace(fb, offset, length, "", null);
 //     }
-//     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length,
-//                         String text, AttributeSet attrs) throws BadLocationException {
+//     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 //         Document doc = fb.getDocument();
 //         int currentLength = doc.getLength();
 //         String currentContent = doc.getText(0, currentLength);
@@ -175,8 +172,7 @@ public class MainPanel extends JPanel{
 //         checkInput(newValue, offset);
 //         fb.replace(offset, length, text, attrs);
 //     }
-//     private static int checkInput(String proposedValue, int offset)
-//     throws BadLocationException {
+//     private static int checkInput(String proposedValue, int offset) throws BadLocationException {
 //         int newValue = 0;
 //         if(proposedValue.length() > 0) {
 //             try{

@@ -123,7 +123,7 @@ class EditableTabbedPane extends JTabbedPane {
         public MyGlassPane() {
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-                @Override public boolean accept(Component c) {return c==editor;}
+                @Override public boolean accept(Component c) { return c==editor; }
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {

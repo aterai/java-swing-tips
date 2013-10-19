@@ -194,7 +194,7 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 //   public LockingGlassPane() {
 //     setOpaque(false);
 //     setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-//       @Override public boolean accept(Component c) {return false;}
+//       @Override public boolean accept(Component c) { return false; }
 //     });
 //     addKeyListener(new KeyAdapter() {});
 //     addMouseListener(new MouseAdapter() {});
