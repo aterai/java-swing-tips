@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
         p1.add(new JButton(new AbstractAction("Resizable(false)") {
             @Override public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser() {
-                    protected JDialog createDialog(Component parent) throws HeadlessException {
+                    @Override protected JDialog createDialog(Component parent) throws HeadlessException {
                         JDialog dialog = super.createDialog(parent);
                         dialog.setResizable(false);
                         return dialog;
@@ -39,7 +39,7 @@ public class MainPanel extends JPanel {
         p2.add(new JButton(new AbstractAction("MinimumSize(640,480)(JDK 6)") {
             @Override public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser() {
-                    protected JDialog createDialog(Component parent) throws HeadlessException {
+                    @Override protected JDialog createDialog(Component parent) throws HeadlessException {
                         JDialog dialog = super.createDialog(parent);
                         dialog.setMinimumSize(new Dimension(640,480));
                         return dialog;
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
         p2.add(new JButton(new AbstractAction("MinimumSize(640,480)") {
             @Override public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser() {
-                    protected JDialog createDialog(Component parent) throws HeadlessException {
+                    @Override protected JDialog createDialog(Component parent) throws HeadlessException {
                         final JDialog dialog = super.createDialog(parent);
                         dialog.addComponentListener(new ComponentAdapter() {
                             @Override public void componentResized(ComponentEvent e) {

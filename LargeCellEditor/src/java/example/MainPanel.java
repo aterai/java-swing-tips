@@ -150,7 +150,7 @@ class IconTable extends JTable {
                 }
             });
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-                @Override public boolean accept(Component c) {return c==editor;}
+                @Override public boolean accept(Component c) { return c==editor; }
             });
             //editor.requestFocusInWindow();
         }

@@ -116,7 +116,7 @@ class JResizer extends JComponent { // implements Serializable{
         setBorder(border);
     }
 //     private void writeObject(java.io.ObjectOutputStream out) throws IOException {}
-//     private void readObject(java.io.ObjectInputStream in)  throws IOException, ClassNotFoundException{}
+//     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException{}
 //     private void readObjectNoData() throws ObjectStreamException{}
 //     private void readObject() {
 //         this.resizeListener = new ResizeMouseListener();

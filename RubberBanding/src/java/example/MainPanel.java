@@ -131,7 +131,7 @@ class DotBorder extends EmptyBorder {
     public DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);
     }
-    @Override public boolean isBorderOpaque() {return true;}
+    @Override public boolean isBorderOpaque() { return true; }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         Graphics2D g2 = (Graphics2D)g;
         g2.translate(x,y);
@@ -142,9 +142,8 @@ class DotBorder extends EmptyBorder {
         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
         g2.translate(-x,-y);
     }
-    //public Insets getBorderInsets()
-    //public Insets getBorderInsets(Component c)
-    //public Insets getBorderInsets(Component c, Insets insets)
+    //@Override public Insets getBorderInsets(Component c)
+    //@Override public Insets getBorderInsets(Component c, Insets insets)
 }
 class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, MouseListener, MouseMotionListener {
     private final JLabel icon  = new JLabel((Icon)null, JLabel.CENTER);

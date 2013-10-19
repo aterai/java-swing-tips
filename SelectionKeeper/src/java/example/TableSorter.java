@@ -316,7 +316,7 @@ public class TableSorter extends AbstractTableModel {
         return tableModel.getColumnName(column);
     }
 
-    @Override public Class getColumnClass(int column) {
+    @Override public Class<?> getColumnClass(int column) {
         return tableModel.getColumnClass(column);
     }
 

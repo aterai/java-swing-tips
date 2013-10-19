@@ -76,8 +76,7 @@ public class MainPanel extends JPanel{
 //         return FinderUtil.findAll(
 //             VirtualMachine.list(),
 //             new IPredicate<VirtualMachineDescriptor>() {
-//                 @Override
-//                 public boolean evaluate(VirtualMachineDescriptor input) {
+//                 @Override public boolean evaluate(VirtualMachineDescriptor input) {
 //                     return input.displayName().equals(mainclassName);
 //                 }
 //             }).size();

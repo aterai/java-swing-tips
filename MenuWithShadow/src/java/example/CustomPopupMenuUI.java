@@ -83,7 +83,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
 
     private static final Insets insets = new Insets(0, 0, OFF, OFF);
     static class ShadowBorderInPanel extends AbstractBorder {
-        public Insets getBorderInsets(Component c) {
+        @Override public Insets getBorderInsets(Component c) {
             return insets;
         }
         @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
@@ -101,7 +101,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
                 screenShot = robot.createScreenCapture(rect);
             }catch(AWTException ex) { ex.printStackTrace(); }
         }
-        public Insets getBorderInsets(Component c) {
+        @Override public Insets getBorderInsets(Component c) {
             return insets;
         }
         @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {

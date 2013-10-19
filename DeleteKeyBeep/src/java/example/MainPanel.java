@@ -93,26 +93,26 @@ public class MainPanel extends JPanel {
 }
 
 class SizeFilter extends DocumentFilter {
-  int max = 5;
-  @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-    int len = fb.getDocument().getLength();
-    if(len+string.length()>max) {
-      Toolkit.getDefaultToolkit().beep();
-      return;
+    int max = 5;
+    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+        int len = fb.getDocument().getLength();
+        if(len+string.length()>max) {
+            Toolkit.getDefaultToolkit().beep();
+            return;
+        }
+        fb.insertString(offset, string, attr);
     }
-    fb.insertString(offset, string, attr);
-  }
-  @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
-    fb.remove(offset, length);
-  }
-  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)throws BadLocationException {
-    int len = fb.getDocument().getLength();
-    if(len-length+text.length()>max) {
-      Toolkit.getDefaultToolkit().beep();
-      return;
+    @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+        fb.remove(offset, length);
     }
-    fb.replace(offset, length, text, attrs);
-  }
+    @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)throws BadLocationException {
+        int len = fb.getDocument().getLength();
+        if(len-length+text.length()>max) {
+            Toolkit.getDefaultToolkit().beep();
+            return;
+        }
+        fb.replace(offset, length, text, attrs);
+    }
 }
 
 // //http://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
