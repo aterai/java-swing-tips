@@ -123,7 +123,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
         this.renderer = renderer;
         this.fileSystemView = fileSystemView;
     }
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel c = (JLabel)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         if(isSelected) {
             c.setOpaque(false);
@@ -152,7 +152,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 //     public LockingGlassPane() {
 //         setOpaque(false);
 //         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-//             @Override public boolean accept(Component c) {return false;}
+//             @Override public boolean accept(Component c) { return false; }
 //         });
 //         addKeyListener(new KeyAdapter() {});
 //         addMouseListener(new MouseAdapter() {});
