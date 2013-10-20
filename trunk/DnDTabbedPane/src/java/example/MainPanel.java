@@ -362,7 +362,9 @@ class DnDTabbedPane extends JTabbedPane {
         //Rectangle compRect   = getSelectedComponent().getBounds();
         Component comp = getSelectedComponent();
         int idx = 0;
-        while(comp==null && idx<getTabCount()) comp = getComponentAt(idx++);
+        while(comp==null && idx<getTabCount()) {
+            comp = getComponentAt(idx++);
+        }
         Rectangle compRect = (comp==null)?new Rectangle():comp.getBounds();
         int tabPlacement = getTabPlacement();
         if(tabPlacement==TOP) {

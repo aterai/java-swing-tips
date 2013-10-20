@@ -12,8 +12,9 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super();
-        add(new ImageCaptionLabel("Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SEREIAL NO: 00000000",
-                                  new ImageIcon(getClass().getResource("test.png"))));
+        String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SEREIAL NO: 00000000";
+        ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+        add(new ImageCaptionLabel(txt, icon));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -103,8 +104,9 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
             private int delay = 4;
             private int count = 0;
             @Override public void mouseEntered(MouseEvent e) {
-                if(animator!=null && animator.isRunning() ||
-                   yy==textArea.getPreferredSize().height) return;
+                if(animator!=null && animator.isRunning() || yy==textArea.getPreferredSize().height) {
+                    return;
+                }
                 final double h = (double)textArea.getPreferredSize().height;
                 animator = new Timer(delay, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
@@ -122,8 +124,9 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
                 animator.start();
             }
             @Override public void mouseExited(MouseEvent e) {
-                if(animator!=null && animator.isRunning() ||
-                   contains(e.getPoint()) && yy==textArea.getPreferredSize().height) return;
+                if(animator!=null && animator.isRunning() || contains(e.getPoint()) && yy==textArea.getPreferredSize().height) {
+                    return;
+                }
                 final double h = (double)textArea.getPreferredSize().height;
                 animator = new Timer(delay, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
@@ -144,8 +147,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         addHierarchyListener(this);
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 &&
-           animator!=null && !isDisplayable()) {
+        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {
             animator.stop();
         }
     }

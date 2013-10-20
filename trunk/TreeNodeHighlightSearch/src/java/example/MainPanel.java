@@ -57,8 +57,9 @@ public class MainPanel extends JPanel {
         if(node.toString().startsWith(q)) tree.expandPath(path.getParentPath());
         if(!node.isLeaf() && node.getChildCount()>=0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements())
-              searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+            while(e.hasMoreElements()) {
+                searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+            }
         }
     }
     private static void collapseAll(JTree tree, TreePath parent) {

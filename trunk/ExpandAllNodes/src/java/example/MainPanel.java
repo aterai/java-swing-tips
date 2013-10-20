@@ -76,8 +76,11 @@ public class MainPanel extends JPanel {
                 visitAll(tree, path, expand);
             }
         }
-        if(expand) tree.expandPath(parent);
-        else       tree.collapsePath(parent);
+        if(expand) {
+            tree.expandPath(parent);
+        }else{
+            tree.collapsePath(parent);
+        }
     }
 
     //Expand or collapse a JTree - Real's Java How-to

@@ -144,8 +144,9 @@ public class MainPanel extends JPanel {
         }
         if(!node.isLeaf() && node.getChildCount()>=0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements())
-              searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
+            while(e.hasMoreElements()) {
+                searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
+            }
         }
     }
 
