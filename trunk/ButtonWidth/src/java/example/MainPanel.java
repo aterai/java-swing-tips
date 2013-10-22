@@ -107,7 +107,7 @@ public class MainPanel extends JPanel {
         return box;
     }
 
-    private static JComponent createRightAlignButtonBox2(final List<JButton> list, final int buttonWidth, final int gap) {
+    private static JComponent createRightAlignButtonBox2(final List<JButton> list, final int buttonWidth, int gap) {
         JComponent box = new JPanel() {
             @Override public void updateUI() {
                 for(JButton b: list) {
@@ -120,10 +120,11 @@ public class MainPanel extends JPanel {
                         for(JButton b: list) {
                             maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
                         }
-                        System.out.println(maxHeight);
+                        Dimension d = new Dimension(buttonWidth, maxHeight);
                         for(JButton b: list) {
-                            b.setPreferredSize(new Dimension(buttonWidth, maxHeight));
+                            b.setPreferredSize(d);
                         }
+                        revalidate();
                     }
                 });
             }
