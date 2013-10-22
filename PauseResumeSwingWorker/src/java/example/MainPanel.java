@@ -5,9 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 //import java.beans.*;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import javax.swing.*;
+import javax.swing.text.Document;
 
 public class MainPanel extends JPanel {
     private final JTextArea area      = new JTextArea();
@@ -21,13 +22,15 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(5,5));
         area.setEditable(false);
+
+        JPanel p = new JPanel(new GridLayout(1, 3, 2, 2));
+        p.add(runButton);
+        p.add(canButton);
+        p.add(pauseButton);
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(runButton);
+        box.add(p);
         box.add(Box.createHorizontalStrut(2));
-        box.add(canButton);
-        box.add(Box.createHorizontalStrut(2));
-        box.add(pauseButton);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
@@ -109,7 +112,7 @@ public class MainPanel extends JPanel {
                                   area.append("*");
                               }else{
                                   try{
-                                      javax.swing.text.Document doc = area.getDocument();
+                                      Document doc = area.getDocument();
                                       doc.remove(area.getDocument().getLength()-1, 1);
                                   }catch(Exception ex) {
                                       ex.printStackTrace();
