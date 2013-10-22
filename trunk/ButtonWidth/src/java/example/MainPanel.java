@@ -17,45 +17,46 @@ public class MainPanel extends JPanel {
         box1.add(new JButton("default"));
         box1.add(Box.createHorizontalStrut(5));
         box1.add(new JButton("a"));
-        //box1.add(Box.createHorizontalStrut(5));
-        box1.setBorder(BorderFactory.createEmptyBorder(5,0,5,5));
+        box1.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
-        JButton button1 = new JButton("getPreferredSize");
-        JButton button2 = new JButton("xxx");
-        Dimension dim = button1.getPreferredSize();
-        button1.setPreferredSize(new Dimension(120, dim.height));
-        button2.setPreferredSize(new Dimension(120, dim.height));
-
-        JComponent box2 = Box.createHorizontalBox();
-        box2.add(Box.createHorizontalGlue());
-        box2.add(button1);
-        box2.add(Box.createHorizontalStrut(5));
-        box2.add(button2);
-        //box2.add(Box.createHorizontalStrut(5));
-        box2.setBorder(BorderFactory.createEmptyBorder(5,0,5,5));
-        //box2.add(Box.createRigidArea(new Dimension(0, dim.height+10)));
-
-        JComponent box3 = createRightAlignButtonBox(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, dim.height, 5);
-
-        JComponent box4 = createRightAlignButtonBox2(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, dim.height, 2);
+        JComponent box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")), 120, 5);
+        JComponent box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, 5);
+        JComponent box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, 2);
+        JComponent box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"), new JButton("gap:2")), 2);
 
         Box box = Box.createVerticalBox();
-        //box.add(Box.createVerticalGlue());
+        box.add(new JSeparator()); box.add(box5);
         box.add(new JSeparator()); box.add(box4);
         box.add(new JSeparator()); box.add(box3);
         box.add(new JSeparator()); box.add(box2);
         box.add(new JSeparator()); box.add(box1);
-
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createRightAlignButtonBox2(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
-        SpringLayout layout = new SpringLayout();
-        JPanel p = new JPanel(layout);
-        SpringLayout.Constraints pCons = layout.getConstraints(p);
-        pCons.setConstraint(SpringLayout.SOUTH, Spring.constant(buttonHeight+gap+gap));
+    private static JComponent createRightAlignButtonBox5(List<JButton> list, int gap) {
+        JPanel p = new JPanel(new GridLayout(1, list.size(), gap, gap));
+        for(JButton b: list) {
+            p.add(b);
+        }
+        Box box = Box.createHorizontalBox();
+        box.add(Box.createHorizontalGlue());
+        box.add(p);
+        box.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
+        return box;
+    }
 
+    private static JComponent createRightAlignButtonBox4(final List<JButton> list, final int buttonWidth, final int gap) {
+        SpringLayout layout = new SpringLayout();
+        JPanel p = new JPanel(layout) {
+            @Override public Dimension getPreferredSize() {
+                int maxHeight = 0;
+                for(JButton b: list) {
+                    maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
+                }
+                return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
+            }
+        };
         Spring x     = layout.getConstraint(SpringLayout.WIDTH, p);
         Spring y     = Spring.constant(gap);
         Spring g     = Spring.minus(Spring.constant(gap));
@@ -71,11 +72,19 @@ public class MainPanel extends JPanel {
         return p;
     }
 
-    private static JComponent createRightAlignButtonBox(List<JButton>list, int buttonWidth, int buttonHeight, int gap) {
+    private static JComponent createRightAlignButtonBox3(final List<JButton> list, final int buttonWidth, final int gap) {
         SpringLayout layout = new SpringLayout();
-        JPanel p = new JPanel(layout);
+        JPanel p = new JPanel(layout) {
+            @Override public Dimension getPreferredSize() {
+                int maxHeight = 0;
+                for(JButton b: list) {
+                    maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
+                }
+                return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
+            }
+        };
         SpringLayout.Constraints pCons = layout.getConstraints(p);
-        pCons.setConstraint(SpringLayout.SOUTH, Spring.constant(buttonHeight+gap+gap));
+        //pCons.setConstraint(SpringLayout.SOUTH, Spring.constant(p.getPreferredSize().height));
         pCons.setConstraint(SpringLayout.EAST,  Spring.constant((buttonWidth+gap)*list.size()));
 
         Spring x     = Spring.constant(0);
@@ -95,6 +104,37 @@ public class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(p);
+        return box;
+    }
+
+    private static JComponent createRightAlignButtonBox2(final List<JButton> list, final int buttonWidth, final int gap) {
+        JComponent box = new JPanel() {
+            @Override public void updateUI() {
+                for(JButton b: list) {
+                    b.setPreferredSize(null);
+                }
+                super.updateUI();
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        int maxHeight = 0;
+                        for(JButton b: list) {
+                            maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
+                        }
+                        System.out.println(maxHeight);
+                        for(JButton b: list) {
+                            b.setPreferredSize(new Dimension(buttonWidth, maxHeight));
+                        }
+                    }
+                });
+            }
+        };
+        box.setLayout(new BoxLayout(box, BoxLayout.X_AXIS));
+        box.add(Box.createHorizontalGlue());
+        for(JButton b: list) {
+            box.add(b);
+            box.add(Box.createHorizontalStrut(gap));
+        }
+        box.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0));
         return box;
     }
 
