@@ -21,9 +21,8 @@ public class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
     private DefaultListModel makeIconList() {
-        DefaultListModel list = new DefaultListModel();
+        DefaultListModel<MyIcon> list = new DefaultListModel<>();
         list.addElement(new MyIcon("wi0009"));
         list.addElement(new MyIcon("wi0054"));
         list.addElement(new MyIcon("wi0062"));
@@ -35,7 +34,6 @@ public class MainPanel extends JPanel {
         list.addElement(new MyIcon("wi0124"));
         return list;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
