@@ -35,7 +35,11 @@ public class MainPanel extends JPanel {
     }
 
     private static JComponent createRightAlignButtonBox5(List<JButton> list, int gap) {
-        JPanel p = new JPanel(new GridLayout(1, list.size(), gap, gap));
+        JPanel p = new JPanel(new GridLayout(1, list.size(), gap, gap)) {
+            @Override public Dimension getMaximumSize() {
+                return super.getPreferredSize();
+            }
+        };
         for(JButton b: list) {
             p.add(b);
         }
