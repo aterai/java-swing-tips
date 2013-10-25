@@ -97,8 +97,8 @@ class LabelTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(DragPanel.class, DataFlavor.javaJVMLocalObjectMimeType, "JLabel");
         window.add(label);
         //window.setAlwaysOnTop(true); // AccessControlException: access denied ("java.awt.AWTPermission" "setWindowAlwaysOnTop")
-        com.sun.awt.AWTUtilities.setWindowOpaque(window, false); // JDK 1.6.0
-        //window.setBackground(new Color(0,true)); // JDK 1.7.0
+        //com.sun.awt.AWTUtilities.setWindowOpaque(window, false); // JDK 1.6.0
+        window.setBackground(new Color(0,true)); // JDK 1.7.0
         DragSource.getDefaultDragSource().addDragSourceMotionListener(
             new DragSourceMotionListener() {
                 @Override public void dragMouseMoved(DragSourceDragEvent dsde) {
@@ -137,15 +137,16 @@ class LabelTransferHandler extends TransferHandler {
                 return false;
             }
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                if(flavor.equals(DataFlavor.stringFlavor)) {
-                    return ss.getTransferData(flavor);
-                }else if(flavor.equals(DataFlavor.plainTextFlavor)) {
-                    return ss.getTransferData(flavor);
-                }else if(flavor.equals(localObjectFlavor)) {
-                    return dh.getTransferData(flavor);
-                }else{
-                    throw new UnsupportedFlavorException(flavor);
-                }
+                return ss.getTransferData(flavor);
+//                 if(flavor.equals(DataFlavor.stringFlavor)) {
+//                     return ss.getTransferData(flavor);
+//                 }else if(flavor.equals(DataFlavor.plainTextFlavor)) {
+//                     return ss.getTransferData(flavor);
+//                 }else if(flavor.equals(localObjectFlavor)) {
+//                     return dh.getTransferData(flavor);
+//                 }else{
+//                     throw new UnsupportedFlavorException(flavor);
+//                 }
             }
         };
     }
