@@ -19,6 +19,7 @@ public class MainPanel extends JPanel {
             bi = ImageIO.read(url);
         }catch(Exception ex){
             ex.printStackTrace();
+            return;
         }
         final ImageIcon icon9 = new ImageIcon(bi);
         final ImageIcon animatedIcon = new ImageIcon(url);
