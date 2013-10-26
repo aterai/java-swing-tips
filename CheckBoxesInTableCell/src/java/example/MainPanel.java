@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.UIResource;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -126,7 +125,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, S
         updateButtons(value);
         return this;
     }
-    public static class UIResource extends CheckBoxesRenderer implements UIResource {}
+    //public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
 }
 
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Serializable {

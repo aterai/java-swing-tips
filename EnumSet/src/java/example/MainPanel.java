@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.UIResource;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -149,7 +148,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, j
         updateButtons(value);
         return this;
     }
-    public static class UIResource extends CheckBoxesRenderer implements UIResource {}
+    //public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
 }
 
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
