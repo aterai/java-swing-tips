@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
 // import javax.swing.event.*;
-import javax.swing.plaf.UIResource;
 import javax.swing.table.*;
 // import javax.swing.text.*;
 
@@ -106,7 +105,7 @@ public class MainPanel extends JPanel {
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
-    public static class UIResource extends TextAreaCellRenderer implements UIResource {}
+    //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
     public TextAreaCellRenderer() {
         super();
         setLineWrap(true);
