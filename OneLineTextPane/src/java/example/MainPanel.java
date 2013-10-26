@@ -121,6 +121,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     @Override public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
         // @see PlainDocument#insertString(...)
+        int length = 0;
         if(str != null && str.indexOf('\n') >= 0) {
             StringBuilder filtered = new StringBuilder(str);
             int n = filtered.length();
@@ -130,9 +131,10 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
                 }
             }
             str = filtered.toString();
+            length = str.length();
         }
         super.insertString(offset, str, a);
-        processChangedLines(offset, str.length());
+        processChangedLines(offset, length);
     }
     @Override public void remove(int offset, int length) throws BadLocationException {
         super.remove(offset, length);

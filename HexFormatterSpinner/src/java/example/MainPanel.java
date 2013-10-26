@@ -114,7 +114,7 @@ public class MainPanel extends JPanel {
                     throw new ParseException(text, 0);
                 }
             }
-            private final String MASK = "000000";
+            private static final String MASK = "000000";
             @Override public String valueToString(Object value) throws ParseException {
                 String str = MASK + Integer.toHexString((Integer)value).toUpperCase();
                 int i = str.length() - MASK.length();
