@@ -630,7 +630,7 @@ class ButtonTabComponent extends JPanel {
             int size = 17;
             setPreferredSize(new Dimension(size, size));
             setToolTipText("close this tab");
-            setUI(new javax.swing.plaf.basic.BasicButtonUI());
+            setUI(new BasicButtonUI());
             setContentAreaFilled(false);
             setFocusable(false);
             setBorder(BorderFactory.createEtchedBorder());

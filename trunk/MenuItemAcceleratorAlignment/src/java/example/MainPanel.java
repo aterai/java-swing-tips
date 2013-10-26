@@ -132,7 +132,7 @@ class MenuItemUIHelper {
     public static void paintCheckIcon(Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
         if(lh.getCheckIcon() != null) {
             ButtonModel model = lh.getMenuItem().getModel();
-            if(model.isArmed() || (lh.getMenuItem() instanceof JMenu && model.isSelected())) {
+            if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
             }else{
                 g.setColor(holdc);
@@ -161,7 +161,7 @@ class MenuItemUIHelper {
                 }
             }else{
                 // *** paint the accText normally
-                if(model.isArmed() || (lh.getMenuItem() instanceof JMenu && model.isSelected())) {
+                if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                     g.setColor(acceleratorSelectionForeground);
                 }else{
                     g.setColor(acceleratorForeground);
@@ -177,7 +177,7 @@ class MenuItemUIHelper {
     public static void paintArrowIcon(Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
         if(lh.getArrowIcon() != null) {
             ButtonModel model = lh.getMenuItem().getModel();
-            if(model.isArmed() || (lh.getMenuItem() instanceof JMenu && model.isSelected())) {
+            if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
             }
             if(lh.useCheckAndArrow()) {
@@ -190,8 +190,8 @@ class MenuItemUIHelper {
         if(insets != null) {
             rect.x += insets.left;
             rect.y += insets.top;
-            rect.width -= (insets.right + rect.x);
-            rect.height -= (insets.bottom + rect.y);
+            rect.width  -= insets.right  + rect.x;
+            rect.height -= insets.bottom + rect.y;
         }
     }
 }

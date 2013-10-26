@@ -8,15 +8,16 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    private static JCheckBox check = new JCheckBox(new AbstractAction("MenuItem.disabledAreNavigable") {
+    private static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
+    private static JCheckBox check = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
         @Override public void actionPerformed(ActionEvent e) {
             Boolean b = ((JCheckBox)e.getSource()).isSelected();
-            UIManager.put("MenuItem.disabledAreNavigable", b);
+            UIManager.put(DISABLED_ARE_NAVIGABLE, b);
         }
     });
     public MainPanel() {
         super();
-        Boolean b = UIManager.getBoolean("MenuItem.disabledAreNavigable");
+        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
         System.out.println(b);
         check.setSelected(b);
         add(check);
@@ -158,8 +159,8 @@ public class MainPanel extends JPanel {
             UIManager.setLookAndFeel(currentLookAndFeel);
             updateLookAndFeel();
 
-            Boolean b = UIManager.getBoolean("MenuItem.disabledAreNavigable");
-            System.out.format("%s MenuItem.disabledAreNavigable: %s%n", laf, b);
+            Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+            System.out.format("%s %s: %s%n", laf, DISABLED_ARE_NAVIGABLE, b);
             check.setSelected(b);
         }catch(Exception ex) {
             ex.printStackTrace();
