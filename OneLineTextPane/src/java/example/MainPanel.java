@@ -121,7 +121,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     @Override public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
         // @see PlainDocument#insertString(...)
-        if((str != null) && (str.indexOf('\n') >= 0)) {
+        if(str != null && str.indexOf('\n') >= 0) {
             StringBuilder filtered = new StringBuilder(str);
             int n = filtered.length();
             for(int i = 0; i < n; i++) {

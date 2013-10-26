@@ -5,8 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
