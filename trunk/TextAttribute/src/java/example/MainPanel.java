@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.*;
-import java.text.AttributedCharacterIterator.Attribute;
+//import java.text.AttributedCharacterIterator.Attribute;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
