@@ -135,7 +135,11 @@ class LabelTransferHandler extends TransferHandler {
                 return false;
             }
             @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                return ss.getTransferData(flavor);
+                 if(flavor.equals(localObjectFlavor)) {
+                     return dh.getTransferData(flavor);
+                 }else{
+                     return ss.getTransferData(flavor);
+                 }
 //                 if(flavor.equals(DataFlavor.stringFlavor)) {
 //                     return ss.getTransferData(flavor);
 //                 }else if(flavor.equals(DataFlavor.plainTextFlavor)) {
@@ -157,10 +161,13 @@ class LabelTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
         DragPanel p = (DragPanel)c;
-        label.setIcon(p.draggingLabel.getIcon());
-        label.setText(p.draggingLabel.getText());
-        window.add(label);
+        JLabel l = p.draggingLabel;
+        label.setIcon(l.getIcon());
+        label.setText(l.getText());
         window.pack();
+        Point pt = l.getLocation();
+        SwingUtilities.convertPointToScreen(pt, p);
+        window.setLocation(pt);
         window.setVisible(true);
         return MOVE;
     }
@@ -193,5 +200,8 @@ class LabelTransferHandler extends TransferHandler {
         }
         src.draggingLabel = null;
         window.setVisible(false);
+        //TEST:
+        //window.setLocation(new Point(-100, -100));
+        //window.setLocation(new Point(0, 0));
     }
 }
