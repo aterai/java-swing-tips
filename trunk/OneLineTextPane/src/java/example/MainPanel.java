@@ -50,13 +50,11 @@ public class MainPanel extends JPanel {
         }catch(Exception ex) {
             ex.printStackTrace();
         }
+        String KEY = "Do-Nothing";
         InputMap im = textPane.getInputMap(JComponent.WHEN_FOCUSED);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                // Do nothing
-            }
-        });
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), new AbstractAction() {
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), KEY);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), key);
+        textPane.getActionMap().put(key, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 // Do nothing
             }
