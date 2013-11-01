@@ -6,10 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
-import javax.swing.plaf.basic.*;
-import java.util.*;
 
 public class MainPanel extends JPanel {
     private static final Color evenColor = new Color(240, 255, 250);
@@ -41,8 +40,6 @@ public class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
         table.setIntercellSpacing(new Dimension());
         table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         table.setRowSorter(sorter);
 
@@ -50,23 +47,25 @@ public class MainPanel extends JPanel {
             model.addRow(new Object[] {i, "Test: "+i, (i%2==0)?"":"comment..."});
         }
         initLinkBox(100, 1);
-
+        box.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
     private void initLinkBox(final int itemsPerPage, final int currentPageIndex) {
         //assert currentPageIndex>0;
-        sorter.setRowFilter(makeRowFilter(itemsPerPage, currentPageIndex-1));
-
-        ArrayList<JRadioButton> paginationButtons = new ArrayList<JRadioButton>();
+        sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+            @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+                int ti = currentPageIndex-1;
+                int ei = entry.getIdentifier();
+                return ti*itemsPerPage<=ei && ei<ti*itemsPerPage+itemsPerPage;
+            }
+        });
 
         int startPageIndex = currentPageIndex-LR_PAGE_SIZE;
         if(startPageIndex<=0) startPageIndex = 1;
 
-        //System.out.println(model.getRowCount()%itemsPerPage);
-
-//#if 0
+//#if 0 //BUG
         //int maxPageIndex = (model.getRowCount()/itemsPerPage)+1;
 //#else
         /* "maxPageIndex" gives one blank page if the module of the division is not zero.
@@ -80,37 +79,28 @@ public class MainPanel extends JPanel {
         int endPageIndex = currentPageIndex+LR_PAGE_SIZE-1;
         if(endPageIndex>maxPageIndex) endPageIndex = maxPageIndex;
 
-        if(currentPageIndex>1) {
-          paginationButtons.add(makePNRadioButton(itemsPerPage, currentPageIndex-1, "Prev"));
-        }
-//         for(int i=startPageIndex;i<=endPageIndex;i++) {
-//             paginationButtons.add(makeRadioButton(itemsPerPage, currentPageIndex, i-1));
-//         }
-        //if I only have one page, Y don't want to see pagination buttons
-        //suggested by erServi
-        if(startPageIndex<endPageIndex) {
-            for(int i=startPageIndex;i<=endPageIndex;i++) {
-                paginationButtons.add(makeRadioButton(itemsPerPage, currentPageIndex, i-1));
-            }
-        }
-        if(currentPageIndex<maxPageIndex) {
-            paginationButtons.add(makePNRadioButton(itemsPerPage, currentPageIndex+1, "Next"));
+        box.removeAll();
+        if(startPageIndex>=endPageIndex) {
+            //if I only have one page, Y don't want to see pagination buttons
+            //suggested by erServi
+            return;
         }
 
-        box.removeAll();
         ButtonGroup bg = new ButtonGroup();
+        JRadioButton f = makePrevNextRadioButton(itemsPerPage, 1, "|<", currentPageIndex>1); box.add(f); bg.add(f);
+        JRadioButton p = makePrevNextRadioButton(itemsPerPage, currentPageIndex-1, "<", currentPageIndex>1); box.add(p); bg.add(p);
         box.add(Box.createHorizontalGlue());
-        for(JRadioButton r:paginationButtons) {
-            box.add(r); bg.add(r);
+        for(int i=startPageIndex;i<=endPageIndex;i++) {
+            JRadioButton c = makeRadioButton(itemsPerPage, currentPageIndex, i); box.add(c); bg.add(c);
         }
         box.add(Box.createHorizontalGlue());
+        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex+1, ">", currentPageIndex<maxPageIndex); box.add(n); bg.add(n);
+        JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex<maxPageIndex); box.add(l); bg.add(l);
         box.revalidate();
         box.repaint();
-        paginationButtons.clear();
     }
-
     private JRadioButton makeRadioButton(final int itemsPerPage, final int current, final int target) {
-        JRadioButton radio = new JRadioButton(String.valueOf(target+1)) {
+        JRadioButton radio = new JRadioButton(String.valueOf(target)) {
             @Override protected void fireStateChanged() {
                 ButtonModel model = getModel();
                 if(!model.isEnabled()) {
@@ -127,20 +117,9 @@ public class MainPanel extends JPanel {
         };
         radio.setForeground(Color.BLUE);
         radio.setUI(ui);
-        if(target+1==current) {
+        if(target==current) {
             radio.setSelected(true);
         }
-        radio.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                initLinkBox(itemsPerPage, target+1);
-            }
-        });
-        return radio;
-    }
-    private JRadioButton makePNRadioButton(final int itemsPerPage, final int target, String title) {
-        JRadioButton radio = new JRadioButton(title);
-        radio.setForeground(Color.BLUE);
-        radio.setUI(ui);
         radio.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 initLinkBox(itemsPerPage, target);
@@ -148,15 +127,18 @@ public class MainPanel extends JPanel {
         });
         return radio;
     }
-    private RowFilter<TableModel,Integer> makeRowFilter(final int itemsPerPage, final int target) {
-        return new RowFilter<TableModel,Integer>() {
-            @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-                int ei = entry.getIdentifier();
-                return target*itemsPerPage<=ei && ei<target*itemsPerPage+itemsPerPage;
+    private JRadioButton makePrevNextRadioButton(final int itemsPerPage, final int target, String title, boolean flag) {
+        JRadioButton radio = new JRadioButton(title);
+        radio.setForeground(Color.BLUE);
+        radio.setUI(ui);
+        radio.setEnabled(flag);
+        radio.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                initLinkBox(itemsPerPage, target);
             }
-        };
+        });
+        return radio;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
