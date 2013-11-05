@@ -31,12 +31,6 @@ public class MainPanel extends JPanel {
 //         t.addTab(makeTitle("Title","wi0009-32.png"), new JLabel("a"));
 //         t.addTab(makeTitle("Help", "wi0054-32.png"), new JLabel("b"));
 
-//         model.addElement(new ListItem("32.png",     "wi0064-32.png"));
-//         model.addElement(new ListItem("asdfsd.jpg", "wi0096-32.png"));
-//         model.addElement(new ListItem("6896",       "wi0111-32.png"));
-//         model.addElement(new ListItem("t467467est", "wi0122-32.png"));
-//         model.addElement(new ListItem("test123",    "wi0124-32.png"));
-//         model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
         add(t);
         setPreferredSize(new Dimension(320, 200));
     }
@@ -120,12 +114,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         }
         super.doLayout();
     }
-    @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        super.insertTab(title, icon, component, tip==null?title:tip, index);
-        JLabel label = new JLabel(title, JLabel.CENTER);
-        //Dimension dim = label.getPreferredSize();
-        //Insets tabInsets = getTabInsets();
-        //label.setPreferredSize(new Dimension(0, dim.height+tabInsets.top+tabInsets.bottom));
-        setTabComponentAt(index, label);
-    }
+//     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
+//         super.insertTab(title, icon, component, tip==null?title:tip, index);
+//         JLabel label = new JLabel(title, JLabel.CENTER);
+//         //Dimension dim = label.getPreferredSize();
+//         //Insets tabInsets = getTabInsets();
+//         //label.setPreferredSize(new Dimension(0, dim.height+tabInsets.top+tabInsets.bottom));
+//         setTabComponentAt(index, label);
+//     }
 }
