@@ -4,14 +4,12 @@
       <Require feature="dynamic-height" />
     </ModulePrefs>
     <UserPref name="img" datatype="string" required="true" />
-    <UserPref name="jws" datatype="bool" default_value="true" />
     <Content type="html">
 <![CDATA[
 <table role="presentation" width="96%">
 <tr height="380px">
 <td width="50%" align="left" valign="top">
 <ul>
-<li><a id="jws" title="Java Web Start"><img width="88" height="23" src="http://lh4.ggpht.com/_9Z4BYR88imo/TRD2KGq73BI/AAAAAAAAAwA/N8-6EXongNk/s800/webstart.png" title="Java Web Start" alt="Launch" /></a></li>
 <li><a id="jar">Runnable JAR(example.jar)</a></li>
 <li><a id="src">Source code(src.zip)</a></li>
 <li><a id="svn">Repository(svn repository)</a></li>
@@ -43,16 +41,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
     var folder = imgpath.substring(imgpath.lastIndexOf("/"), imgpath.lastIndexOf("."));
     var dir = folder.toLowerCase();
 
-    var elm = document.getElementById("jws");
-    elm.setAttribute("href", BASE + dir + "/example.jnlp");
-    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'WebStart', 'Launch', 'Swing/" + folder + "']);");
-
-    if(prefs.getBool("jws")==false) {
-       var p = elm.parentNode;
-       p.parentNode.removeChild(p);
-    }
-
-    elm = document.getElementById("jar");
+    var elm = document.getElementById("jar");
     elm.setAttribute("href", BASE + dir + "/example.jar");
     elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Jar', 'Download', 'Swing/" + folder + "']);");
 
