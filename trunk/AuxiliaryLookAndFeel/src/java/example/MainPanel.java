@@ -63,16 +63,15 @@ public class MainPanel extends JPanel {
         panel.add(cmp);
         return panel;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
         model.addElement("aaaabbbcc");
         model.addElement("1354123451234513512");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
     //<blockquote cite="http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
     private ButtonGroup lookAndFeelRadioGroup;
