@@ -28,7 +28,7 @@ class MainPanel extends JPanel {
         p.add(new JTextField(10));
         p.add(new JButton("bbb"));
 
-        JComboBox combo = makeComboBox();
+        JComboBox<String> combo = new JComboBox<>(new String[] {"Color(.5f,.8f,.5f,.5f)", "ImageTexturePaint", "CheckerTexturePaint"});
 
 //         if(System.getProperty("java.version").startsWith("1.7.0")) {
 //             // XXX: JDK 1.7.0 Translucency JFrame + JComboBox bug???
@@ -68,11 +68,6 @@ class MainPanel extends JPanel {
         p.add(combo);
         p.setPreferredSize(new Dimension(320, 240));
         return p;
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        return new JComboBox(new String[] {
-            "Color(.5f,.8f,.5f,.5f)", "ImageTexturePaint", "CheckerTexturePaint"});
     }
     private TexturePaint makeImageTexture() {
         BufferedImage bi = null;
@@ -116,11 +111,11 @@ class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@");
 //         frame.setUndecorated(true);
 
-        if(System.getProperty("java.version").startsWith("1.6.0")) {
-            com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
-        }else{
+        //if(System.getProperty("java.version").startsWith("1.6.0")) {
+        //    com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
+        //}else{
             frame.setBackground(new Color(0,0,0,0)); //1.7.0
-        }
+        //}
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel().makeUI());
         frame.pack();
