@@ -14,20 +14,19 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(makeList()));
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<String> makeList() {
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("11\n1");
         model.addElement("222222222222222\n222222222222222");
         model.addElement("3333333333333333333\n33333333333333333333\n33333333333333333");
         model.addElement("444");
 
-        JList list = new JList(model);
+        JList<String> list = new JList<>(model);
         list.setFixedCellHeight(-1);
-        CellButtonsMouseListener cbml = new CellButtonsMouseListener();
+        CellButtonsMouseListener cbml = new CellButtonsMouseListener(list);
         list.addMouseListener(cbml);
         list.addMouseMotionListener(cbml);
-        list.setCellRenderer(new ButtonsRenderer());
+        list.setCellRenderer(new ButtonsRenderer(model));
         return list;
     }
     public static void main(String[] args) {
@@ -54,8 +53,12 @@ public class MainPanel extends JPanel {
 class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
     private JButton prevButton = null;
+    private final JList<String> list;
+    public CellButtonsMouseListener(JList<String> list) {
+        this.list = list;
+    }
     @Override public void mouseMoved(MouseEvent e) {
-        JList list = (JList)e.getComponent();
+        //JList list = (JList)e.getComponent();
         Point pt = e.getPoint();
         int index  = list.locationToIndex(pt);
         if(!list.getCellBounds(index, index).contains(pt)) {
@@ -100,7 +103,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         prevIndex = index;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList)e.getComponent();
+        //JList list = (JList)e.getComponent();
         Point pt = e.getPoint();
         int index  = list.locationToIndex(pt);
         if(index>=0) {
@@ -114,7 +117,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        JList list = (JList)e.getComponent();
+        //JList list = (JList)e.getComponent();
         Point pt = e.getPoint();
         int index  = list.locationToIndex(pt);
         if(index>=0) {
@@ -131,9 +134,8 @@ class CellButtonsMouseListener extends MouseAdapter {
             }
         }
     }
-    @SuppressWarnings("unchecked")
-    private static JButton getButton(JList list, Point pt, int index) {
-        Container c = (Container)list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
+    private static JButton getButton(JList<String> list, Point pt, int index) {
+        Component c = list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
         Rectangle r = list.getCellBounds(index, index);
         c.setBounds(r);
         //c.doLayout(); //may be needed for mone LayoutManager
@@ -147,26 +149,24 @@ class CellButtonsMouseListener extends MouseAdapter {
     }
 }
 
-class ButtonsRenderer extends JPanel implements ListCellRenderer {
+class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
     public JTextArea label = new JTextArea();
     private final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
-            //System.out.println("aaa");
-            DefaultListModel m = (DefaultListModel)list.getModel();
-            if(m.getSize()>1)
-              m.removeElementAt(index);
+            if(model.getSize()>1) {
+                model.removeElementAt(index);
+            }
         }
     });
     private final JButton copyButton = new JButton(new AbstractAction("copy") {
-        @SuppressWarnings("unchecked")
         @Override public void actionPerformed(ActionEvent e) {
-            //System.out.println("bbb");
-            DefaultListModel m = (DefaultListModel)list.getModel();
-            m.insertElementAt(m.getElementAt(index), index);
+            model.insertElementAt(model.getElementAt(index), index);
         }
     });
-    public ButtonsRenderer() {
+    private final DefaultListModel<String> model;
+    public ButtonsRenderer(DefaultListModel<String> model) {
         super(new BorderLayout());
+        this.model = model;
         setBorder(BorderFactory.createEmptyBorder(5,5,5,0));
         setOpaque(true);
         label.setLineWrap(true);
@@ -182,12 +182,10 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         }
         add(box, BorderLayout.EAST);
     }
-    private JList list;
     private int index;
     private final Color evenColor = new Color(230,255,230);
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-        label.setText((value==null)?"":value.toString());
-        this.list = list;
+    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
+        label.setText((value==null)?"":value);
         this.index = index;
         if(isSelected) {
             setBackground(list.getSelectionBackground());
