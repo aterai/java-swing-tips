@@ -86,6 +86,15 @@ public class MainPanel extends JPanel {
     }
     private static AbstractButton makeButton(String title, Action action) {
         JButton b = new JButton(action);
+        b.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                JButton b = (JButton)e.getSource();
+                Container c = b.getParent().getParent().getParent();
+                if(c instanceof JPopupMenu) {
+                    ((JPopupMenu)c).setVisible(false);
+                }
+            }
+        });
         b.setText(title);
         b.setVerticalAlignment(SwingConstants.CENTER);
         b.setVerticalTextPosition(SwingConstants.CENTER);
