@@ -143,7 +143,7 @@ public class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
-        frame.setResizable(false);
+        //frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -167,10 +167,10 @@ class ProgressListener implements PropertyChangeListener {
 
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
-    private final AnimeIcon icon = new AnimeIcon();
+    //private final AnimeIcon icon = new AnimeIcon();
     //private final AnimeIcon2 icon = new AnimeIcon2();
     //private final AnimeIcon3 icon = new AnimeIcon3();
-    //private final AnimeIcon4 icon = new AnimeIcon4();
+    private final AnimeIcon4 icon = new AnimeIcon4();
     public AnimatedLabel() {
         super();
         animator = new Timer(100, this);
@@ -346,20 +346,19 @@ class AnimeIcon4 implements Icon {
     private final Dimension dim;
     private boolean isRunning = false;
     private final List<Shape> list = new ArrayList<Shape>();
-    int r = 2;
-    int rotate = 45;
+    int r = 4;
     public AnimeIcon4() {
         super();
         int d = (int)r*2*(1+3);
         dim = new Dimension(d, d);
 
-        Ellipse2D.Float circle = new Ellipse2D.Float(r, r, d-2*r, d-2*r);
-        PathIterator i = new FlatteningPathIterator(circle.getPathIterator(null), 1);
+        Ellipse2D.Float cricle = new Ellipse2D.Float(r, r, d-2*r, d-2*r);
+        PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), r);
         float[] coords = new float[6];
         int idx = 0;
         while(!i.isDone()) {
             i.currentSegment(coords);
-            if(idx<9) { // XXX
+            if(idx++ < 8) { // XXX
                 list.add(new Ellipse2D.Float(coords[0]-r, coords[1]-r, 2*r, 2*r));
             }
             i.next();
@@ -372,16 +371,15 @@ class AnimeIcon4 implements Icon {
         return dim.height;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D)g;
         g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(cColor);
-        float alpha = 0.0f;
-        int xx = x + dim.width/2;
-        int yy = y + dim.height/2;
+        float alpha = 0.1f;
+        float p = (1f - alpha)/(float)list.size();
         for(Shape s: list) {
-            alpha = isRunning?alpha+0.1f:0.5f;
+            alpha = isRunning?alpha+p:0.5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(s);
         }
