@@ -167,10 +167,10 @@ class ProgressListener implements PropertyChangeListener {
 
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
-    //private final AnimeIcon icon = new AnimeIcon();
+    private final AnimeIcon icon = new AnimeIcon();
     //private final AnimeIcon2 icon = new AnimeIcon2();
     //private final AnimeIcon3 icon = new AnimeIcon3();
-    private final AnimeIcon4 icon = new AnimeIcon4();
+    //private final AnimeIcon4 icon = new AnimeIcon4();
     public AnimatedLabel() {
         super();
         animator = new Timer(100, this);
