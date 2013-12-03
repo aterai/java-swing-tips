@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import org.jdesktop.swingworker.SwingWorker;
-//import javax.swing.SwingWorker;
+//import org.jdesktop.swingworker.SwingWorker;
+import javax.swing.SwingWorker;
 
 public class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
@@ -168,6 +168,9 @@ class ProgressListener implements PropertyChangeListener {
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
     private final AnimeIcon icon = new AnimeIcon();
+    //private final AnimeIcon2 icon = new AnimeIcon2();
+    //private final AnimeIcon3 icon = new AnimeIcon3();
+    //private final AnimeIcon4 icon = new AnimeIcon4();
     public AnimatedLabel() {
         super();
         animator = new Timer(100, this);
@@ -220,18 +223,175 @@ class AnimeIcon implements Icon {
     @Override public int getIconWidth()  { return dim.width;  }
     @Override public int getIconHeight() { return dim.height; }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setPaint((c!=null)?c.getBackground():Color.WHITE);
-        g2d.fillRect(x, y, getIconWidth(), getIconHeight());
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(cColor);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(cColor);
         float alpha = 0.0f;
-        g2d.translate(x, y);
+        g2.translate(x, y);
         for(Shape s: list) {
             alpha = isRunning?alpha+0.1f:0.5f;
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2d.fill(s);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.fill(s);
         }
-        g2d.translate(-x, -y);
+        g2.translate(-x, -y);
+    }
+}
+
+class AnimeIcon2 implements Icon {
+    private static final Color cColor = new Color(0.5f,0.8f,0.5f);
+    private final List<Shape> list = new ArrayList<Shape>();
+    private final Dimension dim;
+    private boolean isRunning = false;
+    public AnimeIcon2() {
+        super();
+        int r = 4;
+        Shape s = new Ellipse2D.Float(0, 0, 2*r, 2*r);
+        for(int i=0;i<8;i++) {
+            AffineTransform at = AffineTransform.getRotateInstance(i*2*Math.PI/8);
+            at.concatenate(AffineTransform.getTranslateInstance(r, r));
+            list.add(at.createTransformedShape(s));
+        }
+        //int d = (int)(r*2*(1+2*Math.sqrt(2)));
+        int d = (int)r*2*(1+3); // 2*Math.sqrt(2) is nearly equal to 3.
+        dim = new Dimension(d, d);
+    }
+    @Override public int getIconWidth() {
+        return dim.width;
+    }
+    @Override public int getIconHeight() {
+        return dim.height;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(cColor);
+        float alpha = 0.0f;
+        int xx = x + dim.width/2;
+        int yy = y + dim.height/2;
+        g2.translate(xx, yy);
+        for(Shape s: list) {
+            alpha = isRunning?alpha+0.1f:0.5f;
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.fill(s);
+        }
+    }
+    public void next() {
+        if(isRunning) {
+            list.add(list.remove(0));
+        }
+    }
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+}
+
+class AnimeIcon3 implements Icon {
+    private static final Color cColor = new Color(0.9f,0.7f,0.7f);
+    private final List<Shape> list = new ArrayList<Shape>();
+    private final Dimension dim;
+    private boolean isRunning = false;
+    int rotate = 45;
+    public AnimeIcon3() {
+        super();
+        int r = 4;
+        Shape s = new Ellipse2D.Float(0, 0, 2*r, 2*r);
+        for(int i=0;i<8;i++) {
+            AffineTransform at = AffineTransform.getRotateInstance(i*2*Math.PI/8);
+            at.concatenate(AffineTransform.getTranslateInstance(r, r));
+            list.add(at.createTransformedShape(s));
+        }
+        int d = (int)r*2*(1+3);
+        dim = new Dimension(d, d);
+    }
+    @Override public int getIconWidth() {
+        return dim.width;
+    }
+    @Override public int getIconHeight() {
+        return dim.height;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(cColor);
+        float alpha = 0.0f;
+        int xx = x + dim.width/2;
+        int yy = y + dim.height/2;
+        AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), xx, yy);
+        at.concatenate(AffineTransform.getTranslateInstance(xx, yy));
+        for(Shape s: list) {
+            alpha = isRunning?alpha+0.1f:0.5f;
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.fill(at.createTransformedShape(s));
+        }
+    }
+    public void next() {
+        if(isRunning) {
+            rotate = rotate<360?rotate+45:45;
+        }
+    }
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+}
+
+
+class AnimeIcon4 implements Icon {
+    private static final Color cColor = new Color(0.5f,0.8f,0.5f);
+    private final Dimension dim;
+    private boolean isRunning = false;
+    private final List<Shape> list = new ArrayList<Shape>();
+    int r = 2;
+    int rotate = 45;
+    public AnimeIcon4() {
+        super();
+        int d = (int)r*2*(1+3);
+        dim = new Dimension(d, d);
+
+        Ellipse2D.Float circle = new Ellipse2D.Float(r, r, d-2*r, d-2*r);
+        PathIterator i = new FlatteningPathIterator(circle.getPathIterator(null), 1);
+        float[] coords = new float[6];
+        int idx = 0;
+        while(!i.isDone()) {
+            i.currentSegment(coords);
+            if(idx<9) { // XXX
+                list.add(new Ellipse2D.Float(coords[0]-r, coords[1]-r, 2*r, 2*r));
+            }
+            i.next();
+        }
+    }
+    @Override public int getIconWidth() {
+        return dim.width;
+    }
+    @Override public int getIconHeight() {
+        return dim.height;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(cColor);
+        float alpha = 0.0f;
+        int xx = x + dim.width/2;
+        int yy = y + dim.height/2;
+        for(Shape s: list) {
+            alpha = isRunning?alpha+0.1f:0.5f;
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.fill(s);
+        }
+    }
+    public void next() {
+        if(isRunning) {
+            list.add(list.remove(0));
+        }
+    }
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
     }
 }
