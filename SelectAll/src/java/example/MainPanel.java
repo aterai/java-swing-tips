@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
         super(new GridLayout(2,1));
         field1.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
-                ((JTextComponent)e.getSource()).selectAll();
+                ((JTextComponent)e.getComponent()).selectAll();
             }
         });
         add(makeTitlePanel(field1, "focusGained: selectAll"));
