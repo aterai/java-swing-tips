@@ -9,10 +9,11 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private final JPanel breadcrumb = makePanel(10);
+    private final JPanel breadcrumb = makePanel(11);
     private final JTree tree = new JTree();
     public MainPanel() {
         super(new BorderLayout());
@@ -31,7 +32,7 @@ public class MainPanel extends JPanel {
         });
 
         initBreadcrumbList(breadcrumb, tree);
-        add(breadcrumb, BorderLayout.NORTH);
+        add(new JLayer<JPanel>(breadcrumb, new BreadcrumbLayerUI()), BorderLayout.NORTH);
 
         JComponent c = makeBreadcrumbList(tree, Arrays.asList("aaa", "bb", "c"));
         add(c, BorderLayout.SOUTH);
@@ -126,27 +127,18 @@ public class MainPanel extends JPanel {
 //http://terai.xrea.jp/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
     public Shape area;
-    private static final Color TL = new Color(1f,1f,1f,.2f);
-    private static final Color BR = new Color(0f,0f,0f,.2f);
-    private static final Color ST = new Color(1f,1f,1f,.4f);
-    private static final Color SB = new Color(1f,1f,1f,.1f);
-
-    private Color ssc;
-    private Color bgc;
-
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
         if(parent==null) {
             return;
         }
-        int r = 2;
         int h = c.getHeight()-1;
         int h2 = h/2;
         int w = c.getWidth()-1-h2;
         x += h2;
 
         Graphics2D g2 = (Graphics2D)g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Path2D.Float p = new Path2D.Float();
         if(c==parent.getComponent(0)) {
             //:first-child
@@ -166,24 +158,17 @@ class ToggleButtonBarCellIcon implements Icon {
         p.closePath();
         area = p;
 
-        g2.setPaint(c.getBackground());
-        g2.fill(area);
-
-        ssc = TL;
-        bgc = BR;
+        Color bgc = parent.getBackground();
         Color borderColor = Color.GRAY.brighter();
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             if(m.isSelected() || m.isRollover()) {
-                ssc = ST;
-                bgc = SB;
+                bgc = c.getBackground();
                 borderColor = Color.GRAY;
             }
         }
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y+h, bgc, true));
+        g2.setPaint(bgc);
         g2.fill(area);
-        g2.setPaint(BR);
-        g2.draw(area);
         g2.setPaint(borderColor);
         g2.draw(area);
         g2.dispose();
@@ -192,6 +177,54 @@ class ToggleButtonBarCellIcon implements Icon {
         return 100;
     }
     @Override public int getIconHeight() {
-        return 20;
+        return 21;
+    }
+}
+
+class BreadcrumbLayerUI extends LayerUI<JPanel> {
+    private Shape shape;
+    @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        if(shape!=null) {
+            Graphics2D g2 = (Graphics2D)g.create();
+            //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setPaint(Color.GRAY);
+            g2.draw(shape);
+            g2.dispose();
+        }
+    }
+    @Override public void installUI(JComponent c) {
+        super.installUI(c);
+        ((JLayer)c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+    }
+    @Override public void uninstallUI(JComponent c) {
+        ((JLayer)c).setLayerEventMask(0);
+        super.uninstallUI(c);
+    }
+    private void update(MouseEvent e, JLayer<? extends JPanel> l) {
+        int id = e.getID();
+        Shape s = null;
+        if(id==MouseEvent.MOUSE_ENTERED || id==MouseEvent.MOUSE_MOVED) {
+            Component c = e.getComponent();
+            if(c instanceof AbstractButton) {
+                AbstractButton b = (AbstractButton)c;
+                if(b.getIcon() instanceof ToggleButtonBarCellIcon) {
+                    ToggleButtonBarCellIcon icon = (ToggleButtonBarCellIcon)b.getIcon();
+                    Rectangle r = c.getBounds();
+                    AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
+                    s = at.createTransformedShape(icon.area);
+                }
+            }
+        }
+        if(s!=shape) {
+            shape = s;
+            l.getView().repaint();
+        }
+    }
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+        update(e, l);
+    }
+    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+        update(e, l);
     }
 }
