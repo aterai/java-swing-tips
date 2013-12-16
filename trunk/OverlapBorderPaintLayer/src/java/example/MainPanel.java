@@ -19,15 +19,15 @@ public class MainPanel extends JPanel {
 
         JPanel p1 = new JPanel(new GridLayout(0, 1));
         p1.setBorder(BorderFactory.createTitledBorder("Icon border"));
-        p1.add(makeBreadcrumbList0(list, Color.PINK));
-        p1.add(makeBreadcrumbList1(list, Color.PINK));
-        p1.add(makeBreadcrumbList2(list, Color.PINK));
+        p1.add(makeBreadcrumbList0(list, Color.PINK,  1));
+        p1.add(makeBreadcrumbList1(list, Color.PINK, 11));
+        p1.add(makeBreadcrumbList2(list, Color.PINK, 11));
 
         JPanel p2 = new JPanel(new GridLayout(0, 1));
         p2.setBorder(BorderFactory.createTitledBorder("JLayer border"));
-        p2.add(new JLayer<JPanel>(makeBreadcrumbList0(list, Color.ORANGE), new BreadcrumbLayerUI()));
-        p2.add(new JLayer<JPanel>(makeBreadcrumbList1(list, Color.ORANGE), new BreadcrumbLayerUI()));
-        p2.add(new JLayer<JPanel>(makeBreadcrumbList2(list, Color.ORANGE), new BreadcrumbLayerUI()));
+        p2.add(new JLayer<JPanel>(makeBreadcrumbList0(list, Color.ORANGE,  1), new BreadcrumbLayerUI()));
+        p2.add(new JLayer<JPanel>(makeBreadcrumbList1(list, Color.ORANGE, 11), new BreadcrumbLayerUI()));
+        p2.add(new JLayer<JPanel>(makeBreadcrumbList2(list, Color.ORANGE, 11), new BreadcrumbLayerUI()));
 
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(p1); p.add(p2);
@@ -39,9 +39,9 @@ public class MainPanel extends JPanel {
         p.setOpaque(false);
         return p;
     }
-    private static JPanel makeBreadcrumbList0(List<String> list, Color color) {
-        JPanel p = makePanel(1);
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+    private static JPanel makeBreadcrumbList0(List<String> list, Color color, int overlap) {
+        JPanel p = makePanel(overlap);
+        p.setBorder(BorderFactory.createEmptyBorder(5,overlap+5,5,5));
         ButtonGroup bg = new ButtonGroup();
         for(String title: list) {
             AbstractButton b = makeButton(title, new SizeIcon(), color);
@@ -50,9 +50,9 @@ public class MainPanel extends JPanel {
         }
         return p;
     }
-    private static JPanel makeBreadcrumbList1(List<String> list, Color color) {
-        JPanel p = makePanel(11);
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+    private static JPanel makeBreadcrumbList1(List<String> list, Color color, int overlap) {
+        JPanel p = makePanel(overlap);
+        p.setBorder(BorderFactory.createEmptyBorder(5,overlap+5,5,5));
         ButtonGroup bg = new ButtonGroup();
         for(String title: list) {
             AbstractButton b = makeButton(title, new ToggleButtonBarCellIcon(), color);
@@ -61,9 +61,9 @@ public class MainPanel extends JPanel {
         }
         return p;
     }
-    private static JPanel makeBreadcrumbList2(List<String> list, Color color) {
-        JPanel p = makePanel(21);
-        p.setBorder(BorderFactory.createEmptyBorder(5,11+5,5,5));
+    private static JPanel makeBreadcrumbList2(List<String> list, Color color, int overlap) {
+        JPanel p = makePanel(overlap);
+        p.setBorder(BorderFactory.createEmptyBorder(5,overlap+5,5,5));
         ButtonGroup bg = new ButtonGroup();
         for(String title: list) {
             AbstractButton b = makeButton(title, new ToggleButtonBarCellIcon2(), color);
@@ -73,12 +73,7 @@ public class MainPanel extends JPanel {
         return p;
     }
     private static AbstractButton makeButton(String title, Icon icon, Color color) {
-        AbstractButton b;
-        if(icon==null) {
-            b = new JButton(title);
-        }else{
-            b = new JRadioButton(title);
-        }
+        AbstractButton b = new JRadioButton(title);
         b.setIcon(icon);
         b.setContentAreaFilled(false);
         b.setBorder(BorderFactory.createEmptyBorder());
@@ -116,29 +111,24 @@ public class MainPanel extends JPanel {
 //http://terai.xrea.jp/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
     public Shape area;
+    private static int W = 10;
+    private static int H = 21;
     public Shape getShape(Container parent, Component c, int x, int y) {
-        int h = c.getHeight()-1;
-        int h2 = h/2;
-        int w = c.getWidth()-1-h2;
-        x += h2;
+        int w = c.getWidth()  - 1;
+        int h = c.getHeight() - 1;
+        int h2 = (int)(h * .5 + .5);
+        int w2 = W;
         Path2D.Float p = new Path2D.Float();
-        if(c==parent.getComponent(0)) {
-            //:first-child
-            p.moveTo(x, y);
-            p.lineTo(x + w - h2, y);
-            p.lineTo(x + w,      y + h2);
-            p.lineTo(x + w - h2, y + h);
-            p.lineTo(x,          y + h);
-        }else{
-            p.moveTo(x - h2,     y);
-            p.lineTo(x + w - h2, y);
-            p.lineTo(x + w,      y + h2);
-            p.lineTo(x + w - h2, y + h);
-            p.lineTo(x - h2,     y + h);
-            p.lineTo(x,          y + h2);
+        p.moveTo(0,      0);
+        p.lineTo(w - w2, 0);
+        p.lineTo(w,      h2);
+        p.lineTo(w - w2, h);
+        p.lineTo(0,      h);
+        if(c!=parent.getComponent(0)) {
+            p.lineTo(w2, h2);
         }
         p.closePath();
-        return p;
+        return AffineTransform.getTranslateInstance(x, y).createTransformedShape(p);
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
@@ -169,52 +159,47 @@ class ToggleButtonBarCellIcon implements Icon {
         return 100;
     }
     @Override public int getIconHeight() {
-        return 21;
+        return H;
     }
 }
 
 class SizeIcon extends ToggleButtonBarCellIcon {
     @Override public Shape getShape(Container parent, Component c, int x, int y) {
-        int w = c.getWidth()-1;
-        int h = c.getHeight()-1;
+        int w = c.getWidth()  - 1;
+        int h = c.getHeight() - 1;
         Path2D.Float p = new Path2D.Float();
-        p.moveTo(x,     y);
-        p.lineTo(x + w, y);
-        p.lineTo(x + w, y + h);
-        p.lineTo(x,     y + h);
+        p.moveTo(0, 0);
+        p.lineTo(w, 0);
+        p.lineTo(w, h);
+        p.lineTo(0, h);
         p.closePath();
-        return p;
+        return AffineTransform.getTranslateInstance(x, y).createTransformedShape(p);
     }
 }
 
 class ToggleButtonBarCellIcon2 extends ToggleButtonBarCellIcon {
     public Shape getShape(Container parent, Component c, int x, int y) {
         int r = 4;
-        int w = c.getWidth()-1-10;
-        int h = c.getHeight()-1;
-        int h2 = h/2;
-        x += 10;
+        int w = c.getWidth()  - 1;
+        int h = c.getHeight() - 1;
+        int h2 = (int)(h * .5 + .5);
         Path2D.Float p = new Path2D.Float();
+        p.moveTo(w - h2, 0);
+        p.quadTo(w,      0,      w,      h2);
+        p.quadTo(w,      0 + h,  w - h2, h);
         if(c==parent.getComponent(0)) {
             //:first-child
-            p.moveTo(x + w - h2, y);
-            p.quadTo(x + w,      y,      x + w,      y + h2);
-            p.quadTo(x + w,      y + h,  x + w - h2, y + h);
-
-            p.lineTo(x + r,      y + h);
-            p.quadTo(x,          y + h,  x,     y + h - r);
-            p.lineTo(x,          y + r);
-            p.quadTo(x,          y,      x + r, y);
+            p.lineTo(r, h);
+            p.quadTo(0, h, 0, h - r);
+            p.lineTo(0, r);
+            p.quadTo(0, 0, r, 0);
         }else{
-            p.moveTo(x + w - h2, y);
-            p.quadTo(x + w,      y,      x + w,      y + h2);
-            p.quadTo(x + w,      y + h,  x + w - h2, y + h);
-            p.lineTo(x,          y + h);
-            p.quadTo(x + h2,     y + h,  x + h2,     y + h2);
-            p.quadTo(x + h2,     y,      x,          y);
+            p.lineTo(0,  h);
+            p.quadTo(h2, h, h2, h2);
+            p.quadTo(h2, 0, 0,  0);
         }
         p.closePath();
-        return p;
+        return AffineTransform.getTranslateInstance(x, y).createTransformedShape(p);
     }
 }
 
