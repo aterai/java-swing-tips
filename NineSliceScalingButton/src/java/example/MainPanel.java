@@ -123,7 +123,7 @@ class ScalingButton extends JButton {
 
 class NineSliceScalingButton extends JButton {
     private final BufferedImage image;
-    private static final int a  = 37, b = 36, c = 36, d = 36;
+    private static final int a = 37, b = 36, c = 36, d = 36;
     public NineSliceScalingButton(String title, BufferedImage image) {
         this.image = image;
         setModel(new DefaultButtonModel());
