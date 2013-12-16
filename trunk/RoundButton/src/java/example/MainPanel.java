@@ -328,6 +328,12 @@ class ShapeButton extends JButton {
     @Override public boolean contains(int x, int y) {
         return shape.contains(x, y);
     }
+/*/ Test
+    @Override public Dimension getPreferredSize() {
+        Rectangle r = shape.getBounds();
+        return new Dimension(r.width, r.height);
+    }
+/*/
     private static class DummySizeIcon implements Icon {
         private final Shape shape;
         public DummySizeIcon(Shape s) {
@@ -341,4 +347,5 @@ class ShapeButton extends JButton {
         }
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
     }
+//*/
 }
