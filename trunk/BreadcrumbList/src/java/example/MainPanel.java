@@ -90,15 +90,14 @@ public class MainPanel extends JPanel {
             });
         }
         b.setIcon(icon);
+        b.setContentAreaFilled(false);
+        b.setBorder(BorderFactory.createEmptyBorder());
         b.setVerticalAlignment(SwingConstants.CENTER);
         b.setVerticalTextPosition(SwingConstants.CENTER);
         b.setHorizontalAlignment(SwingConstants.CENTER);
         b.setHorizontalTextPosition(SwingConstants.CENTER);
-        b.setBorder(BorderFactory.createEmptyBorder());
-        b.setContentAreaFilled(false);
         b.setFocusPainted(false);
         b.setOpaque(false);
-        b.setBorder(BorderFactory.createEmptyBorder());
         b.setBackground(color);
         return b;
     }
@@ -127,18 +126,11 @@ public class MainPanel extends JPanel {
 //http://terai.xrea.jp/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
     public Shape area;
-    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Container parent = c.getParent();
-        if(parent==null) {
-            return;
-        }
+    public Shape getShape(Container parent, Component c, int x, int y) {
         int h = c.getHeight()-1;
         int h2 = h/2;
         int w = c.getWidth()-1-h2;
         x += h2;
-
-        Graphics2D g2 = (Graphics2D)g.create();
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Path2D.Float p = new Path2D.Float();
         if(c==parent.getComponent(0)) {
             //:first-child
@@ -156,7 +148,14 @@ class ToggleButtonBarCellIcon implements Icon {
             p.lineTo(x,          y + h2);
         }
         p.closePath();
-        area = p;
+        return p;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Container parent = c.getParent();
+        if(parent==null) {
+            return;
+        }
+        area = getShape(parent, c, x, y);
 
         Color bgc = parent.getBackground();
         Color borderColor = Color.GRAY.brighter();
@@ -167,6 +166,9 @@ class ToggleButtonBarCellIcon implements Icon {
                 borderColor = Color.GRAY;
             }
         }
+
+        Graphics2D g2 = (Graphics2D)g.create();
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(bgc);
         g2.fill(area);
         g2.setPaint(borderColor);
