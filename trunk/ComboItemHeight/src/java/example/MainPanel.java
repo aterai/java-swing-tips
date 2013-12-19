@@ -13,20 +13,21 @@ public class MainPanel extends JPanel {
         add(makeUI(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
     public JComponent makeUI() {
         Box p = Box.createVerticalBox();
-        Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
+        String[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
 
-        JComboBox combo1 = new JComboBox(items) {
+        JComboBox<String> combo1 = new JComboBox<String>(items) {
             @Override public void updateUI() {
                 super.updateUI();
                 JLabel r = (JLabel)getRenderer();
                 r.setPreferredSize(new Dimension(0, 32));
             }
         };
+        p.add(makeTitledPanel("setPreferredSize", combo1));
+        p.add(Box.createVerticalStrut(5));
 
-        JComboBox combo2 = new JComboBox(items);
+        JComboBox<String> combo2 = new JComboBox<>(items);
         final Dimension dim = ((JLabel)combo2.getRenderer()).getPreferredSize();
 /*      //TEST:
         combo2.setRenderer(new DefaultListCellRenderer() {
@@ -51,9 +52,24 @@ public class MainPanel extends JPanel {
             }
         });
 //*/
+        p.add(makeTitledPanel("getListCellRendererComponent", combo2));
+        p.add(Box.createVerticalStrut(5));
 
-//         JComboBox combo3 = new JComboBox(items);
-//         combo3.setUI(new BasicComboBoxUI() {
+        JComboBox<String> combo3 = new JComboBox<>(items);
+        combo3.setRenderer(new DefaultListCellRenderer() {
+            private int cheight;
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                if(index>=0) {
+                    value = String.format("<html><table><td height='32'>%s", value);
+                }
+                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            }
+        });
+        p.add(makeTitledPanel("html", combo3));
+        p.add(Box.createVerticalStrut(5));
+
+//         JComboBox<String> combo4 = new JComboBox<>(items);
+//         combo4.setUI(new BasicComboBoxUI() {
 //             @Override protected ComboPopup createPopup() {
 //                 return new BasicComboPopup(combo) {
 //                     @Override protected void configureList() {
@@ -63,12 +79,7 @@ public class MainPanel extends JPanel {
 //                 };
 //             }
 //         });
-        p.add(makeTitledPanel("setPreferredSize", combo1));
-        p.add(Box.createVerticalStrut(5));
-        p.add(makeTitledPanel("getListCellRendererComponent", combo2));
-        p.add(Box.createVerticalStrut(5));
-        //p.add(combo3); p.add(Box.createVerticalStrut(5));
-        //p.setBorder(BorderFactory.createTitledBorder("JComboBox"));
+//         p.add(makeTitledPanel("BasicComboBoxUI", combo4));
         return p;
     }
     private static JComponent makeTitledPanel(String title, JComponent c) {
