@@ -206,6 +206,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 TableOfContents toc = (TableOfContents)o;
                 FontMetrics metrics = l.getFontMetrics(l.getFont());
                 int gap = l.getIconTextGap();
+                int h = l.getPreferredSize().height;
                 Insets ins = tree.getInsets();
 
                 p.removeAll();
@@ -214,11 +215,11 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 
                 pn = String.format("%3d", toc.page);
                 pnPt.x = tree.getWidth() - metrics.stringWidth(pn) - gap;
-                pnPt.y = (l.getIcon().getIconHeight() + metrics.getAscent()) / 2;
+                pnPt.y = (h + metrics.getAscent()) / 2;
 
                 rxs = l.getPreferredSize().width + gap;
                 rxe = tree.getWidth() - ins.right - metrics.stringWidth("000") - gap;
-                ry  = l.getIcon().getIconHeight() / 2;
+                ry  = h / 2;
 
                 return p;
             }
