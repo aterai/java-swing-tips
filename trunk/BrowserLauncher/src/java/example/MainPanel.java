@@ -3,13 +3,12 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.lang.reflect.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private static String MYSITE = "http://terai.xrea.jp/";
+    private static final String MYSITE = "http://terai.xrea.jp/";
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());
@@ -67,7 +66,7 @@ public class MainPanel extends JPanel {
 /////////////////////////////////////////////////////////
 //class BareBonesBrowserLaunch {
 class BrowserLauncher {
-    private static final String errMsg = "Error attempting to launch web browser";
+    private static final String ERR_MSG = "Error attempting to launch web browser";
     public static void openURL(String url) {
         String osName = System.getProperty("os.name");
         try{
@@ -87,14 +86,14 @@ class BrowserLauncher {
                     }
                 }
                 if(browser == null) {
-                    throw new Exception("Could not find web browser");
+                    throw new UnsupportedOperationException("Could not find web browser");
                 }else{
                     Runtime.getRuntime().exec(new String[] {browser, url});
                 }
             }
         }catch(Exception e) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, errMsg + ":\n" + e.getLocalizedMessage(), "titlebar", JOptionPane.ERROR_MESSAGE);
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, ERR_MSG + ":\n" + e.getLocalizedMessage(), "titlebar", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
