@@ -5,7 +5,7 @@
 <property name="name"    value="example" />
 <property name="vendor"  value="Java Swing Tips - at.terai@gmail.com" />
 <property name="version" value="1.0.0" />
-<property name="year"    value="2003-2013" />
+<property name="year"    value="2003-2014" />
 
 <!-- class -->
 <property name="main.class"        value="example.MainPanel" />
@@ -17,7 +17,7 @@
 <property name="compile.nowarn"      value="off" />
 <property name="compile.deprecation" value="on" />
 <property name="compile.verbose"     value="off" />
-<property name="compile.source"      value="1.6" />
+<property name="compile.source"      value="1.7" />
 <property name="compile.encoding"    value="UTF-8" />
 
 <!-- javadoc -->
@@ -25,7 +25,7 @@
 <property name="javadoc.docencoding" value="UTF-8" />
 <property name="javadoc.pkgs"        value="*" />
 <property name="javadoc.locale"      value="ja" />
-<property name="javadoc.link"        value="http://java.sun.com/javase/ja/6/docs/ja/api/" />
+<property name="javadoc.link"        value="http://http://docs.oracle.com/javase/jp/7/api/" />
 
 <!-- signjar -->
 <property name="signjar.keystore" value="myKeyStore" />
@@ -40,7 +40,7 @@
 <property name="bkup.dir" value="bkuptmp" />
 
 <!-- target -->
-<property name="build.dir"            value="${basedir}/target" />
+<property name="build.dir"            value="target" />
 <property name="build.src"            value="${build.dir}/src" />
 <property name="build.dest"           value="${build.dir}/classes" />
 <property name="build.docs"           value="${build.dir}/apidocs" />
