@@ -212,7 +212,7 @@ class ButtonTabComponent extends JPanel {
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new BorderLayout(0, 0)); //FlowLayout(FlowLayout.LEFT, 0, 0));
         if(pane == null) {
-            throw new NullPointerException("TabbedPane is null");
+            throw new IllegalArgumentException("TabbedPane cannot be null");
         }
         this.pane = pane;
         setOpaque(false);
