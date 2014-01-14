@@ -4,10 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private static final String initTxt =
+    private static final String INIT_TXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
       "This lesson explains the concepts you need to use Swing components in building a user interface." +
@@ -20,20 +19,20 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + initTxt);
+        JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + INIT_TXT);
         textArea1.setMargin(new Insets(5,5,5,5));
         JScrollPane scroll1 = new JScrollPane(textArea1);
 
-        JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + initTxt);
+        JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + INIT_TXT);
         textArea2.setMargin(new Insets(0,0,0,1));
         JScrollPane scroll2 = new JScrollPane(textArea2);
         scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));
 
-        JSplitPane sp = new JSplitPane();
-        sp.setResizeWeight(.5);
-        sp.setLeftComponent(scroll1);
-        sp.setRightComponent(scroll2);
-        add(sp);
+        JSplitPane splitPane = new JSplitPane();
+        splitPane.setResizeWeight(.5);
+        splitPane.setLeftComponent(scroll1);
+        splitPane.setRightComponent(scroll2);
+        add(splitPane);
 
         setPreferredSize(new Dimension(320, 240));
     }
@@ -47,7 +46,7 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
+        }catch(UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
