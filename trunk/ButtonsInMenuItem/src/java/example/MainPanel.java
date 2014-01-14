@@ -8,8 +8,8 @@ import java.awt.geom.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.text.*;
+import javax.swing.plaf.LayerUI;
+import javax.swing.text.DefaultEditorKit;
 
 public class MainPanel extends JPanel {
     public MainPanel() {

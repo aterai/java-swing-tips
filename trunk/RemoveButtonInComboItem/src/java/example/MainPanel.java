@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import javax.accessibility.Accessible;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {

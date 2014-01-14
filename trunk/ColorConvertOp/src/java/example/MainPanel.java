@@ -6,10 +6,7 @@ import java.awt.*;
 import java.awt.color.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.net.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 class MainPanel extends JPanel {
     private final ImageIcon orgImage;

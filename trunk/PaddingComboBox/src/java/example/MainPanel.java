@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.synth.*;
 
 public class MainPanel extends JPanel {
     private final JPanel panel = new JPanel();

@@ -6,7 +6,6 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.*;
 
 class MainPanel extends JPanel {
     private final JSpinner spinner01 = new JSpinner();

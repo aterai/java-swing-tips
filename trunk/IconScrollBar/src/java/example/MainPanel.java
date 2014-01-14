@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import com.sun.java.swing.plaf.windows.*;
 
 public class MainPanel extends JPanel {

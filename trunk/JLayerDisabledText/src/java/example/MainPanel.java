@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
-import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     public final JMenuBar menuBar = new JMenuBar();

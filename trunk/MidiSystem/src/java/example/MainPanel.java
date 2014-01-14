@@ -4,12 +4,10 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.io.*;
 import java.net.*;
 import javax.swing.*;
 import javax.sound.midi.*;
-import javax.sound.midi.spi.*;
+//import javax.sound.midi.spi.*;
 
 class MainPanel extends JPanel {
     private long tickpos = 0;

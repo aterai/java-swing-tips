@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.tree.*;

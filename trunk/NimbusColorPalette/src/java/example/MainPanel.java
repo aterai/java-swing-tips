@@ -5,9 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 // JDK 1.6.0 import com.sun.java.swing.Painter;
 
 public class MainPanel extends JPanel {

@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import javax.swing.plaf.synth.*;

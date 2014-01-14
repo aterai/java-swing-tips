@@ -6,9 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 class MainPanel extends JPanel {
     public MainPanel() {

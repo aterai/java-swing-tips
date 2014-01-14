@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     private final JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
