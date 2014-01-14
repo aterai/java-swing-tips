@@ -9,7 +9,6 @@ import java.awt.image.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     public MainPanel() {

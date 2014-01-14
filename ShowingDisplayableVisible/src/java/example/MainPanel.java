@@ -3,14 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
 import java.util.Date;
 import javax.swing.*;
-import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private final JCheckBox vcheck = new JCheckBox("setVisible", true);

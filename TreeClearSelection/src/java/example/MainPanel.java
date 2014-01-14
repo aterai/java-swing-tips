@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
     private final JTree tree = new JTree();

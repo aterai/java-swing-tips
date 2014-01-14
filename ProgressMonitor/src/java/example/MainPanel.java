@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.beans.*;
 import java.util.List;
 import javax.swing.*;

@@ -7,8 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.metal.MetalSliderUI;
 
 public class MainPanel extends JPanel {
     private static int[] makeGradientPallet() {

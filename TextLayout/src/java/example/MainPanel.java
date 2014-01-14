@@ -3,9 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.font.*;
-import java.awt.geom.*;
+import java.awt.geom.Line2D;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {

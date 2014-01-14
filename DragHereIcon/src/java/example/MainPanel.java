@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 import java.io.*;

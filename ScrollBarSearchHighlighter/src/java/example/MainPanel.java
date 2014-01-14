@@ -7,9 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.regex.*;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.text.*;
-import javax.swing.plaf.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 

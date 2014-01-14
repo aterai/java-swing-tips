@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.awt.image.*;
 //import java.lang.reflect.*;
 import javax.swing.*;
@@ -285,7 +284,7 @@ class TextureFactory {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle2D.Double(0,0,size,size));
+        return new TexturePaint(img, new Rectangle(0,0,size,size));
     }
     public static TexturePaint createCheckerTexture(int cs) {
         return createCheckerTexture(cs, defaultColor);

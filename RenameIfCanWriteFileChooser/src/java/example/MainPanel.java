@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
-import javax.swing.filechooser.*;
 
 public class MainPanel extends JPanel {
     private final JTextArea log = new JTextArea();

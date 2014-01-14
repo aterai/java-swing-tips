@@ -4,7 +4,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;

@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;

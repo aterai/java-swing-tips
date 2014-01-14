@@ -8,9 +8,7 @@ import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
-import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
     public MainPanel() {

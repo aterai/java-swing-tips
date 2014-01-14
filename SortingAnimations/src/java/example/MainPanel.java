@@ -3,13 +3,9 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.color.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 
 // SortAnim.java -- Animate sorting algorithms
 // Copyright (C) 1999 Lucent Technologies

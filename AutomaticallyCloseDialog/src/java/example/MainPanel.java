@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
-import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     private static final int SECONDS = 5;

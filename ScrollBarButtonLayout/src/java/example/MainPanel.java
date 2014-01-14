@@ -3,10 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import javax.swing.plaf.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 

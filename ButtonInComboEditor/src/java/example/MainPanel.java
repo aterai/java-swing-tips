@@ -8,8 +8,6 @@ import java.awt.image.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 
 class MainPanel extends JPanel {
     private final JComboBox combo01;

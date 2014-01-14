@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {

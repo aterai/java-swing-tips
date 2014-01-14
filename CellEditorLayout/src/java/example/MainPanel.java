@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.EventObject;
 import javax.swing.*;
-import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     public MainPanel() {

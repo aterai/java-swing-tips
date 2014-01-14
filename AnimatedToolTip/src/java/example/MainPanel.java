@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.geom.Ellipse2D;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;

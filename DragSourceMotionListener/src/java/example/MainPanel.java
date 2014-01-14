@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.*;
 import javax.activation.*;
 import javax.swing.*;
-import javax.swing.text.*;
 
 public class MainPanel {
     public static void main(String[] args) {

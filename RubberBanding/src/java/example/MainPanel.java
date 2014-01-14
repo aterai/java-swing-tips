@@ -10,7 +10,6 @@ import java.net.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {

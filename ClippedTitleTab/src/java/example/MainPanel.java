@@ -7,8 +7,6 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 

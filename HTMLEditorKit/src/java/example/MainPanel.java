@@ -8,7 +8,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-import javax.swing.text.html.*;
 //import javax.swing.text.html.parser.*;
 
 public class MainPanel extends JPanel {

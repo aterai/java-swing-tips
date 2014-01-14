@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.text.html.*;
 
 public class MainPanel extends JPanel {

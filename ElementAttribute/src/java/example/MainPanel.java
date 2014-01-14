@@ -4,16 +4,11 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
-import java.io.*;
 import java.net.URL;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     private static URL image = MainPanel.class.getResource("favicon.png");

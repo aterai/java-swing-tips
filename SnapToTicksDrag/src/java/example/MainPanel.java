@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public class MainPanel extends JPanel {

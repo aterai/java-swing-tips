@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     private static final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();

@@ -4,11 +4,10 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 class MainPanel extends JPanel {

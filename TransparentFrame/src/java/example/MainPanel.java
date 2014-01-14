@@ -11,7 +11,6 @@ import java.net.*;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
 
 class MainPanel extends JPanel {
     private final static TexturePaint texture = makeTexturePaint();

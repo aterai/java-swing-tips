@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 //import java.awt.color.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
