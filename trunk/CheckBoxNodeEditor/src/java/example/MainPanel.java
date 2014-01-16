@@ -201,7 +201,6 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
 class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer {
     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final JPanel panel = new JPanel(new BorderLayout());
-    private JTree tree = null;
     public CheckBoxNodeRenderer() {
         super();
         String uiName = getUI().getClass().getName();
@@ -216,7 +215,6 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
         this.setOpaque(false);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        this.tree = tree;
         JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         l.setFont(tree.getFont());
         if(value != null && value instanceof DefaultMutableTreeNode) {

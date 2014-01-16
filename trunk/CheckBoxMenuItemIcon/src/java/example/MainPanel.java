@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -31,10 +30,6 @@ public class MainPanel extends JPanel {
         menuBar.add(menu);
         menuBar.add(menu2);
         return menuBar;
-    }
-    private void buttonActionPerformed(ActionEvent e) {
-        Toolkit.getDefaultToolkit().beep();
-        JOptionPane.showMessageDialog(this, "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -54,8 +54,6 @@ public class MainPanel extends JPanel {
     private static final float[] a = new float[MAXN];
     private int number = 150;
     private float factorx, factory;
-    private Image img = null;
-    private Graphics dbg;
 
     public MainPanel() {
         super(new BorderLayout());

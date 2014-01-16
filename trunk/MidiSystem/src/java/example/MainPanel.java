@@ -17,7 +17,6 @@ class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         URL url = getClass().getResource("Mozart_toruko_k.mid");
-        boolean flag = false;
         final Sequencer sequencer;
         try{
             Sequence s = MidiSystem.getSequence(url);

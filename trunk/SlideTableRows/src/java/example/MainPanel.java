@@ -54,52 +54,46 @@ public class MainPanel extends JPanel {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
-        }
-    }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addRow(new Object[] {"New name", model.getRowCount(), false});
-        (new Timer(DELAY, new ActionListener() {
-            int i = table.convertRowIndexToView(model.getRowCount()-1);
-            int h = START_HEIGHT;
-            @Override public void actionPerformed(ActionEvent e) {
-                if(h<END_HEIGHT) {
-                    table.setRowHeight(i, h++);
-                }else{
-                    ((Timer)e.getSource()).stop();
+        @Override public void actionPerformed(ActionEvent e) {
+            model.addRow(new Object[] {"New name", model.getRowCount(), false});
+            (new Timer(DELAY, new ActionListener() {
+                int i = table.convertRowIndexToView(model.getRowCount()-1);
+                int h = START_HEIGHT;
+                @Override public void actionPerformed(ActionEvent e) {
+                    if(h<END_HEIGHT) {
+                        table.setRowHeight(i, h++);
+                    }else{
+                        ((Timer)e.getSource()).stop();
+                    }
                 }
-            }
-        })).start();
+            })).start();
+        }
     }
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    public void deleteActionPerformed(ActionEvent evt) {
-        final int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        (new Timer(DELAY, new ActionListener() {
-            int h = END_HEIGHT;
-            @Override public void actionPerformed(ActionEvent e) {
-                h--;
-                if(h>START_HEIGHT) {
-                    for(int i=selection.length-1;i>=0;i--) {
-                        table.setRowHeight(selection[i], h);
-                    }
-                }else{
-                    ((Timer)e.getSource()).stop();
-                    for(int i=selection.length-1;i>=0;i--) {
-                        model.removeRow(table.convertRowIndexToModel(selection[i]));
+        @Override public void actionPerformed(ActionEvent e) {
+            final int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            (new Timer(DELAY, new ActionListener() {
+                int h = END_HEIGHT;
+                @Override public void actionPerformed(ActionEvent e) {
+                    h--;
+                    if(h>START_HEIGHT) {
+                        for(int i=selection.length-1;i>=0;i--) {
+                            table.setRowHeight(selection[i], h);
+                        }
+                    }else{
+                        ((Timer)e.getSource()).stop();
+                        for(int i=selection.length-1;i>=0;i--) {
+                            model.removeRow(table.convertRowIndexToModel(selection[i]));
+                        }
                     }
                 }
-            }
-        })).start();
+            })).start();
+        }
     }
 
 //     public void xxx_deleteActionPerformed(ActionEvent evt) {

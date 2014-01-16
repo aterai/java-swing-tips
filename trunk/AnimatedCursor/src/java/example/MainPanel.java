@@ -15,12 +15,12 @@ class MainPanel extends JPanel {
     private final URL url00     = getClass().getResource("00.png");
     private final URL url01     = getClass().getResource("01.png");
     private final URL url02     = getClass().getResource("02.png");
-    private final Point p       = new Point(0,0);
     public MainPanel() {
         super(new BorderLayout());
-        list[0] = tk.createCustomCursor(tk.createImage(url00), p, "00");
-        list[1] = tk.createCustomCursor(tk.createImage(url01), p, "01");
-        list[2] = tk.createCustomCursor(tk.createImage(url02), p, "02");
+        Point pt = new Point(0, 0);
+        list[0] = tk.createCustomCursor(tk.createImage(url00), pt, "00");
+        list[1] = tk.createCustomCursor(tk.createImage(url01), pt, "01");
+        list[2] = tk.createCustomCursor(tk.createImage(url02), pt, "02");
         animator = new Timer(100, new ActionListener() {
             private int counter = 0;
             @Override public void actionPerformed(ActionEvent e) {

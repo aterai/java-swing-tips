@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final Color evenColor = new Color(250, 250, 250);
     private final JCheckBox modelCheck = new JCheckBox("edit the cell on single click");
 
     private final String[] columnNames = {"A", "B", "C"};

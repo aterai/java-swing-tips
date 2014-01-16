@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
 
         JComponent box1 = Box.createHorizontalBox();
@@ -157,7 +157,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

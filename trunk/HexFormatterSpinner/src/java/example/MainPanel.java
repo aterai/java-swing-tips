@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)spinner.getEditor();
         JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
         ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
-        ftf.setFormatterFactory(makeFFactory(model));
+        ftf.setFormatterFactory(makeFFactory());
 
         add(spinner, BorderLayout.NORTH);
         add(new JPanel() {
@@ -105,7 +105,7 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static DefaultFormatterFactory makeFFactory(final SpinnerNumberModel m) {
+    private static DefaultFormatterFactory makeFFactory() {
         DefaultFormatter formatter = new DefaultFormatter() {
             @Override public Object stringToValue(String text) throws ParseException {
                 try{

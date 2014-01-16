@@ -98,16 +98,15 @@ public class MainPanel extends JPanel {
             row--;
         }
     }
-    // https://forums.oracle.com/thread/1393385 How to Expand a JTree completely
-    private void expandAPath(TreePath p) {
-        tree.expandPath(p);
-        DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
-        for(int i=0;i<n.getChildCount();i++) {
-            TreePath path = p.pathByAddingChild(n.getChildAt(i));
-            expandAPath(path);
-        }
-    }
-
+//     // https://forums.oracle.com/thread/1393385 How to Expand a JTree completely
+//     private void expandAPath(TreePath p) {
+//         tree.expandPath(p);
+//         DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
+//         for(int i=0;i<n.getChildCount();i++) {
+//             TreePath path = p.pathByAddingChild(n.getChildAt(i));
+//             expandAPath(path);
+//         }
+//     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

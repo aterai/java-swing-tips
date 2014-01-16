@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static final String SEPARATOR = "\n";
+//     private static final String SEPARATOR = "\n";
 //     private void append_(String str, boolean flg) {
 //         SimpleAttributeSet sas = null;
 //         if(!flg) {

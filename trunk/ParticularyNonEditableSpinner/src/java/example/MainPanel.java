@@ -91,12 +91,10 @@ public class MainPanel extends JPanel {
     }
 }
 class StringBorder implements Border {
-    private final JComponent parent;
     private final Insets insets;
     private final Rectangle rect;
     private final String str;
     public StringBorder(JComponent parent, String str) {
-        this.parent = parent;
         this.str = str;
         FontRenderContext frc = new FontRenderContext(null, true, true);
         rect = parent.getFont().getStringBounds(str, frc).getBounds();

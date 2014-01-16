@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Boolean"};

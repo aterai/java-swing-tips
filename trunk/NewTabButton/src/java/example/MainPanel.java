@@ -303,7 +303,7 @@ class TabLayout implements LayoutManager, java.io.Serializable {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
             int ncomponents = parent.getComponentCount();
-            int nrows = 1;
+            //int nrows = 1;
             int ncols = ncomponents-1;
             //boolean ltr = parent.getComponentOrientation().isLeftToRight();
 

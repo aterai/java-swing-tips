@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
         list3.setEditable(true);
         list3.setRootVisible(false);
         list3.setCellRenderer(new CheckBoxNodeRenderer());
-        list3.setCellEditor(new CheckBoxNodeEditor(list3));
+        list3.setCellEditor(new CheckBoxNodeEditor());
 
         for(String title: Arrays.asList(
                 "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee",
@@ -203,10 +203,8 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
 }
 
 class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
-    private final JTree tree;
-    public CheckBoxNodeEditor(JTree tree) {
+    public CheckBoxNodeEditor() {
         super();
-        this.tree = tree;
         setOpaque(false);
         setFocusable(false);
         addActionListener(new ActionListener() {

@@ -274,21 +274,20 @@ class ListItemTransferHandler extends TransferHandler {
         support.setDropAction(MOVE);
         return true;
     }
-    private BufferedImage makeIconImage(JList c) {
-        BufferedImage srcimg = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        c.paint(srcimg.getGraphics());
-
-        BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-        for(int idx:c.getSelectedIndices()) {
-            Rectangle rect = c.getCellBounds(idx,idx);
-            g.clipRect(rect.x,rect.y,rect.width,rect.height);
-            g.drawImage(srcimg, rect.x, rect.y, null);
-            //image = image.getSubimage(rect.x,rect.y,rect.width,rect.height);
-        }
-        return image;
-    }
-
+//     private BufferedImage makeIconImage(JList c) {
+//         BufferedImage srcimg = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
+//         c.paint(srcimg.getGraphics());
+//
+//         BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
+//         Graphics g = image.getGraphics();
+//         for(int idx:c.getSelectedIndices()) {
+//             Rectangle rect = c.getCellBounds(idx,idx);
+//             g.clipRect(rect.x,rect.y,rect.width,rect.height);
+//             g.drawImage(srcimg, rect.x, rect.y, null);
+//             //image = image.getSubimage(rect.x,rect.y,rect.width,rect.height);
+//         }
+//         return image;
+//     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
         Component glassPane = c.getRootPane().getGlassPane();

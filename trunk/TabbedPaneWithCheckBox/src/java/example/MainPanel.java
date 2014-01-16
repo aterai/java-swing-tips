@@ -62,7 +62,6 @@ public class MainPanel extends JPanel {
 }
 
 class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants {
-    private static final int offset = 5;
     private final JCheckBox cbox;
     private final JTabbedPane tab;
     private final JComponent dummy = new JPanel();

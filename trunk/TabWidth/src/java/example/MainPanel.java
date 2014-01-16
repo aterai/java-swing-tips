@@ -10,7 +10,6 @@ import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 public class MainPanel extends JPanel {
     private final JTabbedPane tab0 = new JTabbedPane();
     private final JTabbedPane tab1 = new JTabbedPane();
-    private final JTabbedPane tab2 = new JTabbedPane();
     public MainPanel() {
         super(new BorderLayout());
         tab0.addTab("aaaaaa",          new JLabel("aaaaaaaaaaa"));

@@ -53,12 +53,6 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JComponent makeTitledPanel(String title, JComponent c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        return p;
-    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

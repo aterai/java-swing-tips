@@ -10,8 +10,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super();
-        add(new ImageCaptionLabel("Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SEREIAL NO: 00000000",
-                                  new ImageIcon(getClass().getResource("test.png"))));
+        add(new LabelWithToolBox(new ImageIcon(getClass().getResource("test.png"))));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -37,8 +36,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class ImageCaptionLabel extends JLabel implements HierarchyListener {
-    private float alpha = 0.0f;
+class LabelWithToolBox extends JLabel implements HierarchyListener {
     private Timer animator;
     private int yy = 0;
     private JToolBar toolBox = new JToolBar() {
@@ -49,8 +47,8 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
             super.paintComponent(g);
         }
     };
-    public ImageCaptionLabel(String caption, Icon image) {
-        setIcon(image);
+    public LabelWithToolBox(Icon image) {
+        super(image);
         toolBox.setFloatable(false);
         toolBox.setOpaque(false);
         toolBox.setBackground(new Color(0,0,0,0));
@@ -73,7 +71,7 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
             }
             private void dispatchMouseEvent(MouseEvent e) {
                 Component src = e.getComponent();
-                Component tgt = ImageCaptionLabel.this;
+                Component tgt = LabelWithToolBox.this;
                 tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
             }
         };

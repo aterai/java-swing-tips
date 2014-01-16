@@ -122,27 +122,21 @@ public class MainPanel extends JPanel {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
+        @Override public void actionPerformed(ActionEvent e) {
+            model.addRow(new Object[] {"example", model.getRowCount(), false});
         }
-    }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addRow(new Object[] {"example", model.getRowCount(), false});
     }
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    public void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
+        @Override public void actionPerformed(ActionEvent e) {
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
         }
     }
 

@@ -10,7 +10,7 @@ import javax.swing.text.DefaultEditorKit;
 public class MainPanel extends JPanel {
     private final JTextField pf1 = new JTextField(30);
     private final JTextField pf2 = new JTextField(30);
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
         pf1.setComponentPopupMenu(new TextFieldPopupMenu(pf1));
         pf2.setComponentPopupMenu(new TextFieldPopupMenu(pf2));
@@ -87,7 +87,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);

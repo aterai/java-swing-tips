@@ -61,14 +61,13 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class MyTreeCellRenderer extends DefaultTreeCellRenderer {
-    private final Border border;
 
+class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     public MyTreeCellRenderer() {
         super();
-        Border outside = getBorder();
-        Border inside  = BorderFactory.createEmptyBorder(0,20,0,2);
-        border = BorderFactory.createCompoundBorder(outside, inside);
+//         Border outside = getBorder();
+//         Border inside  = BorderFactory.createEmptyBorder(0,20,0,2);
+//         border = BorderFactory.createCompoundBorder(outside, inside);
         setOpaque(false);
     }
     //protected boolean selected;
@@ -76,7 +75,7 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 
     private boolean drawsFocusBorderAroundIcon;
     private boolean drawDashedFocusIndicator = true;
-    private boolean isDropCell;
+    //private boolean isDropCell;
     private boolean fillBackground = true;
 
     private Color treeBGColor;
@@ -211,6 +210,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     @Override public void paint(Graphics g) {}
 }
+
 class DotBorder extends LineBorder {
     private final Color borderSelectionColor;
     public DotBorder(Color color, Color borderSelectionColor) {

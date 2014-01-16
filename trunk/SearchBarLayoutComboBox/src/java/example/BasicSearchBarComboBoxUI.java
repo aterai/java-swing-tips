@@ -214,7 +214,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 }
                 //= (JButton)cb.getComponent(3);
                 if(loupeButton != null) {
-                    Insets loupeInsets = loupeButton.getInsets();
+                    //Insets loupeInsets = loupeButton.getInsets();
                     //loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
                     loupeButton.setBounds(width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight);
                 }

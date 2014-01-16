@@ -225,12 +225,6 @@ class StarburstSVGMaker {
         AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,or,0);
         return new Path2D.Double(p, at);
     }
-    private JComponent makeTitledPanel(String title, JComponent c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(new JLabel(title), BorderLayout.WEST);
-        p.add(c);
-        return p;
-    }
 //     class MyDragGestureListener implements DragGestureListener {
 //         @Override public void dragGestureRecognized(DragGestureEvent dge) {
 //             File outfile;

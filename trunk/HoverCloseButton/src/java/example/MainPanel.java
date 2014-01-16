@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
 }
 
 class MyJTabbedPane extends JTabbedPane {
-    private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
+    //private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
     public MyJTabbedPane() {
         super();
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);

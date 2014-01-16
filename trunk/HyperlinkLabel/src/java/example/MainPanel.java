@@ -91,14 +91,12 @@ public class MainPanel extends JPanel {
 }
 
 class URILabel extends JLabel {
-    private final String href;
     public URILabel(String str) {
         super("<html><a href='"+str+"'>"+str+"</a>");
-        href = str;
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
             }
         });
     }

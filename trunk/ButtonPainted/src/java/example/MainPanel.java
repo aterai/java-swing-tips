@@ -86,20 +86,6 @@ class MainPanel extends JPanel {
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
-    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
-        JPanel p = new JPanel(new GridBagLayout());
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
-        c.weightx = 1.0;
-        c.gridy   = 0;
-        for(JComponent cmp:list) {
-            p.add(cmp, c);
-            c.gridy++;
-        }
-        return p;
-    }
     //<blockquote cite="http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
     private ButtonGroup lookAndFeelRadioGroup;
     private String lookAndFeel;

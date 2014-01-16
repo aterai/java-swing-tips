@@ -231,20 +231,20 @@ class DnDTree extends JTree implements DragSourceListener, DropTargetListener, D
 
     // custom renderer
     class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
-        private static final int BOTTOM_PAD = 30;
+        //private static final int BOTTOM_PAD = 30;
         private boolean isTargetNode;
         private boolean isTargetNodeLeaf;
-        private boolean isLastItem;
-        private Insets normalInsets;
-        private Insets lastItemInsets;
+        //private boolean isLastItem;
+        //private Insets normalInsets;
+        //private Insets lastItemInsets;
         public DnDTreeCellRenderer() {
             super();
-            normalInsets = super.getInsets();
-            lastItemInsets = new Insets(
-                normalInsets.top,
-                normalInsets.left,
-                normalInsets.bottom + BOTTOM_PAD,
-                normalInsets.right);
+//             normalInsets = super.getInsets();
+//             lastItemInsets = new Insets(
+//                 normalInsets.top,
+//                 normalInsets.left,
+//                 normalInsets.bottom + BOTTOM_PAD,
+//                 normalInsets.right);
         }
         @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean isExpanded, boolean isLeaf, int row, boolean hasFocus) {
             isTargetNode = value == dropTargetNode;

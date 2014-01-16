@@ -10,7 +10,6 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private static final String PREFIX = "xxx_";
     private final Preferences prefs;
-    private final JFrame frame;
     private final Dimension dim = new Dimension(320, 200);
     private final Point pos = new Point();
     private final JButton exitButton = new JButton();
@@ -19,7 +18,6 @@ public class MainPanel extends JPanel {
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        this.frame = frame;
         this.prefs = Preferences.userNodeForPackage(getClass());
         frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {

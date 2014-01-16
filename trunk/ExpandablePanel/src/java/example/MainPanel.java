@@ -119,12 +119,10 @@ abstract class ExpansionPanel extends JPanel {
     private final JButton button;
     private final Container panel;
     private final JScrollPane scroll;
-    private final String title;
     private boolean openFlag = false;
 
     public ExpansionPanel(String title) {
         super(new BorderLayout());
-        this.title = title;
         button = new JButton(new AbstractAction(title) {
             @Override public void actionPerformed(ActionEvent e) {
                 setSelected(!isSelected());

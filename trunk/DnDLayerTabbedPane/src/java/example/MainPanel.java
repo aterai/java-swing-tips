@@ -243,7 +243,6 @@ class DnDTabbedPane extends JTabbedPane {
     public DropLocation dropLocationForPoint(Point p) {
         switch(dropMode) {
           case INSERT:
-            Rectangle r;
             for(int i=0; i<getTabCount(); i++) {
                 if(getBoundsAt(i).contains(p)) {
                     return new DropLocation(p, i);

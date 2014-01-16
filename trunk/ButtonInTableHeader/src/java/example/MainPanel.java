@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
                 return c;
             }
         };
-        HeaderRenderer r = new HeaderRenderer(table.getTableHeader(), 0);
+        HeaderRenderer r = new HeaderRenderer(table.getTableHeader());
         table.getColumnModel().getColumn(0).setHeaderRenderer(r);
         table.getColumnModel().getColumn(1).setHeaderRenderer(r);
         table.getColumnModel().getColumn(2).setHeaderRenderer(r);
@@ -48,12 +48,6 @@ public class MainPanel extends JPanel {
         //table.setAutoCreateRowSorter(true);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private JComponent makeTitledPanel(String title, JComponent c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        return p;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -78,7 +72,7 @@ public class MainPanel extends JPanel {
 }
 class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final int BUTTON_WIDTH = 16;
-    public HeaderRenderer(JTableHeader header, final int targetColumnIndex) {
+    public HeaderRenderer(JTableHeader header) {
         super();
         //setOpaque(false);
         //setFont(header.getFont());

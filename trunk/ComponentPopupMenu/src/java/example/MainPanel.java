@@ -83,7 +83,6 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action copyAction = new DefaultEditorKit.CopyAction();
     private final Action pasteAction = new DefaultEditorKit.PasteAction();
     private final Action deleteAction;
-    private final Action selectAllAction;
     public TextComponentPopupMenu() {
         super();
         add(cutAction);
@@ -96,7 +95,7 @@ class TextComponentPopupMenu extends JPopupMenu {
             }
         });
         addSeparator();
-        add(selectAllAction = new AbstractAction("select all") {
+        add(new AbstractAction("select all") {
             @Override public void actionPerformed(ActionEvent e) {
                 ((JTextComponent)getInvoker()).selectAll();
             }

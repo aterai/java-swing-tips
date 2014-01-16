@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
         initBreadcrumbList(breadcrumb, tree);
         add(new JLayer<JPanel>(breadcrumb, new BreadcrumbLayerUI()), BorderLayout.NORTH);
 
-        JComponent c = makeBreadcrumbList(tree, Arrays.asList("aaa", "bb", "c"));
+        JComponent c = makeBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
         add(c, BorderLayout.SOUTH);
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
             bg.add(b);
         }
     }
-    private static JComponent makeBreadcrumbList(JTree tree, List<String> list) {
+    private static JComponent makeBreadcrumbList(List<String> list) {
         JPanel p = makePanel(5 + 1);
         ButtonGroup bg = new ButtonGroup();
         for(String title: list) {

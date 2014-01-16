@@ -13,7 +13,6 @@ import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public class MainPanel extends JPanel {
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private static final boolean DEBUG = false;
     private static final String PATTERN = "Swing";
     private static final String INITTXT =
       "Trail: Creating a GUI with JFC/Swing\n" +

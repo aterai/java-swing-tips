@@ -77,7 +77,7 @@ public class MainPanel extends JPanel {
         ActionMap am = jtp.getActionMap();
         Action popAct = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                popupMenu(e);
+                showPopupMenu();
             }
         };
         am.put("myPop", popAct);
@@ -98,7 +98,7 @@ public class MainPanel extends JPanel {
         };
         return new JComboBox(model);
     }
-    private void popupMenu(ActionEvent e) {
+    private void showPopupMenu() {
         Rectangle rect = getRect();
         popup.show(jtp, rect.x, rect.y + rect.height);
         EventQueue.invokeLater(new Runnable() {
