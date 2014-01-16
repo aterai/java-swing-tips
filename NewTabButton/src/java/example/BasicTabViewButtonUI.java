@@ -10,7 +10,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
-    private final static TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
+    //private final static TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
     protected TabButton tabViewButton;
 
     public static ComponentUI createUI(JComponent c) {

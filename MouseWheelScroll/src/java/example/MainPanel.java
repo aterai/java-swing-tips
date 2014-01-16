@@ -32,7 +32,6 @@ class MainPanel extends JPanel {
             return new Dimension(dim.width, 0);
         }
     };
-    private final JViewport vport = scroll.getViewport();
     private final JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling");
     private final JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
     private final JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");

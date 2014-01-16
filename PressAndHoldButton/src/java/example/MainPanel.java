@@ -13,7 +13,6 @@ import javax.swing.event.*;
 class MainPanel extends JPanel {
     private final JToolBar toolbar = new JToolBar("toolbar");
     private final URL url = getClass().getResource("ei0021-16.png");
-    private final Component rigid = Box.createRigidArea(new Dimension(5,5));
     public MainPanel() {
         super(new BorderLayout());
         toolbar.add(new PressAndHoldButton("", new ImageIcon(url)));

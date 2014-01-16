@@ -96,38 +96,33 @@ public class MainPanel extends JPanel {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if(table.isEditing()) {
                 table.getCellEditor().stopCellEditing();
             }
-            testCreateActionPerformed(evt);
+            model.addTest(new Test("New row", ""));
+            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            table.scrollRectToVisible(r);
         }
-    }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("New row", ""));
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
-        table.scrollRectToVisible(r);
     }
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if(table.isEditing()) {
                 table.getCellEditor().stopCellEditing();
             }
-            deleteActionPerformed(evt);
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                //Test ixsc = model.getTest(selection[i]);
+                model.removeRow(selection[i]);
+            }
         }
     }
-    private void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            //Test ixsc = model.getTest(selection[i]);
-            model.removeRow(selection[i]);
-        }
-    }
+
     class UpAction extends AbstractAction {
         public UpAction(String str) {
             super(str);
@@ -188,35 +183,32 @@ public class MainPanel extends JPanel {
         public InitAction(String str) {
             super(str);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if(table.isEditing()) {
                 table.getCellEditor().stopCellEditing();
             }
-            initActionPerformed(evt);
+            int row = table.getRowCount();
+            if(row<=0) return;
+            TestModel model = (TestModel)table.getModel();
+            TestModel nmodel = new TestModel();
+            Vector dv = model.getDataVector();
+            for(int i=0;i<row;i++) {
+                //Test test = model.getTest(i);
+                Vector v = (Vector)dv.elementAt(i);
+                //new Test((String)v.elementAt(1), (String)v.elementAt(2));
+                nmodel.addTest(new Test((String)v.elementAt(1), (String)v.elementAt(2)));
+            }
+            JTableHeader h = table.getTableHeader();
+            TableCellRenderer tcr = h.getDefaultRenderer();
+            if(tcr instanceof SortButtonRenderer) {
+                SortButtonRenderer sbr = (SortButtonRenderer)tcr;
+                sbr.setPressedColumn(-1);
+                sbr.setSelectedColumn(-1);
+            }
+            table.setAutoCreateColumnsFromModel(false);
+            table.setModel(nmodel);
+            table.clearSelection();
         }
-    }
-    private void initActionPerformed(ActionEvent e) {
-        int row = table.getRowCount();
-        if(row<=0) return;
-        TestModel model = (TestModel)table.getModel();
-        TestModel nmodel = new TestModel();
-        Vector dv = model.getDataVector();
-        for(int i=0;i<row;i++) {
-            //Test test = model.getTest(i);
-            Vector v = (Vector)dv.elementAt(i);
-            //new Test((String)v.elementAt(1), (String)v.elementAt(2));
-            nmodel.addTest(new Test((String)v.elementAt(1), (String)v.elementAt(2)));
-        }
-        JTableHeader h = table.getTableHeader();
-        TableCellRenderer tcr = h.getDefaultRenderer();
-        if(tcr instanceof SortButtonRenderer) {
-            SortButtonRenderer sbr = (SortButtonRenderer)tcr;
-            sbr.setPressedColumn(-1);
-            sbr.setSelectedColumn(-1);
-        }
-        table.setAutoCreateColumnsFromModel(false);
-        table.setModel(nmodel);
-        table.clearSelection();
     }
 
     public static void main(String[] args) {

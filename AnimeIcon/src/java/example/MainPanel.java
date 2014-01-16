@@ -41,7 +41,6 @@ public class MainPanel extends JPanel {
             super("run");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            final JProgressBar bar = new JProgressBar(0, 100);
             runButton.setEnabled(false);
             canButton.setEnabled(true);
             anil.startAnimation();

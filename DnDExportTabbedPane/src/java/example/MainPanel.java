@@ -214,7 +214,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
     private DropMode dropMode = DropMode.INSERT;
     public DropLocation dropLocationForPoint(Point p) {
-        boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
+        //boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {
           case INSERT:
             for(int i=0; i<getTabCount(); i++) {
@@ -336,7 +336,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
 
     private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
-        private void repaintDropLocation(DropLocation loc) {
+        private void repaintDropLocation() {
             Component c = getRootPane().getGlassPane();
             if(c instanceof GhostGlassPane) {
                 GhostGlassPane glassPane = (GhostGlassPane)c;
@@ -349,7 +349,7 @@ class DnDTabbedPane extends JTabbedPane {
             String propertyName = e.getPropertyName();
             if("dropLocation".equals(propertyName)) {
                 //System.out.println("propertyChange: dropLocation");
-                repaintDropLocation(getDropLocation());
+                repaintDropLocation();
             }
         }
         // MouseListener

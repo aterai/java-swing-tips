@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 200));
     }
-    private static boolean searchAndClick(Container parent, Icon icon) {
+    public static boolean searchAndClick(Container parent, Icon icon) {
         for(Component c:parent.getComponents()) {
             if(c instanceof JToggleButton && ((JToggleButton)c).getIcon()==icon) {
                 ((AbstractButton)c).doClick();

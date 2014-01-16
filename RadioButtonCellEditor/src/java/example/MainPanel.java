@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
         TableColumn c = table.getColumnModel().getColumn(2);
         c.setCellRenderer(new RadioButtonsRenderer());
-        c.setCellEditor(new RadioButtonsEditor(model));
+        c.setCellEditor(new RadioButtonsEditor());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -77,7 +77,8 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
     }
 }
 class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
-    public RadioButtonsEditor(final DefaultTableModel model) {
+    //public RadioButtonsEditor(final DefaultTableModel model) {
+    public RadioButtonsEditor() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
         addActionListener(new ActionListener() {

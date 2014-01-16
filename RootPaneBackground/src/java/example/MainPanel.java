@@ -190,7 +190,6 @@ class CentredBackgroundBorder implements Border {
 
 //http://terai.xrea.jp/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
-    private static final Color ALPHA_ZERO = new Color(0, true);
     private static final Color POPUP_BACK = new Color(250,250,250,100);
     private static final Color POPUP_LEFT = new Color(230,230,230,100);
     private static final int LEFT_WIDTH = 24;
@@ -207,6 +206,7 @@ class TranslucentPopupMenu extends JPopupMenu {
         menuItem.setOpaque(false);
         return super.add(menuItem);
     }
+//     private static final Color ALPHA_ZERO = new Color(0, true);
 //     @Override public void show(Component c, int x, int y) {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
@@ -308,12 +308,13 @@ class TranslucentPopupFactory extends PopupFactory {
 class TranslucentPopup extends Popup {
     private JWindow popupWindow;
     public TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
+        super(owner, contents, ownerX, ownerY);
         // create a new heavyweight window
         this.popupWindow = new JWindow();
         // mark the popup with partial opacity
         //com.sun.awt.AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? 0.8f : 0.95f);
         //popupWindow.setOpacity(.5f);
-        com.sun.awt.AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
+        //com.sun.awt.AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
         popupWindow.setBackground(new Color(0, true)); //Java 1.7.0
         // determine the popup location
         popupWindow.setLocation(ownerX, ownerY);

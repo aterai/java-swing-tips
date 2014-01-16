@@ -199,7 +199,6 @@ class FolderSelectionListener implements TreeSelectionListener {
 class FileTreeCellRenderer extends TriStateCheckBox implements TreeCellRenderer {
     private final FileSystemView fileSystemView;
     private final JPanel panel = new JPanel(new BorderLayout());
-    private JTree tree = null;
     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     public FileTreeCellRenderer(FileSystemView fileSystemView) {
         super();
@@ -216,7 +215,6 @@ class FileTreeCellRenderer extends TriStateCheckBox implements TreeCellRenderer 
         this.setOpaque(false);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        this.tree = tree;
         JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         l.setFont(tree.getFont());
         if(value != null && value instanceof DefaultMutableTreeNode) {

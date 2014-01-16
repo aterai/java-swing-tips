@@ -62,10 +62,10 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed(evt);
+            testCreateActionPerformed();
         }
     }
-    private void testCreateActionPerformed(ActionEvent e) {
+    private void testCreateActionPerformed() {
         final int key = model.getRowCount();
         SwingWorker<Integer, Integer> worker = new SwingWorker<Integer, Integer>() {
             private int sleepDummy = new Random().nextInt(100) + 1;
@@ -116,26 +116,24 @@ public class MainPanel extends JPanel {
         executor.execute(worker);
         //worker.execute();
     }
+
     class CancelAction extends AbstractAction {
         public CancelAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            cancelActionPerformed(evt);
-        }
-    }
-    public synchronized void cancelActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=0;i<selection.length;i++) {
-            int midx = table.convertRowIndexToModel(selection[i]);
-            SwingWorker worker = model.getSwingWorker(midx);
-            if(worker!=null && !worker.isDone()) {
-                worker.cancel(true);
+        @Override public void actionPerformed(ActionEvent e) {
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=0;i<selection.length;i++) {
+                int midx = table.convertRowIndexToModel(selection[i]);
+                SwingWorker worker = model.getSwingWorker(midx);
+                if(worker!=null && !worker.isDone()) {
+                    worker.cancel(true);
+                }
+                worker = null;
             }
-            worker = null;
+            table.repaint();
         }
-        table.repaint();
     }
 
     class DeleteAction extends AbstractAction {

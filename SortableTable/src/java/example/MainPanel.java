@@ -54,36 +54,30 @@ public class MainPanel extends JPanel {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if(table.isEditing()) {
                 table.getCellEditor().stopCellEditing();
             }
-            testCreateActionPerformed(evt);
+            model.addTest(new Test("New row", ""));
+            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            table.scrollRectToVisible(r);
         }
-    }
-    private void testCreateActionPerformed(ActionEvent e) {
-        model.addTest(new Test("New row", ""));
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
-        table.scrollRectToVisible(r);
     }
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if(table.isEditing()) {
                 table.getCellEditor().stopCellEditing();
             }
-            deleteActionPerformed(evt);
-        }
-    }
-    private void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
-        for(int i=selection.length-1;i>=0;i--) {
-            //Test ixsc = model.getTest(selection[i]);
-            model.removeRow(selection[i]);
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) return;
+            for(int i=selection.length-1;i>=0;i--) {
+                //Test ixsc = model.getTest(selection[i]);
+                model.removeRow(selection[i]);
+            }
         }
     }
 

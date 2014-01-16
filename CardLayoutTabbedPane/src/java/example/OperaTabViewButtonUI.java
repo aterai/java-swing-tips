@@ -9,7 +9,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
-    private final static TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
+    //private final static TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }

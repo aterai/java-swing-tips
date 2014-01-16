@@ -375,8 +375,6 @@ class MyTable extends JTable {
     private int[] getIntersectedIndices(Path2D path) {
         TableModel model = getModel();
         ArrayList<Integer> list = new ArrayList<Integer>(model.getRowCount());
-        int start = -1;
-        int end = -1;
         for(int i=0;i<getRowCount();i++) {
             if(path.intersects(getCellRect2(MyTable.this, i, convertColumnIndexToView(0)))) {
                 list.add(i);

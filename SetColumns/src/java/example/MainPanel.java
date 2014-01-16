@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     private final JComboBox combo3      = new JComboBox();
     private final JSpinner spinner      = new JSpinner();
 
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super();
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

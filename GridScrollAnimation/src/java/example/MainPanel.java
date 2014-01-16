@@ -7,7 +7,6 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private Timer scroller;
     public MainPanel() {
         super(new BorderLayout());
         JPanel gp = new GridPanel();

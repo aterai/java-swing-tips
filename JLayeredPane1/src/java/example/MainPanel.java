@@ -12,7 +12,7 @@ import javax.swing.border.*;
 */
 class MainPanel extends JPanel {
     private static final int BACKLAYER = 1;
-    private static final int FORELAYER = 2;
+    //private static final int FORELAYER = 2;
 
     Font FONT = new Font("ＭＳ ゴシック", Font.PLAIN, 12);
 

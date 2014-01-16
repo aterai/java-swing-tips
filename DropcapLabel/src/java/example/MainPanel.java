@@ -23,10 +23,6 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(new Color(100,200,200,100), 10));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JLabel initLabel(JLabel label, String title, Color color) {
-        return label;
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

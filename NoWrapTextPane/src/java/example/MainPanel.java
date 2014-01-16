@@ -13,10 +13,10 @@ public class MainPanel extends JPanel {
     //private final JTextPane   textPane;
     private final JEditorPane editorPane;
     private final JTextArea   textArea;
-    private final ExecutorService threadPool;
+    //private final ExecutorService threadPool;
     public MainPanel(final ExecutorService threadPool) {
         super(new BorderLayout());
-        this.threadPool = threadPool;
+        //this.threadPool = threadPool;
         editorPane = new JEditorPane();
         textArea = new JTextArea();
 /*

@@ -198,11 +198,11 @@ class MainPanel extends JPanel {
             return (argb & 0xff000000) | (r<<16) | (g<<8) | (b);
         }
     }
-    private static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
+    public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
         ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
     }
-    private static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
+    public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
         //*
         RescaleOp op = new RescaleOp(
             new float[] { 1.2f,1.2f,1.2f,1.0f },

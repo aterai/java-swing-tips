@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
 
         Ellipse2D.Double circle  = new Ellipse2D.Double(0, 0, 100, 100);
@@ -18,12 +18,12 @@ public class MainPanel extends JPanel {
         p.add(makeLabel("Polygon", convertEllipse2Polygon(ellipse)));
         p.add(makeLabel("Polygon", convertEllipse2Polygon(circle)));
         p.add(makeLabel("FlatteningPathIterator", convertEllipse2Polygon(ellipse)));
+        //TEST: p.add(makeLabel("convertShape2Polygon", convertShape2Polygon(ellipse)));
 
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-
-    private static Polygon convertEllipse2Polygon(Ellipse2D e) {
+    public static Polygon convertEllipse2Polygon(Ellipse2D e) {
         Rectangle b = e.getBounds();
         int r1 = b.width/2, r2 = b.height/2;
         int x0 = b.x + r1,  y0 = b.y + r2;
@@ -36,10 +36,9 @@ public class MainPanel extends JPanel {
         }
         return polygon;
     }
-
     // http://java-sl.com/tip_flatteningpathiterator_moving_shape.html
     // via: http://stackoverflow.com/questions/17272912/converting-an-ellipse2d-to-polygon
-    private static Polygon convertShape2Polygon(Shape s) {
+    public static Polygon convertShape2Polygon(Shape s) {
         PathIterator i  = new FlatteningPathIterator(s.getPathIterator(null), 1.0);
         Polygon polygon = new Polygon();
         float[] coords  = new float[6];
@@ -50,13 +49,11 @@ public class MainPanel extends JPanel {
         }
         return polygon;
     }
-
     private static JLabel makeLabel(String title, Shape shape) {
         JLabel l = new JLabel(title, new ShapeIcon(shape), JLabel.CENTER);
         l.setHorizontalTextPosition(SwingConstants.CENTER);
         return l;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -64,7 +61,6 @@ public class MainPanel extends JPanel {
             }
         });
     }
-
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -73,7 +69,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

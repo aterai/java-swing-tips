@@ -14,8 +14,6 @@ public class MainPanel extends JPanel {
     private final JLabel    lbl2 = new WrappedLabel(TEXT);
     private final JLabel    lbl3 = new WrappingLabel(TEXT);
     private final JTextArea lbl4 = new JTextArea(TEXT);
-    private GlyphVector gvtext;
-    private boolean flg = true;
     public MainPanel() {
         super(new GridLayout(4,1,0,0));
         lbl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.YELLOW, 5), "JLabel"));

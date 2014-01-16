@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.util.List;
+//import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.imageio.*;
@@ -120,7 +120,7 @@ class XMLTreeNode implements TreeNode {
         this(xmlNode);
         this.parent = parent;
     }
-    private boolean getShowAttributes() {
+    public boolean getShowAttributes() {
         if(showAttributes != null) {
             return showAttributes.booleanValue();
         }
@@ -129,7 +129,7 @@ class XMLTreeNode implements TreeNode {
         }
         return false;
     }
-    private void setShowAttributes(Boolean set) {
+    public void setShowAttributes(Boolean set) {
         showAttributes = set;
     }
     private String getXMLTag() {
@@ -158,12 +158,12 @@ class XMLTreeNode implements TreeNode {
         }
         return xmlNode.getNodeName();
     }
-    private List<XMLTreeNode> getChildren() {
-        if(children==null) {
-            loadChildren();
-        }
-        return new ArrayList<XMLTreeNode>(children);
-    }
+//     private List<XMLTreeNode> getChildren() {
+//         if(children==null) {
+//             loadChildren();
+//         }
+//         return new ArrayList<XMLTreeNode>(children);
+//     }
     private void loadChildren() {
         NodeList cn = xmlNode.getChildNodes();
         int count = cn.getLength();

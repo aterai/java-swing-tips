@@ -59,12 +59,10 @@ class MainPanel extends JPanel {
 class ComponentTitledBorder implements Border, MouseListener, MouseMotionListener, SwingConstants {
     private static final int offset = 5;
     private final Component comp;
-    private final JComponent container;
     private final Border border;
 
     public ComponentTitledBorder(Component comp, JComponent container, Border border) {
         this.comp      = comp;
-        this.container = container;
         this.border    = border;
         if(comp instanceof JComponent) {
             ((JComponent)comp).setOpaque(true);

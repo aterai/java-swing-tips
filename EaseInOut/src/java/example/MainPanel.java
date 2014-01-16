@@ -41,7 +41,6 @@ public class MainPanel extends JPanel {
 }
 
 class ImageCaptionLabel extends JLabel implements HierarchyListener {
-    private float alpha = 0.0f;
     private Timer animator;
     private int yy = 0;
     private JTextArea textArea = new JTextArea() {

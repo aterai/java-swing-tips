@@ -10,11 +10,9 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private final JTextArea textarea = new JTextArea();
-    private final JFrame frame;
     private final JButton b;
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
-        this.frame = frame;
         Box box = Box.createHorizontalBox();
         box.add(box.createHorizontalGlue());
         box.add(new JButton("111"));

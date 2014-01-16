@@ -4,9 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
+//import java.util.Hashtable;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -95,21 +95,21 @@ public class MainPanel extends JPanel {
     // original code:
     // ftp://ftp.oreilly.de/pub/examples/english_examples/jswing2/code/goodies/Mapper.java
     // modified by terai
-    private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
-        Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<Object, ArrayList<KeyStroke>>();
-        if(im.allKeys()==null) return h;
-        for(KeyStroke ks:im.allKeys()) {
-            Object name = im.get(ks);
-            if(h.containsKey(name)) {
-                h.get(name).add(ks);
-            }else{
-                ArrayList<KeyStroke> keylist = new ArrayList<KeyStroke>();
-                keylist.add(ks);
-                h.put(name, keylist);
-            }
-        }
-        return h;
-    }
+//     private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
+//         Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<Object, ArrayList<KeyStroke>>();
+//         if(im.allKeys()==null) return h;
+//         for(KeyStroke ks:im.allKeys()) {
+//             Object name = im.get(ks);
+//             if(h.containsKey(name)) {
+//                 h.get(name).add(ks);
+//             }else{
+//                 ArrayList<KeyStroke> keylist = new ArrayList<KeyStroke>();
+//                 keylist.add(ks);
+//                 h.put(name, keylist);
+//             }
+//         }
+//         return h;
+//     }
     private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
         if(im.allKeys()==null) return;
         ActionMap tmpAm = new ActionMap();
@@ -160,7 +160,6 @@ class BindingMapModel extends DefaultTableModel {
         new ColumnContext("ActionName", String.class, false),
         new ColumnContext("KeyDescription", String.class, false)
     };
-    private int number = 0;
     public void addBinding(Binding t) {
         Integer ft = t.getFocusType();
         String s = (ft==JComponent.WHEN_FOCUSED)?"WHEN_FOCUSED"
@@ -168,7 +167,6 @@ class BindingMapModel extends DefaultTableModel {
             :"WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
         Object[] obj = {s, t.getActionName(), t.getKeyDescription()};
         super.addRow(obj);
-        number++;
     }
     @Override public boolean isCellEditable(int row, int col) {
         return columnArray[col].isEditable;

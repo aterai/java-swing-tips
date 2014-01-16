@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
 //         frame.setJMenuBar(createMenubar());
 //         addComponentListener(new ComponentAdapter() {
@@ -104,7 +104,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

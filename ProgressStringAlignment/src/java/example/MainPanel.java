@@ -81,20 +81,20 @@ public class MainPanel extends JPanel {
                         }
                         return "Done";
                     }
-                    @Override public void done() {
-                        String text = null;
-                        if(isCancelled()) {
-                            text = "Cancelled";
-                        }else{
-                            try{
-                                text = get();
-                            }catch(Exception ex) {
-                                ex.printStackTrace();
-                                text = "Exception";
-                            }
-                        }
-                        //appendLine(text);
-                    }
+//                     @Override public void done() {
+//                         String text = null;
+//                         if(isCancelled()) {
+//                             text = "Cancelled";
+//                         }else{
+//                             try{
+//                                 text = get();
+//                             }catch(Exception ex) {
+//                                 ex.printStackTrace();
+//                                 text = "Exception";
+//                             }
+//                         }
+//                         //appendLine(text);
+//                     }
                 };
                 worker.addPropertyChangeListener(new ProgressListener(progressBar1));
                 worker.execute();

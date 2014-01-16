@@ -46,15 +46,15 @@ public class MainPanel extends JPanel {
                         combo.setSelectedIndex(-1);
                         combo.repaint();
                     }
-                    @Override public void done() {
-                        String text = null;
-                        if(!isCancelled()) {
-                            combo.setSelectedIndex(0);
-                        }
-                        combo.setEnabled(true);
-                        button.setEnabled(true);
-                        count = 0;
-                    }
+//                     @Override public void done() {
+//                         String text = null;
+//                         if(!isCancelled()) {
+//                             combo.setSelectedIndex(0);
+//                         }
+//                         combo.setEnabled(true);
+//                         button.setEnabled(true);
+//                         count = 0;
+//                     }
                 };
                 worker.execute();
             }
