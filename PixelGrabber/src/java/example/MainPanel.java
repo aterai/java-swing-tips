@@ -63,7 +63,9 @@ public class MainPanel extends JPanel {
             for(int x=0;x<5;x++) {
                 if(y==0 && x<5 || y==1 && x<3 ||
                    y==2 && x<2 || y==3 && x<1 ||
-                   y==4 && x<1 ) pix[y*width+x] = 0x0;
+                   y==4 && x<1 ) {
+                    pix[y*width+x] = 0x0;
+                }
             }
         }
         //NE
@@ -71,7 +73,9 @@ public class MainPanel extends JPanel {
             for(int x=width-5;x<width;x++) {
                 if(y==0 && x>=width-5 || y==1 && x>=width-3 ||
                    y==2 && x>=width-2 || y==3 && x>=width-1 ||
-                   y==4 && x>=width-1 ) pix[y*width+x] = 0x0;
+                   y==4 && x>=width-1 ) {
+                    pix[y*width+x] = 0x0;
+                }
             }
         }
 //         int n=0;
@@ -79,11 +83,11 @@ public class MainPanel extends JPanel {
 //             for(int x=0;x<width;x++) {
 //                 n = y * width + x;
 //                 if(x>=5 && x<width-5) { continue; }
-//                 else if(y==0 && (x<5 || x>=width-5)) pix[n] = 0x0;
-//                 else if(y==1 && (x<3 || x>=width-3)) pix[n] = 0x0;
-//                 else if(y==2 && (x<2 || x>=width-2)) pix[n] = 0x0;
-//                 else if(y==3 && (x<1 || x>=width-1)) pix[n] = 0x0;
-//                 else if(y==4 && (x<1 || x>=width-1)) pix[n] = 0x0;
+//                 else if(y==0 && (x<5 || x>=width-5)) { pix[n] = 0x0; }
+//                 else if(y==1 && (x<3 || x>=width-3)) { pix[n] = 0x0; }
+//                 else if(y==2 && (x<2 || x>=width-2)) { pix[n] = 0x0; }
+//                 else if(y==3 && (x<1 || x>=width-1)) { pix[n] = 0x0; }
+//                 else if(y==4 && (x<1 || x>=width-1)) { pix[n] = 0x0; }
 //             }
 //         }
         MemoryImageSource producer = new MemoryImageSource(width, height, pix, 0, width);

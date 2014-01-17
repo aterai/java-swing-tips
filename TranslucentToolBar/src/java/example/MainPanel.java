@@ -100,8 +100,9 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
             private int delay = 8;
             private int count = 0;
             @Override public void mouseEntered(MouseEvent e) {
-                if(animator!=null && animator.isRunning() ||
-                   yy==toolBox.getPreferredSize().height) return;
+                if(animator!=null && animator.isRunning() || yy==toolBox.getPreferredSize().height) {
+                    return;
+                }
                 final double h = (double)toolBox.getPreferredSize().height;
                 animator = new Timer(delay, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
@@ -119,8 +120,9 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
                 animator.start();
             }
             @Override public void mouseExited(MouseEvent e) {
-                if(animator!=null && animator.isRunning() ||
-                   contains(e.getPoint()) && yy==toolBox.getPreferredSize().height) return;
+                if(animator!=null && animator.isRunning() || contains(e.getPoint()) && yy==toolBox.getPreferredSize().height) {
+                    return;
+                }
                 final double h = (double)toolBox.getPreferredSize().height;
                 animator = new Timer(delay, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {

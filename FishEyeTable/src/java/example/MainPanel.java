@@ -124,7 +124,7 @@ class FishEyeTable extends JTable {
         @Override public void valueChanged(ListSelectionEvent e) {
             if(e.getValueIsAdjusting()) { return; }
             int row = getSelectedRow();
-            if(prev_row==row) return;
+            if(prev_row==row) { return; }
             initRowHeigth(prev_height, row);
             prev_row = row;
         }
@@ -135,7 +135,7 @@ class FishEyeTable extends JTable {
         Container p = getParent();
         if(p==null || !(p instanceof JViewport)) { return; }
         int h = ((JViewport)p).getExtentSize().height;
-        if(h==prev_height) return;
+        if(h==prev_height) { return; }
         initRowHeigth(h, getSelectedRow());
         prev_height = h;
     }

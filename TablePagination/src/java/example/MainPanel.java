@@ -76,7 +76,9 @@ public class MainPanel extends JPanel {
         int maxPageIndex = rowCount/itemsPerPage + v;
 //#endif
         int endPageIndex = currentPageIndex+LR_PAGE_SIZE-1;
-        if(endPageIndex>maxPageIndex) endPageIndex = maxPageIndex;
+        if(endPageIndex>maxPageIndex) {
+            endPageIndex = maxPageIndex;
+        }
 
         box.removeAll();
         if(startPageIndex>=endPageIndex) {

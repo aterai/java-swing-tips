@@ -74,7 +74,7 @@ public class MainPanel extends JPanel {
         if(o==null || !(o instanceof DefaultMutableTreeNode)) { return; }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)o;
         o = node.getUserObject();
-        if(o==null || !(o instanceof CheckBoxNode)) return;
+        if(o==null || !(o instanceof CheckBoxNode)) { return; }
         CheckBoxNode check = (CheckBoxNode)o;
         if(check.status==Status.SELECTED) {
             System.out.println(check.file.toString());
@@ -170,9 +170,9 @@ class FolderSelectionListener implements TreeSelectionListener {
 
         if(!node.isLeaf()) { return; }
         CheckBoxNode check = (CheckBoxNode)node.getUserObject();
-        if(check==null) return;
+        if(check==null) { return; }
         final File parent = check.file;
-        if(!parent.isDirectory()) return;
+        if(!parent.isDirectory()) { return; }
         final Status parent_status = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
 
         SwingWorker<String, File> worker = new SwingWorker<String, File>() {

@@ -99,7 +99,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
 
             int prev_row = rollOverRowIndex;
             rollOverRowIndex = table.rowAtPoint(pt);
-            if(rollOverRowIndex == prev_row) return;
+            if(rollOverRowIndex == prev_row) { return; }
             Rectangle repaintRect;
             if(rollOverRowIndex >= 0) {
                 Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
