@@ -16,9 +16,8 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<String> makeList() {
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("abbbbbbbbbbbbbbbbbb");
         model.addElement("accccccccccc");
@@ -28,7 +27,7 @@ public class MainPanel extends JPanel {
         model.addElement("eeeeeeeeeeeeeeeeeee");
         model.addElement("fffffffffffffffffffffff");
 
-        JList list = new JList(model) {
+        JList<String> list = new JList<String>(model) {
             @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
                 return check.isSelected()?-1:super.getNextMatch(prefix, startIndex, bias);
             }

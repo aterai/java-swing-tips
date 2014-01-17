@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
 //             }
 //         }, AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
-        JComboBox combo1 = makeComboBox(5);
+        JComboBox<String> combo1 = makeComboBox(5);
         if(combo1.getUI() instanceof WindowsComboBoxUI) {
             combo1.setUI(new WindowsComboBoxUI() {
                 @Override protected ComboPopup createPopup() {
@@ -39,7 +39,7 @@ public class MainPanel extends JPanel {
             });
         }
 
-        JComboBox combo2 = makeComboBox(5);
+        JComboBox<String> combo2 = makeComboBox(5);
         if(combo2.getUI() instanceof WindowsComboBoxUI) {
             combo2.setUI(new WindowsComboBoxUI() {
                 @Override protected ComboPopup createPopup() {
@@ -72,13 +72,12 @@ public class MainPanel extends JPanel {
         panel.add(cmp);
         return panel;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(int size) {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox(int size) {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for(int i=0;i<size;i++) {
             model.addElement("No."+i);
         }
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -112,7 +111,9 @@ class BasicComboPopup2 extends BasicComboPopup {
         super(combo);
     }
     @Override protected MouseListener createListMouseListener() {
-        if(handler2==null) handler2 = new Handler2();
+        if(handler2==null) {
+            handler2 = new Handler2();
+        }
         return handler2;
     }
     private class Handler2 implements MouseListener {
@@ -124,7 +125,9 @@ class BasicComboPopup2 extends BasicComboPopup {
             if(e.getSource() == list) {
                 if(list.getModel().getSize() > 0) {
                     // <ins>
-                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) return;
+                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
+                        return;
+                    }
                     // </ins>
                     // JList mouse listener
                     if(comboBox.getSelectedIndex() == list.getSelectedIndex()) {
@@ -168,7 +171,9 @@ class BasicComboPopup3 extends BasicComboPopup {
     @Override protected JList createList() {
         return new JList(comboBox.getModel()) {
             @Override public void processMouseEvent(MouseEvent e)  {
-                if(SwingUtilities.isRightMouseButton(e)) return;
+                if(SwingUtilities.isRightMouseButton(e)) {
+                    return;
+                }
                 if(e.isControlDown())  {
                     // Fix for 4234053. Filter out the Control Key from the list.
                     // ie., don't allow CTRL key deselection.

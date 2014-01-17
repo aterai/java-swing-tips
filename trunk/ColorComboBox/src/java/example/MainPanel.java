@@ -9,8 +9,8 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private static final Color evenBGColor = new Color(225,255,225);
     private static final Color oddBGColor  = new Color(255,255,255);
-    private final JComboBox combo01 = makeComboBox();
-    private final JComboBox combo02 = makeComboBox();
+    private final JComboBox<String> combo01 = makeComboBox();
+    private final JComboBox<String> combo02 = makeComboBox();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -68,9 +68,8 @@ public class MainPanel extends JPanel {
             return cmp;
         }
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
         model.addElement("aaaabbbcc");
@@ -78,11 +77,13 @@ public class MainPanel extends JPanel {
         model.addElement("bbb1");
         model.addElement("bbb12");
 
-        JComboBox combo = new JComboBox(model);
+        JComboBox<String> combo = new JComboBox<>(model);
         combo.setRenderer(new AlternateRowColorListCellRenderer());
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) return;
+                if(e.getStateChange()!=ItemEvent.SELECTED) {
+                    return;
+                }
                 JComboBox cb = (JComboBox)e.getSource();
                 Color rc = getAlternateRowColor(cb.getSelectedIndex());
                 if(cb.isEditable()) {

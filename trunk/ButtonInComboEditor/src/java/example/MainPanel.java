@@ -10,8 +10,8 @@ import java.util.List;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private final JComboBox combo01;
-    private final JComboBox combo02;
+    private final JComboBox<TestItem> combo01;
+    private final JComboBox<TestItem> combo02;
     private final ImageIcon image1;
     private final ImageIcon image2;
     private final ImageIcon rss;
@@ -147,12 +147,11 @@ class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
     private TestItem getTestItemFromModel(String text) {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) combo02.getModel();
+        DefaultComboBoxModel<TestItem> model = (DefaultComboBoxModel<TestItem>)combo02.getModel();
         TestItem item = null;
         for(int i=0;i<model.getSize();i++) {
-            TestItem tmp = (TestItem)model.getElementAt(i);
+            TestItem tmp = model.getElementAt(i);
             if(tmp.url.equals(text)) {
                 item = tmp;
                 break;
@@ -220,9 +219,8 @@ class MainPanel extends JPanel {
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
-    @SuppressWarnings("unchecked")
-    private DefaultComboBoxModel makeModel() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private DefaultComboBoxModel<TestItem> makeModel() {
+        DefaultComboBoxModel<TestItem> model = new DefaultComboBoxModel<>();
         model.addElement(new TestItem("http://terai.xrea.jp/", image1, true));
         model.addElement(new TestItem("http://terai.xrea.jp/Swing.html", image1, true));
         model.addElement(new TestItem("http://terai.xrea.jp/JavaWebStart.html", image1, true));
@@ -231,9 +229,8 @@ class MainPanel extends JPanel {
         model.addElement(new TestItem("http://www.example.com/", image2, false));
         return model;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeTestComboBox(DefaultComboBoxModel model) {
-        JComboBox combo = new JComboBox(model);
+    private static JComboBox<TestItem> makeTestComboBox(DefaultComboBoxModel<TestItem> model) {
+        JComboBox<TestItem> combo = new JComboBox<>(model);
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

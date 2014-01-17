@@ -38,9 +38,8 @@ public class MainPanel extends JPanel {
         column.setCellEditor(new ComboBoxCellEditor());
         return table;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        JComboBox combo = new JComboBox(new String[] {"aaaaaa", "bbb", "c"});
+    private static JComboBox<String> makeComboBox() {
+        JComboBox<String> combo = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
         combo.setEditable(true);
         combo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8,10,8,10), combo.getBorder()));
         return combo;
@@ -68,9 +67,8 @@ public class MainPanel extends JPanel {
 }
 
 //*
-@SuppressWarnings("unchecked")
 class ComboBoxPanel extends JPanel {
-    public final JComboBox comboBox = new JComboBox(new String[] {"aaaaaa", "bbb", "c"});
+    public final JComboBox<String> comboBox = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
     public ComboBoxPanel() {
         super(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -85,7 +83,7 @@ class ComboBoxPanel extends JPanel {
         comboBox.setSelectedIndex(0);
     }
 }
-/*/
+/*/ //TEST:
 class ComboBoxPanel extends JPanel {
     private String[] m = new String[] {"a", "b", "c"};
     protected JComboBox<String> comboBox = new JComboBox<String>(m) {
@@ -181,7 +179,9 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -194,13 +194,15 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }
     }
 }
-class ComboCellRenderer extends JComboBox implements TableCellRenderer {
+class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     private final JTextField editor;
     //private JButton button;
     public ComboCellRenderer() {
@@ -212,7 +214,6 @@ class ComboCellRenderer extends JComboBox implements TableCellRenderer {
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
     }
-    @SuppressWarnings("unchecked")
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
         if(isSelected) {

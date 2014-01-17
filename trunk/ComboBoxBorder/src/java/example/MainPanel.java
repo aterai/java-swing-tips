@@ -26,10 +26,9 @@ public class MainPanel extends JPanel {
         UIManager.put("TitledBorder.titleColor", Color.WHITE);
         UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
-//         JComboBox<String> combo = new JComboBox<>(makeModel());
-        JComboBox combo00 = makeComboBox();
-        JComboBox combo01 = makeComboBox();
-        JComboBox combo02 = makeComboBox();
+        JComboBox<String> combo00 = makeComboBox();
+        JComboBox<String> combo01 = makeComboBox();
+        JComboBox<String> combo02 = makeComboBox();
 
         combo01.setUI(new BasicComboBoxUI());
         combo02.setUI(new BasicComboBoxUI() {
@@ -91,16 +90,12 @@ public class MainPanel extends JPanel {
         panel.setBackground(Color.BLACK);
         return panel;
     }
-//     //JDK 1.7.0
-//     private static DefaultComboBoxModel<String> makeModel() {
-//         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("1234");
         model.addElement("5555555555555555555555");
         model.addElement("6789000000000");
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

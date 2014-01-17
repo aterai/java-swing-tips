@@ -10,15 +10,14 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridLayout(1,3));
         Box list1 = Box.createVerticalBox();
 
-        DefaultListModel model = new DefaultListModel();
-        JList list2 = new JList(model) {
+        DefaultListModel<CheckBoxNode> model = new DefaultListModel<>();
+        JList<CheckBoxNode> list2 = new JList<CheckBoxNode>(model) {
             private CheckBoxCellRenderer renderer;
             @Override public void updateUI() {
                 setForeground(null);
@@ -119,8 +118,8 @@ public class MainPanel extends JPanel {
     }
 }
 
-class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseListener, MouseMotionListener {
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBoxNode>, MouseListener, MouseMotionListener {
+    @Override public Component getListCellRendererComponent(JList list, CheckBoxNode value, int index, boolean isSelected, boolean cellHasFocus) {
         this.setOpaque(true);
         if(isSelected) {
             this.setBackground(list.getSelectionBackground());
@@ -144,15 +143,15 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer, MouseL
             rollOverRowIndex = -1;
         }
     }
-    @SuppressWarnings("unchecked")
     @Override public void mouseClicked(MouseEvent e) {
         if(e.getButton()==MouseEvent.BUTTON1) {
             JList l = (JList)e.getComponent();
-            DefaultListModel m = (DefaultListModel)l.getModel();
+            @SuppressWarnings("unchecked")
+            DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>)l.getModel();
             Point p = e.getPoint();
             int index  = l.locationToIndex(p);
             if(index>=0) {
-                CheckBoxNode n = (CheckBoxNode)m.get(index);
+                CheckBoxNode n = m.get(index);
                 m.set(index, new CheckBoxNode(n.text, !n.selected));
                 l.repaint(l.getCellBounds(index, index));
             }
@@ -261,7 +260,9 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -274,7 +275,9 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }

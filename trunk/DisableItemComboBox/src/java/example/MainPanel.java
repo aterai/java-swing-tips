@@ -30,9 +30,8 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
 
-    @SuppressWarnings("unchecked")
     private static MyComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("0000000000000");
         model.addElement("111111");
         model.addElement("222222222222");
@@ -81,8 +80,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class MyComboBox extends JComboBox {
-    @SuppressWarnings("unchecked")
+class MyComboBox extends JComboBox<String> {
     public MyComboBox() {
         super();
         setRenderer(new DefaultListCellRenderer() {
@@ -129,7 +127,7 @@ class MyComboBox extends JComboBox {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
     }
-    private final Set<Integer> disableIndexSet = new HashSet<Integer>();
+    private final Set<Integer> disableIndexSet = new HashSet<>();
     private boolean isDisableIndex = false;
     public void setDisableIndex(Set<Integer> set) {
         disableIndexSet.clear();

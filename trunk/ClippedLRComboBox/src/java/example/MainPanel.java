@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo1 = makeComboBox(true);
-    private final JComboBox combo2 = makeComboBox(false);
+    private final JComboBox<LRItem> combo1 = makeComboBox(true);
+    private final JComboBox<LRItem> combo2 = makeComboBox(false);
     public MainPanel() {
         super(new BorderLayout());
         add(makeTitledBox("MultiColumnComboBox", combo1), BorderLayout.NORTH);
@@ -41,9 +41,8 @@ public class MainPanel extends JPanel {
         });
         return box;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(boolean hasMultiColumn) {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<LRItem> makeComboBox(boolean hasMultiColumn) {
+        DefaultComboBoxModel<LRItem> model = new DefaultComboBoxModel<>();
         model.addElement(new LRItem("asdfasdf", "846876"));
         model.addElement(new LRItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
         model.addElement(new LRItem("asdfasdf.1234567890.1234567890.1234567890.e",
@@ -54,7 +53,7 @@ public class MainPanel extends JPanel {
         model.addElement(new LRItem("bbbbbbbb", "eeeee"));
         model.addElement(new LRItem("cccccccc", "fffffff"));
 
-        JComboBox combo = new JComboBox(model);
+        JComboBox<LRItem> combo = new JComboBox<>(model);
         if(hasMultiColumn) {
             combo.setRenderer(new MultiColumnCellRenderer(80));
         }
@@ -82,7 +81,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
+class MultiColumnCellRenderer extends JPanel implements ListCellRenderer<LRItem> {
     private final JLabel leftLabel = new JLabel();
     private final JLabel rightLabel;
     public MultiColumnCellRenderer(int rightWidth) {
@@ -106,10 +105,9 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer {
         this.add(leftLabel);
         this.add(rightLabel, BorderLayout.EAST);
     }
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        LRItem item = (LRItem)value;
-        leftLabel.setText(item.getLeftText());
-        rightLabel.setText(item.getRightText());
+    @Override public Component getListCellRendererComponent(JList list, LRItem value, int index, boolean isSelected, boolean cellHasFocus) {
+        leftLabel.setText(value.getLeftText());
+        rightLabel.setText(value.getRightText());
 
         leftLabel.setFont(list.getFont());
         rightLabel.setFont(list.getFont());

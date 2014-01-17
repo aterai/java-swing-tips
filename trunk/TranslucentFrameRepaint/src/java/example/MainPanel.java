@@ -19,13 +19,17 @@ class MainPanel extends JPanel {
     private final Timer timer = new Timer(1000, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             label.setText(df.format(new Date()));
-            if(label.getParent().isOpaque()) {
+            Container parent = SwingUtilities.getUnwrappedParent(label);
+            if(parent!=null && parent.isOpaque()) {
                 repaintWindowAncestor(label);
             }
         }
     });
     private void repaintWindowAncestor(JComponent c) {
         JRootPane root = c.getRootPane();
+        if(root==null) {
+            return;
+        }
         Rectangle r = c.getBounds();
         r = SwingUtilities.convertRectangle(c, r, root);
         root.repaint(r.x, r.y, r.width, r.height);
@@ -65,7 +69,9 @@ class MainPanel extends JPanel {
         g2.fillRect(0,0,sz,sz);
         for(int i=0;i*cs<sz;i++) {
             for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+                if((i+j)%2==0) {
+                    g2.fillRect(i*cs, j*cs, cs, cs);
+                }
             }
         }
         g2.dispose();
@@ -88,12 +94,7 @@ class MainPanel extends JPanel {
             return this.texture;
         }
     }
-    private final JComboBox combo = makeComboBox(TexturePaints.values());
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Object[] model) {
-        return new JComboBox(model);
-    }
-
+    private final JComboBox<TexturePaints> combo = new JComboBox<>(TexturePaints.values());
     private final TexturePanel tp;
 
     public MainPanel() {

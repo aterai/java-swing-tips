@@ -3,30 +3,27 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Vector;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(4,1,5,5));
         setBorder(BorderFactory.createEmptyBorder(5,20,5,20));
         p.add(new JLabel("Default JComboBox"));
-        p.add(new JComboBox(new String[] {"Google", "Yahoo!", "Bing"}));
+        p.add(new JComboBox<String>(new String[] {"Google", "Yahoo!", "Bing"}));
         p.add(new JLabel("SearchBar JComboBox"));
         p.add(makeSearchBar());
         //p.add(new SearchBarComboBox(makeModel()));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
-    private JComboBox makeSearchBar() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel() {
+    private JComboBox<SearchEngine> makeSearchBar() {
+        DefaultComboBoxModel<SearchEngine> model = new DefaultComboBoxModel<SearchEngine>() {
             @Override public void setSelectedItem(Object anObject) {
                 //System.out.println("model: "+anObject);
             }
-            //@Override public Object getSelectedItem() {
+            //@Override public DefaultComboBoxModel getSelectedItem() {
             //    return null;
             //}
         };
@@ -34,7 +31,7 @@ public class MainPanel extends JPanel {
         model.addElement(new SearchEngine("Yahoo!", "http://www.yahoo.com/",  new ImageIcon(getClass().getResource("yahoo.png"))));
         model.addElement(new SearchEngine("Bing",   "http://www.bing.com/",   new ImageIcon(getClass().getResource("bing.png"))));
 
-        JComboBox combo = new JSearchBar(model);
+        JComboBox<SearchEngine> combo = new JSearchBar(model);
         combo.getEditor().setItem("java swing");
 
 //         final JComboBox combo = new JComboBox(model);
@@ -87,8 +84,7 @@ class SearchEngine {
     }
 }
 
-@SuppressWarnings("unchecked")
-class JSearchBar extends JComboBox {
+class JSearchBar extends JComboBox<SearchEngine> {
     private static final String uiClassID = "SearchBarComboBoxUI";
     @Override public String getUIClassID() {
         return uiClassID;
@@ -107,8 +103,10 @@ class JSearchBar extends JComboBox {
         }
         UIManager.put("ComboBox.font", getFont()); //XXX: ???
         JButton arrowButton = (JButton)getComponent(0);
-        SearchEngine se = (SearchEngine)getItemAt(0);
-        if(se!=null) arrowButton.setIcon(se.favicon);
+        SearchEngine se = getItemAt(0);
+        if(se!=null) {
+            arrowButton.setIcon(se.favicon);
+        }
 //         ListCellRenderer renderer = getRenderer();
 //         if(renderer instanceof Component) {
 //             SwingUtilities.updateComponentTreeUI((Component)renderer);
@@ -116,17 +114,17 @@ class JSearchBar extends JComboBox {
     }
     public JSearchBar() {
         super();
-        setModel(new DefaultComboBoxModel());
+        setModel(new DefaultComboBoxModel<SearchEngine>());
         init();
     }
-    public JSearchBar(ComboBoxModel aModel) {
+    public JSearchBar(ComboBoxModel<SearchEngine> aModel) {
         super();
         setModel(aModel);
         init();
     }
-    public JSearchBar(final Object[] items) {
+    public JSearchBar(SearchEngine[] items) {
         super();
-        setModel(new DefaultComboBoxModel(items));
+        setModel(new DefaultComboBoxModel<SearchEngine>(items));
         init();
     }
 //     public JSearchBar(Vector<?> items) {

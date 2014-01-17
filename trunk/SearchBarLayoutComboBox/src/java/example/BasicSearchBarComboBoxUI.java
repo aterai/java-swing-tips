@@ -69,7 +69,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         @Override public void actionPerformed(ActionEvent e) {
             comboBox.setPopupVisible(false);
             Object o = listBox.getSelectedValue();
-            if(o==null) o = comboBox.getItemAt(0);
+            if(o==null) {
+                o = comboBox.getItemAt(0);
+            }
             System.out.println(o + ": " +comboBox.getEditor().getItem());
         }
     };
@@ -190,7 +192,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 return parent.getMinimumSize();
             }
             @Override public void layoutContainer(Container parent) {
-                if(!(parent instanceof JComboBox)) return;
+                if(!(parent instanceof JComboBox)) {
+                    return;
+                }
                 JComboBox cb     = (JComboBox)parent;
                 int width        = cb.getWidth();
                 int height       = cb.getHeight();
@@ -257,7 +261,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         private transient Icon triangleIcon = new TriangleIcon();
         @Override public void setIcon(Icon favicon) {
             super.setIcon(favicon);
-            if(favicon!=null) setRolloverIcon(makeRolloverIcon(favicon));
+            if(favicon!=null) {
+                setRolloverIcon(makeRolloverIcon(favicon));
+            }
         }
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
