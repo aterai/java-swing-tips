@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
                 final JButton b = (JButton)ev.getSource();
                 b.setEnabled(false);
                 (new SwingWorker<Boolean, Void>() {
-                    @Override protected Boolean doInBackground() throws Exception {
+                    @Override protected Boolean doInBackground() throws InterruptedException {
                          DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
                          DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
                          Enumeration e = root.breadthFirstEnumeration();
@@ -117,7 +117,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
         this.model = (DefaultTreeModel)tree.getModel();
         this.treeNode = treeNode;
     }
-    @Override protected TreeNode doInBackground() throws Exception {
+    @Override protected TreeNode doInBackground() throws InterruptedException {
          int current = 0;
          while(current <= lengthOfTask && !isCancelled()) {
              try{

@@ -52,7 +52,7 @@ class MainPanel extends JPanel {
             bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
         }catch(IOException ioe) {
             ioe.printStackTrace();
-            throw new RuntimeException(ioe);
+            throw new IllegalArgumentException(ioe);
         }
         return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
     }

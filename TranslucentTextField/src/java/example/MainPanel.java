@@ -69,7 +69,7 @@ class MainPanel extends JPanel {
             //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1.0f,1.0f,0.5f});
         }catch(IOException ioe) {
             ioe.printStackTrace();
-            throw new RuntimeException(ioe);
+            throw new IllegalArgumentException(ioe);
         }
         int w = bfimage.getWidth();
         int h = bfimage.getHeight();

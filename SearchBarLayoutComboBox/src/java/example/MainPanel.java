@@ -129,11 +129,11 @@ class JSearchBar extends JComboBox {
         setModel(new DefaultComboBoxModel(items));
         init();
     }
-    public JSearchBar(Vector<?> items) {
-        super();
-        setModel(new DefaultComboBoxModel(items));
-        init();
-    }
+//     public JSearchBar(Vector<?> items) {
+//         super();
+//         setModel(new DefaultComboBoxModel(items));
+//         init();
+//     }
     private void init() {
         installAncestorListener();
         //setUIProperty("opaque", true);
