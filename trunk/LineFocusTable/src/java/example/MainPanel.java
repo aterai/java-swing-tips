@@ -285,7 +285,7 @@ class DotBorder extends EmptyBorder {
 //         if(isLeadRow) {
 //           border.type.add(DotBorder.Type.LEAD);
 //           if(column==0) { border.type.add(DotBorder.Type.WEST); }
-//           if(column==getColumnCount()-1) border.type.add(DotBorder.Type.EAST);
+//           if(column==getColumnCount()-1) { border.type.add(DotBorder.Type.EAST); }
 //         }
 //       }
 //       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {

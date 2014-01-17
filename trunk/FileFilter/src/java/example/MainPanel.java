@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override public boolean accept(File file) {
                 if(file.isDirectory()) { return true; }
-                if(file.getName().toLowerCase().endsWith(".png")) return true;
+                if(file.getName().toLowerCase().endsWith(".png")) { return true; }
                 return false;
             }
             @Override public String getDescription() {
@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
         fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override public boolean accept(File file) {
                 if(file.isDirectory()) { return true; }
-                if(file.getName().toLowerCase().endsWith(".jpg")) return true;
+                if(file.getName().toLowerCase().endsWith(".jpg")) { return true; }
                 return false;
             }
             @Override public String getDescription() {

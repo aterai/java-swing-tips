@@ -129,8 +129,8 @@ class MainPanel extends JPanel {
 
         // Change is made to the desired (X,Y) values, when the
         // PopupMenu is too tall OR too wide for the screen
-        if(p.x < screenBounds.x) p.x = screenBounds.x;
-        if(p.y < screenBounds.y) p.y = screenBounds.y;
+        if(p.x < screenBounds.x) { p.x = screenBounds.x; }
+        if(p.y < screenBounds.y) { p.y = screenBounds.y; }
 
         return p;
     }

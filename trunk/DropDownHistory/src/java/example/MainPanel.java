@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
     @SuppressWarnings("unchecked")
     public static boolean addItem(JComboBox combo, String str, int max) {
         //if(str==null || str.trim().length()==0) { return false; }
-        if(str==null || str.length()==0) return false;
+        if(str==null || str.length()==0) { return false; }
         combo.setVisible(false);
         DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
         model.removeElement(str);

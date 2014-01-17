@@ -45,8 +45,9 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 threadPool.execute(new Runnable() {
                     @Override public void run() {
-                        if(text!=null)
-                          editorPane.setText(text);
+                        if(text!=null) {
+                            editorPane.setText(text);
+                        }
                     }
                 });
             }
@@ -55,8 +56,9 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 threadPool.execute(new Runnable() {
                     @Override public void run() {
-                        if(text!=null)
-                          textArea.setText(text);
+                        if(text!=null) {
+                            textArea.setText(text);
+                        }
                     }
                 });
             }

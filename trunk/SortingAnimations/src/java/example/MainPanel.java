@@ -204,8 +204,8 @@ public class MainPanel extends JPanel {
         for(;;) {
             c = 2*i;
             if(c > u) { break; }
-            if(c+1 <= u && a[c+1] > a[c]) c++;
-            if(a[i] >= a[c]) break;
+            if(c+1 <= u && a[c+1] > a[c]) { c++; }
+            if(a[i] >= a[c]) { break; }
             swap(i, c);
             i = c;
         }
