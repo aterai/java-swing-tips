@@ -11,11 +11,13 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JComboBox combo = makeComboBox();
+        JComboBox<String> combo = makeComboBox();
         combo.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
                 JComboBox source = (JComboBox) e.getSource();
-                if(!source.hasFocus()) return;
+                if(!source.hasFocus()) {
+                    return;
+                }
                 int ni = source.getSelectedIndex() + e.getWheelRotation();
                 if(ni>=0 && ni<source.getItemCount()) {
                     source.setSelectedIndex(ni);
@@ -45,9 +47,8 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("111111");
         model.addElement("22222222");
         model.addElement("3333333333");
@@ -56,7 +57,7 @@ public class MainPanel extends JPanel {
         model.addElement("66666666666");
         model.addElement("77777777");
         model.addElement("88888888888");
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

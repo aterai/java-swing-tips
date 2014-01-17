@@ -9,7 +9,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JComboBox combo = makeComboBox();
+        JComboBox<String> combo = makeComboBox();
         initComboBoxRenderer(combo);
 
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -33,19 +33,17 @@ public class MainPanel extends JPanel {
         box.add(combo);
         return box;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
         model.addElement("aaaa.tif");
         model.addElement("\\asdfsadfs\\afsdfasdf\\asdfasdfasd.avi");
         model.addElement("aaaabbbcc.pdf");
         model.addElement("c:/b12312343245/643667345624523451/324513/41234125/134513451345135125123412341bb1.mpg");
         model.addElement("file://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
-    @SuppressWarnings("unchecked")
-    private static void initComboBoxRenderer(final JComboBox combo) {
+    private static void initComboBoxRenderer(final JComboBox<String> combo) {
         final JButton arrowButton = getArrowButton(combo);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -79,7 +77,9 @@ public class MainPanel extends JPanel {
                     int nChars = cellText.length() - 1;
                     while(nChars>0) {
                         textWidth += fm.charWidth(cellText.charAt(nChars));
-                        if(textWidth > availableWidth) break;
+                        if(textWidth > availableWidth) {
+                            break;
+                        }
                         nChars--;
                     }
                     setText(dots+cellText.substring(nChars+1));

@@ -7,10 +7,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo00 = makeComboBox();
-    private final JComboBox combo01 = makeComboBox();
-    private final JComboBox combo02 = makeComboBox();
-    private final JComboBox combo03 = makeComboBox();
+    private final JComboBox<String> combo00 = makeComboBox();
+    private final JComboBox<String> combo01 = makeComboBox();
+    private final JComboBox<String> combo02 = makeComboBox();
+    private final JComboBox<String> combo03 = makeComboBox();
     public MainPanel() {
         super(new BorderLayout());
         combo00.setEditable(false);
@@ -30,16 +30,15 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
         model.addElement("aaaabbbcc");
         model.addElement("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
     // https://forums.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
     private static class WidePopupMenuListener implements PopupMenuListener {
@@ -48,7 +47,9 @@ public class MainPanel extends JPanel {
         @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             JComboBox combo = (JComboBox)e.getSource();
             Dimension size  = combo.getSize();
-            if(size.width>=POPUP_MIN_WIDTH) return;
+            if(size.width>=POPUP_MIN_WIDTH) {
+                return;
+            }
             if(!adjusting) {
                 adjusting = true;
                 combo.setSize(POPUP_MIN_WIDTH, size.height);

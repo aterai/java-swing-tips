@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
     private static class ComboHtmlRenderer extends DefaultListCellRenderer {
         private final Color selectionBackground = new Color(240,245,250);
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-            ColorItem item = (ColorItem) value;
+            ColorItem item = (ColorItem)value;
             if(index<0) {
                 list.setSelectionBackground(selectionBackground);
             }
@@ -60,10 +60,10 @@ public class MainPanel extends JPanel {
             return String.format("#%06x", c.getRGB()&0xffffff);
         }
     }
-    private final JComboBox combo00 = makeComboBox();
-    private final JComboBox combo01 = makeComboBox();
-    private final JComboBox combo02 = makeComboBox();
-    @SuppressWarnings("unchecked")
+    private final JComboBox<ColorItem> combo00 = makeComboBox();
+    private final JComboBox<ColorItem> combo01 = makeComboBox();
+    private final JComboBox<ColorItem> combo02 = makeComboBox();
+
     public MainPanel() {
         super(new BorderLayout());
         combo01.setRenderer(new ComboForegroundRenderer(combo01));
@@ -79,8 +79,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
+    private static JComboBox<ColorItem> makeComboBox() {
         ColorItem[] model = new ColorItem[] {
             new ColorItem(Color.RED,     "Red"),
             new ColorItem(Color.GREEN,   "Green"),
@@ -89,8 +88,7 @@ public class MainPanel extends JPanel {
             new ColorItem(Color.ORANGE,  "Orange"),
             new ColorItem(Color.MAGENTA, "Magenta"),
         };
-        JComboBox combo = new JComboBox(model);
-        return combo;
+        return new JComboBox<ColorItem>(model);
     }
     private static JComponent createPanel(JComponent cmp, String str) {
         JPanel panel = new JPanel(new BorderLayout());

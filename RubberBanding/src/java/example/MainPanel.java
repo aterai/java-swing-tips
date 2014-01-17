@@ -18,9 +18,8 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(makeList()));
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<ListItem> makeList() {
+        DefaultListModel<ListItem> model = new DefaultListModel<>();
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
         model.addElement(new ListItem("test",       "wi0062-32.png"));
@@ -31,7 +30,7 @@ public class MainPanel extends JPanel {
         model.addElement(new ListItem("22222",      "wi0062-32.png"));
         model.addElement(new ListItem("3333",       "wi0063-32.png"));
 
-        JList list = new JList(model) {
+        JList<ListItem> list = new JList<ListItem>(model) {
             private RubberBandListCellRenderer renderer;
             private AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
             private Color PCOLOR;
@@ -144,7 +143,7 @@ class DotBorder extends EmptyBorder {
     //@Override public Insets getBorderInsets(Component c)
     //@Override public Insets getBorderInsets(Component c, Insets insets)
 }
-class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, MouseListener, MouseMotionListener {
+class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<ListItem>, MouseListener, MouseMotionListener {
     private final JLabel icon  = new JLabel((Icon)null, JLabel.CENTER);
     private final JLabel label = new JLabel("", JLabel.CENTER);
     private final Border dotBorder = new DotBorder(2,2,2,2);
@@ -163,19 +162,16 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
         this.add(icon);
         this.add(label, BorderLayout.SOUTH);
     }
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if(value instanceof ListItem) {
-            ListItem item = (ListItem)value;
-            icon.setIcon(isSelected?item.sicon:item.nicon);
-            label.setText(item.title);
-            label.setBorder(cellHasFocus?dotBorder:empBorder);
-            if(isSelected) {
-                label.setForeground(list.getSelectionForeground());
-                label.setBackground(list.getSelectionBackground());
-            }else{
-                label.setForeground(list.getForeground());
-                label.setBackground(list.getBackground());
-            }
+    @Override public Component getListCellRendererComponent(JList list, ListItem item, int index, boolean isSelected, boolean cellHasFocus) {
+        icon.setIcon(isSelected?item.sicon:item.nicon);
+        label.setText(item.title);
+        label.setBorder(cellHasFocus?dotBorder:empBorder);
+        if(isSelected) {
+            label.setForeground(list.getSelectionForeground());
+            label.setBackground(list.getSelectionBackground());
+        }else{
+            label.setForeground(list.getForeground());
+            label.setBackground(list.getBackground());
         }
         return this;
     }
@@ -183,7 +179,9 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer, Mou
     @Override public void mouseDragged(MouseEvent e) {
         JList list = (JList)e.getSource();
         list.setFocusable(true);
-        if(polygon==null) srcPoint.setLocation(e.getPoint());
+        if(polygon==null) {
+            srcPoint.setLocation(e.getPoint());
+        }
         Point destPoint = e.getPoint();
         polygon = new Path2D.Double();
         polygon.moveTo(srcPoint.x,  srcPoint.y);

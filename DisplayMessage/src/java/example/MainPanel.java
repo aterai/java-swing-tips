@@ -12,7 +12,7 @@ class MainPanel extends JPanel {
     private final Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
     private final TrayIcon icon   = new TrayIcon(image, "TRAY", popup);
     private final JTextArea log   = new JTextArea();
-    private final JComboBox messageType = makeComboBox();
+    private final JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values()); //ERROR, WARNING, INFO, NONE
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
 
@@ -67,14 +67,6 @@ class MainPanel extends JPanel {
         }catch(AWTException e) {
             e.printStackTrace();
         }
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        return new JComboBox(new Object[] {
-            TrayIcon.MessageType.ERROR,
-            TrayIcon.MessageType.INFO,
-            TrayIcon.MessageType.NONE,
-            TrayIcon.MessageType.WARNING});
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-@SuppressWarnings("unchecked")
 public class MainPanel extends JPanel {
     private static enum Vertical {
         TOP, CENTER, BOTTOM;
@@ -15,10 +14,10 @@ public class MainPanel extends JPanel {
     private static enum Horizontal {
         LEFT, CENTER, RIGHT, LEADING, TRAILING;
     }
-    private final JComboBox verticalAlignmentChoices      = new JComboBox(Vertical.values());
-    private final JComboBox verticalTextPositionChoices   = new JComboBox(Vertical.values());
-    private final JComboBox horizontalAlignmentChoices    = new JComboBox(Horizontal.values());
-    private final JComboBox horizontalTextPositionChoices = new JComboBox(Horizontal.values());
+    private final JComboBox<Vertical> verticalAlignmentChoices        = new JComboBox<>(Vertical.values());
+    private final JComboBox<Vertical> verticalTextPositionChoices     = new JComboBox<>(Vertical.values());
+    private final JComboBox<Horizontal> horizontalAlignmentChoices    = new JComboBox<>(Horizontal.values());
+    private final JComboBox<Horizontal> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
     private final JLabel label   = new JLabel("Test Test", new StarburstIcon(), SwingConstants.CENTER);
 
     public MainPanel() {

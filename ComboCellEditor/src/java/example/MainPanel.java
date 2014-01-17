@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
 
         UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-        JComboBox combo = makeComboBox();
+        JComboBox<String> combo = makeComboBox();
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);
@@ -39,9 +39,8 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        JComboBox combo = new JComboBox(new String[] {"Name 0", "Name 1", "Name 2"}) {
+    private static JComboBox<String> makeComboBox() {
+        JComboBox<String> combo = new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
             @Override public void updateUI() {
                 super.updateUI();
                 setBorder(BorderFactory.createEmptyBorder());

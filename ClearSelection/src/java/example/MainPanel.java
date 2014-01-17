@@ -13,26 +13,17 @@ public class MainPanel extends JPanel {
         add(makeTitledPanel("clearSelection", makeList(false)));
         setPreferredSize(new Dimension(320, 240));
     }
-//     @SuppressWarnings("unchecked")
-//     private static DefaultListModel makeModel() {
-//         DefaultListModel model = new DefaultListModel();
-//         model.addElement("aaaaaaa");
-//         model.addElement("bbbbbbbbbbbbb");
-//         model.addElement("cccccccccc");
-//         model.addElement("ddddddddd");
-//         model.addElement("eeeeeeeeee");
-//         return model;
-//     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList(boolean def) {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<String> makeList(boolean def) {
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaa");
         model.addElement("bbbbbbbbbbbbb");
         model.addElement("cccccccccc");
         model.addElement("ddddddddd");
         model.addElement("eeeeeeeeee");
-        if(def) return new JList(model);
-        JList list = new JList(model) {
+        if(def) {
+            return new JList<String>(model);
+        }
+        JList<String> list = new JList<String>(model) {
             private MouseAdapter listener;
             @Override public void updateUI() {
                 removeMouseListener(listener);
@@ -42,7 +33,9 @@ public class MainPanel extends JPanel {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 super.updateUI();
-                if(listener==null) listener = new ClearSelectionListener();
+                if(listener==null) {
+                    listener = new ClearSelectionListener();
+                }
                 addMouseListener(listener);
                 addMouseMotionListener(listener);
             }
@@ -92,7 +85,9 @@ class ClearSelectionListener extends MouseAdapter {
     private static boolean contains(JList list, Point pt) {
         for(int i=0;i<list.getModel().getSize();i++) {
             Rectangle r = list.getCellBounds(i, i);
-            if(r.contains(pt)) return true;
+            if(r.contains(pt)) {
+                return true;
+            }
         }
         return false;
     }

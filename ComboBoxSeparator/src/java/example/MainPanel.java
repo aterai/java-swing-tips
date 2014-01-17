@@ -16,9 +16,8 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel() {
+    private static JComboBox<Object> makeComboBox() {
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<Object>() {
             @Override public void setSelectedItem(Object anObject) {
                 if(!(anObject instanceof JSeparator)) {
                     super.setSelectedItem(anObject);
@@ -37,7 +36,7 @@ public class MainPanel extends JPanel {
         model.addElement("11111");
         model.addElement("2222222");
 
-        JComboBox combo = new JComboBox(model);
+        JComboBox<Object> combo = new JComboBox<>(model);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if(value instanceof JSeparator) {
@@ -51,7 +50,9 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox)e.getSource();
                 int index = cb.getSelectedIndex();
-                if(index==0) return;
+                if(index==0) {
+                    return;
+                }
                 Object o = cb.getItemAt(index-1);
                 if(o instanceof JSeparator) {
                     cb.setSelectedIndex(index-2);
@@ -64,7 +65,9 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox)e.getSource();
                 int index = cb.getSelectedIndex();
-                if(index==cb.getItemCount()-1) return;
+                if(index==cb.getItemCount()-1) {
+                    return;
+                }
                 Object o = cb.getItemAt(index+1);
                 if(o instanceof JSeparator) {
                     cb.setSelectedIndex(index+2);

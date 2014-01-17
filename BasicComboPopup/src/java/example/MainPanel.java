@@ -88,15 +88,14 @@ public class MainPanel extends JPanel {
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
+    private static JComboBox<String> makeComboBox() {
         String[] model = {
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             "bbbbbbbb", "cccccccc",
             "dddddddd", "eeeeeeeee",
             "fff", "ggg", "hhhhhhhhh", "iii",
         };
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
     private void showPopupMenu() {
         Rectangle rect = getRect();

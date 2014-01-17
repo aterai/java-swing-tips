@@ -54,9 +54,8 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        JComboBox combo = new JComboBox(new String[] {"Name 0", "Name 1", "Name 2"}) {
+    private static JComboBox<String> makeComboBox() {
+        JComboBox<String> combo = new JComboBox<String>(new String[] {"Name 0", "Name 1", "Name 2"}) {
             @Override public void updateUI() {
                 super.updateUI();
                 setBorder(BorderFactory.createEmptyBorder());
@@ -104,7 +103,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class ComboCellRenderer extends JComboBox implements TableCellRenderer {
+class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     private static final Color evenColor = new Color(240, 240, 250);
     private JTextField editor;
     private JButton button;
@@ -129,7 +128,6 @@ class ComboCellRenderer extends JComboBox implements TableCellRenderer {
         editor.setOpaque(true);
         editor.setEditable(false);
     }
-    @SuppressWarnings("unchecked")
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
         if(isSelected) {
