@@ -8,24 +8,27 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements PropertyChangeListener {
     private static final String ASTERISK_TITLEBAR = "unsaved";
-    private final JTextArea textarea = new JTextArea();
-    private final JButton saveButton = new JButton("save");
+    private final JTextArea textarea = new JTextArea("JFrame Conditional Close Test");
+    private final JButton exitButton = new JButton(new AbstractAction("exit") {
+        @Override public void actionPerformed(ActionEvent e) {
+            maybeExit();
+        }
+    });
+    private final JButton saveButton = new JButton(new AbstractAction("save") {
+        @Override public void actionPerformed(ActionEvent e) {
+            //System.out.println("Save(dummy)");
+            fireUnsavedFlagChangeEvent(false);
+        }
+    });
     private final JFrame frame;
     private final String title;
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         this.frame = frame;
         this.title = frame.getTitle();
-        addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                if(ASTERISK_TITLEBAR.equals(e.getPropertyName())) {
-                    Boolean unsaved = (Boolean)e.getNewValue();
-                    frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
-                }
-            }
-        });
+        addPropertyChangeListener(this);
         frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
                 System.out.println("windowClosing");
@@ -36,7 +39,6 @@ public class MainPanel extends JPanel {
                 System.exit(0); //webstart
             }
         });
-        textarea.setText("JFrame Conditional Close Test");
         textarea.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) {
                 fireUnsavedFlagChangeEvent(true);
@@ -47,36 +49,30 @@ public class MainPanel extends JPanel {
             @Override public void changedUpdate(DocumentEvent e) {}
         });
         saveButton.setEnabled(false);
-        saveButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent ae) {
-                System.out.println("Save(dummy)");
-                fireUnsavedFlagChangeEvent(false);
-            }
-        });
         add(new JScrollPane(textarea));
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("exit") {
-            @Override public void actionPerformed(ActionEvent e) {
-                maybeExit();
-            }
-        }));
+        box.add(exitButton);
         box.add(Box.createHorizontalStrut(5));
         box.add(saveButton);
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-
+    @Override public void propertyChange(PropertyChangeEvent e) {
+        if(ASTERISK_TITLEBAR.equals(e.getPropertyName())) {
+            Boolean unsaved = (Boolean)e.getNewValue();
+            frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
+        }
+    }
     private void maybeExit() {
         if(title.equals(frame.getTitle())) {
             System.out.println("The document has already been saved, exit without doing anything.");
             frame.dispose();
             return;
         }
-        java.awt.Toolkit.getDefaultToolkit().beep();
+        Toolkit.getDefaultToolkit().beep();
         //String[] obj = {"unsaved documents", "Do you really want to exit?"};
-        //int retValue = JOptionPane.showConfirmDialog(frame, obj, "Select an Option",
-        //                                             JOptionPane.YES_NO_CANCEL_OPTION);
+        //int retValue = JOptionPane.showConfirmDialog(frame, obj, "Select an Option", JOptionPane.YES_NO_CANCEL_OPTION);
         Object[] options = { "Save", "Discard", "Cancel" };
         int retValue = JOptionPane.showOptionDialog(
             frame, "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue</html>",
@@ -106,7 +102,6 @@ public class MainPanel extends JPanel {
             firePropertyChange(ASTERISK_TITLEBAR, Boolean.TRUE, Boolean.FALSE);
         }
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
