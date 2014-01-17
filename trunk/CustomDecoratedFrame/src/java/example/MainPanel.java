@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
-//import javax.swing.event.*;
 
 class MainPanel extends JPanel {
     public MainPanel() {
@@ -16,26 +15,17 @@ class MainPanel extends JPanel {
     }
     private static final int W = 4;
     private static final Color borderColor = new Color(100,100,100);
-    public enum Side {
-        NW_SIDE, N_SIDE, NE_SIDE, L_SIDE, R_SIDE, SW_SIDE, S_SIDE, SE_SIDE;
-    }
-    private JLabel left, right, top, bottom, topleft, topright, bottomleft, bottomright;
-    private JPanel resizePanel  = new JPanel(new BorderLayout()) {
+    private SideLabel left, right, top, bottom, topleft, topright, bottomleft, bottomright;
+    private JPanel resizePanel = new JPanel(new BorderLayout()) {
         @Override protected void paintComponent(Graphics g) {
-            //super.paintComponent(g);
-            //Graphics2D g2 = (Graphics2D)g;
             Graphics2D g2 = (Graphics2D)g.create();
             int w = getWidth();
             int h = getHeight();
             g2.setPaint(Color.ORANGE);
             g2.fillRect(0,0,w,h);
-            g2.setPaint(borderColor); //g2.setPaint(Color.RED);
+            g2.setPaint(borderColor);
             g2.drawRect(0,0,w-1,h-1);
 
-            //g2.setPaint(Color.WHITE);
-            //g2.setPaint(new Color(0,0,0,0));
-//             g2.drawLine(0,0,0,0);
-//             g2.drawLine(w-1,0,w-1,0);
             g2.drawLine(0,2,2,0);
             g2.drawLine(w-3,0,w-1,2);
 
@@ -48,21 +38,8 @@ class MainPanel extends JPanel {
         }
     };
     private JPanel contentPanel = new JPanel(new BorderLayout());
-    //private int state = 0;
-    public JFrame makeFrame(String str) {
-        final JFrame frame = new JFrame(str) {
-            @Override public Container getContentPane() {
-                return contentPanel;
-            }
-        };
-        frame.setUndecorated(true);
-//         if(System.getProperty("java.version").startsWith("1.6.0")) {
-//             if(com.sun.awt.AWTUtilities.isWindowOpaque(frame)) {
-//                 com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
-//             }
-//         }else{
-            frame.setBackground(new Color(255,255,255,0));
-//         }
+
+    private static JButton makeCloseButton() {
         JButton button = new JButton(new CloseIcon());
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
@@ -71,10 +48,17 @@ class MainPanel extends JPanel {
         button.setBackground(Color.ORANGE);
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                JComponent b = (JComponent)e.getSource();
+                Window w = SwingUtilities.getWindowAncestor(b);
+                if(w!=null) {
+                    w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+                }
             }
         });
-//         //javax/swing/plaf/metal/MetalTitlePane.java
+        return button;
+    }
+
+//     private static JButton makeIconifyButton() {
 //         JButton iconify = new JButton("_");
 //         iconify.setContentAreaFilled(false);
 //         iconify.setFocusPainted(false);
@@ -86,6 +70,16 @@ class MainPanel extends JPanel {
 //                 frame.setExtendedState(state | Frame.ICONIFIED);
 //             }
 //         });
+//     }
+
+    public JFrame makeFrame(String str) {
+        final JFrame frame = new JFrame(str) {
+            @Override public Container getContentPane() {
+                return contentPanel;
+            }
+        };
+        frame.setUndecorated(true);
+        frame.setBackground(new Color(255,255,255,0));
 
         JPanel title = new JPanel(new BorderLayout());
         DragWindowListener dwl = new DragWindowListener();
@@ -96,66 +90,18 @@ class MainPanel extends JPanel {
         title.setBorder(BorderFactory.createEmptyBorder(W,W,W,W));
 
         title.add(new JLabel(str, JLabel.CENTER));
-        title.add(button, BorderLayout.EAST);
+        title.add(makeCloseButton(), BorderLayout.EAST);
         //title.add(iconify, BorderLayout.WEST);
 
         ResizeWindowListener rwl = new ResizeWindowListener(frame);
-        for(JLabel l:Arrays.asList(
-            left         = new JLabel(), right        = new JLabel(),
-            top          = new JLabel(), bottom       = new JLabel(),
-            topleft      = new JLabel(), topright     = new JLabel(),
-            bottomleft   = new JLabel(), bottomright  = new JLabel())) {
+        for(SideLabel l:Arrays.asList(
+            left       = new SideLabel(Side.W),  right       = new SideLabel(Side.E),
+            top        = new SideLabel(Side.N),  bottom      = new SideLabel(Side.S),
+            topleft    = new SideLabel(Side.NW), topright    = new SideLabel(Side.NE),
+            bottomleft = new SideLabel(Side.SW), bottomright = new SideLabel(Side.SE))) {
             l.addMouseListener(rwl);
             l.addMouseMotionListener(rwl);
-            //l.setOpaque(true);
-            //l.setBackground(Color.RED);
         }
-
-//         //top.setBorder(BorderFactory.createMatteBorder(1,0,0,0,borderColor));
-//         left.setBorder(BorderFactory.createMatteBorder(0,1,0,0,borderColor));
-//         //bottom.setBorder(BorderFactory.createMatteBorder(0,0,1,0,borderColor));
-//         right.setBorder(BorderFactory.createMatteBorder(0,0,0,1,borderColor));
-
-        //topleft.setBorder(BorderFactory.createMatteBorder(1,1,0,0,borderColor));
-        //bottomleft.setBorder(BorderFactory.createMatteBorder(0,1,1,0,borderColor));
-        //bottomright.setBorder(BorderFactory.createMatteBorder(0,0,1,1,borderColor));
-        //topright.setBorder(BorderFactory.createMatteBorder(1,0,0,1,borderColor));
-
-//         topleft.setBackground(Color.GREEN);
-//         topright.setBackground(Color.GREEN);
-//         bottomleft.setBackground(Color.GREEN);
-//         bottomright.setBackground(Color.GREEN);
-
-        Dimension d = new Dimension(W, 0);
-        left.setPreferredSize(d);
-        left.setMinimumSize(d);
-        right.setPreferredSize(d);
-        right.setMinimumSize(d);
-
-        d = new Dimension(0, W);
-        top.setPreferredSize(d);
-        top.setMinimumSize(d);
-        bottom.setPreferredSize(d);
-        bottom.setMinimumSize(d);
-
-        d = new Dimension(W, W);
-        topleft.setPreferredSize(d);
-        topleft.setMinimumSize(d);
-        topright.setPreferredSize(d);
-        topright.setMinimumSize(d);
-        bottomleft.setPreferredSize(d);
-        bottomleft.setMinimumSize(d);
-        bottomright.setPreferredSize(d);
-        bottomright.setMinimumSize(d);
-
-        left.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
-        right.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-        top.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
-        bottom.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-        topleft.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
-        topright.setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
-        bottomleft.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
-        bottomright.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
 
         JPanel titlePanel = new JPanel(new BorderLayout(0,0));
         titlePanel.add(top,           BorderLayout.NORTH);
@@ -186,48 +132,6 @@ class MainPanel extends JPanel {
         frame.setContentPane(resizePanel);
         return frame;
     }
-    class ResizeWindowListener extends MouseAdapter {
-        private Rectangle startSide = null;
-        private final JFrame frame;
-        public ResizeWindowListener(JFrame frame) {
-            this.frame = frame;
-        }
-        @Override public void mousePressed(MouseEvent e) {
-            startSide = frame.getBounds();
-        }
-        @Override public void mouseDragged(MouseEvent e) {
-            if(startSide==null) { return; }
-            Component c = e.getComponent();
-            if(c==topleft) {
-                startSide.y += e.getY();
-                startSide.height -= e.getY();
-                startSide.x += e.getX();
-                startSide.width -= e.getX();
-            }else if(c==top) {
-                startSide.y += e.getY();
-                startSide.height -= e.getY();
-            }else if(c==topright) {
-                startSide.y += e.getY();
-                startSide.height -= e.getY();
-                startSide.width += e.getX();
-            }else if(c==left) {
-                startSide.x += e.getX();
-                startSide.width -= e.getX();
-            }else if(c==right) {
-                startSide.width += e.getX();
-            }else if(c==bottomleft) {
-                startSide.height += e.getY();
-                startSide.x += e.getX();
-                startSide.width -= e.getX();
-            }else if(c==bottom) {
-                startSide.height += e.getY();
-            }else if(c==bottomright) {
-                startSide.height += e.getY();
-                startSide.width += e.getX();
-            }
-            frame.setBounds(startSide);
-        }
-    }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -252,6 +156,96 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum Side {
+    N (Cursor.N_RESIZE_CURSOR,  new Dimension(0, 4)),
+    W (Cursor.W_RESIZE_CURSOR,  new Dimension(4, 0)),
+    E (Cursor.E_RESIZE_CURSOR,  new Dimension(4, 0)),
+    S (Cursor.S_RESIZE_CURSOR,  new Dimension(0, 4)),
+    NW(Cursor.NW_RESIZE_CURSOR, new Dimension(4, 4)),
+    NE(Cursor.NE_RESIZE_CURSOR, new Dimension(4, 4)),
+    SW(Cursor.SW_RESIZE_CURSOR, new Dimension(4, 4)),
+    SE(Cursor.SE_RESIZE_CURSOR, new Dimension(4, 4));
+    public final Dimension dim;
+    public final int cursor;
+    private Side(int cursor, Dimension dim) {
+        this.cursor = cursor;
+        this.dim = dim;
+    }
+}
+
+class SideLabel extends JLabel {
+    public final Side side;
+    public SideLabel(Side side) {
+        super();
+        this.side = side;
+        setCursor(Cursor.getPredefinedCursor(side.cursor));
+    }
+    @Override public Dimension getPreferredSize() {
+        return side.dim;
+    }
+    @Override public Dimension getMinimumSize() {
+        return side.dim;
+    }
+    @Override public Dimension getMaximumSize() {
+        return side.dim;
+    }
+}
+
+class ResizeWindowListener extends MouseAdapter {
+    private Rectangle rect = null;
+    private final JFrame frame;
+    public ResizeWindowListener(JFrame frame) {
+        this.frame = frame;
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        rect = frame.getBounds();
+    }
+    @Override public void mouseDragged(MouseEvent e) {
+        if(rect==null) {
+            return;
+        }
+        SideLabel c = (SideLabel)e.getComponent();
+        switch(c.side) {
+          case NW: {
+              rect.y += e.getY();
+              rect.height -= e.getY();
+              rect.x += e.getX();
+              rect.width -= e.getX();
+          } break;
+          case N: {
+              rect.y += e.getY();
+              rect.height -= e.getY();
+          } break;
+          case NE: {
+              rect.y += e.getY();
+              rect.height -= e.getY();
+              rect.width += e.getX();
+          } break;
+          case W: {
+              rect.x += e.getX();
+              rect.width -= e.getX();
+          } break;
+          case E: {
+              rect.width += e.getX();
+          } break;
+          case SW: {
+              rect.height += e.getY();
+              rect.x += e.getX();
+              rect.width -= e.getX();
+          }
+          case S: {
+              rect.height += e.getY();
+          } break;
+          case SE: {
+              rect.height += e.getY();
+              rect.width += e.getX();
+          } break;
+        }
+        frame.setBounds(rect);
+    }
+}
+
 class DragWindowListener extends MouseAdapter {
     private MouseEvent start;
     private Window window;
@@ -274,6 +268,7 @@ class DragWindowListener extends MouseAdapter {
         }
     }
 }
+
 class CloseIcon implements Icon {
     private int width;
     private int height;

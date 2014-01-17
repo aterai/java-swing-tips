@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createLookAndFeelMenu());
 
-        JInternalFrame f = makeInternalFrame("@title@");
+        JInternalFrame f = new DraggableInternalFrame("@title@");
         f.getContentPane().add(p);
         f.setJMenuBar(menuBar);
         f.setVisible(true);
@@ -38,36 +38,6 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         setBackground(new Color(1f,1f,1f,.01f));
         //<<<
-    }
-    public JInternalFrame makeInternalFrame(String title) {
-        final JInternalFrame internal = new JInternalFrame(title) {
-            @Override public void updateUI() {
-                super.updateUI();
-                BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
-                Component titleBar = ui.getNorthPane();
-                for(MouseMotionListener l: titleBar.getListeners(MouseMotionListener.class)) {
-                    titleBar.removeMouseMotionListener(l);
-                }
-                DragWindowListener dwl = new DragWindowListener();
-                titleBar.addMouseListener(dwl);
-                titleBar.addMouseMotionListener(dwl);
-            }
-        };
-
-        KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        focusManager.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                String prop = e.getPropertyName();
-                if("activeWindow".equals(prop)) {
-                    try{
-                        internal.setSelected(e.getNewValue()!=null);
-                    }catch(PropertyVetoException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-        return internal;
     }
     private ButtonGroup lookAndFeelRadioGroup;
     private String lookAndFeel;
@@ -155,6 +125,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class DragWindowListener extends MouseAdapter {
     private MouseEvent start;
     private Window window;
@@ -177,5 +148,35 @@ class DragWindowListener extends MouseAdapter {
             int y = pt.y - start.getY() + me.getY();
             window.setLocation(x, y);
         }
+    }
+}
+
+class DraggableInternalFrame extends JInternalFrame {
+    public DraggableInternalFrame(String title) {
+        super(title);
+        KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        focusManager.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override public void propertyChange(PropertyChangeEvent e) {
+                String prop = e.getPropertyName();
+                if("activeWindow".equals(prop)) {
+                    try{
+                        setSelected(e.getNewValue()!=null);
+                    }catch(PropertyVetoException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
+        Component titleBar = ui.getNorthPane();
+        for(MouseMotionListener l: titleBar.getListeners(MouseMotionListener.class)) {
+            titleBar.removeMouseMotionListener(l);
+        }
+        DragWindowListener dwl = new DragWindowListener();
+        titleBar.addMouseListener(dwl);
+        titleBar.addMouseMotionListener(dwl);
     }
 }
