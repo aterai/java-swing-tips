@@ -26,7 +26,7 @@ class MainPanel extends JPanel {
         JViewport vport = new JViewport() {
             private boolean flag = false;
             @Override public void revalidate() {
-                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) return;
+                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) { return; }
                 super.revalidate();
             }
             @Override public void setViewPosition(Point p) {

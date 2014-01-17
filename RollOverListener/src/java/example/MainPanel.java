@@ -78,7 +78,7 @@ class RollOverList extends JList {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if(index == rollOverRowIndex) {
                 c.setBackground(ROLLOVERBACKGROUND);
-                if(isSelected) c.setForeground(Color.BLACK);
+                if(isSelected) { c.setForeground(Color.BLACK); }
                 //c.setForeground(getSelectionForeground());
                 //c.setBackground(getSelectionBackground());
             }

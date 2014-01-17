@@ -120,7 +120,7 @@ public class MainPanel extends JPanel {
                     }
                 }
             }
-            if(node.getChildCount() > 0) sortTree0(node);
+            if(node.getChildCount() > 0) { sortTree0(node); }
         }
     }
 
@@ -139,7 +139,7 @@ public class MainPanel extends JPanel {
                     break;
                 }
             }
-            if(node.getChildCount() > 0) sortTree1(node);
+            if(node.getChildCount() > 0) { sortTree1(node); }
         }
     }
 

@@ -78,7 +78,7 @@ class RandomDissolve extends JComponent implements ActionListener {
         if(currentStage > 0) {
             currentStage = currentStage - 1;
             for(int i=0; i<step.length; i++) {
-                if(step[i]==currentStage) src[i] = dst[i];
+                if(step[i]==currentStage) { src[i] = dst[i]; }
             }
             return true;
         }else{

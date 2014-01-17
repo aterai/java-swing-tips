@@ -90,7 +90,9 @@ public class MainPanel extends JPanel {
             makeTestTab(new JTabbedPane()),
             makeTestTab(tabbedPane));
         JPanel p = new JPanel(new GridLayout(2,1));
-        for(JTabbedPane t:list) p.add(t);
+        for(JTabbedPane t:list) {
+            p.add(t);
+        }
         add(new JCheckBox(new AbstractAction("LEFT") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox)e.getSource();

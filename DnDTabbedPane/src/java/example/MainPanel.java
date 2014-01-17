@@ -191,11 +191,15 @@ class DnDTabbedPane extends JTabbedPane {
         };
         final DragGestureListener dgl = new DragGestureListener() {
             @Override public void dragGestureRecognized(DragGestureEvent e) {
-                if(getTabCount()<=1) return;
+                if(getTabCount()<=1) {
+                    return;
+                }
                 Point tabPt = e.getDragOrigin();
                 dragTabIndex = indexAtLocation(tabPt.x, tabPt.y);
                 //"disabled tab problem".
-                if(dragTabIndex<0 || !isEnabledAt(dragTabIndex)) return;
+                if(dragTabIndex<0 || !isEnabledAt(dragTabIndex)) {
+                    return;
+                }
                 initGlassPane(e.getComponent(), e.getDragOrigin());
                 try{
                     e.startDrag(DragSource.DefaultMoveDrop, t, dsl);
@@ -212,8 +216,11 @@ class DnDTabbedPane extends JTabbedPane {
 
     class CDropTargetListener implements DropTargetListener {
         @Override public void dragEnter(DropTargetDragEvent e) {
-            if(isDragAcceptable(e)) e.acceptDrag(e.getDropAction());
-            else e.rejectDrag();
+            if(isDragAcceptable(e)) {
+                e.acceptDrag(e.getDropAction());
+            }else{
+                e.rejectDrag();
+            }
         }
         @Override public void dragExit(DropTargetEvent e) {
             Component c = e.getDropTargetContext().getComponent();
@@ -232,7 +239,7 @@ class DnDTabbedPane extends JTabbedPane {
             if(hasGhost()) {
                 glassPane.setPoint(glassPt);
             }
-            if(!_glassPt.equals(glassPt)) glassPane.repaint();
+            if(!_glassPt.equals(glassPt)) { glassPane.repaint(); }
             _glassPt = glassPt;
             autoScrollTest(glassPt);
         }
@@ -284,14 +291,20 @@ class DnDTabbedPane extends JTabbedPane {
         boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         for(int i=0;i<getTabCount();i++) {
             Rectangle r = getBoundsAt(i);
-            if(isTB) r.setRect(r.x-r.width/2, r.y,  r.width, r.height);
-            else     r.setRect(r.x, r.y-r.height/2, r.width, r.height);
-            if(r.contains(tabPt)) return i;
+            if(isTB) {
+                r.setRect(r.x-r.width/2, r.y,  r.width, r.height);
+            }else{
+                r.setRect(r.x, r.y-r.height/2, r.width, r.height);
+            }
+            if(r.contains(tabPt)) { return i; }
         }
         Rectangle r = getBoundsAt(getTabCount()-1);
-        if(isTB) r.setRect(r.x+r.width/2, r.y,  r.width, r.height);
-        else     r.setRect(r.x, r.y+r.height/2, r.width, r.height);
-        return   r.contains(tabPt)?getTabCount():-1;
+        if(isTB) {
+            r.setRect(r.x+r.width/2, r.y,  r.width, r.height);
+        }else{
+            r.setRect(r.x, r.y+r.height/2, r.width, r.height);
+        }
+        return r.contains(tabPt)?getTabCount():-1;
     }
     private void convertTab(int prev, int next) {
         if(next<0 || prev==next) {
@@ -309,7 +322,9 @@ class DnDTabbedPane extends JTabbedPane {
         setEnabledAt(tgtindex, flg);
         //When you drag'n'drop a disabled tab, it finishes enabled and selected.
         //pointed out by dlorde
-        if(flg) setSelectedIndex(tgtindex);
+        if(flg) {
+            setSelectedIndex(tgtindex);
+        }
         //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);

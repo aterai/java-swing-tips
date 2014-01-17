@@ -78,7 +78,7 @@ public class MainPanel extends JPanel {
     private transient Timer timer;
     private transient HierarchyListener hierarchyListener;
     @Override public void updateUI() {
-        if(hierarchyListener!=null) removeHierarchyListener(hierarchyListener);
+        if(hierarchyListener!=null) { removeHierarchyListener(hierarchyListener); }
         super.updateUI();
         addHierarchyListener(hierarchyListener = new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {

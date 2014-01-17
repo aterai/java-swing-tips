@@ -238,7 +238,7 @@ class StarburstSVGMaker {
 //                 JOptionPane.showMessageDialog(null,"Could not create file.","Error",JOptionPane.ERROR_MESSAGE);
 //                 return;
 //             }
-//             if(outfile==null) return;
+//             if(outfile==null) { return; }
 //             final File tmpfile = outfile;
 //             Transferable tran = new Transferable() {
 //                 @Override public Object getTransferData(DataFlavor flavor) {
@@ -279,7 +279,9 @@ class StarIcon implements Icon {
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate(x, y);
         g2d.setPaint(Color.PINK);
-        if(antialias) g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if(antialias) {
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
         g2d.fill(star);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         //g2d.setPaint(Color.BLACK);

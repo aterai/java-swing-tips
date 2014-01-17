@@ -66,7 +66,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) return;
+            if(selection==null || selection.length<=0) { return; }
             for(int i=selection.length-1;i>=0;i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
@@ -155,9 +155,9 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
 
     // Interface: DragGestureListener
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        if(getSelectedRowCount()>1) return;
+        if(getSelectedRowCount()>1) { return; }
         draggedIndex = rowAtPoint(e.getDragOrigin());
-        if(draggedIndex<0) return;
+        if(draggedIndex<0) { return; }
         try{
             e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, (DragSourceListener)this);
         }catch(InvalidDnDOperationException idoe) { idoe.printStackTrace(); }
@@ -215,7 +215,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
             repaint();
         }
         @Override public void dropActionChanged(DropTargetDragEvent e) {
-            // if(isDragAcceptable(e)) e.acceptDrag(e.getDropAction());
+            // if(isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
             // else e.rejectDrag();
         }
         @Override public void drop(DropTargetDropEvent e) {

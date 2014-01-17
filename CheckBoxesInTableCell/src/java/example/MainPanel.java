@@ -162,9 +162,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Seria
     }
     @Override public Object getCellEditorValue() {
         int i = 0;
-        if(buttons[0].isSelected()) i|=1<<2;
-        if(buttons[1].isSelected()) i|=1<<1;
-        if(buttons[2].isSelected()) i|=1<<0;
+        if(buttons[0].isSelected()) { i|=1<<2; }
+        if(buttons[1].isSelected()) { i|=1<<1; }
+        if(buttons[2].isSelected()) { i|=1<<0; }
         return i;
     }
 
@@ -202,7 +202,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Seria
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -215,7 +215,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Seria
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }

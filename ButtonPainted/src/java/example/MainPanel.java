@@ -30,28 +30,36 @@ class MainPanel extends JPanel {
             new JCheckBox(new AbstractAction("setFocusPainted") {
                 @Override public void actionPerformed(ActionEvent e) {
                     boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                    for(JButton b:list) b.setFocusPainted(flg);
+                    for(JButton b:list) {
+                        b.setFocusPainted(flg);
+                    }
                     p.revalidate();
                 }
             }),
             new JCheckBox(new AbstractAction("setBorderPainted") {
                 @Override public void actionPerformed(ActionEvent e) {
                     boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                    for(JButton b:list) b.setBorderPainted(flg);
+                    for(JButton b:list) {
+                        b.setBorderPainted(flg);
+                    }
                     p.revalidate();
                 }
             }),
             new JCheckBox(new AbstractAction("setContentAreaFilled") {
                 @Override public void actionPerformed(ActionEvent e) {
                     boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                    for(JButton b:list) b.setContentAreaFilled(flg);
+                    for(JButton b:list) {
+                        b.setContentAreaFilled(flg);
+                    }
                     p.revalidate();
                 }
             }),
             new JCheckBox(new AbstractAction("setRolloverEnabled") {
                 @Override public void actionPerformed(ActionEvent e) {
                     boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                    for(JButton b:list) b.setRolloverEnabled(flg);
+                    for(JButton b:list) {
+                        b.setRolloverEnabled(flg);
+                    }
                     p.revalidate();
                 }
             })

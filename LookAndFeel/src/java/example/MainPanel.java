@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
         }
     }
     private void setLookAndFeel(String laf) {
-        if(currentLookAndFeel.equals(laf)) return;
+        if(currentLookAndFeel.equals(laf)) { return; }
         currentLookAndFeel = laf;
         try{
             UIManager.setLookAndFeel(currentLookAndFeel);

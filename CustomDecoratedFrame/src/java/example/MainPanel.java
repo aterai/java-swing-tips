@@ -196,7 +196,7 @@ class MainPanel extends JPanel {
             startSide = frame.getBounds();
         }
         @Override public void mouseDragged(MouseEvent e) {
-            if(startSide==null) return;
+            if(startSide==null) { return; }
             Component c = e.getComponent();
             if(c==topleft) {
                 startSide.y += e.getY();

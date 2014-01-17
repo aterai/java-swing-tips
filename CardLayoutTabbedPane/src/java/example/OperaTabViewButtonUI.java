@@ -59,7 +59,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
             b.getText() == null ? 0 : b.getIconTextGap());
-        if(text==null) return;
+        if(text==null) { return; }
 
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
         if(v!=null) {

@@ -166,7 +166,7 @@ public class MainPanel extends JPanel {
 //         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
 //         //final TreePath path = e.getPath();
 //
-//         if(!node.isLeaf()) return;
+//         if(!node.isLeaf()) { return; }
 //         final File parent = (File)node.getUserObject();
 //         if(!parent.isDirectory()) return;
 //

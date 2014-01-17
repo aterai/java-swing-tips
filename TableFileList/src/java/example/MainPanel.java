@@ -42,7 +42,7 @@ public class MainPanel extends JPanel {
 //                 int row  = table.rowAtPoint(pt);
 //                 int col  = table.columnAtPoint(pt);
 //                 int mcol = table.convertColumnIndexToModel(col);
-//                 if(mcol!=1 || row<0 || row>table.getRowCount()) return;
+//                 if(mcol!=1 || row<0 || row>table.getRowCount()) { return; }
 //                 if(!isOnLabel(table, pt, row, col)) {
 //                     table.changeSelection(row, 0, false, false);
 //                     table.clearSelection();
@@ -299,7 +299,7 @@ class MyTable extends JTable {
         Point pt = e.getPoint();
         int row  = rowAtPoint(pt);
         int col  = columnAtPoint(pt);
-        if(convertColumnIndexToModel(col)!=0 || row<0 || row>getRowCount()) return null;
+        if(convertColumnIndexToModel(col)!=0 || row<0 || row>getRowCount()) { return null; }
         Rectangle rect = getCellRect2(this, row, col);
         if(rect.contains(pt)) {
             return getValueAt(row, col).toString();
@@ -312,7 +312,7 @@ class MyTable extends JTable {
     }
     class RubberBandingListener extends MouseAdapter {
         @Override public void mouseDragged(MouseEvent e) {
-            if(srcPoint==null) srcPoint = e.getPoint();
+            if(srcPoint==null) { srcPoint = e.getPoint(); }
             Point destPoint = e.getPoint();
             polygon.reset();
             polygon.moveTo(srcPoint.x,  srcPoint.y);
@@ -364,7 +364,7 @@ class MyTable extends JTable {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(srcPoint==null) return;
+        if(srcPoint==null) { return; }
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(rcolor);
         g2d.draw(polygon);

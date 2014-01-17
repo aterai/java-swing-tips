@@ -63,7 +63,7 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     }
     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         Document doc = fb.getDocument();
-        if(doc.getDefaultRootElement().getElementIndex(offset)<2) return;
+        if(doc.getDefaultRootElement().getElementIndex(offset)<2) { return; }
         fb.replace(offset, length, text, attrs);
     }
 }

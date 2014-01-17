@@ -46,7 +46,7 @@ class MainPanel extends JPanel {
                                                            JPopupMenu popup = (JPopupMenu)m.getParent();
                                                            JComponent invoker = (JComponent)popup.getInvoker();
                                                            Window f = SwingUtilities.getWindowAncestor(invoker);
-                                                           if(f!=null) f.dispose();
+                                                           if(f!=null) { f.dispose(); }
                                                        }
                                                    }))) {
             c.setOpaque(true);
@@ -100,7 +100,7 @@ class DropShadowPopupMenu extends JPopupMenu {
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
-        if(inner==null) inner = getBorder();
+        if(inner==null) { inner = getBorder(); }
         setBorder(makeShadowBorder(c, new Point(x, y)));
 
         Dimension d = getPreferredSize();
@@ -156,7 +156,7 @@ class ShadowBorder extends AbstractBorder {
         return insets;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        if(screen==null) return;
+        if(screen==null) { return; }
         if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();

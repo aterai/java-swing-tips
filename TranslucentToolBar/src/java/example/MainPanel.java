@@ -84,7 +84,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
-                if(ncomponents == 0) return;
+                if(ncomponents == 0) { return; }
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
                 int x = 0; //insets.left; int y = insets.top;
@@ -141,8 +141,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         addHierarchyListener(this);
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 &&
-           animator!=null && !isDisplayable()) {
+        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {
             animator.stop();
         }
     }

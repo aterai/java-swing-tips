@@ -89,7 +89,7 @@ class MainPanel extends JPanel {
     //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
     private static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
         Point p = new Point(xposition, yposition);
-        if(GraphicsEnvironment.isHeadless()) return p;
+        if(GraphicsEnvironment.isHeadless()) { return p; }
 
         Rectangle screenBounds;
         GraphicsConfiguration gc = null;
@@ -124,8 +124,8 @@ class MainPanel extends JPanel {
         long pw = (long) p.x + (long) size.width;
         long ph = (long) p.y + (long) size.height;
 
-        if(pw > screenBounds.x + screenBounds.width)  p.x -= size.width;
-        if(ph > screenBounds.y + screenBounds.height) p.y -= size.height;
+        if(pw > screenBounds.x + screenBounds.width)  { p.x -= size.width;  }
+        if(ph > screenBounds.y + screenBounds.height) { p.y -= size.height; }
 
         // Change is made to the desired (X,Y) values, when the
         // PopupMenu is too tall OR too wide for the screen
@@ -189,7 +189,9 @@ class MainPanel extends JPanel {
                 SwingUtilities.updateComponentTreeUI(f);
                 f.pack();
             }
-            for(JComponent c:list) SwingUtilities.updateComponentTreeUI(c);
+            for(JComponent c:list) {
+                SwingUtilities.updateComponentTreeUI(c);
+            }
         }
     }
 

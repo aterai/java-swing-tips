@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
                 synchronized(target.getTreeLock()) {
                     Insets insets = target.getInsets();
                     int nmembers  = target.getComponentCount();
-                    if(nmembers<=0) return;
+                    if(nmembers<=0) { return; }
                     int vgap = getVgap();
                     int hgap = getHgap();
                     int rowh = (target.getHeight() - insets.top - insets.bottom - vgap*2) / nmembers;

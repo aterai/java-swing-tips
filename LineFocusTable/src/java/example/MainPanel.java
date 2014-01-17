@@ -93,8 +93,12 @@ public class MainPanel extends JPanel {
             private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
             private void updateBorderType(DotBorder border, int column) {
                 border.type = EnumSet.noneOf(DotBorder.Type.class);
-                if(column==0) border.type.add(DotBorder.Type.START);
-                if(column==getColumnCount()-1) border.type.add(DotBorder.Type.END);
+                if(column==0) {
+                    border.type.add(DotBorder.Type.START);
+                }
+                if(column==getColumnCount()-1) {
+                    border.type.add(DotBorder.Type.END);
+                }
             }
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
@@ -157,7 +161,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) return;
+            if(selection==null || selection.length<=0) { return; }
             for(int i=selection.length-1;i>=0;i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
@@ -280,7 +284,7 @@ class DotBorder extends EmptyBorder {
 //         border.type = EnumSet.noneOf(DotBorder.Type.class);
 //         if(isLeadRow) {
 //           border.type.add(DotBorder.Type.LEAD);
-//           if(column==0) border.type.add(DotBorder.Type.WEST);
+//           if(column==0) { border.type.add(DotBorder.Type.WEST); }
 //           if(column==getColumnCount()-1) border.type.add(DotBorder.Type.EAST);
 //         }
 //       }

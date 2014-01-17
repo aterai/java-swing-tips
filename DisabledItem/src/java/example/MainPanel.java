@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
 
 //         list.setSelectionModel(new DefaultListSelectionModel() {
 //             @Override public boolean isSelectedIndex(int index) {
-//                 if(disableIndexSet.contains(index)) return false;
+//                 if(disableIndexSet.contains(index)) { return false; }
 //                 return super.isSelectedIndex(index);
 //             }
 //         });

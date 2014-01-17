@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
                             if(f.getExtendedState()==JFrame.NORMAL) {
                                 ws.setSize(f.getSize());
                                 //Point pt = f.getLocationOnScreen();
-                                //if(pt.x<0 || pt.y<0) return;
+                                //if(pt.x<0 || pt.y<0) { return; }
                                 ws.setLocation(f.getLocationOnScreen());
                             }
                             saveWindowState(persistenceService, codebase, ws);
@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
                     e.printStackTrace();
                 }
                 JFrame frame = new JFrame("@title@");
-                if(wa!=null) frame.addWindowListener(wa);
+                if(wa!=null) { frame.addWindowListener(wa); }
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.getContentPane().add(new MainPanel());
                 frame.setSize(ws.getSize());

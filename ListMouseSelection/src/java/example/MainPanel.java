@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 super.updateUI();
-                if(listener==null) listener = new ClearSelectionListener();
+                if(listener==null) { listener = new ClearSelectionListener(); }
                 addMouseListener(listener);
                 addMouseMotionListener(listener);
             }
@@ -132,7 +132,7 @@ class ClearSelectionListener extends MouseAdapter {
     private static boolean contains(JList list, Point pt) {
         for(int i=0;i<list.getModel().getSize();i++) {
             Rectangle r = list.getCellBounds(i, i);
-            if(r.contains(pt)) return true;
+            if(r.contains(pt)) { return true; }
         }
         return false;
     }

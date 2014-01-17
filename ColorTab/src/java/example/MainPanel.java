@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         tab.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
                 JTabbedPane jtab = (JTabbedPane)e.getSource();
-                if(jtab.getTabCount()<=0) return;
+                if(jtab.getTabCount()<=0) { return; }
                 int sindex = jtab.getSelectedIndex();
                 for(int i=0;i<jtab.getTabCount();i++) {
                     if(i==sindex && jtab.getTitleAt(sindex).endsWith("1")) {

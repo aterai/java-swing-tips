@@ -73,7 +73,7 @@ public class MainPanel extends JPanel {
                 table.getCellEditor().stopCellEditing();
             }
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) return;
+            if(selection==null || selection.length<=0) { return; }
             for(int i=selection.length-1;i>=0;i--) {
                 //Test ixsc = model.getTest(selection[i]);
                 model.removeRow(selection[i]);

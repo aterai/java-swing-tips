@@ -39,7 +39,7 @@ class MainPanel extends JPanel {
         icon.setImageObserver(new ImageObserver() {
             //@see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
             @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-                if(!table.isShowing()) return false; //@see javax.swing.JLabel#imageUpdate(...)
+                if(!table.isShowing()) { return false; } //@see javax.swing.JLabel#imageUpdate(...)
                 if((infoflags & (FRAMEBITS|ALLBITS)) != 0) { //@see java.awt.Component#imageUpdate(...)
                     int vr = table.convertRowIndexToView(row); //JDK 1.6.0
                     int vc = table.convertColumnIndexToView(col);

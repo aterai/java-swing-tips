@@ -29,7 +29,9 @@ public class MainPanel extends JPanel {
     private static JTree makeTree(TreeModel model) {
         JTree tree = new JTree(model);
         tree.setRowHeight(0);
-        for(int i=0;i<tree.getRowCount();i++) tree.expandRow(i);
+        for(int i=0;i<tree.getRowCount();i++) {
+            tree.expandRow(i);
+        }
         return tree;
     }
     private static TreeModel getDefaultTreeModel() {
@@ -155,8 +157,8 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         }else{
             bColor = renderer.getBackgroundNonSelectionColor();
             fColor = renderer.getTextNonSelectionColor();
-            if(bColor == null) bColor = renderer.getBackground();
-            if(fColor == null) fColor = renderer.getForeground();
+            if(bColor == null) { bColor = renderer.getBackground(); }
+            if(fColor == null) { fColor = renderer.getForeground(); }
         }
         text.setFont(l.getFont());
         text.setText(l.getText());

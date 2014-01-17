@@ -10,7 +10,9 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();
-        for(int i=0;i<1000;i++) buf.append(i+LF);
+        for(int i=0;i<1000;i++) {
+            buf.append(i+LF);
+        }
 
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(new JScrollPane(new JTextArea(buf.toString())));

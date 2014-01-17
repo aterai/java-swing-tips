@@ -81,7 +81,7 @@ class RippleBorder extends EmptyBorder {
         Graphics2D g2 = (Graphics2D) g;
         g2.setPaint(Color.WHITE);
         float a = 1.0f/count;
-        if( 0.12f-a>1.0e-2 ) a = 0.0f;
+        if( 0.12f-a>1.0e-2 ) { a = 0.0f; }
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,a));
         Insets i = getBorderInsets();
         int xx = i.left-(int)count;

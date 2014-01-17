@@ -190,9 +190,8 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
             g.setColor(b.getBackground());
             g.fillRect(0,0, size.width, size.height);
         }
-        if(text==null) return;
-        if(!model.isSelected() && !model.isPressed() && !model.isArmed()
-           && b.isRolloverEnabled() && model.isRollover()) {
+        if(text==null) { return; }
+        if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
             g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);

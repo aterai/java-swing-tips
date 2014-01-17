@@ -11,8 +11,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         JPanel gp = new GridPanel();
         for(int i = 0; i<GridPanel.cols*GridPanel.rows;i++) {
-            if(i%2==0) gp.add(new JButton("aa"+i));
-            else gp.add(new JScrollPane(new JTree()));
+            gp.add(i%2==0 ? new JButton("aa"+i) : new JScrollPane(new JTree()));
         }
         final JScrollPane scrollPane = new JScrollPane(gp);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -96,7 +95,9 @@ class ScrollAction extends AbstractAction {
                   sx  = vport.getViewPosition().x,
                   sy  = vport.getViewPosition().y;
         final Rectangle rect = new Rectangle(w, h);
-        if(scroller!=null && scroller.isRunning()) return;
+        if(scroller!=null && scroller.isRunning()) {
+            return;
+        }
         scroller = new Timer(5, new ActionListener() {
             double SIZE = 100d;
             int count = (int)SIZE;

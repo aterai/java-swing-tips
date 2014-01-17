@@ -21,10 +21,8 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(makeList()));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<ListItem> makeList() {
+        DefaultListModel<ListItem> model = new DefaultListModel<>();
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("asdasdfsd",  "wi0009-32.png"));
         model.addElement(new ListItem("12345",      "wi0054-32.png"));
@@ -83,6 +81,7 @@ class ListItem {
         this.title = title;
     }
 }
+
 class SelectedImageFilter extends RGBImageFilter {
     //public SelectedImageFilter() {
     //    canFilterIndexColorModel = false;
@@ -95,6 +94,7 @@ class SelectedImageFilter extends RGBImageFilter {
         return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
     }
 }
+
 class DotBorder extends EmptyBorder {
     public DotBorder(Insets borderInsets) {
         super(borderInsets);
@@ -112,7 +112,7 @@ class DotBorder extends EmptyBorder {
     }
 }
 
-class ReorderbleList extends JList {
+class ReorderbleList extends JList<ListItem> {
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon  = new JLabel((Icon)null, JLabel.CENTER);
     private final JLabel label = new JLabel("", JLabel.CENTER);
@@ -123,7 +123,7 @@ class ReorderbleList extends JList {
     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Polygon polygon = new Polygon();
     private Point srcPoint = null;
-    @SuppressWarnings("unchecked")
+
     public ReorderbleList() {
         super();
         rcolor = SystemColor.activeCaption;
@@ -143,14 +143,13 @@ class ReorderbleList extends JList {
         p.add(icon);
         p.add(label, BorderLayout.SOUTH);
 
-        setCellRenderer(new ListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                ListItem item = (ListItem)getModel().getElementAt(index);
-                icon.setIcon(isSelected?item.sicon:item.nicon);
+        setCellRenderer(new ListCellRenderer<ListItem>() {
+            @Override public Component getListCellRendererComponent(JList list, ListItem item, int index, boolean isSelected, boolean cellHasFocus) {
+                icon.setIcon(isSelected ? item.sicon : item.nicon);
                 label.setText(item.title);
-                label.setBorder(cellHasFocus?dotBorder:empBorder);
-                label.setForeground(isSelected?list.getSelectionForeground():list.getForeground());
-                label.setBackground(isSelected?list.getSelectionBackground():list.getBackground());
+                label.setBorder(cellHasFocus ? dotBorder : empBorder);
+                label.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
+                label.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
                 return p;
             }
         });
@@ -166,8 +165,12 @@ class ReorderbleList extends JList {
     class RubberBandingListener extends MouseInputAdapter {
         @Override public void mouseDragged(MouseEvent e) {
             JList list = (JList)e.getSource();
-            if(list.getDragEnabled()) return;
-            if(srcPoint==null) srcPoint = e.getPoint();
+            if(list.getDragEnabled()) {
+                return;
+            }
+            if(srcPoint==null) {
+                srcPoint = e.getPoint();
+            }
             Point destPoint = e.getPoint();
             polygon.reset();
             polygon.addPoint(srcPoint.x,  srcPoint.y);
@@ -234,7 +237,9 @@ class ReorderbleList extends JList {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(srcPoint==null || getDragEnabled()) return;
+        if(srcPoint==null || getDragEnabled()) {
+            return;
+        }
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(rcolor);
         g2d.drawPolygon(polygon);

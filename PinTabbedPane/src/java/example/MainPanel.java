@@ -117,7 +117,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             t.insertTab(check.isSelected()?"":tip, icon, cmp, tip, i);
             t.setTabComponentAt(i, tab);
             t.setEnabledAt(i, flg);
-            if(flg) t.setSelectedIndex(i);
+            if(flg) { t.setSelectedIndex(i); }
 
             //JComponent c = (JComponent)t.getTabComponentAt(idx);
             //c.revalidate();

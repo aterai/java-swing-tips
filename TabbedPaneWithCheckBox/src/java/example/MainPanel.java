@@ -76,7 +76,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
         int xx = tab.getSize().width - size.width;
         Rectangle lastTab = tab.getUI().getTabBounds(tab, tab.getTabCount()-1);
         int tabEnd = lastTab.x + lastTab.width;
-        if(xx<tabEnd) xx = tabEnd;
+        if(xx<tabEnd) { xx = tabEnd; }
         rect = new Rectangle(xx, -2, size.width, size.height);
         SwingUtilities.paintComponent(g, cbox, dummy, rect);
     }
@@ -87,7 +87,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
         return true;
     }
     private void dispatchEvent(MouseEvent me) {
-        if(rect==null || !rect.contains(me.getX(), me.getY())) return;
+        if(rect==null || !rect.contains(me.getX(), me.getY())) { return; }
         cbox.setBounds(rect);
         cbox.dispatchEvent(SwingUtilities.convertMouseEvent(tab,me,cbox));
     }

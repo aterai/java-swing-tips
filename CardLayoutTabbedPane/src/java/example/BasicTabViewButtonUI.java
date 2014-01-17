@@ -62,7 +62,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 
         g.setColor(b.getBackground());
         g.fillRect(0,0, size.width, size.height);
-        if(text==null) return;
+        if(text==null) { return; }
         if(model.isSelected() || model.isArmed()) {
             g.setColor(Color.WHITE);
         }else{

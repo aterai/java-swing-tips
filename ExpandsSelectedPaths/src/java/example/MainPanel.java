@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
         TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) return;
+        if(node==null) { return; }
         if(node.toString().equals(q)) {
             tree.addSelectionPath(path);
         }

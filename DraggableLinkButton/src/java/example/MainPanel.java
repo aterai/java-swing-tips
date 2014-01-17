@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         JButton label = new JButton(new AbstractAction(MYSITE) {
             @Override public void actionPerformed(ActionEvent ae) {
                 java.awt.Toolkit.getDefaultToolkit().beep();
-                //if(!Desktop.isDesktopSupported()) return;
+                //if(!Desktop.isDesktopSupported()) { return; }
                 //try{
                 //    Desktop.getDesktop().browse(new URI(MYSITE));
                 //}catch(IOException ioe) {
@@ -189,9 +189,8 @@ class LinkViewButtonUI extends BasicButtonUI {
             g.setColor(b.getBackground());
             g.fillRect(0,0, size.width, size.height);
         }
-        if(text==null) return;
-        if(!model.isSelected() && !model.isPressed() && !model.isArmed()
-           && b.isRolloverEnabled() && model.isRollover()) {
+        if(text==null) { return; }
+        if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
             g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);

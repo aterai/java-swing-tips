@@ -91,7 +91,7 @@ class MainPanel extends JPanel {
             layerPane.moveToFront(panel);
         }
         @Override public void mouseDragged(MouseEvent e) {
-            if(origin == null) return;
+            if(origin == null) { return; }
             //ずれた分だけ JPanel を移動させる
             int dx = e.getX() - origin.x;
             int dy = e.getY() - origin.y;

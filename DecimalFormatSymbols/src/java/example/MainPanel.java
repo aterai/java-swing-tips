@@ -21,12 +21,18 @@ public class MainPanel extends JPanel {
             Object old;
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                for(JSpinner c:Arrays.asList(s0,s1,s2,s3)) c.setEnabled(flg);
+                for(JSpinner c:Arrays.asList(s0,s1,s2,s3)) {
+                    c.setEnabled(flg);
+                }
                 if(flg) {
-                    for(JSpinner c:Arrays.asList(s2,s3)) c.setValue(old);
+                    for(JSpinner c:Arrays.asList(s2,s3)) {
+                        c.setValue(old);
+                    }
                 }else{
                     old = s2.getValue();
-                    for(JSpinner c:Arrays.asList(s2,s3)) c.setValue(Double.NaN);
+                    for(JSpinner c:Arrays.asList(s2,s3)) {
+                        c.setValue(Double.NaN);
+                    }
                 }
             }
         });

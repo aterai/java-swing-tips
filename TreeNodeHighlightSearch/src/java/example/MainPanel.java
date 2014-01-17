@@ -46,13 +46,13 @@ public class MainPanel extends JPanel {
         renderer.q = q;
         TreePath root = tree.getPathForRow(0);
         collapseAll(tree, root);
-        if(!q.isEmpty()) searchTree(tree, root, q);
+        if(!q.isEmpty()) { searchTree(tree, root, q); }
         //tree.repaint();
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
         TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) return;
-        if(node.toString().startsWith(q)) tree.expandPath(path.getParentPath());
+        if(node==null) { return; }
+        if(node.toString().startsWith(q)) { tree.expandPath(path.getParentPath()); }
         if(!node.isLeaf() && node.getChildCount()>=0) {
             Enumeration e = node.children();
             while(e.hasMoreElements()) {

@@ -44,7 +44,9 @@ class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox cb = (JCheckBox)e.getSource();
                 Color bgc = cb.isSelected()? Color.WHITE:Color.BLACK;
-                for(JButton b: l) b.setBackground(bgc);
+                for(JButton b: l) {
+                    b.setBackground(bgc);
+                }
                 box.repaint();
             }
         }));
@@ -52,7 +54,9 @@ class MainPanel extends JPanel {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
                     ButtonAlignments ba = (ButtonAlignments)alignmentsChoices.getSelectedItem();
-                    for(JButton b: l) b.setAlignmentY(ba.alingment);
+                    for(JButton b: l) {
+                        b.setAlignmentY(ba.alingment);
+                    }
                     box.revalidate();
                 }
             }
@@ -218,7 +222,7 @@ class RoundImageButtonUI extends BasicButtonUI{
         clearTextShiftOffset();
         defaultTextShiftOffset = 0;
         Icon icon = b.getIcon();
-        if(icon==null) return;
+        if(icon==null) { return; }
         b.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         b.setContentAreaFilled(false);
         b.setFocusPainted(false);

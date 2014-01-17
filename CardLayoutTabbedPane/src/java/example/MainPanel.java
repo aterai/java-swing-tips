@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-            //    if("Nimbus".equals(laf.getName())) UIManager.setLookAndFeel(laf.getClassName());
+            //    if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
             //}
         }catch(Exception e) {
             e.printStackTrace();
@@ -281,7 +281,7 @@ class TableHeaderTabbedPane extends JPanel {
         @Override public void mousePressed(MouseEvent e) {
             JTableHeader header = (JTableHeader)e.getSource();
             int index = header.columnAtPoint(e.getPoint());
-            if(index<0) return;
+            if(index<0) { return; }
             Object title = model.getColumn(index).getHeaderValue();
             cardLayout.show(contentsPanel, (String)title);
             selectedColumn = title;

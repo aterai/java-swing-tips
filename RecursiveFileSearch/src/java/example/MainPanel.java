@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
     }
     @SuppressWarnings("unchecked")
     public static void addItem(JComboBox dirCombo, String str, int max) {
-        if(str==null || str.trim().isEmpty()) return;
+        if(str==null || str.trim().isEmpty()) { return; }
         dirCombo.setVisible(false);
         DefaultComboBoxModel model = (DefaultComboBoxModel) dirCombo.getModel();
         model.removeElement(str);
@@ -172,7 +172,7 @@ public class MainPanel extends JPanel {
                             recursiveSearch(sdir, list);
                         }else{
                             scount++;
-                            if(scount%100==0) publish(new Message("Results:"+scount+"\n",false));
+                            if(scount%100==0) { publish(new Message("Results:"+scount+"\n",false)); }
                             list.add(sdir);
                         }
                     }

@@ -28,8 +28,9 @@ public class MainPanel extends JPanel {
             makeTestTabbedPane(new ClippedTitleTabbedPane(JTabbedPane.LEFT)));
 
         JPanel p = new JPanel(new GridLayout(list.size(),1));
-        for(JTabbedPane t:list) p.add(t);
-
+        for(JTabbedPane t:list) {
+            p.add(t);
+        }
         add(new JCheckBox(new AbstractAction("TOP") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox)e.getSource();
@@ -101,7 +102,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     @Override public void doLayout() {
         int tabCount  = getTabCount();
-        if(tabCount==0) return;
+        if(tabCount==0) { return; }
         Insets tabInsets     = getTabInsets();
         Insets tabAreaInsets = getTabAreaInsets();
         Insets insets = getInsets();
@@ -122,7 +123,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
         for(int i=0;i<tabCount;i++) {
             JComponent l = (JComponent)getTabComponentAt(i);
-            if(l==null) break;
+            if(l==null) { break; }
             int v = i < gap ? 1 : 0;
             l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
         }
@@ -246,7 +247,7 @@ class ButtonTabComponent extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            if(i != -1) pane.remove(i);
+            if(i != -1) { pane.remove(i); }
         }
         @Override public void updateUI() {}
         @Override protected void paintComponent(Graphics g) {

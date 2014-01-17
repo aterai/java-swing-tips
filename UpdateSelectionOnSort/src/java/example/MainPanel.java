@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
 //         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
 //             @Override public void toggleSortOrder(int column) {
 //                 super.toggleSortOrder(column);
-//                 if(check2.isSelected()) table.clearSelection();
+//                 if(check2.isSelected()) { table.clearSelection(); }
 //             }
 //         };
 //         table.setRowSorter(sorter);
@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
 
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if(!check2.isSelected()) return;
+                if(!check2.isSelected()) { return; }
                 if(table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }

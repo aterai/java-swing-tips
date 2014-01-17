@@ -99,7 +99,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
             });
             animator.start();
         }else{
-            if(animator!=null) animator.stop();
+            if(animator!=null) { animator.stop(); }
         }
         animatedIcon.setRunning(isVisible);
     }
@@ -134,7 +134,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         g2d.fill(rect);
 
         if(alpha>0) {
-            if(alpha>1.0f) alpha = 1.0f;
+            if(alpha>1.0f) { alpha = 1.0f; }
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.drawImage(image.getImage(), rect.x+5, rect.y+5,
                           image.getIconWidth(),
@@ -146,8 +146,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 &&
-           animator!=null && !isDisplayable()) {
+        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {
             animator.stop();
         }
     }
@@ -171,7 +170,7 @@ class AnimeIcon implements Icon {
 
     private boolean isRunning = false;
     public void next() {
-        if(isRunning) list.add(list.remove(0));
+        if(isRunning) { list.add(list.remove(0)); }
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;

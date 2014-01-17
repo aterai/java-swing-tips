@@ -62,7 +62,7 @@ public class MainPanel extends JPanel {
         });
 
         int startPageIndex = currentPageIndex-LR_PAGE_SIZE;
-        if(startPageIndex<=0) startPageIndex = 1;
+        if(startPageIndex<=0) { startPageIndex = 1; }
 
 //#if 0 //BUG
         //int maxPageIndex = (model.getRowCount()/itemsPerPage)+1;
@@ -211,7 +211,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
             g.setColor(b.getBackground());
             g.fillRect(0,0, size.width, size.height);
         }
-        if(text==null) return;
+        if(text==null) { return; }
 //         // Changing Component State During Painting (an infinite repaint loop)
 //         // pointed out by Peter
 //         // -note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
@@ -223,8 +223,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //         }else if(b.isRolloverEnabled() && model.isRollover()) {
 
         g.setColor(b.getForeground());
-        if(!model.isSelected() && !model.isPressed() && !model.isArmed()
-           && b.isRolloverEnabled() && model.isRollover()) {
+        if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);
         }

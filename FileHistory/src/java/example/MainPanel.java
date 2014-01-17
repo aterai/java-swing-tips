@@ -70,7 +70,7 @@ public class MainPanel extends JPanel {
         fileHistory.removeAll();
         fh.remove(str);
         fh.add(0, str);
-        if(fh.size()>MAXHISTORY) fh.remove(fh.size()-1);
+        if(fh.size()>MAXHISTORY) { fh.remove(fh.size()-1); }
         for(int i=0;i<fh.size();i++) {
             String name = fh.get(i);
             String num  = Integer.toString(i+1);

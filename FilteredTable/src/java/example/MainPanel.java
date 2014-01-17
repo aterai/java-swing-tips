@@ -128,7 +128,7 @@ class TestModel extends DefaultTableModel {
         //dataVector.clear();
         setRowCount(0);
         for(int i=0;i<list.size();i++) {
-            if(flg && i%2==0) continue;
+            if(flg && i%2==0) { continue; }
             Test t = list.get(i);
             addRow(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
             //dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));

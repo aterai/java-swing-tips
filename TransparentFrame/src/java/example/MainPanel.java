@@ -104,7 +104,7 @@ class MainPanel extends JPanel {
         int cs = 4;
         for(int i=0;i*cs<16;i++) {
             for(int j=0;j*cs<16;j++) {
-                if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
             }
         }
         g2.dispose();

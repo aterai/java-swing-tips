@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
             @Override public void componentMoved(ComponentEvent e) {
                 if(frame.getExtendedState()==JFrame.NORMAL) {
                     Point pt = frame.getLocationOnScreen();
-                    if(pt.x<0 || pt.y<0) return;
+                    if(pt.x<0 || pt.y<0) { return; }
                     try{
                         pos.setLocation(pt);
                     }catch(IllegalComponentStateException icse) {

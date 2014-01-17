@@ -13,7 +13,9 @@ public class MainPanel extends JPanel {
 
         JTextArea textArea = new JTextArea();
         StringBuilder sb = new StringBuilder();
-        for(int i=0;i<2000;i++) sb.append(String.format("%04d%n", i));
+        for(int i=0;i<2000;i++) {
+            sb.append(String.format("%04d%n", i));
+        }
         textArea.setText(sb.toString());
         textArea.setCaretPosition(0);
 

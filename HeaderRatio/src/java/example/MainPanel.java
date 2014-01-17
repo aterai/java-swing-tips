@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                if(check.isSelected()) setTableHeaderColumnRaito();
+                if(check.isSelected()) { setTableHeaderColumnRaito(); }
             }
         });
         add(makeSettingPanel(), BorderLayout.NORTH);
@@ -71,7 +71,9 @@ public class MainPanel extends JPanel {
     }
     private static int getRaitoTotal(int[] list) {
         int w = 0;
-        for(int i:list) w += i;
+        for(int i:list) {
+            w += i;
+        }
         return w;
     }
     private int[] getWidthRaitoArray() {

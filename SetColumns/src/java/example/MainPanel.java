@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
 
         combo1.setEditable(true);
         Component c = combo1.getEditor().getEditorComponent();
-        if(c instanceof JTextField) ((JTextField)c).setColumns(20);
+        if(c instanceof JTextField) { ((JTextField)c).setColumns(20); }
 
         combo2.setEditable(true);
 

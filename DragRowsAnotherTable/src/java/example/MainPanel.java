@@ -109,8 +109,9 @@ class TableRowTransferHandler extends TransferHandler {
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         ArrayList<Object> list = new ArrayList<Object>();
-        for(int i: rows = table.getSelectedRows())
-          list.add(model.getDataVector().elementAt(i));
+        for(int i: rows = table.getSelectedRows()) {
+            list.add(model.getDataVector().elementAt(i));
+        }
         transferedObjects = list.toArray();
         return new DataHandler(transferedObjects,localObjectFlavor.getMimeType());
     }
@@ -130,12 +131,12 @@ class TableRowTransferHandler extends TransferHandler {
         DefaultTableModel model = (DefaultTableModel)target.getModel();
         int index = dl.getRow();
         int max = model.getRowCount();
-        if(index<0 || index>max) index = max;
+        if(index<0 || index>max) { index = max; }
         addIndex = index;
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try{
             Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
-            if(source==target) addCount = values.length;
+            if(source==target) { addCount = values.length; }
             for(int i=0;i<values.length;i++) {
                 int idx = index++;
                 model.insertRow(idx, (Vector)values[i]);
@@ -164,7 +165,9 @@ class TableRowTransferHandler extends TransferHandler {
                     }
                 }
             }
-            for(int i=rows.length-1;i>=0;i--) model.removeRow(rows[i]);
+            for(int i=rows.length-1;i>=0;i--) {
+                model.removeRow(rows[i]);
+            }
         }
         rows     = null;
         addCount = 0;

@@ -211,7 +211,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 
                 p.removeAll();
                 p.add(l, BorderLayout.WEST);
-                if(isSynth) p.setForeground(l.getForeground());
+                if(isSynth) { p.setForeground(l.getForeground()); }
 
                 pn = String.format("%3d", toc.page);
                 pnPt.x = tree.getWidth() - metrics.stringWidth(pn) - gap;
@@ -271,7 +271,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
 
                 p.removeAll();
                 p.add(l, BorderLayout.WEST);
-                if(isSynth) p.setForeground(l.getForeground());
+                if(isSynth) { p.setForeground(l.getForeground()); }
 
                 pn = String.format("%s%3d", READER, toc.page);
                 pnx = tree.getWidth() - metrics.stringWidth(pn) - gap;

@@ -16,7 +16,9 @@ public class MainPanel extends JPanel {
     public MainPanel(JFrame frame) {
         super(new BorderLayout());
         String dummyStr = "aaaaaaaaaaaaa\n";
-        for(int i=0;i<2000;i++) textArea.append(dummyStr);
+        for(int i=0;i<2000;i++) {
+            textArea.append(dummyStr);
+        }
 
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));

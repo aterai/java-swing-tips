@@ -218,9 +218,9 @@ class DnDTabbedPane extends JTabbedPane {
         switch(dropMode) {
           case INSERT:
             for(int i=0; i<getTabCount(); i++) {
-                if(getBoundsAt(i).contains(p)) return new DropLocation(p, i);
+                if(getBoundsAt(i).contains(p)) { return new DropLocation(p, i); }
             }
-            if(getTabAreaBounds().contains(p)) return new DropLocation(p, getTabCount());
+            if(getTabAreaBounds().contains(p)) { return new DropLocation(p, getTabCount()); }
             break;
           case USE_SELECTION:
           case ON:
@@ -246,12 +246,12 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
-        if(targetIndex<0) return;
+        if(targetIndex<0) { return; }
 
         Component cmp    = getComponentAt(dragIndex);
         Container parent = target;
         while(parent!=null) {
-            if(cmp==parent) return; //target==child: JTabbedPane in JTabbedPane
+            if(cmp==parent) { return;  } //target==child: JTabbedPane in JTabbedPane
             parent = parent.getParent();
         }
 
@@ -267,8 +267,9 @@ class DnDTabbedPane extends JTabbedPane {
         //if(tab instanceof ButtonTabComponent) tab = new ButtonTabComponent(target);
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
-        if(tab!=null && tab instanceof JComponent)
+        if(tab!=null && tab instanceof JComponent) {
             ((JComponent)tab).scrollRectToVisible(tab.getBounds());
+        }
     }
 
     public void convertTab(int prev, int next) {
@@ -288,14 +289,14 @@ class DnDTabbedPane extends JTabbedPane {
         setEnabledAt(tgtindex, flg);
         //When you drag'n'drop a disabled tab, it finishes enabled and selected.
         //pointed out by dlorde
-        if(flg) setSelectedIndex(tgtindex);
+        if(flg) { setSelectedIndex(tgtindex); }
         //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
     public Rectangle getDropLineRect() {
         DropLocation loc = getDropLocation();
-        if(loc == null || !loc.isDropable()) return null;
+        if(loc == null || !loc.isDropable()) { return null; }
 
         int index = loc.getIndex();
         if(index<0) {
@@ -316,7 +317,7 @@ class DnDTabbedPane extends JTabbedPane {
         int xx = tabbedRect.x;
         int yy = tabbedRect.y;
         Component c = getSelectedComponent();
-        if(c==null) return tabbedRect;
+        if(c==null) { return tabbedRect; }
         Rectangle compRect = getSelectedComponent().getBounds();
         int tabPlacement = getTabPlacement();
         if(tabPlacement==TOP) {
@@ -399,7 +400,7 @@ class TabTransferHandler extends TransferHandler {
     private DnDTabbedPane source = null;
     @Override protected Transferable createTransferable(JComponent c) {
         System.out.println("createTransferable");
-        if(c instanceof DnDTabbedPane) source = (DnDTabbedPane)c;
+        if(c instanceof DnDTabbedPane) { source = (DnDTabbedPane)c; }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport support) {
@@ -491,7 +492,7 @@ class TabTransferHandler extends TransferHandler {
         if(glassPane==null) {
             c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
         }
-        if(src.dragTabIndex<0) return NONE;
+        if(src.dragTabIndex<0) { return NONE; }
 //*
         glassPane.setImage(makeDragTabImage(src));
 /*/ //java 1.7.0
@@ -502,7 +503,7 @@ class TabTransferHandler extends TransferHandler {
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
-        if(!canImport(support)) return false;
+        if(!canImport(support)) { return false; }
 
         DnDTabbedPane target = (DnDTabbedPane)support.getComponent();
         DnDTabbedPane.DropLocation dl = target.getDropLocation();
@@ -638,7 +639,7 @@ class GhostGlassPane extends JPanel {
 //         }
 //         @Override public void actionPerformed(ActionEvent e) {
 //             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-//             if(i != -1) pane.remove(i);
+//             if(i != -1) { pane.remove(i); }
 //         }
 //         @Override public void updateUI() {}
 //         @Override protected void paintComponent(Graphics g) {

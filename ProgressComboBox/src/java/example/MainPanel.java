@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void updateUI() {
             super.updateUI();
-            if(bar!=null) SwingUtilities.updateComponentTreeUI(bar);
+            if(bar!=null) { SwingUtilities.updateComponentTreeUI(bar); }
         }
     }
 

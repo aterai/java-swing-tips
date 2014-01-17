@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         desktop.setDesktopManager(new ReIconifyDesktopManager());
         desktop.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                if(!check.isSelected()) return;
+                if(!check.isSelected()) { return; }
                 doReIconify((JDesktopPane)e.getComponent());
             }
         });
@@ -53,7 +53,7 @@ public class MainPanel extends JPanel {
         if(dm instanceof ReIconifyDesktopManager) {
             ReIconifyDesktopManager rdm = (ReIconifyDesktopManager)dm;
             for(JInternalFrame f: desktopPane.getAllFrames()) {
-                if(f.isIcon()) rdm.reIconifyFrame(f);
+                if(f.isIcon()) { rdm.reIconifyFrame(f); }
             }
         }
     }
