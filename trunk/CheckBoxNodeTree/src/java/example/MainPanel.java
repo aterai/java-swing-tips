@@ -33,7 +33,9 @@ public class MainPanel extends JPanel {
                 node.setUserObject(new CheckBoxNode((String)o, b=!b));
             }
         }
-        for(int i=0;i<tree.getRowCount();i++) tree.expandRow(i);
+        for(int i=0;i<tree.getRowCount();i++) {
+            tree.expandRow(i);
+        }
 
         //tree.setCellRenderer(new CheckBoxNodeRenderer());
         //tree.setCellEditor(new CheckBoxNodeEditor(tree));
@@ -194,7 +196,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -207,7 +209,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }
@@ -282,7 +284,7 @@ class CheckBoxNode {
 //             TreeCellRenderer r = tree.getCellRenderer();
 //
 //         }
-//         if(leafRenderer!=null) leafRenderer.updateUI();
+//         if(leafRenderer!=null) { leafRenderer.updateUI(); }
 //
 //         //setLeafIcon(getDefaultLeafIcon());
 //         setOpenIcon(getDefaultOpenIcon());
@@ -309,7 +311,7 @@ class CheckBoxNode {
 // //         Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
 // //         if(margins != null) {
 // //             setBorder(new EmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
-// //             //if(leafRenderer!=null) leafRenderer.setBorder(getBorder());
+// //             //if(leafRenderer!=null) { leafRenderer.setBorder(getBorder()); }
 // //         }
 //         setName("Tree.cellRenderer");
 //         //if(tree!=null) tree.revalidate();

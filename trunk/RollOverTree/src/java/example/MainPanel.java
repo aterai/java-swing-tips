@@ -69,7 +69,7 @@ class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseM
         if(row==rollOverRowIndex) {
             c.setOpaque(true);
             c.setBackground(rollOverRowColor);
-            if(isSelected) c.setForeground(getTextNonSelectionColor());
+            if(isSelected) { c.setForeground(getTextNonSelectionColor()); }
         }else{
             c.setOpaque(false);
         }

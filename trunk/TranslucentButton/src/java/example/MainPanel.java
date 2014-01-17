@@ -106,7 +106,9 @@ public class MainPanel extends JPanel {
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for(int i=0;i<256;i++) b[i] = (byte)(i*0.5);
+        for(int i=0;i<256;i++) {
+            b[i] = (byte)(i*0.5);
+        }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
         op.filter(image, dest);
         return dest;
@@ -122,7 +124,7 @@ public class MainPanel extends JPanel {
         g2.setPaint(new Color(200,200,200,20));
         for(int i=0;i*cs<sz;i++) {
             for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
             }
         }
         g2.dispose();

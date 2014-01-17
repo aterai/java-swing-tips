@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
     }
     private static void searchTreeForCheckedNode(JTree tree, TreePath path) {
         Object o = path.getLastPathComponent();
-        if(o==null || !(o instanceof DefaultMutableTreeNode)) return;
+        if(o==null || !(o instanceof DefaultMutableTreeNode)) { return; }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)o;
         o = node.getUserObject();
         if(o==null || !(o instanceof CheckBoxNode)) return;
@@ -168,7 +168,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
 
-        if(!node.isLeaf()) return;
+        if(!node.isLeaf()) { return; }
         CheckBoxNode check = (CheckBoxNode)node.getUserObject();
         if(check==null) return;
         final File parent = check.file;
@@ -312,7 +312,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             JTree tree = (JTree)e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if(r==null) return false;
+            if(r==null) { return false; }
             Dimension d = getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if(r.contains(me.getX(), me.getY())) {
@@ -371,7 +371,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -384,7 +384,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }
@@ -394,7 +394,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
 class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting = false;
     @Override public void treeNodesChanged(TreeModelEvent e) {
-        if(adjusting) return;
+        if(adjusting) { return; }
         adjusting = true;
         TreePath parent = e.getTreePath();
         Object[] children = e.getChildren();
@@ -441,7 +441,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
                 indeterminateCount++;
                 break;
             }
-            if(check.status==Status.SELECTED) selectedCount++;
+            if(check.status==Status.SELECTED) { selectedCount++; }
         }
         if(indeterminateCount>0) {
             parent.setUserObject(new CheckBoxNode(file));

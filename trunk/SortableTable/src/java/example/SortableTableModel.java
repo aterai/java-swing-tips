@@ -134,7 +134,7 @@ class HeaderMouseListener extends MouseAdapter {
         TableColumnModel columnModel = h.getColumnModel();
         TableCellRenderer tcr = h.getDefaultRenderer();
         int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-        if(viewColumn<0) return;
+        if(viewColumn<0) { return; }
         int column = columnModel.getColumn(viewColumn).getModelIndex();
         if(column != -1 && tcr instanceof SortButtonRenderer) {
             SortButtonRenderer sbr = (SortButtonRenderer)tcr;

@@ -92,8 +92,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         }else{
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
-            if(bColor == null) bColor = getBackground();
-            if(fColor == null) fColor = getForeground();
+            if(bColor == null) { bColor = getBackground(); }
+            if(fColor == null) { fColor = getForeground(); }
         }
         text.setForeground(fColor);
         text.setBackground(bColor);

@@ -89,11 +89,11 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
                 TableColumnModel columnModel = h.getColumnModel();
                 TableCellRenderer tcr = h.getDefaultRenderer();
                 int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-                if(viewColumn<0) return;
+                if(viewColumn<0) { return; }
                 int column = columnModel.getColumn(viewColumn).getModelIndex();
                 if(column != -1 && tcr instanceof SortButtonRenderer) {
                     SortButtonRenderer sbr = (SortButtonRenderer)tcr;
-                    if(!sbr.isEnabledAt(column)) return;
+                    if(!sbr.isEnabledAt(column)) { return; }
                     sbr.setPressedColumn(column);
                     sbr.setSelectedColumn(column);
                     h.repaint();
@@ -155,7 +155,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         return dmap.containsKey(col)?dmap.get(col):true;
     }
     public void setSelectedColumn(int col) {
-        if(col < 0) return;
+        if(col < 0) { return; }
         Integer value = null;
         Integer obj = state.get(col);
         value = obj != null && obj == DOWN ? UP : DOWN;

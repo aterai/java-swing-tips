@@ -31,8 +31,9 @@ class MainPanel extends JPanel {
             buf.append(String.format("Height: %d%n", reader.getHeight(0)));
 
             IIOMetadata meta = reader.getImageMetadata(0);
-            for(String s:meta.getMetadataFormatNames())
-              buf.append(String.format("MetadataFormatName: %s%n",s));
+            for(String s:meta.getMetadataFormatNames()) {
+                buf.append(String.format("MetadataFormatName: %s%n",s));
+            }
 
             root = (IIOMetadataNode)meta.getAsTree("javax_imageio_jpeg_image_1.0");
             //root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");

@@ -112,7 +112,7 @@ class LabelTransferHandler extends TransferHandler {
         JLabel l = p.draggingLabel;
         final DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
         String text = l.getText();
-        if(text==null) return dh;
+        if(text==null) { return dh; }
         final StringSelection ss = new StringSelection(text+"\n");
         return new Transferable() {
             @Override public DataFlavor[] getTransferDataFlavors() {
@@ -172,7 +172,7 @@ class LabelTransferHandler extends TransferHandler {
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
-        if(!canImport(support)) return false;
+        if(!canImport(support)) { return false; }
         DragPanel target = (DragPanel)support.getComponent();
         try{
             DragPanel src = (DragPanel)support.getTransferable().getTransferData(localObjectFlavor);

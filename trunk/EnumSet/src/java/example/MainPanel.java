@@ -180,9 +180,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
     }
     @Override public Object getCellEditorValue() {
         EnumSet<Permissions> f = EnumSet.noneOf(Permissions.class);
-        if(buttons[0].isSelected()) f.add(Permissions.READ);
-        if(buttons[1].isSelected()) f.add(Permissions.WRITE);
-        if(buttons[2].isSelected()) f.add(Permissions.EXECUTE);
+        if(buttons[0].isSelected()) { f.add(Permissions.READ);    }
+        if(buttons[1].isSelected()) { f.add(Permissions.WRITE);   }
+        if(buttons[2].isSelected()) { f.add(Permissions.EXECUTE); }
         return f;
     }
 
@@ -220,7 +220,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -233,7 +233,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }

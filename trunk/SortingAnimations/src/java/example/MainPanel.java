@@ -144,7 +144,7 @@ public class MainPanel extends JPanel {
         }
     }
     private void swap(int i, int j) throws InterruptedException {
-        if(isCancelled() || !isDisplayable()) throw new InterruptedException();
+        if(isCancelled() || !isDisplayable()) { throw new InterruptedException(); }
 
         int px = (int) (MINX + factorx*i);
         int py = MAXY - (int)(factory*a[i]);
@@ -189,10 +189,10 @@ public class MainPanel extends JPanel {
         for(h = 1; h < n; h = 3*h + 1) {}
         for(;;) {
             h /= 3;
-            if(h < 1) break;
+            if(h < 1) { break; }
             for(i = h; i < n; i++) {
                 for(j = i; j >= h; j -= h) {
-                    if(a[j-h] < a[j]) break;
+                    if(a[j-h] < a[j]) { break; }
                     swap(j-h, j);
                 }
             }
@@ -203,7 +203,7 @@ public class MainPanel extends JPanel {
         i = l;
         for(;;) {
             c = 2*i;
-            if(c > u) break;
+            if(c > u) { break; }
             if(c+1 <= u && a[c+1] > a[c]) c++;
             if(a[i] >= a[c]) break;
             swap(i, c);
@@ -221,23 +221,23 @@ public class MainPanel extends JPanel {
         }
     }
     private void qsort(int l, int u) throws InterruptedException {
-        if(l >= u) return;
+        if(l >= u) { return; }
         int m = l;
         for(int i = l+1; i <= u; i++) {
-            if(a[i] < a[l]) swap(++m, i);
+            if(a[i] < a[l]) { swap(++m, i); }
         }
         swap(l, m);
         qsort(l, m-1);
         qsort(m+1, u);
     }
     private void qsort2(int l, int u) throws InterruptedException {
-        if(l >= u) return;
+        if(l >= u) { return; }
         int i = l;
         int j = u+1;
         for(;;) {
             do i++; while(i <= u && a[i] < a[l]);
             do j--; while(a[j] > a[l]);
-            if(i > j) break;
+            if(i > j) { break; }
             swap(i, j);
         }
         swap(l, j);

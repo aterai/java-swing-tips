@@ -159,7 +159,7 @@ class AnimeIcon implements Icon {
 
     private boolean isRunning = false;
     public void next() {
-        if(isRunning) list.add(list.remove(0));
+        if(isRunning) { list.add(list.remove(0)); }
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;

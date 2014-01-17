@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
                 int x = getSize().width-stringWidth;
                 Rectangle lastTab = getUI().getTabBounds(this, getTabCount()-1);
                 int tabEnd = lastTab.x + lastTab.width;
-                if(x<tabEnd) x = tabEnd;
+                if(x<tabEnd) { x = tabEnd; }
                 g.drawString(text, x+5, 18);
             }
         };

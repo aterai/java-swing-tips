@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
                     break;
                 }
             }
-            if(row>0 && flg) table.setRowSelectionInterval(row, row);
+            if(row>0 && flg) { table.setRowSelectionInterval(row, row); }
 
             createAction.setEnabled(count<=1);
             deleteAction.setEnabled(row>=0);
@@ -115,7 +115,7 @@ public class MainPanel extends JPanel {
                 table.getCellEditor().stopCellEditing();
             }
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) return;
+            if(selection==null || selection.length<=0) { return; }
             for(int i=selection.length-1;i>=0;i--) {
                 //Test ixsc = model.getTest(selection[i]);
                 model.removeRow(selection[i]);
@@ -136,13 +136,13 @@ public class MainPanel extends JPanel {
     }
     private void upActionPerformed(ActionEvent e) {
         int[] pos = table.getSelectedRows();
-        if(pos==null || pos.length<=0) return;
+        if(pos==null || pos.length<=0) { return; }
         DefaultTableModel mdl = (DefaultTableModel) table.getModel();
         if((e.getModifiers() & ActionEvent.SHIFT_MASK)!=0) {
             mdl.moveRow(pos[0], pos[pos.length-1], 0);
             table.setRowSelectionInterval(0, pos.length-1);
         }else{
-            if(pos[0]==0) return;
+            if(pos[0]==0) { return; }
             mdl.moveRow(pos[0], pos[pos.length-1], pos[0]-1);
             table.setRowSelectionInterval(pos[0]-1, pos[pos.length-1]-1);
         }
@@ -161,13 +161,13 @@ public class MainPanel extends JPanel {
     }
     private void downActionPerformed(ActionEvent e) {
         int[] pos = table.getSelectedRows();
-        if(pos==null || pos.length<=0) return;
+        if(pos==null || pos.length<=0) { return; }
         DefaultTableModel mdl = (DefaultTableModel) table.getModel();
         if((e.getModifiers() & ActionEvent.SHIFT_MASK)!=0) {
             mdl.moveRow(pos[0], pos[pos.length-1], mdl.getRowCount()-pos.length);
             table.setRowSelectionInterval(mdl.getRowCount()-pos.length, mdl.getRowCount()-1);
         }else{
-            if(pos[pos.length-1]==mdl.getRowCount()-1) return;
+            if(pos[pos.length-1]==mdl.getRowCount()-1) { return; }
             mdl.moveRow(pos[0], pos[pos.length-1], pos[0]+1);
             table.setRowSelectionInterval(pos[0]+1, pos[pos.length-1]+1);
         }
@@ -188,7 +188,7 @@ public class MainPanel extends JPanel {
                 table.getCellEditor().stopCellEditing();
             }
             int row = table.getRowCount();
-            if(row<=0) return;
+            if(row<=0) { return; }
             TestModel model = (TestModel)table.getModel();
             TestModel nmodel = new TestModel();
             Vector dv = model.getDataVector();

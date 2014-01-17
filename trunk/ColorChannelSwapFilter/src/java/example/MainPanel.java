@@ -43,7 +43,7 @@ class MainPanel extends JPanel {
         box.add(new JButton(new AbstractAction("Start") {
             SwingWorker<String, Void> worker;
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) worker.cancel(true);
+                if(worker!=null && !worker.isDone()) { worker.cancel(true); }
                 worker = new SwingWorker<String, Void>() {
                     @Override public String doInBackground() {
                         int current = 0;

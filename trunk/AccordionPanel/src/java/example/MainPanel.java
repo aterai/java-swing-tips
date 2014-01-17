@@ -174,7 +174,7 @@ abstract class ExpansionPanel extends JPanel {
 
 //     protected Vector<ExpansionListener> expansionListenerList = new Vector<ExpansionListener>();
 //     public void addExpansionListener(ExpansionListener listener) {
-//         if(!expansionListenerList.contains(listener)) expansionListenerList.add(listener);
+//         if(!expansionListenerList.contains(listener)) { expansionListenerList.add(listener); }
 //     }
 //     public void removeExpansionListener(ExpansionListener listener) {
 //         expansionListenerList.remove(listener);

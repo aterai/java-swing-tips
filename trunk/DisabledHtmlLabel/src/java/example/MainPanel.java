@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
                 if(isEnabled()) {
                     super.paintComponent(g);
                 }else{
-                    if(shadow!=null) g.drawImage(shadow, 0, 0, this);
+                    if(shadow!=null) { g.drawImage(shadow, 0, 0, this); }
                 }
             }
         };

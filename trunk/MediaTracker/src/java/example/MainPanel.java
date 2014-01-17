@@ -104,7 +104,7 @@ public class MainPanel extends JPanel {
     }
     public void deleteActionPerformed(ActionEvent evt) {
         int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
+        if(selection==null || selection.length<=0) { return; }
         for(int i=selection.length-1;i>=0;i--) {
             model.removeRow(table.convertRowIndexToModel(selection[i]));
         }

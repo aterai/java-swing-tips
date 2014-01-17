@@ -78,7 +78,7 @@ class MainPanel extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(texture==null) texture = makeTexturePaint();
+        if(texture==null) { texture = makeTexturePaint(); }
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(texture);
         g2.fillRect(0, 0, getWidth(), getHeight());
@@ -95,7 +95,7 @@ class MainPanel extends JPanel {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-            //    if("Nimbus".equals(laf.getName())) UIManager.setLookAndFeel(laf.getClassName());
+            //    if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
             //}
         }catch(Exception e) {
             e.printStackTrace();

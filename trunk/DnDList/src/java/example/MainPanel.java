@@ -108,9 +108,9 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
 
     // Interface: DragGestureListener
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        if(getSelectedIndices().length>1) return;
+        if(getSelectedIndices().length>1) { return; }
         draggedIndex = locationToIndex(e.getDragOrigin());
-        if(draggedIndex<0) return;
+        if(draggedIndex<0) { return; }
         try{
             e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, (DragSourceListener)this);
         }catch(InvalidDnDOperationException idoe) { idoe.printStackTrace(); }
@@ -165,7 +165,7 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
             repaint();
         }
         @Override public void dropActionChanged(DropTargetDragEvent e) {
-            // if(isDragAcceptable(e)) e.acceptDrag(e.getDropAction());
+            // if(isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
             // else e.rejectDrag();
         }
         @SuppressWarnings("unchecked")

@@ -99,7 +99,7 @@ class FishEyeTable extends JTable {
         setRowSelectionAllowed(true);
         setFillsViewportHeight(true);
 
-        if(handler==null) handler = new FishEyeTableHandler();
+        if(handler==null) { handler = new FishEyeTableHandler(); }
         addMouseListener(handler);
         addMouseMotionListener(handler);
         getSelectionModel().addListSelectionListener(handler);
@@ -108,13 +108,13 @@ class FishEyeTable extends JTable {
     private class FishEyeTableHandler extends MouseAdapter implements ListSelectionListener {
         @Override public void mouseMoved(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
-            if(prev_row==row) return;
+            if(prev_row==row) { return; }
             initRowHeigth(prev_height, row);
             prev_row = row;
         }
         @Override public void mouseDragged(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
-            if(prev_row==row) return;
+            if(prev_row==row) { return; }
             initRowHeigth(prev_height, row);
             prev_row = row;
         }
@@ -122,7 +122,7 @@ class FishEyeTable extends JTable {
             repaint();
         }
         @Override public void valueChanged(ListSelectionEvent e) {
-            if(e.getValueIsAdjusting()) return;
+            if(e.getValueIsAdjusting()) { return; }
             int row = getSelectedRow();
             if(prev_row==row) return;
             initRowHeigth(prev_height, row);
@@ -133,7 +133,7 @@ class FishEyeTable extends JTable {
     @Override public void doLayout() {
         super.doLayout();
         Container p = getParent();
-        if(p==null || !(p instanceof JViewport)) return;
+        if(p==null || !(p instanceof JViewport)) { return; }
         int h = ((JViewport)p).getExtentSize().height;
         if(h==prev_height) return;
         initRowHeigth(h, getSelectedRow());
@@ -182,7 +182,9 @@ class FishEyeTable extends JTable {
         int rowCount = getModel().getRowCount();
         int view_rc  = getViewableColoredRowCount(ccRow);
         int view_h   = 0;
-        for(int i=0;i<view_rc;i++) view_h += fishEyeRowList.get(i).height;
+        for(int i=0;i<view_rc;i++) {
+            view_h += fishEyeRowList.get(i).height;
+        }
         int rest_rc  = rowCount - view_rc;
         int rest_h   = height - view_h;
         int rest_rh  = rest_h/rest_rc; rest_rh = rest_rh>0?rest_rh:1;
@@ -193,10 +195,10 @@ class FishEyeTable extends JTable {
             int crh;
             if(ccRow-rd2<=i && i<=ccRow+rd2) {
                 index++;
-                if(i<0) continue;
+                if(i<0) { continue; }
                 crh = fishEyeRowList.get(index).height;
             }else{
-                if(i<0) continue;
+                if(i<0) { continue; }
                 int b = a>0?1:0;
                 crh = rest_rh+b;
                 a = a-1;

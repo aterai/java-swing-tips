@@ -17,7 +17,9 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         StringBuilder sb = new StringBuilder();
         String dummyStr = "aaaaaaaaaaaaa\n";
-        for(int i=0;i<2000;i++) sb.append(dummyStr);
+        for(int i=0;i<2000;i++) {
+            sb.append(dummyStr);
+        }
         textArea.setText(sb.toString());
 
         scroll.setRowHeaderView(new LineNumberView(textArea));

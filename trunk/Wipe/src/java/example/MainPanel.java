@@ -47,11 +47,17 @@ class MainPanel extends JPanel {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
             if(mode) {
-                if(ww<((int) (icon.getIconWidth()))) ww=ww+10;
-                else animator.stop();
+                if(ww < icon.getIconWidth()) {
+                    ww += 10;
+                }else{
+                    animator.stop();
+                }
             }else{
-                if(ww>0) ww=ww-10;
-                else animator.stop();
+                if(ww > 0) {
+                    ww -= 10;
+                }else{
+                    animator.stop();
+                }
             }
             g.drawImage(icon.getImage(), 0, 0, (int) (icon.getIconWidth()), (int) (icon.getIconHeight()), this);
             g.fillRect(ww, 0, (int) (icon.getIconWidth()), (int) (icon.getIconHeight()));

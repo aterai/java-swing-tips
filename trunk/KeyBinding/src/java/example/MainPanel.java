@@ -97,7 +97,7 @@ public class MainPanel extends JPanel {
     // modified by terai
 //     private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
 //         Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<Object, ArrayList<KeyStroke>>();
-//         if(im.allKeys()==null) return h;
+//         if(im.allKeys()==null) { return h; }
 //         for(KeyStroke ks:im.allKeys()) {
 //             Object name = im.get(ks);
 //             if(h.containsKey(name)) {
@@ -111,7 +111,7 @@ public class MainPanel extends JPanel {
 //         return h;
 //     }
     private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
-        if(im.allKeys()==null) return;
+        if(im.allKeys()==null) { return; }
         ActionMap tmpAm = new ActionMap();
         for(Object actionMapKey:am.allKeys()) {
             tmpAm.put(actionMapKey, am.get(actionMapKey));
@@ -126,7 +126,7 @@ public class MainPanel extends JPanel {
             }
             tmpAm.remove(actionMapKey);
         }
-        if(tmpAm.allKeys()==null) return;
+        if(tmpAm.allKeys()==null) { return; }
         for(Object actionMapKey:tmpAm.allKeys()) {
             model.addBinding(new Binding(focusType, actionMapKey.toString(), ""));
         }

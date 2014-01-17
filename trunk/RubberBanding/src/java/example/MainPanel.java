@@ -285,7 +285,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
 //     class RubberBandingListener extends MouseInputAdapter {
 //         @Override public void mouseDragged(MouseEvent e) {
 //             setFocusable(true);
-//             if(srcPoint==null) srcPoint = e.getPoint();
+//             if(srcPoint==null) { srcPoint = e.getPoint(); }
 //             Point destPoint = e.getPoint();
 //             polygon.reset();
 //             polygon.addPoint(srcPoint.x,  srcPoint.y);
@@ -336,7 +336,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         if(srcPoint==null) return;
+//         if(srcPoint==null) { return; }
 //         Graphics2D g2d = (Graphics2D) g;
 //         g2d.setPaint(rcolor);
 //         g2d.drawPolygon(polygon);
@@ -404,7 +404,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
 //     class RubberBandingListener extends MouseAdapter {
 //         @Override public void mouseDragged(MouseEvent e) {
 //             setFocusable(true);
-//             if(srcPoint==null) srcPoint = e.getPoint();
+//             if(srcPoint==null) { srcPoint = e.getPoint(); }
 //             Point destPoint = e.getPoint();
 //             polygon.reset();
 //             polygon.moveTo(srcPoint.x,  srcPoint.y);
@@ -450,7 +450,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         if(srcPoint==null) return;
+//         if(srcPoint==null) { return; }
 //         Graphics2D g2d = (Graphics2D) g;
 //         g2d.setPaint(rcolor);
 //         g2d.draw(polygon);

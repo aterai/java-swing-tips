@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         g2.fillRect(0,0,sz,sz);
         for(int i=0;i*cs<sz;i++) {
             for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
             }
         }
         g2.dispose();

@@ -76,7 +76,7 @@ class MyTabbedPane extends JTabbedPane {
     }
     @Override public JToolTip createToolTip() {
         int index = current;
-        if(index<0) return null;
+        if(index<0) { return null; }
 
         final JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder());

@@ -98,7 +98,7 @@ class HighlightListener extends MouseAdapter {
         int prev_col = col;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
-        if(row<0 || col<0) row = col = -1;
+        if(row<0 || col<0) { row = col = -1; }
 // >>>> HyperlinkCellRenderer.java
 // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
         if(row == prev_row && col == prev_col) return;

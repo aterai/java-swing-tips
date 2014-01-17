@@ -73,7 +73,7 @@ class MainPanel extends JPanel {
         box.add(new JLabel("Flip: "));
         for(AbstractAction a:list) {
             JRadioButton rb = new JRadioButton(a);
-            if(bg.getButtonCount()==0) rb.setSelected(true);
+            if(bg.getButtonCount()==0) { rb.setSelected(true); }
             box.add(rb); bg.add(rb);
             box.add(Box.createHorizontalStrut(5));
         }

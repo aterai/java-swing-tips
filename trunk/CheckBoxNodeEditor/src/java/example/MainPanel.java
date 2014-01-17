@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels())
-            //  if("Nimbus".equals(laf.getName())) UIManager.setLookAndFeel(laf.getClassName());
+            //  if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
         }catch(Exception e) {
             e.printStackTrace();
         }
@@ -126,7 +126,7 @@ class CheckBoxNode {
 class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting = false;
     @Override public void treeNodesChanged(TreeModelEvent e) {
-        if(adjusting) return;
+        if(adjusting) { return; }
         adjusting = true;
         TreePath parent = e.getTreePath();
         Object[] children = e.getChildren();
@@ -168,7 +168,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
                 indeterminateCount++;
                 break;
             }
-            if(check.status==Status.SELECTED) selectedCount++;
+            if(check.status==Status.SELECTED) { selectedCount++; }
         }
         if(indeterminateCount>0) {
             parent.setUserObject(new CheckBoxNode(label));
@@ -304,7 +304,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             JTree tree = (JTree)e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if(r==null) return false;
+            if(r==null) { return false; }
             Dimension d = getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if(r.contains(me.getX(), me.getY())) {
@@ -362,7 +362,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -375,7 +375,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }
@@ -489,7 +489,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
             JTree tree = (JTree)e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if(r==null) return false;
+            if(r==null) { return false; }
             Dimension d = check.getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if(r.contains(me.getX(), me.getY())) {
@@ -547,7 +547,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -560,7 +560,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }

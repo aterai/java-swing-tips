@@ -96,7 +96,7 @@ class SplitPaneWrapper extends JPanel {
         int size = getOrientedSize(sp);
         final double proportionalLocation = sp.getDividerLocation()/(double)size;
         super.doLayout();
-        if(!flag) return;
+        if(!flag) { return; }
         int state = ((Frame)SwingUtilities.getWindowAncestor(sp)).getExtendedState();
         if(sp.isShowing() && state!=prev_state) {
             EventQueue.invokeLater(new Runnable() {

@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
                     //window.pack();
                     window.setLocation(getToolTipLocation(me));
                 }else{
-                    if(popup!=null) popup.hide();
+                    if(popup!=null) { popup.hide(); }
                     tip.setTipText(String.format("Popup(x,y)=(%d,%d)", p.x, p.y));
                     p = getToolTipLocation(me);
                     popup = factory.getPopup(c, tip, p.x, p.y);
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
                 }
             }
             @Override public void mouseReleased(MouseEvent me) {
-                if(popup!=null) popup.hide();
+                if(popup!=null) { popup.hide(); }
                 window.setVisible(false);
             }
         };

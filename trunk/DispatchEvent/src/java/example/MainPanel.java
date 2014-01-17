@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
 //             @Override protected void dispatchEvent(AWTEvent e) {
 //                 super.dispatchEvent(e);
 //                 if(e instanceof InputEvent) {
-//                     if(timer!=null && timer.isRunning()) timer.restart();
+//                     if(timer!=null && timer.isRunning()) { timer.restart(); }
 //                 }
 //             }
 //         };

@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override public boolean accept(File file) {
-                if(file.isDirectory()) return true;
+                if(file.isDirectory()) { return true; }
                 if(file.getName().toLowerCase().endsWith(".png")) return true;
                 return false;
             }
@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         });
         fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override public boolean accept(File file) {
-                if(file.isDirectory()) return true;
+                if(file.isDirectory()) { return true; }
                 if(file.getName().toLowerCase().endsWith(".jpg")) return true;
                 return false;
             }

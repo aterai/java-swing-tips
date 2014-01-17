@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
             private ChangeListener changeListener = null;
             @Override public void updateUI() {
                 removeAll();
-                if(changeListener!=null) removeChangeListener(changeListener);
+                if(changeListener!=null) { removeChangeListener(changeListener); }
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
@@ -65,7 +65,7 @@ public class MainPanel extends JPanel {
         box.add(new JButton(new AbstractAction("Test") {
             SwingWorker<String, Void> worker;
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) worker.cancel(true);
+                if(worker!=null && !worker.isDone()) { worker.cancel(true); }
                 worker = new SwingWorker<String, Void>() {
                     @Override public String doInBackground() {
                         int current = 0;

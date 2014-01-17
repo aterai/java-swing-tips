@@ -30,7 +30,7 @@ class MainPanel extends JPanel {
         Enumeration e = root.breadthFirstEnumeration();
         while(e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-            if(node.isLeaf()) continue;
+            if(node.isLeaf()) { continue; }
             int row = tree.getRowForPath(new TreePath(node.getPath()));
             tree.expandRow(row);
         }

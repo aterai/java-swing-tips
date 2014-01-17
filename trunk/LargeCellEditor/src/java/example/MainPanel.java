@@ -143,7 +143,7 @@ class IconTable extends JTable {
             setOpaque(false);
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if(rect==null || rect.contains(me.getPoint())) return;
+                    if(rect==null || rect.contains(me.getPoint())) { return; }
                     changeValue(me.getPoint());
                 }
             });

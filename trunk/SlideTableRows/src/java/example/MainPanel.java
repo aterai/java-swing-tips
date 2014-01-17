@@ -40,7 +40,9 @@ public class MainPanel extends JPanel {
         //table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(START_HEIGHT);
-        for(int i=0;i<model.getRowCount();i++) table.setRowHeight(i, END_HEIGHT);
+        for(int i=0;i<model.getRowCount();i++) {
+            table.setRowHeight(i, END_HEIGHT);
+        }
 
         JScrollPane scroll = new JScrollPane(table);
         scroll.setComponentPopupMenu(new TablePopupMenu());
@@ -76,7 +78,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             final int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) return;
+            if(selection==null || selection.length<=0) { return; }
             (new Timer(DELAY, new ActionListener() {
                 int h = END_HEIGHT;
                 @Override public void actionPerformed(ActionEvent e) {
@@ -98,7 +100,7 @@ public class MainPanel extends JPanel {
 
 //     public void xxx_deleteActionPerformed(ActionEvent evt) {
 //         final int[] selection = table.getSelectedRows();
-//         if(selection==null || selection.length<=0) return;
+//         if(selection==null || selection.length<=0) { return; }
 //         (new SwingWorker<Void, Integer>() {
 //             @Override public Void doInBackground() {
 //                 int current = END_HEIGHT;

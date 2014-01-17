@@ -437,7 +437,7 @@ public class TableSorter extends AbstractTableModel {
             TableColumnModel columnModel = h.getColumnModel();
             int viewColumn = columnModel.getColumnIndexAtX(e.getX());
             // ArrayIndexOutOfBoundsException: -1
-            if(viewColumn<0) return;
+            if(viewColumn<0) { return; }
             int column = columnModel.getColumn(viewColumn).getModelIndex();
             if(column != -1) {
                 JTable t = h.getTable();
@@ -467,7 +467,7 @@ public class TableSorter extends AbstractTableModel {
             return list;
         }
         private void loadSelectedRow(JTable table, List<?> list, int keyColIndex) {
-            if(list==null || list.size()<=0) return;
+            if(list==null || list.size()<=0) { return; }
             for(int i=0;i<tableModel.getRowCount();i++) {
                 if(list.contains(tableModel.getValueAt(modelIndex(i), keyColIndex))) {
                     table.getSelectionModel().addSelectionInterval(i, i);

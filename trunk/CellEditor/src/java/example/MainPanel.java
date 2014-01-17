@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
             private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
             @Override public void actionPerformed(ActionEvent e) {
                 table.clearSelection();
-                if(table.isEditing()) table.getCellEditor().stopCellEditing();
+                if(table.isEditing()) { table.getCellEditor().stopCellEditing(); }
                 table.setDefaultEditor(Object.class, objectCheck.isSelected()?null:dce);
                 table.setEnabled(!editableCheck.isSelected());
             }

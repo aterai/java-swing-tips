@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         String comment = "#comment\n";
         for(int i=0;i<200;i++) {
             sb.append(dummy);
-            if(i%16==0) sb.append(comment);
+            if(i%16==0) { sb.append(comment); }
         }
         textArea.setText(sb.toString());
         scroll.setRowHeaderView(new LineNumberView(textArea));

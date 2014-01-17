@@ -114,7 +114,7 @@ class JustifiedLabel extends JLabel {
         Rectangle2D r = gv.getVisualBounds();
         float jwidth = (float)getWidth();
         float vwidth = (float)r.getWidth();
-        if(jwidth<vwidth) return gv;
+        if(jwidth<vwidth) { return gv; }
 
         float xx = (jwidth-vwidth) / (float)(gv.getNumGlyphs()-1);
         float xpos = 0.0f;

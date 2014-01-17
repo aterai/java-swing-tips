@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
 //                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
 //                     Point p = SwingUtilities.convertPoint(t, pt, c);
 //                     Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-//                     if(b instanceof JRadioButton) ((JRadioButton)b).doClick();
+//                     if(b instanceof JRadioButton) { ((JRadioButton)b).doClick(); }
 //                 }
 //             }
 //         });
@@ -135,7 +135,9 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
                 fireEditingStopped();
             }
         };
-        for(AbstractButton b: buttons) b.addActionListener(al);
+        for(AbstractButton b: buttons) {
+            b.addActionListener(al);
+        }
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         updateSelectedButton(value);
@@ -179,7 +181,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -192,10 +194,11 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) changeEvent = new ChangeEvent(this);
+                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }
     }
 }
+
 enum Answer {A, B, C}

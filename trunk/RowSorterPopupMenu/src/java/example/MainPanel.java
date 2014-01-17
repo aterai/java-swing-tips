@@ -59,13 +59,17 @@ public class MainPanel extends JPanel {
             //new SortAction(SortOrder.UNSORTED));
         public TablePopupMenu() {
             super();
-            for(Action a:actions) add(a);
+            for(Action a:actions) {
+                add(a);
+            }
         }
         @Override public void show(Component c, int x, int y) {
             JTableHeader h = (JTableHeader)c;
             int i = h.columnAtPoint(new Point(x, y));
             i = h.getTable().convertColumnIndexToModel(i);
-            for(SortAction a:actions) a.setIndex(i);
+            for(SortAction a:actions) {
+                a.setIndex(i);
+            }
             super.show(c, x, y);
         }
     }

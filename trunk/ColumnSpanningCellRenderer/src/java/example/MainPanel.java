@@ -128,7 +128,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         }
         textArea.scrollRectToVisible(cr);
 /*/
-        if(column!=0) cr.x -= iconLabel.getPreferredSize().width;
+        if(column!=0) { cr.x -= iconLabel.getPreferredSize().width; }
         scroll.getViewport().setViewPosition(cr.getLocation());
 //*/
         if(isSelected) {

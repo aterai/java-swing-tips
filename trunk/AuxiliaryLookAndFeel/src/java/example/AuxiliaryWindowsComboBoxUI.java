@@ -61,7 +61,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         handler2 = null;
     }
     @Override protected MouseListener createListMouseListener() {
-        if(handler2==null) handler2 = new Handler2();
+        if(handler2==null) { handler2 = new Handler2(); }
         return handler2;
     }
     private class Handler2 implements MouseListener {
@@ -73,7 +73,7 @@ class BasicComboPopup2 extends BasicComboPopup {
             if(e.getSource() == list) {
                 if(list.getModel().getSize() > 0) {
                     // <ins>
-                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) return;
+                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) { return; }
                     // </ins>
                     // JList mouse listener
                     if(comboBox.getSelectedIndex() == list.getSelectedIndex()) {

@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
             //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
             @Override public boolean getScrollableTracksViewportWidth() {
                 Component p = getParent();
-                if(p==null) return true;
+                if(p==null) { return true; }
                 int ewidth = getUI().getPreferredSize(this).width;
                 return ewidth<=p.getSize().width;
             }

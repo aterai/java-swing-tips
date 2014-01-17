@@ -99,7 +99,9 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
                     Object v = column.getHeaderValue();
                     boolean b = Status.DESELECTED.equals(v)?true:false;
                     TableModel m = table.getModel();
-                    for(int i=0; i<m.getRowCount(); i++) m.setValueAt(b, i, mci);
+                    for(int i=0; i<m.getRowCount(); i++) {
+                        m.setValueAt(b, i, mci);
+                    }
                     column.setHeaderValue(b?Status.SELECTED:Status.DESELECTED);
                     //header.repaint();
                 }
@@ -162,7 +164,7 @@ class HeaderCheckBoxHandler implements TableModelListener {
                 for(int i=0; i<m.getRowCount(); i++) {
                     Boolean b = (Boolean)m.getValueAt(i, targetColumnIndex);
                     selected &= b; deselected &= !b;
-                    if(selected==deselected) return;
+                    if(selected==deselected) { return; }
                 }
                 if(selected) {
                     column.setHeaderValue(Status.SELECTED);

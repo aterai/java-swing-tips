@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
         }
         recursiveUpdateUI(this); //SwingUtilities.updateComponentTreeUI(this);
         Container c = getTopLevelAncestor();
-        if(c!=null && c instanceof Window) ((Window)c).pack();
+        if(c!=null && c instanceof Window) { ((Window)c).pack(); }
     }
     private void recursiveUpdateUI(JComponent p) {
         for(Component c: p.getComponents()) {
@@ -53,7 +53,7 @@ public class MainPanel extends JPanel {
             }else if(c instanceof JComponent) {
                 JComponent jc = (JComponent)c;
                 jc.updateUI();
-                if(jc.getComponentCount()>0) recursiveUpdateUI(jc);
+                if(jc.getComponentCount()>0) { recursiveUpdateUI(jc); }
             }
         }
     }

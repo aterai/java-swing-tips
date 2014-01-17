@@ -39,7 +39,7 @@ public class MainPanel extends JPanel {
 //         combo.addItemListener(new ItemListener() {
 //             private boolean adj = false;
 //             @Override public void itemStateChanged(ItemEvent e) {
-//             //    if(combo.isPopupVisible()) return;
+//             //    if(combo.isPopupVisible()) { return; }
 //                 if(!adj && e.getStateChange()==ItemEvent.SELECTED) {
 //                     adj = true;
 //                     searchActionPerformed();
@@ -66,7 +66,7 @@ public class MainPanel extends JPanel {
     }
     @SuppressWarnings("unchecked")
     public static boolean addItem(JComboBox combo, String str, int max) {
-        //if(str==null || str.trim().length()==0) return false;
+        //if(str==null || str.trim().length()==0) { return false; }
         if(str==null || str.length()==0) return false;
         combo.setVisible(false);
         DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();

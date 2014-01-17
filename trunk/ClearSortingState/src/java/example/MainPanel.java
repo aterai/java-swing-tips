@@ -26,13 +26,13 @@ public class MainPanel extends JPanel {
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 final RowSorter<? extends TableModel> sorter = table.getRowSorter();
-                if(sorter==null || sorter.getSortKeys().size()==0) return;
+                if(sorter==null || sorter.getSortKeys().size()==0) { return; }
 
                 JTableHeader h = (JTableHeader)e.getComponent();
                 TableColumnModel columnModel = h.getColumnModel();
                 int viewColumn = columnModel.getColumnIndexAtX(e.getX());
                 // ArrayIndexOutOfBoundsException: -1
-                if(viewColumn<0) return;
+                if(viewColumn<0) { return; }
                 int column = columnModel.getColumn(viewColumn).getModelIndex();
 
                 if(column != -1 && e.isShiftDown()) {

@@ -106,7 +106,7 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void actionPerformed(ActionEvent e) {
                 JTree tree = (JTree)getInvoker();
                 DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-                //if(path==null) return;
+                //if(path==null) { return; }
                 Object node = path.getLastPathComponent();
                 if(node instanceof DefaultMutableTreeNode) {
                     DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)node;

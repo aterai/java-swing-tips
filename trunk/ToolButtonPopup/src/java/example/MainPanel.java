@@ -92,7 +92,7 @@ class MenuToggleButton extends JToggleButton {
         Action a = new AbstractAction(text) {
             @Override public void actionPerformed(ActionEvent ae) {
                 MenuToggleButton b = (MenuToggleButton)ae.getSource();
-                if(pop!=null) pop.show(b, 0, b.getHeight());
+                if(pop!=null) { pop.show(b, 0, b.getHeight()); }
             }
         };
         a.putValue(Action.SMALL_ICON, icon);

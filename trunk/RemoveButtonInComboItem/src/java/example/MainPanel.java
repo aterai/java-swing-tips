@@ -42,7 +42,7 @@ public class MainPanel extends JPanel {
         JComboBox comboBox = new JComboBox(m) {
             @Override public void updateUI() {
                 super.updateUI();
-                if(isDefault) return;
+                if(isDefault) { return; }
                 setRenderer(new ButtonsRenderer(this));
                 Accessible a = getAccessibleContext().getAccessibleChild(0);
                 if(a instanceof BasicComboPopup) {

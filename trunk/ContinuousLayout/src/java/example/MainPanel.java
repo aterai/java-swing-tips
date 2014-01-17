@@ -34,8 +34,9 @@ public class MainPanel extends JPanel {
                     JSplitPane source = (JSplitPane)e.getSource();
                     int location = ((Integer)e.getNewValue()).intValue();
                     JSplitPane target = (source==leftPane)?rightPane:leftPane;
-                    if(location != target.getDividerLocation())
-                      target.setDividerLocation(location);
+                    if(location != target.getDividerLocation()) {
+                        target.setDividerLocation(location);
+                    }
                 }
             }
         };

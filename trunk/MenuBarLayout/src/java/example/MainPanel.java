@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
             @Override public Dimension preferredLayoutSize(Container target) {
                 synchronized (target.getTreeLock()) {
                     int targetWidth = target.getSize().width;
-                    if(targetWidth == 0) targetWidth = Integer.MAX_VALUE;
+                    if(targetWidth == 0) { targetWidth = Integer.MAX_VALUE; }
                     Insets insets = target.getInsets();
                     int hgap = getHgap();
                     int vgap = getVgap();

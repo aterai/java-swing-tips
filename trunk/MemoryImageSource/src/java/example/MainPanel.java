@@ -62,7 +62,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         g2.fillRect(0,0,sz,sz);
         for(int i=0; i*cs<sz; i++) {
             for(int j=0; j*cs<sz; j++) {
-                if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
             }
         }
         g2.dispose();
@@ -96,7 +96,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         double yStart = startPoint.y;
         for(int i=0; i<delta; i++) {
             Point p = new Point((int)xStart, (int)yStart);
-            if(p.x<0 || p.y<0 || p.x>=320 || p.y>=240) break;
+            if(p.x<0 || p.y<0 || p.x>=320 || p.y>=240) { break; }
             pixels[p.x + p.y * 320] = penc;
             for(int n=-1;n<=1;n++) {
                 for(int m=-1;m<=1;m++) {
@@ -151,7 +151,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         g2.fillRect(0,0,sz,sz);
 //         for(int i=0; i*cs<sz; i++) {
 //             for(int j=0; j*cs<sz; j++) {
-//                 if((i+j)%2==0) g2.fillRect(i*cs, j*cs, cs, cs);
+//                 if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
 //             }
 //         }
 //         g2.dispose();

@@ -152,7 +152,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         int endOffset     = root.getElement(line).getEndOffset() - 1;
         int lineLength    = endOffset - startOffset;
         int contentLength = content.length();
-        if(endOffset >= contentLength) endOffset = contentLength - 1;
+        if(endOffset >= contentLength) { endOffset = contentLength - 1; }
         setCharacterAttributes(startOffset, lineLength, normal, true);
         checkForTokens(content, startOffset, endOffset);
     }

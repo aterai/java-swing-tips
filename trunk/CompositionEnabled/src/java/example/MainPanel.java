@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
             protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
                 //System.out.println("key: "+ks.toString());
                 boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
-                if(!check.isSelected()) return retValue;
+                if(!check.isSelected()) { return retValue; }
                 if(KeyStroke.getKeyStroke('\t').equals(ks) || KeyStroke.getKeyStroke('\n').equals(ks)) {
                     System.out.println("tab or enter typed");
                     return retValue;

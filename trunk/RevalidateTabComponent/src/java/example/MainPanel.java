@@ -89,7 +89,7 @@ class ButtonTabComponent extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            if(i != -1) pane.remove(i);
+            if(i != -1) { pane.remove(i); }
         }
         @Override public void updateUI() {}
         @Override protected void paintComponent(Graphics g) {

@@ -22,7 +22,7 @@ class MainPanel extends JPanel {
         viewport = new JViewport() {
             private boolean flag = false;
             @Override public void revalidate() {
-                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) return;
+                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) { return; }
                 super.revalidate();
             }
             @Override public void setViewPosition(Point p) {
@@ -184,11 +184,11 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                 if(Math.abs(delta.x)>0 || Math.abs(delta.y)>0) {
                     delta.setLocation((int)(delta.x*D), (int)(delta.y*D));
                     //Outside
-                    if(vp.x<0 || vp.x+vport.getWidth()-label.getWidth()>0  ) delta.x = (int)(delta.x*D);
-                    if(vp.y<0 || vp.y+vport.getHeight()-label.getHeight()>0) delta.y = (int)(delta.y*D);
+                    if(vp.x<0 || vp.x+vport.getWidth()-label.getWidth()>0  ) { delta.x = (int)(delta.x*D); }
+                    if(vp.y<0 || vp.y+vport.getHeight()-label.getHeight()>0) { delta.y = (int)(delta.y*D); }
                 }else{
                     inside.stop();
-                    if(!isInside(vport, label)) outside.start();
+                    if(!isInside(vport, label)) { outside.start(); }
                 }
             }
         });
@@ -197,14 +197,16 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                 JViewport vport = (JViewport)label.getParent();
                 Point vp = vport.getViewPosition();
                 //System.out.format("r: %s%n", vp);
-                if(vp.x<0) vp.x = (int)(vp.x*D);
-                if(vp.y<0) vp.y = (int)(vp.y*D);
-                if(vp.x+vport.getWidth()-label.getWidth()>0)
-                  vp.x = (int) (vp.x - (vp.x+vport.getWidth()-label.getWidth())*(1.0-D));
-                if(vp.y+vport.getHeight()>label.getHeight())
-                  vp.y = (int) (vp.y - (vp.y+vport.getHeight()-label.getHeight())*(1.0-D));
+                if(vp.x<0) { vp.x = (int)(vp.x*D); }
+                if(vp.y<0) { vp.y = (int)(vp.y*D); }
+                if(vp.x+vport.getWidth()-label.getWidth()>0) {
+                    vp.x = (int) (vp.x - (vp.x+vport.getWidth()-label.getWidth())*(1.0-D));
+                }
+                if(vp.y+vport.getHeight()>label.getHeight()) {
+                    vp.y = (int) (vp.y - (vp.y+vport.getHeight()-label.getHeight())*(1.0-D));
+                }
                 vport.setViewPosition(vp);
-                if(isInside(vport, label)) outside.stop();
+                if(isInside(vport, label)) { outside.stop(); }
             }
         });
     }

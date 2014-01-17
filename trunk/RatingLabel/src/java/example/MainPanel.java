@@ -35,8 +35,9 @@ class MainPanel extends JPanel {
             makeStarImageIcon(ip, new float[]{1.0f,0.1f,0.1f}));
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1) {
             @Override protected void repaintIcon(int index) {
-                for(int i=0;i<labelList.size();i++)
-                  labelList.get(i).setIcon(i<=index?iconList.get(index):defaultIcon);
+                for(int i=0;i<labelList.size();i++) {
+                    labelList.get(i).setIcon(i<=index ? iconList.get(index) : defaultIcon);
+                }
                 repaint();
             }
         }));
@@ -128,7 +129,7 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
         for(int i=0;i<labelList.size();i++) {
             Rectangle r = labelList.get(i).getBounds();
             r.grow(gap, gap);
-            if(r.contains(p)) return i;
+            if(r.contains(p)) { return i; }
         }
         return -1;
     }

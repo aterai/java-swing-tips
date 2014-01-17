@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("show") {
             @Override public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showConfirmDialog(frame, textField, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION) textArea.setText(textField.getText());
+                if(result==JOptionPane.OK_OPTION) { textArea.setText(textField.getText()); }
             }
         }));
         return p;
@@ -78,7 +78,7 @@ public class MainPanel extends JPanel {
                 if(selectedValue != null && selectedValue instanceof Integer) {
                     result = ((Integer)selectedValue).intValue();
                 }
-                if(result==JOptionPane.OK_OPTION) textArea.setText(textField.getText());
+                if(result==JOptionPane.OK_OPTION) { textArea.setText(textField.getText()); }
             }
         }));
         return p;

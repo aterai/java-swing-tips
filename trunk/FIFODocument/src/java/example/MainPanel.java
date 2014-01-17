@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
             @Override public void insertUpdate(DocumentEvent e) {
                 final Document doc = jta.getDocument();
                 final Element root = doc.getDefaultRootElement();
-                if(root.getElementCount()<=MAX_LINES) return;
+                if(root.getElementCount()<=MAX_LINES) { return; }
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         removeLines(doc, root);
