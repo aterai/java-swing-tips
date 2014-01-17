@@ -30,11 +30,15 @@ public final class BarFactory {
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
                 //http://docs.oracle.com/javase/jp/7/api/java/util/ResourceBundle.Control.html
                 @Override public List<String> getFormats(String baseName) {
-                    if(baseName == null) throw new NullPointerException();
+                    if(baseName == null) {
+                        throw new IllegalArgumentException("parameter cannot be null");
+                    }
                     return Arrays.asList("properties");
                 }
                 @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-                    if(baseName == null || locale == null || format == null || loader == null) throw new NullPointerException();
+                    if(baseName == null || locale == null || format == null || loader == null) {
+                        throw new IllegalArgumentException("parameter cannot be null");
+                    }
                     ResourceBundle bundle = null;
                     if(format.equals("properties")) {
                         String bundleName = toBundleName(baseName, locale);
@@ -121,7 +125,9 @@ public final class BarFactory {
 
     public JToolBar createToolbar() {
         String tmp = getResourceString("toolbar");
-        if(tmp==null) return null;
+        if(tmp==null) {
+            return null;
+        }
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);

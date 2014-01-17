@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -13,7 +14,7 @@ public class MainPanel extends JPanel {
         String[] array = {
             "aaaa", "aaaabbb", "aaaabbbcc", "aaaabbbccddd",
             "abcde", "abefg", "bbb1", "bbb12"};
-        JComboBox combo = makeComboBox(array);
+        JComboBox<String> combo = makeComboBox(array);
         combo.setEditable(true);
         combo.setSelectedIndex(-1);
         JTextField field = (JTextField)combo.getEditor().getEditorComponent();
@@ -47,9 +48,8 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 180));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Object[] model) {
-        return new JComboBox(model);
+    private static JComboBox<String> makeComboBox(String[] model) {
+        return new JComboBox<String>(model);
 //         //Test: Remove ArrowButtn(look like a JTextField)
 //         //UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 //         return new JComboBox(model) {
@@ -135,14 +135,13 @@ public class MainPanel extends JPanel {
     }
 }
 
-@SuppressWarnings("unchecked")
 class ComboKeyHandler extends KeyAdapter {
-    private final JComboBox comboBox;
-    private final Vector<String> list = new Vector<>();
-    public ComboKeyHandler(JComboBox combo) {
+    private final JComboBox<String> comboBox;
+    private final List<String> list = new ArrayList<>();
+    public ComboKeyHandler(JComboBox<String> combo) {
         this.comboBox = combo;
         for(int i=0;i<comboBox.getModel().getSize();i++) {
-            list.addElement((String)comboBox.getItemAt(i));
+            list.add((String)comboBox.getItemAt(i));
         }
     }
     private boolean shouldHide = false;
@@ -150,11 +149,14 @@ class ComboKeyHandler extends KeyAdapter {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 String text = ((JTextField)e.getSource()).getText();
+                ComboBoxModel<String> m;
                 if(text.length()==0) {
-                    setSuggestionModel(comboBox, new DefaultComboBoxModel(list), "");
+                    String[] array = list.toArray(new String[0]);
+                    m = new DefaultComboBoxModel<String>(array);
+                    setSuggestionModel(comboBox, m, "");
                     comboBox.hidePopup();
                 }else{
-                    ComboBoxModel m = getSuggestedModel(list, text);
+                    m = getSuggestedModel(list, text);
                     if(m.getSize()==0 || shouldHide) {
                         comboBox.hidePopup();
                     }else{
@@ -180,7 +182,7 @@ class ComboKeyHandler extends KeyAdapter {
             break;
           case KeyEvent.VK_ENTER:
             if(!list.contains(text)) {
-                list.addElement(text);
+                list.add(text);
                 Collections.sort(list);
                 //setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
                 setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
@@ -194,15 +196,17 @@ class ComboKeyHandler extends KeyAdapter {
             break;
         }
     }
-    private static void setSuggestionModel(JComboBox comboBox, ComboBoxModel mdl, String str) {
+    private static void setSuggestionModel(JComboBox<String> comboBox, ComboBoxModel<String> mdl, String str) {
         comboBox.setModel(mdl);
         comboBox.setSelectedIndex(-1);
         ((JTextField)comboBox.getEditor().getEditorComponent()).setText(str);
     }
-    private static ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
-        DefaultComboBoxModel m = new DefaultComboBoxModel();
+    private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {
+        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
         for(String s: list) {
-            if(s.startsWith(text)) m.addElement(s);
+            if(s.startsWith(text)) {
+                m.addElement(s);
+            }
         }
         return m;
     }
