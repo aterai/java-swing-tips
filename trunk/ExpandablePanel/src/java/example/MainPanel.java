@@ -73,7 +73,9 @@ public class MainPanel extends JPanel {
                 public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-                    for(int i=0;i<16;i++) p.add(new JLabel(String.format("%02d", i)));
+                    for(int i=0;i<16;i++) {
+                        p.add(new JLabel(String.format("%02d", i)));
+                    }
                     return p;
                 }
             },
@@ -201,5 +203,5 @@ class ExpansionEvent extends EventObject {
 }
 
 interface ExpansionListener extends EventListener {
-    public void expansionStateChanged(ExpansionEvent e);
+    void expansionStateChanged(ExpansionEvent e);
 }

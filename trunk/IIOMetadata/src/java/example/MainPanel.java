@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-//import java.util.List;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.imageio.*;
@@ -110,7 +110,7 @@ class MainPanel extends JPanel {
 class XMLTreeNode implements TreeNode {
     private Node xmlNode;
     private XMLTreeNode parent;
-    private ArrayList<XMLTreeNode> children;
+    private List<XMLTreeNode> children;
     private Boolean showAttributes;
     public XMLTreeNode(Node xmlNode) {
         this.xmlNode = xmlNode;

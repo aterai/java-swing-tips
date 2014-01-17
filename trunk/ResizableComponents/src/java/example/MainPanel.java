@@ -157,7 +157,9 @@ class JResizer extends JComponent { // implements Serializable {
         }
         // %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
         @Override public void mouseDragged(MouseEvent e) {
-            if(startPos==null || startingBounds==null) return;
+            if(startPos==null || startingBounds==null) {
+                return;
+            }
             Point p = SwingUtilities.convertPoint((Component)e.getSource(), e.getX(), e.getY(), null);
             int deltaX = startPos.x - p.x;
             int deltaY = startPos.y - p.y;
@@ -334,7 +336,7 @@ class JResizer extends JComponent { // implements Serializable {
 //Resizable Components - Santhosh Kumar's Weblog
 //http://www.jroller.com/santhosh/entry/resizable_components
 interface ResizableBorder extends Border {
-    public int getResizeCursor(MouseEvent e);
+    int getResizeCursor(MouseEvent e);
 }
 
 class DefaultResizableBorder implements ResizableBorder, SwingConstants {
@@ -411,7 +413,9 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
         Point pt = e.getPoint();
 
         Rectangle bounds = new Rectangle(0, 0, w, h);
-        if(!bounds.contains(pt)) return Cursor.DEFAULT_CURSOR;
+        if(!bounds.contains(pt)) {
+            return Cursor.DEFAULT_CURSOR;
+        }
 
         Rectangle actualBounds = new Rectangle(dist, dist, w-2*dist, h-2*dist);
         if(actualBounds.contains(pt)) {
@@ -419,7 +423,9 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
         }
         for(int i=0; i<locations.length-2; i++) {
             Rectangle r = getRectangle(0, 0, w, h, locations[i]);
-            if(r.contains(pt)) return cursors[i];
+            if(r.contains(pt)) {
+                return cursors[i];
+            }
         }
         return Cursor.MOVE_CURSOR;
     }

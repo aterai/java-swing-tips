@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import java.io.*;
 import javax.swing.*;
 
@@ -12,7 +13,7 @@ public class MainPanel extends JPanel {
     private final BarFactory barFactory;
     private final JFrame frame;
 
-    private ArrayList<String> fh = new ArrayList<String>();
+    private List<String> fh = new ArrayList<>();
     private JMenuItem noFile = new JMenuItem("なし");
     private JMenu fileHistory;
 

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import javax.imageio.*;
 import javax.imageio.stream.*;
 import javax.swing.*;
@@ -34,7 +35,7 @@ class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     // https://forums.oracle.com/thread/1271862 Reading gif animation frame rates and such?
-    private ArrayList<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
+    private List<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
         ImageReader reader = null;
         Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
         while(readers.hasNext()) {
@@ -51,7 +52,7 @@ class MainPanel extends JPanel {
         }
         boolean isGif = reader.getFormatName().equalsIgnoreCase("gif");
         reader.setInput(imageStream, false, !isGif);
-        ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
+        List<BufferedImage> list = new ArrayList<BufferedImage>();
         for(int i=0;i<reader.getNumImages(true);i++) {
             IIOImage frame = reader.readAll(i, null);
             list.add((BufferedImage)frame.getRenderedImage());

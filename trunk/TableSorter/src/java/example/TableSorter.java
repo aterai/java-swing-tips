@@ -440,8 +440,8 @@ public class TableSorter extends AbstractTableModel {
             if(viewColumn<0) return;
             int column = columnModel.getColumn(viewColumn).getModelIndex();
             if(column != -1) {
+                JTable t = h.getTable();
                 int keyCol = 0;
-                ArrayList list = saveSelectedRow(h.getTable(), keyCol);
                 int status = getSortingStatus(column);
                 if(!e.isControlDown()) {
                     cancelSorting();
@@ -452,11 +452,11 @@ public class TableSorter extends AbstractTableModel {
                 status = status + d;
                 status = (status + 4) % 3 - 1; // signed mod, returning {-1, 0, 1}
                 setSortingStatus(column, status);
-                loadSelectedRow(h.getTable(), list, keyCol);
+                loadSelectedRow(t, saveSelectedRow(t, keyCol), keyCol);
             }
         }
-        private ArrayList saveSelectedRow(JTable table, int keyColIndex) {
-            ArrayList<Object> list = new ArrayList<Object>();
+        private List saveSelectedRow(JTable table, int keyColIndex) {
+            List<Object> list = new ArrayList<>();
             int[] ilist = table.getSelectedRows();
             if(ilist!=null && ilist.length>0) {
                 DefaultTableModel model = (DefaultTableModel)tableModel;
@@ -466,7 +466,7 @@ public class TableSorter extends AbstractTableModel {
             }
             return list;
         }
-        private void loadSelectedRow(JTable table, ArrayList list, int keyColIndex) {
+        private void loadSelectedRow(JTable table, List<?> list, int keyColIndex) {
             if(list==null || list.size()<=0) return;
             for(int i=0;i<tableModel.getRowCount();i++) {
                 if(list.contains(tableModel.getValueAt(modelIndex(i), keyColIndex))) {

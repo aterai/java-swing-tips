@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
         combo.setModel(model);
         return combo;
     }
-    private HashSet<Integer> getDisableIndexFromTextField() {
+    private Set<Integer> getDisableIndexFromTextField() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         HashSet<Integer> set = new HashSet<Integer>();
         try{
@@ -129,9 +129,9 @@ class MyComboBox extends JComboBox {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
     }
-    private final HashSet<Integer> disableIndexSet = new HashSet<Integer>();
+    private final Set<Integer> disableIndexSet = new HashSet<Integer>();
     private boolean isDisableIndex = false;
-    public void setDisableIndex(HashSet<Integer> set) {
+    public void setDisableIndex(Set<Integer> set) {
         disableIndexSet.clear();
         for(Integer i:set) {
             disableIndexSet.add(i);

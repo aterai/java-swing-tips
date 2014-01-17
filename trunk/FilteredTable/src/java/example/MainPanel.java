@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -122,7 +123,7 @@ class TestModel extends DefaultTableModel {
             this.isEditable = isEditable;
         }
     }
-    private final ArrayList<Test> list = new ArrayList<Test>();
+    private final List<Test> list = new ArrayList<>();
     public void filterRows(boolean flg) {
         //dataVector.clear();
         setRowCount(0);

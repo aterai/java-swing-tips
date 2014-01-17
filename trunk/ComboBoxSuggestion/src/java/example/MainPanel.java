@@ -138,7 +138,7 @@ public class MainPanel extends JPanel {
 @SuppressWarnings("unchecked")
 class ComboKeyHandler extends KeyAdapter {
     private final JComboBox comboBox;
-    private final Vector<String> list = new Vector<String>();
+    private final Vector<String> list = new Vector<>();
     public ComboKeyHandler(JComboBox combo) {
         this.comboBox = combo;
         for(int i=0;i<comboBox.getModel().getSize();i++) {

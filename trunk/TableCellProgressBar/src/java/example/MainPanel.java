@@ -123,7 +123,9 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) return;
+            if(selection==null || selection.length<=0) {
+                return;
+            }
             for(int i=0;i<selection.length;i++) {
                 int midx = table.convertRowIndexToModel(selection[i]);
                 SwingWorker worker = model.getSwingWorker(midx);
@@ -144,10 +146,12 @@ public class MainPanel extends JPanel {
             deleteActionPerformed(evt);
         }
     }
-    private final TreeSet<Integer> deleteRowSet = new TreeSet<Integer>();
+    private final Set<Integer> deleteRowSet = new TreeSet<>();
     public synchronized void deleteActionPerformed(ActionEvent evt) {
         int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) return;
+        if(selection==null || selection.length<=0) {
+            return;
+        }
         for(int i=0;i<selection.length;i++) {
             int midx = table.convertRowIndexToModel(selection[i]);
             deleteRowSet.add(midx);
@@ -301,6 +305,8 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if(p!=null) SwingUtilities.updateComponentTreeUI(p);
+        if(p!=null) {
+            SwingUtilities.updateComponentTreeUI(p);
+        }
     }
 }

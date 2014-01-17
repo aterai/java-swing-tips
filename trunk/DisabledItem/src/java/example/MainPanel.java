@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final HashSet<Integer> disableIndexSet = new HashSet<Integer>();
+    private final Set<Integer> disableIndexSet = new HashSet<>();
     private final JTextField field = new JTextField("1,2,5");
     private final JList list = makeList(disableIndexSet);
 
@@ -57,7 +57,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
 
-    private static JList makeList(final HashSet<Integer> disableIndexSet) {
+    private static JList makeList(final Set<Integer> disableIndexSet) {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("bbbbbbbbbbbbbbbbbb");
@@ -90,7 +90,7 @@ public class MainPanel extends JPanel {
 
         return list;
     }
-    private void initDisableIndex(HashSet<Integer> set) {
+    private void initDisableIndex(Set<Integer> set) {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         set.clear();
         try{

@@ -4,7 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -35,7 +36,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 320));
     }
 
-    private void layoutComboBoxPanel(JPanel p2, ArrayList<JComboBox> list) {
+    private void layoutComboBoxPanel(JPanel p2, List<JComboBox> list) {
         p2.removeAll();
         p2.setLayout(new GridBagLayout());
         Border inside  = BorderFactory.createEmptyBorder(10,5+2,10,10+2);
@@ -56,13 +57,13 @@ public class MainPanel extends JPanel {
         p2.revalidate(); //??? JDK 1.7.0 Nimbus ???
     }
 
-    private ArrayList<JComboBox> initComboBoxes(boolean isColor) {
+    private List<JComboBox> initComboBoxes(boolean isColor) {
 //         if(uiCheck.isSelected()) {
 //             // Bug ID: JDK-7158712 Synth Property "ComboBox.popupInsets" is ignored
 //             // http://bugs.sun.com/view_bug.do?bug_id=7158712
 //             UIManager.put("ComboBox.padding", new javax.swing.plaf.InsetsUIResource(1,15,1,1));
 //         }
-        ArrayList<JComboBox> list = new ArrayList<JComboBox>();
+        List<JComboBox> list = new ArrayList<>();
         for(int i=0;i<7;i++) {
             list.add(makeComboBox());
         }
