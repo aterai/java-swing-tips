@@ -161,7 +161,7 @@ public class MainPanel extends JPanel {
                 }
                 private int scount = 0;
 //*
-                private void recursiveSearch(File dir, final ArrayList<File> list) throws InterruptedException {
+                private void recursiveSearch(File dir, final List<File> list) throws InterruptedException {
                     //System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
                     for(String fname: dir.list()) {
                         if(Thread.interrupted()) {

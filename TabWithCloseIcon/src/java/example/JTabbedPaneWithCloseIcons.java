@@ -22,7 +22,9 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
     }
     private void tabClicked(MouseEvent e) {
         int index = getUI().tabForCoordinate(this, e.getX(), e.getY());
-        if(index<0) return;
+        if(index<0) {
+            return;
+        }
         Rectangle rect = ((CloseTabIcon)getIconAt(index)).getBounds();
         if(rect.contains(e.getX(), e.getY())) {
             removeTabAt(index);

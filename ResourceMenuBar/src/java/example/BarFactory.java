@@ -18,10 +18,10 @@ public final class BarFactory {
 
     private final ResourceBundle resources;
 
-    private final Hashtable<String, JMenuItem> menuItems   = new Hashtable<String, JMenuItem>();
-    private final Hashtable<String, JButton>   toolButtons = new Hashtable<String, JButton>();
-    private final Hashtable<Object, Action>    commands    = new Hashtable<Object, Action>();
-    private final Hashtable<String, JMenu>     menus       = new Hashtable<String, JMenu>();
+    private final Map<String, JMenuItem> menuItems   = new Hashtable<>();
+    private final Map<String, JButton>   toolButtons = new Hashtable<>();
+    private final Map<Object, Action>    commands    = new Hashtable<>();
+    private final Map<String, JMenu>     menus       = new Hashtable<>();
     //private Action[] actions;
 
     public BarFactory(String restr) {

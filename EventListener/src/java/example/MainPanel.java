@@ -151,7 +151,7 @@ public class MainPanel extends JPanel {
 }
 
 interface FontChangeListener extends EventListener {
-    public void fontStateChanged(FontChangeEvent e);
+    void fontStateChanged(FontChangeEvent e);
 }
 class FontChangeEvent extends EventObject {
     private final String command;

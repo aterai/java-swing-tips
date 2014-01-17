@@ -3,7 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.*;
@@ -35,7 +36,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     }
     class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
         //a list of our close buttons
-        ArrayList<JButton> closeButtons = new ArrayList<JButton>();
+        List<JButton> closeButtons = new ArrayList<>();
         @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
             //ensure that there are at least as many close buttons as tabs
@@ -102,7 +103,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
 
     class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
         //a list of our close buttons
-        ArrayList<JButton> closeButtons = new ArrayList<JButton>();
+        List<JButton> closeButtons = new ArrayList<>();
         @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
             //ensure that there are at least as many close buttons as tabs

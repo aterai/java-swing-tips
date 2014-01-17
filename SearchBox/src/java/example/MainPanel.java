@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -19,7 +20,7 @@ public class MainPanel extends JPanel {
     private final JTextField field = new JTextField("asd", 10);
     private final JButton button   = new JButton();
     private final JButton showHideButton = new JButton();
-    private final ArrayList<TreePath> rollOverPathLists = new ArrayList<TreePath>();
+    private final List<TreePath> rollOverPathLists = new ArrayList<>();
 
     private Timer animator = null;
     private boolean isHidden = true;
@@ -32,9 +33,13 @@ public class MainPanel extends JPanel {
             controlsPreferredHeight = ps.height;
             if(animator!=null) {
                 if(isHidden) {
-                    if(controls.getHeight()<controlsPreferredHeight) controlsHeight += 5;
+                    if(controls.getHeight()<controlsPreferredHeight) {
+                        controlsHeight += 5;
+                    }
                 }else{
-                    if(controls.getHeight()>0) controlsHeight -= 5;
+                    if(controls.getHeight()>0) {
+                        controlsHeight -= 5;
+                    }
                 }
                 if(controlsHeight<=0) {
                     controlsHeight = 0;
@@ -104,7 +109,9 @@ public class MainPanel extends JPanel {
         controls.setBorder(BorderFactory.createTitledBorder("Search down"));
         return new AbstractAction("Show/Hide Search Box") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(animator!=null && animator.isRunning()) return;
+                if(animator!=null && animator.isRunning()) {
+                    return;
+                }
                 isHidden = controls.getHeight()==0;
                 animator = new Timer(5, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
@@ -133,9 +140,11 @@ public class MainPanel extends JPanel {
         set2.add(set3);
         return new DefaultTreeModel(root);
     }
-    private static void searchTree(JTree tree, TreePath path, String q, ArrayList<TreePath> rollOverPathLists) {
+    private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
         TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) return;
+        if(node==null) {
+            return;
+        }
         if(node.toString().startsWith(q)) {
             rollOverPathLists.add(path);
             tree.expandPath(path.getParentPath());

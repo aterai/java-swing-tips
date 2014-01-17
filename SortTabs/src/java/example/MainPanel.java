@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -88,11 +89,10 @@ public class MainPanel extends JPanel {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            final ArrayList<ComparableTab> list = makeSortedList(tab);
-            setSortedTab(tab, list);
+            setSortedTab(tab, makeSortedList(tab));
         }
-        private ArrayList<ComparableTab> makeSortedList(JTabbedPane t) {
-            ArrayList<ComparableTab> l = new ArrayList<ComparableTab>();
+        private List<ComparableTab> makeSortedList(JTabbedPane t) {
+            List<ComparableTab> l = new ArrayList<>();
             for(int i=0;i<t.getTabCount();i++) {
                 l.add(new ComparableTab(t.getTitleAt(i), t.getComponentAt(i)));
             }
@@ -105,7 +105,7 @@ public class MainPanel extends JPanel {
 //             });
             return l;
         }
-        private void setSortedTab(JTabbedPane tabbedPane, ArrayList<ComparableTab> list) {
+        private void setSortedTab(JTabbedPane tabbedPane, List<ComparableTab> list) {
             tabbedPane.setVisible(false);
             tabbedPane.removeAll();
             for(ComparableTab c: list) {

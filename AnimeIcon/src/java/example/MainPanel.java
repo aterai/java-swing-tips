@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
+//import javax.swing.SwingWorker;
 //import org.jdesktop.swingworker.SwingWorker;
-import javax.swing.SwingWorker;
 
 public class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();

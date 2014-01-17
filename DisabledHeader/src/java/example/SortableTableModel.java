@@ -6,10 +6,10 @@ modified by aterai at.terai@gmail.com
 package example;
 //-*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -76,8 +76,8 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         }
     };
     private int pushedColumn = -1;
-    private final Hashtable<Integer, Integer> state = new Hashtable<Integer, Integer>();
-    private final HashMap<Integer, Boolean> dmap = new HashMap<Integer, Boolean>();
+    private final Map<Integer, Integer> state = new HashMap<>();
+    private final Map<Integer, Boolean> dmap  = new HashMap<>();
     private final JTableHeader header;
 
     public SortButtonRenderer(JTableHeader header) {

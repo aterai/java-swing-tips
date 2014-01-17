@@ -116,7 +116,10 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
             if((prop = ((JComponent) component).getClientProperty("isClosable")) != null) {
                 doPaintCloseIcon = ((Boolean) prop).booleanValue();
             }
-        }catch(Exception ignored) { ignored.printStackTrace(); /*Could probably be a ClassCastException*/}
+        }catch(Exception ignored) {
+            /*Could probably be a ClassCastException*/
+            ignored.printStackTrace();
+        }
 
         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
 
@@ -129,8 +132,9 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
             Component[] list = getComponents();
             for(int i=0;i<list.length;i++) {
                 Component c = list[i];
-                if("TabbedPane.scrollableViewport".equals(c.getName()))
-                  headerViewport = (JViewport) c;
+                if("TabbedPane.scrollableViewport".equals(c.getName())) {
+                    headerViewport = (JViewport) c;
+                }
             }
         }
     }
@@ -157,8 +161,9 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
     @Override public void mouseExited(MouseEvent e) {
         for(int i=0; i<getTabCount(); i++) {
             CloseTabIcon icon = (CloseTabIcon) getIconAt(i);
-            if(icon != null)
-              icon.mouseover = false;
+            if(icon != null) {
+                icon.mouseover = false;
+            }
         }
         repaint();
     }
@@ -208,7 +213,9 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      */
     private void processMouseEvents(MouseEvent e) {
         int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
-        if(tabNumber < 0) return;
+        if(tabNumber < 0) {
+            return;
+        }
         CloseTabIcon icon = (CloseTabIcon) getIconAt(tabNumber);
         if(icon != null) {
             Rectangle rect= icon.getBounds();
@@ -380,7 +387,10 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
                 if((prop = curPanel.getClientProperty("isClosable")) != null) {
                     doPaintCloseIcon = ((Boolean) prop).booleanValue();
                 }
-            }catch(Exception ignored) { ignored.printStackTrace(); /*Could probably be a ClassCastException*/}
+            }catch(Exception ignored) {
+                /*Could probably be a ClassCastException*/
+                ignored.printStackTrace();
+            }
             if(doPaintCloseIcon) {
                 x_pos = x;
                 y_pos = y;
@@ -408,8 +418,9 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
                     g.drawLine(x, y_p+1, x, y_p+12);
                     g.drawLine(x+13, y_p+1, x+13, y_p+12);
                     g.drawLine(x+3, y_p+3, x+10, y_p+10);
-                    if(mouseover)
-                      g.setColor(Color.GRAY);
+                    if(mouseover) {
+                        g.setColor(Color.GRAY);
+                    }
                     g.drawLine(x+3, y_p+4, x+9, y_p+10);
                     g.drawLine(x+4, y_p+3, x+10, y_p+9);
                     g.drawLine(x+10, y_p+3, x+3, y_p+10);
