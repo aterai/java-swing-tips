@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
     private final JButton runButton  = new JButton(new RunAction());
     private final JButton canButton  = new JButton(new CancelAction());
     private final AnimatedLabel anil = new AnimatedLabel();
-    private SwingWorker<String, String> worker;
+    private Task worker;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -48,32 +48,7 @@ public class MainPanel extends JPanel {
             statusPanel.add(bar);
             statusPanel.revalidate();
             bar.setIndeterminate(true);
-            worker = new SwingWorker<String, String>() {
-                @Override public String doInBackground() {
-                    //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-                    try{
-                        Thread.sleep(1000);
-                    }catch(InterruptedException ie) {
-                        if(isCancelled()) {
-                            worker.cancel(true);
-                        }
-                        return "Interrupted";
-                    }
-                    int current = 0;
-                    int lengthOfTask = 120; //list.size();
-                    publish("Length Of Task: " + lengthOfTask);
-                    publish("------------------------------");
-                    while(current<lengthOfTask && !isCancelled()) {
-                        try{
-                            Thread.sleep(50);
-                        }catch(InterruptedException ie) {
-                            return "Interrupted";
-                        }
-                        setProgress(100 * current / lengthOfTask);
-                        current++;
-                    }
-                    return "Done";
-                }
+            worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     for(String message : chunks) {
@@ -105,6 +80,7 @@ public class MainPanel extends JPanel {
             worker.execute();
         }
     }
+
     class CancelAction extends AbstractAction {
         public CancelAction() {
             super("cancel");
@@ -116,9 +92,11 @@ public class MainPanel extends JPanel {
             worker = null;
         }
     }
+
     private boolean isCancelled() {
         return (worker!=null)?worker.isCancelled():true;
     }
+
     private void appendLine(String str) {
         area.append(str+"\n");
         area.setCaretPosition(area.getDocument().getLength());
@@ -131,6 +109,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -145,6 +124,34 @@ public class MainPanel extends JPanel {
         //frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class Task extends SwingWorker<String, String> {
+    @Override public String doInBackground() {
+        //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException ie) {
+            if(isCancelled()) {
+                cancel(true);
+            }
+            return "Interrupted";
+        }
+        int current = 0;
+        int lengthOfTask = 120; //list.size();
+        publish("Length Of Task: " + lengthOfTask);
+        publish("------------------------------");
+        while(current<lengthOfTask && !isCancelled()) {
+            try{
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            setProgress(100 * current / lengthOfTask);
+            current++;
+        }
+        return "Done";
     }
 }
 
@@ -338,7 +345,6 @@ class AnimeIcon3 implements Icon {
         this.isRunning = isRunning;
     }
 }
-
 
 class AnimeIcon4 implements Icon {
     private static final Color cColor = new Color(0.5f,0.8f,0.5f);

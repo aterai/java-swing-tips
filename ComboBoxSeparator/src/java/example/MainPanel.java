@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 200));
     }
-    private static JComboBox<Object> makeComboBox() {
+    private static ComboBoxModel<Object> makeModel() {
         DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<Object>() {
             @Override public void setSelectedItem(Object anObject) {
                 if(!(anObject instanceof JSeparator)) {
@@ -35,8 +35,10 @@ public class MainPanel extends JPanel {
         model.addElement(new JSeparator());
         model.addElement("11111");
         model.addElement("2222222");
-
-        JComboBox<Object> combo = new JComboBox<>(model);
+        return model;
+    }
+    private static JComboBox<Object> makeComboBox() {
+        JComboBox<Object> combo = new JComboBox<>(makeModel());
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if(value instanceof JSeparator) {
@@ -46,7 +48,9 @@ public class MainPanel extends JPanel {
                 }
             }
         });
-        Action up = new AbstractAction() {
+
+        ActionMap am = combo.getActionMap();
+        am.put("selectPrevious3", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox)e.getSource();
                 int index = cb.getSelectedIndex();
@@ -60,8 +64,8 @@ public class MainPanel extends JPanel {
                     cb.setSelectedIndex(index-1);
                 }
             }
-        };
-        Action down = new AbstractAction() {
+        });
+        am.put("selectNext3", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox)e.getSource();
                 int index = cb.getSelectedIndex();
@@ -75,10 +79,7 @@ public class MainPanel extends JPanel {
                     cb.setSelectedIndex(index+1);
                 }
             }
-        };
-        ActionMap am = combo.getActionMap();
-        am.put("selectPrevious3", up);
-        am.put("selectNext3", down);
+        });
 
         InputMap im = combo.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),      "selectPrevious3");
@@ -88,7 +89,6 @@ public class MainPanel extends JPanel {
 
         return combo;
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

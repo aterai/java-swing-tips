@@ -42,6 +42,19 @@ public class MainPanel extends JPanel {
             initFilterAndButton();
         }
     });
+    private final Action enterAction = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            try{
+                int v = Integer.parseInt(field.getText());
+                if(v>0 && v<=maxPageIndex) {
+                    currentPageIndex = v;
+                }
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
+            initFilterAndButton();
+        }
+    };
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
     public MainPanel() {
@@ -61,59 +74,9 @@ public class MainPanel extends JPanel {
 
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
-        field.getActionMap().put("Enter", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                try{
-                    int v = Integer.parseInt(field.getText());
-                    if(v>0 && v<=maxPageIndex) {
-                        currentPageIndex = v;
-                    }
-                }catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-                initFilterAndButton();
-            }
-        });
-/*/
-        for(int i=1; i<=2013; i++) {
-            model.addRow(new Object[] {i, "Test: "+i, (i%2==0)?"":"comment..."});
-        }
-        int rowCount = model.getRowCount();
-        int v = rowCount%itemsPerPage==0 ? 0 : 1;
-        maxPageIndex = rowCount/itemsPerPage + v;
-        initFilterAndButton();
-/*/
-        SwingWorker<String, List<Object[]>> worker = new SwingWorker<String, List<Object[]>>() {
-            private int max = 2013;
-            @Override public String doInBackground() {
-                int current = 1;
-                int c = max/itemsPerPage;
-                int i = 0;
-                while(i<c && !isCancelled()) {
-                    current = makeRowListAndPublish(current, itemsPerPage);
-                    i++;
-                }
-                int m = max%itemsPerPage;
-                if(m>0) {
-                    makeRowListAndPublish(current, m);
-                }
-                return "Done";
-            }
-            private int makeRowListAndPublish(int current, int size) {
-                try{
-                    Thread.sleep(500); //dummy
-                }catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-                List<Object[]> result = new ArrayList<Object[]>(size);
-                int j = current;
-                while(j<current+size) {
-                    result.add(new Object[] {j, "Test: "+j, (j%2==0)?"":"comment..."});
-                    j++;
-                }
-                publish(result);
-                return j;
-            }
+        field.getActionMap().put("Enter", enterAction);
+
+        Task worker = new Task(2013, itemsPerPage) {
             @Override protected void process(List<List<Object[]>> chunks) {
                 for(List<Object[]> list: chunks) {
                     for(Object[] o: list) {
@@ -140,7 +103,7 @@ public class MainPanel extends JPanel {
             }
         };
         worker.execute();
-//*/
+
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
@@ -182,5 +145,43 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class Task extends SwingWorker<String, List<Object[]>> {
+    private final int max;
+    private final int itemsPerPage;
+    public Task(int max, int itemsPerPage) {
+        this.max = max;
+        this.itemsPerPage = itemsPerPage;
+    }
+    @Override public String doInBackground() {
+        int current = 1;
+        int c = max/itemsPerPage;
+        int i = 0;
+        while(i<c && !isCancelled()) {
+            current = makeRowListAndPublish(current, itemsPerPage);
+            i++;
+        }
+        int m = max%itemsPerPage;
+        if(m>0) {
+            makeRowListAndPublish(current, m);
+        }
+        return "Done";
+    }
+    private int makeRowListAndPublish(int current, int size) {
+        try{
+            Thread.sleep(500); //dummy
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        List<Object[]> result = new ArrayList<Object[]>(size);
+        int j = current;
+        while(j<current+size) {
+            result.add(new Object[] {j, "Test: "+j, (j%2==0)?"":"comment..."});
+            j++;
+        }
+        publish(result);
+        return j;
     }
 }

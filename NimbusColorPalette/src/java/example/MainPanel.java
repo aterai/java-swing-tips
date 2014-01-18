@@ -49,36 +49,10 @@ public class MainPanel extends JPanel {
         box.add(new JButton(new AbstractAction("Test start") {
             SwingWorker<String, Void> worker;
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) { worker.cancel(true); }
-                worker = new SwingWorker<String, Void>() {
-                    @Override public String doInBackground() {
-                        int current = 0;
-                        int lengthOfTask = 100;
-                        while(current<=lengthOfTask && !isCancelled()) {
-                            try{ // dummy task
-                                Thread.sleep(50);
-                            }catch(InterruptedException ie) {
-                                return "Interrupted";
-                            }
-                            setProgress(100 * current / lengthOfTask);
-                            current++;
-                        }
-                        return "Done";
-                    }
-//                     @Override public void done() {
-//                         String text = null;
-//                         if(isCancelled()) {
-//                             text = "Cancelled";
-//                         }else{
-//                             try{
-//                                 text = get();
-//                             }catch(Exception ex) {
-//                                 ex.printStackTrace();
-//                                 text = "Exception";
-//                             }
-//                         }
-//                     }
-                };
+                if(worker!=null && !worker.isDone()) {
+                    worker.cancel(true);
+                }
+                worker = new Task();
                 worker.addPropertyChangeListener(new ProgressListener(progressBar1));
                 worker.execute();
             }
@@ -116,6 +90,24 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<String, Void> {
+    @Override public String doInBackground() {
+        int current = 0;
+        int lengthOfTask = 100;
+        while(current<=lengthOfTask && !isCancelled()) {
+            try{ // dummy task
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            setProgress(100 * current / lengthOfTask);
+            current++;
+        }
+        return "Done";
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {

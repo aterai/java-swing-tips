@@ -20,7 +20,6 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-
         JTable table1 = new JTable(model) {
             @Override public void updateUI() {
                 // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
@@ -30,7 +29,8 @@ public class MainPanel extends JPanel {
                 setSelectionBackground(new ColorUIResource(Color.RED));
                 super.updateUI();
                 updateRenderer();
-                remakeBooleanEditor();
+                JCheckBox checkBox = makeBooleanEditor(this);
+                setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
             }
             private void updateRenderer() {
                 TableModel m = getModel();
@@ -40,37 +40,6 @@ public class MainPanel extends JPanel {
                         ((JComponent)r).updateUI();
                     }
                 }
-            }
-            private void remakeBooleanEditor() {
-                JCheckBox checkBox = new JCheckBox();
-                checkBox.setHorizontalAlignment(JCheckBox.CENTER);
-                checkBox.setBorderPainted(true);
-                checkBox.setOpaque(true);
-                checkBox.addMouseListener(new MouseAdapter() {
-                    @Override public void mousePressed(MouseEvent e) {
-                        JCheckBox cb = (JCheckBox)e.getSource();
-                        ButtonModel m = cb.getModel();
-                        if(m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
-                            if(getEditingRow()%2==0) {
-                                cb.setOpaque(false);
-                                //cb.setBackground(getBackground());
-                            }else{
-                                cb.setOpaque(true);
-                                cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-                            }
-                        }else{
-                            cb.setBackground(getSelectionBackground());
-                            cb.setOpaque(true);
-                        }
-                    }
-                    @Override public void mouseExited(MouseEvent e) {
-                        //in order to drag table row selection
-                        if(isEditing() && !getCellEditor().stopCellEditing()) {
-                            getCellEditor().cancelCellEditing();
-                        }
-                    }
-                });
-                setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
             }
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component c = super.prepareEditor(editor, row, column);
@@ -94,6 +63,38 @@ public class MainPanel extends JPanel {
                                        new JScrollPane(table1));
         sp.setResizeWeight(0.5);
         return sp;
+    }
+    private static JCheckBox makeBooleanEditor(final JTable table) {
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+        checkBox.setBorderPainted(true);
+        checkBox.setOpaque(true);
+        checkBox.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                JCheckBox cb = (JCheckBox)e.getSource();
+                ButtonModel m = cb.getModel();
+                int editingRow = table.getEditingRow();
+                if(m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
+                    if(editingRow%2==0) {
+                        cb.setOpaque(false);
+                        //cb.setBackground(getBackground());
+                    }else{
+                        cb.setOpaque(true);
+                        cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+                    }
+                }else{
+                    cb.setBackground(table.getSelectionBackground());
+                    cb.setOpaque(true);
+                }
+            }
+            @Override public void mouseExited(MouseEvent e) {
+                //in order to drag table row selection
+                if(table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+                    table.getCellEditor().cancelCellEditing();
+                }
+            }
+        });
+        return checkBox;
     }
     public MainPanel() {
         super(new BorderLayout());

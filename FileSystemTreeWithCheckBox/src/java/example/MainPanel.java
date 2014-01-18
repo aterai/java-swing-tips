@@ -71,10 +71,14 @@ public class MainPanel extends JPanel {
     }
     private static void searchTreeForCheckedNode(JTree tree, TreePath path) {
         Object o = path.getLastPathComponent();
-        if(o==null || !(o instanceof DefaultMutableTreeNode)) { return; }
+        if(!(o instanceof DefaultMutableTreeNode)) {
+            return;
+        }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)o;
         o = node.getUserObject();
-        if(o==null || !(o instanceof CheckBoxNode)) { return; }
+        if(!(o instanceof CheckBoxNode)) {
+            return;
+        }
         CheckBoxNode check = (CheckBoxNode)o;
         if(check.status==Status.SELECTED) {
             System.out.println(check.file.toString());
@@ -175,16 +179,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         if(!parent.isDirectory()) { return; }
         final Status parent_status = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
 
-        SwingWorker<String, File> worker = new SwingWorker<String, File>() {
-            @Override public String doInBackground() {
-                File[] children = fileSystemView.getFiles(parent, true);
-                for(File child: children) {
-                    if(child.isDirectory()) {
-                        publish(child);
-                    }
-                }
-                return "done";
-            }
+        Task worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 for(File file: chunks) {
                     node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)));
@@ -193,6 +188,24 @@ class FolderSelectionListener implements TreeSelectionListener {
             }
         };
         worker.execute();
+    }
+}
+
+class Task extends SwingWorker<String, File> {
+    private final FileSystemView fileSystemView;
+    private final File parent;
+    public Task(FileSystemView fileSystemView, File parent) {
+        this.fileSystemView = fileSystemView;
+        this.parent = parent;
+    }
+    @Override public String doInBackground() {
+        File[] children = fileSystemView.getFiles(parent, true);
+        for(File child: children) {
+            if(child.isDirectory()) {
+                publish(child);
+            }
+        }
+        return "done";
     }
 }
 

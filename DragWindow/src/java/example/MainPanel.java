@@ -5,17 +5,17 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import javax.swing.event.*;
 
 class MainPanel {
     private JFrame frame;
     private JWindow splashScreen;
-    private JLabel  splashLabel;
 
-    public void start(JFrame frame) {
-        this.frame = frame;
-        createSplashScreen("splash.png");
-        showSplashScreen();
+    public void start(JFrame f) {
+        this.frame = f;
+        ImageIcon img = new ImageIcon(getClass().getResource("splash.png"));
+        splashScreen = createSplashScreen(frame, img);
+        splashScreen.setVisible(true);
+
         (new Thread() {
             @Override public void run() {
                 try{
@@ -24,7 +24,9 @@ class MainPanel {
                     EventQueue.invokeAndWait(new Runnable() {
                         @Override public void run() {
                             showFrame();
-                            hideSplash();
+                            //hideSplash();
+                            splashScreen.setVisible(false);
+                            splashScreen.dispose();
                         }
                     });
                 }catch(Exception e) {
@@ -58,29 +60,20 @@ class MainPanel {
         p.add(new JLabel("Alt+Space => System Menu"));
         return p;
     }
-    public void createSplashScreen(String path) {
-        ImageIcon img = new ImageIcon(getClass().getResource(path));
+    public static JWindow createSplashScreen(JFrame frame, ImageIcon img) {
         DragWindowListener dwl = new DragWindowListener();
 
-        splashLabel = new JLabel(img);
-        splashLabel.addMouseListener(dwl);
-        splashLabel.addMouseMotionListener(dwl);
-        splashScreen = new JWindow(getFrame());
-        splashScreen.getContentPane().add(splashLabel);
-        splashScreen.pack();
-        splashScreen.setLocationRelativeTo(null);
+        JLabel label = new JLabel(img);
+        label.addMouseListener(dwl);
+        label.addMouseMotionListener(dwl);
+
+        JWindow window = new JWindow(frame);
+        window.getContentPane().add(label);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        return window;
     }
-    public void showSplashScreen() {
-        splashScreen.setVisible(true);
-    }
-    public void hideSplash() {
-        splashScreen.setVisible(false);
-        splashScreen.dispose();
-    }
-    public JFrame getFrame() {
-        return frame;
-    }
-    public void showFrame() {
+    private void showFrame() {
         frame.getContentPane().add(makeUI());
         frame.setMinimumSize(new Dimension(100, 100));
         frame.setSize(320, 240);

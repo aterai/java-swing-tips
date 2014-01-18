@@ -14,8 +14,10 @@ class MainPanel extends JPanel {
     private final JPopupMenu popup = new JPopupMenu();
     //private final JWindow dummy    = new JWindow(); //Ubuntu?
     private final JDialog dummy    = new JDialog();
-    public MainPanel(final JFrame frame) {
+    private final JFrame frame;
+    public MainPanel(JFrame f) {
         super(new BorderLayout());
+        this.frame = f;
         add(new JLabel("SystemTray.isSupported(): "+SystemTray.isSupported()), BorderLayout.NORTH);
         add(createBox(popup));
         setPreferredSize(new Dimension(320, 200));
@@ -31,18 +33,6 @@ class MainPanel extends JPanel {
         dummy.setUndecorated(true);
         //dummy.setAlwaysOnTop(true);
 
-        // This code is inspired from:
-        // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
-        // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
-        popup.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
-            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                dummy.setVisible(false);
-            }
-            @Override public void popupMenuCanceled(PopupMenuEvent e) {
-                dummy.setVisible(false);
-            }
-        });
         icon.addMouseListener(new MouseAdapter() {
             private void showJPopupMenu(MouseEvent e) {
                 if(e.isPopupTrigger()) {
@@ -61,6 +51,27 @@ class MainPanel extends JPanel {
             }
         });
 
+        initPopupMenu();
+        try{
+            tray.add(icon);
+        }catch(AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initPopupMenu() {
+        // This code is inspired from:
+        // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
+        // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
+        popup.addPopupMenuListener(new PopupMenuListener() {
+            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                dummy.setVisible(false);
+            }
+            @Override public void popupMenuCanceled(PopupMenuEvent e) {
+                dummy.setVisible(false);
+            }
+        });
         popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
         popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
         popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem aaaaaaaaaaa"));
@@ -78,22 +89,11 @@ class MainPanel extends JPanel {
                 //System.exit(0);
             }
         });
-
-        try{
-            tray.add(icon);
-        }catch(AWTException e) {
-            e.printStackTrace();
-        }
     }
 
-    //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
-    private static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
-        Point p = new Point(xposition, yposition);
-        if(GraphicsEnvironment.isHeadless()) { return p; }
-
-        Rectangle screenBounds;
+    // Try to find GraphicsConfiguration, that includes mouse pointer position
+    private static GraphicsConfiguration getGraphicsConfiguration(Point p) {
         GraphicsConfiguration gc = null;
-        // Try to find GraphicsConfiguration, that includes mouse pointer position
         for(GraphicsDevice gd: GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
             if(gd.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
                 GraphicsConfiguration dgc = gd.getDefaultConfiguration();
@@ -103,6 +103,18 @@ class MainPanel extends JPanel {
                 }
             }
         }
+        return gc;
+    }
+
+    //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
+    private static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
+        Point p = new Point(xposition, yposition);
+        if(GraphicsEnvironment.isHeadless()) {
+            return p;
+        }
+
+        Rectangle screenBounds;
+        GraphicsConfiguration gc = getGraphicsConfiguration(p);
 
         // If not found and popup have invoker, ask invoker about his gc
         if(gc == null && popup.getInvoker() != null) {
@@ -144,21 +156,6 @@ class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         box.setBorder(BorderFactory.createEmptyBorder(5,25,5,25));
         return box;
-    }
-    private static enum LookAndFeelEnum {
-        Metal  ("javax.swing.plaf.metal.MetalLookAndFeel"),
-        Mac    ("com.sun.java.swing.plaf.mac.MacLookAndFeel"),
-        Motif  ("com.sun.java.swing.plaf.motif.MotifLookAndFeel"),
-        Windows("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"),
-        GTK    ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
-        Nimbus ("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-        private final String clazz;
-        private LookAndFeelEnum(String clazz) {
-            this.clazz = clazz;
-        }
-        public String getClassName() {
-            return clazz;
-        }
     }
     private static class ChangeLookAndFeelAction extends AbstractAction {
         private final String lnf;
@@ -219,5 +216,21 @@ class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+enum LookAndFeelEnum {
+    Metal  ("javax.swing.plaf.metal.MetalLookAndFeel"),
+    Mac    ("com.sun.java.swing.plaf.mac.MacLookAndFeel"),
+    Motif  ("com.sun.java.swing.plaf.motif.MotifLookAndFeel"),
+    Windows("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"),
+    GTK    ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
+    Nimbus ("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+    private final String clazz;
+    private LookAndFeelEnum(String clazz) {
+        this.clazz = clazz;
+    }
+    public String getClassName() {
+        return clazz;
     }
 }

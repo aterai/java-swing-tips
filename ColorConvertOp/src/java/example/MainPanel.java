@@ -21,7 +21,7 @@ class MainPanel extends JPanel {
         add(makeLabel(makeGrayImageIcon_3(orgImage.getImage()), "GrayFilter.createDisabledImage"));
         JPanel p3 = new JPanel(new GridLayout(1,2));
         p3.add(makeLabel(makeGrayImageIcon_4(orgImage.getImage()), "GrayFilter(true,50)"));
-        p3.add(makeLabel(makeGrayImageIcon_5(orgImage.getImage()), "MyGrayFilter"));
+        p3.add(makeLabel(makeGrayImageIcon_5(orgImage.getImage()), "GrayImageFilter"));
         add(p3);
 
         p1.setBackground(Color.WHITE);
@@ -79,22 +79,8 @@ class MainPanel extends JPanel {
 
     private ImageIcon makeGrayImageIcon_5(Image img) {
         //RGBImageFilter
-        ImageProducer ip = new FilteredImageSource(img.getSource(), new MyGrayFilter());
+        ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayImageFilter());
         return new ImageIcon(createImage(ip));
-    }
-    private static class MyGrayFilter extends RGBImageFilter {
-        //public MyGrayFilter() {
-        //    canFilterIndexColorModel = false;
-        //}
-        @Override public int filterRGB(int x, int y, int argb) {
-            //int a = (argb >> 24) & 0xff;
-            int r = (argb >> 16) & 0xff;
-            int g = (argb >>  8) & 0xff;
-            int b = (argb      ) & 0xff;
-            int m = (2*r+4*g+b)/7; //NTSC Coefficients
-            //return new Color(m,m,m,a).getRGB();
-            return (argb & 0xff000000) | (m<<16) | (m<<8) | (m);
-        }
     }
 
     public static void main(String[] args) {
@@ -116,5 +102,20 @@ class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class GrayImageFilter extends RGBImageFilter {
+    //public GrayImageFilter() {
+    //    canFilterIndexColorModel = false;
+    //}
+    @Override public int filterRGB(int x, int y, int argb) {
+        //int a = (argb >> 24) & 0xff;
+        int r = (argb >> 16) & 0xff;
+        int g = (argb >>  8) & 0xff;
+        int b = (argb      ) & 0xff;
+        int m = (2*r+4*g+b)/7; //NTSC Coefficients
+        //return new Color(m,m,m,a).getRGB();
+        return (argb & 0xff000000) | (m<<16) | (m<<8) | (m);
     }
 }

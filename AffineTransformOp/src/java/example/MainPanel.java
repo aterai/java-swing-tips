@@ -12,13 +12,29 @@ import javax.swing.*;
 import javax.imageio.*;
 
 class MainPanel extends JPanel {
-    public enum Flip {
-        NONE,
-        VERTICAL,
-        HORIZONTAL,
-    }
     private Flip mode = Flip.NONE;
     private BufferedImage bi = null;
+    private final JPanel p = new JPanel() {
+        @Override public void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+            int w = bi.getWidth(this);
+            int h = bi.getHeight(this);
+            if(mode==Flip.NONE) {
+                g.drawImage(bi, 0, 0, w, h, this);
+            }else if(mode==Flip.VERTICAL) {
+                AffineTransform at = AffineTransform.getScaleInstance(1.0, -1.0);
+                at.translate(0, -h);
+                g2.drawImage(bi, at, this);
+            }else if(mode==Flip.HORIZONTAL) {
+                AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
+                at.translate(-w, 0);
+                AffineTransformOp atOp = new AffineTransformOp(at, null);
+                g.drawImage(atOp.filter(bi, null), 0, 0, w, h, this);
+            }
+        }
+    };
     public MainPanel() {
         super(new BorderLayout());
         try{
@@ -26,27 +42,6 @@ class MainPanel extends JPanel {
         }catch(Exception ioe) {
             ioe.printStackTrace();
         }
-        JPanel p = new JPanel() {
-            @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
-                g.setColor(getBackground());
-                g.fillRect(0, 0, getWidth(), getHeight());
-                int w = bi.getWidth(this);
-                int h = bi.getHeight(this);
-                if(mode==Flip.NONE) {
-                    g.drawImage(bi, 0, 0, w, h, this);
-                }else if(mode==Flip.VERTICAL) {
-                    AffineTransform at = AffineTransform.getScaleInstance(1.0, -1.0);
-                    at.translate(0, -h);
-                    g2.drawImage(bi, at, this);
-                }else if(mode==Flip.HORIZONTAL) {
-                    AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
-                    at.translate(-w, 0);
-                    AffineTransformOp atOp = new AffineTransformOp(at, null);
-                    g.drawImage(atOp.filter(bi, null), 0, 0, w, h, this);
-                }
-            }
-        };
         List<AbstractAction> list = Arrays.asList(
             new AbstractAction("NONE") {
                 @Override public void actionPerformed(ActionEvent e) {
@@ -103,3 +98,5 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum Flip { NONE, VERTICAL, HORIZONTAL; }
