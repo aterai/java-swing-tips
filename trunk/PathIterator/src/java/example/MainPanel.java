@@ -181,7 +181,7 @@ class StarburstSVGMaker {
 
         textArea.setText(sb.toString());
     }
-    private StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
+    private static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
         StringBuilder sb = new StringBuilder(200);
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
         sb.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz));
@@ -209,7 +209,7 @@ class StarburstSVGMaker {
         sb.append(String.format("\" style=\"%s\" />%n</svg>%n", style));
         return sb;
     }
-    private Path2D.Double makeStar(int r1, int r2, int vc) {
+    private static Path2D.Double makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
         double agl = 0.0;
@@ -262,6 +262,7 @@ class StarburstSVGMaker {
 //         }
 //     }
 }
+
 class StarIcon implements Icon {
     private final Shape star;
     private final boolean antialias;
@@ -289,6 +290,7 @@ class StarIcon implements Icon {
         g2d.translate(-x, -y);
     }
 }
+
 // class FileWriter {
 //     private final File file;
 //     public FileWriter(File file){

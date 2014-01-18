@@ -40,10 +40,11 @@ public class MainPanel extends JPanel {
     }
 }
 
-class ImageCaptionLabel extends JLabel implements HierarchyListener {
+class ImageCaptionLabel extends JLabel implements MouseListener, HierarchyListener {
+    private static int DELAY = 4;
     private Timer animator;
     private int yy = 0;
-    private JTextArea textArea = new JTextArea() {
+    private final JTextArea textArea = new JTextArea() {
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
             g2.setPaint(getBackground());
@@ -54,6 +55,19 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         //    return false;
         //}
     };
+    private final MouseAdapter textAreaMouseListener = new MouseAdapter() {
+        @Override public void mouseEntered(MouseEvent e) {
+            dispatchMouseEvent(e);
+        }
+        @Override public void mouseExited(MouseEvent e) {
+            dispatchMouseEvent(e);
+        }
+        private void dispatchMouseEvent(MouseEvent e) {
+            Component src = e.getComponent();
+            Component tgt = ImageCaptionLabel.this;
+            tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
+        }
+    };
     public ImageCaptionLabel(String caption, Icon icon) {
         setIcon(icon);
         textArea.setFont(textArea.getFont().deriveFont(11f));
@@ -61,28 +75,13 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
         textArea.setOpaque(false);
         textArea.setEditable(false);
         //textArea.setFocusable(false);
-        textArea.setBackground(new Color(0,0,0,0));
+        textArea.setBackground(new Color(0,true));
         textArea.setForeground(Color.WHITE);
         textArea.setBorder(BorderFactory.createEmptyBorder(2,4,4,4));
+        textArea.addMouseListener(textAreaMouseListener);
 
-        MouseAdapter ma = new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                dispatchMouseEvent(e);
-            }
-            @Override public void mouseExited(MouseEvent e) {
-                dispatchMouseEvent(e);
-            }
-            private void dispatchMouseEvent(MouseEvent e) {
-                Component src = e.getComponent();
-                Component tgt = ImageCaptionLabel.this;
-                tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
-            }
-        };
-        textArea.addMouseListener(ma);
-
-        setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(222,222,222)),
-            BorderFactory.createLineBorder(Color.WHITE, 4)));
+        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(222,222,222)),
+                                                     BorderFactory.createLineBorder(Color.WHITE, 4)));
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
@@ -98,52 +97,51 @@ class ImageCaptionLabel extends JLabel implements HierarchyListener {
             }
         });
         add(textArea);
+        addMouseListener(this);
+        addHierarchyListener(this);
+    }
+    @Override public void mouseClicked(MouseEvent e) {}
+    @Override public void mousePressed(MouseEvent e) {}
+    @Override public void mouseReleased(MouseEvent e) {}
 
-        addMouseListener(new MouseAdapter() {
-            private int delay = 4;
-            private int count = 0;
-            @Override public void mouseEntered(MouseEvent e) {
-                if(animator!=null && animator.isRunning() || yy==textArea.getPreferredSize().height) {
-                    return;
-                }
-                final double h = (double)textArea.getPreferredSize().height;
-                animator = new Timer(delay, new ActionListener() {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        double a = easeInOut(++count/h);
-                        yy = (int)(.5d+a*h);
-                        textArea.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
-                        if(yy>=textArea.getPreferredSize().height) {
-                            yy = textArea.getPreferredSize().height;
-                            animator.stop();
-                        }
-                        revalidate();
-                        repaint();
+    @Override public void mouseEntered(MouseEvent e) {
+        if(animator!=null && animator.isRunning() || yy==textArea.getPreferredSize().height) {
+            return;
+        }
+        animator = createTimer(1);
+        animator.start();
+    }
+    @Override public void mouseExited(MouseEvent e) {
+        if(animator!=null && animator.isRunning() || contains(e.getPoint()) && yy==textArea.getPreferredSize().height) {
+            return;
+        }
+        animator = createTimer(-1);
+        animator.start();
+    }
+    private int count = 0;
+    private Timer createTimer(final int dir) {
+        final double height = (double)textArea.getPreferredSize().height;
+        return new Timer(DELAY, new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                double a = easeInOut(count/height);
+                count += dir;
+                yy = (int)(.5d+a*height);
+                textArea.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
+                if(dir>0) { //show
+                    if(yy>=textArea.getPreferredSize().height) {
+                        yy = textArea.getPreferredSize().height;
+                        animator.stop();
                     }
-                });
-                animator.start();
-            }
-            @Override public void mouseExited(MouseEvent e) {
-                if(animator!=null && animator.isRunning() || contains(e.getPoint()) && yy==textArea.getPreferredSize().height) {
-                    return;
-                }
-                final double h = (double)textArea.getPreferredSize().height;
-                animator = new Timer(delay, new ActionListener() {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        double a = easeInOut(--count/h);
-                        yy = (int)(.5d+a*h);
-                        textArea.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
-                        if(yy<=0) {
-                            yy = 0;
-                            animator.stop();
-                        }
-                        revalidate();
-                        repaint();
+                }else{ //hide
+                    if(yy<=0) {
+                        yy = 0;
+                        animator.stop();
                     }
-                });
-                animator.start();
+                }
+                revalidate();
+                repaint();
             }
         });
-        addHierarchyListener(this);
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {

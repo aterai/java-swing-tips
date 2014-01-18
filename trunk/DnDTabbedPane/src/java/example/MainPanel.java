@@ -141,73 +141,73 @@ class DnDTabbedPane extends JTabbedPane {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
+    private final DragSourceListener dsl = new DragSourceListener() {
+        @Override public void dragEnter(DragSourceDragEvent e) {
+            e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+        }
+        @Override public void dragExit(DragSourceEvent e) {
+            e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+            lineRect.setRect(0,0,0,0);
+            glassPane.setPoint(new Point(-1000,-1000));
+            glassPane.repaint();
+        }
+        @Override public void dragOver(DragSourceDragEvent e) {
+            Point glassPt = e.getLocation();
+            SwingUtilities.convertPointFromScreen(glassPt, glassPane);
+            int targetIdx = getTargetTabIndex(glassPt);
+            //if(getTabAreaBounds().contains(tabPt) && targetIdx>=0 &&
+            if(getTabAreaBounds().contains(glassPt) && targetIdx>=0 &&
+               targetIdx!=dragTabIndex && targetIdx!=dragTabIndex+1) {
+                e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+                glassPane.setCursor(DragSource.DefaultMoveDrop);
+            }else{
+                e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+                glassPane.setCursor(DragSource.DefaultMoveNoDrop);
+            }
+        }
+        @Override public void dragDropEnd(DragSourceDropEvent e) {
+            lineRect.setRect(0,0,0,0);
+            dragTabIndex = -1;
+            glassPane.setVisible(false);
+            glassPane.setImage(null);
+        }
+        @Override public void dropActionChanged(DragSourceDragEvent e) {}
+    };
+    private final Transferable t = new Transferable() {
+        private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+        @Override public Object getTransferData(DataFlavor flavor) {
+            return DnDTabbedPane.this;
+        }
+        @Override public DataFlavor[] getTransferDataFlavors() {
+            DataFlavor[] f = new DataFlavor[1];
+            f[0] = this.FLAVOR;
+            return f;
+        }
+        @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor.getHumanPresentableName().equals(NAME);
+        }
+    };
+    private final DragGestureListener dgl = new DragGestureListener() {
+        @Override public void dragGestureRecognized(DragGestureEvent e) {
+            if(getTabCount()<=1) {
+                return;
+            }
+            Point tabPt = e.getDragOrigin();
+            dragTabIndex = indexAtLocation(tabPt.x, tabPt.y);
+            //"disabled tab problem".
+            if(dragTabIndex<0 || !isEnabledAt(dragTabIndex)) {
+                return;
+            }
+            initGlassPane(e.getComponent(), e.getDragOrigin());
+            try{
+                e.startDrag(DragSource.DefaultMoveDrop, t, dsl);
+            }catch(InvalidDnDOperationException idoe) {
+                idoe.printStackTrace();
+            }
+        }
+    };
     public DnDTabbedPane() {
         super();
-        final DragSourceListener dsl = new DragSourceListener() {
-            @Override public void dragEnter(DragSourceDragEvent e) {
-                e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-            }
-            @Override public void dragExit(DragSourceEvent e) {
-                e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-                lineRect.setRect(0,0,0,0);
-                glassPane.setPoint(new Point(-1000,-1000));
-                glassPane.repaint();
-            }
-            @Override public void dragOver(DragSourceDragEvent e) {
-                Point glassPt = e.getLocation();
-                SwingUtilities.convertPointFromScreen(glassPt, glassPane);
-                int targetIdx = getTargetTabIndex(glassPt);
-                //if(getTabAreaBounds().contains(tabPt) && targetIdx>=0 &&
-                if(getTabAreaBounds().contains(glassPt) && targetIdx>=0 &&
-                   targetIdx!=dragTabIndex && targetIdx!=dragTabIndex+1) {
-                    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-                    glassPane.setCursor(DragSource.DefaultMoveDrop);
-                }else{
-                    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-                    glassPane.setCursor(DragSource.DefaultMoveNoDrop);
-                }
-            }
-            @Override public void dragDropEnd(DragSourceDropEvent e) {
-                lineRect.setRect(0,0,0,0);
-                dragTabIndex = -1;
-                glassPane.setVisible(false);
-                glassPane.setImage(null);
-            }
-            @Override public void dropActionChanged(DragSourceDragEvent e) {}
-        };
-        final Transferable t = new Transferable() {
-            private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-            @Override public Object getTransferData(DataFlavor flavor) {
-                return DnDTabbedPane.this;
-            }
-            @Override public DataFlavor[] getTransferDataFlavors() {
-                DataFlavor[] f = new DataFlavor[1];
-                f[0] = this.FLAVOR;
-                return f;
-            }
-            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-                return flavor.getHumanPresentableName().equals(NAME);
-            }
-        };
-        final DragGestureListener dgl = new DragGestureListener() {
-            @Override public void dragGestureRecognized(DragGestureEvent e) {
-                if(getTabCount()<=1) {
-                    return;
-                }
-                Point tabPt = e.getDragOrigin();
-                dragTabIndex = indexAtLocation(tabPt.x, tabPt.y);
-                //"disabled tab problem".
-                if(dragTabIndex<0 || !isEnabledAt(dragTabIndex)) {
-                    return;
-                }
-                initGlassPane(e.getComponent(), e.getDragOrigin());
-                try{
-                    e.startDrag(DragSource.DefaultMoveDrop, t, dsl);
-                }catch(InvalidDnDOperationException idoe) {
-                    idoe.printStackTrace();
-                }
-            }
-        };
         glassPane.setName("GlassPane");
         new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dgl);

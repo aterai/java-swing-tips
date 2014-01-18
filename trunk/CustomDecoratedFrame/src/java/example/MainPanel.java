@@ -193,54 +193,53 @@ class SideLabel extends JLabel {
 }
 
 class ResizeWindowListener extends MouseAdapter {
-    private Rectangle rect = null;
     private final JFrame frame;
+    private Rectangle rect;
     public ResizeWindowListener(JFrame frame) {
         this.frame = frame;
+        this.rect  = frame.getBounds();
     }
     @Override public void mousePressed(MouseEvent e) {
         rect = frame.getBounds();
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if(rect==null) {
-            return;
-        }
-        SideLabel c = (SideLabel)e.getComponent();
-        switch(c.side) {
-          case NW: {
-              rect.y += e.getY();
-              rect.height -= e.getY();
-              rect.x += e.getX();
-              rect.width -= e.getX();
-          } break;
-          case N: {
-              rect.y += e.getY();
-              rect.height -= e.getY();
-          } break;
-          case NE: {
-              rect.y += e.getY();
-              rect.height -= e.getY();
-              rect.width += e.getX();
-          } break;
-          case W: {
-              rect.x += e.getX();
-              rect.width -= e.getX();
-          } break;
-          case E: {
-              rect.width += e.getX();
-          } break;
-          case SW: {
-              rect.height += e.getY();
-              rect.x += e.getX();
-              rect.width -= e.getX();
-          }
-          case S: {
-              rect.height += e.getY();
-          } break;
-          case SE: {
-              rect.height += e.getY();
-              rect.width += e.getX();
-          } break;
+        if(rect==null) { return; }
+        int dx = e.getX(), dy = e.getY();
+        switch(((SideLabel)e.getComponent()).side) {
+          case NW:
+            rect.y      += dy;
+            rect.height -= dy;
+            rect.x      += dx;
+            rect.width  -= dx;
+            break;
+          case N:
+            rect.y      += dy;
+            rect.height -= dy;
+            break;
+          case NE:
+            rect.y      += dy;
+            rect.height -= dy;
+            rect.width  += dx;
+            break;
+          case W:
+            rect.x      += dx;
+            rect.width  -= dx;
+            break;
+          case E:
+            rect.width  += dx;
+            break;
+          case SW:
+            rect.height += dy;
+            rect.x      += dx;
+            rect.width  -= dx;
+            break;
+          case S:
+            rect.height += dy;
+            break;
+          case SE:
+            rect.height += dy;
+            rect.width  += dx;
+            break;
         }
         frame.setBounds(rect);
     }

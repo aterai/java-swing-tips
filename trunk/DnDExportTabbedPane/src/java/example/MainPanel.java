@@ -39,45 +39,17 @@ public class MainPanel extends JPanel {
         sub2.addTab("Title bb", new JScrollPane(new JTree()));
         sub2.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
-        DropTargetListener dtl = new DropTargetAdapter() {
-            private void clearDropLocationPaint(Component c) {
-                System.out.println("------------------- "+ c.getName());
-                if(c instanceof DnDTabbedPane) {
-                    DnDTabbedPane t = (DnDTabbedPane)c;
-                    t.setDropLocation(null, null, false);
-                    t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                }
-            }
-            @Override public void drop(DropTargetDropEvent dtde) {
-                System.out.println("DropTargetListener#drop");
-                Component c = dtde.getDropTargetContext().getComponent();
-                clearDropLocationPaint(c);
-            }
-            @Override public void dragExit(DropTargetEvent dte) {
-                System.out.println("DropTargetListener#dragExit");
-                Component c = dte.getDropTargetContext().getComponent();
-                clearDropLocationPaint(c);
-            }
-            @Override public void dragEnter(DropTargetDragEvent dtde) {
-                System.out.println("DropTargetListener#dragEnter");
-            }
-//             @Override public void dragOver(DropTargetDragEvent dtde) {
-//                 //System.out.println("dragOver");
-//             }
-//             @Override public void dropActionChanged(DropTargetDragEvent dtde) {
-//                 System.out.println("dropActionChanged");
-//             }
-        };
         tab.setName("000");
         sub.setName("111");
         sub2.setName("222");
 
+        DropTargetListener dropTargetListener = new TabDropTargetAdapter();
         TransferHandler handler = new TabTransferHandler();
         try{
             for(JTabbedPane t:Arrays.asList(tab, sub, sub2)) {
                 t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                 t.setTransferHandler(handler);
-                t.getDropTarget().addDropTargetListener(dtl);
+                t.getDropTarget().addDropTargetListener(dropTargetListener);
             }
         }catch(Exception ex) {
             ex.printStackTrace();
@@ -108,12 +80,12 @@ public class MainPanel extends JPanel {
         p.add(scheck);
         return p;
     }
-    private JTextArea makeJTextArea() {
+    private static JTextArea makeJTextArea() {
         JTextArea textArea = new JTextArea("asfasdfasfasdfas\nafasfasdfaf\n");
         //textArea.setTransferHandler(null); //XXX
         return textArea;
     }
-    private JTable makeJTable() {
+    private static JTable makeJTable() {
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
             {"AAA", 1, true}, {"BBB", 2, false},
@@ -294,12 +266,13 @@ class DnDTabbedPane extends JTabbedPane {
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
+    private static int getDropLocationIndex(DropLocation loc) {
+        return loc == null || !loc.isDropable() ? -1 : loc.getIndex();
+    }
     public Rectangle getDropLineRect() {
         DropLocation loc = getDropLocation();
-        if(loc == null || !loc.isDropable()) { return null; }
-
-        int index = loc.getIndex();
-        if(index<0) {
+        int index = getDropLocationIndex(loc);
+        if(index < 0) {
             lineRect.setRect(0,0,0,0);
             return null;
         }
@@ -391,6 +364,36 @@ class DnDTabbedPane extends JTabbedPane {
     }
 }
 
+class TabDropTargetAdapter extends DropTargetAdapter {
+    private void clearDropLocationPaint(Component c) {
+        System.out.println("------------------- "+ c.getName());
+        if(c instanceof DnDTabbedPane) {
+            DnDTabbedPane t = (DnDTabbedPane)c;
+            t.setDropLocation(null, null, false);
+            t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+    }
+    @Override public void drop(DropTargetDropEvent dtde) {
+        System.out.println("DropTargetListener#drop");
+        Component c = dtde.getDropTargetContext().getComponent();
+        clearDropLocationPaint(c);
+    }
+    @Override public void dragExit(DropTargetEvent dte) {
+        System.out.println("DropTargetListener#dragExit");
+        Component c = dte.getDropTargetContext().getComponent();
+        clearDropLocationPaint(c);
+    }
+    @Override public void dragEnter(DropTargetDragEvent dtde) {
+        System.out.println("DropTargetListener#dragEnter");
+    }
+//     @Override public void dragOver(DropTargetDragEvent dtde) {
+//         //System.out.println("dragOver");
+//     }
+//     @Override public void dropActionChanged(DropTargetDragEvent dtde) {
+//         System.out.println("dropActionChanged");
+//     }
+};
+
 class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     public TabTransferHandler() {
@@ -402,6 +405,20 @@ class TabTransferHandler extends TransferHandler {
         System.out.println("createTransferable");
         if(c instanceof DnDTabbedPane) { source = (DnDTabbedPane)c; }
         return new DataHandler(c, localObjectFlavor.getMimeType());
+    }
+    private boolean isDropable(DnDTabbedPane target, Point pt, int idx) {
+        boolean isDropable = false;
+        Rectangle tr = target.getTabAreaBounds();
+        if(target==source) {
+            //System.out.println("target==source");
+            isDropable = tr.contains(pt) && idx>=0 && idx!=target.dragTabIndex && idx!=target.dragTabIndex+1;
+        }else{
+            //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
+            if(source!=null && target!=source.getComponentAt(source.dragTabIndex)) {
+                isDropable = tr.contains(pt) && idx>=0;
+            }
+        }
+        return isDropable;
     }
     @Override public boolean canImport(TransferSupport support) {
         //System.out.println("canImport");
@@ -416,7 +433,6 @@ class TabTransferHandler extends TransferHandler {
         target.autoScrollTest(pt);
         DnDTabbedPane.DropLocation dl = (DnDTabbedPane.DropLocation)target.dropLocationForPoint(pt);
         int idx = dl.getIndex();
-        boolean isDropable = false;
 
 //         if(!isWebStart()) {
 //             //System.out.println("local");
@@ -426,15 +442,8 @@ class TabTransferHandler extends TransferHandler {
 //                 ex.printStackTrace();
 //             }
 //         }
-        if(target==source) {
-            //System.out.println("target==source");
-            isDropable = target.getTabAreaBounds().contains(pt) && idx>=0 && idx!=target.dragTabIndex && idx!=target.dragTabIndex+1;
-        }else{
-            //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            if(source!=null && target!=source.getComponentAt(source.dragTabIndex)) {
-                isDropable = target.getTabAreaBounds().contains(pt) && idx>=0;
-            }
-        }
+        boolean isDropable = isDropable(target, pt, idx);
+
         glassPane.setVisible(false);
         target.getRootPane().setGlassPane(glassPane);
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation

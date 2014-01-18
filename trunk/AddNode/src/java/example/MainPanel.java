@@ -43,6 +43,52 @@ public class MainPanel extends JPanel {
 class TreePopupMenu extends JPopupMenu {
     private final JTextField textField = new JTextField(24);
     private TreePath path;
+    private final Action addNodeAction = new AbstractAction("add") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTree tree = (JTree)getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
+            DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
+            //model.insertNodeInto(child, parent, 0);
+            parent.add(child);
+            model.nodeStructureChanged(parent);
+            tree.expandPath(path);
+        }
+    };
+    private final Action editNodeAction = new AbstractAction("edit") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTree tree = (JTree)getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+            //if(path==null) { return; }
+            Object node = path.getLastPathComponent();
+            if(node instanceof DefaultMutableTreeNode) {
+                DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)node;
+                textField.setText(leaf.getUserObject().toString());
+                int result = JOptionPane.showConfirmDialog(
+                    tree, textField, "edit",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if(result==JOptionPane.OK_OPTION) {
+                    String str = textField.getText();
+                    if(!str.trim().isEmpty()) {
+                        model.valueForPathChanged(path, str);
+                        //leaf.setUserObject(str);
+                        //model.nodeChanged(leaf);
+                    }
+                }
+            }
+        }
+    };
+    private final Action removeNodeAction = new AbstractAction("remove") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTree tree = (JTree)getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
+            //if(path.getParentPath()!=null) {
+            if(!node.isRoot()) {
+                model.removeNodeFromParent(node);
+            }
+        }
+    };
     public TreePopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {
@@ -52,53 +98,10 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void ancestorMoved(AncestorEvent event) {}
             @Override public void ancestorRemoved(AncestorEvent e) {}
         });
-        add(new AbstractAction("add") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTree tree = (JTree)getInvoker();
-                DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-                DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
-                DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
-                //model.insertNodeInto(child, parent, 0);
-                parent.add(child);
-                model.nodeStructureChanged(parent);
-                tree.expandPath(path);
-            }
-        });
-        add(new JMenuItem(new AbstractAction("edit") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTree tree = (JTree)getInvoker();
-                DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-                //if(path==null) { return; }
-                Object node = path.getLastPathComponent();
-                if(node instanceof DefaultMutableTreeNode) {
-                    DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)node;
-                    textField.setText(leaf.getUserObject().toString());
-                    int result = JOptionPane.showConfirmDialog(
-                        tree, textField, "edit",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                    if(result==JOptionPane.OK_OPTION) {
-                        String str = textField.getText();
-                        if(!str.trim().isEmpty()) {
-                            model.valueForPathChanged(path, str);
-                            //leaf.setUserObject(str);
-                            //model.nodeChanged(leaf);
-                        }
-                    }
-                }
-            }
-        }));
+        add(addNodeAction);
+        add(editNodeAction);
         addSeparator();
-        add(new AbstractAction("remove") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTree tree = (JTree)getInvoker();
-                DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-                //if(path.getParentPath()!=null) {
-                if(!node.isRoot()) {
-                    model.removeNodeFromParent(node);
-                }
-            }
-        });
+        add(removeNodeAction);
     }
     @Override public void show(Component c, int x, int y) {
         JTree tree = (JTree)c;

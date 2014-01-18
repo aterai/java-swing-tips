@@ -8,52 +8,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final int SECONDS = 5;
     private final JTextArea textArea = new JTextArea();
     private final JLabel label = new JLabel();
 
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
-        label.addHierarchyListener(new HierarchyListener() {
-            private Timer timer = null;
-            private AtomicInteger atomicDown = new AtomicInteger(SECONDS);
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                final JLabel l = (JLabel)e.getComponent();
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0) {
-                    if(l.isShowing()) {
-                        textArea.append("isShowing=ture\n");
-                        atomicDown.set(SECONDS);
-                        l.setText(String.format("Closing in %d seconds", SECONDS));
-                        timer = new Timer(1000, new ActionListener() {
-                            //private int countdown = SECONDS;
-                            @Override public void actionPerformed(ActionEvent e) {
-                                //int i = --countdown;
-                                int i = atomicDown.decrementAndGet();
-                                l.setText(String.format("Closing in %d seconds", i));
-                                if(i<=0) {
-                                    Window w = SwingUtilities.getWindowAncestor(l);
-                                    if(w!=null && timer!=null && timer.isRunning()) {
-                                        textArea.append("Timer: timer.stop()\n");
-                                        timer.stop();
-                                        textArea.append("window.dispose()\n");
-                                        w.dispose();
-                                    }
-                                }
-                            }
-                        });
-                        timer.start();
-                    }else{
-                        textArea.append("isShowing=false\n");
-                        if(timer!=null && timer.isRunning()) {
-                            textArea.append("timer.stop()\n");
-                            timer.stop();
-                            timer = null;
-                        }
-                    }
-                }
-            }
-        });
-
+        label.addHierarchyListener(new AutomaticallyCloseListener(textArea));
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.add(makePanel("HierarchyListener", frame, label));
         add(p, BorderLayout.NORTH);
@@ -101,5 +61,53 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class AutomaticallyCloseListener implements HierarchyListener {
+    private static final int SECONDS = 5;
+    private AtomicInteger atomicDown = new AtomicInteger(SECONDS);
+    private Timer timer = null;
+    private final JTextArea textArea;
+    public AutomaticallyCloseListener(JTextArea textArea) {
+        this.textArea = textArea;
+    }
+    private Timer makeTimer(final JLabel l) {
+        return new Timer(1000, new ActionListener() {
+            //private int countdown = SECONDS;
+            @Override public void actionPerformed(ActionEvent e) {
+                //int i = --countdown;
+                int i = atomicDown.decrementAndGet();
+                l.setText(String.format("Closing in %d seconds", i));
+                if(i<=0) {
+                    Window w = SwingUtilities.getWindowAncestor(l);
+                    if(w!=null && timer!=null && timer.isRunning()) {
+                        textArea.append("Timer: timer.stop()\n");
+                        timer.stop();
+                        textArea.append("window.dispose()\n");
+                        w.dispose();
+                    }
+                }
+            }
+        });
+    }
+    @Override public void hierarchyChanged(HierarchyEvent e) {
+        if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0) {
+            JLabel l = (JLabel)e.getComponent();
+            if(l.isShowing()) {
+                textArea.append("isShowing=ture\n");
+                atomicDown.set(SECONDS);
+                l.setText(String.format("Closing in %d seconds", SECONDS));
+                timer = makeTimer(l);
+                timer.start();
+            }else{
+                textArea.append("isShowing=false\n");
+                if(timer!=null && timer.isRunning()) {
+                    textArea.append("timer.stop()\n");
+                    timer.stop();
+                    timer = null;
+                }
+            }
+        }
     }
 }

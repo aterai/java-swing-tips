@@ -7,34 +7,17 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MainPanel extends JPanel {
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {
         super(new BorderLayout());
-        fileChooser.addChoosableFileFilter(new FileFilter() {
-            @Override public boolean accept(File file) {
-                if(file.isDirectory()) { return true; }
-                if(file.getName().toLowerCase().endsWith(".png")) { return true; }
-                return false;
-            }
-            @Override public String getDescription() {
-                return "PNG(*.png)";
-            }
-        });
-        fileChooser.addChoosableFileFilter(new FileFilter() {
-            @Override public boolean accept(File file) {
-                if(file.isDirectory()) { return true; }
-                if(file.getName().toLowerCase().endsWith(".jpg")) { return true; }
-                return false;
-            }
-            @Override public String getDescription() {
-                return "JPEG(*.jpg)";
-            }
-        });
-        //JDK 6
-        //FileFilter filter = new FileNameExtensionFilter("JPEG(*.jpg)", "jpg", "jpeg");
-        //fileChooser.addChoosableFileFilter(filter);
+        fileChooser.addChoosableFileFilter(new PngFileFilter());
+        fileChooser.addChoosableFileFilter(new JpgFileFilter());
+
+        FileFilter filter = new FileNameExtensionFilter("*.jpg, *.jpeg", "jpg", "jpeg");
+        fileChooser.addChoosableFileFilter(filter);
 
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser#showOpenDialog(...)"));
@@ -51,7 +34,7 @@ public class MainPanel extends JPanel {
         }));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -75,5 +58,35 @@ public class MainPanel extends JPanel {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class PngFileFilter extends FileFilter {
+    @Override public boolean accept(File file) {
+        if(file.isDirectory()) {
+            return true;
+        }
+        if(file.getName().toLowerCase().endsWith(".png")) {
+            return true;
+        }
+        return false;
+    }
+    @Override public String getDescription() {
+        return "PNG(*.png)";
+    }
+}
+
+class JpgFileFilter extends FileFilter {
+    @Override public boolean accept(File file) {
+        if(file.isDirectory()) {
+            return true;
+        }
+        if(file.getName().toLowerCase().endsWith(".jpg")) {
+            return true;
+        }
+        return false;
+    }
+    @Override public String getDescription() {
+        return "JPEG(*.jpg)";
     }
 }

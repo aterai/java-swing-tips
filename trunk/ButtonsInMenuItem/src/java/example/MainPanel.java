@@ -70,7 +70,7 @@ public class MainPanel extends JPanel {
 
         return item;
     }
-    private static JComponent makeEditButtonBar(final List<AbstractButton> list) {
+    private static JComponent makeEditButtonBar(List<AbstractButton> list) {
         int size = list.size();
         JPanel p = new JPanel(new GridLayout(1, size, 0, 0)) {
             @Override public Dimension getMaximumSize() {
@@ -84,47 +84,7 @@ public class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         p.setOpaque(false);
 
-        return new JLayer<JPanel>(p, new LayerUI<JPanel>() {
-            @Override public void paint(Graphics g, JComponent c) {
-                super.paint(g, c);
-                if(shape!=null) {
-                    Graphics2D g2 = (Graphics2D)g.create();
-                    g2.setPaint(Color.GRAY);
-                    g2.draw(shape);
-                    g2.dispose();
-                }
-            }
-            private Shape shape;
-            @Override public void installUI(JComponent c) {
-                super.installUI(c);
-                ((JLayer)c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
-            }
-            @Override public void uninstallUI(JComponent c) {
-                ((JLayer)c).setLayerEventMask(0);
-                super.uninstallUI(c);
-            }
-            private void update(MouseEvent e, JLayer<? extends JPanel> l) {
-                int id = e.getID();
-                Shape s = null;
-                if(id==MouseEvent.MOUSE_ENTERED || id==MouseEvent.MOUSE_MOVED) {
-                    Component c = e.getComponent();
-                    if(c!=list.get(list.size()-1)) {
-                        Rectangle r = c.getBounds();
-                        s = new Line2D.Double(r.x+r.width, r.y, r.x+r.width, r.y+r.height-1);
-                    }
-                }
-                if(s!=shape) {
-                    shape = s;
-                    l.getView().repaint();
-                }
-            }
-            @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-                update(e, l);
-            }
-            @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-                update(e, l);
-            }
-        });
+        return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(list.size()-1)));
     }
     private static AbstractButton makeButton(String title, Action action) {
         JButton b = new JButton(action);
@@ -234,5 +194,52 @@ class ToggleButtonBarCellIcon implements Icon {
     }
     @Override public int getIconHeight() {
         return 20;
+    }
+}
+
+class EditMenuLayerUI extends LayerUI<JPanel> {
+    private final AbstractButton lastButton;
+    private Shape shape;
+    public EditMenuLayerUI(AbstractButton button) {
+        super();
+        this.lastButton = button;
+    }
+    @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        if(shape!=null) {
+            Graphics2D g2 = (Graphics2D)g.create();
+            g2.setPaint(Color.GRAY);
+            g2.draw(shape);
+            g2.dispose();
+        }
+    }
+    @Override public void installUI(JComponent c) {
+        super.installUI(c);
+        ((JLayer)c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+    }
+    @Override public void uninstallUI(JComponent c) {
+        ((JLayer)c).setLayerEventMask(0);
+        super.uninstallUI(c);
+    }
+    private void update(MouseEvent e, JLayer<? extends JPanel> l) {
+        int id = e.getID();
+        Shape s = null;
+        if(id==MouseEvent.MOUSE_ENTERED || id==MouseEvent.MOUSE_MOVED) {
+            Component c = e.getComponent();
+            if(c!=lastButton) {
+                Rectangle r = c.getBounds();
+                s = new Line2D.Double(r.x+r.width, r.y, r.x+r.width, r.y+r.height-1);
+            }
+        }
+        if(s!=shape) {
+            shape = s;
+            l.getView().repaint();
+        }
+    }
+    @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+        update(e, l);
+    }
+    @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+        update(e, l);
     }
 }

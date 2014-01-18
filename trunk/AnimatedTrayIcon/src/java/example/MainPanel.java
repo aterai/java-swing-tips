@@ -9,9 +9,16 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private final JDialog dialog = new JDialog();
     private final Image[] imglist = new Image[4];
-    public MainPanel(final JFrame frame) {
+    private final PopupMenu popup = new PopupMenu();
+    private final JFrame frame;
+    private SystemTray tray;
+    private TrayIcon icon;
+    private Timer animator;
+
+    public MainPanel(JFrame frame) {
         super();
         setPreferredSize(new Dimension(320, 240));
+        this.frame = frame;
 
         imglist[0] = imglist[2] = new ImageIcon(getClass().getResource("16x16.png")).getImage();
         imglist[1] = new ImageIcon(getClass().getResource("16x16l.png")).getImage();
@@ -26,19 +33,24 @@ class MainPanel extends JPanel {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;
         }
-        final SystemTray tray = SystemTray.getSystemTray();
-        final PopupMenu popup = new PopupMenu();
-        //Image img = new ImageIcon(getClass().getResource("anime.gif")).getImage();
-        //final TrayIcon icon   = new TrayIcon(img, "TRAY", popup);
-        final TrayIcon icon   = new TrayIcon(imglist[0], "TRAY", popup);
-        final Timer animator = new Timer(100, new ActionListener() {
+        tray = SystemTray.getSystemTray();
+        //TEST: icon   = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
+        icon = new TrayIcon(imglist[0], "TRAY", popup);
+        animator = new Timer(100, new ActionListener() {
             private int idx = 0;
             @Override public void actionPerformed(ActionEvent e) {
                 icon.setImage(imglist[idx]);
                 idx = idx<imglist.length-1 ? idx+1 : 0;
             }
         });
-
+        initTrayPopupMenu(popup);
+        try{
+            tray.add(icon);
+        }catch(AWTException e) {
+            e.printStackTrace();
+        }
+    }
+    private void initTrayPopupMenu(PopupMenu popup) {
         MenuItem item1 = new MenuItem("Open:Frame");
         item1.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -85,13 +97,7 @@ class MainPanel extends JPanel {
         popup.addSeparator();
         popup.add(item5);
 
-        try{
-            tray.add(icon);
-        }catch(AWTException e) {
-            e.printStackTrace();
-        }
     }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
