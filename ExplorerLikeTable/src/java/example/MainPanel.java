@@ -175,7 +175,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         FontMetrics fm = table.getFontMetrics(table.getFont());
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth()-iconLabel.getPreferredSize().width;
-        textLabel.setPreferredSize(new Dimension(swidth>cwidth?cwidth:swidth,0)); //height:0 is dummy
+        textLabel.setPreferredSize(new Dimension(Math.min(swidth, cwidth), 0)); //height:0 is dummy
         if(isSelected) {
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());

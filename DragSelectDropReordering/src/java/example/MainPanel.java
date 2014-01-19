@@ -145,11 +145,17 @@ class ReorderbleList extends JList<ListItem> {
 
         setCellRenderer(new ListCellRenderer<ListItem>() {
             @Override public Component getListCellRendererComponent(JList list, ListItem item, int index, boolean isSelected, boolean cellHasFocus) {
-                icon.setIcon(isSelected ? item.sicon : item.nicon);
                 label.setText(item.title);
+                if(isSelected) {
+                    icon.setIcon(item.sicon);
+                    label.setForeground(list.getSelectionForeground());
+                    label.setBackground(list.getSelectionBackground());
+                }else{
+                    icon.setIcon(item.nicon);
+                    label.setForeground(list.getForeground());
+                    label.setBackground(list.getBackground());
+                }
                 label.setBorder(cellHasFocus ? dotBorder : empBorder);
-                label.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
-                label.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
                 return p;
             }
         });

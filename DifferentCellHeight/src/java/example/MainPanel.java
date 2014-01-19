@@ -61,9 +61,7 @@ class TextAreaRenderer extends JTextArea implements ListCellRenderer<String> {
     private static final Color EVEN_COLOR = new Color(230,255,230);
     @Override public Component getListCellRendererComponent(JList list, String str, int index, boolean isSelected, boolean cellHasFocus) {
         //setLineWrap(true);
-        if(focusBorder==null) {
-            focusBorder = new DotBorder(new Color(~list.getSelectionBackground().getRGB()),2);
-        }
+        setText(str==null ? "" : str);
         if(isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
@@ -71,8 +69,14 @@ class TextAreaRenderer extends JTextArea implements ListCellRenderer<String> {
             setBackground(index%2==0 ? EVEN_COLOR : list.getBackground());
             setForeground(list.getForeground());
         }
-        setBorder(cellHasFocus ? focusBorder : NOMAL_BORDER);
-        setText((str==null) ? "" : str);
+        if(cellHasFocus) {
+            if(focusBorder==null) {
+                focusBorder = new DotBorder(new Color(~list.getSelectionBackground().getRGB()), 2);
+            }
+            setBorder(focusBorder);
+        }else{
+            setBorder(NOMAL_BORDER);
+        }
         return this;
     }
 }

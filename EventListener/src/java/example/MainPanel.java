@@ -15,34 +15,6 @@ public class MainPanel extends JPanel {
     private final MyLabel    label  = new MyLabel("test");
     private final MyComboBox combo  = new MyComboBox();
 
-    static class MyComboBox extends JComboBox implements FontChangeListener {
-        @SuppressWarnings("unchecked")
-        public MyComboBox() {
-            super(new DefaultComboBoxModel(new Object[] {"test test"}));
-            setFont(FONT12);
-        }
-        @Override public void fontStateChanged(FontChangeEvent e) {
-            setFont(e.getFont());
-        }
-    }
-    static class MyLabel extends JLabel implements FontChangeListener {
-        public MyLabel(String str) {
-            super(str);
-            setFont(FONT12);
-        }
-        @Override public void fontStateChanged(FontChangeEvent e) {
-            setFont(e.getFont());
-        }
-    }
-    static class MyButton extends JButton implements FontChangeListener {
-        public MyButton(String str) {
-            super(str);
-            setFont(FONT12);
-        }
-        @Override public void fontStateChanged(FontChangeEvent e) {
-            setFont(e.getFont());
-        }
-    }
 //*
     //http://docs.oracle.com/javase/jp/6/api/javax/swing/event/EventListenerList.html
     private final EventListenerList listenerList = new EventListenerList();
@@ -119,6 +91,10 @@ public class MainPanel extends JPanel {
             }
         });
 
+        label.setFont(FONT12);
+        combo.setFont(FONT12);
+        button.setFont(FONT12);
+
         JPanel panel = new JPanel();
         panel.add(label);
         panel.add(combo);
@@ -153,6 +129,7 @@ public class MainPanel extends JPanel {
 interface FontChangeListener extends EventListener {
     void fontStateChanged(FontChangeEvent e);
 }
+
 class FontChangeEvent extends EventObject {
     private final String command;
     private final Font font;
@@ -166,5 +143,32 @@ class FontChangeEvent extends EventObject {
         super(source);
         this.command = cmd;
         this.font = font;
+    }
+}
+
+class MyComboBox extends JComboBox<String> implements FontChangeListener {
+    public MyComboBox() {
+        super(new DefaultComboBoxModel<String>(new String[] {"test test"}));
+    }
+    @Override public void fontStateChanged(FontChangeEvent e) {
+        setFont(e.getFont());
+    }
+}
+
+class MyLabel extends JLabel implements FontChangeListener {
+    public MyLabel(String str) {
+        super(str);
+    }
+    @Override public void fontStateChanged(FontChangeEvent e) {
+        setFont(e.getFont());
+    }
+}
+
+class MyButton extends JButton implements FontChangeListener {
+    public MyButton(String str) {
+        super(str);
+    }
+    @Override public void fontStateChanged(FontChangeEvent e) {
+        setFont(e.getFont());
     }
 }

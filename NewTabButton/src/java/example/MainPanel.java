@@ -318,9 +318,15 @@ class TabLayout implements LayoutManager, java.io.Serializable {
             int x = insets.left;
             int y = insets.top;
             for(int i=0;i<ncomponents;i++) {
-                int a = gap>0 ? 1 : 0;
-                gap--;
-                int cw = i==ncols ? lastw : w+a;
+                int a = 0;
+                if(gap>0) {
+                    a = 1;
+                    gap--;
+                }
+                int cw = w + a;
+                if(i==ncols) {
+                    cw = lastw;
+                }
                 parent.getComponent(i).setBounds(x, y, cw, h);
                 x += w + a;
             }

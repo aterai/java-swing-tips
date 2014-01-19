@@ -76,33 +76,37 @@ class DragHandler extends MouseAdapter {
         }
         startPt = e.getPoint();
     }
+    private void startDragging(JComponent parent, Point pt) {
+        Component c = parent.getComponentAt(pt);
+        index = parent.getComponentZOrder(c);
+        if(c == parent || index < 0) {
+            return;
+        }
+        draggingComonent = c;
+        swapComponentLocation(parent, c, gap, index);
+
+        window.add(draggingComonent);
+        window.pack();
+
+        Dimension d = draggingComonent.getPreferredSize();
+        Point p = new Point(pt.x - d.width/2, pt.y - d.height/2);
+        SwingUtilities.convertPointToScreen(p, parent);
+        window.setLocation(p);
+        window.setVisible(true);
+    }
+    private static void swapComponentLocation(Container parent, Component remove, Component add, int idx) {
+        parent.remove(remove);
+        parent.add(add, idx);
+        parent.revalidate();
+        //parent.repaint();
+    }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
         JComponent parent = (JComponent)e.getComponent();
 
         if(startPt != null && Math.sqrt(Math.pow(pt.x-startPt.x, 2)+Math.pow(pt.y-startPt.y, 2))>gestureMotionThreshold) {
+            startDragging(parent, pt);
             startPt = null;
-            Component c = parent.getComponentAt(pt);
-            index = parent.getComponentZOrder(c);
-            if(c == parent || index < 0) {
-                return;
-            }
-            draggingComonent = c;
-
-            parent.remove(draggingComonent);
-            parent.add(gap, index);
-            parent.revalidate();
-            parent.repaint();
-
-            window.add(draggingComonent);
-            window.pack();
-
-            Dimension d = draggingComonent.getPreferredSize();
-            Point p = new Point(pt.x - d.width/2, pt.y - d.height/2);
-            SwingUtilities.convertPointToScreen(p, parent);
-            window.setLocation(p);
-            window.setVisible(true);
-
             return;
         }
         if(!window.isVisible() || draggingComonent==null) {
@@ -121,28 +125,15 @@ class DragHandler extends MouseAdapter {
             Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
             Rectangle r2 = new Rectangle(r.x+wd2, r.y, wd2, r.height);
             if(r1.contains(pt)) {
-                if(c==gap) {
-                    return;
-                }
-                parent.remove(gap);
-                parent.add(gap, i-1>0 ? i : 0);
-                parent.revalidate();
-                parent.repaint();
+                swapComponentLocation(parent, gap, gap, i-1>0 ? i : 0);
                 return;
             }else if(r2.contains(pt)) {
-                if(c==gap) {
-                    return;
-                }
-                parent.remove(gap);
-                parent.add(gap, i);
-                parent.revalidate();
-                parent.repaint();
+                swapComponentLocation(parent, gap, gap, i);
                 return;
             }
         }
         parent.remove(gap);
         parent.revalidate();
-        parent.repaint();
     }
 
     @Override public void mouseReleased(MouseEvent e) {
@@ -164,27 +155,17 @@ class DragHandler extends MouseAdapter {
             Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
             Rectangle r2 = new Rectangle(r.x+wd2, r.y, wd2, r.height);
             if(r1.contains(pt)) {
-                parent.remove(gap);
-                parent.add(cmp, i-1>0 ? i : 0);
-                parent.revalidate();
-                parent.repaint();
+                swapComponentLocation(parent, gap, cmp, i-1>0 ? i : 0);
                 return;
             }else if(r2.contains(pt)) {
-                parent.remove(gap);
-                parent.add(cmp, i);
-                parent.revalidate();
-                parent.repaint();
+                swapComponentLocation(parent, gap, cmp, i);
                 return;
             }
         }
         if(parent.getBounds().contains(pt)) {
-            parent.remove(gap);
-            parent.add(cmp);
+            swapComponentLocation(parent, gap, cmp, parent.getComponentCount());
         }else{
-            parent.remove(gap);
-            parent.add(cmp, index);
+            swapComponentLocation(parent, gap, cmp, index);
         }
-        parent.revalidate();
-        parent.repaint();
     }
 }
