@@ -20,38 +20,23 @@ class MainPanel extends JPanel {
         image1  = new ImageIcon(getClass().getResource("favicon.png"));
         image2  = new ImageIcon(getClass().getResource("16x16.png"));
         rss     = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
+
         combo01 = makeTestComboBox(makeModel());
         combo02 = makeTestComboBox(makeModel());
 
+        initComboBox(combo02, rss, image1);
+
+        add(makeTitlePanel("setEditable(true)", Arrays.asList(combo01, combo02)));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private void initComboBox(final JComboBox combo02, ImageIcon rss, ImageIcon image1) {
         final JTextField field = (JTextField) combo02.getEditor().getEditorComponent();
-        final JButton button = new JButton(rss);
-        final JLabel label = new JLabel(image1);
-        label.addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        field.requestFocusInWindow();
-                        field.selectAll();
-                    }
-                });
-            }
-        });
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        label.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
-        button.setRolloverIcon(makeFilteredImage(rss));
-        //button.setRolloverIcon(makeFilteredImage2(rss));
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked...");
-            }
-        });
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        button.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        final JButton button = makeButton(rss);
+        final JLabel label = makeLabel(image1, field);
         combo02.add(button);
         combo02.add(label);
+
 //         field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,14+2));
 //         field.addComponentListener(new ComponentAdapter() {
 //             @Override public void componentResized(ComponentEvent e) {
@@ -92,9 +77,39 @@ class MainPanel extends JPanel {
                 });
             }
         });
-        add(makeTitlePanel("setEditable(true)", Arrays.asList(combo01, combo02)));
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 240));
+    }
+    private static JButton makeButton(ImageIcon rss) {
+        JButton button = new JButton(rss);
+
+        button.setRolloverIcon(makeFilteredImage(rss));
+        //button.setRolloverIcon(makeFilteredImage2(rss));
+        button.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked...");
+            }
+        });
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        button.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        return button;
+    }
+    private static JLabel makeLabel(ImageIcon img, final JTextField field) {
+        JLabel label = new JLabel(img);
+        label.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        field.requestFocusInWindow();
+                        field.selectAll();
+                    }
+                });
+            }
+        });
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        label.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        return label;
     }
     private TestItem getTestItemFromModel(String text) {
         DefaultComboBoxModel<TestItem> model = (DefaultComboBoxModel<TestItem>)combo02.getModel();

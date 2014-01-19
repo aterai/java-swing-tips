@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     public MainPanel() {
         super(new BorderLayout());
-        tree.setModel(makeModel());
+        //tree.setModel(makeModel());
 
         JPanel p = new JPanel(new GridLayout(0,1,2,2));
         p.add(new JButton(new AbstractAction("expand A") {
@@ -44,24 +44,25 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static DefaultTreeModel makeModel() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
-        DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
-        DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
-        set1.add(new DefaultMutableTreeNode("111111111"));
-        set1.add(new DefaultMutableTreeNode("22222222222"));
-        set1.add(new DefaultMutableTreeNode("33333"));
-        set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-        set2.add(new DefaultMutableTreeNode("asdf"));
-        set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-        set3.add(new DefaultMutableTreeNode("zxcvzxcvzx"));
-        set3.add(new DefaultMutableTreeNode("qwerqwerqwerqwerqwer"));
-        root.add(set1);
-        root.add(set2);
-        set2.add(set3);
-        return new DefaultTreeModel(root);
-    }
+
+//     private static DefaultTreeModel makeModel() {
+//         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+//         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
+//         DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
+//         DefaultMutableTreeNode set3 = new DefaultMutableTreeNode("Set 003");
+//         set1.add(new DefaultMutableTreeNode("111111111"));
+//         set1.add(new DefaultMutableTreeNode("22222222222"));
+//         set1.add(new DefaultMutableTreeNode("33333"));
+//         set2.add(new DefaultMutableTreeNode("asdfasdfas"));
+//         set2.add(new DefaultMutableTreeNode("asdf"));
+//         set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
+//         set3.add(new DefaultMutableTreeNode("zxcvzxcvzx"));
+//         set3.add(new DefaultMutableTreeNode("qwerqwerqwerqwerqwer"));
+//         root.add(set1);
+//         root.add(set2);
+//         set2.add(set3);
+//         return new DefaultTreeModel(root);
+//     }
 
     //Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
     //http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html

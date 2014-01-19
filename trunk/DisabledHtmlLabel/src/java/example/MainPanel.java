@@ -22,32 +22,7 @@ public class MainPanel extends JPanel {
                                 : UIManager.getColor("Label.disabledForeground"));
             }
         };
-        final JLabel label3 = new JLabel(HTML_TEXT) {
-            private BufferedImage shadow;
-            @Override public void setEnabled(boolean b) {
-                setForeground(b ? UIManager.getColor("Label.foreground")
-                                : UIManager.getColor("Label.disabledForeground"));
-                if(!b) {
-                    BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-                    Graphics2D g2 = source.createGraphics();
-                    g2.setPaint(new Color(0,0,0,0));
-                    g2.fillRect(0,0,getWidth(),getHeight());
-                    //print(g2);
-                    paint(g2);
-                    g2.dispose();
-                    ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-                    shadow = colorConvert.filter(source, null);
-                }
-                super.setEnabled(b);
-            }
-            @Override public void paintComponent(Graphics g) {
-                if(isEnabled()) {
-                    super.paintComponent(g);
-                }else{
-                    if(shadow!=null) { g.drawImage(shadow, 0, 0, this); }
-                }
-            }
-        };
+        final JLabel label3 = new DisabledHtmlLabel(HTML_TEXT);
 
         final JEditorPane editor1 = new JEditorPane("text/html", HTML_TEXT);
         editor1.setOpaque(false);
@@ -84,7 +59,7 @@ public class MainPanel extends JPanel {
 
         add(check, BorderLayout.NORTH);
         add(box);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makePanel(String title, JComponent label) {
         JPanel p = new JPanel(new GridLayout(1,1));
@@ -112,5 +87,37 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class DisabledHtmlLabel extends JLabel {
+    public DisabledHtmlLabel(String text) {
+        super(text);
+    }
+    private BufferedImage shadow;
+    @Override public void setEnabled(boolean b) {
+        setForeground(b ? UIManager.getColor("Label.foreground")
+                        : UIManager.getColor("Label.disabledForeground"));
+        if(!b) {
+            BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = source.createGraphics();
+            g2.setPaint(new Color(0,0,0,0));
+            g2.fillRect(0,0,getWidth(),getHeight());
+            //print(g2);
+            paint(g2);
+            g2.dispose();
+            ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+            shadow = colorConvert.filter(source, null);
+        }
+        super.setEnabled(b);
+    }
+    @Override public void paintComponent(Graphics g) {
+        if(isEnabled()) {
+            super.paintComponent(g);
+        }else{
+            if(shadow!=null) {
+                g.drawImage(shadow, 0, 0, this);
+            }
+        }
     }
 }

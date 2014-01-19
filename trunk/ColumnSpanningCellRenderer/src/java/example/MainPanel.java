@@ -106,12 +106,14 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
             test = (Test)value;
             add(iconLabel, BorderLayout.WEST);
         }else{
-            int mrow = table.convertRowIndexToModel(row);
             String title = value!=null ? value.toString() : "";
+            int mrow = table.convertRowIndexToModel(row);
             Test t = (Test)table.getModel().getValueAt(mrow, 0);
-            String text = t!=null ? t.text : "";
-            Icon icon = t!=null ? t.icon : null;
-            test = new Test(title, icon, text);
+            if(t!=null) {
+                test = new Test(title, t.icon, t.text);
+            }else{
+                test = new Test(title, null, "");
+            }
             remove(iconLabel);
         }
         label.setText(test.title);
@@ -128,7 +130,9 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         }
         textArea.scrollRectToVisible(cr);
 /*/
-        if(column!=0) { cr.x -= iconLabel.getPreferredSize().width; }
+        if(column!=0) {
+            cr.x -= iconLabel.getPreferredSize().width;
+        }
         scroll.getViewport().setViewPosition(cr.getLocation());
 //*/
         if(isSelected) {
