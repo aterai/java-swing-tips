@@ -232,8 +232,8 @@ class GradientPalletSliderUI extends MetalSliderUI {
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
         try{
             pg.grabPixels();
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(InterruptedException ex) {
+            ex.printStackTrace();
         }
         return pallet;
     }

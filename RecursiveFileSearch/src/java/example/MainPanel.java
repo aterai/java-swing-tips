@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.io.*;
 import javax.swing.*;
 
@@ -111,7 +112,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }

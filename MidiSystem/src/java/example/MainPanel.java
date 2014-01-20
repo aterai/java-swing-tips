@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.io.IOException;
 import javax.swing.*;
 import javax.sound.midi.*;
 //import javax.sound.midi.spi.*;
@@ -15,7 +16,7 @@ class MainPanel extends JPanel {
     private final JButton stop;
     private final JButton init;
     public MainPanel() {
-        super(new BorderLayout());
+        super(new BorderLayout(5, 5));
         URL url = getClass().getResource("Mozart_toruko_k.mid");
         final Sequencer sequencer;
         try{
@@ -23,7 +24,7 @@ class MainPanel extends JPanel {
             sequencer = MidiSystem.getSequencer();
             sequencer.open();
             sequencer.setSequence(s);
-        }catch(Exception ex) {
+        }catch(InvalidMidiDataException | MidiUnavailableException | IOException ex) {
             ex.printStackTrace();
             start = null;
             stop = null;
@@ -67,6 +68,7 @@ class MainPanel extends JPanel {
         stop.setEnabled(false);
 
         JTextArea label = new JTextArea("Wolfgang Amadeus Mozart\nPiano Sonata No. 11 in A major, K 331\n(Turkish Rondo)");
+        label.setBorder(BorderFactory.createTitledBorder("MIDI"));
         label.setEditable(false);
         label.setBackground(getBackground());
 
@@ -77,15 +79,10 @@ class MainPanel extends JPanel {
         box.add(stop);
         box.add(init);
 
-        Box b = Box.createVerticalBox();
-        b.setBorder(BorderFactory.createTitledBorder("MIDI"));
-        b.add(label);
-        b.add(new JSeparator());
-        b.add(box);
-
-        add(b);
-        //setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 160));
+        add(label);
+        add(box, BorderLayout.SOUTH);
+        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

@@ -90,22 +90,14 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel();
         p.add(new JButton(new AbstractAction("undo") {
             @Override public void actionPerformed(ActionEvent e) {
-                try{
-                    undoManager.undo();
-                    um.undo();
-                }catch(Exception ex) {
-                    Toolkit.getDefaultToolkit().beep();
-                }
+                undoManager.undo();
+                um.undo();
             }
         }));
         p.add(new JButton(new AbstractAction("redo") {
             @Override public void actionPerformed(ActionEvent e) {
-                try{
-                    undoManager.redo();
-                    um.redo();
-                }catch(Exception ex) {
-                    Toolkit.getDefaultToolkit().beep();
-                }
+                undoManager.redo();
+                um.redo();
             }
         }));
         p.add(new JButton(new AbstractAction("setText(new Date())") {

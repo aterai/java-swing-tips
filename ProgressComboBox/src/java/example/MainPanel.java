@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
                                 //setProgress(100 * current / max);
                                 count = 100 * current / max;
                                 publish("test: "+current);
-                            }catch(Exception ie) {
+                            }catch(InterruptedException ie) {
                                 return "Exception";
                             }
                             current++;

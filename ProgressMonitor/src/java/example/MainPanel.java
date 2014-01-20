@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -24,7 +25,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     class RunAction extends AbstractAction {
         public RunAction() {
@@ -67,7 +68,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }

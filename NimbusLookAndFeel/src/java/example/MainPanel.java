@@ -37,7 +37,8 @@ public class MainPanel extends JPanel {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
                 try{
                     setLookAndFeel(m.getActionCommand());
-                }catch(Exception ex) {
+                }catch(ClassNotFoundException | InstantiationException |
+                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }

@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.StringReader;
+import java.io.*;
 import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
                             }
                         }
                     }, Boolean.TRUE);
-                }catch(Exception ex) {
+                }catch(IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -92,7 +92,7 @@ public class MainPanel extends JPanel {
         int end   = element.getEndOffset() - lf; //lf???, setDrawsLayeredHighlights(false) bug???
         try{
             highlighter.addHighlight(start, end, highlightPainter);
-        }catch(Exception ex) {
+        }catch(BadLocationException ex) {
             ex.printStackTrace();
         }
     }

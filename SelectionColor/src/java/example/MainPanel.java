@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.regex.*;
 import javax.swing.*;
@@ -92,7 +93,7 @@ class MainPanel extends JPanel {
         BufferedImage image;
         try{
             image = ImageIO.read(url);
-        }catch(Exception ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -44,13 +45,9 @@ public class MainPanel extends JPanel {
     });
     private final Action enterAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            try{
-                int v = Integer.parseInt(field.getText());
-                if(v>0 && v<=maxPageIndex) {
-                    currentPageIndex = v;
-                }
-            }catch(Exception ex) {
-                ex.printStackTrace();
+            int v = Integer.parseInt(field.getText());
+            if(v>0 && v<=maxPageIndex) {
+                currentPageIndex = v;
             }
             initFilterAndButton();
         }
@@ -94,7 +91,7 @@ public class MainPanel extends JPanel {
                 }else{
                     try{
                         text = get();
-                    }catch(Exception ex) {
+                    }catch(InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
                         text = "Exception";
                     }
@@ -173,7 +170,7 @@ class Task extends SwingWorker<String, List<Object[]>> {
     private int makeRowListAndPublish(int current, int size) {
         try{
             Thread.sleep(500); //dummy
-        }catch(Exception ex) {
+        }catch(InterruptedException ex) {
             ex.printStackTrace();
         }
         List<Object[]> result = new ArrayList<Object[]>(size);

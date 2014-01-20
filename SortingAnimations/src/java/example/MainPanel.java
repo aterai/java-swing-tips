@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 // SortAnim.java -- Animate sorting algorithms
@@ -277,7 +278,7 @@ public class MainPanel extends JPanel {
                 }else{
                     try{
                         text = get();
-                    }catch(Exception ex) {
+                    }catch(InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
                         text = "Exception";
                     }

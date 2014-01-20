@@ -191,10 +191,9 @@ class CellTextArea extends JTextArea {
     //http://www.codeguru.com/java/articles/141.shtml
     @Override public void setText(String str) {
         FontMetrics fm = getFontMetrics(getFont());
-        BufferedReader br = new BufferedReader(new StringReader(str));
         String line;
         int maxWidth = 0, lines = 0;
-        try{
+        try(BufferedReader br = new BufferedReader(new StringReader(str))) {
             while((line = br.readLine()) != null) {
                 int width = SwingUtilities.computeStringWidth(fm, line);
                 if(maxWidth < width) {
@@ -202,7 +201,7 @@ class CellTextArea extends JTextArea {
                 }
                 lines++;
             }
-        }catch(Exception ex) {
+        }catch(IOException ex) {
             ex.printStackTrace();
         }
         lines = lines < 1 ? 1 : lines;
@@ -240,7 +239,7 @@ class CellTextArea2 extends JTextArea {
                     maxWidth = width;
                 }
             }
-        }catch(Exception ex) {
+        }catch(BadLocationException ex) {
             ex.printStackTrace();
         }
         setRows(lineCount);

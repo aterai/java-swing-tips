@@ -9,6 +9,7 @@ import java.beans.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -32,7 +33,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class RunAction extends AbstractAction {
@@ -50,33 +51,7 @@ public class MainPanel extends JPanel {
             statusPanel.revalidate();
             bar.setIndeterminate(true);
 
-            worker = new SwingWorker<String, String>() {
-                @Override public String doInBackground() {
-                    System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-                    try{
-                        Thread.sleep(1000);
-                    }catch(InterruptedException ie) {
-                        return "Interrupted";
-                    }
-                    int current = 0;
-                    int lengthOfTask = 120; //list.size();
-                    publish("Length Of Task: " + lengthOfTask);
-                    publish("------------------------------");
-
-                    while(current<lengthOfTask && !isCancelled()) {
-                        if(!bar.isDisplayable()) {
-                            return "Disposed";
-                        }
-                        try{
-                            Thread.sleep(50);
-                        }catch(InterruptedException ie) {
-                            return "Interrupted";
-                        }
-                        setProgress(100 * current / lengthOfTask);
-                        current++;
-                    }
-                    return "Done";
-                }
+            worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     for(String message : chunks) {
@@ -96,7 +71,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }
@@ -146,6 +121,35 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class Task extends SwingWorker<String, String> {
+    @Override public String doInBackground() {
+        System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException ie) {
+            return "Interrupted";
+        }
+        int current = 0;
+        int lengthOfTask = 120; //list.size();
+        publish("Length Of Task: " + lengthOfTask);
+        publish("------------------------------");
+
+        while(current<lengthOfTask && !isCancelled()) {
+//             if(!bar.isDisplayable()) {
+//                 return "Disposed";
+//             }
+            try{
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            setProgress(100 * current / lengthOfTask);
+            current++;
+        }
+        return "Done";
     }
 }
 

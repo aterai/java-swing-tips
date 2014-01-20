@@ -171,14 +171,15 @@ class MainPanel extends JPanel {
                 Class lnfClass = Class.forName(lnf);
                 LookAndFeel newLnF = (LookAndFeel)(lnfClass.newInstance());
                 return newLnF.isSupportedLookAndFeel();
-            }catch(Exception e) {
+            }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                 return false;
             }
         }
         @Override public void actionPerformed(ActionEvent e) {
             try{
                 UIManager.setLookAndFeel(lnf);
-            }catch(Exception ex) {
+            }catch(ClassNotFoundException | InstantiationException |
+                   IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 ex.printStackTrace();
                 System.out.println("Failed loading L&F: " + lnf);
             }

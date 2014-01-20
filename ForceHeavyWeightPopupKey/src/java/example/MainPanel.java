@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
             }
             field.setAccessible(true);
             label2.putClientProperty(field.get(null), Boolean.TRUE);
-        }catch(Exception ex) {
+        }catch(ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();
         }
         glass.add(label1, BorderLayout.WEST);

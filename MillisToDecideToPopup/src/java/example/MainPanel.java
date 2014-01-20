@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -56,7 +57,7 @@ public class MainPanel extends JPanel {
             Window w = SwingUtilities.getWindowAncestor((Component)e.getSource());
             int toDecideToPopup = (int)millisToDecideToPopup.getValue();
             int toPopup         = (int)millisToPopup.getValue();
-            final int lengthOfTask = Math.max(10000, toDecideToPopup*5);
+            int lengthOfTask    = Math.max(10000, toDecideToPopup*5);
             monitor = new ProgressMonitor(w, "message", "note", 0, 100);
             monitor.setMillisToDecideToPopup(toDecideToPopup);
             monitor.setMillisToPopup(toPopup);
@@ -65,24 +66,7 @@ public class MainPanel extends JPanel {
             //System.out.println(monitor.getMillisToPopup());
 
             runButton.setEnabled(false);
-            worker = new SwingWorker<String, String>() {
-                @Override public String doInBackground() {
-                    int current = 0;
-                    while(current<lengthOfTask && !isCancelled()) {
-                        if(current%10==0) {
-                            try{
-                                Thread.sleep(5);
-                            }catch(InterruptedException ie) {
-                                return "Interrupted";
-                            }
-                        }
-                        int v = 100 * current / lengthOfTask;
-                        setProgress(v);
-                        publish(String.format("%d%%", v));
-                        current++;
-                    }
-                    return "Done";
-                }
+            worker = new Task(lengthOfTask) {
                 @Override protected void process(List<String> chunks) {
                     for(String message : chunks) {
                         monitor.setNote(message);
@@ -97,7 +81,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }
@@ -136,6 +120,31 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<String, String> {
+    private final int lengthOfTask;
+    public Task(int lengthOfTask) {
+        this.lengthOfTask = lengthOfTask;
+    }
+    @Override public String doInBackground() {
+        int current = 0;
+        while(current<lengthOfTask && !isCancelled()) {
+            if(current%10==0) {
+                try{
+                    Thread.sleep(5);
+                }catch(InterruptedException ie) {
+                    return "Interrupted";
+                }
+            }
+            int v = 100 * current / lengthOfTask;
+            setProgress(v);
+            publish(String.format("%d%%", v));
+            current++;
+        }
+        return "Done";
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final ProgressMonitor monitor;
     public ProgressListener(ProgressMonitor monitor) {

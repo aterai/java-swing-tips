@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
             //symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
             //http://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
             bi = ImageIO.read(getClass().getResource("symbol_scale_2.jpg"));
-        }catch(Exception ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
         }
 
