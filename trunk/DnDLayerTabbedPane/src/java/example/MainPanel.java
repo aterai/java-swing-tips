@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
                 t.setTransferHandler(handler);
                 t.getDropTarget().addDropTargetListener(dtl);
             }
-        }catch(Exception ex) {
+        }catch(TooManyListenersException ex) {
             ex.printStackTrace();
         }
 
@@ -482,9 +482,9 @@ class TabTransferHandler extends TransferHandler {
     }
 //     private static boolean isWebStart() {
 //         try{
-//             javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
+//             ServiceManager.lookup("javax.jnlp.BasicService");
 //             return true;
-//         }catch(Throwable ex) {
+//         }catch(UnavailableServiceException ex) {
 //             return false;
 //         }
 //     }
@@ -536,10 +536,8 @@ class TabTransferHandler extends TransferHandler {
                 source.exportTab(source.dragTabIndex, target, index);
             }
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }
@@ -565,13 +563,20 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
         if(loc != null && loc.isDropable() && loc.getIndex()>=0) {
             int index = loc.getIndex();
             boolean isZero = index==0;
-            Rectangle r = tabbedPane.getBoundsAt(isZero?0:index-1);
-            if(tabbedPane.getTabPlacement()==JTabbedPane.TOP ||
-               tabbedPane.getTabPlacement()==JTabbedPane.BOTTOM) {
-                lineRect.setRect(r.x-LINEWIDTH/2+r.width*(isZero?0:1), r.y,LINEWIDTH,r.height);
+            Rectangle r = tabbedPane.getBoundsAt(isZero ? 0 : index-1);
+            int x, y, w, h, a = isZero ? 0 : 1;
+            if(tabbedPane.getTabPlacement()==JTabbedPane.TOP || tabbedPane.getTabPlacement()==JTabbedPane.BOTTOM) {
+                x = r.x - LINEWIDTH/2 + r.width * a;
+                y = r.y;
+                w = LINEWIDTH;
+                h = r.height;
             }else{
-                lineRect.setRect(r.x,r.y-LINEWIDTH/2+r.height*(isZero?0:1), r.width,LINEWIDTH);
+                x = r.x;
+                y = r.y - LINEWIDTH/2 + r.height * a;
+                w = r.width;
+                h = LINEWIDTH;
             }
+            lineRect.setRect(x, y, w, h);
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             g2.setColor(Color.RED);

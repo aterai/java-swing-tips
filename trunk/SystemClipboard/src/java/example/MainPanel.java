@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.jnlp.*;
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class MainPanel extends JPanel {
 
         try{
             cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(Throwable t) {
+        }catch(UnavailableServiceException t) {
             cs = null;
         }
         add(new JScrollPane(label));
@@ -38,7 +39,7 @@ public class MainPanel extends JPanel {
                     }
                     label.setText(str);
                     label.setIcon(image);
-                }catch(Exception ex) {
+                }catch(UnsupportedFlavorException | IOException ex) {
                     ex.printStackTrace();
                 }
             }

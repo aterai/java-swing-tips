@@ -200,7 +200,7 @@ public class MainPanel extends JPanel {
 class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     private int scount = 0;
     private final File dir;
-    public Task(File dir) {
+    public RecursiveFileSearchTask(File dir) {
         this.dir = dir;
     }
     @Override public String doInBackground() {

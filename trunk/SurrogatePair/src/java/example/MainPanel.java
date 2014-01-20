@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
@@ -21,9 +22,9 @@ public class MainPanel extends JPanel {
         editor1.setEditorKit(htmlEditorKit);
 
         final URL url = getClass().getResource("SurrogatePair.html");
-        try{
-            editor1.read(new InputStreamReader(url.openStream(), "UTF-8"), "html");
-        }catch(Exception ex) {
+        try(Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+            editor1.read(reader, "html");
+        }catch(IOException ex) {
             editor1.setText("<html><p>(&#xD85B;&#xDE40;) (&#x26E40;)<br />(&#xD842;&#xDF9F;) (&#x00020B9F;)</p></html>");
         }
 
@@ -38,10 +39,10 @@ public class MainPanel extends JPanel {
 
         add(new JButton(new AbstractAction("browse: SurrogatePair.html") {
             @Override public void actionPerformed(ActionEvent e) {
-                javax.jnlp.BasicService bs = null;
+                BasicService bs = null;
                 try{
-                    bs = (javax.jnlp.BasicService)javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
-                }catch(Throwable t) {
+                    bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
+                }catch(UnavailableServiceException t) {
                     bs = null;
                 }
                 if(bs!=null) {
@@ -50,19 +51,16 @@ public class MainPanel extends JPanel {
                     try{
                         File tmp = File.createTempFile("_tmp", ".html");
                         tmp.deleteOnExit();
-                        InputStream in   = new BufferedInputStream(url.openStream());
-                        OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp));
-                        byte buf[] = new byte[256];
-                        int len;
-                        while((len = in.read(buf)) != -1) {
-                            out.write(buf, 0, len);
+                        try(InputStream in = new BufferedInputStream(url.openStream()); OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
+                            byte buf[] = new byte[256];
+                            int len;
+                            while((len = in.read(buf)) != -1) {
+                                out.write(buf, 0, len);
+                            }
+                            out.flush();
+                            Desktop.getDesktop().browse(tmp.toURI());
                         }
-                        out.flush();
-                        out.close();
-                        in.close();
-
-                        Desktop.getDesktop().browse(tmp.toURI());
-                    }catch(Exception ex) {
+                    }catch(IOException ex) {
                         ex.printStackTrace();
                     }
                 }

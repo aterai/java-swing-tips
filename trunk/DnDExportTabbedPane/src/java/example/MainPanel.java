@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
                 t.setTransferHandler(handler);
                 t.getDropTarget().addDropTargetListener(dropTargetListener);
             }
-        }catch(Exception ex) {
+        }catch(TooManyListenersException ex) {
             ex.printStackTrace();
         }
 
@@ -467,9 +467,9 @@ class TabTransferHandler extends TransferHandler {
     }
 //     private static boolean isWebStart() {
 //         try{
-//             javax.jnlp.ServiceManager.lookup("javax.jnlp.BasicService");
+//             ServiceManager.lookup("javax.jnlp.BasicService");
 //             return true;
-//         }catch(Throwable ex) {
+//         }catch(UnavailableServiceException ex) {
 //             return false;
 //         }
 //     }
@@ -525,10 +525,8 @@ class TabTransferHandler extends TransferHandler {
                 source.exportTab(source.dragTabIndex, target, index);
             }
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }

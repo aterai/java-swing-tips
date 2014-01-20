@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
                     });
                 }
             });
-        }catch(Throwable use) { //UnavailableServiceException use) {
+        }catch(UnavailableServiceException use) {
             use.printStackTrace();
             return;
         }
