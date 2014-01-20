@@ -75,13 +75,8 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         p.add(new JButton(new AbstractAction("changeSelection") {
             @Override public void actionPerformed(ActionEvent e) {
-                int row = -1, col = -1;
-                try{
-                    row = Integer.parseInt(rowField.getValue().toString());
-                    col = Integer.parseInt(colField.getValue().toString());
-                }catch(Exception ex) {
-                    ex.printStackTrace();
-                }
+                int row = Integer.parseInt(rowField.getValue().toString());
+                int col = Integer.parseInt(colField.getValue().toString());
 
                 table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
                 //table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());
@@ -116,8 +111,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

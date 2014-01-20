@@ -106,9 +106,9 @@ public class MainPanel extends JPanel {
     protected static boolean isAvailableLookAndFeel(String laf) {
         try{
             Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel)(lnfClass.newInstance());
+            LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
             return newLAF.isSupportedLookAndFeel();
-        }catch(Exception e) {
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             return false;
         }
     }
@@ -124,7 +124,9 @@ public class MainPanel extends JPanel {
         }
     }
     private static void setLookAndFeel(String laf) {
-        if(currentLookAndFeel.equals(laf)) { return; }
+        if(currentLookAndFeel.equals(laf)) {
+            return;
+        }
         currentLookAndFeel = laf;
         try{
             UIManager.setLookAndFeel(currentLookAndFeel);
@@ -133,7 +135,8 @@ public class MainPanel extends JPanel {
             Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
             System.out.format("%s %s: %s%n", laf, DISABLED_ARE_NAVIGABLE, b);
             check.setSelected(b);
-        }catch(Exception ex) {
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + currentLookAndFeel);
         }

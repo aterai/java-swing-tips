@@ -115,8 +115,9 @@ public class MainPanel extends JPanel {
                     UIManager.setLookAndFeel(laf.getClassName());
                 }
             }
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         MainPanel p;
         JFrame frame = new JFrame("@title@");

@@ -78,8 +78,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
 //         UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.BLUE));
 //         UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));

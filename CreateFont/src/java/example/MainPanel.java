@@ -70,25 +70,15 @@ class MainPanel extends JPanel {
 
     private static Document makeDocument(URL url, String encoding) {
         DefaultStyledDocument doc = new DefaultStyledDocument();
-        Reader reader = null;
-        try{
-            reader = new InputStreamReader(url.openStream(), encoding);
+        try(Reader reader = new InputStreamReader(url.openStream(), encoding)) {
             char[] buff = new char[4096];
             int nch;
             while((nch = reader.read(buff, 0, buff.length)) != -1) {
                 doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
             }
-            reader.close();
-        }catch(Exception e) {
-            e.printStackTrace();
-        }finally{
-            if(reader!=null) {
-                try{
-                    reader.close();
-                }catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+            //reader.close();
+        }catch(IOException | BadLocationException ex) {
+            ex.printStackTrace();
         }
         return doc;
     }
@@ -103,8 +93,9 @@ class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

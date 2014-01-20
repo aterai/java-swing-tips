@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.text.ParseException;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -44,8 +45,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -116,7 +118,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     @Override public boolean stopCellEditing() {
         try{
             commitEdit();
-        }catch(Exception pe) {
+        }catch(ParseException pe) {
             Toolkit.getDefaultToolkit().beep();
             return false;
 //             // Edited value is invalid, spinner.getValue() will return

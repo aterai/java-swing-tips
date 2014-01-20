@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.lang.reflect.*;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -42,8 +43,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -91,7 +93,8 @@ class BrowserLauncher {
                     Runtime.getRuntime().exec(new String[] {browser, url});
                 }
             }
-        }catch(Exception e) {
+        }catch(IOException | InterruptedException | ClassNotFoundException |
+               IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(null, ERR_MSG + ":\n" + e.getLocalizedMessage(), "titlebar", JOptionPane.ERROR_MESSAGE);
         }

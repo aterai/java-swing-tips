@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
 class MainPanel {
@@ -29,7 +30,7 @@ class MainPanel {
                             splashScreen.dispose();
                         }
                     });
-                }catch(Exception e) {
+                }catch(InterruptedException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
@@ -120,8 +121,9 @@ class MainPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame();
         frame.setUndecorated(true);

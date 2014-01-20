@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
@@ -39,7 +40,7 @@ class MainPanel extends JPanel {
         super(new BorderLayout());
         try{
             bi = ImageIO.read(getClass().getResource("test.jpg"));
-        }catch(Exception ioe) {
+        }catch(IOException ioe) {
             ioe.printStackTrace();
         }
         List<AbstractAction> list = Arrays.asList(
@@ -87,8 +88,9 @@ class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
