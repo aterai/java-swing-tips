@@ -71,8 +71,9 @@ public class MainPanel extends JPanel {
                     Rectangle r = getRowBounds(i);
                     if(rect.intersects(r)) {
                         TreePath path = getPathForRow(i);
+                        TreeCellRenderer tcr = getCellRenderer();
+                        JComponent c = (JComponent)tcr;
                         if(isSynth && isRowSelected(i)) {
-                            TreeCellRenderer tcr = getCellRenderer();
                             if(tcr instanceof DefaultTreeCellRenderer) {
                                 DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer)tcr;
                                 g2.setColor(renderer.getTextSelectionColor());
@@ -86,7 +87,8 @@ public class MainPanel extends JPanel {
                             TableOfContents toc = (TableOfContents)o;
                             String pn = "" + toc.page;
                             int x = getWidth() -1 - fm.stringWidth(pn) - ins.right;
-                            int y = r.y + (r.height + fm.getAscent()) / 2;
+                            //int y = (int)(0.5 + r.y + (r.height + fm.getAscent()) * 0.5);
+                            int y = r.y + c.getBaseline(r.width, r.height);
                             g2.drawString(pn, x, y);
 
                             int gap = 5;
@@ -206,18 +208,20 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 TableOfContents toc = (TableOfContents)o;
                 FontMetrics metrics = l.getFontMetrics(l.getFont());
                 int gap = l.getIconTextGap();
-                int h = l.getPreferredSize().height;
+                Dimension d = l.getPreferredSize();
                 Insets ins = tree.getInsets();
 
                 p.removeAll();
                 p.add(l, BorderLayout.WEST);
-                if(isSynth) { p.setForeground(l.getForeground()); }
+                if(isSynth) {
+                    p.setForeground(l.getForeground());
+                }
 
                 pn = String.format("%3d", toc.page);
                 pnPt.x = tree.getWidth() - metrics.stringWidth(pn) - gap;
-                pnPt.y = (h + metrics.getAscent()) / 2;
+                pnPt.y = l.getBaseline(d.width, d.height);
 
-                rxs = l.getPreferredSize().width + gap;
+                rxs = d.width + gap;
                 rxe = tree.getWidth() - ins.right - metrics.stringWidth("000") - gap;
 
                 return p;
