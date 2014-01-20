@@ -17,13 +17,11 @@ class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         IIOMetadataNode root = null;
+        Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
+        ImageReader reader = (ImageReader)readers.next();
         final StringBuilder buf = new StringBuilder();
-        InputStream source = getClass().getResourceAsStream("test.jpg");
-        try{
-            Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
-            ImageReader reader = (ImageReader)readers.next();
+        try(ImageInputStream iis = ImageIO.createImageInputStream(getClass().getResourceAsStream("test.jpg"))) {
             //FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
-            ImageInputStream iis = ImageIO.createImageInputStream(source);
             reader.setInput(iis, true);
 
             //ImageReadParam param = reader.getDefaultReadParam();
@@ -45,14 +43,8 @@ class MainPanel extends JPanel {
             }
             buf.append("------------\n");
             print(buf, root, 0);
-        }catch(Exception e) {
-            e.printStackTrace();
-        }finally{
-            try{
-                source.close();
-            }catch(IOException ioe) {
-                ioe.printStackTrace();
-            }
+        }catch(IOException ex) {
+            ex.printStackTrace();
         }
         JTextArea log = new JTextArea(buf.toString());
         JTree tree = new JTree(new DefaultTreeModel(new XMLTreeNode(root)));

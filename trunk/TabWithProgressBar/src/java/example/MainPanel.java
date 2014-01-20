@@ -29,9 +29,9 @@ public class MainPanel extends JPanel {
                     int current = 0;
                     int lengthOfTask = 120;
                     while(current<lengthOfTask) {
-                        if(!bar.isDisplayable()) {
-                            return "NotDisplayable or Disposed";
-                        }
+//                         if(!bar.isDisplayable()) {
+//                             return "NotDisplayable or Disposed";
+//                         }
                         try{
                             Thread.sleep(20);
                         }catch(InterruptedException ie) {
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
                     Object o = null;
                     try{
                         o = get();
-                    }catch(Exception e) {
+                    }catch(InterruptedException | ExecutionException ex) {
                         o = "Exception";
                     }
                     System.out.println(o);

@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -70,7 +71,7 @@ public class MainPanel extends JPanel {
                             }
                         }
                         System.out.println(cs);
-                    }catch(Exception ex) {
+                    }catch(IOException ex) {
                         ex.printStackTrace();
                         ret = "Error";
                         return ret;
@@ -119,7 +120,7 @@ public class MainPanel extends JPanel {
                     String text = null;
                     try{
                         text = isCancelled() ? "Cancelled" : get();
-                    }catch(Exception ex) {
+                    }catch(InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
                         text = "Exception";
                     }

@@ -7,8 +7,9 @@ import java.awt.event.*;
 //import java.beans.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-import javax.swing.text.Document;
+import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private final JTextArea area      = new JTextArea();
@@ -72,7 +73,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }
@@ -226,7 +227,7 @@ class Task extends SwingWorker<String, Progress> {
                       try{
                           Document doc = area.getDocument();
                           doc.remove(area.getDocument().getLength()-1, 1);
-                      }catch(Exception ex) {
+                      }catch(BadLocationException ex) {
                           ex.printStackTrace();
                       }
                   }

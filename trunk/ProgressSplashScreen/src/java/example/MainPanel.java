@@ -46,25 +46,7 @@ public class MainPanel extends JPanel {
                 splashScreen.setVisible(true);
             }
         });
-        SwingWorker<Void,Void> worker = new SwingWorker<Void,Void>() {
-            @Override public Void doInBackground() {
-                try{
-                    int current = 0;
-                    int lengthOfTask = 120;
-                    while(current<lengthOfTask && !isCancelled()) {
-                        try{
-                            Thread.sleep(50);
-                        }catch(InterruptedException ie) {
-                            ie.printStackTrace();
-                            return null;
-                        }
-                        setProgress(100 * current++ / lengthOfTask);
-                    }
-                }catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-                return null;
-            }
+        SwingWorker<Void,Void> worker = new Task() {
             @Override public void done() {
                 splashScreen.dispose();
             }
@@ -87,5 +69,22 @@ public class MainPanel extends JPanel {
                 frame.setVisible(true);
             }
         });
+    }
+}
+
+class Task extends SwingWorker<Void,Void> {
+    @Override public Void doInBackground() {
+        int current = 0;
+        int lengthOfTask = 120;
+        while(current<lengthOfTask && !isCancelled()) {
+            try{
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                ie.printStackTrace();
+                return null;
+            }
+            setProgress(100 * current++ / lengthOfTask);
+        }
+        return null;
     }
 }

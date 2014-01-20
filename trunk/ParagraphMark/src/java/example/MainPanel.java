@@ -86,8 +86,8 @@ class MyParagraphView extends ParagraphView {
             g.drawLine(x+2, y+h/2, x+2, y+h-5);
             g.drawLine(x+3, y+h-6, x+3, y+h-6);
             g.setColor(old);
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
 }

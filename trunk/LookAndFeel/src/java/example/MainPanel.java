@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
             Class lnfClass = Class.forName(laf);
             LookAndFeel newLAF = (LookAndFeel)(lnfClass.newInstance());
             return newLAF.isSupportedLookAndFeel();
-        }catch(Exception e) {
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             return false;
         }
     }
@@ -73,7 +73,8 @@ public class MainPanel extends JPanel {
         try{
             UIManager.setLookAndFeel(currentLookAndFeel);
             updateLookAndFeel();
-        }catch(Exception ex) {
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + currentLookAndFeel);
         }
@@ -140,8 +141,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
 //         try{
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(Exception e) {
-//             e.printStackTrace();
+//         }catch(ClassNotFoundException | InstantiationException |
+//                IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//             ex.printStackTrace();
 //         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

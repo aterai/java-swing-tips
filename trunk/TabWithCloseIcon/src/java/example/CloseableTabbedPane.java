@@ -111,16 +111,10 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      */
     public void addTab(String title, Component component, Icon extraIcon) {
         boolean doPaintCloseIcon = true;
-        try{
-            Object prop = null;
-            if((prop = ((JComponent) component).getClientProperty("isClosable")) != null) {
-                doPaintCloseIcon = ((Boolean) prop).booleanValue();
-            }
-        }catch(Exception ignored) {
-            /*Could probably be a ClassCastException*/
-            ignored.printStackTrace();
+        Object prop = null;
+        if((prop = ((JComponent) component).getClientProperty("isClosable")) != null) {
+            doPaintCloseIcon = ((Boolean) prop).booleanValue();
         }
-
         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
 
         if(headerViewport == null) {
@@ -378,7 +372,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          */
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             boolean doPaintCloseIcon = true;
-            try{
+//             try{
                 // JComponent.putClientProperty("isClosable", new Boolean(false));
                 JTabbedPane tabbedpane = (JTabbedPane) c;
                 int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
@@ -387,10 +381,10 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
                 if((prop = curPanel.getClientProperty("isClosable")) != null) {
                     doPaintCloseIcon = ((Boolean) prop).booleanValue();
                 }
-            }catch(Exception ignored) {
-                /*Could probably be a ClassCastException*/
-                ignored.printStackTrace();
-            }
+//             }catch(Exception ignored) {
+//                 /*Could probably be a ClassCastException*/
+//                 ignored.printStackTrace();
+//             }
             if(doPaintCloseIcon) {
                 x_pos = x;
                 y_pos = y;

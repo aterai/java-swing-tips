@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
         textPane.setDocument(doc);
         try{
             doc.insertString(0, text, null);
-        }catch(Exception ex) {
+        }catch(BadLocationException ex) {
             ex.printStackTrace();
         }
         String KEY = "Do-Nothing";

@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.text.ParseException;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -115,8 +116,8 @@ class DateEditor extends JSpinner implements TableCellEditor {
             @Override public void focusGained(FocusEvent e) {
                 //System.out.println("getTextField");
                 setArrowButtonEnabled(true);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
                         editor.getTextField().setCaretPosition(8);
                         editor.getTextField().setSelectionStart(8);
                         editor.getTextField().setSelectionEnd(10);
@@ -154,7 +155,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
     @Override public boolean stopCellEditing() {
         try{
             commitEdit();
-        }catch(Exception pe) {
+        }catch(ParseException pe) {
             Toolkit.getDefaultToolkit().beep();
             return false;
 //             // Edited value is invalid, spinner.getValue() will return

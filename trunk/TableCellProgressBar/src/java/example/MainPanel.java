@@ -67,26 +67,7 @@ public class MainPanel extends JPanel {
     }
     private void testCreateActionPerformed() {
         final int key = model.getRowCount();
-        SwingWorker<Integer, Integer> worker = new SwingWorker<Integer, Integer>() {
-            private int sleepDummy = new Random().nextInt(100) + 1;
-            private int lengthOfTask = 120;
-            @Override protected Integer doInBackground() {
-                int current = 0;
-                while(current<lengthOfTask && !isCancelled()) {
-                    if(!table.isDisplayable()) {
-                        return -1;
-                    }
-                    current++;
-                    try{
-                        Thread.sleep(sleepDummy);
-                    }catch(InterruptedException ie) {
-                        //cancel(true);
-                        break;
-                    }
-                    publish(100 * current / lengthOfTask);
-                }
-                return sleepDummy*lengthOfTask;
-            }
+        SwingWorker<Integer, Integer> worker = new Task() {
             @Override protected void process(List<Integer> c) {
                 model.setValueAt(c.get(c.size()-1), key, 2);
                 //for(Integer value : chunks) {
@@ -104,9 +85,9 @@ public class MainPanel extends JPanel {
                     try{
                         i = get();
                         text = i>=0?"Done":"Disposed";
-                    }catch(Exception ignore) {
-                        ignore.printStackTrace();
-                        text = ignore.getMessage();
+                    }catch(InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
+                        text = ex.getMessage();
                     }
                 }
                 System.out.println(key +":"+text+"("+i+"ms)");
@@ -213,6 +194,29 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<Integer, Integer> {
+    private int sleepDummy = new Random().nextInt(100) + 1;
+    private int lengthOfTask = 120;
+    @Override protected Integer doInBackground() {
+        int current = 0;
+        while(current<lengthOfTask && !isCancelled()) {
+//             if(!table.isDisplayable()) {
+//                 return -1;
+//             }
+            current++;
+            try{
+                Thread.sleep(sleepDummy);
+            }catch(InterruptedException ie) {
+                //cancel(true);
+                break;
+            }
+            publish(100 * current / lengthOfTask);
+        }
+        return sleepDummy*lengthOfTask;
+    }
+}
+
 class WorkerModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",      Integer.class, false),

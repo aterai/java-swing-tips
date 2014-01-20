@@ -7,6 +7,7 @@ import java.awt.event.*;
 //import java.beans.*;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -104,7 +105,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }

@@ -54,8 +54,8 @@ public class MainPanel extends JPanel {
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, pix, 0, width);
         try{
             pg.grabPixels();
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(InterruptedException ex) {
+            ex.printStackTrace();
         }
 
         //NW

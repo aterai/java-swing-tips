@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.IOException;
 import java.net.URL;
 import javax.imageio.*;
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class MainPanel extends JPanel {
         BufferedImage bi = null;
         try{
             bi = ImageIO.read(url);
-        }catch(Exception ex){
+        }catch(IOException ex){
             ex.printStackTrace();
             return;
         }
