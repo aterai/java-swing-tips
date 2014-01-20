@@ -9,6 +9,7 @@ import java.beans.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 //import javax.swing.SwingWorker;
 //import org.jdesktop.swingworker.SwingWorker;
@@ -68,7 +69,7 @@ public class MainPanel extends JPanel {
                     }else{
                         try{
                             text = get();
-                        }catch(Exception ex) {
+                        }catch(InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }
@@ -113,8 +114,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

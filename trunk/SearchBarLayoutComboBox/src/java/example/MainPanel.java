@@ -58,8 +58,9 @@ public class MainPanel extends JPanel {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.put("example.SearchBarComboBox", "SearchBarComboBoxUI");
             UIManager.put("SearchBarComboBoxUI", "example.BasicSearchBarComboBoxUI");
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

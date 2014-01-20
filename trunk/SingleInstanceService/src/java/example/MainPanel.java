@@ -22,8 +22,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         final JFrame frame = new JFrame("@title@");
         try{

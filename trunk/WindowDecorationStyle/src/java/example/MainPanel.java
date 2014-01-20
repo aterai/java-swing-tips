@@ -97,8 +97,9 @@ public class MainPanel extends JPanel {
         JFrame frame = new JFrame();
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         //XXX: JFrame frame = new JFrame();
         frame.setUndecorated(true);

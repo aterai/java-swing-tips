@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
                 // re-install the Metal Look and Feel
                 try{
                     UIManager.setLookAndFeel(new MetalLookAndFeel());
-                }catch(Exception ex) {
+                }catch(UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
                 // Update the ComponentUIs for all Components. This

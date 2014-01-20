@@ -25,8 +25,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -85,6 +86,8 @@ class MyParagraphView extends ParagraphView {
             g.drawLine(x+2, y+h/2, x+2, y+h-5);
             g.drawLine(x+3, y+h-6, x+3, y+h-6);
             g.setColor(old);
-        }catch(Exception e) { e.printStackTrace(); }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

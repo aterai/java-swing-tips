@@ -93,7 +93,8 @@ public class MainPanel extends JPanel {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
                 try{
                     setLookAndFeel(m.getActionCommand());
-                }catch(Exception ex) {
+                }catch(ClassNotFoundException | InstantiationException |
+                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -128,8 +129,9 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         MainPanel mainPanel = new MainPanel();
         JMenuBar mb = new JMenuBar();

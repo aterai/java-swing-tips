@@ -21,13 +21,12 @@ class MainPanel extends JPanel {
         Box p = Box.createHorizontalBox();
         p.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
 
-        try(InputStream source = getClass().getResourceAsStream("duke.running.gif");
-            ImageInputStream iis = ImageIO.createImageInputStream(source)) {
+        try(ImageInputStream iis = ImageIO.createImageInputStream(getClass().getResourceAsStream("duke.running.gif"))) {
             for(BufferedImage image: loadFromStream(iis)) {
                 p.add(new JLabel(new ImageIcon(image)));
             }
             //iis.close();
-        }catch(Exception ex) {
+        }catch(IOException ex) {
             ex.printStackTrace();
         }
         add(label, BorderLayout.WEST);
@@ -70,8 +69,9 @@ class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

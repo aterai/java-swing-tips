@@ -8,6 +8,7 @@ import java.beans.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import javax.jnlp.*;
 import javax.swing.*;
 
@@ -45,8 +46,10 @@ public class MainPanel extends JPanel {
                 try{
                     windowListener = get();
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                }catch(Exception e) {
-                    e.printStackTrace();
+                }catch(InterruptedException   | ExecutionException |
+                       ClassNotFoundException | InstantiationException |
+                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    ex.printStackTrace();
                 }
                 JFrame frame = new JFrame("@title@");
                 if(windowListener!=null) {
