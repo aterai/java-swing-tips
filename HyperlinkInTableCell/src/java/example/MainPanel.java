@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -18,7 +19,7 @@ public class MainPanel extends JPanel {
             model.addTest(new Test("Java Swing Tips", new URL("http://terai.xrea.jp/Swing.html")));
             model.addTest(new Test("Example", new URL("http://www.example.com/")));
             model.addTest(new Test("Example.jp", new URL("http://www.example.jp/")));
-        }catch(Exception ex) {
+        }catch(MalformedURLException ex) {
             ex.printStackTrace();
         }
         JTable table = new JTable(model) {
@@ -196,7 +197,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
                 if(Desktop.isDesktopSupported()) { // JDK 1.6.0
                     Desktop.getDesktop().browse(url.toURI());
                 }
-            }catch(Exception ex) {
+            }catch(URISyntaxException | IOException ex) {
               ex.printStackTrace();
             }
         }

@@ -33,7 +33,7 @@ public class MainPanel extends JPanel {
         BasicService bs;
         try{
             bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
-        }catch(Throwable ex) { //UnavailableServiceException use) {
+        }catch(UnavailableServiceException ex) {
             bs = null;
         }
         s1.setMinimumSize(new Dimension(0, 100));
@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
                         "setKeepHidden", new Class<?>[] { Boolean.TYPE }); //boolean.class });
                     setKeepHidden.setAccessible(true);
                     setKeepHidden.invoke(splitPane.getUI(), new Object[] { Boolean.TRUE });
-                }catch(Exception e) {
+                }catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }

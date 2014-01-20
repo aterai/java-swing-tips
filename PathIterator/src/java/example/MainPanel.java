@@ -69,11 +69,7 @@ class StarburstSVGMaker {
             if(cs != null) {
                 Transferable tr = cs.getContents();
                 if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    try{
-                        getTransferHandler().importData(this, tr);
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
+                    getTransferHandler().importData(this, tr);
                 }
             }else{
                 super.paste();
@@ -84,7 +80,7 @@ class StarburstSVGMaker {
     public JComponent makeUI() {
         try{
             cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(Throwable t) {
+        }catch(UnavailableServiceException t) {
             cs = null;
         }
         initStar();

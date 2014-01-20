@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         super(new GridLayout(2,1));
         try{
             cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(Throwable t) {
+        }catch(UnavailableServiceException t) {
             cs = null;
         }
         JTextArea textArea = new JTextArea() {
@@ -36,11 +36,7 @@ public class MainPanel extends JPanel {
                 if(cs != null) {
                     Transferable tr = cs.getContents();
                     if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                        try{
-                            getTransferHandler().importData(this, tr);
-                        }catch(Exception e) {
-                            e.printStackTrace();
-                        }
+                        getTransferHandler().importData(this, tr);
                     }
                 }else{
                     super.paste();
