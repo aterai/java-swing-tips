@@ -9,27 +9,36 @@ import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public JComponent makeUI() {
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"CCC", 92, true}, {"DDD", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model);
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+    private final JScrollPane s1 = new JScrollPane(new JTable(model));
+    private final JScrollPane s2 = new JScrollPane(new JTree());
+    private final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
+
+    public MainPanel() {
+        super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        JScrollPane s1, s2;
-        final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                                    s1 = new JScrollPane(new JTable(model)),
-                                                    s2 = new JScrollPane(new JTree()));
         splitPane.setOneTouchExpandable(true);
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
 
+        Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
+        JPanel north = makeButtonPanel(divider);
+
+        add(north, BorderLayout.NORTH);
+        add(splitPane);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private JPanel makeButtonPanel(final Container divider) {
         JPanel north = new JPanel(new GridLayout(0,2,5,5));
         north.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
@@ -93,7 +102,6 @@ public class MainPanel extends JPanel {
             }
         }));
 
-        final Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
         ButtonModel selectMinModel = null;
         ButtonModel selectMaxModel = null;
         for(Component c: divider.getComponents()) {
@@ -110,18 +118,11 @@ public class MainPanel extends JPanel {
         smin.setModel(selectMinModel);
         JButton smax = new JButton("Max:keepHidden");
         smax.setModel(selectMaxModel);
+
         north.add(smin);
         north.add(smax);
 
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(north, BorderLayout.NORTH);
-        p.add(splitPane);
-        return p;
-    }
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI());
-        setPreferredSize(new Dimension(320, 240));
+        return north;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

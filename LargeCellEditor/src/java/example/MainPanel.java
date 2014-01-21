@@ -86,6 +86,7 @@ class TestRenderer extends DefaultTableCellRenderer {
         return this;
     }
 }
+
 class MyIcon {
     public final ImageIcon large;
     public final ImageIcon small;
@@ -94,6 +95,7 @@ class MyIcon {
         small = new ImageIcon(getClass().getResource(str+"-24.png"));
     }
 }
+
 class IconTable extends JTable {
     private final MyGlassPane panel = new MyGlassPane();
     private final EditorFromList editor;

@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final DnDTabbedPane tab = new DnDTabbedPane();
+    private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
     public MainPanel() {
         super(new BorderLayout());
         DnDTabbedPane sub = new DnDTabbedPane();
@@ -23,14 +23,14 @@ public class MainPanel extends JPanel {
         sub.addTab("Title bb", new JScrollPane(new JTree()));
         sub.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
-        tab.addTab("JTree 00",       new JScrollPane(new JTree()));
-        tab.addTab("JLabel 01",      new JLabel("Test"));
-        tab.addTab("JTable 02",      new JScrollPane(makeJTable()));
-        tab.addTab("JTextArea 03",   new JScrollPane(makeJTextArea()));
-        tab.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
-        tab.addTab("null 05",        null);
-        tab.addTab("JTabbedPane 06", sub);
-        tab.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
+        tabbedPane.addTab("JTree 00",       new JScrollPane(new JTree()));
+        tabbedPane.addTab("JLabel 01",      new JLabel("Test"));
+        tabbedPane.addTab("JTable 02",      new JScrollPane(makeJTable()));
+        tabbedPane.addTab("JTextArea 03",   new JScrollPane(makeJTextArea()));
+        tabbedPane.addTab("JLabel 04",      new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
+        tabbedPane.addTab("null 05",        null);
+        tabbedPane.addTab("JTabbedPane 06", sub);
+        tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
         ////ButtonTabComponent
         //for(int i=0;i<tab.getTabCount();i++) tab.setTabComponentAt(i, new ButtonTabComponent(tab));
 
@@ -39,14 +39,14 @@ public class MainPanel extends JPanel {
         sub2.addTab("Title bb", new JScrollPane(new JTree()));
         sub2.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
-        tab.setName("000");
+        tabbedPane.setName("000");
         sub.setName("111");
         sub2.setName("222");
 
         DropTargetListener dropTargetListener = new TabDropTargetAdapter();
         TransferHandler handler = new TabTransferHandler();
         try{
-            for(JTabbedPane t:Arrays.asList(tab, sub, sub2)) {
+            for(JTabbedPane t:Arrays.asList(tabbedPane, sub, sub2)) {
                 t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                 t.setTransferHandler(handler);
                 t.getDropTarget().addDropTargetListener(dropTargetListener);
@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
         }
 
         JPanel p = new JPanel(new GridLayout(2,1));
-        p.add(tab);
+        p.add(tabbedPane);
         p.add(sub2);
         add(p);
         add(makeCheckBoxPanel(), BorderLayout.NORTH);
@@ -66,13 +66,13 @@ public class MainPanel extends JPanel {
         final JCheckBox tcheck  = new JCheckBox("Top", true);
         tcheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setTabPlacement(tcheck.isSelected()?JTabbedPane.TOP:JTabbedPane.RIGHT);
+                tabbedPane.setTabPlacement(tcheck.isSelected()?JTabbedPane.TOP:JTabbedPane.RIGHT);
             }
         });
         final JCheckBox scheck  = new JCheckBox("SCROLL_TAB_LAYOUT", true);
         scheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setTabLayoutPolicy(scheck.isSelected()?JTabbedPane.SCROLL_TAB_LAYOUT:JTabbedPane.WRAP_TAB_LAYOUT);
+                tabbedPane.setTabLayoutPolicy(scheck.isSelected()?JTabbedPane.SCROLL_TAB_LAYOUT:JTabbedPane.WRAP_TAB_LAYOUT);
             }
         });
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -191,9 +191,13 @@ class DnDTabbedPane extends JTabbedPane {
         switch(dropMode) {
           case INSERT:
             for(int i=0; i<getTabCount(); i++) {
-                if(getBoundsAt(i).contains(p)) { return new DropLocation(p, i); }
+                if(getBoundsAt(i).contains(p)) {
+                    return new DropLocation(p, i);
+                }
             }
-            if(getTabAreaBounds().contains(p)) { return new DropLocation(p, getTabCount()); }
+            if(getTabAreaBounds().contains(p)) {
+                return new DropLocation(p, getTabCount());
+            }
             break;
           case USE_SELECTION:
           case ON:
@@ -224,7 +228,7 @@ class DnDTabbedPane extends JTabbedPane {
         Component cmp    = getComponentAt(dragIndex);
         Container parent = target;
         while(parent!=null) {
-            if(cmp==parent) { return;  } //target==child: JTabbedPane in JTabbedPane
+            if(cmp==parent) { return; } //target==child: JTabbedPane in JTabbedPane
             parent = parent.getParent();
         }
 
@@ -236,8 +240,12 @@ class DnDTabbedPane extends JTabbedPane {
         remove(dragIndex);
         target.insertTab(str, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, flg);
+
         ////ButtonTabComponent
-        //if(tab instanceof ButtonTabComponent) tab = new ButtonTabComponent(target);
+        //if(tab instanceof ButtonTabComponent) {
+        //    tab = new ButtonTabComponent(target);
+        //}
+
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
         if(tab!=null && tab instanceof JComponent) {
@@ -375,17 +383,18 @@ class TabDropTargetAdapter extends DropTargetAdapter {
         }
     }
     @Override public void drop(DropTargetDropEvent dtde) {
-        System.out.println("DropTargetListener#drop");
         Component c = dtde.getDropTargetContext().getComponent();
+        System.out.println("DropTargetListener#drop: "+c.getName());
         clearDropLocationPaint(c);
     }
     @Override public void dragExit(DropTargetEvent dte) {
-        System.out.println("DropTargetListener#dragExit");
         Component c = dte.getDropTargetContext().getComponent();
+        System.out.println("DropTargetListener#dragExit: "+c.getName());
         clearDropLocationPaint(c);
     }
     @Override public void dragEnter(DropTargetDragEvent dtde) {
-        System.out.println("DropTargetListener#dragEnter");
+        Component c = dtde.getDropTargetContext().getComponent();
+        System.out.println("DropTargetListener#dragEnter"+c.getName());
     }
 //     @Override public void dragOver(DropTargetDragEvent dtde) {
 //         //System.out.println("dragOver");

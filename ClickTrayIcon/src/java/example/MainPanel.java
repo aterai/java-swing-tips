@@ -9,20 +9,53 @@ import java.awt.image.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    String str = "icon.addMouseListener(new MouseAdapter() {\n"+
-                 "  public void mouseClicked(MouseEvent e) {\n"+
-                 "    if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {\n"+
-                 "      frame.setVisible(true);\n"+
-                 "    }else if(frame.isVisible()) {\n"+
-                 "      frame.setExtendedState(JFrame.NORMAL);\n"+
-                 "      frame.toFront();\n"+
-                 "    }\n"+
-                 "  }\n"+
-                 "});\n";
+    private static final String TEXT =
+      "icon.addMouseListener(new MouseAdapter() {\n"+
+      "  public void mouseClicked(MouseEvent e) {\n"+
+      "    if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {\n"+
+      "      frame.setVisible(true);\n"+
+      "    }else if(frame.isVisible()) {\n"+
+      "      frame.setExtendedState(JFrame.NORMAL);\n"+
+      "      frame.toFront();\n"+
+      "    }\n"+
+      "  }\n"+
+      "});\n";
     public MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(new JTextArea(str)));
+        add(new JScrollPane(new JTextArea(TEXT)));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static TrayIcon makeTrayIcon(final JFrame frame, final SystemTray tray, Image image) {
+        PopupMenu popup = new PopupMenu();
+        final TrayIcon icon = new TrayIcon(image, "Click Test", popup);
+        icon.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {
+                    frame.setVisible(true);
+                }else if(frame.isVisible()) {
+                    frame.setExtendedState(JFrame.NORMAL);
+                    frame.toFront();
+                }
+            }
+        });
+        MenuItem open = new MenuItem("Option");
+        MenuItem exit = new MenuItem("Exit");
+        popup.add(open);
+        popup.add(exit);
+        open.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                frame.setVisible(true);
+            }
+        });
+        exit.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                tray.remove(icon);
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                //frame.dispose();
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+        return icon;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -51,38 +84,12 @@ public class MainPanel extends JPanel {
             return;
         }
         Image image = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
-        new StarIcon().paintIcon(null, image.getGraphics(), 0, 0);
+        Graphics g = image.getGraphics();
+        new StarIcon().paintIcon(null, g, 0, 0);
+        g.dispose();
 
-        final SystemTray tray = SystemTray.getSystemTray();
-        PopupMenu popup       = new PopupMenu();
-        MenuItem open         = new MenuItem("Option");
-        MenuItem exit         = new MenuItem("Exit");
-        final TrayIcon icon   = new TrayIcon(image, "Click Test", popup);
-        popup.add(open);
-        popup.add(exit);
-        icon.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) {
-                if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {
-                    frame.setVisible(true);
-                }else if(frame.isVisible()) {
-                    frame.setExtendedState(JFrame.NORMAL);
-                    frame.toFront();
-                }
-            }
-        });
-        open.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                frame.setVisible(true);
-            }
-        });
-        exit.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tray.remove(icon);
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                //frame.dispose();
-                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-            }
-        });
+        SystemTray tray = SystemTray.getSystemTray();
+        TrayIcon icon =  makeTrayIcon(frame, tray, image);
         try{
             tray.add(icon);
         }catch(AWTException e) {
@@ -90,6 +97,7 @@ public class MainPanel extends JPanel {
         }
     }
 }
+
 class StarIcon implements Icon {
     private final Shape star;
     public StarIcon() {
