@@ -10,7 +10,7 @@ class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Component>();
+        Dictionary<Integer, Component> labelTable = new Hashtable<>();
         int c = 0;
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         for(String s:Arrays.asList("wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
@@ -28,7 +28,7 @@ class MainPanel extends JPanel {
         slider1.setLabelTable(labelTable);
         slider1.setPaintLabels(true);
 
-        Hashtable<Integer, Component> labelTable2 = new Hashtable<Integer, Component>();
+        Dictionary<Integer, Component> labelTable2 = new Hashtable<Integer, Component>();
         int i=0;
         for(String s:Arrays.asList("零","壱","弐","参","肆","伍","陸","漆","捌","玖","拾")) {
             JLabel l = new JLabel(s);

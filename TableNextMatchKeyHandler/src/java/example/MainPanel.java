@@ -136,21 +136,18 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     //@see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
     public static int getNextMatch(JTable table, String prefix, int startingRow, Position.Bias bias) {
         int max = table.getRowCount();
-        if(prefix == null) {
-            throw new IllegalArgumentException();
-        }
-        if(startingRow < 0 || startingRow >= max) {
+        if(prefix == null || startingRow < 0 || startingRow >= max) {
             throw new IllegalArgumentException();
         }
         prefix = prefix.toUpperCase();
 
         // start search from the next/previous element froom the
         // selected element
-        int increment = (bias == Position.Bias.Forward) ? 1 : -1;
+        int increment = bias == Position.Bias.Forward ? 1 : -1;
         int row = startingRow;
         do{
             Object value = table.getValueAt(row, TARGET_COLUMN);
-            String text = value!=null?value.toString():"";
+            String text = value!=null ? value.toString() : "";
             if(text.toUpperCase().startsWith(prefix)) {
                 return row;
             }

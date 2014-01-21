@@ -181,21 +181,23 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         add(textLabel);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        textLabel.setText((value ==null)?"":value.toString());
+        textLabel.setText(value==null ? "" : value.toString());
+        textLabel.setFocusedBorder(hasFocus);
+        textLabel.setFont(table.getFont());
         FontMetrics fm = table.getFontMetrics(table.getFont());
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
-        int cwidth = table.getColumnModel().getColumn(column).getWidth()-iconLabel.getPreferredSize().width;
+        int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
         textLabel.setPreferredSize(new Dimension(swidth>cwidth ? cwidth : swidth, 10000)); //height:10000 is dummy
+
         if(isSelected) {
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());
+            iconLabel.setIcon(sicon);
         }else{
             textLabel.setForeground(table.getForeground());
             textLabel.setBackground(table.getBackground());
+            iconLabel.setIcon(nicon);
         }
-        textLabel.setFocusedBorder(hasFocus);
-        textLabel.setFont(table.getFont());
-        iconLabel.setIcon(isSelected ? sicon : nicon);
         return this;
     }
     //Overridden for performance reasons. ---->
