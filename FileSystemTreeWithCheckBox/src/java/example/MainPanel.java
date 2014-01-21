@@ -104,7 +104,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -147,6 +148,7 @@ class IndeterminateIcon implements Icon {
 }
 
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
+
 class CheckBoxNode {
     public final File file;
     public final Status status;
@@ -182,6 +184,11 @@ class FolderSelectionListener implements TreeSelectionListener {
 
         Task worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
+                if(!tree.isDisplayable()) {
+                    System.out.println("process: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
                 for(File file: chunks) {
                     node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)));
                 }

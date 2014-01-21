@@ -88,6 +88,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class MyGlassPane extends JPanel {
     private static final Color bgc = new Color(200,100,100,100);
     public MyGlassPane() {

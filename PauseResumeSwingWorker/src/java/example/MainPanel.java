@@ -39,7 +39,6 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-
     class RunAction extends AbstractAction {
         public RunAction() {
             super("run");
@@ -57,8 +56,41 @@ public class MainPanel extends JPanel {
             statusPanel.revalidate();
             //bar1.setIndeterminate(true);
 
-            worker = new Task(bar1, bar2, area) {
+            worker = new Task() {
+                @Override protected void process(List<Progress> chunks) {
+                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    if(!isDisplayable()) {
+                        System.out.println("process: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
+                    for(Progress s: chunks) {
+                        switch(s.component) {
+                          case TOTAL: bar1.setValue((Integer)s.value); break;
+                          case FILE:  bar2.setValue((Integer)s.value); break;
+                          case LOG:   area.append((String)s.value); break;
+                          case PAUSE: {
+                              if((Boolean)s.value) {
+                                  area.append("*");
+                              }else{
+                                  try{
+                                      Document doc = area.getDocument();
+                                      doc.remove(area.getDocument().getLength()-1, 1);
+                                  }catch(BadLocationException ex) {
+                                      ex.printStackTrace();
+                                  }
+                              }
+                              break;
+                          }
+                        }
+                    }
+                }
                 @Override public void done() {
+                    if(!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
                     runButton.requestFocusInWindow();
                     runButton.setEnabled(true);
@@ -78,7 +110,6 @@ public class MainPanel extends JPanel {
                             text = "Exception";
                         }
                     }
-                    //System.out.println(text);
                     area.append("\n"+text+"\n");
                     area.setCaretPosition(area.getDocument().getLength());
                 }
@@ -138,8 +169,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -159,17 +190,9 @@ class Progress {
 }
 
 class Task extends SwingWorker<String, Progress> {
-    private final JProgressBar bar1;
-    private final JProgressBar bar2;
-    private final JTextArea area;
     private final Random r = new Random();
     public boolean isPaused = false;
 
-    public Task(JProgressBar bar1, JProgressBar bar2, JTextArea area) {
-        this.bar1 = bar1;
-        this.bar2 = bar2;
-        this.area = area;
-    }
     @Override public String doInBackground() {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
@@ -178,9 +201,6 @@ class Task extends SwingWorker<String, Progress> {
         publish(new Progress(Component.LOG, "\n------------------------------\n"));
         while(current<lengthOfTask && !isCancelled()) {
             publish(new Progress(Component.LOG, "*"));
-            if(!bar1.isDisplayable()) {
-                return "Disposed";
-            }
             try{
                 convertFileToSomething();
             }catch(InterruptedException ie) {
@@ -211,29 +231,6 @@ class Task extends SwingWorker<String, Progress> {
             Thread.sleep(20); // dummy
             publish(new Progress(Component.FILE, iv+1));
             current++;
-        }
-    }
-    @Override protected void process(List<Progress> chunks) {
-        //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-        for(Progress s: chunks) {
-            switch(s.component) {
-              case TOTAL: bar1.setValue((Integer)s.value); break;
-              case FILE:  bar2.setValue((Integer)s.value); break;
-              case LOG:   area.append((String)s.value); break;
-              case PAUSE: {
-                  if((Boolean)s.value) {
-                      area.append("*");
-                  }else{
-                      try{
-                          Document doc = area.getDocument();
-                          doc.remove(area.getDocument().getLength()-1, 1);
-                      }catch(BadLocationException ex) {
-                          ex.printStackTrace();
-                      }
-                  }
-                  break;
-              }
-            }
         }
     }
 }

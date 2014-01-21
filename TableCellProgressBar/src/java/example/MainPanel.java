@@ -11,29 +11,16 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final Color evenColor = new Color(250, 250, 250);
     private final WorkerModel model = new WorkerModel();
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
     private final JTable table;
-    private final Executor executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newCachedThreadPool();
     //TEST: private final Executor executor = Executors.newFixedThreadPool(2);
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-        };
+        table = new JTable(model);
         table.setRowSorter(sorter);
-        model.addTest(new Test("Name 1", 100), null);
+        model.addProgressValue(new ProgressValue("Name 1", 100), null);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setBackground(Color.WHITE);
@@ -52,50 +39,59 @@ public class MainPanel extends JPanel {
         column = table.getColumnModel().getColumn(2);
         column.setCellRenderer(new ProgressRenderer());
 
-        add(new JButton(new TestCreateAction("add", null)), BorderLayout.SOUTH);
+        add(new JButton(new ProgressValueCreateAction("add", null)), BorderLayout.SOUTH);
         add(scrollPane);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
+    class ProgressValueCreateAction extends AbstractAction {
+        public ProgressValueCreateAction(String label, Icon icon) {
             super(label,icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            testCreateActionPerformed();
-        }
-    }
-    private void testCreateActionPerformed() {
-        final int key = model.getRowCount();
-        SwingWorker<Integer, Integer> worker = new Task() {
-            @Override protected void process(List<Integer> c) {
-                model.setValueAt(c.get(c.size()-1), key, 2);
-                //for(Integer value : chunks) {
-                //    model.setValueAt(value, key, 2);
-                //}
-                //model.fireTableCellUpdated(key, 2);
-                //table.repaint();
-            }
-            @Override protected void done() {
-                String text;
-                int i = -1;
-                if(isCancelled()) {
-                    text = "Cancelled";
-                }else{
-                    try{
-                        i = get();
-                        text = i>=0?"Done":"Disposed";
-                    }catch(InterruptedException | ExecutionException ex) {
-                        ex.printStackTrace();
-                        text = ex.getMessage();
+            final int key = model.getRowCount();
+            SwingWorker<Integer, Integer> worker = new Task() {
+                @Override protected void process(List<Integer> c) {
+                    if(!isDisplayable()) {
+                        System.out.println("process: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        executor.shutdown();
+                        return;
                     }
+                    model.setValueAt(c.get(c.size()-1), key, 2);
+                    //for(Integer value : chunks) {
+                    //    model.setValueAt(value, key, 2);
+                    //}
+                    //model.fireTableCellUpdated(key, 2);
+                    //table.repaint();
                 }
-                System.out.println(key +":"+text+"("+i+"ms)");
-            }
-        };
-        model.addTest(new Test("example", 0), worker);
-        executor.execute(worker);
-        //worker.execute();
+                @Override protected void done() {
+                    if(!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        executor.shutdown();
+                        return;
+                    }
+                    String text;
+                    int i = -1;
+                    if(isCancelled()) {
+                        text = "Cancelled";
+                    }else{
+                        try{
+                            i = get();
+                            text = i>=0?"Done":"Disposed";
+                        }catch(InterruptedException | ExecutionException ex) {
+                            ex.printStackTrace();
+                            text = ex.getMessage();
+                        }
+                    }
+                    System.out.println(key +":"+text+"("+i+"ms)");
+                }
+            };
+            model.addProgressValue(new ProgressValue("example", 0), worker);
+            executor.execute(worker);
+            //worker.execute();
+        }
     }
 
     class CancelAction extends AbstractAction {
@@ -123,33 +119,30 @@ public class MainPanel extends JPanel {
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
+        private Set<Integer> deleteRowSet = new TreeSet<>();
         @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    private final Set<Integer> deleteRowSet = new TreeSet<>();
-    public synchronized void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) {
-            return;
-        }
-        for(int i=0;i<selection.length;i++) {
-            int midx = table.convertRowIndexToModel(selection[i]);
-            deleteRowSet.add(midx);
-            SwingWorker worker = model.getSwingWorker(midx);
-            if(worker!=null && !worker.isDone()) {
-                worker.cancel(true);
-                //((ThreadPoolExecutor)executor).remove(worker);
+            int[] selection = table.getSelectedRows();
+            if(selection==null || selection.length<=0) {
+                return;
             }
-            worker = null;
-        }
-        final RowFilter<TableModel,Integer> filter = new RowFilter<TableModel,Integer>() {
-            @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-                return !deleteRowSet.contains(entry.getIdentifier());
+            for(int i=0;i<selection.length;i++) {
+                int midx = table.convertRowIndexToModel(selection[i]);
+                deleteRowSet.add(midx);
+                SwingWorker worker = model.getSwingWorker(midx);
+                if(worker!=null && !worker.isDone()) {
+                    worker.cancel(true);
+                    //((ThreadPoolExecutor)executor).remove(worker);
+                }
+                worker = null;
             }
-        };
-        sorter.setRowFilter(filter);
-        table.repaint();
+            final RowFilter<TableModel,Integer> filter = new RowFilter<TableModel,Integer>() {
+                @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+                    return !deleteRowSet.contains(entry.getIdentifier());
+                }
+            };
+            sorter.setRowFilter(filter);
+            table.repaint();
+        }
     }
 
     private class TablePopupMenu extends JPopupMenu {
@@ -157,7 +150,7 @@ public class MainPanel extends JPanel {
         private final Action deleteAction = new DeleteAction("delete", null);
         public TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
+            add(new ProgressValueCreateAction("add", null));
             //add(new ClearAction("clearSelection", null));
             addSeparator();
             add(deleteAction);
@@ -186,8 +179,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -201,14 +194,10 @@ class Task extends SwingWorker<Integer, Integer> {
     @Override protected Integer doInBackground() {
         int current = 0;
         while(current<lengthOfTask && !isCancelled()) {
-//             if(!table.isDisplayable()) {
-//                 return -1;
-//             }
             current++;
             try{
                 Thread.sleep(sleepDummy);
             }catch(InterruptedException ie) {
-                //cancel(true);
                 break;
             }
             publish(100 * current / lengthOfTask);
@@ -225,7 +214,7 @@ class WorkerModel extends DefaultTableModel {
     };
     private final Map<Integer, SwingWorker> swmap = new HashMap<Integer, SwingWorker>();
     private int number = 0;
-    public void addTest(Test t, SwingWorker worker) {
+    public void addProgressValue(ProgressValue t, SwingWorker worker) {
         Object[] obj = {number, t.getName(), t.getProgress()};
         super.addRow(obj);
         swmap.put(number, worker);
@@ -235,8 +224,8 @@ class WorkerModel extends DefaultTableModel {
         Integer key = (Integer)getValueAt(identifier, 0);
         return swmap.get(key);
     }
-    public Test getTest(int identifier) {
-        return new Test((String)getValueAt(identifier,1), (Integer)getValueAt(identifier,2));
+    public ProgressValue getProgressValue(int identifier) {
+        return new ProgressValue((String)getValueAt(identifier,1), (Integer)getValueAt(identifier,2));
     }
     @Override public boolean isCellEditable(int row, int col) {
         return columnArray[col].isEditable;
@@ -261,10 +250,11 @@ class WorkerModel extends DefaultTableModel {
         }
     }
 }
-class Test {
+
+class ProgressValue {
     private String name;
     private Integer progress;
-    public Test(String name, Integer progress) {
+    public ProgressValue(String name, Integer progress) {
         this.name = name;
         this.progress = progress;
     }
@@ -281,6 +271,7 @@ class Test {
         return progress;
     }
 }
+
 class ProgressRenderer extends DefaultTableCellRenderer {
     private final JProgressBar b = new JProgressBar(0, 100);
     private final JPanel p = new JPanel(new BorderLayout());

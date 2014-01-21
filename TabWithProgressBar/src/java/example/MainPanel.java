@@ -5,11 +5,12 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.util.List;
 import java.util.concurrent.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final Executor executor = Executors.newCachedThreadPool();
+    //private final Executor executor = Executors.newCachedThreadPool();
     private final JTabbedPane tab = new JTabbedPane() {
         @Override public void addTab(String title, final Component content) {
             super.addTab(title, new JLabel("Loading..."));
@@ -24,40 +25,34 @@ public class MainPanel extends JPanel {
             //bar.setString(title);
             //bar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
             setTabComponentAt(currentIndex, bar);
-            SwingWorker worker = new SwingWorker() {
-                @Override public Object doInBackground() {
-                    int current = 0;
-                    int lengthOfTask = 120;
-                    while(current<lengthOfTask) {
-//                         if(!bar.isDisplayable()) {
-//                             return "NotDisplayable or Disposed";
-//                         }
-                        try{
-                            Thread.sleep(20);
-                        }catch(InterruptedException ie) {
-                            ie.printStackTrace();
-                            return "Interrupted";
-                        }
-                        current++;
-                        setProgress(100 * current / lengthOfTask);
+            SwingWorker<String, Integer> worker = new Task() {
+                @Override protected void process(List<Integer> dummy) {
+                    if(!isDisplayable()) {
+                        System.out.println("process: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
                     }
-                    return "Done";
                 }
                 @Override public void done() {
+                    if(!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     setTabComponentAt(currentIndex, label);
                     setComponentAt(currentIndex, content);
-                    Object o = null;
+                    String txt = null;
                     try{
-                        o = get();
+                        txt = get();
                     }catch(InterruptedException | ExecutionException ex) {
-                        o = "Exception";
+                        txt = "Exception";
                     }
-                    System.out.println(o);
+                    System.out.println(txt);
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));
-            executor.execute(worker);
-            //worker.execute();
+            //executor.execute(worker);
+            worker.execute();
         }
     };
     public MainPanel() {
@@ -112,14 +107,34 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<String, Integer> {
+    @Override public String doInBackground() {
+        int current = 0;
+        int lengthOfTask = 120;
+        while(current<lengthOfTask) {
+            try{
+                Thread.sleep(20);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            current++;
+            int v = 100 * current / lengthOfTask;
+            setProgress(v);
+            publish(v);
+        }
+        return "Done";
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {

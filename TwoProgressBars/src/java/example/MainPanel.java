@@ -15,6 +15,8 @@ public class MainPanel extends JPanel {
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton  = new JButton(new RunAction());
     private final JButton canButton  = new JButton(new CancelAction());
+    private final JProgressBar bar1  = new JProgressBar(0, 100);
+    private final JProgressBar bar2  = new JProgressBar(0, 100);
     private SwingWorker<String, Progress> worker;
 
     public MainPanel() {
@@ -31,74 +33,45 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-
+    private void initStatusPanel(boolean start) {
+        if(start) {
+            runButton.setEnabled(false);
+            canButton.setEnabled(true);
+            statusPanel.add(bar1, BorderLayout.NORTH);
+            statusPanel.add(bar2, BorderLayout.SOUTH);
+        }else{
+            runButton.setEnabled(true);
+            canButton.setEnabled(false);
+            statusPanel.removeAll();
+        }
+        statusPanel.revalidate();
+    }
     class RunAction extends AbstractAction {
         public RunAction() {
             super("run");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-            final JProgressBar bar1 = new JProgressBar(0, 100);
-            final JProgressBar bar2 = new JProgressBar(0, 100);
-            runButton.setEnabled(false);
-            canButton.setEnabled(true);
-            statusPanel.removeAll();
-            statusPanel.add(bar1, BorderLayout.NORTH);
-            statusPanel.add(bar2, BorderLayout.SOUTH);
-            statusPanel.revalidate();
-            //bar1.setIndeterminate(true);
-
-            worker = new SwingWorker<String, Progress>() {
-                @Override public String doInBackground() {
-                    //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-                    int current = 0;
-                    int lengthOfTask = 12; //filelist.size();
-                    publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
-                    publish(new Progress(Component.LOG, "\n------------------------------\n"));
-                    while(current<lengthOfTask && !isCancelled()) {
-                        if(!bar1.isDisplayable()) {
-                            return "Disposed";
-                        }
-                        try{
-                            convertFileToSomething();
-                        }catch(InterruptedException ie) {
-                            return "Interrupted";
-                        }
-                        publish(new Progress(Component.LOG, "*"));
-                        publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
-                        current++;
-                    }
-                    publish(new Progress(Component.LOG, "\n"));
-                    return "Done";
-                }
-                private final Random r = new Random();
-                private void convertFileToSomething() throws InterruptedException {
-                    int current = 0;
-                    int lengthOfTask = 10+r.nextInt(50); //long lengthOfTask = file.length();
-                    while(current<=lengthOfTask && !isCancelled()) {
-                        int iv = 100 * current / lengthOfTask;
-                        Thread.sleep(20); // dummy
-                        publish(new Progress(Component.FILE, iv+1));
-                        current++;
-                    }
-                }
+            initStatusPanel(true);
+            worker = new Task() {
                 @Override protected void process(List<Progress> chunks) {
-                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    if(!isDisplayable()) {
+                        cancel(true);
+                        return;
+                    }
                     for(Progress s: chunks) {
                         switch(s.component) {
                           case TOTAL: bar1.setValue((Integer)s.value); break;
                           case FILE:  bar2.setValue((Integer)s.value); break;
-                          case LOG:  area.append((String)s.value); break;
+                          case LOG:   area.append((String)s.value);    break;
                         }
                     }
                 }
                 @Override public void done() {
-                    //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-                    runButton.setEnabled(true);
-                    canButton.setEnabled(false);
-                    statusPanel.remove(bar1);
-                    statusPanel.remove(bar2);
-                    statusPanel.revalidate();
+                    if(!isDisplayable()) {
+                        cancel(true);
+                        return;
+                    }
+                    initStatusPanel(false);
                     String text = null;
                     if(isCancelled()) {
                         text = "Cancelled";
@@ -110,9 +83,7 @@ public class MainPanel extends JPanel {
                             text = "Exception";
                         }
                     }
-                    //System.out.println(text);
-                    area.append(text);
-                    area.setCaretPosition(area.getDocument().getLength());
+                    appendLine(text);
                 }
             };
             worker.execute();
@@ -129,10 +100,11 @@ public class MainPanel extends JPanel {
             worker = null;
         }
     }
-//     private void appendLine(String str) {
-//         area.append(str);
-//         area.setCaretPosition(area.getDocument().getLength());
-//     }
+
+    private void appendLine(String str) {
+        area.append(str);
+        area.setCaretPosition(area.getDocument().getLength());
+    }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -149,8 +121,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -159,12 +131,46 @@ public class MainPanel extends JPanel {
 }
 
 enum Component { TOTAL, FILE, LOG }
+
 class Progress {
     public final Object value;
     public final Component component;
     public Progress(Component component, Object value) {
         this.component = component;
         this.value = value;
+    }
+}
+
+class Task extends SwingWorker<String, Progress> {
+    @Override public String doInBackground() {
+        //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        int current = 0;
+        int lengthOfTask = 12; //filelist.size();
+        publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
+        publish(new Progress(Component.LOG, "\n------------------------------\n"));
+        while(current<lengthOfTask && !isCancelled()) {
+            try{
+                convertFileToSomething();
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            publish(new Progress(Component.LOG, "*"));
+            publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
+            current++;
+        }
+        publish(new Progress(Component.LOG, "\n"));
+        return "Done";
+    }
+    private final Random r = new Random();
+    private void convertFileToSomething() throws InterruptedException {
+        int current = 0;
+        int lengthOfTask = 10+r.nextInt(50); //long lengthOfTask = file.length();
+        while(current<=lengthOfTask && !isCancelled()) {
+            int iv = 100 * current / lengthOfTask;
+            Thread.sleep(20); // dummy
+            publish(new Progress(Component.FILE, iv+1));
+            current++;
+        }
     }
 }
 
