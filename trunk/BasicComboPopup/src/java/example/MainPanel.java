@@ -10,58 +10,34 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private final JTextPane jtp = new JTextPane();
-    private final JComboBox combo = makeComboBox();
-    private final BasicComboPopup popup = new BasicComboPopup(combo) {
-        private MouseAdapter listener = null;
-        @Override protected void installListListeners() {
-            super.installListListeners();
-            listener = new MouseAdapter() {
-                @Override public void mouseClicked(MouseEvent e) {
-                    hide();
-                    System.out.println(comboBox.getSelectedItem());
-                    append((String)combo.getSelectedItem());
-                }
-            };
-            if(listener!=null) {
-                list.addMouseListener(listener);
-            }
-        }
-        //void uninstallListListeners() {
-        @Override public void uninstallingUI() {
-            if(listener != null) {
-                list.removeMouseListener(listener);
-                listener = null;
-            }
-            super.uninstallingUI();
-        }
-        @Override public boolean isFocusable() {
-            return true;
-        }
-    };
-    private final Action upAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            int index = combo.getSelectedIndex();
-            combo.setSelectedIndex((index==0)?combo.getItemCount()-1:index-1);
-        }
-    };
-    private final Action downAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            int index = combo.getSelectedIndex();
-            combo.setSelectedIndex((index==combo.getItemCount()-1)?0:index+1);
-        }
-    };
-    private final Action enterAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            append((String)combo.getSelectedItem());
-        }
-    };
+    private final JComboBox<String> combo = new JComboBox<>(new String[] {
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "bbbbbbbb", "cccccccc",
+        "dddddddd", "eeeeeeeee",
+        "fff", "ggg", "hhhhhhhhh", "iii"
+    });
+    private final BasicComboPopup popup = new EditorComboPopup(jtp, combo);
     public MainPanel() {
         super(new BorderLayout());
 
         ActionMap amc = popup.getActionMap();
-        amc.put("myUp",   upAction);
-        amc.put("myDown", downAction);
-        amc.put("myEnt",  enterAction);
+        amc.put("myUp",   new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int index = combo.getSelectedIndex();
+                combo.setSelectedIndex((index==0)?combo.getItemCount()-1:index-1);
+            }
+        });
+        amc.put("myDown", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int index = combo.getSelectedIndex();
+                combo.setSelectedIndex((index==combo.getItemCount()-1)?0:index+1);
+            }
+        });
+        amc.put("myEnt",  new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                append((String)combo.getSelectedItem());
+            }
+        });
 
         InputMap imc = popup.getInputMap();
         imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),    "myUp");
@@ -70,64 +46,26 @@ public class MainPanel extends JPanel {
 
         jtp.getActionMap().put("myPop", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                showPopupMenu();
+                Rectangle rect = new Rectangle();
+                try{
+                    rect = jtp.modelToView(jtp.getCaretPosition());
+                }catch(BadLocationException ble) {
+                    ble.printStackTrace();
+                    return;
+                }
+                popup.show(jtp, rect.x, rect.y + rect.height);
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        SwingUtilities.getWindowAncestor(popup).toFront();
+                        popup.requestFocusInWindow();
+                    }
+                });
             }
         });
         jtp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK), "myPop");
 
         add(new JScrollPane(jtp));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private static JComboBox<String> makeComboBox() {
-        String[] model = {
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            "bbbbbbbb", "cccccccc",
-            "dddddddd", "eeeeeeeee",
-            "fff", "ggg", "hhhhhhhhh", "iii",
-        };
-        return new JComboBox<String>(model);
-    }
-    private void showPopupMenu() {
-        Rectangle rect = getRect();
-        popup.show(jtp, rect.x, rect.y + rect.height);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                SwingUtilities.getWindowAncestor(popup).toFront();
-                popup.requestFocusInWindow();
-            }
-        });
-    }
-    //     private void test_popupMenu(ActionEvent e) {
-    //         //System.out.println(EventQueue.isDispatchThread());
-    //         Rectangle rect = getRect();
-    //         Rectangle r = this.getBounds();
-    // //         System.out.println(popup.getWidth());
-    // //         System.out.println(rect.toString());
-    // //         System.out.println(r.toString());
-    //         if(!r.contains(rect.x+popup.getWidth(), rect.y+rect.height+popup.getHeight())) {
-    //             System.out.println("----------------------------");
-    //             popup.show(jtp, rect.x, rect.y + rect.height);
-    //             EventQueue.invokeLater(new Runnable() {
-    //                 @Override public void run() {
-    //                     JPanel parent = (JPanel)popup.getParent();
-    //                     System.out.println(parent);
-    //                     SwingUtilities.getWindowAncestor(popup).toFront();
-    //                     popup.requestFocusInWindow();
-    //                 }
-    //             });
-    //         }else{
-    //             popup.show(jtp, rect.x, rect.y + rect.height);
-    //             popup.requestFocusInWindow();
-    //         }
-    //     }
-    private Rectangle getRect() {
-        Rectangle rect = new Rectangle();
-        try{
-            rect = jtp.modelToView(jtp.getCaretPosition());
-        }catch(BadLocationException ble) {
-            ble.printStackTrace();
-        }
-        return rect;
     }
     private void append(final String str) {
         popup.hide();
@@ -157,5 +95,42 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class EditorComboPopup extends BasicComboPopup {
+    private final JTextComponent textArea;
+    public EditorComboPopup(JTextComponent textArea, JComboBox cb) {
+        super(cb);
+        this.textArea = textArea;
+    }
+    private MouseAdapter listener = null;
+    @Override protected void installListListeners() {
+        super.installListListeners();
+        listener = new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                hide();
+                String str = (String)comboBox.getSelectedItem();
+                try{
+                    Document doc = textArea.getDocument();
+                    doc.insertString(textArea.getCaretPosition(), str, null);
+                }catch(BadLocationException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        if(listener!=null) {
+            list.addMouseListener(listener);
+        }
+    }
+    @Override public void uninstallingUI() {
+        if(listener != null) {
+            list.removeMouseListener(listener);
+            listener = null;
+        }
+        super.uninstallingUI();
+    }
+    @Override public boolean isFocusable() {
+        return true;
     }
 }

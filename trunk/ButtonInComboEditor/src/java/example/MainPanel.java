@@ -10,8 +10,6 @@ import java.util.List;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private final JComboBox<TestItem> combo01;
-    private final JComboBox<TestItem> combo02;
     private final ImageIcon image1;
     private final ImageIcon image2;
     private final ImageIcon rss;
@@ -21,164 +19,37 @@ class MainPanel extends JPanel {
         image2  = new ImageIcon(getClass().getResource("16x16.png"));
         rss     = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
 
-        combo01 = makeTestComboBox(makeModel());
-        combo02 = makeTestComboBox(makeModel());
+        JComboBox<URLItem> combo01 = new JComboBox<>(makeTestModel());
+        initComboBox(combo01);
 
-        initComboBox(combo02, rss, image1);
+        JComboBox<URLItem> combo02 = new URLItemComboBox(makeTestModel(), rss);
+        initComboBox(combo02);
 
         add(makeTitlePanel("setEditable(true)", Arrays.asList(combo01, combo02)));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initComboBox(final JComboBox combo02, ImageIcon rss, ImageIcon image1) {
-        final JTextField field = (JTextField) combo02.getEditor().getEditorComponent();
-        final JButton button = makeButton(rss);
-        final JLabel label = makeLabel(image1, field);
-        combo02.add(button);
-        combo02.add(label);
-
-//         field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,14+2));
-//         field.addComponentListener(new ComponentAdapter() {
-//             @Override public void componentResized(ComponentEvent e) {
-//                 Rectangle r = field.getBounds();
-//                 label.setBounds(1, 0, 16, r.height);
-//                 button.setBounds(r.width-14, 0, 14, r.height);
-//             }
-//         });
-        combo02.setLayout(new ComboBoxLayout(label, button));
-        field.addFocusListener(new FocusAdapter() {
-            @Override public void focusGained(FocusEvent e) {
-                //field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,0));
-                button.setVisible(false);
-            }
-            @Override public void focusLost(FocusEvent e) {
-                TestItem item = getTestItemFromModel(field.getText());
-                label.setIcon(item.favicon);
-                button.setVisible(item.hasRSS);
-                //if(item.hasRSS) {
-                //    field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,14+2));
-                //}else{
-                //    field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,0));
-                //}
-                combo02.setSelectedIndex(0);
-            }
-        });
-        combo02.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) {
-                    return;
-                }
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        Object o = combo02.getSelectedItem();
-                        TestItem i = o instanceof TestItem ? (TestItem)o : getTestItemFromModel(o.toString());
-                        label.setIcon(i.favicon);
-                    }
-                });
-            }
-        });
-    }
-    private static JButton makeButton(ImageIcon rss) {
-        JButton button = new JButton(rss);
-
-        button.setRolloverIcon(makeFilteredImage(rss));
-        //button.setRolloverIcon(makeFilteredImage2(rss));
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked...");
-            }
-        });
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        button.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
-        return button;
-    }
-    private static JLabel makeLabel(ImageIcon img, final JTextField field) {
-        JLabel label = new JLabel(img);
-        label.addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        field.requestFocusInWindow();
-                        field.selectAll();
-                    }
-                });
-            }
-        });
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        label.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
-        return label;
-    }
-    private TestItem getTestItemFromModel(String text) {
-        DefaultComboBoxModel<TestItem> model = (DefaultComboBoxModel<TestItem>)combo02.getModel();
-        TestItem item = null;
-        for(int i=0;i<model.getSize();i++) {
-            TestItem tmp = model.getElementAt(i);
-            if(tmp.url.equals(text)) {
-                item = tmp;
-                break;
-            }
-        }
-        if(item!=null) {
-            model.removeElement(item);
-            model.insertElementAt(item, 0);
-        }else{
-            ImageIcon icon = getFavicon(text);
-            boolean hasRSS = hasRSS(text);
-            model.insertElementAt(item = new TestItem(text, icon, hasRSS), 0);
-        }
-        return item;
-    }
-    private ImageIcon getFavicon(String url) {
-        if(url.startsWith("http://terai.xrea.jp/")) {
-            return image1;
-        }else{
-            return image2;
-        }
-    }
-    private boolean hasRSS(String url) {
-        return url.startsWith("http://terai.xrea.jp/");
-    }
-    public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
-        ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
-        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
-    }
-    public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
-        RescaleOp op = new RescaleOp(new float[] { 1.2f,1.2f,1.2f,1.0f }, new float[] { 0f,0f,0f,0f }, null);
-        BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-        //TEST: RescaleOp op = new RescaleOp(1.2f, 0.0f, null);
-        //BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics g = img.getGraphics();
-        //g.drawImage(srcIcon.getImage(), 0, 0, null);
-        srcIcon.paintIcon(null, g, 0, 0);
-        g.dispose();
-        return new ImageIcon(op.filter(img, null));
-    }
-    private DefaultComboBoxModel<TestItem> makeModel() {
-        DefaultComboBoxModel<TestItem> model = new DefaultComboBoxModel<>();
-        model.addElement(new TestItem("http://terai.xrea.jp/", image1, true));
-        model.addElement(new TestItem("http://terai.xrea.jp/Swing.html", image1, true));
-        model.addElement(new TestItem("http://terai.xrea.jp/JavaWebStart.html", image1, true));
-        model.addElement(new TestItem("http://d.hatena.ne.jp/aterai/", image2, true));
-        model.addElement(new TestItem("http://java-swing-tips.blogspot.com/", image2, true));
-        model.addElement(new TestItem("http://www.example.com/", image2, false));
+    private DefaultComboBoxModel<URLItem> makeTestModel() {
+        DefaultComboBoxModel<URLItem> model = new DefaultComboBoxModel<>();
+        model.addElement(new URLItem("http://terai.xrea.jp/", image1, true));
+        model.addElement(new URLItem("http://terai.xrea.jp/Swing.html", image1, true));
+        model.addElement(new URLItem("http://terai.xrea.jp/JavaWebStart.html", image1, true));
+        model.addElement(new URLItem("http://d.hatena.ne.jp/aterai/", image2, true));
+        model.addElement(new URLItem("http://java-swing-tips.blogspot.com/", image2, true));
+        model.addElement(new URLItem("http://www.example.com/", image2, false));
         return model;
     }
-    private static JComboBox<TestItem> makeTestComboBox(DefaultComboBoxModel<TestItem> model) {
-        JComboBox<TestItem> combo = new JComboBox<>(model);
+    private static void initComboBox(JComboBox<URLItem> combo) {
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel c = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                c.setIcon(((TestItem)value).favicon);
+                c.setIcon(((URLItem)value).favicon);
                 return c;
             }
         });
-        return combo;
     }
-    private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
+    private static JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder(title));
         for(JComponent cmp:list) {
@@ -211,6 +82,126 @@ class MainPanel extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+}
+
+class URLItemComboBox extends JComboBox<URLItem> {
+    public URLItemComboBox(DefaultComboBoxModel<URLItem> model, ImageIcon rss) {
+        super(model);
+
+        final JTextField field = (JTextField)getEditor().getEditorComponent();
+        final JButton button = makeRssButton(rss);
+        final JLabel label = makeLabel(field);
+        setLayout(new ComboBoxLayout(label, button));
+        add(button);
+        add(label);
+
+        field.addFocusListener(new FocusAdapter() {
+            @Override public void focusGained(FocusEvent e) {
+                //field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,0));
+                button.setVisible(false);
+            }
+            @Override public void focusLost(FocusEvent e) {
+                URLItem item = getURLItemFromModel(field.getText());
+                label.setIcon(item.favicon);
+                button.setVisible(item.hasRSS);
+                setSelectedIndex(0);
+            }
+        });
+        addItemListener(new ItemListener() {
+            @Override public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()!=ItemEvent.SELECTED) {
+                    return;
+                }
+                updateFavicon(label);
+            }
+        });
+        updateFavicon(label);
+    }
+    private void updateFavicon(final JLabel label) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Object o = getSelectedItem();
+                URLItem i = o instanceof URLItem ? (URLItem)o : getURLItemFromModel(o.toString());
+                label.setIcon(i.favicon);
+            }
+        });
+    }
+    private static JButton makeRssButton(ImageIcon rss) {
+        JButton button = new JButton(rss);
+        ImageProducer ip = new FilteredImageSource(rss.getImage().getSource(), new SelectedImageFilter());
+        button.setRolloverIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip)));
+        //button.setRolloverIcon(makeFilteredImage(rss));
+        //button.setRolloverIcon(makeFilteredImage2(rss));
+        button.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked...");
+            }
+        });
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        button.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        return button;
+    }
+    private static JLabel makeLabel(final JTextField field) {
+        JLabel label = new JLabel();
+        label.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        field.requestFocusInWindow();
+                        field.selectAll();
+                    }
+                });
+            }
+        });
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        label.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        return label;
+    }
+    private URLItem getURLItemFromModel(String text) {
+        DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>)getModel();
+        URLItem item = null;
+        for(int i=0;i<model.getSize();i++) {
+            URLItem tmp = model.getElementAt(i);
+            if(tmp.url.equals(text)) {
+                item = tmp;
+                break;
+            }
+        }
+        if(item!=null) {
+            model.removeElement(item);
+            model.insertElementAt(item, 0);
+        }
+        return item;
+    }
+//     private ImageIcon getFavicon(String url) {
+//         if(url.startsWith("http://terai.xrea.jp/")) {
+//             return image1;
+//         }else{
+//             return image2;
+//         }
+//     }
+//     private boolean hasRSS(String url) {
+//         return url.startsWith("http://terai.xrea.jp/");
+//     }
+//     public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
+//         ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
+//         return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+//     }
+//     //Test:
+//     public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
+//         RescaleOp op = new RescaleOp(new float[] { 1.2f,1.2f,1.2f,1.0f }, new float[] { 0f,0f,0f,0f }, null);
+//         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+//         //TEST: RescaleOp op = new RescaleOp(1.2f, 0.0f, null);
+//         //BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+//         Graphics g = img.getGraphics();
+//         //g.drawImage(srcIcon.getImage(), 0, 0, null);
+//         srcIcon.paintIcon(null, g, 0, 0);
+//         g.dispose();
+//         return new ImageIcon(op.filter(img, null));
+//     }
 }
 
 class ComboBoxLayout implements LayoutManager {
@@ -276,11 +267,11 @@ class ComboBoxLayout implements LayoutManager {
     }
 }
 
-class TestItem {
+class URLItem {
     public final String url;
     public final ImageIcon favicon;
     public final boolean hasRSS;
-    public TestItem(String url, ImageIcon icon, boolean hasRSS) {
+    public URLItem(String url, ImageIcon icon, boolean hasRSS) {
         this.url = url;
         this.favicon = icon;
         this.hasRSS = hasRSS;

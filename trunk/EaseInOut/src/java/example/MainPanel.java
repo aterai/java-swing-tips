@@ -41,10 +41,8 @@ public class MainPanel extends JPanel {
     }
 }
 
-class ImageCaptionLabel extends JLabel implements MouseListener, HierarchyListener {
-    private static int DELAY = 4;
-    private Timer animator;
-    private int yy = 0;
+class ImageCaptionLabel extends JLabel {
+    private final LabelHandler handler;
     private final JTextArea textArea = new JTextArea() {
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
@@ -91,75 +89,92 @@ class ImageCaptionLabel extends JLabel implements MouseListener, HierarchyListen
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
                 int x = 0; //insets.left; int y = insets.top;
+                int tah = handler.getTextAreaHeight();
                 //for(int i=0;i<ncomponents;i++) {
                 Component c = parent.getComponent(0); //= textArea;
-                c.setBounds(x, height-yy, width, c.getPreferredSize().height);
+                c.setBounds(x, height-tah, width, c.getPreferredSize().height);
                 //}
             }
         });
         add(textArea);
-        addMouseListener(this);
-        addHierarchyListener(this);
+        handler = new LabelHandler(textArea);
+        addMouseListener(handler);
+        addHierarchyListener(handler);
     }
-    @Override public void mouseClicked(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
+}
 
-    @Override public void mouseEntered(MouseEvent e) {
-        if(animator!=null && animator.isRunning() || yy==textArea.getPreferredSize().height) {
-            return;
-        }
-        animator = createTimer(1);
-        animator.start();
+class LabelHandler extends MouseAdapter implements HierarchyListener {
+    private static int DELAY = 4;
+    private Timer animator;
+    private final JComponent textArea;
+    private int txah = 0;
+    public LabelHandler(JComponent textArea) {
+        this.textArea = textArea;
     }
-    @Override public void mouseExited(MouseEvent e) {
-        if(animator!=null && animator.isRunning() || contains(e.getPoint()) && yy==textArea.getPreferredSize().height) {
-            return;
-        }
-        animator = createTimer(-1);
-        animator.start();
+    public int getTextAreaHeight() {
+        return txah;
     }
     private int count = 0;
     private Timer createTimer(final int dir) {
         final double height = (double)textArea.getPreferredSize().height;
         return new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                double a = easeInOut(count/height);
+                double a = AnimationUtil.easeInOut(count/height);
                 count += dir;
-                yy = (int)(.5d+a*height);
+                txah = (int)(.5d+a*height);
                 textArea.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
                 if(dir>0) { //show
-                    if(yy>=textArea.getPreferredSize().height) {
-                        yy = textArea.getPreferredSize().height;
+                    if(txah>=textArea.getPreferredSize().height) {
+                        txah = textArea.getPreferredSize().height;
                         animator.stop();
                     }
                 }else{ //hide
-                    if(yy<=0) {
-                        yy = 0;
+                    if(txah<=0) {
+                        txah = 0;
                         animator.stop();
                     }
                 }
-                revalidate();
-                repaint();
+                JComponent p = (JComponent)SwingUtilities.getUnwrappedParent(textArea);
+                p.revalidate();
+                p.repaint();
             }
         });
     }
+    @Override public void mouseEntered(MouseEvent e) {
+        if(animator!=null && animator.isRunning() || txah==textArea.getPreferredSize().height) {
+            return;
+        }
+        animator = createTimer(1);
+        animator.start();
+    }
+    @Override public void mouseExited(MouseEvent e) {
+        JComponent parent = (JComponent)e.getSource();
+        if(animator!=null && animator.isRunning() || parent.contains(e.getPoint()) && txah==textArea.getPreferredSize().height) {
+            return;
+        }
+        animator = createTimer(-1);
+        animator.start();
+    }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {
+        JComponent c = (JComponent)e.getComponent();
+        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !c.isDisplayable()) {
             animator.stop();
         }
     }
+}
+
+class AnimationUtil {
     //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
     //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
     private static int N = 3;
-    public double easeIn(double t) {
+    public static double easeIn(double t) {
         //range: 0.0<=t<=1.0
         return Math.pow(t, N);
     }
-    public double easeOut(double t) {
+    public static double easeOut(double t) {
         return Math.pow(t-1d, N) + 1d;
     }
-    public double easeInOut(double t) {
+    public static double easeInOut(double t) {
 /*/
         if(t<0.5d) {
             return 0.5d*Math.pow(t*2d, N);
@@ -192,7 +207,7 @@ class ImageCaptionLabel extends JLabel implements MouseListener, HierarchyListen
         return d;
     }
 //*/
-//     public double delta(double t) {
+//     public static double delta(double t) {
 //         return 1d - Math.sin(Math.acos(t));
 //     }
 }
