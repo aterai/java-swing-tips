@@ -38,96 +38,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
-        table = new JTable(model) {
-            @Override public void updateUI() {
-                // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-                // http://bugs.sun.com/view_bug.do?bug_id=6788475
-                //XXX: set dummy ColorUIResource
-                setSelectionForeground(new ColorUIResource(Color.RED));
-                setSelectionBackground(new ColorUIResource(Color.RED));
-                super.updateUI();
-                updateRenderer();
-                remakeBooleanEditor();
-            }
-            private void updateRenderer() {
-                TableModel m = getModel();
-                for(int i=0;i<m.getColumnCount();i++) {
-                    TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-                    if(r instanceof JComponent) {
-                        ((JComponent)r).updateUI();
-                    }
-                }
-            }
-            private void remakeBooleanEditor() {
-                JCheckBox checkBox = new JCheckBox();
-                checkBox.setHorizontalAlignment(JCheckBox.CENTER);
-                checkBox.setBorderPainted(true);
-                checkBox.setOpaque(true);
-                checkBox.addMouseListener(new MouseAdapter() {
-                    @Override public void mousePressed(MouseEvent e) {
-                        JCheckBox cb = (JCheckBox)e.getSource();
-                        ButtonModel m = cb.getModel();
-                        if(m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
-                            if(getEditingRow()%2==0) {
-                                cb.setOpaque(false);
-                                //cb.setBackground(getBackground());
-                            }else{
-                                cb.setOpaque(true);
-                                cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-                            }
-                        }else{
-                            cb.setBackground(getSelectionBackground());
-                            cb.setOpaque(true);
-                        }
-                    }
-                    @Override public void mouseExited(MouseEvent e) {
-                        //in order to drag table row selection
-                        if(isEditing() && !getCellEditor().stopCellEditing()) {
-                            getCellEditor().cancelCellEditing();
-                        }
-                    }
-                });
-                setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
-            }
-            private final DotBorder dotBorder = new DotBorder(2,2,2,2);
-            private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
-            private void updateBorderType(DotBorder border, int column) {
-                border.type = EnumSet.noneOf(DotBorder.Type.class);
-                if(column==0) {
-                    border.type.add(DotBorder.Type.START);
-                }
-                if(column==getColumnCount()-1) {
-                    border.type.add(DotBorder.Type.END);
-                }
-            }
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
-                    b.setBorderPainted(true);
-                }
-                if(row==getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
-                    ((JComponent)c).setBorder(dotBorder);
-                    updateBorderType(dotBorder, column);
-                }else{
-                    ((JComponent)c).setBorder(emptyBorder);
-                }
-                return c;
-            }
-            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-                Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
-                    //System.out.println(b.getBorder());
-                    b.setBorder(dotBorder);
-                    updateBorderType(dotBorder, column);
-                    //updateBorderType((DotBorder)b.getBorder(), column);
-                    //b.setBorderPainted(true);
-                    //b.setBackground(getSelectionBackground());
-                }
-                return c;
-            }
-        };
+        table = new LineFocusTable(model);
 
         //TableColumnModel columns = table.getColumnModel();
         //for(int i=0;i<columns.getColumnCount();i++) {
@@ -213,6 +124,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 // class TestRenderer extends DefaultTableCellRenderer {
 //     private static final DotBorder dotBorder = new DotBorder(2,2,2,2);
 //     private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
@@ -226,6 +138,101 @@ public class MainPanel extends JPanel {
 //         return c;
 //     }
 // }
+
+class LineFocusTable extends JTable {
+    public LineFocusTable(DefaultTableModel model) {
+        super(model);
+    }
+    @Override public void updateUI() {
+        // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+        // http://bugs.sun.com/view_bug.do?bug_id=6788475
+        //XXX: set dummy ColorUIResource
+        setSelectionForeground(new ColorUIResource(Color.RED));
+        setSelectionBackground(new ColorUIResource(Color.RED));
+        super.updateUI();
+        updateRenderer();
+        remakeBooleanEditor();
+    }
+    private void updateRenderer() {
+        TableModel m = getModel();
+        for(int i=0;i<m.getColumnCount();i++) {
+            TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+            if(r instanceof JComponent) {
+                ((JComponent)r).updateUI();
+            }
+        }
+    }
+    private void remakeBooleanEditor() {
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+        checkBox.setBorderPainted(true);
+        checkBox.setOpaque(true);
+        checkBox.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                JCheckBox cb = (JCheckBox)e.getSource();
+                ButtonModel m = cb.getModel();
+                if(m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
+                    if(getEditingRow()%2==0) {
+                        cb.setOpaque(false);
+                        //cb.setBackground(getBackground());
+                    }else{
+                        cb.setOpaque(true);
+                        cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+                    }
+                }else{
+                    cb.setBackground(getSelectionBackground());
+                    cb.setOpaque(true);
+                }
+            }
+            @Override public void mouseExited(MouseEvent e) {
+                //in order to drag table row selection
+                if(isEditing() && !getCellEditor().stopCellEditing()) {
+                    getCellEditor().cancelCellEditing();
+                }
+            }
+        });
+        setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
+    }
+    private final DotBorder dotBorder = new DotBorder(2,2,2,2);
+    private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
+    private void updateBorderType(DotBorder border, int column) {
+        border.type = EnumSet.noneOf(DotBorder.Type.class);
+        if(column==0) {
+            border.type.add(DotBorder.Type.START);
+        }
+        if(column==getColumnCount()-1) {
+            border.type.add(DotBorder.Type.END);
+        }
+    }
+    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if(c instanceof JCheckBox) {
+            JCheckBox b = (JCheckBox)c;
+            b.setBorderPainted(true);
+        }
+        if(row==getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
+            ((JComponent)c).setBorder(dotBorder);
+            updateBorderType(dotBorder, column);
+        }else{
+            ((JComponent)c).setBorder(emptyBorder);
+        }
+        return c;
+    }
+    @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+        Component c = super.prepareEditor(editor, row, column);
+        if(c instanceof JCheckBox) {
+            JCheckBox b = (JCheckBox)c;
+            //System.out.println(b.getBorder());
+            b.setBorder(dotBorder);
+            updateBorderType(dotBorder, column);
+            //updateBorderType((DotBorder)b.getBorder(), column);
+            //b.setBorderPainted(true);
+            //b.setBackground(getSelectionBackground());
+        }
+        return c;
+    }
+}
+
 class DotBorder extends EmptyBorder {
     public enum Type { START, END; }
     private static final BasicStroke dashed = new BasicStroke(

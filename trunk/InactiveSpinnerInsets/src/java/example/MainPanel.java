@@ -33,29 +33,7 @@ public class MainPanel extends JPanel {
         JTextField field2 = editor2.getTextField();
         field2.setBorder(BorderFactory.createEmptyBorder(2,2,2,0));
 
-        JSpinner spinner3 = new JSpinner() {
-            @Override protected void paintComponent(Graphics g) {
-                if(getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
-                    Graphics2D g2d = (Graphics2D) g.create();
-                    g2d.setPaint(isEnabled()?UIManager.getColor("FormattedTextField.background")
-                                 :UIManager.getColor("FormattedTextField.inactiveBackground"));
-                    g2d.fillRect(0,0,getWidth(),getHeight());
-                    g2d.dispose();
-                }
-            }
-            @Override protected void paintChildren(Graphics g) {
-                super.paintChildren(g);
-                if(!isEnabled() && getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
-                    Graphics2D g2d = (Graphics2D) g.create();
-                    Rectangle r = getComponent(0).getBounds();
-                    r.add(getComponent(1).getBounds());
-                    r.width--; r.height--;
-                    g2d.setPaint(UIManager.getColor("FormattedTextField.inactiveBackground"));
-                    g2d.draw(r);
-                    g2d.dispose();
-                }
-            }
-        };
+        JSpinner spinner3 = new SimpleBorderSpinner();
 
         final List<JSpinner> list = Arrays.asList(spinner0,spinner1,spinner2,spinner3);
         Box box = Box.createVerticalBox();
@@ -107,5 +85,29 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class SimpleBorderSpinner extends JSpinner {
+    @Override protected void paintComponent(Graphics g) {
+        if(getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
+                                     : UIManager.getColor("FormattedTextField.inactiveBackground"));
+            g2d.fillRect(0,0,getWidth(),getHeight());
+            g2d.dispose();
+        }
+    }
+    @Override protected void paintChildren(Graphics g) {
+        super.paintChildren(g);
+        if(!isEnabled() && getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            Rectangle r = getComponent(0).getBounds();
+            r.add(getComponent(1).getBounds());
+            r.width--; r.height--;
+            g2d.setPaint(UIManager.getColor("FormattedTextField.inactiveBackground"));
+            g2d.draw(r);
+            g2d.dispose();
+        }
     }
 }

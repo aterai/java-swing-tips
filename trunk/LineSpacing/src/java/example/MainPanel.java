@@ -77,30 +77,33 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class BottomInsetEditorKit extends StyledEditorKit {
     @Override public ViewFactory getViewFactory() {
-        return new ViewFactory() {
-            @Override public View create(Element elem) {
-                String kind = elem.getName();
-                if(kind!=null) {
-                    if(kind.equals(AbstractDocument.ContentElementName)) {
-                        return new LabelView(elem);
-                    }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
-                        return new ParagraphView(elem) {
-                            @Override protected short getBottomInset() {
-                                return 5;
-                            }
-                        };
-                    }else if(kind.equals(AbstractDocument.SectionElementName)) {
-                        return new BoxView(elem, View.Y_AXIS);
-                    }else if(kind.equals(StyleConstants.ComponentElementName)) {
-                        return new ComponentView(elem);
-                    }else if(kind.equals(StyleConstants.IconElementName)) {
-                        return new IconView(elem);
-                    }
-                }
+        return new BottomInsetViewFactory();
+    }
+}
+
+class BottomInsetViewFactory implements ViewFactory {
+    @Override public View create(Element elem) {
+        String kind = elem.getName();
+        if(kind!=null) {
+            if(kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
+            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+                return new ParagraphView(elem) {
+                    @Override protected short getBottomInset() {
+                        return 5;
+                    }
+                };
+            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+                return new BoxView(elem, View.Y_AXIS);
+            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+                return new ComponentView(elem);
+            }else if(kind.equals(StyleConstants.IconElementName)) {
+                return new IconView(elem);
             }
-        };
+        }
+        return new LabelView(elem);
     }
 }
