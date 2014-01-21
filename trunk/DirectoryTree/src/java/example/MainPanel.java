@@ -55,7 +55,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -81,38 +82,51 @@ class FolderSelectionListener implements TreeSelectionListener {
         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         //final TreePath path = e.getPath();
 
-        if(!node.isLeaf()) { return; }
+        if(!node.isLeaf()) {
+            return;
+        }
         final File parent = (File)node.getUserObject();
-        if(!parent.isDirectory()) { return; }
+        if(!parent.isDirectory()) {
+            return;
+        }
 
-        SwingWorker<String, File> worker = new SwingWorker<String, File>() {
-            @Override public String doInBackground() {
-                File[] children = fileSystemView.getFiles(parent, true);
-                for(File child: children) {
-                    if(child.isDirectory()) {
-                        publish(child);
-//                         try{
-//                             Thread.sleep(500);
-//                         }catch(InterruptedException ex) {
-//                             ex.printStackTrace();
-//                         }
-                    }
-                }
-                return "done";
-            }
+        SwingWorker<String, File> worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
+                if(!tree.isDisplayable()) {
+                    cancel(true);
+                    return;
+                }
                 for(File file: chunks) {
                     node.add(new DefaultMutableTreeNode(file));
                 }
                 model.nodeStructureChanged(node);
                 //tree.expandPath(path);
             }
-//              @Override public void done() {
-//                  //frame.getGlassPane().setVisible(false);
-//                  //tree.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-//              }
         };
         worker.execute();
+    }
+}
+
+class Task extends SwingWorker<String, File> {
+    private final FileSystemView fileSystemView;
+    private final File parent;
+    public Task(FileSystemView fileSystemView, File parent) {
+        this.fileSystemView = fileSystemView;
+        this.parent = parent;
+    }
+    @Override public String doInBackground() {
+        File[] children = fileSystemView.getFiles(parent, true);
+        for(File child: children) {
+            if(child.isDirectory()) {
+                publish(child);
+//                 try{ //Test
+//                     Thread.sleep(500);
+//                 }catch(InterruptedException ex) {
+//                     ex.printStackTrace();
+//                 }
+            }
+        }
+        return "done";
     }
 }
 

@@ -54,6 +54,7 @@ public class MainPanel extends JPanel {
     };
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
+    private Task worker;
     public MainPanel() {
         super(new BorderLayout());
         table.setFillsViewportHeight(true);
@@ -73,8 +74,13 @@ public class MainPanel extends JPanel {
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
         field.getActionMap().put("Enter", enterAction);
 
-        Task worker = new Task(2013, itemsPerPage) {
+        worker = new Task(2013, itemsPerPage) {
             @Override protected void process(List<List<Object[]>> chunks) {
+                if(!isDisplayable()) {
+                    System.out.println("process: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
                 for(List<Object[]> list: chunks) {
                     for(Object[] o: list) {
                         model.addRow(o);
@@ -85,6 +91,11 @@ public class MainPanel extends JPanel {
                 initFilterAndButton();
             }
             @Override public void done() {
+                if(!isDisplayable()) {
+                    System.out.println("done: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
                 String text = null;
                 if(isCancelled()) {
                     text = "Cancelled";
@@ -96,6 +107,7 @@ public class MainPanel extends JPanel {
                         text = "Exception";
                     }
                 }
+                System.out.println(text);
                 table.setEnabled(true);
             }
         };
@@ -138,7 +150,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -158,6 +171,12 @@ class Task extends SwingWorker<String, List<Object[]>> {
         int c = max/itemsPerPage;
         int i = 0;
         while(i<c && !isCancelled()) {
+            try{
+                Thread.sleep(500); //dummy
+            }catch(InterruptedException ex) {
+                //ex.printStackTrace();
+                return "Interrupted";
+            }
             current = makeRowListAndPublish(current, itemsPerPage);
             i++;
         }
@@ -168,11 +187,6 @@ class Task extends SwingWorker<String, List<Object[]>> {
         return "Done";
     }
     private int makeRowListAndPublish(int current, int size) {
-        try{
-            Thread.sleep(500); //dummy
-        }catch(InterruptedException ex) {
-            ex.printStackTrace();
-        }
         List<Object[]> result = new ArrayList<Object[]>(size);
         int j = current;
         while(j<current+size) {

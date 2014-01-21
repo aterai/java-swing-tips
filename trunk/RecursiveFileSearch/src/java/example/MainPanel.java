@@ -16,9 +16,9 @@ import javax.swing.*;
 //import static java.nio.file.FileVisitResult.*;
 
 public class MainPanel extends JPanel {
+    private final JComboBox<String> dirCombo = new JComboBox<>();
     private final JFileChooser fileChooser = new JFileChooser();
     private final JTextArea textArea = new JTextArea();
-    private final JComboBox dirCombo = new JComboBox();
     private final JProgressBar pBar  = new JProgressBar();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton  = new JButton(new RunAction());
@@ -26,11 +26,10 @@ public class MainPanel extends JPanel {
     private final JButton openButton = new JButton(new OpenAction());
     private SwingWorker<String, Message>  worker;
 
-    @SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement(System.getProperty("user.dir"));
         dirCombo.setModel(model);
         dirCombo.setFocusable(false);
@@ -57,11 +56,13 @@ public class MainPanel extends JPanel {
         add(statusPanel, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    public static void addItem(JComboBox dirCombo, String str, int max) {
-        if(str==null || str.trim().isEmpty()) { return; }
+    //@SuppressWarnings("unchecked")
+    public static void addItem(JComboBox<String> dirCombo, String str, int max) {
+        if(str==null || str.trim().isEmpty()) {
+            return;
+        }
         dirCombo.setVisible(false);
-        DefaultComboBoxModel model = (DefaultComboBoxModel) dirCombo.getModel();
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)dirCombo.getModel();
         model.removeElement(str);
         model.insertElementAt(str, 0);
         if(model.getSize()>max) {
@@ -89,6 +90,11 @@ public class MainPanel extends JPanel {
             worker = new RecursiveFileSearchTask(dir) {
                 @Override protected void process(List<Message> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    if(!isDisplayable()) {
+                        System.out.println("process: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     for(Message c: chunks) {
                         if(c.append) {
                             appendLine(c.message);
@@ -99,6 +105,11 @@ public class MainPanel extends JPanel {
                 }
                 @Override public void done() {
                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+                    if(!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     dirCombo.setEnabled(true);
                     openButton.setEnabled(true);
                     runButton.setEnabled(true);
@@ -190,8 +201,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

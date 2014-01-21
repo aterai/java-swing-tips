@@ -54,12 +54,22 @@ public class MainPanel extends JPanel {
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    if(!isDisplayable()) {
+                        System.out.println("process: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     for(String message : chunks) {
                         appendLine(message);
                     }
                 }
                 @Override public void done() {
                     System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+                    if(!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     anil.stopAnimation();
                     runButton.setEnabled(true);
                     canButton.setEnabled(false);
@@ -76,7 +86,6 @@ public class MainPanel extends JPanel {
                             text = "Exception";
                         }
                     }
-                    System.out.println(text);
                     appendLine(text);
                 }
             };
@@ -115,8 +124,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -138,9 +147,6 @@ class Task extends SwingWorker<String, String> {
         publish("------------------------------");
 
         while(current<lengthOfTask && !isCancelled()) {
-//             if(!bar.isDisplayable()) {
-//                 return "Disposed";
-//             }
             try{
                 Thread.sleep(50);
             }catch(InterruptedException ie) {

@@ -46,22 +46,11 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 final JButton b = (JButton)e.getSource();
                 b.setEnabled(false);
-                SwingWorker<Void,Void> worker = new SwingWorker<Void,Void>() {
-                    @Override public Void doInBackground() {
-                        int current = 0, lengthOfTask = 100;
-                        while(current<=lengthOfTask && !isCancelled()) {
-                            try{ // dummy task
-                                Thread.sleep(50);
-                            }catch(InterruptedException ie) {
-                                return null;
-                            }
-                            setProgress(100 * current / lengthOfTask);
-                            current++;
-                        }
-                        return null;
-                    }
+                SwingWorker<Void,Void> worker = new Task() {
                     @Override public void done() {
-                        b.setEnabled(true);
+                        if(b.isDisplayable()) {
+                            b.setEnabled(true);
+                        }
                     }
                 };
                 worker.addPropertyChangeListener(new ProgressListener(progressBar));
@@ -86,6 +75,7 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -93,6 +83,23 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<Void,Void> {
+    @Override public Void doInBackground() {
+        int current = 0, lengthOfTask = 100;
+        while(current<=lengthOfTask && !isCancelled()) {
+            try{ // dummy task
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return null;
+            }
+            setProgress(100 * current / lengthOfTask);
+            current++;
+        }
+        return null;
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {
@@ -108,6 +115,7 @@ class ProgressListener implements PropertyChangeListener {
         }
     }
 }
+
 class GradientPalletProgressBarUI extends BasicProgressBarUI{
     private final int[] pallet;
     public GradientPalletProgressBarUI() {

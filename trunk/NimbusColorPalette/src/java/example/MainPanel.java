@@ -8,8 +8,9 @@ import java.beans.*;
 import javax.swing.*;
 // JDK 1.6.0 import com.sun.java.swing.Painter;
 
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements HierarchyListener {
     private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
+    private SwingWorker<String, Void> worker;
     public MainPanel() {
         super(new BorderLayout());
 
@@ -47,7 +48,6 @@ public class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Test start") {
-            SwingWorker<String, Void> worker;
             @Override public void actionPerformed(ActionEvent e) {
                 if(worker!=null && !worker.isDone()) {
                     worker.cancel(true);
@@ -59,10 +59,19 @@ public class MainPanel extends JPanel {
         }));
         box.add(Box.createHorizontalStrut(5));
 
+        addHierarchyListener(this);
         add(p);
         add(box, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
+    }
+    @Override public void hierarchyChanged(HierarchyEvent he) {
+        JComponent c = (JComponent)he.getComponent();
+        if((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker!=null) {
+            System.out.println("DISPOSE_ON_CLOSE");
+            worker.cancel(true);
+            worker = null;
+        }
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -84,7 +93,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

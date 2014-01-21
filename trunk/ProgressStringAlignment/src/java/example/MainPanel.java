@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements HierarchyListener {
     private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
     public JProgressBar makeProgressBar(final int halign) {
         return new JProgressBar(model) {
@@ -41,6 +41,7 @@ public class MainPanel extends JPanel {
     private final JProgressBar progressBar1 = makeProgressBar(SwingConstants.RIGHT);
     private final JProgressBar progressBar2 = makeProgressBar(SwingConstants.LEFT);
     private final List<JProgressBar> list = Arrays.<JProgressBar>asList(progressBar1, progressBar2);
+    private SwingWorker<String, Void> worker;
     public MainPanel() {
         super(new BorderLayout());
 
@@ -63,48 +64,29 @@ public class MainPanel extends JPanel {
         }));
         box.add(Box.createHorizontalStrut(5));
         box.add(new JButton(new AbstractAction("Test") {
-            SwingWorker<String, Void> worker;
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) { worker.cancel(true); }
-                worker = new SwingWorker<String, Void>() {
-                    @Override public String doInBackground() {
-                        int current = 0;
-                        int lengthOfTask = 100;
-                        while(current<=lengthOfTask && !isCancelled()) {
-                            try { // dummy task
-                                Thread.sleep(50);
-                            }catch(InterruptedException ie) {
-                                return "Interrupted";
-                            }
-                            setProgress(100 * current / lengthOfTask);
-                            current++;
-                        }
-                        return "Done";
-                    }
-//                     @Override public void done() {
-//                         String text = null;
-//                         if(isCancelled()) {
-//                             text = "Cancelled";
-//                         }else{
-//                             try{
-//                                 text = get();
-//                             }catch(Exception ex) {
-//                                 ex.printStackTrace();
-//                                 text = "Exception";
-//                             }
-//                         }
-//                         //appendLine(text);
-//                     }
-                };
+                if(worker!=null && !worker.isDone()) {
+                    worker.cancel(true);
+                }
+                worker = new Task();
                 worker.addPropertyChangeListener(new ProgressListener(progressBar1));
                 worker.execute();
             }
         }));
         box.add(Box.createHorizontalStrut(5));
 
+        addHierarchyListener(this);
         add(p);
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    @Override public void hierarchyChanged(HierarchyEvent he) {
+        JComponent c = (JComponent)he.getComponent();
+        if((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker!=null) {
+            System.out.println("DISPOSE_ON_CLOSE");
+            worker.cancel(true);
+            worker = null;
+        }
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -126,13 +108,32 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<String, Void> {
+    @Override public String doInBackground() {
+        int current = 0;
+        int lengthOfTask = 100;
+        while(current<=lengthOfTask && !isCancelled()) {
+            try { // dummy task
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            setProgress(100 * current / lengthOfTask);
+            current++;
+        }
+        return "Done";
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {

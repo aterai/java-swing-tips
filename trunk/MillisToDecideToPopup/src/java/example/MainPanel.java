@@ -68,11 +68,21 @@ public class MainPanel extends JPanel {
             runButton.setEnabled(false);
             worker = new Task(lengthOfTask) {
                 @Override protected void process(List<String> chunks) {
+                    if(!isDisplayable()) {
+                        System.out.println("process: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     for(String message : chunks) {
                         monitor.setNote(message);
                     }
                 }
                 @Override public void done() {
+                    if(!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
+                    }
                     runButton.setEnabled(true);
                     monitor.close();
                     String text = null;
@@ -112,8 +122,8 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);

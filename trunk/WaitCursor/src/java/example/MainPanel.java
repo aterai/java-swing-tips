@@ -17,12 +17,13 @@ public class MainPanel extends JPanel {
                 //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
                 frame.getGlassPane().setVisible(true);
                 button.setEnabled(false);
-                new SwingWorker() {
-                    @Override public Object doInBackground() {
-                        dummyLongTask();
-                        return "Done";
-                    }
+                new Task() {
                     @Override public void done() {
+                        if(!isDisplayable()) {
+                            System.out.println("done: DISPOSE_ON_CLOSE");
+                            cancel(true);
+                            return;
+                        }
                         frame.getGlassPane().setVisible(false);
                         button.setEnabled(true);
                     }
@@ -47,14 +48,6 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
 
-    public void dummyLongTask() {
-        try{
-            Thread.sleep(5000);
-        }catch(InterruptedException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -70,11 +63,23 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel(frame));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class Task extends SwingWorker<String, Void> {
+    @Override public String doInBackground() {
+        try{
+            Thread.sleep(5000);
+        }catch(InterruptedException ex) {
+            ex.printStackTrace();
+        }
+        return "Done";
     }
 }
 

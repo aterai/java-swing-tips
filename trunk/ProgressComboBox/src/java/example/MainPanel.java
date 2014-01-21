@@ -4,15 +4,17 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo = new JComboBox();
+    private final JComboBox<String> combo = new JComboBox<>();
     private final JButton button;
-    private SwingWorker<String, String> worker;
-    private int count = 0;
-    @SuppressWarnings("unchecked")
+    private SwingWorker<String[], Integer> worker;
+    private int counter = 0;
+    //@SuppressWarnings("unchecked")
     public MainPanel() {
         super(new BorderLayout());
         combo.setRenderer(new ProgressCellRenderer());
@@ -20,41 +22,39 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 button.setEnabled(false);
                 combo.setEnabled(false);
-                combo.removeAllItems();
-                worker = new SwingWorker<String, String>() {
-                    private int max = 30;
-                    @Override public String doInBackground() {
-                        int current = 0;
-                        while(current<=max && !isCancelled()) {
-                            try{
-                                Thread.sleep(50);
-                                //setProgress(100 * current / max);
-                                count = 100 * current / max;
-                                publish("test: "+current);
-                            }catch(InterruptedException ie) {
-                                return "Exception";
-                            }
-                            current++;
+                //combo.removeAllItems();
+                worker = new Task() {
+                    @Override protected void process(List<Integer> chunks) {
+                        if(!isDisplayable()) {
+                            System.out.println("process: DISPOSE_ON_CLOSE");
+                            cancel(true);
+                            return;
                         }
-                        return "Done";
-                    }
-                    @Override protected void process(List<String> chunks) {
-                        DefaultComboBoxModel m = (DefaultComboBoxModel)combo.getModel();
-                        for(String s: chunks) {
-                            m.addElement(s);
+                        for(Integer i: chunks) {
+                            counter = i;
                         }
                         combo.setSelectedIndex(-1);
                         combo.repaint();
                     }
-//                     @Override public void done() {
-//                         String text = null;
-//                         if(!isCancelled()) {
-//                             combo.setSelectedIndex(0);
-//                         }
-//                         combo.setEnabled(true);
-//                         button.setEnabled(true);
-//                         count = 0;
-//                     }
+                    @Override public void done() {
+                        if(!isDisplayable()) {
+                            System.out.println("done: DISPOSE_ON_CLOSE");
+                            cancel(true);
+                            return;
+                        }
+                        try{
+                            if(!isCancelled()) {
+                                String[] array = get();
+                                combo.setModel(new DefaultComboBoxModel<String>(array));
+                                combo.setSelectedIndex(0);
+                            }
+                        }catch(InterruptedException | ExecutionException ex) {
+                            System.out.println("Interrupted");
+                        }
+                        combo.setEnabled(true);
+                        button.setEnabled(true);
+                        counter = 0;
+                    }
                 };
                 worker.execute();
             }
@@ -74,15 +74,16 @@ public class MainPanel extends JPanel {
             if(index<0 && worker!=null && !worker.isDone()) {
                 bar.setFont(list.getFont());
                 bar.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-                bar.setValue(count);
+                bar.setValue(counter);
                 return bar;
-            }else{
-                return super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
             }
+            return super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
         }
         @Override public void updateUI() {
             super.updateUI();
-            if(bar!=null) { SwingUtilities.updateComponentTreeUI(bar); }
+            if(bar!=null) {
+                SwingUtilities.updateComponentTreeUI(bar);
+            }
         }
     }
 
@@ -136,10 +137,32 @@ public class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class Task extends SwingWorker<String[], Integer> {
+    private int max = 30;
+    @Override public String[] doInBackground() {
+        int current = 0;
+        List<String> list = new ArrayList<>();
+        while(current<=max && !isCancelled()) {
+            try{
+                Thread.sleep(50);
+                int iv = 100 * current / max;
+                publish(iv);
+                //setProgress(iv);
+                list.add("Test: " + current);
+            }catch(InterruptedException ie) {
+                break;
+            }
+            current++;
+        }
+        return list.toArray(new String[0]);
     }
 }

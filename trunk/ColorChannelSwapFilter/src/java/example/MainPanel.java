@@ -11,7 +11,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-class MainPanel extends JPanel {
+class MainPanel extends JPanel implements HierarchyListener {
     private final BoundedRangeModel model = new DefaultBoundedRangeModel();
     private final JProgressBar progress01 = new JProgressBar(model);
     private final JProgressBar progress02 = new JProgressBar(model);
@@ -19,6 +19,7 @@ class MainPanel extends JPanel {
     private final JProgressBar progress04 = new JProgressBar(model);
     private final BlockedColorLayerUI layerUI = new BlockedColorLayerUI();
     private final JPanel p = new JPanel(new GridLayout(2,1));
+    private SwingWorker<String, Void> worker;
     public MainPanel() {
         super(new BorderLayout());
         progress01.setStringPainted(true);
@@ -41,49 +42,30 @@ class MainPanel extends JPanel {
         }));
         box.add(Box.createHorizontalStrut(2));
         box.add(new JButton(new AbstractAction("Start") {
-            SwingWorker<String, Void> worker;
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) { worker.cancel(true); }
-                worker = new SwingWorker<String, Void>() {
-                    @Override public String doInBackground() {
-                        int current = 0;
-                        int lengthOfTask = 100;
-                        while(current<=lengthOfTask && !isCancelled()) {
-                            try { // dummy task
-                                Thread.sleep(50);
-                            }catch(InterruptedException ie) {
-                                return "Interrupted";
-                            }
-                            setProgress(100 * current / lengthOfTask);
-                            current++;
-                        }
-                        return "Done";
-                    }
-//                     @Override public void done() {
-//                         String text = null;
-//                         if(isCancelled()) {
-//                             text = "Cancelled";
-//                         }else{
-//                             try{
-//                                 text = get();
-//                             }catch(Exception ex) {
-//                                 ex.printStackTrace();
-//                                 text = "Exception";
-//                             }
-//                         }
-//                         System.out.println(text);
-//                     }
-                };
+                if(worker!=null && !worker.isDone()) {
+                    worker.cancel(true);
+                }
+                worker = new Task();
                 worker.addPropertyChangeListener(new ProgressListener(progress01));
                 worker.execute();
             }
         }));
         box.add(Box.createHorizontalStrut(2));
 
+        addHierarchyListener(this);
         add(p);
         add(box, BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
+    }
+    @Override public void hierarchyChanged(HierarchyEvent he) {
+        JComponent c = (JComponent)he.getComponent();
+        if((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker!=null) {
+            System.out.println("DISPOSE_ON_CLOSE");
+            worker.cancel(true);
+            worker = null;
+        }
     }
     private JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         JPanel p = new JPanel(new GridBagLayout());
@@ -114,7 +96,8 @@ class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -160,6 +143,24 @@ class RedGreenChannelSwapFilter extends RGBImageFilter {
         return (argb & 0xff000000) | (g<<16) | (r<<8) | (b);
     }
 }
+
+class Task extends SwingWorker<String, Void> {
+    @Override public String doInBackground() {
+        int current = 0;
+        int lengthOfTask = 100;
+        while(current<=lengthOfTask && !isCancelled()) {
+            try { // dummy task
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            setProgress(100 * current / lengthOfTask);
+            current++;
+        }
+        return "Done";
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
     ProgressListener(JProgressBar progressBar) {
