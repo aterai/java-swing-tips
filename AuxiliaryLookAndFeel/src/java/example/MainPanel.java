@@ -101,11 +101,11 @@ public class MainPanel extends JPanel {
     }
 }
 
+//http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 class LookAndFeelPanel extends JPanel {
     public LookAndFeelPanel(LayoutManager lm) {
         super(lm);
     }
-    //<blockquote cite="http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java">
     private ButtonGroup lookAndFeelRadioGroup;
     private String lookAndFeel;
     public JMenu createLookAndFeelMenu() {
@@ -151,5 +151,4 @@ class LookAndFeelPanel extends JPanel {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }
-    //</blockquote>
 }
