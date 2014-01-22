@@ -12,16 +12,16 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        DefaultListModel list = makeIconList();
-        TestModel model = new TestModel(list);
-        IconTable table = new IconTable(model, list);
+        DefaultListModel<MyIcon> list = makeIconList();
+        MyIconModel model = new MyIconModel(list);
+        MyIconTable table = new MyIconTable(model, list);
         JPanel p = new JPanel(new GridBagLayout());
         p.add(table, new GridBagConstraints());
         p.setBackground(Color.WHITE);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private DefaultListModel makeIconList() {
+    private DefaultListModel<MyIcon> makeIconList() {
         DefaultListModel<MyIcon> list = new DefaultListModel<>();
         list.addElement(new MyIcon("wi0009"));
         list.addElement(new MyIcon("wi0054"));
@@ -57,8 +57,9 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class TestModel extends DefaultTableModel {
-    public TestModel(DefaultListModel list) {
+
+class MyIconModel extends DefaultTableModel {
+    public MyIconModel(DefaultListModel list) {
         super();
         addRow(new Object[] {list.elementAt(0), list.elementAt(1), list.elementAt(2) });
         addRow(new Object[] {list.elementAt(3), list.elementAt(4), list.elementAt(5) });
@@ -74,8 +75,18 @@ class TestModel extends DefaultTableModel {
         return "";
     }
 }
-class TestRenderer extends DefaultTableCellRenderer {
-    public TestRenderer() {
+
+class MyIcon {
+    public final ImageIcon large;
+    public final ImageIcon small;
+    public MyIcon(String str) {
+        large = new ImageIcon(getClass().getResource(str+"-48.png"));
+        small = new ImageIcon(getClass().getResource(str+"-24.png"));
+    }
+}
+
+class MyIconRenderer extends DefaultTableCellRenderer {
+    public MyIconRenderer() {
         super();
         setHorizontalAlignment(JLabel.CENTER);
         //setOpaque(true);
@@ -87,23 +98,30 @@ class TestRenderer extends DefaultTableCellRenderer {
     }
 }
 
-class MyIcon {
-    public final ImageIcon large;
-    public final ImageIcon small;
-    public MyIcon(String str) {
-        large = new ImageIcon(getClass().getResource(str+"-48.png"));
-        small = new ImageIcon(getClass().getResource(str+"-24.png"));
-    }
-}
-
-class IconTable extends JTable {
-    private final MyGlassPane panel = new MyGlassPane();
+class MyIconTable extends JTable {
+    private static final int XOFF = 4;
+    private final MyGlassPane panel = new MyGlassPane() {
+        @Override public void paintComponent(Graphics g) {
+            g.setColor(new Color(255,255,255,100));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            BufferedImage bufimg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = bufimg.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
+            g2.setPaint(Color.BLACK);
+            for(int i=0;i<XOFF;i++) {
+                g2.fillRoundRect(rect.x-i, rect.y+XOFF, rect.width+i+i, rect.height-XOFF+i, 5, 5);
+            }
+            g2.dispose();
+            g.drawImage(bufimg, 0, 0, null);
+        }
+    };
     private final EditorFromList editor;
     private Rectangle rect;
 
-    public IconTable(TableModel model, DefaultListModel list) {
+    public MyIconTable(TableModel model, DefaultListModel<MyIcon> list) {
         super(model);
-        setDefaultRenderer(Object.class, new TestRenderer());
+        setDefaultRenderer(Object.class, new MyIconRenderer());
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         initCellSize(50);
         addMouseListener(new MouseAdapter() {
@@ -111,6 +129,7 @@ class IconTable extends JTable {
                 startEditing();
             }
         });
+
         editor = new EditorFromList(list);
         editor.addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
@@ -121,7 +140,21 @@ class IconTable extends JTable {
         });
         editor.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent me) {
-                changeValue(me.getPoint());
+                setEditorSelectedIconAt(me.getPoint());
+            }
+        });
+
+        panel.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent me) {
+                if(rect==null || rect.contains(me.getPoint())) {
+                    return;
+                }
+                setEditorSelectedIconAt(me.getPoint());
+            }
+        });
+        panel.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+            @Override public boolean accept(Component c) {
+                return c==editor;
             }
         });
         panel.add(editor);
@@ -140,44 +173,9 @@ class IconTable extends JTable {
         }
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
-    class MyGlassPane extends JPanel {
-        public MyGlassPane() {
-            super((LayoutManager)null);
-            setOpaque(false);
-            addMouseListener(new MouseAdapter() {
-                @Override public void mouseClicked(MouseEvent me) {
-                    if(rect==null || rect.contains(me.getPoint())) { return; }
-                    changeValue(me.getPoint());
-                }
-            });
-            setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-                @Override public boolean accept(Component c) { return c==editor; }
-            });
-            //editor.requestFocusInWindow();
-        }
-        @Override public void setVisible(boolean flag) {
-            super.setVisible(flag);
-            setFocusTraversalPolicyProvider(flag);
-            setFocusCycleRoot(flag);
-        }
-        private static final int xoff = 4;
-        @Override public void paintComponent(Graphics g) {
-            g.setColor(new Color(255,255,255,100));
-            g.fillRect(0,0,getWidth(), getHeight());
-            BufferedImage bufimg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = bufimg.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
-            g2.setPaint(Color.BLACK);
-            for(int i=0;i<xoff;i++) {
-                g2.fillRoundRect(rect.x-i, rect.y+xoff,
-                                 rect.width+i+i, rect.height-xoff+i, 5, 5);
-            }
-            g2.dispose();
-            g.drawImage(bufimg, 0, 0, null);
-        }
-    }
-    private void initEditor() {
+    public void startEditing() {
+        JFrame f = (JFrame)getTopLevelAncestor();
+        f.setGlassPane(panel);
         Dimension dim = editor.getPreferredSize();
         rect = getCellRect(getSelectedRow(), getSelectedColumn(), true);
         int iv = (dim.width-rect.width)/2;
@@ -185,72 +183,79 @@ class IconTable extends JTable {
         rect.setRect(p.x-iv, p.y-iv, dim.width, dim.height);
         editor.setBounds(rect);
         editor.setSelectedValue(getValueAt(getSelectedRow(), getSelectedColumn()), true);
-    }
-    public void startEditing() {
-        JFrame f = (JFrame)getTopLevelAncestor();
-        f.setGlassPane(panel);
-        initEditor();
         panel.setVisible(true);
         editor.requestFocusInWindow();
     }
     private void cancelEditing() {
         panel.setVisible(false);
     }
-    private void changeValue(Point p) {
+    private void setEditorSelectedIconAt(Point p) {
         Object o = editor.getModel().getElementAt(editor.locationToIndex(p));
         if(o != null) {
             setValueAt(o, getSelectedRow(), getSelectedColumn());
         }
         panel.setVisible(false);
     }
-    @SuppressWarnings("unchecked")
-    class EditorFromList extends JList {
-        private static final int ins = 2;
-        public EditorFromList(DefaultListModel list) {
-            super(list);
-            ImageIcon icon = ((MyIcon)list.elementAt(0)).small;
-            int iw = ins+icon.getIconWidth();
-            int ih = ins+icon.getIconHeight();
-            setLayoutOrientation(JList.HORIZONTAL_WRAP);
-            setVisibleRowCount(0);
-            setFixedCellWidth(iw);
-            setFixedCellHeight(ih);
-            setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            setPreferredSize(new Dimension(iw*3+ins, ih*3+ins));
-            setCellRenderer(new ListCellRenderer() {
-                private final JLabel label = new JLabel();
-                private final Color selctedColor = new Color(200, 200, 255);
-                @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                    label.setOpaque(true);
-                    label.setHorizontalAlignment(JLabel.CENTER);
-                    if(index == rollOverRowIndex) {
-                        label.setBackground(getSelectionBackground());
-                    }else if(isSelected) {
-                        label.setBackground(selctedColor);
-                    }else{
-                        label.setBackground(getBackground());
-                    }
-                    label.setIcon(((MyIcon)value).small);
-                    return label;
+}
+
+class EditorFromList extends JList<MyIcon> {
+    private static final int ins = 2;
+    public EditorFromList(DefaultListModel<MyIcon> list) {
+        super(list);
+        ImageIcon icon = ((MyIcon)list.elementAt(0)).small;
+        int iw = ins+icon.getIconWidth();
+        int ih = ins+icon.getIconHeight();
+        setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        setVisibleRowCount(0);
+        setFixedCellWidth(iw);
+        setFixedCellHeight(ih);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setPreferredSize(new Dimension(iw*3+ins, ih*3+ins));
+        setCellRenderer(new ListCellRenderer<MyIcon>() {
+            private final JLabel label = new JLabel();
+            private final Color selctedColor = new Color(200, 200, 255);
+            @Override public Component getListCellRendererComponent(JList list, MyIcon value, int index, boolean isSelected, boolean cellHasFocus) {
+                label.setOpaque(true);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                if(index == rollOverRowIndex) {
+                    label.setBackground(getSelectionBackground());
+                }else if(isSelected) {
+                    label.setBackground(selctedColor);
+                }else{
+                    label.setBackground(getBackground());
                 }
-            });
-            RollOverListener lst = new RollOverListener();
-            addMouseMotionListener(lst);
-            addMouseListener(lst);
+                label.setIcon(value.small);
+                return label;
+            }
+        });
+        RollOverListener lst = new RollOverListener();
+        addMouseMotionListener(lst);
+        addMouseListener(lst);
+    }
+    private int rollOverRowIndex = -1;
+    private class RollOverListener extends MouseInputAdapter {
+        @Override public void mouseExited(MouseEvent e) {
+            rollOverRowIndex = -1;
+            repaint();
         }
-        private int rollOverRowIndex = -1;
-        private class RollOverListener extends MouseInputAdapter {
-            @Override public void mouseExited(MouseEvent e) {
-                rollOverRowIndex = -1;
+        @Override public void mouseMoved(MouseEvent e) {
+            int row = locationToIndex(e.getPoint());
+            if( row != rollOverRowIndex ) {
+                rollOverRowIndex = row;
                 repaint();
             }
-            @Override public void mouseMoved(MouseEvent e) {
-                int row = locationToIndex(e.getPoint());
-                if( row != rollOverRowIndex ) {
-                    rollOverRowIndex = row;
-                    repaint();
-                }
-            }
         }
+    }
+}
+
+class MyGlassPane extends JPanel {
+    public MyGlassPane() {
+        super((LayoutManager)null);
+        setOpaque(false);
+    }
+    @Override public void setVisible(boolean flag) {
+        super.setVisible(flag);
+        setFocusTraversalPolicyProvider(flag);
+        setFocusCycleRoot(flag);
     }
 }
