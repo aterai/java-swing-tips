@@ -34,14 +34,14 @@ public class MainPanel extends JPanel {
         tab.addTab("JTabbedPane 06", sub);
         tab.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
 
-        add(makeCheckBoxes(), BorderLayout.NORTH);
+        add(makeCheckBoxPanel(), BorderLayout.NORTH);
         add(tab);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JPanel makeCheckBoxes() {
+    private JComponent makeCheckBoxPanel() {
         gcheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setPaintGhost(gcheck.isSelected());
+                tab.hasGhost = gcheck.isSelected();
             }
         });
         tcheck.addActionListener(new ActionListener() {
@@ -57,7 +57,7 @@ public class MainPanel extends JPanel {
         });
         debugp.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setPaintScrollArea(debugp.isSelected());
+                tab.isPaintScrollArea = debugp.isSelected();
             }
         });
         JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -103,23 +103,38 @@ public class MainPanel extends JPanel {
     }
 }
 
+class TabTransferable implements Transferable {
+    private static final String NAME = "test";
+    private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+    private final Component tabbedPane;
+    public TabTransferable(Component tabbedPane) {
+        this.tabbedPane = tabbedPane;
+    }
+    @Override public Object getTransferData(DataFlavor flavor) {
+        return tabbedPane;
+    }
+    @Override public DataFlavor[] getTransferDataFlavors() {
+        DataFlavor[] f = new DataFlavor[1];
+        f[0] = FLAVOR;
+        return f;
+    }
+    @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+        return flavor.getHumanPresentableName().equals(NAME);
+    }
+}
+
 class DnDTabbedPane extends JTabbedPane {
     private static final int LINEWIDTH = 3;
-    private static final String NAME = "test";
     private final GhostGlassPane glassPane = new GhostGlassPane();
     private final Rectangle lineRect  = new Rectangle();
     private final Color     lineColor = new Color(0, 100, 255);
     private int dragTabIndex = -1;
 
-    private void clickArrowButton(String actionKey) {
-        ActionMap map = getActionMap();
-        if(map != null) {
-            Action action = map.get(actionKey);
-            if(action != null && action.isEnabled()) {
-                action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
-            }
-        }
-    }
+    //For Debug: >>>
+    protected boolean hasGhost = true;
+    protected boolean isPaintScrollArea = true;
+    //<<<
+
     private Rectangle rBackward = new Rectangle();
     private Rectangle rForward  = new Rectangle();
     private static int rwh = 20;
@@ -142,7 +157,25 @@ class DnDTabbedPane extends JTabbedPane {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
-    private final DragSourceListener dsl = new DragSourceListener() {
+    private void clickArrowButton(String actionKey) {
+        ActionMap map = getActionMap();
+        if(map != null) {
+            Action action = map.get(actionKey);
+            if(action != null && action.isEnabled()) {
+                action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
+            }
+        }
+    }
+
+    public DnDTabbedPane() {
+        super();
+        glassPane.setName("GlassPane");
+        new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
+        new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
+        //DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
+    }
+
+    class TabDragSourceListener implements DragSourceListener {
         @Override public void dragEnter(DragSourceDragEvent e) {
             e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
         }
@@ -156,9 +189,7 @@ class DnDTabbedPane extends JTabbedPane {
             Point glassPt = e.getLocation();
             SwingUtilities.convertPointFromScreen(glassPt, glassPane);
             int targetIdx = getTargetTabIndex(glassPt);
-            //if(getTabAreaBounds().contains(tabPt) && targetIdx>=0 &&
-            if(getTabAreaBounds().contains(glassPt) && targetIdx>=0 &&
-               targetIdx!=dragTabIndex && targetIdx!=dragTabIndex+1) {
+            if(getTabAreaBounds().contains(glassPt) && targetIdx>=0 && targetIdx!=dragTabIndex && targetIdx!=dragTabIndex+1) {
                 e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
                 glassPane.setCursor(DragSource.DefaultMoveDrop);
             }else{
@@ -173,49 +204,9 @@ class DnDTabbedPane extends JTabbedPane {
             glassPane.setImage(null);
         }
         @Override public void dropActionChanged(DragSourceDragEvent e) {}
-    };
-    private final Transferable t = new Transferable() {
-        private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-        @Override public Object getTransferData(DataFlavor flavor) {
-            return DnDTabbedPane.this;
-        }
-        @Override public DataFlavor[] getTransferDataFlavors() {
-            DataFlavor[] f = new DataFlavor[1];
-            f[0] = this.FLAVOR;
-            return f;
-        }
-        @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return flavor.getHumanPresentableName().equals(NAME);
-        }
-    };
-    private final DragGestureListener dgl = new DragGestureListener() {
-        @Override public void dragGestureRecognized(DragGestureEvent e) {
-            if(getTabCount()<=1) {
-                return;
-            }
-            Point tabPt = e.getDragOrigin();
-            dragTabIndex = indexAtLocation(tabPt.x, tabPt.y);
-            //"disabled tab problem".
-            if(dragTabIndex<0 || !isEnabledAt(dragTabIndex)) {
-                return;
-            }
-            initGlassPane(e.getComponent(), e.getDragOrigin());
-            try{
-                e.startDrag(DragSource.DefaultMoveDrop, t, dsl);
-            }catch(InvalidDnDOperationException idoe) {
-                idoe.printStackTrace();
-            }
-        }
-    };
-    public DnDTabbedPane() {
-        super();
-        glassPane.setName("GlassPane");
-        new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
-        new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
-        //DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
     }
 
-    class CDropTargetListener implements DropTargetListener {
+    class TabDropTargetListener implements DropTargetListener {
         @Override public void dragEnter(DropTargetDragEvent e) {
             if(isDragAcceptable(e)) {
                 e.acceptDrag(e.getDropAction());
@@ -229,7 +220,7 @@ class DnDTabbedPane extends JTabbedPane {
         }
         @Override public void dropActionChanged(DropTargetDragEvent e) {}
 
-        private Point _glassPt = new Point();
+        private Point prevGlassPt = new Point();
         @Override public void dragOver(final DropTargetDragEvent e) {
             Point glassPt = e.getLocation();
             if(getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM) {
@@ -237,11 +228,11 @@ class DnDTabbedPane extends JTabbedPane {
             }else{
                 initTargetTopBottomLine(getTargetTabIndex(glassPt));
             }
-            if(hasGhost()) {
+            if(hasGhost) {
                 glassPane.setPoint(glassPt);
             }
-            if(!_glassPt.equals(glassPt)) { glassPane.repaint(); }
-            _glassPt = glassPt;
+            if(!prevGlassPt.equals(glassPt)) { glassPane.repaint(); }
+            prevGlassPt = glassPt;
             autoScrollTest(glassPt);
         }
 
@@ -272,19 +263,24 @@ class DnDTabbedPane extends JTabbedPane {
         }
     }
 
-    private boolean hasGhost = true;
-    public void setPaintGhost(boolean flag) {
-        hasGhost = flag;
-    }
-    public boolean hasGhost() {
-        return hasGhost;
-    }
-    private boolean isPaintScrollArea = true;
-    public void setPaintScrollArea(boolean flag) {
-        isPaintScrollArea = flag;
-    }
-    public boolean isPaintScrollArea() {
-        return isPaintScrollArea;
+    class TabDragGestureListener implements DragGestureListener {
+        @Override public void dragGestureRecognized(DragGestureEvent e) {
+            if(getTabCount()<=1) {
+                return;
+            }
+            Point tabPt = e.getDragOrigin();
+            dragTabIndex = indexAtLocation(tabPt.x, tabPt.y);
+            //"disabled tab problem".
+            if(dragTabIndex<0 || !isEnabledAt(dragTabIndex)) {
+                return;
+            }
+            initGlassPane(e.getComponent(), e.getDragOrigin());
+            try{
+                e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(e.getComponent()), new TabDragSourceListener());
+            }catch(InvalidDnDOperationException idoe) {
+                idoe.printStackTrace();
+            }
+        }
     }
 
     private int getTargetTabIndex(Point glassPt) {
@@ -297,7 +293,9 @@ class DnDTabbedPane extends JTabbedPane {
             }else{
                 r.setRect(r.x, r.y-r.height/2, r.width, r.height);
             }
-            if(r.contains(tabPt)) { return i; }
+            if(r.contains(tabPt)) {
+                return i;
+            }
         }
         Rectangle r = getBoundsAt(getTabCount()-1);
         if(isTB) {
@@ -307,6 +305,7 @@ class DnDTabbedPane extends JTabbedPane {
         }
         return r.contains(tabPt)?getTabCount():-1;
     }
+
     private void convertTab(int prev, int next) {
         if(next<0 || prev==next) {
             return;
@@ -342,6 +341,7 @@ class DnDTabbedPane extends JTabbedPane {
             lineRect.setRect(r.x+r.width-LINEWIDTH/2,r.y,LINEWIDTH,r.height);
         }
     }
+
     private void initTargetTopBottomLine(int next) {
         if(next<0 || dragTabIndex==next || next-dragTabIndex==1) {
             lineRect.setRect(0,0,0,0);
@@ -356,7 +356,7 @@ class DnDTabbedPane extends JTabbedPane {
 
     private void initGlassPane(Component c, Point tabPt) {
         getRootPane().setGlassPane(glassPane);
-        if(hasGhost()) {
+        if(hasGhost) {
             Rectangle rect = getBoundsAt(dragTabIndex);
             BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
@@ -396,6 +396,7 @@ class DnDTabbedPane extends JTabbedPane {
         tabbedRect.grow(2, 2);
         return tabbedRect;
     }
+
     class GhostGlassPane extends JPanel {
         private final AlphaComposite composite;
         private Point location = new Point(0, 0);
@@ -416,7 +417,7 @@ class DnDTabbedPane extends JTabbedPane {
         @Override public void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setComposite(composite);
-            if(isPaintScrollArea() && getTabLayoutPolicy()==SCROLL_TAB_LAYOUT) {
+            if(isPaintScrollArea && getTabLayoutPolicy()==SCROLL_TAB_LAYOUT) {
                 g2.setPaint(Color.RED);
                 g2.fill(rBackward);
                 g2.fill(rForward);

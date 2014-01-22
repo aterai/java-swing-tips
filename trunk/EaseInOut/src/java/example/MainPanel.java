@@ -54,19 +54,11 @@ class ImageCaptionLabel extends JLabel {
         //    return false;
         //}
     };
-    private final MouseAdapter textAreaMouseListener = new MouseAdapter() {
-        @Override public void mouseEntered(MouseEvent e) {
-            dispatchMouseEvent(e);
-        }
-        @Override public void mouseExited(MouseEvent e) {
-            dispatchMouseEvent(e);
-        }
-        private void dispatchMouseEvent(MouseEvent e) {
-            Component src = e.getComponent();
-            Component tgt = ImageCaptionLabel.this;
-            tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
-        }
-    };
+    private void dispatchMouseEvent(MouseEvent e) {
+        Component src = e.getComponent();
+        //this: target Component;
+        this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));
+    }
     public ImageCaptionLabel(String caption, Icon icon) {
         setIcon(icon);
         textArea.setFont(textArea.getFont().deriveFont(11f));
@@ -77,7 +69,14 @@ class ImageCaptionLabel extends JLabel {
         textArea.setBackground(new Color(0,true));
         textArea.setForeground(Color.WHITE);
         textArea.setBorder(BorderFactory.createEmptyBorder(2,4,4,4));
-        textArea.addMouseListener(textAreaMouseListener);
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                dispatchMouseEvent(e);
+            }
+            @Override public void mouseExited(MouseEvent e) {
+                dispatchMouseEvent(e);
+            }
+        });
 
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(222,222,222)),
                                                      BorderFactory.createLineBorder(Color.WHITE, 4)));

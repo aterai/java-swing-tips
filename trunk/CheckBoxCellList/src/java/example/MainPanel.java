@@ -129,11 +129,9 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBo
             this.setBackground(list.getBackground());
             this.setForeground(list.getForeground());
         }
-        if(value instanceof CheckBoxNode) {
-            this.setSelected(((CheckBoxNode)value).selected);
-            this.getModel().setRollover(index==rollOverRowIndex);
-        }
-        this.setText(value.toString());
+        this.setSelected(value.selected);
+        this.getModel().setRollover(index==rollOverRowIndex);
+        this.setText(value.text);
         return this;
     }
     private int rollOverRowIndex = -1;

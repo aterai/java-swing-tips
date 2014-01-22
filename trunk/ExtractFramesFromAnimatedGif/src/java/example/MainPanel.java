@@ -21,7 +21,8 @@ class MainPanel extends JPanel {
         Box p = Box.createHorizontalBox();
         p.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
 
-        try(ImageInputStream iis = ImageIO.createImageInputStream(getClass().getResourceAsStream("duke.running.gif"))) {
+        try(InputStream is = getClass().getResourceAsStream("duke.running.gif");
+            ImageInputStream iis = ImageIO.createImageInputStream(is)) {
             for(BufferedImage image: loadFromStream(iis)) {
                 p.add(new JLabel(new ImageIcon(image)));
             }
@@ -40,9 +41,7 @@ class MainPanel extends JPanel {
         while(readers.hasNext()) {
             reader = readers.next();
             String metaFormat = reader.getOriginatingProvider().getNativeImageMetadataFormatName();
-            if("gif".equalsIgnoreCase(reader.getFormatName()) && !"javax_imageio_gif_image_1.0".equals(metaFormat)) {
-                continue;
-            }else{
+            if("gif".equalsIgnoreCase(reader.getFormatName()) && "javax_imageio_gif_image_1.0".equals(metaFormat)) {
                 break;
             }
         }

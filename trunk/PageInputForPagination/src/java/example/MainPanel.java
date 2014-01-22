@@ -54,7 +54,6 @@ public class MainPanel extends JPanel {
     };
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
-    private Task worker;
     public MainPanel() {
         super(new BorderLayout());
         table.setFillsViewportHeight(true);
@@ -74,7 +73,7 @@ public class MainPanel extends JPanel {
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
         field.getActionMap().put("Enter", enterAction);
 
-        worker = new Task(2013, itemsPerPage) {
+        new Task(2013, itemsPerPage) {
             @Override protected void process(List<List<Object[]>> chunks) {
                 if(!isDisplayable()) {
                     System.out.println("process: DISPOSE_ON_CLOSE");
@@ -110,8 +109,7 @@ public class MainPanel extends JPanel {
                 System.out.println(text);
                 table.setEnabled(true);
             }
-        };
-        worker.execute();
+        }.execute();
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));

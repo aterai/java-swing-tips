@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
 
         jtp.getActionMap().put("myPop", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                Rectangle rect = new Rectangle();
+                Rectangle rect;
                 try{
                     rect = jtp.modelToView(jtp.getCaretPosition());
                 }catch(BadLocationException ble) {
