@@ -6,20 +6,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.Timer;
 
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(makeList(), ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<String> makeList() {
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("asdfasdfasdfsadfas");
         model.addElement("qwerqwerqwerqwerweqr");
         model.addElement("zxcvzxcbzxcvzxcbzxcbzxcbzxcvzxcbzxbzxcvzxcbzcvbzxcvzxcvzx");
@@ -31,7 +30,7 @@ public class MainPanel extends JPanel {
         model.addElement("tiutyityityoiuo");
         model.addElement("hjklgkghkghk");
         model.addElement("zxcvzxcvbvnvbmvbmbm");
-        JList list = new JList(model);
+        JList<String> list = new JList<>(model);
         list.setCellRenderer(new AnimeListCellRenderer(list));
         return list;
     }
@@ -59,7 +58,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class AnimeListCellRenderer extends JPanel implements ListCellRenderer, HierarchyListener {
+class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, HierarchyListener {
     private static final Color SELECTEDCOLOR = new Color(230,230,255);
     private final AnimeIcon icon = new AnimeIcon();
     private final MarqueeLabel label = new MarqueeLabel();
@@ -96,9 +95,9 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer, Hierarch
             }
         }
     }
-    @Override public Component getListCellRendererComponent(JList list, Object object, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         setBackground(isSelected ? SELECTEDCOLOR : list.getBackground());
-        label.setText((object==null) ? "" : object.toString());
+        label.setText(Objects.toString(value, ""));
         animate_index = index;
         return this;
     }

@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 //                     int mr = convertRowIndexToModel(row);
 //                     int mc = convertColumnIndexToModel(column);
 //                     Object o = getModel().getValueAt(mr, mc);
-//                     String s = (o!=null)?o.toString():null;
+//                     String s = Objects.toString(o, "");
 //                     ((JComponent)c).setToolTipText(s.isEmpty()?null:s);
 //                 }
 //                 return c;

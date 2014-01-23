@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -164,7 +165,7 @@ class RowHeaderList extends JList {
                 setForeground(header.getForeground());
                 setBackground(header.getBackground());
             }
-            setText((value == null) ? "" : value.toString());
+            setText(Objects.toString(value, ""));
             return this;
         }
     }

@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -66,7 +67,7 @@ public class MainPanel extends JPanel {
                     //availableWidth -= insets.left;
                     availableWidth -= insets.left + insets.right;
                 }
-                String cellText = (value!=null)?value.toString():"";
+                String cellText = Objects.toString(value, "");
                 //<blockquote cite="http://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
                 //@title Left Dot Renderer
                 //@auther Rob Camick

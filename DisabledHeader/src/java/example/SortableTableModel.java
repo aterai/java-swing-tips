@@ -114,7 +114,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        setText((value==null) ? "" : value.toString());
+        setText(Objects.toString(value, ""));
         setIcon(NONE_SORT_ICON);
         int modelColumn = table.convertColumnIndexToModel(column);
         if(!isEnabledAt(modelColumn)) {

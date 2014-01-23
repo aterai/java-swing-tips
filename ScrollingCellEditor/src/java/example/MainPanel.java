@@ -82,7 +82,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         System.out.println("getTableCellEditorComponent");
         setFont(table.getFont());
-        setText((value!=null)?value.toString():"");
+        setText(Objects.toString(value, ""));
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 setCaretPosition(getText().length());
@@ -178,7 +178,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
             setBackground(table.getBackground());
         }
         setFont(table.getFont());
-        setText((value ==null) ? "" : value.toString());
+        setText(Objects.toString(value, ""));
         return this;
     }
     //Overridden for performance reasons. ---->

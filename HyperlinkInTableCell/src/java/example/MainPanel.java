@@ -4,8 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
 import java.io.IOException;
+import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -120,7 +121,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 //             trect, //text
 //             this.getIconTextGap());
 // <<<<
-        String str = value!=null?value.toString():"";
+        String str = Objects.toString(value, "");
 
         if(!table.isEditing() && this.row==row && this.col==column && this.isRollover) {
             setText("<html><u><font color='blue'>"+str);

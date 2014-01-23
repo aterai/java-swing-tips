@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.font.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -84,7 +85,7 @@ class TestRenderer extends WrappedLabel implements TableCellRenderer {
         }
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         setFont(table.getFont());
-        setText((value ==null) ? "" : value.toString());
+        setText(Objects.toString(value, ""));
         return this;
     }
 }
@@ -163,7 +164,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
             setBackground(table.getBackground());
         }
         setFont(table.getFont());
-        setText((value ==null) ? "" : value.toString());
+        setText(Objects.toString(value, ""));
         return this;
     }
     //Overridden for performance reasons. ---->

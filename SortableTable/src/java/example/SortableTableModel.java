@@ -6,10 +6,10 @@ modified by aterai at.terai@gmail.com
 package example;
 //-*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
-import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -84,7 +84,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        setText((value==null) ? "" : value.toString());
+        setText(Objects.toString(value, ""));
         setIcon(NONE_SORT_ICON);
         int modelColumn = table.convertColumnIndexToModel(column);
         Integer ivalue = state.get(modelColumn);

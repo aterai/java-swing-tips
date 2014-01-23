@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Enumeration;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -108,7 +108,7 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
         setEditable(false);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        String txt = value!=null ? value.toString() : "";
+        String txt = Objects.toString(value, "");
         getHighlighter().removeAllHighlights();
         setText(txt);
         setBackground(isSelected ? backgroundSelectionColor : Color.WHITE);

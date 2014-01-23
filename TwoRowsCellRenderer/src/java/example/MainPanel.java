@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -72,7 +73,7 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
         }
         setFont(table.getFont());
         FontMetrics fm  = table.getFontMetrics(table.getFont());
-        String text     = (value==null) ? "" : value.toString();
+        String text     = Objects.toString(value, "");
         String first    = text;
         String second   = "";
         int columnWidth = table.getColumnModel().getColumn(column).getWidth();

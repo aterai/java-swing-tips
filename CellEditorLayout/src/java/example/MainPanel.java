@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.EventObject;
+import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -92,7 +92,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 //     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         //System.out.println("getTableCellEditorComponent");
-        field.setText(value!=null?value.toString():"");
+        field.setText(Objects.toString(value, ""));
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 field.setCaretPosition(field.getText().length());
@@ -172,7 +172,7 @@ class CustomComponentCellEditor2 extends DefaultCellEditor {
         this.component = component;
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        component.field.setText(value!=null?value.toString():"");
+        component.field.setText(Objects.toString(value, ""));
         return this.component;
     }
     @Override public Component getComponent() {

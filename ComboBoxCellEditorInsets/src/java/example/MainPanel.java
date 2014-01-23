@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.EventObject;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -226,7 +226,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
             editor.setBackground(table.getBackground());
             //button.setBackground(bg);
         }
-        addItem((value==null)?"":value.toString());
+        addItem(Objects.toString(value, ""));
         return this;
     }
     //Overridden for performance reasons. ---->
