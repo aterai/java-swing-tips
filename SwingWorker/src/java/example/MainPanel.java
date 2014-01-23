@@ -53,14 +53,14 @@ public class MainPanel extends JPanel {
 
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
-                    System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     if(!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
                         cancel(true);
                         return;
                     }
                     for(String message : chunks) {
-                        appendLine(message);
+                        appendText(message);
                     }
                 }
                 @Override public void done() {
@@ -86,7 +86,7 @@ public class MainPanel extends JPanel {
                             text = "Exception";
                         }
                     }
-                    appendLine(text);
+                    appendText(text+"\n");
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));
@@ -104,8 +104,8 @@ public class MainPanel extends JPanel {
             worker = null;
         }
     }
-    private void appendLine(String str) {
-        area.append(str+"\n");
+    private void appendText(String str) {
+        area.append(str);
         area.setCaretPosition(area.getDocument().getLength());
     }
 
@@ -144,7 +144,7 @@ class Task extends SwingWorker<String, String> {
         int current = 0;
         int lengthOfTask = 120; //list.size();
         publish("Length Of Task: " + lengthOfTask);
-        publish("------------------------------");
+        publish("\n------------------------------\n");
 
         while(current<lengthOfTask && !isCancelled()) {
             try{
@@ -153,6 +153,7 @@ class Task extends SwingWorker<String, String> {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);
+            publish(".");
             current++;
         }
         return "Done";
@@ -166,6 +167,10 @@ class ProgressListener implements PropertyChangeListener {
         this.progressBar.setValue(0);
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
+        if(!progressBar.isDisplayable() && evt.getSource() instanceof SwingWorker) {
+            System.out.println("progress: DISPOSE_ON_CLOSE");
+            ((SwingWorker)evt.getSource()).cancel(true);
+        }
         String strPropertyName = evt.getPropertyName();
         if("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
