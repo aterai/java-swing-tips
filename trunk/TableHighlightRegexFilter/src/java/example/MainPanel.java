@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -121,7 +122,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
         setEditable(false);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        String txt = value!=null ? value.toString() : "";
+        String txt = Objects.toString(value, "");
         Highlighter highlighter = getHighlighter();
         highlighter.removeAllHighlights();
         setText(txt);

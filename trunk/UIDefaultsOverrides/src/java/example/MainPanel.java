@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -199,7 +199,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setFont(table.getFont());
-        setText(value != null ? value.toString() : "");
+        setText(Objects.toString(value, ""));
         setBorder(hasFocus ? fhb : epb);
         if(isSelected) {
             setForeground(table.getSelectionForeground());

@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -172,7 +173,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         add(Box.createHorizontalGlue());
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        textLabel.setText(value==null?"":value.toString());
+        textLabel.setText(Objects.toString(value, ""));
         FontMetrics fm = table.getFontMetrics(table.getFont());
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth()-iconLabel.getPreferredSize().width;

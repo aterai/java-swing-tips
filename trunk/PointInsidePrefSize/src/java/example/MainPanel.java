@@ -4,8 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
 import java.io.IOException;
+import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -110,7 +111,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         String str = SwingUtilities.layoutCompoundLabel(
             this,
             this.getFontMetrics(this.getFont()),
-            value.toString(), //this.getText(),
+            Objects.toString(value, ""), //this.getText(),
             this.getIcon(),
             this.getVerticalAlignment(),
             this.getHorizontalAlignment(),
@@ -120,7 +121,6 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             irect, //icon
             trect, //text
             this.getIconTextGap());
-        //String str = value!=null?value.toString():"";
 
         if(!table.isEditing() && this.row==row && this.col==column && this.isRollover) {
             setText("<html><u><font color='blue'>"+str);

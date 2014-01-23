@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -107,7 +108,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
             test = (Test)value;
             add(iconLabel, BorderLayout.WEST);
         }else{
-            String title = value!=null ? value.toString() : "";
+            String title = Objects.toString(value, "");
             int mrow = table.convertRowIndexToModel(row);
             Test t = (Test)table.getModel().getValueAt(mrow, 0);
             if(t!=null) {

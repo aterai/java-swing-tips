@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -17,7 +18,7 @@ public class MainPanel extends JPanel {
                 if(path!=null) {
                     o = path.getLastPathComponent();
                 }
-                return (o==null)?null:"getToolTipText: "+o.toString();
+                return Objects.toString(o, "getToolTipText");
             }
         };
         ToolTipManager.sharedInstance().registerComponent(tree1);

@@ -115,7 +115,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         if(isSelected) {
             c.setForeground(getTextSelectionColor());
         }else{
-            rollOver = q!=null && !q.isEmpty() && value.toString().startsWith(q);
+            rollOver = q!=null && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
             c.setForeground(getTextNonSelectionColor());
             c.setBackground(getBackgroundNonSelectionColor());
         }

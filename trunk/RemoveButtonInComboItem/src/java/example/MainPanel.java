@@ -4,8 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 import javax.accessibility.Accessible;
 import javax.swing.*;
@@ -219,7 +218,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
     private int index;
     private final Color evenColor = new Color(230,255,230);
     @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-        label.setText((value==null)?"":value.toString());
+        label.setText(Objects.toString(value, ""));
         this.list = list;
         this.index = index;
         if(isSelected) {

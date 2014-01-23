@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
 import javax.swing.*;
 // import javax.swing.event.*;
 import javax.swing.table.*;
@@ -117,7 +117,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setFont(table.getFont());
-        setText((value ==null) ? "" : value.toString());
+        setText(Objects.toString(value, ""));
         adjustRowHeight(table, row, column);
         return this;
     }

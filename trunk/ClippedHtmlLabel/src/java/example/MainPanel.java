@@ -4,8 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
 import java.io.IOException;
+import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -96,7 +97,7 @@ class URLRenderer1 extends DefaultTableCellRenderer implements MouseListener, Mo
     private boolean isRollover = false;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-        String str = value!=null?value.toString():"";
+        String str = Objects.toString(value, "");
 
         if(!table.isEditing() && this.row==row && this.col==column && this.isRollover) {
             setText("<html><u><font color='blue'>"+str);

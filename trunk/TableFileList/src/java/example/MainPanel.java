@@ -181,7 +181,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         add(textLabel);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        textLabel.setText(value==null ? "" : value.toString());
+        textLabel.setText(Objects.toString(value, ""));
         textLabel.setFocusedBorder(hasFocus);
         textLabel.setFont(table.getFont());
         FontMetrics fm = table.getFontMetrics(table.getFont());

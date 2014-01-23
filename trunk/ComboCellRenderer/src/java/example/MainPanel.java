@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -142,7 +143,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
             editor.setBackground(bg);
             button.setBackground(bg);
         }
-        addItem((value==null)?"":value.toString());
+        addItem(Objects.toString(value, ""));
         return this;
     }
     //Overridden for performance reasons. ---->

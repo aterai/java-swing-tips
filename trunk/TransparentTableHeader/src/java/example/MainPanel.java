@@ -5,8 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import javax.imageio.*;
 import java.io.IOException;
+import java.util.Objects;
+import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -149,7 +150,7 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
                                                                 BorderFactory.createEmptyBorder(2,2,1,2));
     private final Color alphaZero = new Color(0, true);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        this.setText(value!=null?value.toString():"");
+        this.setText(Objects.toString(value, ""));
         this.setHorizontalAlignment(JLabel.CENTER);
         this.setOpaque(false);
         this.setBackground(alphaZero);
