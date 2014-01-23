@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.Position;
@@ -111,6 +112,9 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         }
         lastTime = time;
 
+        selectAndScrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
+    }
+    private static void selectAndScrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIndex, boolean startingFromSelection) {
         if(startIndex < 0 || startIndex >= max) {
             if(e.isShiftDown()) {
                 startIndex = max-1;
@@ -147,7 +151,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         int row = startingRow;
         do{
             Object value = table.getValueAt(row, TARGET_COLUMN);
-            String text = value!=null ? value.toString() : "";
+            String text = Objects.toString(value, "");
             if(text.toUpperCase().startsWith(prefix)) {
                 return row;
             }
