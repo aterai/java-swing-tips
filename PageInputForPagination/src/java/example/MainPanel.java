@@ -19,39 +19,27 @@ public class MainPanel extends JPanel {
     };
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
     private final JTable table = new JTable(model);
-    private final JButton first = new JButton(new AbstractAction("|<") {
+
+    private final JButton first = new JButton("|<");
+    private final JButton prev  = new JButton("<");
+    private final JButton next  = new JButton(">");
+    private final JButton last  = new JButton(">|");
+    private final ActionListener jumpActionListener = new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
-            currentPageIndex = 1;
-            initFilterAndButton();
-        }
-    });
-    private final JButton prev  = new JButton(new AbstractAction("<") {
-        @Override public void actionPerformed(ActionEvent e) {
-            currentPageIndex -= 1;
-            initFilterAndButton();
-        }
-    });
-    private final JButton next = new JButton(new AbstractAction(">") {
-        @Override public void actionPerformed(ActionEvent e) {
-            currentPageIndex += 1;
-            initFilterAndButton();
-        }
-    });
-    private final JButton last = new JButton(new AbstractAction(">|") {
-        @Override public void actionPerformed(ActionEvent e) {
-            currentPageIndex = maxPageIndex;
-            initFilterAndButton();
-        }
-    });
-    private final Action enterAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            int v = Integer.parseInt(field.getText());
-            if(v>0 && v<=maxPageIndex) {
-                currentPageIndex = v;
+            Object c = e.getSource();
+            if(c==first) {
+                currentPageIndex = 1;
+            }else if(c==prev) {
+                currentPageIndex -= 1;
+            }else if(c==next) {
+                currentPageIndex += 1;
+            }else if(c==last) {
+                currentPageIndex = maxPageIndex;
             }
             initFilterAndButton();
         }
     };
+
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
     public MainPanel() {
@@ -65,56 +53,69 @@ public class MainPanel extends JPanel {
         po.add(label);
         JPanel box = new JPanel(new GridLayout(1,4,2,2));
         box.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        for(JComponent r:Arrays.asList(first, prev, po, next, last)) {
-            box.add(r);
+        for(JComponent c:Arrays.asList(first, prev, po, next, last)) {
+            box.add(c);
         }
 
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
-        field.getActionMap().put("Enter", enterAction);
-
-        new Task(2013, itemsPerPage) {
-            @Override protected void process(List<List<Object[]>> chunks) {
-                if(!isDisplayable()) {
-                    System.out.println("process: DISPOSE_ON_CLOSE");
-                    cancel(true);
-                    return;
+        field.getActionMap().put("Enter", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                int v = Integer.parseInt(field.getText());
+                if(v>0 && v<=maxPageIndex) {
+                    currentPageIndex = v;
                 }
-                for(List<Object[]> list: chunks) {
-                    for(Object[] o: list) {
-                        model.addRow(o);
-                    }
-                }
-                int rowCount = model.getRowCount();
-                maxPageIndex = rowCount/itemsPerPage + (rowCount%itemsPerPage==0?0:1);
                 initFilterAndButton();
             }
-            @Override public void done() {
-                if(!isDisplayable()) {
-                    System.out.println("done: DISPOSE_ON_CLOSE");
-                    cancel(true);
-                    return;
-                }
-                String text = null;
-                if(isCancelled()) {
-                    text = "Cancelled";
-                }else{
-                    try{
-                        text = get();
-                    }catch(InterruptedException | ExecutionException ex) {
-                        ex.printStackTrace();
-                        text = "Exception";
-                    }
-                }
-                System.out.println(text);
-                table.setEnabled(true);
-            }
-        }.execute();
+        });
+        for(JButton b:Arrays.asList(first, prev, next, last)) {
+            b.addActionListener(jumpActionListener);
+        }
+
+        new TableUpdateTask(2013, itemsPerPage).execute();
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
+
+    class TableUpdateTask extends LoadTask {
+        public TableUpdateTask(int max, int itemsPerPage) {
+            super(max, itemsPerPage);
+        }
+        @Override protected void process(List<List<Object[]>> chunks) {
+            if(!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            for(List<Object[]> list: chunks) {
+                for(Object[] o: list) {
+                    model.addRow(o);
+                }
+            }
+            int rowCount = model.getRowCount();
+            maxPageIndex = rowCount/itemsPerPage + (rowCount%itemsPerPage==0?0:1);
+            initFilterAndButton();
+        }
+        @Override public void done() {
+            if(!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            String text;
+            try{
+                text = get();
+            }catch(InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
+                text = "Cancelled";
+            }
+            System.out.println(text);
+            table.setEnabled(true);
+        }
+    }
+
     private static final int itemsPerPage = 100;
     private int maxPageIndex;
     private int currentPageIndex = 1;
@@ -157,10 +158,10 @@ public class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<String, List<Object[]>> {
+class LoadTask extends SwingWorker<String, List<Object[]>> {
     private final int max;
     private final int itemsPerPage;
-    public Task(int max, int itemsPerPage) {
+    public LoadTask(int max, int itemsPerPage) {
         this.max = max;
         this.itemsPerPage = itemsPerPage;
     }

@@ -46,6 +46,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                     if(o!=null && o instanceof SearchEngine) {
                         SearchEngine se = (SearchEngine) o;
                         arrowButton.setIcon(se.favicon);
+                        arrowButton.setRolloverIcon(makeRolloverIcon(se.favicon));
                     }
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
@@ -182,124 +183,127 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         };
     }
     @Override protected LayoutManager createLayoutManager() {
-        return new LayoutManager() {
-            @Override public void addLayoutComponent(String name, Component comp) {}
-            @Override public void removeLayoutComponent(Component comp) {}
-            @Override public Dimension preferredLayoutSize(Container parent) {
-                return parent.getPreferredSize();
-            }
-            @Override public Dimension minimumLayoutSize(Container parent) {
-                return parent.getMinimumSize();
-            }
-            @Override public void layoutContainer(Container parent) {
-                if(!(parent instanceof JComboBox)) {
-                    return;
-                }
-                JComboBox cb     = (JComboBox)parent;
-                int width        = cb.getWidth();
-                int height       = cb.getHeight();
-                Insets insets    = cb.getInsets();
-                int buttonHeight = height - insets.top - insets.bottom;
-                int buttonWidth  = buttonHeight;
-                int loupeWidth   = buttonHeight;
-
-                JButton arrowButton = (JButton)cb.getComponent(0);
-                if(arrowButton != null) {
-                    Insets arrowInsets = arrowButton.getInsets();
-                    buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-                    arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
-                }
-                JButton loupeButton = null;
-                for(Component c: cb.getComponents()) {
-                    if("ComboBox.loupeButton".equals(c.getName())) {
-                        loupeButton = (JButton)c;
-                        break;
-                    }
-                }
-                //= (JButton)cb.getComponent(3);
-                if(loupeButton != null) {
-                    //Insets loupeInsets = loupeButton.getInsets();
-                    //loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
-                    loupeButton.setBounds(width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight);
-                }
-                JTextField editor = (JTextField)cb.getEditor().getEditorComponent();
-                //JTextField editor = (JTextField)cb.getComponent(1);
-                if(editor != null) {
-                    editor.setBounds(insets.left + buttonWidth, insets.top,
-                                     width  - insets.left - insets.right - buttonWidth - loupeWidth,
-                                     height - insets.top  - insets.bottom);
-                }
-            }
-        };
+        return new SearchBarLayout();
     }
     private static Icon makeRolloverIcon(Icon srcIcon) {
         RescaleOp op = new RescaleOp(
             new float[] { 1.2f,1.2f,1.2f,1.0f },
             new float[] { 0f,0f,0f,0f }, null);
-        BufferedImage img = new BufferedImage(
-            srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
         //g.drawImage(srcIcon.getImage(), 0, 0, null);
         srcIcon.paintIcon(null, g, 0, 0);
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
-    static class TriangleIcon implements Icon {
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            Graphics2D g2 = (Graphics2D)g;
-            g2.setPaint(Color.GRAY);
-            g2.translate(x,y);
-            g2.drawLine( 2, 3, 6, 3 );
-            g2.drawLine( 3, 4, 5, 4 );
-            g2.drawLine( 4, 5, 4, 5 );
-            g2.translate(-x,-y);
-        }
-        @Override public int getIconWidth()  { return 9; }
-        @Override public int getIconHeight() { return 9; }
-    }
-    static class TriangleArrowButton extends JButton {
-        private transient Icon triangleIcon = new TriangleIcon();
-        @Override public void setIcon(Icon favicon) {
-            super.setIcon(favicon);
-            if(favicon!=null) {
-                setRolloverIcon(makeRolloverIcon(favicon));
-            }
-        }
-        @Override protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if(getModel().isArmed()) {
-                g2.setColor(new Color(220,220,220));
-            }else if(isRolloverEnabled() && getModel().isRollover()) {
-                g2.setColor(new Color(220,220,220));
-            }else if(hasFocus()) {
-                g2.setColor(new Color(220,220,220));
-            }else{
-                g2.setColor(getBackground());
-            }
-            Rectangle r = getBounds();
-            r.grow(1,1);
-            g2.fill(r);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            g2.setColor(getBackground());
-            super.paintComponent(g);
+}
 
-            Insets i = getInsets();
-            int x = r.width-i.right-triangleIcon.getIconWidth()-2;
-            int y = i.top+(r.height-i.top-i.bottom-triangleIcon.getIconHeight())/2;
-            triangleIcon.paintIcon(this, g, x, y);
+class SearchBarLayout implements LayoutManager {
+    @Override public void addLayoutComponent(String name, Component comp) {}
+    @Override public void removeLayoutComponent(Component comp) {}
+    @Override public Dimension preferredLayoutSize(Container parent) {
+        return parent.getPreferredSize();
+    }
+    @Override public Dimension minimumLayoutSize(Container parent) {
+        return parent.getMinimumSize();
+    }
+    @Override public void layoutContainer(Container parent) {
+        if(!(parent instanceof JComboBox)) {
+            return;
         }
-        @Override public Dimension getPreferredSize() {
-            Insets i = getInsets();
-            Icon favicon = getIcon();
-            int fw = (favicon!=null)?favicon.getIconWidth():16;
-            int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
-            return new Dimension(w, w);
+        JComboBox cb     = (JComboBox)parent;
+        int width        = cb.getWidth();
+        int height       = cb.getHeight();
+        Insets insets    = cb.getInsets();
+        int buttonHeight = height - insets.top - insets.bottom;
+        int buttonWidth  = buttonHeight;
+        int loupeWidth   = buttonHeight;
+
+        JButton arrowButton = (JButton)cb.getComponent(0);
+        if(arrowButton != null) {
+            Insets arrowInsets = arrowButton.getInsets();
+            buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+            arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
         }
-        @Override public void setBorder(Border border) {
-            if(border instanceof CompoundBorder) {
-                super.setBorder(border);
+        JButton loupeButton = null;
+        for(Component c: cb.getComponents()) {
+            if("ComboBox.loupeButton".equals(c.getName())) {
+                loupeButton = (JButton)c;
+                break;
             }
+        }
+        //= (JButton)cb.getComponent(3);
+        if(loupeButton != null) {
+            //Insets loupeInsets = loupeButton.getInsets();
+            //loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
+            loupeButton.setBounds(width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight);
+        }
+        JTextField editor = (JTextField)cb.getEditor().getEditorComponent();
+        //JTextField editor = (JTextField)cb.getComponent(1);
+        if(editor != null) {
+            editor.setBounds(insets.left + buttonWidth, insets.top,
+                             width  - insets.left - insets.right - buttonWidth - loupeWidth,
+                             height - insets.top  - insets.bottom);
+        }
+    }
+}
+
+class TriangleIcon implements Icon {
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setPaint(Color.GRAY);
+        g2.translate(x,y);
+        g2.drawLine( 2, 3, 6, 3 );
+        g2.drawLine( 3, 4, 5, 4 );
+        g2.drawLine( 4, 5, 4, 5 );
+        g2.translate(-x,-y);
+    }
+    @Override public int getIconWidth()  { return 9; }
+    @Override public int getIconHeight() { return 9; }
+}
+
+class TriangleArrowButton extends JButton {
+    private transient Icon triangleIcon = new TriangleIcon();
+//     @Override public void setIcon(Icon favicon) {
+//         super.setIcon(favicon);
+//         if(favicon!=null) {
+//             setRolloverIcon(makeRolloverIcon(favicon));
+//         }
+//     }
+    @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if(getModel().isArmed()) {
+            g2.setColor(new Color(220,220,220));
+        }else if(isRolloverEnabled() && getModel().isRollover()) {
+            g2.setColor(new Color(220,220,220));
+        }else if(hasFocus()) {
+            g2.setColor(new Color(220,220,220));
+        }else{
+            g2.setColor(getBackground());
+        }
+        Rectangle r = getBounds();
+        r.grow(1,1);
+        g2.fill(r);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2.setColor(getBackground());
+        super.paintComponent(g);
+
+        Insets i = getInsets();
+        int x = r.width-i.right-triangleIcon.getIconWidth()-2;
+        int y = i.top+(r.height-i.top-i.bottom-triangleIcon.getIconHeight())/2;
+        triangleIcon.paintIcon(this, g, x, y);
+    }
+    @Override public Dimension getPreferredSize() {
+        Insets i = getInsets();
+        Icon favicon = getIcon();
+        int fw = (favicon!=null)?favicon.getIconWidth():16;
+        int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
+        return new Dimension(w, w);
+    }
+    @Override public void setBorder(Border border) {
+        if(border instanceof CompoundBorder) {
+            super.setBorder(border);
         }
     }
 }

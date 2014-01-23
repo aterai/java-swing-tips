@@ -17,16 +17,15 @@ public class MainPanel extends JPanel {
         add(makeToolBar(), BorderLayout.NORTH);
         add(scroll);
         addComp(new JLabel("aaaaaaaaaaaaaaaaaaaaaa"));
-        addComp(makeButton());
-        addComp(makeCheckBox());
-        addComp(makeLabel());
+        addComp(MakeComponentUtil.makeButton());
+        addComp(MakeComponentUtil.makeCheckBox());
+        addComp(MakeComponentUtil.makeLabel());
         setPreferredSize(new Dimension(320, 240));
     }
     private final Box box = Box.createVerticalBox();
     private final Component glue = Box.createVerticalGlue();
     public void addComp(final JComponent comp) {
-        comp.setMaximumSize(new Dimension(
-            Short.MAX_VALUE, comp.getPreferredSize().height));
+        comp.setMaximumSize(new Dimension(Short.MAX_VALUE, comp.getPreferredSize().height));
         box.remove(glue);
         box.add(Box.createVerticalStrut(5));
         box.add(comp);
@@ -39,40 +38,23 @@ public class MainPanel extends JPanel {
         });
     }
 
-    private static JComponent makeLabel() {
-        JLabel label = new JLabel("Height: 50");
-        label.setOpaque(true);
-        label.setPreferredSize(new Dimension(0, 50));
-        label.setBackground(Color.YELLOW.brighter());
-        return label;
-    }
-    private static JComponent makeButton() {
-        return new JButton(new AbstractAction("Beep Test") {
-            @Override public void actionPerformed(ActionEvent e) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
-            }
-        });
-    }
-    private static JComponent makeCheckBox() {
-        return new JCheckBox("bbbbbbbbbbbbbbbbbbbb", true);
-    }
     public JToolBar makeToolBar() {
         JToolBar bar = new JToolBar();
         bar.add(new AbstractAction("add JLabel") {
             @Override public void actionPerformed(ActionEvent ae) {
-                addComp(makeLabel());
+                addComp(MakeComponentUtil.makeLabel());
             }
         });
         bar.addSeparator();
         bar.add(new AbstractAction("add JButton") {
             @Override public void actionPerformed(ActionEvent ae) {
-                addComp(makeButton());
+                addComp(MakeComponentUtil.makeButton());
             }
         });
         bar.addSeparator();
         bar.add(new AbstractAction("add JCheckBox") {
             @Override public void actionPerformed(ActionEvent ae) {
-                addComp(makeCheckBox());
+                addComp(MakeComponentUtil.makeCheckBox());
             }
         });
         return bar;
@@ -97,5 +79,25 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class MakeComponentUtil {
+    public static JComponent makeLabel() {
+        JLabel label = new JLabel("Height: 50");
+        label.setOpaque(true);
+        label.setPreferredSize(new Dimension(0, 50));
+        label.setBackground(Color.YELLOW.brighter());
+        return label;
+    }
+    public static JComponent makeButton() {
+        return new JButton(new AbstractAction("Beep Test") {
+            @Override public void actionPerformed(ActionEvent e) {
+                Toolkit.getDefaultToolkit().beep();
+            }
+        });
+    }
+    public static JComponent makeCheckBox() {
+        return new JCheckBox("bbbbbbbbbbbbbbbbbbbb", true);
     }
 }
