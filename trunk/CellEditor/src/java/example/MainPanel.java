@@ -12,15 +12,26 @@ public class MainPanel extends JPanel {
     private final JCheckBox modelCheck    = new JCheckBox("isCellEditable return false");
     private final JCheckBox objectCheck   = new JCheckBox("setDefaultEditor(Object.class, null)");
     private final JCheckBox editableCheck = new JCheckBox("setEnabled(false)");
-    private final JTable table;
+    private final TestModel model = new TestModel() {
+        @Override public boolean isCellEditable(int row, int col) {
+            return !modelCheck.isSelected();
+        }
+    };
+    private final JTable table = new JTable(model);
+    private final ActionListener al = new ActionListener() {
+        private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
+        @Override public void actionPerformed(ActionEvent e) {
+            table.clearSelection();
+            if(table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
+            }
+            table.setDefaultEditor(Object.class, objectCheck.isSelected() ? null : dce);
+            table.setEnabled(!editableCheck.isSelected());
+        }
+    };
 
     public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel() {
-            @Override public boolean isCellEditable(int row, int col) {
-                return !modelCheck.isSelected();
-            }
-        };
         model.addTest(new Test("Name 1", "Comment"));
         model.addTest(new Test("Name 2", "Test"));
         model.addTest(new Test("Name d", "ee"));
@@ -30,22 +41,10 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
         model.addTest(new Test("Name 0", "gg"));
 
-        table = new JTable(model);
-
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(50);
         col.setMaxWidth(50);
         col.setResizable(false);
-
-        ActionListener al = new ActionListener() {
-            private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
-            @Override public void actionPerformed(ActionEvent e) {
-                table.clearSelection();
-                if(table.isEditing()) { table.getCellEditor().stopCellEditing(); }
-                table.setDefaultEditor(Object.class, objectCheck.isSelected()?null:dce);
-                table.setEnabled(!editableCheck.isSelected());
-            }
-        };
 
         JPanel p = new JPanel(new GridLayout(3,1));
         for(JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {

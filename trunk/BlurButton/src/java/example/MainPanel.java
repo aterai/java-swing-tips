@@ -64,9 +64,10 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JToggleButton(new AbstractAction("setEnabled(false)") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean f = ((JToggleButton)e.getSource()).isSelected();
+                boolean f = ((AbstractButton)e.getSource()).isSelected();
+                f ^= true;
                 for(JButton b: list) {
-                    b.setEnabled(!f);
+                    b.setEnabled(f);
                 }
             }
         }), BorderLayout.SOUTH);

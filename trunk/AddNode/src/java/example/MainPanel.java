@@ -13,7 +13,6 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JTree tree = new JTree();
-        //tree.setRootVisible(false);
         tree.setComponentPopupMenu(new TreePopupMenu());
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
@@ -58,19 +57,19 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editNodeAction = new AbstractAction("edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTree tree = (JTree)getInvoker();
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
             //if(path==null) { return; }
             Object node = path.getLastPathComponent();
             if(node instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)node;
                 textField.setText(leaf.getUserObject().toString());
+                JTree tree = (JTree)getInvoker();
                 int result = JOptionPane.showConfirmDialog(
                     tree, textField, "edit",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if(result==JOptionPane.OK_OPTION) {
                     String str = textField.getText();
                     if(!str.trim().isEmpty()) {
+                        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
                         model.valueForPathChanged(path, str);
                         //leaf.setUserObject(str);
                         //model.nodeChanged(leaf);
@@ -81,11 +80,11 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action removeNodeAction = new AbstractAction("remove") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTree tree = (JTree)getInvoker();
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
             //if(path.getParentPath()!=null) {
             if(!node.isRoot()) {
+                JTree tree = (JTree)getInvoker();
+                DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
                 model.removeNodeFromParent(node);
             }
         }

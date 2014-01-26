@@ -11,10 +11,8 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel {
     private final JTextPane jtp = new JTextPane();
     private final JComboBox<String> combo = new JComboBox<>(new String[] {
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "bbbbbbbb", "cccccccc",
-        "dddddddd", "eeeeeeeee",
-        "fff", "ggg", "hhhhhhhhh", "iii"
+        "public", "protected", "private",
+        "final", "transient", "super", "this", "return", "class"
     });
     private final BasicComboPopup popup = new EditorComboPopup(jtp, combo);
     public MainPanel() {
@@ -46,20 +44,18 @@ public class MainPanel extends JPanel {
 
         jtp.getActionMap().put("myPop", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                Rectangle rect;
                 try{
-                    rect = jtp.modelToView(jtp.getCaretPosition());
+                    Rectangle rect = jtp.modelToView(jtp.getCaretPosition());
+                    popup.show(jtp, rect.x, rect.y + rect.height);
+                    EventQueue.invokeLater(new Runnable() {
+                        @Override public void run() {
+                            SwingUtilities.getWindowAncestor(popup).toFront();
+                            popup.requestFocusInWindow();
+                        }
+                    });
                 }catch(BadLocationException ble) {
                     ble.printStackTrace();
-                    return;
                 }
-                popup.show(jtp, rect.x, rect.y + rect.height);
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        SwingUtilities.getWindowAncestor(popup).toFront();
-                        popup.requestFocusInWindow();
-                    }
-                });
             }
         });
         jtp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK), "myPop");
@@ -100,11 +96,11 @@ public class MainPanel extends JPanel {
 
 class EditorComboPopup extends BasicComboPopup {
     private final JTextComponent textArea;
+    private MouseAdapter listener = null;
     public EditorComboPopup(JTextComponent textArea, JComboBox cb) {
         super(cb);
         this.textArea = textArea;
     }
-    private MouseAdapter listener = null;
     @Override protected void installListListeners() {
         super.installListListeners();
         listener = new MouseAdapter() {

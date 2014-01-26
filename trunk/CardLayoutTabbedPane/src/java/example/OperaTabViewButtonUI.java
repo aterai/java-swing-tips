@@ -9,6 +9,11 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
+    private static int CLOSEICON_WIDTH = 12;
     //private final static TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
@@ -24,15 +29,9 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         tabViewButton.setRolloverSelectedTextColor(Color.WHITE);
         tabViewButton.setSelectedTextColor(Color.WHITE);
     }
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
-    private static int CLOSEICON_WIDTH = 12;
     @Override public synchronized void paint(Graphics g, JComponent c) {
         Graphics2D g2 = (Graphics2D)g;
         AbstractButton b = (AbstractButton) c;
-        ButtonModel model = b.getModel();
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -59,18 +58,22 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
             b.getText() == null ? 0 : b.getIconTextGap());
-        if(text==null) { return; }
+        if(text==null) {
+            return;
+        }
 
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v!=null) {
-            v.paint(g, textRect);
-        }else{
+        if(v==null) {
             textRect.x += 4;
             paintText(g, b, textRect, text);
+        }else{
+            v.paint(g, textRect);
         }
         if(icon!=null) {
             icon.paintIcon(c, g, iconRect.x+4, iconRect.y+2);
         }
+
+        ButtonModel model = b.getModel();
         if(!model.isSelected() && !model.isArmed() && !model.isRollover()) {
             g2.setPaint(new Color(0,0,0,100));
             g2.fillRect(0,0,size.width,size.height);

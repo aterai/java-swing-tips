@@ -31,18 +31,11 @@ public class MainPanel extends JPanel {
 
         ok.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                int i1 = ((Integer)spinner1.getValue()).intValue();
-                int i2 = ((Integer)spinner2.getValue()).intValue();
                 try{
                     File file = new File(System.getProperty("java.io.tmpdir"), "backup-test");
-                    if(!file.exists()) {
-                        if(!file.createNewFile()) {
-                            append(file.getName()+"の生成に失敗しました。", ERROR);
-                            return;
-                        }
-                        //file.deleteOnExit();
-                        append(file.getName()+"を生成しました。", REGULAR);
-                    }else{
+                    if(file.exists()) {
+                        int i1 = ((Integer)spinner1.getValue()).intValue();
+                        int i2 = ((Integer)spinner2.getValue()).intValue();
                         File nf = makeBackupFile(file, i1, i2);
                         if(nf==null) {
                             append("バックアップファイルの生成に失敗しました。", ERROR);
@@ -50,6 +43,13 @@ public class MainPanel extends JPanel {
                             append(nf.getName()+"の生成に失敗しました。", REGULAR);
                         }
                         //append(nf.getName()+"を更新しました。", ERROR);
+                    }else{
+                        if(!file.createNewFile()) {
+                            append(file.getName()+"の生成に失敗しました。", ERROR);
+                            return;
+                        }
+                        //file.deleteOnExit();
+                        append(file.getName()+"を生成しました。", REGULAR);
                     }
                 }catch(IOException ioe) {
                     ioe.printStackTrace();

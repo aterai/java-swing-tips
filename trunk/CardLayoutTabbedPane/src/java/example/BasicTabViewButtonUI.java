@@ -12,6 +12,10 @@ import javax.swing.plaf.basic.*;
 public class BasicTabViewButtonUI extends TabViewButtonUI {
     //private final static TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
     protected TabButton tabViewButton;
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
 
     public static ComponentUI createUI(JComponent c) {
         return new BasicTabViewButtonUI();
@@ -33,13 +37,8 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     }
 //     @Override public void installDefaults() {}
 
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
-        ButtonModel model = b.getModel();
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -61,8 +60,12 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
             0); //b.getText() == null ? 0 : b.getIconTextGap());
 
         g.setColor(b.getBackground());
-        g.fillRect(0,0, size.width, size.height);
-        if(text==null) { return; }
+        g.fillRect(0, 0, size.width, size.height);
+        if(text==null) {
+            return;
+        }
+
+        ButtonModel model = b.getModel();
         if(model.isSelected() || model.isArmed()) {
             g.setColor(Color.WHITE);
         }else{
@@ -88,15 +91,15 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
             g.drawLine(viewRect.x+0, viewRect.y+2, viewRect.x+viewRect.width-0, viewRect.y+2);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v!=null) {
-            v.paint(g, textRect);
-        }else{
+        if(v==null) {
             if(model.isSelected()) {
                 textRect.y -= 2;
                 textRect.x -= 1;
             }
             textRect.x += 4;
             paintText(g, b, textRect, text);
+        }else{
+            v.paint(g, textRect);
         }
     }
 }

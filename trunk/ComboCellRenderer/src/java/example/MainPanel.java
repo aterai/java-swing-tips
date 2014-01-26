@@ -9,6 +9,7 @@ import javax.swing.table.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public class MainPanel extends JPanel {
+    private static final Color EVEN_COLOR = new Color(240, 240, 250);
     private final String[] columnNames = {"Integer", "String", "Boolean"};
     private final Object[][] data = {
         {12, "Name 0", true}, {5, "Name 2", false},
@@ -20,7 +21,6 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        private final Color evenColor = new Color(240, 240, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if(isRowSelected(row)) {
@@ -28,7 +28,7 @@ public class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             }else{
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?evenColor:getBackground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
             }
             return c;
         }
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
     }
 }
 class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
-    private static final Color evenColor = new Color(240, 240, 250);
+    private static final Color EVEN_COLOR = new Color(240, 240, 250);
     private JTextField editor;
     private JButton button;
     public ComboCellRenderer() {
@@ -139,7 +139,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
         }else{
             editor.setForeground(table.getForeground());
             //setBackground(table.getBackground());
-            Color bg = (row%2==0)?evenColor:table.getBackground();
+            Color bg = (row%2==0)?EVEN_COLOR:table.getBackground();
             editor.setBackground(bg);
             button.setBackground(bg);
         }

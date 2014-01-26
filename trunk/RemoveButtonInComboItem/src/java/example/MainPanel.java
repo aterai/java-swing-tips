@@ -216,7 +216,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
     private final JComboBox comboBox;
     private JList list;
     private int index;
-    private final Color evenColor = new Color(230,255,230);
+    private static final Color EVEN_COLOR = new Color(230,255,230);
     @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
         label.setText(Objects.toString(value, ""));
         this.list = list;
@@ -225,7 +225,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
             setBackground(list.getSelectionBackground());
             label.setForeground(list.getSelectionForeground());
         }else{
-            setBackground(index%2==0 ? evenColor : list.getBackground());
+            setBackground(index%2==0 ? EVEN_COLOR : list.getBackground());
             label.setForeground(list.getForeground());
         }
         MutableComboBoxModel m = (MutableComboBoxModel)list.getModel();

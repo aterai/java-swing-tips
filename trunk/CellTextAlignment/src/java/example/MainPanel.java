@@ -24,21 +24,27 @@ public class MainPanel extends JPanel {
     private final JRadioButton centerRadio = new JRadioButton("center");
     private final JRadioButton rightRadio  = new JRadioButton("right");
     private final JRadioButton customRadio = new JRadioButton("custom");
+    private final String[] columnNames = {"Integer", "String", "Boolean"};
+    private final Object[][] data = {
+        {12, "aaa", true}, {5, "bbb", false},
+        {92, "CCC", true}, {0, "DDD", false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+    private final ActionListener al = new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            repaint();
+        }
+    };
+    private final ButtonGroup bg = new ButtonGroup();
 
     public MainPanel() {
         super(new BorderLayout());
 
-        String[] columnNames = {"Integer", "String", "Boolean"};
-        Object[][] data = {
-            {12, "aaa", true}, {5, "bbb", false},
-            {92, "CCC", true}, {0, "DDD", false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 
         TableColumn col = table.getColumnModel().getColumn(0);
@@ -52,12 +58,6 @@ public class MainPanel extends JPanel {
         col = table.getColumnModel().getColumn(2);
         col.setHeaderRenderer(new HeaderRenderer());
 
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                repaint();
-            }
-        };
-        ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
         for(JRadioButton r:Arrays.asList(leftRadio,centerRadio,rightRadio,customRadio)) {
             bg.add(r); p.add(r); r.addActionListener(al);

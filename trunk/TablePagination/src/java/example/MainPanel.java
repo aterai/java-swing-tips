@@ -10,7 +10,7 @@ import javax.swing.table.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final Color evenColor = new Color(240, 255, 250);
+    private static final Color EVEN_COLOR = new Color(240, 255, 250);
     private static final LinkViewRadioButtonUI ui = new LinkViewRadioButtonUI();
     private static int LR_PAGE_SIZE = 5;
     private final Box box = Box.createHorizontalBox();
@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             }else{
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?evenColor:getBackground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
             }
             return c;
         }

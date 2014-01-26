@@ -179,7 +179,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
         add(box, BorderLayout.EAST);
     }
     private int index;
-    private final Color evenColor = new Color(230,255,230);
+    private static final Color EVEN_COLOR = new Color(230,255,230);
     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
         label.setText((value==null)?"":value);
         this.index = index;
@@ -187,7 +187,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
             setBackground(list.getSelectionBackground());
             label.setForeground(list.getSelectionForeground());
         }else{
-            setBackground(index%2==0 ? evenColor : list.getBackground());
+            setBackground(index%2==0 ? EVEN_COLOR : list.getBackground());
             label.setForeground(list.getForeground());
         }
         resetButtonStatus();

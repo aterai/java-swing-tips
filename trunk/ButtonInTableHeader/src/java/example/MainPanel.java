@@ -9,37 +9,37 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final Object[] columnNames = {"Boolean", "Integer", "String"};
+    private final Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}};
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model) {
+        @Override public void updateUI() {
+            super.updateUI();
+            //XXX: Nimbus
+            TableCellRenderer r = getDefaultRenderer(Boolean.class);
+            if(r instanceof JComponent) {
+                ((JComponent)r).updateUI();
+            }
+        }
+        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+            Component c = super.prepareEditor(editor, row, column);
+            if(c instanceof JCheckBox) {
+                JCheckBox b = (JCheckBox)c;
+                b.setBackground(getSelectionBackground());
+                b.setBorderPainted(true);
+            }
+            return c;
+        }
+    };
     public MainPanel() {
         super(new BorderLayout());
-        Object[] columnNames = {"Boolean", "Integer", "String"};
-        Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
-            {true, 2, "DDD"}, {false, 5, "CCC"},
-            {true, 3, "EEE"}, {false, 6, "GGG"},
-            {true, 4, "FFF"}, {false, 7, "HHH"}};
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        final JTable table = new JTable(model) {
-            @Override public void updateUI() {
-                super.updateUI();
-                //XXX: Nimbus
-                TableCellRenderer r = getDefaultRenderer(Boolean.class);
-                if(r instanceof JComponent) {
-                    ((JComponent)r).updateUI();
-                }
-            }
-            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-                Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
-                    b.setBackground(getSelectionBackground());
-                    b.setBorderPainted(true);
-                }
-                return c;
-            }
-        };
         HeaderRenderer r = new HeaderRenderer(table.getTableHeader());
         table.getColumnModel().getColumn(0).setHeaderRenderer(r);
         table.getColumnModel().getColumn(1).setHeaderRenderer(r);
@@ -71,20 +71,12 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final int BUTTON_WIDTH = 16;
-    public HeaderRenderer(JTableHeader header) {
-        super();
-        //setOpaque(false);
-        //setFont(header.getFont());
-        setBorder(BorderFactory.createEmptyBorder());
-        setContentAreaFilled(false);
-        pop.add("000");
-        pop.add("11111");
-        pop.add("2222222");
-        header.addMouseListener(ma);
-        header.addMouseMotionListener(ma);
-    }
+    private static final Color BUTTONBGC = new Color(200,200,200,100);
+    private JPopupMenu pop;
+    private int rolloverIndex = -1;
     private transient final MouseAdapter ma = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
             JTableHeader header = (JTableHeader)e.getSource();
@@ -123,9 +115,20 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             rolloverIndex = mci;
         }
     };
-    int rolloverIndex = -1;
 
-    private JPopupMenu pop;
+    public HeaderRenderer(JTableHeader header) {
+        super();
+        //setOpaque(false);
+        //setFont(header.getFont());
+        setBorder(BorderFactory.createEmptyBorder());
+        setContentAreaFilled(false);
+        pop.add("000");
+        pop.add("11111");
+        pop.add("2222222");
+        header.addMouseListener(ma);
+        header.addMouseMotionListener(ma);
+    }
+
     @Override public void updateUI() {
         super.updateUI();
         if(pop==null) {
@@ -140,7 +143,6 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 //             System.out.println("clicked");
 //         }
 //     });
-    private final Color BUTTONBGC = new Color(200,200,200,100);
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
         JLabel l = (JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
@@ -148,10 +150,10 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         l.removeAll();
         int mci = tbl.convertColumnIndexToModel(col);
 
-        TableColumn column = tbl.getColumnModel().getColumn(mci);
-        int w = column.getWidth();
-        int h = tbl.getTableHeader().getHeight();
         if(rolloverIndex==mci) {
+            TableColumn column = tbl.getColumnModel().getColumn(mci);
+            int w = column.getWidth();
+            int h = tbl.getTableHeader().getHeight();
             //Icon icon = new MenuArrowIcon();
             Border outside = l.getBorder();
             Border inside  = BorderFactory.createEmptyBorder(0,0,0,BUTTON_WIDTH);
@@ -172,6 +174,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         return l;
     }
 }
+
 class MenuArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g;
