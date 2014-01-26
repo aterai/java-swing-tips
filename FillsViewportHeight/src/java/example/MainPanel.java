@@ -10,6 +10,7 @@ import javax.swing.table.*;
 // import java.util.*;
 
 public class MainPanel extends JPanel {
+    private static final Color EVEN_COLOR = new Color(245, 245, 245);
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -34,7 +35,6 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        private final Color evenColor = new Color(245, 245, 245);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if(isRowSelected(row)) {
@@ -42,7 +42,7 @@ public class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             }else{
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?evenColor:getBackground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
             }
             return c;
         }

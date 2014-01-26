@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final String[] columnNames = {"A", "B", "C"};
     private final Object[][] data = {
         {"0,0", "0,1", "0,2"},
@@ -26,7 +27,19 @@ public class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table;
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if(isCellSelected(row, column)) {
+                c.setForeground(getSelectionForeground());
+                c.setBackground(getSelectionBackground());
+            }else{
+                c.setForeground(getForeground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+            }
+            return c;
+        }
+    };
     private final JSpinner rowField;
     private final JSpinner colField;
     private final JCheckBox toggle = new JCheckBox("toggle", false);
@@ -34,20 +47,6 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model) {
-            private final Color evenColor = new Color(250, 250, 250);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isCellSelected(row, column)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-        };
         table.setCellSelectionEnabled(true);
         //table.setAutoCreateRowSorter(true);
 

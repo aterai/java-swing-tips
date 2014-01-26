@@ -26,6 +26,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         area.setEditable(false);
+        area.setLineWrap(true);
         Box box = Box.createHorizontalBox();
         box.add(anil);
         box.add(Box.createHorizontalGlue());
@@ -240,16 +241,16 @@ class AnimeIcon implements Icon {
     @Override public int getIconHeight() { return dim.height; }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(cColor);
-        float alpha = 0.0f;
         g2.translate(x, y);
-        for(Shape s: list) {
-            alpha = isRunning?alpha+0.1f:0.5f;
+        int size = list.size();
+        for(int i=0;i<size;i++) {
+            float alpha = isRunning ? (i+1)/(float)size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.fill(s);
+            g2.fill(list.get(i));
         }
         g2.translate(-x, -y);
     }
@@ -281,19 +282,20 @@ class AnimeIcon2 implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(cColor);
-        float alpha = 0.0f;
         int xx = x + dim.width/2;
         int yy = y + dim.height/2;
         g2.translate(xx, yy);
-        for(Shape s: list) {
-            alpha = isRunning?alpha+0.1f:0.5f;
+        int size = list.size();
+        for(int i=0;i<size;i++) {
+            float alpha = isRunning ? (i+1)/(float)size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.fill(s);
+            g2.fill(list.get(i));
         }
+        g2.translate(-xx, -yy);
     }
     public void next() {
         if(isRunning) {
@@ -331,19 +333,19 @@ class AnimeIcon3 implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(cColor);
-        float alpha = 0.0f;
         int xx = x + dim.width/2;
         int yy = y + dim.height/2;
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), xx, yy);
         at.concatenate(AffineTransform.getTranslateInstance(xx, yy));
-        for(Shape s: list) {
-            alpha = isRunning?alpha+0.1f:0.5f;
+        int size = list.size();
+        for(int i=0;i<size;i++) {
+            float alpha = isRunning ? (i+1)/(float)size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.fill(at.createTransformedShape(s));
+            g2.fill(at.createTransformedShape(list.get(i)));
         }
     }
     public void next() {
@@ -388,16 +390,15 @@ class AnimeIcon4 implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g;
-        g2.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(cColor);
-        float alpha = 0.1f;
-        float p = (1f - alpha)/(float)list.size();
-        for(Shape s: list) {
-            alpha = isRunning?alpha+p:0.5f;
+        int size = list.size();
+        for(int i=0;i<size;i++) {
+            float alpha = isRunning ? (i+1)/(float)size : .5f;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.fill(s);
+            g2.fill(list.get(i));
         }
     }
     public void next() {

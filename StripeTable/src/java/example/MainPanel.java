@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         table = new JTable(model);
 //        table = new JTable(model) {
-//            private static final Color evenColor = new Color(240, 240, 255);
+//            private static final Color EVEN_COLOR = new Color(240, 240, 255);
 //            public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                Component c = super.prepareRenderer(tcr, row, column);
 //                if(isRowSelected(row)) {
@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
 //                    c.setBackground(getSelectionBackground());
 //                }else{
 //                    c.setForeground(getForeground());
-//                    c.setBackground((row%2==0)?evenColor:getBackground());
+//                    c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
 //                }
 //               return c;
 //            }
@@ -122,7 +122,7 @@ public class MainPanel extends JPanel {
 }
 
 class StripeTableRenderer extends DefaultTableCellRenderer {
-    private static final Color evenColor = new Color(240, 240, 255);
+    private static final Color EVEN_COLOR = new Color(240, 240, 255);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if(isSelected) {
@@ -130,7 +130,7 @@ class StripeTableRenderer extends DefaultTableCellRenderer {
             setBackground(table.getSelectionBackground());
         }else{
             setForeground(table.getForeground());
-            setBackground((row%2==0)?evenColor:table.getBackground());
+            setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
         }
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         return this;

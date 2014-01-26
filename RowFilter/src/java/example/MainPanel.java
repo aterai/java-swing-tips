@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final Color evenColor = new Color(240, 255, 250);
+    private static final Color EVEN_COLOR = new Color(240, 255, 250);
     private final JCheckBox check1;
     private final JCheckBox check2;
     private final TestModel model = new TestModel();
@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
                     c.setBackground(getSelectionBackground());
                 }else{
                     c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:table.getBackground());
+                    c.setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
                 }
                 return c;
             }

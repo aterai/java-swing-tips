@@ -6,32 +6,31 @@ import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.net.*;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 
 class MainPanel extends JPanel {
+    private final Object[] columnNames = new Object[] {"String", "ImageIcon"};
+    private final JTable table = new JTable();
     public MainPanel() {
         super(new BorderLayout());
         URL url = getClass().getResource("restore_to_background_color.gif");
-        JTable table = new JTable();
         Object[][] data =  new Object[][] {
             {"Default ImageIcon", new ImageIcon(url)},
             {"ImageIcon#setImageObserver", makeImageIcon(url, table, 1, 1)}
         };
-        Object[] columnNames = new Object[] {"String", "ImageIcon"};
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        table.setModel(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }
             @Override public boolean isCellEditable(int row, int column) {
                 return column==0;
             }
-        };
-        table.setModel(model);
+        });
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(20);
 
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static ImageIcon makeImageIcon(URL url, final JTable table, final int row, final int col) {
         ImageIcon icon = new ImageIcon(url);
@@ -39,7 +38,9 @@ class MainPanel extends JPanel {
         icon.setImageObserver(new ImageObserver() {
             //@see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
             @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-                if(!table.isShowing()) { return false; } //@see javax.swing.JLabel#imageUpdate(...)
+                if(!table.isShowing()) {
+                    return false; //@see javax.swing.JLabel#imageUpdate(...)
+                }
                 if((infoflags & (FRAMEBITS|ALLBITS)) != 0) { //@see java.awt.Component#imageUpdate(...)
                     int vr = table.convertRowIndexToView(row); //JDK 1.6.0
                     int vc = table.convertColumnIndexToView(col);

@@ -9,18 +9,35 @@ import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static JComponent makeUI() {
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"CCC", 92, true}, {"DDD", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table1 = new JTable(model) {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    public MainPanel() {
+        super(new BorderLayout());
+        JTable table0 = new JTable(model);
+        table0.setAutoCreateRowSorter(true);
+        table0.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+        JTable table1 = makeTable(model);
+        table1.setAutoCreateRowSorter(true);
+        table1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                                       new JScrollPane(table0),
+                                       new JScrollPane(table1));
+        sp.setResizeWeight(0.5);
+        add(sp);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private static JTable makeTable(DefaultTableModel model) {
+        return new JTable(model) {
             @Override public void updateUI() {
                 // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
                 // http://bugs.sun.com/view_bug.do?bug_id=6788475
@@ -51,18 +68,6 @@ public class MainPanel extends JPanel {
                 return c;
             }
         };
-        table1.setAutoCreateRowSorter(true);
-        table1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
-        JTable table0 = new JTable(model);
-        table0.setAutoCreateRowSorter(true);
-        table0.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
-        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                       new JScrollPane(table0),
-                                       new JScrollPane(table1));
-        sp.setResizeWeight(0.5);
-        return sp;
     }
     private static JCheckBox makeBooleanEditor(final JTable table) {
         JCheckBox checkBox = new JCheckBox();
@@ -95,11 +100,6 @@ public class MainPanel extends JPanel {
             }
         });
         return checkBox;
-    }
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI());
-        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -23,6 +23,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(5,5));
         area.setEditable(false);
+        area.setLineWrap(true);
         Box box = Box.createHorizontalBox();
         box.add(anil);
         box.add(Box.createHorizontalGlue());
@@ -59,8 +60,10 @@ public class MainPanel extends JPanel {
                         cancel(true);
                         return;
                     }
-                    for(String message : chunks) {
-                        appendText(message);
+                    for(String message: chunks) {
+                        if(!isCancelled()) {
+                            appendText(message);
+                        }
                     }
                 }
                 @Override public void done() {
@@ -75,18 +78,16 @@ public class MainPanel extends JPanel {
                     canButton.setEnabled(false);
                     statusPanel.remove(bar);
                     statusPanel.revalidate();
-                    String text = null;
-                    if(isCancelled()) {
-                        text = "Cancelled";
-                    }else{
-                        try{
-                            text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
+                    try{
+                        if(isCancelled()) {
+                            appendText("\nCancelled\n");
+                        }else{
+                            appendText("\n" + get() + "\n");
                         }
+                    }catch(InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
+                        appendText("\nException\n");
                     }
-                    appendText(text+"\n");
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));
@@ -101,7 +102,7 @@ public class MainPanel extends JPanel {
             if(worker!=null && !worker.isDone()) {
                 worker.cancel(true);
             }
-            worker = null;
+            //worker = null;
         }
     }
     private void appendText(String str) {
@@ -136,11 +137,11 @@ public class MainPanel extends JPanel {
 class Task extends SwingWorker<String, String> {
     @Override public String doInBackground() {
         System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException ie) {
-            return "Interrupted";
-        }
+//         try{
+//             Thread.sleep(1000);
+//         }catch(InterruptedException ie) {
+//             return "Interrupted";
+//         }
         int current = 0;
         int lengthOfTask = 120; //list.size();
         publish("Length Of Task: " + lengthOfTask);
@@ -150,7 +151,8 @@ class Task extends SwingWorker<String, String> {
             try{
                 Thread.sleep(50);
             }catch(InterruptedException ie) {
-                return "Interrupted";
+                //return "Interrupted";
+                break;
             }
             setProgress(100 * current / lengthOfTask);
             publish(".");
@@ -237,16 +239,16 @@ class AnimeIcon implements Icon {
     @Override public int getIconHeight() { return dim.height; }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2d.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(cColor);
-        float alpha = 0.0f;
         g2d.translate(x, y);
-        for(Shape s: list) {
-            alpha = isRunning?alpha+0.1f:0.5f;
+        int size = list.size();
+        for(int i=0;i<size;i++) {
+            float alpha = isRunning ? (i+1)/(float)size : .5f;
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2d.fill(s);
+            g2d.fill(list.get(i));
         }
         g2d.translate(-x, -y);
     }

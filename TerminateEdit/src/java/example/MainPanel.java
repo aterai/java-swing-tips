@@ -8,8 +8,9 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final String[] columnNames = {"String", "Integer"};
-    Object[][] data = {
+    private final Object[][] data = {
         {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
@@ -17,26 +18,24 @@ public class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table;
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if(isRowSelected(row)) {
+                c.setForeground(getSelectionForeground());
+                c.setBackground(getSelectionBackground());
+            }else{
+                c.setForeground(getForeground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+            }
+            return c;
+        }
+    };
     private final JCheckBox checkbox    = new JCheckBox("terminateEditOnFocusLost", true);
     private final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
     private final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model) {
-            private final Color evenColor = new Color(250, 250, 250);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-        };
         table.setAutoCreateRowSorter(true);
 
 //         // Bug ID: 4330950 Lost newly entered data in the cell when resizing column width

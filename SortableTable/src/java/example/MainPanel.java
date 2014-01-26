@@ -8,9 +8,9 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final TestModel model = new TestModel();
     private final JTable table = new JTable(model) {
-        private final Color evenColor = new Color(250, 250, 250);
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if(isRowSelected(row)) {
@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             }else{
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?evenColor:getBackground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
             }
             return c;
         }

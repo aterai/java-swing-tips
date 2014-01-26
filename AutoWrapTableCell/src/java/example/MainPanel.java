@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         };
         TableModel model = new DefaultTableModel(data, columnNames);
         final JTable table = new JTable(model) {
-//             private final Color evenColor = new Color(230, 240, 255);
+//             private static final Color EVEN_COLOR = new Color(230, 240, 255);
 //             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                 Component c = super.prepareRenderer(tcr, row, column);
 //                 if(isRowSelected(row)) {
@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 //                     c.setBackground(getSelectionBackground());
 //                 }else{
 //                     c.setForeground(getForeground());
-//                     c.setBackground((row%2==0)?evenColor:getBackground());
+//                     c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
 //                 }
 //                 return c;
 //             }

@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
+import java.util.Locale;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;

@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
         tree.setComponentPopupMenu(new TreePopupMenu());
 
         add(new JScrollPane(tree));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -69,30 +69,34 @@ public class MainPanel extends JPanel {
 class TreePopupMenu extends JPopupMenu {
     private TreePath path;
     private final JTextField textField = new JTextField();
-    private final JMenuItem editAction = new JMenuItem(new AbstractAction("Edit") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JTree tree = (JTree)getInvoker();
-                if(path!=null) { tree.startEditingAtPath(path); }
-            }
-        });
-    private final JMenuItem editDialogAction = new JMenuItem(new AbstractAction("Edit Dialog") {
+    private final Action editAction = new AbstractAction("Edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTree tree = (JTree)getInvoker();
-            if(path==null) { return; }
+            if(path!=null) {
+                JTree tree = (JTree)getInvoker();
+                tree.startEditingAtPath(path);
+            }
+        }
+    };
+    private final Action editDialogAction = new AbstractAction("Edit Dialog") {
+        @Override public void actionPerformed(ActionEvent e) {
+            if(path==null) {
+                return;
+            }
             Object node = path.getLastPathComponent();
             if(node instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
+                JTree tree = (JTree)getInvoker();
                 int result = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if(result==JOptionPane.OK_OPTION) {
-                    String str = textField.getText();
-                    if(!str.trim().isEmpty()) {
+                    String str = textField.getText().trim();
+                    if(!str.isEmpty()) {
                         ((DefaultTreeModel)tree.getModel()).valueForPathChanged(path, str);
                     }
                 }
             }
         }
-    });
+    };
     public TreePopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {

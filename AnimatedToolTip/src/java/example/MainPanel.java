@@ -14,27 +14,25 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private final URL url = getClass().getResource("anime.gif");
     private final ImageIcon icon = new ImageIcon(url);
+    private final JLabel l1 = new JLabel("Timer Animated ToolTip") {
+        @Override public JToolTip createToolTip() {
+            JToolTip tip = new AnimatedToolTip(new AnimatedLabel(""));
+            tip.setComponent(this);
+            return tip;
+        }
+    };
+    private final JLabel l2 = new JLabel("Gif Animated ToolTip") {
+        @Override public JToolTip createToolTip() {
+            JToolTip tip = new AnimatedToolTip(new JLabel("", icon, SwingConstants.LEFT));
+            tip.setComponent(this);
+            return tip;
+        }
+    };
+    private final JLabel l3 = new JLabel("Gif Animated ToolTip(html)");
     public MainPanel() {
         super(new BorderLayout());
-        JLabel l1 = new JLabel("Timer Animated ToolTip") {
-            @Override public JToolTip createToolTip() {
-                JToolTip tip = new AnimatedToolTip(new AnimatedLabel(""));
-                tip.setComponent(this);
-                return tip;
-            }
-        };
         l1.setToolTipText("Test1");
-
-        JLabel l2 = new JLabel("Gif Animated ToolTip") {
-            @Override public JToolTip createToolTip() {
-                JToolTip tip = new AnimatedToolTip(new JLabel("", icon, SwingConstants.LEFT));
-                tip.setComponent(this);
-                return tip;
-            }
-        };
         l2.setToolTipText("Test2");
-
-        JLabel l3 = new JLabel("Gif Animated ToolTip(html)");
         l3.setToolTipText("<html><img src='"+url+"'>Test3</html>");
 
         JPanel p1 = new JPanel(new BorderLayout());
@@ -52,7 +50,7 @@ class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         add(box);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -170,16 +168,16 @@ class AnimeIcon implements Icon {
     @Override public int getIconHeight() { return dim.height; }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setPaint((c!=null)?c.getBackground():Color.WHITE);
+        g2d.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(cColor);
-        float alpha = 0.0f;
         g2d.translate(x, y);
-        for(Shape s: list) {
-            alpha = isRunning?alpha+0.1f:0.5f;
+        int size = list.size();
+        for(int i=0;i<size;i++) {
+            float alpha = isRunning ? (i+1)/(float)size : .5f;
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2d.fill(s);
+            g2d.fill(list.get(i));
         }
         g2d.translate(-x, -y);
     }

@@ -7,18 +7,18 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"family", "name", "postscript name"};
+    private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+        @Override public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+        @Override public Class<?> getColumnClass(int column) {
+            return String.class;
+        }
+    };
+    private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"family", "name", "postscript name"};
-        DefaultTableModel model = new DefaultTableModel(null, columnNames) {
-            @Override public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-            @Override public Class<?> getColumnClass(int column) {
-                return String.class;
-            }
-        };
-        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
         for(Font f: fonts) {

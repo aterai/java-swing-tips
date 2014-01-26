@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static final Color evenColor = new Color(250, 250, 250);
+    private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private static JTable makeTable() {
         TestModel model = new TestModel();
         try{
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?evenColor:getBackground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
                 return c;
             }
         };

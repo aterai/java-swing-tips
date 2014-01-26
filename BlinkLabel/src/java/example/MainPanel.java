@@ -7,32 +7,33 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JLabel label1 = new JLabel();
-    private final JLabel label2 = new JLabel();
+    private final JLabel label1 = new JLabel("\u25CF", SwingConstants.CENTER);
+    private final JLabel label2 = new JLabel("", SwingConstants.CENTER);
+    private final Timer timer1 = new Timer(600, new ActionListener() {
+        private boolean flg = true;
+        @Override public void actionPerformed(ActionEvent e) {
+            label1.setText((flg^=true) ? "\u25CB" : "\u25CF");
+        }
+    });
+    private final Timer timer2 = new Timer(300, new ActionListener() {
+        private boolean flg = true;
+        @Override public void actionPerformed(ActionEvent e) {
+            label2.setText((flg^=true) ? "!!!Warning!!!" : "");
+        }
+    });
+
     public MainPanel() {
         super(new BorderLayout());
-        label1.setHorizontalAlignment(JLabel.CENTER);
-        final Timer timer1 = new Timer(600, new ActionListener() {
-            boolean flg = true;
-            @Override public void actionPerformed(ActionEvent e) {
-                label1.setText((flg^=true) ? "\u25CB" : "\u25CF");
-            }
-        });
 
-        label2.setHorizontalAlignment(JLabel.CENTER);
-        final Timer timer2 = new Timer(300, new ActionListener() {
-            boolean flg = true;
-            @Override public void actionPerformed(ActionEvent e) {
-                label2.setText((flg^=true) ? "!!!Warning!!!" : "");
-            }
-        });
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0) {
                     if(isDisplayable()) {
-                        timer1.start(); timer2.start();
+                        timer1.start();
+                        timer2.start();
                     }else{
-                        timer1.stop(); timer2.stop();
+                        timer1.stop();
+                        timer2.stop();
                     }
                 }
             }
@@ -42,7 +43,7 @@ public class MainPanel extends JPanel {
         p.add(makePanel("!!!Warning!!!<->Empty", label2));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
