@@ -21,27 +21,28 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         this.frame = frame;
         barFactory = new BarFactory("resources.Main");
-        frame.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosing(WindowEvent e) {
-                //exitActionPerformed();
-                frame.dispose();
-            }
-        });
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
-        menupanel.add(createMenubar(), BorderLayout.NORTH);
-        menupanel.add(createToolbar(), BorderLayout.SOUTH);
+        JMenuBar menuBar = barFactory.createMenubar();
+        if(menuBar!=null) {
+            menupanel.add(menuBar, BorderLayout.NORTH);
+            initHistory(barFactory);
+        }
+        JToolBar toolBar = barFactory.createToolbar();
+        if(toolBar!=null) {
+            menupanel.add(toolBar, BorderLayout.SOUTH);
+        }
         add(menupanel, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void initHistory() {
-        JMenu fm = getMenu("file");
+    private void initHistory(BarFactory barFactory) {
+        JMenu fm = barFactory.getMenu("file");
         if(fileHistory==null) {
             fileHistory = new JMenu("最近使ったファイル(F)");
             fileHistory.setMnemonic('F');
-            JMenuItem exit = getMenuItem("exit");
+            JMenuItem exit = barFactory.getMenuItem("exit");
             fm.remove(exit);
             fm.add(fileHistory);
             fm.addSeparator();
@@ -121,26 +122,24 @@ public class MainPanel extends JPanel {
         new VersionAction(),
     };
 
-    protected JToolBar createToolbar() {
-        return barFactory.createToolbar();
-    }
-    private JMenuBar createMenubar() {
-        JMenuBar mb = barFactory.createMenubar();
-        initHistory();
-        return mb;
-    }
-    protected JButton getToolButton(String cmd) {
-        return barFactory.getToolButton(cmd);
-    }
-    protected JMenuItem getMenuItem(String cmd) {
-        return barFactory.getMenuItem(cmd);
-    }
-    protected JMenu getMenu(String cmd) {
-        return barFactory.getMenu(cmd);
-    }
-    protected Action getAction(String cmd) {
-        return barFactory.getAction(cmd);
-    }
+//     protected JToolBar createToolbar() {
+//         return barFactory.createToolbar();
+//     }
+//     protected JMenuBar createMenubar() {
+//         return barFactory.createMenubar();
+//     }
+//     protected JButton getToolButton(String cmd) {
+//         return barFactory.getToolButton(cmd);
+//     }
+//     protected JMenuItem getMenuItem(String cmd) {
+//         return barFactory.getMenuItem(cmd);
+//     }
+//     protected JMenu getMenu(String cmd) {
+//         return barFactory.getMenu(cmd);
+//     }
+//     protected Action getAction(String cmd) {
+//         return barFactory.getAction(cmd);
+//     }
 
     private static class NewAction extends AbstractAction {
         public NewAction() {
@@ -194,8 +193,6 @@ public class MainPanel extends JPanel {
             //System.exit(0);
         }
     }
-//     protected void exitActionPerformed() {
-//     }
 
     protected static class HelpAction extends AbstractAction {
         public HelpAction() {

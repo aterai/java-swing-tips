@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
@@ -21,34 +21,7 @@ public class MainPanel extends JPanel {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model) {
-            private final Color evenColor = new Color(250, 230, 230);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground(isSortingColumn(column)?
-                                  evenColor:getBackground());
-                }
-                return c;
-            }
-            private boolean isSortingColumn(int column) {
-                RowSorter sorter = getRowSorter();
-                if(sorter!=null) {
-                    List list = sorter.getSortKeys();
-                    if(list.size()>0) {
-                        RowSorter.SortKey key0 = (RowSorter.SortKey)list.get(0);
-                        if(column==convertColumnIndexToView(key0.getColumn())) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        };
+        JTable table = new SortingColumnColorTable(model);
         final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
 
@@ -58,7 +31,7 @@ public class MainPanel extends JPanel {
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -81,5 +54,37 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class SortingColumnColorTable extends JTable {
+    private final static Color EVEN_COLOR = new Color(250, 230, 230);
+    public SortingColumnColorTable(TableModel model) {
+        super(model);
+    }
+    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if(isRowSelected(row)) {
+            c.setForeground(getSelectionForeground());
+            c.setBackground(getSelectionBackground());
+        }else{
+            c.setForeground(getForeground());
+            c.setBackground(isSortingColumn(column)?EVEN_COLOR:getBackground());
+        }
+        return c;
+    }
+    private boolean isSortingColumn(int column) {
+        RowSorter sorter = getRowSorter();
+        if(sorter!=null) {
+            List list = sorter.getSortKeys();
+            if(list.isEmpty()) {
+                return false;
+            }
+            RowSorter.SortKey key0 = (RowSorter.SortKey)list.get(0);
+            if(column==convertColumnIndexToView(key0.getColumn())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

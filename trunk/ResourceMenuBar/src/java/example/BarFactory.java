@@ -18,17 +18,17 @@ public final class BarFactory {
 
     private final ResourceBundle resources;
 
-    private final Map<String, JMenuItem> menuItems   = new Hashtable<>();
-    private final Map<String, JButton>   toolButtons = new Hashtable<>();
-    private final Map<Object, Action>    commands    = new Hashtable<>();
-    private final Map<String, JMenu>     menus       = new Hashtable<>();
+    private final Map<String, JMenuItem> menuItems   = new HashMap<>();
+    private final Map<String, JButton>   toolButtons = new HashMap<>();
+    private final Map<Object, Action>    commands    = new HashMap<>();
+    private final Map<String, JMenu>     menus       = new HashMap<>();
     //private Action[] actions;
 
     public BarFactory(String restr) {
         ResourceBundle res;
         try{
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
-                //http://docs.oracle.com/javase/jp/6/api/java/util/ResourceBundle.Control.html
+                //http://docs.oracle.com/javase/jp/7/api/java/util/ResourceBundle.Control.html
                 @Override public List<String> getFormats(String baseName) {
                     Objects.requireNonNull(baseName, "baseName must not be null");
                     return Arrays.asList("properties");
@@ -39,7 +39,7 @@ public final class BarFactory {
                     String format   = Objects.requireNonNull(_format,    "format must not be null");
                     ClassLoader loader = Objects.requireNonNull(_loader, "baseName must not be null");
                     ResourceBundle bundle = null;
-                    if(format.equals("properties")) {
+                    if("properties".equals(format)) {
                         String bundleName = toBundleName(baseName, locale);
                         String resourceName = toResourceName(bundleName, format);
                         InputStream stream = null;
@@ -91,11 +91,10 @@ public final class BarFactory {
 
     public URL getResource(String key) {
         String name = getResourceString(key);
-        if(name != null) {
-            URL url = this.getClass().getResource(name);
-            return url;
+        if(name == null) {
+            return null;
         }
-        return null;
+        return getClass().getResource(name);
     }
 
     private String getResourceString(String nm) {

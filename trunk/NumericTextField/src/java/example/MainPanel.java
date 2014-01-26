@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JTextField textField1 = new JTextField("1000");
@@ -105,7 +105,7 @@ class IntegerInputVerifier extends InputVerifier {
 //>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 //Validating with a Custom Document
 class IntegerDocument extends PlainDocument {
-    int currentValue = 0;
+    private int currentValue = 0;
     public int getValue() {
         return currentValue;
     }
@@ -137,15 +137,14 @@ class IntegerDocument extends PlainDocument {
         super.remove(offset, length);
     }
     private int checkInput(String proposedValue, int offset) throws BadLocationException {
-        if(proposedValue.length()>0) {
+        if(proposedValue.isEmpty()) {
+            return 0;
+        }else{
             try{
-                int newValue = Integer.parseInt(proposedValue);
-                return newValue;
+                return Integer.parseInt(proposedValue);
             }catch(NumberFormatException e) {
                 throw new BadLocationException(proposedValue, offset);
             }
-        }else{
-            return 0;
         }
     }
 }
@@ -177,15 +176,15 @@ class IntegerDocumentFilter extends DocumentFilter {
         fb.replace(offset, length, text, attrs);
     }
     private static int checkInput(String proposedValue, int offset) throws BadLocationException {
-        int newValue = 0;
-        if(proposedValue.length() > 0) {
+        if(proposedValue.isEmpty()) {
+            return 0;
+        }else{
             try{
-                newValue = Integer.parseInt(proposedValue);
+                return Integer.parseInt(proposedValue);
             }catch(NumberFormatException e) {
                 throw new BadLocationException(proposedValue, offset);
             }
         }
-        return newValue;
     }
 }
 

@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         }
         add(menupanel, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
-        setPreferredSize(new Dimension(320,200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     protected void initActions(Action[] actlist) {
@@ -37,7 +37,6 @@ public class MainPanel extends JPanel {
     }
     private Action[] defaultActions = {
         new NewAction(),
-        //new OpenAction(),
         new ExitAction(),
         new HelpAction(),
         new VersionAction(),

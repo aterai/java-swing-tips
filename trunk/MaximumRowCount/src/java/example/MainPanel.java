@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox comboBox = makeComboBox();
+    private final JComboBox<String> comboBox = new JComboBox<>(makeModel());
     private final JSpinner spinner   = new JSpinner(new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1));
     public MainPanel() {
         super(new BorderLayout());
@@ -34,14 +34,12 @@ public class MainPanel extends JPanel {
         p.add(c);
         return p;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static DefaultComboBoxModel<String> makeModel() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for(int i=0;i<100;i++) {
             model.addElement("Item"+i);
         }
-        JComboBox combo = new JComboBox(model);
-        return combo;
+        return model;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
