@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
         @Override public void show(Component c, int x, int y) {
             JTree tree = (JTree)c;
             tsp = tree.getSelectionPaths();
-            if(tsp!=null && tsp.length>0) {
+            if(tsp.length > 0) {
                 super.show(c, x, y);
             }
         }

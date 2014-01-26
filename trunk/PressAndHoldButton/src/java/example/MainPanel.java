@@ -135,7 +135,9 @@ class PressAndHoldButton extends JToggleButton {
             if(autoRepeatTimer.isRunning()) {
                 System.out.println("actionPerformed");
                 System.out.println("    "+bg.getSelection().getActionCommand());
-                if(arrowButton!=null) { arrowButton.setSelected(false); }
+                if(arrowButton!=null) {
+                    arrowButton.setSelected(false);
+                }
                 autoRepeatTimer.stop();
             }
         }

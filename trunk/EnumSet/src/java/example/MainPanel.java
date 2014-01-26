@@ -133,7 +133,7 @@ class CheckBoxesPanel extends JPanel {
             initButtons();
         }
         @SuppressWarnings("unchecked")
-        EnumSet<Permissions> f = (v==null)? EnumSet.noneOf(Permissions.class):(EnumSet<Permissions>)v;
+        EnumSet<Permissions> f = (v==null) ? EnumSet.noneOf(Permissions.class) : (EnumSet<Permissions>)v;
         buttons[0].setSelected(f.contains(Permissions.READ));
         buttons[1].setSelected(f.contains(Permissions.WRITE));
         buttons[2].setSelected(f.contains(Permissions.EXECUTE));
@@ -221,7 +221,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -234,7 +236,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }

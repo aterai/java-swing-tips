@@ -100,7 +100,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) {
+            if(selection.length == 0) {
                 return;
             }
             for(int i=0;i<selection.length;i++) {
@@ -122,7 +122,7 @@ public class MainPanel extends JPanel {
         private Set<Integer> deleteRowSet = new TreeSet<>();
         @Override public void actionPerformed(ActionEvent evt) {
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) {
+            if(selection.length == 0) {
                 return;
             }
             for(int i=0;i<selection.length;i++) {
@@ -157,7 +157,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void show(Component c, int x, int y) {
             int[] l = table.getSelectedRows();
-            boolean flag = l!=null && l.length>0;
+            boolean flag = l.length > 0;
             cancelAction.setEnabled(flag);
             deleteAction.setEnabled(flag);
             super.show(c, x, y);

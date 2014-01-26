@@ -33,7 +33,7 @@ class MainPanel extends JPanel {
     //         doc.setLogicalStyle(0, style);
     //         textpane.setDocument(doc);
 
-//*
+/*
     private static Font makeFont(URL url) {
         Font font = null;
         InputStream is = null;

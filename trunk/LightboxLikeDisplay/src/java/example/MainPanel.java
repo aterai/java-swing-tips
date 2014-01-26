@@ -100,7 +100,9 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
             });
             animator.start();
         }else{
-            if(animator!=null) { animator.stop(); }
+            if(animator!=null) {
+                animator.stop();
+            }
         }
         animatedIcon.setRunning(isVisible);
     }

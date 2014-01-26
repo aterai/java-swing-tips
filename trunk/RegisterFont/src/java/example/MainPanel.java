@@ -11,27 +11,13 @@ import javax.swing.text.html.*;
 public class MainPanel extends JPanel {
     private static Font makeFont(URL url) {
         Font font = null;
-        InputStream is = null;
-        try{
-            is = url.openStream();
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(24.0f);
-            is.close();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-        }catch(FontFormatException ffe) {
-            ffe.printStackTrace();
-        }finally{
-            if(is!=null) {
-                try{
-                    is.close();
-                }catch(IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        try(InputStream is = url.openStream()) {
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+        }catch(IOException | FontFormatException ex) {
+            ex.printStackTrace();
         }
         return font;
     }
-
     public MainPanel() {
         super(new BorderLayout());
         Font font = makeFont(getClass().getResource("Burnstown Dam.ttf"));

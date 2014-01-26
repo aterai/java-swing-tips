@@ -18,7 +18,9 @@ public class MainPanel extends JPanel implements HierarchyListener {
             private ChangeListener changeListener = null;
             @Override public void updateUI() {
                 removeAll();
-                if(changeListener!=null) { removeChangeListener(changeListener); }
+                if(changeListener!=null) {
+                    removeChangeListener(changeListener);
+                }
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
