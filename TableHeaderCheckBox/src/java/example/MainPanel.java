@@ -160,12 +160,16 @@ class HeaderCheckBoxHandler implements TableModelListener {
             if(!Status.INDETERMINATE.equals(column.getHeaderValue())) {
                 column.setHeaderValue(Status.INDETERMINATE);
             }else{
-                boolean selected = true, deselected = true;
+                boolean selected = true;
+                boolean deselected = true;
                 TableModel m = table.getModel();
                 for(int i=0; i<m.getRowCount(); i++) {
                     Boolean b = (Boolean)m.getValueAt(i, targetColumnIndex);
-                    selected &= b; deselected &= !b;
-                    if(selected==deselected) { return; }
+                    selected &= b;
+                    deselected &= !b;
+                    if(selected==deselected) {
+                        return;
+                    }
                 }
                 if(selected) {
                     column.setHeaderValue(Status.SELECTED);

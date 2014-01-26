@@ -93,21 +93,28 @@ class TriStateCheckBox extends JCheckBox {
 class IndeterminateIcon implements Icon {
     private final Color FOREGROUND = new Color(50,20,255,200); //TEST: UIManager.getColor("CheckBox.foreground");
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
+    private static final int a = 4;
+    private static final int b = 2;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         icon.paintIcon(c, g, x, y);
-        int w = getIconWidth(), h = getIconHeight();
-        int a = 4, b = 2;
+        int w = getIconWidth();
+        int h = getIconHeight();
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
         g2.fillRect(a, (h-b)/2, w-a-a, b);
         g2.translate(-x, -y);
     }
-    @Override public int getIconWidth()  { return icon.getIconWidth();  }
-    @Override public int getIconHeight() { return icon.getIconHeight(); }
+    @Override public int getIconWidth()  {
+        return icon.getIconWidth();
+    }
+    @Override public int getIconHeight() {
+        return icon.getIconHeight();
+    }
 }
 
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
+
 class CheckBoxNode {
     public final String label;
     public final Status status;

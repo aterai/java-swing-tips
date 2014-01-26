@@ -578,19 +578,20 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             int index = loc.getIndex();
             boolean isZero = index==0;
             Rectangle r = tabbedPane.getBoundsAt(isZero ? 0 : index-1);
-            int x, y, w, h, a = isZero ? 0 : 1;
+            Rectangle rect = new Rectangle();
+            int a = isZero ? 0 : 1;
             if(tabbedPane.getTabPlacement()==JTabbedPane.TOP || tabbedPane.getTabPlacement()==JTabbedPane.BOTTOM) {
-                x = r.x - LINEWIDTH/2 + r.width * a;
-                y = r.y;
-                w = LINEWIDTH;
-                h = r.height;
+                rect.x = r.x - LINEWIDTH/2 + r.width * a;
+                rect.y = r.y;
+                rect.width  = LINEWIDTH;
+                rect.height = r.height;
             }else{
-                x = r.x;
-                y = r.y - LINEWIDTH/2 + r.height * a;
-                w = r.width;
-                h = LINEWIDTH;
+                rect.x = r.x;
+                rect.y = r.y - LINEWIDTH/2 + r.height * a;
+                rect.width  = r.width;
+                rect.height = LINEWIDTH;
             }
-            lineRect.setRect(x, y, w, h);
+            lineRect.setRect(rect);
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             g2.setColor(Color.RED);

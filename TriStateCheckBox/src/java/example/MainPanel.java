@@ -259,10 +259,12 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 class IndeterminateIcon implements Icon {
     private final Color FOREGROUND = Color.BLACK; //TEST: UIManager.getColor("CheckBox.foreground");
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
+    private final static int a = 4;
+    private final static int b = 2;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         icon.paintIcon(c, g, x, y);
-        int w = getIconWidth(), h = getIconHeight();
-        int a = 4, b = 2;
+        int w = getIconWidth();
+        int h = getIconHeight();
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
@@ -287,12 +289,16 @@ class HeaderCheckBoxHandler implements TableModelListener {
             if(!Status.INDETERMINATE.equals(column.getHeaderValue())) {
                 column.setHeaderValue(Status.INDETERMINATE);
             }else{
-                boolean selected = true, deselected = true;
+                boolean selected = true;
+                boolean deselected = true;
                 TableModel m = table.getModel();
                 for(int i=0; i<m.getRowCount(); i++) {
                     Boolean b = (Boolean)m.getValueAt(i, targetColumnIndex);
-                    selected &= b; deselected &= !b;
-                    if(selected==deselected) { return; }
+                    selected &= b;
+                    deselected &= !b;
+                    if(selected==deselected) {
+                        return;
+                    }
                 }
                 if(selected) {
                     column.setHeaderValue(Status.SELECTED);

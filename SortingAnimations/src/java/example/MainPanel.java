@@ -273,7 +273,9 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     }
 
     private void shellsort(int n) throws InterruptedException {
-        int i, j, h;
+        int i;
+        int j;
+        int h;
         for(h = 1; h < n; h = 3*h + 1) {}
         for(;;) {
             h /= 3;
@@ -288,13 +290,19 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     }
 
     private void siftdown(int l, int u) throws InterruptedException {
-        int i, c;
-        i = l;
+        int i = l;
+        int c;
         for(;;) {
             c = 2*i;
-            if(c > u) { break; }
-            if(c+1 <= u && a[c+1] > a[c]) { c++; }
-            if(a[i] >= a[c]) { break; }
+            if(c > u) {
+                break;
+            }
+            if(c+1 <= u && a[c+1] > a[c]) {
+                c++;
+            }
+            if(a[i] >= a[c]) {
+                break;
+            }
             swap(i, c);
             i = c;
         }

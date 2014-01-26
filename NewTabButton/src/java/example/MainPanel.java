@@ -278,7 +278,8 @@ class TabLayout implements LayoutManager, java.io.Serializable {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
             int last = parent.getComponentCount()-1;
-            int w = 0, h = 0;
+            int w = 0;
+            int h = 0;
             if(last>=0) {
                 Component comp = parent.getComponent(last);
                 Dimension d = comp.getPreferredSize();

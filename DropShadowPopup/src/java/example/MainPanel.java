@@ -105,7 +105,8 @@ class DropShadowPopupMenu extends JPopupMenu {
         setBorder(makeShadowBorder(c, new Point(x, y)));
 
         Dimension d = getPreferredSize();
-        int w = d.width, h = d.height;
+        int w = d.width;
+        int h = d.height;
         if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();

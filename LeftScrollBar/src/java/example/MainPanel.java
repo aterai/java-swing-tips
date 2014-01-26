@@ -34,8 +34,10 @@ class MainPanel extends JPanel {
         private int startX, startY;
         @Override public void mouseDragged(final MouseEvent e) {
             Rectangle vr = vport.getViewRect();
-            int w = vr.width, h = vr.height;
-            int x = e.getX(), y = e.getY();
+            int w = vr.width;
+            int h = vr.height;
+            int x = e.getX();
+            int y = e.getY();
             Point pt = SwingUtilities.convertPoint(vport,0,0,label);
             rect.setRect(pt.x-x+startX, pt.y-y+startY, w, h);
             label.scrollRectToVisible(rect);

@@ -54,24 +54,28 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         g2.fillRect(0,0,320,240);
         g2.dispose();
     }
-    private static BufferedImage makeBGImage() {
+    private static BufferedImage makeBGImage(int cs) {
         Color color = new Color(200,150,100,50);
-        int cs = 6, sz = cs*cs;
+        //int cs = 6;
+        int sz = cs*cs;
         BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0,0,sz,sz);
         for(int i=0; i*cs<sz; i++) {
             for(int j=0; j*cs<sz; j++) {
-                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
+                if((i+j)%2==0) {
+                    g2.fillRect(i*cs, j*cs, cs, cs);
+                }
             }
         }
         g2.dispose();
         return img;
     }
     private static TexturePaint makeTexturePaint() {
-        BufferedImage img = makeBGImage();
-        int w = img.getWidth(), h = img.getHeight();
+        BufferedImage img = makeBGImage(6);
+        int w = img.getWidth();
+        int h = img.getHeight();
         Rectangle2D r2d = new Rectangle2D.Float(0,0,w,h);
         return new TexturePaint(img, r2d);
     }

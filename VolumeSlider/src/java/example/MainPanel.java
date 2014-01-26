@@ -79,7 +79,8 @@ class TriSliderUI extends MetalSliderUI {
         g2.fillOval(thumbRect.x,thumbRect.y,thumbRect.width,thumbRect.height);
     }
     @Override public void paintTrack(Graphics g) {
-        int cy, cw;
+        int cy;
+        int cw;
         //int pad;
         Rectangle trackBounds = trackRect;
         if(slider.getOrientation() == JSlider.HORIZONTAL ) {
