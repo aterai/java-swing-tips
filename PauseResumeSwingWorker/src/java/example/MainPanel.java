@@ -137,15 +137,15 @@ public class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             JButton b = (JButton)e.getSource();
             String pause = (String)getValue(Action.NAME);
-            if(worker!=null) {
-                if(!worker.isCancelled() && !worker.isPaused) {
-                    b.setText("resume");
-                }else{
-                    b.setText(pause);
-                }
-                worker.isPaused = !worker.isPaused;
-            }else{
+            if(worker==null) {
                 b.setText(pause);
+            }else{
+                if(worker.isCancelled() || worker.isPaused) {
+                    b.setText(pause);
+                }else{
+                    b.setText("resume");
+                }
+                worker.isPaused ^= true;
             }
         }
     }
@@ -224,7 +224,7 @@ class Task extends SwingWorker<String, Progress> {
                     return;
                 }
                 publish(new Progress(Component.PAUSE, blinking));
-                blinking = !blinking;
+                blinking ^= true;
                 continue;
             }
             int iv = 100 * current / lengthOfTask;

@@ -65,12 +65,7 @@ public class MainPanel extends JPanel {
 
 //Java Swing Hacks - HACK #26: DnD JTree
 //http://www.oreilly.co.jp/books/4873112788/
-class DnDTree extends JTree implements DragSourceListener, DropTargetListener, DragGestureListener {
-    private static final String NAME = "TREE-TEST";
-    private static final DataFlavor localObjectFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-    private static final DataFlavor[] supportedFlavors = { localObjectFlavor };
-    //private DragSource dragSource;
-    //private DropTarget dropTarget;
+class DnDTree extends JTree {
     private TreeNode dropTargetNode = null;
     private TreeNode draggedNode = null;
 
@@ -78,180 +73,143 @@ class DnDTree extends JTree implements DragSourceListener, DropTargetListener, D
         super();
         setCellRenderer(new DnDTreeCellRenderer());
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode("default")));
-        //dragSource = new DragSource();
-        //DragGestureRecognizer dgr =
-        new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, this);
-        //dropTarget =
-        new DropTarget(this, this);
+        new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
+        new DropTarget(this, new NodeDropTargetListener());
     }
 
-    // DragGestureListener ---->
-    @Override public void dragGestureRecognized(DragGestureEvent dge) {
-        //System.out.println("dragGestureRecognized");
-        Point pt = dge.getDragOrigin();
-        TreePath path = getPathForLocation(pt.x, pt.y);
-        if(path==null || path.getParentPath()==null) {
-            return;
+    private class NodeDragSourceListener implements DragSourceListener {
+        @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+            dropTargetNode = null;
+            draggedNode = null;
+            repaint();
         }
-        //System.out.println("start "+path.toString());
-        draggedNode = (TreeNode) path.getLastPathComponent();
-        Transferable trans = new RJLTransferable(draggedNode);
-        new DragSource().startDrag(dge, Cursor.getDefaultCursor(), trans, this);
+        @Override public void dragEnter(DragSourceDragEvent dsde) {
+            dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+        }
+        @Override public void dragExit(DragSourceEvent dse) {
+            dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+        }
+        @Override public void dragOver(DragSourceDragEvent dsde) {}
+        @Override public void dropActionChanged(DragSourceDragEvent dsde) {}
     }
-    // <---- DragGestureListener
 
-    // DragSourceListener ---->
-    @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-        dropTargetNode = null;
-        draggedNode = null;
-        repaint();
+    private class NodeDragGestureListener implements DragGestureListener {
+        @Override public void dragGestureRecognized(DragGestureEvent dge) {
+            //System.out.println("dragGestureRecognized");
+            Point pt = dge.getDragOrigin();
+            TreePath path = getPathForLocation(pt.x, pt.y);
+            if(path==null || path.getParentPath()==null) {
+                return;
+            }
+            //System.out.println("start "+path.toString());
+            draggedNode = (TreeNode) path.getLastPathComponent();
+            Transferable trans = new RJLTransferable(draggedNode);
+            new DragSource().startDrag(dge, Cursor.getDefaultCursor(), trans, new NodeDragSourceListener());
+        }
     }
-    @Override public void dragEnter(DragSourceDragEvent dsde) {
-        dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-    }
-    @Override public void dragExit(DragSourceEvent dse) {
-        dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-    }
-    @Override public void dragOver(DragSourceDragEvent dsde) {}
-    @Override public void dropActionChanged(DragSourceDragEvent dsde) {}
-    // <---- DragSourceListener
 
-    // DropTargetListener ---->
-    @Override public void dropActionChanged(DropTargetDragEvent dtde) {}
-    @Override public void dragEnter(DropTargetDragEvent dtde) {}
-    @Override public void dragExit(DropTargetEvent dte) {}
-    @Override public void dragOver(DropTargetDragEvent dtde) {
-        DataFlavor[] f = dtde.getCurrentDataFlavors();
-        boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(NAME);
-        if(!isDataFlavorSupported) {
-            //サポートされていないDataFlavorである(例えばデスクトップからファイルなど)
-            rejectDrag(dtde);
-            return;
-        }
-        // figure out which cell it's over, no drag to self
-        Point pt = dtde.getLocation();
-        TreePath path = getPathForLocation(pt.x, pt.y);
-        if(path==null) {
-            //ノード以外の場所である(例えばJTreeの余白など)
-            rejectDrag(dtde);
-            return;
-        }
-//         Object draggingObject;
-//         if(!isWebStart()) {
-//             try{
-//                 draggingObject = dtde.getTransferable().getTransferData(localObjectFlavor);
-//             }catch(Exception ex) {
-//                 rejectDrag(dtde);
-//                 return;
-//             }
-//         }else{
-//             draggingObject = getSelectionPath().getLastPathComponent();
-//         }
-        Object draggingObject             = getSelectionPath().getLastPathComponent();
-        MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
-        DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-        while(parentNode!=null) {
-            if(draggingNode.equals(parentNode)) {
-                //親ノードを子ノードにドロップしようとしている
+    private class NodeDropTargetListener implements DropTargetListener {
+        @Override public void dropActionChanged(DropTargetDragEvent dtde) {}
+        @Override public void dragEnter(DropTargetDragEvent dtde) {}
+        @Override public void dragExit(DropTargetEvent dte) {}
+        @Override public void dragOver(DropTargetDragEvent dtde) {
+            DataFlavor[] f = dtde.getCurrentDataFlavors();
+            boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(RJLTransferable.NAME);
+            if(!isDataFlavorSupported) {
+                //サポートされていないDataFlavorである(例えばデスクトップからファイルなど)
                 rejectDrag(dtde);
                 return;
             }
-            parentNode = (DefaultMutableTreeNode)parentNode.getParent();
-        }
-        //dropTargetNode は、描画用(Rectangle2D、Line)のflag
-        dropTargetNode = targetNode; //(TreeNode) path.getLastPathComponent();
-        dtde.acceptDrag(dtde.getDropAction());
-        repaint();
-    }
-    @Override public void drop(DropTargetDropEvent dtde) {
-        //System.out.println("drop");
-//         if(!isWebStart()) {
-//             try{
-//                 draggingObject = dtde.getTransferable().getTransferData(localObjectFlavor);
-//             }catch(Exception ex) {
-//                 rejectDrag(dtde);
-//                 return;
-//             }
-//         }else{
-//             draggingObject = getSelectionPath().getLastPathComponent();
-//         }
-        Object draggingObject  = getSelectionPath().getLastPathComponent();
-        DefaultTreeModel model = (DefaultTreeModel) getModel();
-        Point p = dtde.getLocation();
-        TreePath path = getPathForLocation(p.x, p.y);
-        if(path==null || !(draggingObject instanceof MutableTreeNode)) {
-            dtde.dropComplete(false);
-            return;
-        }
-        //System.out.println("drop path is " + path);
-        MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
-        DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-        if(targetNode.equals(draggingNode)) {
-            //自分を自分にはドロップ不可
-            dtde.dropComplete(false);
-            return;
-        }
-        dtde.acceptDrop(DnDConstants.ACTION_MOVE);
-        model.removeNodeFromParent(draggingNode);
-        if(parentNode!=null && targetNode.isLeaf()) {
-            model.insertNodeInto(draggingNode, parentNode, parentNode.getIndex(targetNode));
-        }else{
-            model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
-        }
-        dtde.dropComplete(true);
-    }
-    private void rejectDrag(DropTargetDragEvent dtde) {
-        dtde.rejectDrag();
-        dropTargetNode = null; // dropTargetNode(flag)をnullにして
-        repaint();             // Rectangle2D、Lineを消すためJTreeを再描画
-    }
-    // <---- DropTargetListener
 
-    static class RJLTransferable implements Transferable {
-        Object object;
-        public RJLTransferable(Object o) {
-            object = o;
-        }
-        @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
-            if(isDataFlavorSupported(df)) {
-                return object;
-            }else{
-                throw new UnsupportedFlavorException(df);
+            // figure out which cell it's over, no drag to self
+            Point pt = dtde.getLocation();
+            TreePath path = getPathForLocation(pt.x, pt.y);
+            if(path==null) {
+                //ノード以外の場所である(例えばJTreeの余白など)
+                rejectDrag(dtde);
+                return;
             }
+            //Object draggingObject;
+            //if(!isWebStart()) {
+            //    try{
+            //        draggingObject = dtde.getTransferable().getTransferData(localObjectFlavor);
+            //    }catch(Exception ex) {
+            //        rejectDrag(dtde);
+            //        return;
+            //    }
+            //}else{
+            //    draggingObject = getSelectionPath().getLastPathComponent();
+            //}
+            Object draggingObject             = getSelectionPath().getLastPathComponent();
+            MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
+            DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
+            while(parentNode!=null) {
+                if(draggingNode.equals(parentNode)) {
+                    //親ノードを子ノードにドロップしようとしている
+                    rejectDrag(dtde);
+                    return;
+                }
+                parentNode = (DefaultMutableTreeNode)parentNode.getParent();
+            }
+            //dropTargetNode は、描画用(Rectangle2D、Line)のflag
+            dropTargetNode = targetNode; //(TreeNode) path.getLastPathComponent();
+            dtde.acceptDrag(dtde.getDropAction());
+            repaint();
         }
-        @Override public boolean isDataFlavorSupported(DataFlavor df) {
-            return df.getHumanPresentableName().equals(NAME);
-            //return (df.equals(localObjectFlavor));
+        @Override public void drop(DropTargetDropEvent dtde) {
+            //System.out.println("drop");
+            //if(!isWebStart()) {
+            //    try{
+            //        draggingObject = dtde.getTransferable().getTransferData(localObjectFlavor);
+            //    }catch(Exception ex) {
+            //        rejectDrag(dtde);
+            //        return;
+            //    }
+            //}else{
+            //    draggingObject = getSelectionPath().getLastPathComponent();
+            //}
+            Object draggingObject  = getSelectionPath().getLastPathComponent();
+            DefaultTreeModel model = (DefaultTreeModel)getModel();
+            Point p = dtde.getLocation();
+            TreePath path = getPathForLocation(p.x, p.y);
+            if(path==null || !(draggingObject instanceof MutableTreeNode)) {
+                dtde.dropComplete(false);
+                return;
+            }
+            //System.out.println("drop path is " + path);
+            MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
+            DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
+            if(targetNode.equals(draggingNode)) {
+                //自分を自分にはドロップ不可
+                dtde.dropComplete(false);
+                return;
+            }
+            dtde.acceptDrop(DnDConstants.ACTION_MOVE);
+            model.removeNodeFromParent(draggingNode);
+            if(parentNode!=null && targetNode.isLeaf()) {
+                model.insertNodeInto(draggingNode, parentNode, parentNode.getIndex(targetNode));
+            }else{
+                model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
+            }
+            dtde.dropComplete(true);
         }
-        @Override public DataFlavor[] getTransferDataFlavors() {
-            return supportedFlavors;
+        private void rejectDrag(DropTargetDragEvent dtde) {
+            dtde.rejectDrag();
+            dropTargetNode = null; // dropTargetNode(flag)をnullにして
+            repaint();             // Rectangle2D、Lineを消すためJTreeを再描画
         }
     }
 
-    // custom renderer
-    class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
-        //private static final int BOTTOM_PAD = 30;
+    private class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
         private boolean isTargetNode;
         private boolean isTargetNodeLeaf;
-        //private boolean isLastItem;
-        //private Insets normalInsets;
-        //private Insets lastItemInsets;
-//         public DnDTreeCellRenderer() {
-//             super();
-//             normalInsets = super.getInsets();
-//             lastItemInsets = new Insets(
-//                 normalInsets.top,
-//                 normalInsets.left,
-//                 normalInsets.bottom + BOTTOM_PAD,
-//                 normalInsets.right);
-//         }
         @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean isExpanded, boolean isLeaf, int row, boolean hasFocus) {
-            isTargetNode = value == dropTargetNode;
-            isTargetNodeLeaf = isTargetNode && ((TreeNode)value).isLeaf();
-            // isLastItem = (index == list.getModel().getSize()-1);
-            //boolean showSelected = isSelected & (dropTargetNode == null);
+            if(value instanceof TreeNode) {
+                isTargetNode     = value.equals(dropTargetNode);
+                isTargetNodeLeaf = isTargetNode && ((TreeNode)value).isLeaf();
+            }
             return super.getTreeCellRendererComponent(tree, value, isSelected, isExpanded, isLeaf, row, hasFocus);
         }
         @Override public void paintComponent(Graphics g) {
@@ -265,5 +223,29 @@ class DnDTree extends JTree implements DragSourceListener, DropTargetListener, D
                 }
             }
         }
+    }
+}
+
+class RJLTransferable implements Transferable {
+    public static final String NAME = "TREE-TEST";
+    private static final DataFlavor localObjectFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+    //private static final DataFlavor[] supportedFlavors = { localObjectFlavor };
+    private final Object object;
+    public RJLTransferable(Object o) {
+        object = o;
+    }
+    @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
+         if(isDataFlavorSupported(df)) {
+             return object;
+         }else{
+             throw new UnsupportedFlavorException(df);
+         }
+     }
+    @Override public boolean isDataFlavorSupported(DataFlavor df) {
+        return df.getHumanPresentableName().equals(NAME);
+        //return (df.equals(localObjectFlavor));
+    }
+    @Override public DataFlavor[] getTransferDataFlavors() {
+        return new DataFlavor[] { localObjectFlavor };
     }
 }

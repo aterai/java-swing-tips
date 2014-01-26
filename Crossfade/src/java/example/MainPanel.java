@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    JCheckBox box = new JCheckBox("Crossfade Type?", true);
+    private final JCheckBox box = new JCheckBox("Crossfade Type?", true);
     public MainPanel() {
         super(new BorderLayout());
         ImageIcon i1 = new ImageIcon(getClass().getResource("test.png"));
@@ -37,7 +37,7 @@ class MainPanel extends JPanel {
             animator = new Timer(50, this);
         }
         public void animationStart() {
-            mode = !mode;
+            mode ^= true;
             animator.start();
         }
         @Override public void paintComponent(Graphics g) {

@@ -65,7 +65,7 @@ public class MainPanel extends JPanel {
             @Override public void redo() throws CannotRedoException {
                 try{
                     replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
-                }catch(BadLocationException ex) {
+                }catch(final BadLocationException ex) {
                     throw new CannotUndoException();
                 }
             }

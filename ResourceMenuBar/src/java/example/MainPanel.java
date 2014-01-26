@@ -33,33 +33,20 @@ public class MainPanel extends JPanel {
         barFactory.initActions(actlist);
     }
     private Action[] getActions() {
-        return defaultActions;
+        return new Action[] {
+            new NewAction(),
+            new ExitAction(),
+            new HelpAction(),
+            new VersionAction()
+        };
+        //return defaultActions;
     }
-    private final Action[] defaultActions = {
-        new NewAction(),
-        new ExitAction(),
-        new HelpAction(),
-        new VersionAction(),
-    };
-
-//     protected JToolBar createToolbar() {
-//         return barFactory.createToolbar();
-//     }
-//     protected JMenuBar createMenubar() {
-//         return barFactory.createMenubar();
-//     }
-//     protected JButton getToolButton(String cmd) {
-//         return barFactory.getToolButton(cmd);
-//     }
-//     protected JMenuItem getMenuItem(String cmd) {
-//         return barFactory.getMenuItem(cmd);
-//     }
-//     protected JMenu getMenu(String cmd) {
-//         return barFactory.getMenu(cmd);
-//     }
-//     protected Action getAction(String cmd) {
-//         return barFactory.getAction(cmd);
-//     }
+//     private final Action[] defaultActions = {
+//         new NewAction(),
+//         new ExitAction(),
+//         new HelpAction(),
+//         new VersionAction(),
+//     };
 
     private static class NewAction extends AbstractAction {
         public NewAction() {

@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
             Object o = node.getUserObject();
             if(o instanceof String) {
-                node.setUserObject(new CheckBoxNode((String)o, b=!b));
+                node.setUserObject(new CheckBoxNode(o.toString(), b^=true));
             }
         }
         for(int i=0;i<tree.getRowCount();i++) {

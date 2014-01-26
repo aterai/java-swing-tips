@@ -62,7 +62,7 @@ public class MainPanel extends JPanel {
                             String contentType = urlConnection.getContentType();
                             for(String value: contentType.split(";")) {
                                 value = value.trim();
-                                if(value.toLowerCase().startsWith("charset=")) {
+                                if(value.toLowerCase(Locale.ENGLISH).startsWith("charset=")) {
                                     encoding = value.substring("charset=".length());
                                 }
                             }

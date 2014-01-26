@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         final Timer timer1 = new Timer(600, new ActionListener() {
             boolean flg = true;
             @Override public void actionPerformed(ActionEvent e) {
-                label1.setText((flg=!flg)?"\u25CB":"\u25CF");
+                label1.setText((flg^=true) ? "\u25CB" : "\u25CF");
             }
         });
 
@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
         final Timer timer2 = new Timer(300, new ActionListener() {
             boolean flg = true;
             @Override public void actionPerformed(ActionEvent e) {
-                label2.setText((flg=!flg)?"!!!Warning!!!":"");
+                label2.setText((flg^=true) ? "!!!Warning!!!" : "");
             }
         });
         addHierarchyListener(new HierarchyListener() {

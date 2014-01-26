@@ -87,9 +87,9 @@ public class MainPanel extends JPanel {
     }
     class HistoryAction extends AbstractAction {
 //         private final File file;
-//         public HistoryAction(File file_) {
+//         public HistoryAction(File file) {
 //             super();
-//             file = file_;
+//             this.file = file;
 //         }
         private final String fileName;
         public HistoryAction(String fileName) {
@@ -97,9 +97,6 @@ public class MainPanel extends JPanel {
             this.fileName = fileName;
         }
         @Override public void actionPerformed(ActionEvent evt) {
-//             System.out.println(file.getAbsolutePath());
-//             historyActionPerformed(file.getAbsolutePath());
-            //historyActionPerformed(fileName);
             Object[] obj = {"本来はファイルを開いたりする。\n",
                 "このサンプルではなにもせずに\n",
                 "履歴の先頭にファイルを移動する。"};
@@ -107,41 +104,27 @@ public class MainPanel extends JPanel {
             updateHistory(fileName);
         }
     }
-//     private void historyActionPerformed(String fileName) {
-//     }
 
     protected void initActions(Action[] actlist) {
         barFactory.initActions(actlist);
     }
     private Action[] getActions() {
-        return defaultActions;
+        return new Action[] {
+            new NewAction(),
+            new OpenAction(),
+            new ExitAction(),
+            new HelpAction(),
+            new VersionAction()
+        };
+        //return defaultActions;
     }
-    private final Action[] defaultActions = {
-        new NewAction(),
-        new OpenAction(),
-        new ExitAction(),
-        new HelpAction(),
-        new VersionAction(),
-    };
-
-//     protected JToolBar createToolbar() {
-//         return barFactory.createToolbar();
-//     }
-//     protected JMenuBar createMenubar() {
-//         return barFactory.createMenubar();
-//     }
-//     protected JButton getToolButton(String cmd) {
-//         return barFactory.getToolButton(cmd);
-//     }
-//     protected JMenuItem getMenuItem(String cmd) {
-//         return barFactory.getMenuItem(cmd);
-//     }
-//     protected JMenu getMenu(String cmd) {
-//         return barFactory.getMenu(cmd);
-//     }
-//     protected Action getAction(String cmd) {
-//         return barFactory.getAction(cmd);
-//     }
+//     private final Action[] defaultActions = {
+//         new NewAction(),
+//         new OpenAction(),
+//         new ExitAction(),
+//         new HelpAction(),
+//         new VersionAction(),
+//     };
 
     private static class NewAction extends AbstractAction {
         public NewAction() {

@@ -68,10 +68,13 @@ public class MainPanel {
 }
 
 class DragPanel extends JPanel {
-//     public DragPanel() {
-//         super();
-//     }
     public JLabel draggingLabel;
+    public DragPanel() {
+        super();
+    }
+    public DragPanel(LayoutManager lm) {
+        super(lm);
+    }
 }
 
 class Handler extends MouseAdapter {

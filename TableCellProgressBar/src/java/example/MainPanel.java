@@ -190,7 +190,7 @@ public class MainPanel extends JPanel {
 
 class Task extends SwingWorker<Integer, Integer> {
     private final int sleepDummy = new Random().nextInt(100) + 1;
-    private final int lengthOfTask = 120;
+    private static final int lengthOfTask = 120;
     @Override protected Integer doInBackground() {
         int current = 0;
         while(current<lengthOfTask && !isCancelled()) {
