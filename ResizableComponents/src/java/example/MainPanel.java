@@ -15,20 +15,23 @@ public class MainPanel extends JPanel {
     private final Point pt = new Point();
     public MainPanel() {
         super(new BorderLayout());
-        panel.setComponentPopupMenu(new JPopupMenu() {
-            {
-                add(new AbstractAction("table") {
-                    @Override public void actionPerformed(ActionEvent e) { createTable(); }
-                });
-                add(new AbstractAction("tree") {
-                    @Override public void actionPerformed(ActionEvent e) { createTree(); }
-                });
-            }
+        JPopupMenu popup = new JPopupMenu() {
             @Override public void show(Component c, int x, int y) {
                 pt.setLocation(x, y);
                 super.show(c, x, y);
             }
+        };
+        popup.add(new AbstractAction("table") {
+            @Override public void actionPerformed(ActionEvent e) {
+                createTable();
+            }
         });
+        popup.add(new AbstractAction("tree") {
+            @Override public void actionPerformed(ActionEvent e) {
+                createTree();
+            }
+        });
+        panel.setComponentPopupMenu(popup);
         panel.addMouseListener(new MouseAdapter() {});
         add(panel);
         toolbar.add(new AbstractAction("add table") {
@@ -182,7 +185,9 @@ class JResizer extends JComponent { // implements Serializable {
                   }else if(startingBounds.height + deltaY > max.height) {
                       deltaY = max.height - startingBounds.height;
                   }
-                  if(startingBounds.y - deltaY < 0) { deltaY = startingBounds.y; }
+                  if(startingBounds.y - deltaY < 0) {
+                      deltaY = startingBounds.y;
+                  }
                   newX = startingBounds.x;
                   newY = startingBounds.y - deltaY;
                   newW = startingBounds.width;
@@ -309,7 +314,9 @@ class JResizer extends JComponent { // implements Serializable {
                   }else if(startingBounds.height + deltaY > max.height) {
                       deltaY = max.height - startingBounds.height;
                   }
-                  if(startingBounds.y - deltaY < 0) { deltaY = startingBounds.y; }
+                  if(startingBounds.y - deltaY < 0) {
+                      deltaY = startingBounds.y;
+                  }
                   newX = startingBounds.x - deltaX;
                   newY = startingBounds.y - deltaY;
                   newW = startingBounds.width + deltaX;
@@ -342,7 +349,7 @@ interface ResizableBorder extends Border {
 }
 
 class DefaultResizableBorder implements ResizableBorder, SwingConstants {
-    private int dist = 6;
+    private final int dist;
 
     private static int[] locations = {
         NORTH,
@@ -371,6 +378,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     };
 
     public DefaultResizableBorder(int dist) {
+        super();
         this.dist = dist;
     }
 

@@ -145,7 +145,10 @@ class MainPanel extends JPanel {
     }
 }
 
+// https://forums.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
+// http://terai.xrea.jp/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
+    private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
     public CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
@@ -156,7 +159,7 @@ class CentredBackgroundBorder implements Border {
         ((Graphics2D)g).drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
     }
     @Override public Insets getBorderInsets(Component c) {
-        return new Insets(0,0,0,0);
+        return insets;
     }
     @Override public boolean isBorderOpaque() {
         return true;
