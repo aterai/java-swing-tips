@@ -37,30 +37,7 @@ public class MainPanel extends JPanel {
         //setFocusCycleRoot(true);
 
         FocusTraversalPolicy policy0 = getFocusTraversalPolicy();
-//         final FocusTraversalPolicy policy0 = frame.getFocusTraversalPolicy();
-//         final FocusTraversalPolicy policy0 = null;
-
-        FocusTraversalPolicy policy1 = new FocusTraversalPolicy() {
-            private final List<? extends Component> order = Arrays.asList(eb, wb, sb, nb);
-            @Override public Component getFirstComponent(Container focusCycleRoot) {
-                return order.get(0);
-            }
-            @Override public Component getLastComponent(Container focusCycleRoot) {
-                return order.get(order.size()-1);
-            }
-            @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
-                int i = order.indexOf(aComponent);
-                return order.get((i + 1) % order.size());
-            }
-            @Override public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
-                int i = order.indexOf(aComponent);
-                return order.get((i - 1 + order.size()) % order.size());
-            }
-            @Override public Component getDefaultComponent(Container focusCycleRoot) {
-                return order.get(0);
-            }
-        };
-
+        FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(Arrays.asList(eb, wb, sb, nb));
         FocusTraversalPolicy policy2 = new LayoutFocusTraversalPolicy() {
             @Override protected boolean accept(Component c) {
                 if(c instanceof JTextComponent) {
@@ -149,5 +126,29 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class CustomFocusTraversalPolicy extends FocusTraversalPolicy {
+    private final List<? extends Component> order;
+    public CustomFocusTraversalPolicy(List<? extends Component> order) {
+        this.order = order;
+    }
+    @Override public Component getFirstComponent(Container focusCycleRoot) {
+        return order.get(0);
+    }
+    @Override public Component getLastComponent(Container focusCycleRoot) {
+        return order.get(order.size()-1);
+    }
+    @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
+        int i = order.indexOf(aComponent);
+        return order.get((i + 1) % order.size());
+    }
+    @Override public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
+        int i = order.indexOf(aComponent);
+        return order.get((i - 1 + order.size()) % order.size());
+    }
+    @Override public Component getDefaultComponent(Container focusCycleRoot) {
+        return order.get(0);
     }
 }

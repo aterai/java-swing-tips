@@ -11,7 +11,7 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel {
     private final JSpinner s0 = new JSpinner(makeSpinnerNumberModel());
     private final JSpinner s1 = new JSpinner(makeSpinnerNumberModel());
-    private final JSpinner s2 = makeSpinner2(makeSpinnerNumberModel());
+    private final JSpinner s2 = new WarningSpinner(makeSpinnerNumberModel());
     public MainPanel() {
         super(new GridLayout(3,1));
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s1.getEditor();
@@ -27,13 +27,47 @@ public class MainPanel extends JPanel {
         return new SpinnerNumberModel(Long.valueOf(10),    Long.valueOf(0),
                                       Long.valueOf(99999), Long.valueOf(1));
     }
-    private static JSpinner makeSpinner2(SpinnerNumberModel m) {
-        JSpinner s = new JSpinner(m);
-        JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s.getEditor();
+    private JComponent makeTitlePanel(JComponent cmp, String title) {
+        JPanel p = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1.0;
+        c.fill    = GridBagConstraints.HORIZONTAL;
+        c.insets  = new Insets(5, 5, 5, 5);
+        p.add(cmp, c);
+        p.setBorder(BorderFactory.createTitledBorder(title));
+        return p;
+    }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class WarningSpinner extends JSpinner {
+    private static final Color ERROR_BG = new Color(255, 200, 200);
+    public WarningSpinner(SpinnerNumberModel model) {
+        super(model);
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor)getEditor();
         final JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
-        ftf.setFormatterFactory(makeFFactory(m));
+        ftf.setFormatterFactory(makeFFactory(model));
         ftf.getDocument().addDocumentListener(new DocumentListener() {
-            private final Color color = new Color(255,200,200);
             @Override public void changedUpdate(DocumentEvent e) {
                 updateEditValid();
             }
@@ -46,12 +80,11 @@ public class MainPanel extends JPanel {
             private void updateEditValid() {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        ftf.setBackground(ftf.isEditValid()?Color.WHITE:color);
+                        ftf.setBackground(ftf.isEditValid()?Color.WHITE:ERROR_BG);
                     }
                 });
             }
         });
-        return s;
     }
     private static DefaultFormatterFactory makeFFactory(final SpinnerNumberModel m) { //DecimalFormatSymbols dfs) {
         final NumberFormat format = new DecimalFormat("####0"); //, dfs);
@@ -84,6 +117,8 @@ public class MainPanel extends JPanel {
         editFormatter.setValueClass(Long.class);
         return new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);
     }
+}
+
 //     private static JSpinner makeSpinner2(final SpinnerNumberModel m) {
 //         JSpinner s = new JSpinner(m);
 //         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s.getEditor();
@@ -118,38 +153,7 @@ public class MainPanel extends JPanel {
 //         formatter.setValueClass(Long.class);
 //         return new DefaultFormatterFactory(formatter);
 //     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
-        JPanel p = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1.0;
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.insets  = new Insets(5, 5, 5, 5);
-        p.add(cmp, c);
-        p.setBorder(BorderFactory.createTitledBorder(title));
-        return p;
-    }
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-}
+
 // class IntegerDocumentFilter extends DocumentFilter {
 //     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
 //         if(string == null) {

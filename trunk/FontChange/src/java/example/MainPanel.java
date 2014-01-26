@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(button, "MessageDialog",
                                               "Change All Font Size",
                                               JOptionPane.ERROR_MESSAGE);

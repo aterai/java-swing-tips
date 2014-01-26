@@ -30,15 +30,14 @@ public final class BarFactory {
             res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
                 //http://docs.oracle.com/javase/jp/7/api/java/util/ResourceBundle.Control.html
                 @Override public List<String> getFormats(String baseName) {
-                    if(baseName == null) {
-                        throw new IllegalArgumentException("parameter cannot be null");
-                    }
+                    baseName = Objects.requireNonNull(baseName, "baseName must not be null");
                     return Arrays.asList("properties");
                 }
                 @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-                    if(baseName == null || locale == null || format == null || loader == null) {
-                        throw new IllegalArgumentException("parameter cannot be null");
-                    }
+                    baseName = Objects.requireNonNull(baseName, "baseName must not be null");
+                    locale   = Objects.requireNonNull(locale,   "locale must not be null");
+                    format   = Objects.requireNonNull(format,   "format must not be null");
+                    loader   = Objects.requireNonNull(loader,   "baseName must not be null");
                     ResourceBundle bundle = null;
                     if(format.equals("properties")) {
                         String bundleName = toBundleName(baseName, locale);

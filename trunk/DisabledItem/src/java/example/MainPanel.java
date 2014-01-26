@@ -93,15 +93,15 @@ public class MainPanel extends JPanel {
     private void initDisableIndex(Set<Integer> set) {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         set.clear();
-        try{
-            while(st.hasMoreTokens()) {
-                set.add(Integer.valueOf(st.nextToken()));
-            }
-        }catch(NumberFormatException nfe) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
-                                          "Error", JOptionPane.ERROR_MESSAGE);
+//         try{
+        while(st.hasMoreTokens()) {
+            set.add(Integer.valueOf(st.nextToken()));
         }
+//         }catch(NumberFormatException nfe) {
+//             Toolkit.getDefaultToolkit().beep();
+//             JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+//                                           "Error", JOptionPane.ERROR_MESSAGE);
+//         }
     }
 
     public static void main(String[] args) {

@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
         editor.addHyperlinkListener(new HyperlinkListener() {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
                 if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
-                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    Toolkit.getDefaultToolkit().beep();
                 }
             }
         });

@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        //for(String s:(String[])java.awt.Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
+        //for(String s:(String[])Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
         Toolkit.getDefaultToolkit().addPropertyChangeListener("win.xpstyle.colorName", new PropertyChangeListener() {
             @Override public void propertyChange(PropertyChangeEvent e) {
                 System.out.println("----\n"+e.getPropertyName());

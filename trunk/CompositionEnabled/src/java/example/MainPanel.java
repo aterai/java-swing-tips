@@ -19,43 +19,35 @@ public class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table;
-    public MainPanel() {
-        super(new BorderLayout());
-        table = new JTable(model) {
-            private final Color evenColor = new Color(250, 250, 250);
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?evenColor:getBackground());
-                }
-                return c;
-            }
-            protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-                //System.out.println("key: "+ks.toString());
-                boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
-                if(!check.isSelected()) { return retValue; }
-                if(KeyStroke.getKeyStroke('\t').equals(ks) || KeyStroke.getKeyStroke('\n').equals(ks)) {
-                    System.out.println("tab or enter typed");
-                    return retValue;
-                }
-                if(getInputContext().isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
-                    int selectedRow = getSelectedRow();
-                    int selectedColumn = getSelectedColumn();
-                    if(selectedRow!=-1 && selectedColumn!=-1) {
-                        boolean dummy = editCellAt(selectedRow, selectedColumn);
-                        System.out.println("editCellAt: "+dummy);
-                    }
-                }
+    private final JTable table = new JTable(model) {
+        @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+            //System.out.println("key: "+ks.toString());
+            boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
+            if(!check.isSelected()) {
                 return retValue;
             }
-        };
+            if(isTabOrEnterKey(ks)) {
+                System.out.println("tab or enter typed");
+                return retValue;
+            }
+            if(getInputContext().isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
+                int selectedRow = getSelectedRow();
+                int selectedColumn = getSelectedColumn();
+                if(selectedRow!=-1 && selectedColumn!=-1) {
+                    boolean dummy = editCellAt(selectedRow, selectedColumn);
+                    System.out.println("editCellAt: "+dummy);
+                }
+            }
+            return retValue;
+        }
+        private boolean isTabOrEnterKey(KeyStroke ks) {
+            return KeyStroke.getKeyStroke('\t').equals(ks) || KeyStroke.getKeyStroke('\n').equals(ks);
+        }
+    };
+    public MainPanel() {
+        super(new BorderLayout());
         //table.setSurrendersFocusOnKeystroke(true);
-        table.setShowGrid(false);
+        //table.setShowGrid(false);
         //table.setShowHorizontalLines(false);
         //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);

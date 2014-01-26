@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         JButton label = new JButton(new AbstractAction(MYSITE) {
             @Override public void actionPerformed(ActionEvent ae) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
                 //if(!Desktop.isDesktopSupported()) { return; }
                 //try{
                 //    Desktop.getDesktop().browse(new URI(MYSITE));

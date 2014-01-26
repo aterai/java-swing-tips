@@ -9,14 +9,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel {
-    private static enum TabPlacements {
-        TOP(JTabbedPane.TOP), BOTTOM(JTabbedPane.BOTTOM), LEFT(JTabbedPane.LEFT), RIGHT(JTabbedPane.RIGHT);
-        public final int tabPlacement;
-        private TabPlacements(int tabPlacement) {
-            this.tabPlacement = tabPlacement;
-        }
-    }
-    private final JComboBox<TabPlacements> comboBox = new JComboBox<>(TabPlacements.values());
+    private final JComboBox<? extends Enum> comboBox = new JComboBox<>(TabPlacements.values());
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     public MainPanel() {
@@ -37,46 +30,9 @@ public class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-            tabbedPane.setUI(new WindowsTabbedPaneUI() {
-                private static final int tabAreaHeight = 32;
-                @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-                    return tabAreaHeight; //super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
-                }
-                //@Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
-                //    Rectangle tabRect = super.getTabBounds(pane, i);
-                //    tabRect.translate(0, -16);
-                //    tabRect.height = 16;
-                //    return tabRect;
-                //}
-                @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-                    if(tabPane.getSelectedIndex()!=tabIndex && tabPlacement!=JTabbedPane.LEFT && tabPlacement!=JTabbedPane.RIGHT) {
-                        int tabHeight = tabAreaHeight/2 + 3;
-                        rects[tabIndex].height = tabHeight;
-                        if(tabPlacement==JTabbedPane.TOP) {
-                            rects[tabIndex].y = tabAreaHeight - tabHeight + 3;
-                        }
-                    }
-                    super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
-                }
-            });
+            tabbedPane.setUI(new WindowsTabHeightTabbedPaneUI());
         }else{
-            //t.setUI(new javax.swing.plaf.metal.MetalTabbedPaneUI() {
-            tabbedPane.setUI(new BasicTabbedPaneUI() {
-                private static final int tabAreaHeight = 32;
-                @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-                    return tabAreaHeight;
-                }
-                @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-                    if(tabPane.getSelectedIndex()!=tabIndex && tabPlacement!=JTabbedPane.LEFT && tabPlacement!=JTabbedPane.RIGHT) {
-                        int tabHeight = tabAreaHeight/2 + 3;
-                        rects[tabIndex].height = tabHeight;
-                        if(tabPlacement==JTabbedPane.TOP) {
-                            rects[tabIndex].y = tabAreaHeight - tabHeight + 3;
-                        }
-                    }
-                    super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
-                }
-            });
+            tabbedPane.setUI(new BasicTabHeightTabbedPaneUI());
         }
         tabbedPane.addTab("00000", new JLabel("aaaaaaaaaaa"));
         tabbedPane.addTab("111112", new JLabel("bbbbbbbbbbbbbbbb"));
@@ -106,5 +62,56 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+enum TabPlacements {
+    TOP(JTabbedPane.TOP),
+    BOTTOM(JTabbedPane.BOTTOM),
+    LEFT(JTabbedPane.LEFT),
+    RIGHT(JTabbedPane.RIGHT);
+    public final int tabPlacement;
+    private TabPlacements(int tabPlacement) {
+        this.tabPlacement = tabPlacement;
+    }
+}
+
+class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
+    private static final int TAB_AREA_HEIGHT = 32;
+    @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+        return TAB_AREA_HEIGHT; //super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
+    }
+    //@Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
+    //    Rectangle tabRect = super.getTabBounds(pane, i);
+    //    tabRect.translate(0, -16);
+    //    tabRect.height = 16;
+    //    return tabRect;
+    //}
+    @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
+        if(tabPane.getSelectedIndex()!=tabIndex && tabPlacement!=JTabbedPane.LEFT && tabPlacement!=JTabbedPane.RIGHT) {
+            int tabHeight = TAB_AREA_HEIGHT/2 + 3;
+            rects[tabIndex].height = tabHeight;
+            if(tabPlacement==JTabbedPane.TOP) {
+                rects[tabIndex].y = TAB_AREA_HEIGHT - tabHeight + 3;
+            }
+        }
+        super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
+    }
+}
+
+class BasicTabHeightTabbedPaneUI extends BasicTabbedPaneUI {
+    private static final int TAB_AREA_HEIGHT = 32;
+    @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+        return TAB_AREA_HEIGHT;
+    }
+    @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
+        if(tabPane.getSelectedIndex()!=tabIndex && tabPlacement!=JTabbedPane.LEFT && tabPlacement!=JTabbedPane.RIGHT) {
+            int tabHeight = TAB_AREA_HEIGHT/2 + 3;
+            rects[tabIndex].height = tabHeight;
+            if(tabPlacement==JTabbedPane.TOP) {
+                rects[tabIndex].y = TAB_AREA_HEIGHT - tabHeight + 3;
+            }
+        }
+        super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
     }
 }

@@ -11,11 +11,6 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makePanel());
-        setPreferredSize(new Dimension(320, 240));
-    }
     private final JTree tree       = new JTree(makeModel());
     private final JTextField field = new JTextField("asd", 10);
     private final JButton button   = new JButton();
@@ -53,33 +48,13 @@ public class MainPanel extends JPanel {
             return ps;
         }
     });
+    public MainPanel() {
+        super(new BorderLayout());
 
-    public JPanel makePanel() {
-        Action a = new AbstractAction("Find Next") {
-            @Override public void actionPerformed(ActionEvent e) {
-                TreePath selectedPath = tree.getSelectionPath();
-                tree.clearSelection();
-                rollOverPathLists.clear();
-                searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
-                if(!rollOverPathLists.isEmpty()) {
-                    int nextIndex = 0;
-                    int size = rollOverPathLists.size();
-                    for(int i=0;i<size;i++) {
-                        if(rollOverPathLists.get(i).equals(selectedPath)) {
-                            nextIndex = i+1<size ? i+1 : 0;
-                            break;
-                        }
-                    }
-                    TreePath p = rollOverPathLists.get(nextIndex);
-                    tree.addSelectionPath(p);
-                    tree.scrollPathToVisible(p);
-                }
-            }
-        };
-        button.setAction(a);
+        button.setAction(findNextAction);
         button.setFocusable(false);
 
-        field.getActionMap().put("find-next", a);
+        field.getActionMap().put("find-next", findNextAction);
         field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
@@ -87,41 +62,58 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 
+        controls.setBorder(BorderFactory.createTitledBorder("Search down"));
         controls.add(new JLabel("Find what:"), BorderLayout.WEST);
         controls.add(field);
         controls.add(button, BorderLayout.EAST);
 
-        Action act = makeShowHideAction();
-        showHideButton.setAction(act);
+        showHideButton.setAction(showHideAction);
         showHideButton.setFocusable(false);
 
-        JPanel p = new JPanel(new BorderLayout());
-        InputMap imap = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK), "open-searchbox");
-        p.getActionMap().put("open-searchbox", act);
+        getActionMap().put("open-searchbox", showHideAction);
 
-        p.add(controls, BorderLayout.NORTH);
-        p.add(new JScrollPane(tree));
-        p.add(showHideButton, BorderLayout.SOUTH);
-        return p;
+        add(controls, BorderLayout.NORTH);
+        add(new JScrollPane(tree));
+        add(showHideButton, BorderLayout.SOUTH);
+        setPreferredSize(new Dimension(320, 240));
     }
-    private Action makeShowHideAction() {
-        controls.setBorder(BorderFactory.createTitledBorder("Search down"));
-        return new AbstractAction("Show/Hide Search Box") {
-            @Override public void actionPerformed(ActionEvent e) {
-                if(animator!=null && animator.isRunning()) {
-                    return;
-                }
-                isHidden = controls.getHeight()==0;
-                animator = new Timer(5, new ActionListener() {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        controls.revalidate();
+    private final Action findNextAction = new AbstractAction("Find Next") {
+        @Override public void actionPerformed(ActionEvent e) {
+            TreePath selectedPath = tree.getSelectionPath();
+            tree.clearSelection();
+            rollOverPathLists.clear();
+            searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
+            if(!rollOverPathLists.isEmpty()) {
+                int nextIndex = 0;
+                int size = rollOverPathLists.size();
+                for(int i=0;i<size;i++) {
+                    if(rollOverPathLists.get(i).equals(selectedPath)) {
+                        nextIndex = i+1<size ? i+1 : 0;
+                        break;
                     }
-                });
-                animator.start();
+                }
+                TreePath p = rollOverPathLists.get(nextIndex);
+                tree.addSelectionPath(p);
+                tree.scrollPathToVisible(p);
             }
-        };
-    }
+        }
+    };
+    private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
+        @Override public void actionPerformed(ActionEvent e) {
+            if(animator!=null && animator.isRunning()) {
+                return;
+            }
+            isHidden = controls.getHeight()==0;
+            animator = new Timer(5, new ActionListener() {
+                @Override public void actionPerformed(ActionEvent e) {
+                    controls.revalidate();
+                }
+            });
+            animator.start();
+        }
+    };
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");

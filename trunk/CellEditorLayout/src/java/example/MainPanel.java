@@ -137,7 +137,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 
 class CustomComponent extends JPanel {
 //     static class CustomTextField extends JTextField {
-//         protected boolean processKeyBinding (KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+//         @Override protected boolean processKeyBinding (KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
 //             return super.processKeyBinding(ks, e, condition, pressed);
 //         }
 //     }

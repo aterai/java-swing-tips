@@ -85,7 +85,7 @@ public class MainPanel extends JPanel {
                     outfile = File.createTempFile("test",".tmp");
                     outfile.deleteOnExit();
                 }catch(IOException ioe) {
-                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    Toolkit.getDefaultToolkit().beep();
                     JOptionPane.showMessageDialog(box,"Could not create file.","Error",JOptionPane.ERROR_MESSAGE);
                     return;
                 }

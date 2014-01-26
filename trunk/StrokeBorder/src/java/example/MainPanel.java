@@ -8,26 +8,29 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox<JoinStyle> joinCombo = new JComboBox<>(JoinStyle.values());
-    private final JComboBox<EndCapStyle> endcapCombo = new JComboBox<>(EndCapStyle.values());
+    private final JComboBox<? extends Enum> joinCombo   = new JComboBox<>(JoinStyle.values());
+    private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
     private final JLabel label = new JLabel();
     public  final JButton button;
     private float[] getDashArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         float[] list = new float[st.countTokens()];
-        int i=0;
-        try{
-            while(st.hasMoreTokens()) {
-                list[i] = Float.valueOf(st.nextToken());
-                i++;
-            }
-        }catch(final NumberFormatException nfe) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            float[] fd = {1.0f};
-            return fd;
+        int i = 0;
+//         try{
+        while(st.hasMoreTokens()) {
+            list[i] = Float.valueOf(st.nextToken());
+            i++;
         }
+        if(i==0) {
+            list = new float[] { 1f };
+        }
+//         }catch(NumberFormatException nfe) {
+//             Toolkit.getDefaultToolkit().beep();
+//             JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//             float[] fd = {1.0f};
+//             return fd;
+//         }
         return list;
     }
 
@@ -44,7 +47,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        JPanel p = new JPanel(new BorderLayout(2,2));
+        JPanel p = new JPanel(new BorderLayout(2, 2));
         p.add(field); p.add(button, BorderLayout.EAST);
         p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 

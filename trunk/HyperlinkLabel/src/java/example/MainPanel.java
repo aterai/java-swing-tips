@@ -16,15 +16,13 @@ public class MainPanel extends JPanel {
     private static final String MYSITE = "http://terai.xrea.jp/";
     private static final Action a = new AbstractAction(MYSITE) {
         @Override public void actionPerformed(ActionEvent e) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
+            Toolkit.getDefaultToolkit().beep();
             try{
                 if(!Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().browse(new URI(MYSITE));
                 }
-            }catch(IOException ioe) {
-                ioe.printStackTrace();
-            }catch(URISyntaxException use) {
-                use.printStackTrace();
+            }catch(IOException | URISyntaxException ex) {
+                ex.printStackTrace();
             }
         }
     };
@@ -39,7 +37,7 @@ public class MainPanel extends JPanel {
         editor.addHyperlinkListener(new HyperlinkListener() {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
                 if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
-                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    Toolkit.getDefaultToolkit().beep();
                 }
             }
         });

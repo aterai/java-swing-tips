@@ -102,4 +102,3 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-

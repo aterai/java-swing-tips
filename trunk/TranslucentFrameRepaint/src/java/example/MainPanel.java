@@ -49,57 +49,12 @@ class MainPanel extends JPanel {
 //             c.repaint();
 //         }
 //     }
-    private static TexturePaint makeImageTexture() {
-        BufferedImage bi = null;
-        try{
-            //http://www.viva-edo.com/komon/edokomon.html
-            bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
-        }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
-    }
-    private static TexturePaint makeCheckerTexture() {
-        int cs = 6;
-        int sz = cs*cs;
-        BufferedImage bi = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = bi.createGraphics();
-        g2.setPaint(new Color(200,150,100,50));
-        g2.fillRect(0,0,sz,sz);
-        for(int i=0;i*cs<sz;i++) {
-            for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) {
-                    g2.fillRect(i*cs, j*cs, cs, cs);
-                }
-            }
-        }
-        g2.dispose();
-        return new TexturePaint(bi, new Rectangle(0,0,sz,sz));
-    }
-    private enum TexturePaints {
-        Null    (null, "Color(.5f,.8f,.5f,.5f)"),
-        Image   (makeImageTexture(), "Image TexturePaint"),
-        Checker (makeCheckerTexture(), "Checker TexturePaint");
-        private final String description;
-        private final TexturePaint texture;
-        private TexturePaints(TexturePaint texture, String description) {
-            this.texture = texture;
-            this.description = description;
-        }
-        @Override public String toString() {
-            return description;
-        }
-        public TexturePaint getTexturePaint() {
-            return this.texture;
-        }
-    }
-    private final JComboBox<TexturePaints> combo = new JComboBox<>(TexturePaints.values());
+    private final JComboBox<? extends Enum> combo = new JComboBox<>(TexturePaints.values());
     private final TexturePanel tp;
 
     public MainPanel() {
         super(new BorderLayout());
-        tp = makeTexturePanel();
+        tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
@@ -142,47 +97,6 @@ class MainPanel extends JPanel {
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    private static Font makeFont(URL url) {
-        Font font = null;
-        InputStream is = null;
-        try{
-            is = url.openStream();
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
-            is.close();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-        }catch(FontFormatException ffe) {
-            ffe.printStackTrace();
-        }finally{
-            if(is!=null) {
-                try{
-                    is.close();
-                }catch(IOException ioex) {
-                    ioex.printStackTrace();
-                }
-            }
-        }
-        return font;
-    }
-
-    private TexturePanel makeTexturePanel() {
-        //http://www.yourname.jp/soft/digitalfonts-20090306.shtml
-        //Digital display font: Copyright (c) Yourname, Inc.
-        Font font = makeFont(getClass().getResource("YournameS7ScientificHalf.ttf"));
-        label.setFont(font.deriveFont(80.0f));
-        label.setBackground(new Color(0,0,0,0));
-        label.setOpaque(false);
-        TexturePanel p = new TexturePanel(new BorderLayout(8,8));
-        p.add(label);
-        p.add(new JLabel("Digital display fonts by Yourname, Inc."), BorderLayout.NORTH);
-        p.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
-        p.setBackground(new Color(.5f,.8f,.5f,.5f));
-        DragWindowListener dwl = new DragWindowListener();
-        p.addMouseListener(dwl);
-        p.addMouseMotionListener(dwl);
-        return p;
-    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -205,6 +119,7 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TexturePanel extends JPanel {
     public TexturePanel() {
         super();
@@ -225,6 +140,84 @@ class TexturePanel extends JPanel {
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
         super.paintComponent(g);
+    }
+}
+
+enum TexturePaints {
+    Null    (null, "Color(.5f,.8f,.5f,.5f)"),
+    Image   (TextureUtil.makeImageTexture(), "Image TexturePaint"),
+    Checker (TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
+    private final String description;
+    private final TexturePaint texture;
+    private TexturePaints(TexturePaint texture, String description) {
+        this.texture = texture;
+        this.description = description;
+    }
+    @Override public String toString() {
+        return description;
+    }
+    public TexturePaint getTexturePaint() {
+        return this.texture;
+    }
+}
+
+class TextureUtil {
+    public static TexturePaint makeImageTexture() {
+        BufferedImage bi = null;
+        try{
+            //http://www.viva-edo.com/komon/edokomon.html
+            bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
+        }catch(IOException ioe) {
+            ioe.printStackTrace();
+            throw new IllegalArgumentException(ioe);
+        }
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
+    }
+
+    public static TexturePaint makeCheckerTexture() {
+        int cs = 6;
+        int sz = cs*cs;
+        BufferedImage bi = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bi.createGraphics();
+        g2.setPaint(new Color(200,150,100,50));
+        g2.fillRect(0,0,sz,sz);
+        for(int i=0;i*cs<sz;i++) {
+            for(int j=0;j*cs<sz;j++) {
+                if((i+j)%2==0) {
+                    g2.fillRect(i*cs, j*cs, cs, cs);
+                }
+            }
+        }
+        g2.dispose();
+        return new TexturePaint(bi, new Rectangle(0,0,sz,sz));
+    }
+
+    public static TexturePanel makeTexturePanel(JLabel label, URL url) {
+        //http://www.yourname.jp/soft/digitalfonts-20090306.shtml
+        //Digital display font: Copyright (c) Yourname, Inc.
+        Font font = makeFont(url);
+        label.setFont(font.deriveFont(80.0f));
+        label.setBackground(new Color(0,0,0,0));
+        label.setOpaque(false);
+        TexturePanel p = new TexturePanel(new BorderLayout(8,8));
+        p.add(label);
+        p.add(new JLabel("Digital display fonts by Yourname, Inc."), BorderLayout.NORTH);
+        p.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+        p.setBackground(new Color(.5f,.8f,.5f,.5f));
+        DragWindowListener dwl = new DragWindowListener();
+        p.addMouseListener(dwl);
+        p.addMouseMotionListener(dwl);
+        return p;
+    }
+
+    private static Font makeFont(URL url) {
+        Font font = null;
+        try(InputStream is = url.openStream()) {
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+        }catch(IOException | FontFormatException ex) {
+            ex.printStackTrace();
+        }
+        return font;
     }
 }
 
