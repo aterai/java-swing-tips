@@ -43,8 +43,14 @@ public class MainPanel extends JPanel {
             }
         }
         recursiveUpdateUI(this); //SwingUtilities.updateComponentTreeUI(this);
-        Container c = getTopLevelAncestor();
-        if(c!=null && c instanceof Window) { ((Window)c).pack(); }
+        //Container c = getTopLevelAncestor();
+        //if(c!=null && c instanceof Window) {
+        //    ((Window)c).pack();
+        //}
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if(window != null) {
+            window.pack();
+        }
     }
     private void recursiveUpdateUI(JComponent p) {
         for(Component c: p.getComponents()) {

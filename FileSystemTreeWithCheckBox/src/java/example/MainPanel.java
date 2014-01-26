@@ -175,11 +175,17 @@ class FolderSelectionListener implements TreeSelectionListener {
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
 
-        if(!node.isLeaf()) { return; }
+        if(!node.isLeaf()) {
+            return;
+        }
         CheckBoxNode check = (CheckBoxNode)node.getUserObject();
-        if(check==null) { return; }
+        if(check==null) {
+            return;
+        }
         final File parent = check.file;
-        if(!parent.isDirectory()) { return; }
+        if(!parent.isDirectory()) {
+            return;
+        }
         final Status parent_status = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
 
         Task worker = new Task(fileSystemView, parent) {
@@ -333,7 +339,9 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             JTree tree = (JTree)e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if(r==null) { return false; }
+            if(r==null) {
+                return false;
+            }
             Dimension d = getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if(r.contains(me.getX(), me.getY())) {
@@ -392,7 +400,9 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
             }
         }
@@ -405,7 +415,9 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for(int i = listeners.length-2; i>=0; i-=2) {
             if(listeners[i]==CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
+                if(changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
                 ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
             }
         }

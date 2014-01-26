@@ -111,7 +111,9 @@ public class MainPanel extends JPanel {
 //         return h;
 //     }
     private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
-        if(im.allKeys()==null) { return; }
+        if(im.allKeys()==null) {
+            return;
+        }
         ActionMap tmpAm = new ActionMap();
         for(Object actionMapKey:am.allKeys()) {
             tmpAm.put(actionMapKey, am.get(actionMapKey));
@@ -126,7 +128,9 @@ public class MainPanel extends JPanel {
             }
             tmpAm.remove(actionMapKey);
         }
-        if(tmpAm.allKeys()==null) { return; }
+        if(tmpAm.allKeys()==null) {
+            return;
+        }
         for(Object actionMapKey:tmpAm.allKeys()) {
             model.addBinding(new Binding(focusType, actionMapKey.toString(), ""));
         }

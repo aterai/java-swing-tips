@@ -73,7 +73,9 @@ public class MainPanel extends JPanel {
                 table.getCellEditor().stopCellEditing();
             }
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) { return; }
+            if(selection.length == 0) {
+                return;
+            }
             for(int i=selection.length-1;i>=0;i--) {
                 //Test ixsc = model.getTest(selection[i]);
                 model.removeRow(selection[i]);
@@ -92,7 +94,7 @@ public class MainPanel extends JPanel {
         }
         @Override public void show(Component c, int x, int y) {
             int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l!=null && l.length>0);
+            deleteAction.setEnabled(l.length > 0);
             super.show(c, x, y);
         }
     }

@@ -67,33 +67,25 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
 
-    class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label,icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            deleteActionPerformed(evt);
-        }
-    }
-    public void deleteActionPerformed(ActionEvent evt) {
-        int[] selection = table.getSelectedRows();
-        if(selection==null || selection.length<=0) { return; }
-        for(int i=selection.length-1;i>=0;i--) {
-            model.removeRow(table.convertRowIndexToModel(selection[i]));
-        }
-    }
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
+        private final Action deleteAction = new AbstractAction("delete") {
+            @Override public void actionPerformed(ActionEvent e) {
+                int[] selection = table.getSelectedRows();
+                if(selection.length == 0) {
+                    return;
+                }
+                for(int i=selection.length-1;i>=0;i--) {
+                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                }
+            }
+        };
         public TablePopupMenu() {
             super();
-            //add(new FileNameCreateAction("add", null));
-            //add(new ClearAction("clearSelection", null));
-            //addSeparator();
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
             int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l!=null && l.length>0);
+            deleteAction.setEnabled(l.length > 0);
             super.show(c, x, y);
         }
     }

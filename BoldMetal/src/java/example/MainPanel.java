@@ -144,11 +144,9 @@ class TreePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         JTree tree = (JTree)c;
         TreePath[] tsp = tree.getSelectionPaths();
-        if(tsp!=null) {
-            path = tree.getPathForLocation(x, y);
-            if(path!=null && Arrays.asList(tsp).contains(path)) {
-                super.show(c, x, y);
-            }
+        path = tree.getPathForLocation(x, y);
+        if(path!=null && Arrays.asList(tsp).contains(path)) {
+            super.show(c, x, y);
         }
     }
 }

@@ -105,7 +105,9 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
             return insets;
         }
         @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
-            if(screenShot==null) { return; }
+            if(screenShot==null) {
+                return;
+            }
             Graphics2D g2 = (Graphics2D) g;
             g2.drawImage(screenShot, x, y, comp);
             g2.drawImage(makeShadowImage(x, y, w, h), x, y, comp);

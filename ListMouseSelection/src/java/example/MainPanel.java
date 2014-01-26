@@ -59,7 +59,9 @@ public class MainPanel extends JPanel {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 super.updateUI();
-                if(listener==null) { listener = new ClearSelectionListener(); }
+                if(listener==null) {
+                    listener = new ClearSelectionListener();
+                }
                 addMouseListener(listener);
                 addMouseMotionListener(listener);
             }

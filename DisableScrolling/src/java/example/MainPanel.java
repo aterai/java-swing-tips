@@ -89,7 +89,9 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection==null || selection.length<=0) { return; }
+            if(selection.length == 0) {
+                return;
+            }
             for(int i=selection.length-1;i>=0;i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
@@ -108,7 +110,7 @@ public class MainPanel extends JPanel {
         @Override public void show(Component c, int x, int y) {
             createAction.setEnabled(!check.isSelected());
             int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l!=null && l.length>0);
+            deleteAction.setEnabled(l.length > 0);
             super.show(c, x, y);
         }
     }

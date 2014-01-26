@@ -100,7 +100,9 @@ class FishEyeTable extends JTable {
         setRowSelectionAllowed(true);
         setFillsViewportHeight(true);
 
-        if(handler==null) { handler = new FishEyeTableHandler(); }
+        if(handler==null) {
+            handler = new FishEyeTableHandler();
+        }
         addMouseListener(handler);
         addMouseMotionListener(handler);
         getSelectionModel().addListSelectionListener(handler);
@@ -133,10 +135,14 @@ class FishEyeTable extends JTable {
 
     @Override public void doLayout() {
         super.doLayout();
-        Container p = getParent();
-        if(p==null || !(p instanceof JViewport)) { return; }
+        Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
+        if(p==null) {
+            return;
+        }
         int h = ((JViewport)p).getExtentSize().height;
-        if(h==prev_height) { return; }
+        if(h==prev_height) {
+            return;
+        }
         initRowHeigth(h, getSelectedRow());
         prev_height = h;
     }

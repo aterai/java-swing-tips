@@ -58,7 +58,9 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
         this.textArea = textArea;
     }
     @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attrs) throws BadLocationException {
-        if(text==null) { return; }
+        if(text==null) {
+            return;
+        }
         replace(fb, offset, 0, text, attrs);
     }
     @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {

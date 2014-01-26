@@ -47,7 +47,9 @@ public class MainPanel extends JPanel {
     private Action makeShowHideAction() {
         return new AbstractAction("Show/Hide Search Box") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(animator!=null && animator.isRunning()) { return; }
+                if(animator!=null && animator.isRunning()) {
+                    return;
+                }
                 isHidden = controls.getHeight()==0;
                 animator = new Timer(5, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
