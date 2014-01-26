@@ -87,8 +87,6 @@ class CellIcon implements Icon {
     private static final Color ST = new Color(1f,1f,1f,.4f);
     private static final Color SB = new Color(1f,1f,1f,.1f);
 
-    private Color ssc;
-    private Color bgc;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int w = c.getWidth();
         int h = c.getHeight();
@@ -98,8 +96,8 @@ class CellIcon implements Icon {
         g2.setPaint(c.getBackground());
         g2.fillRect(x, y, w, h);
 
-        ssc = TL;
-        bgc = BR;
+        Color ssc = TL;
+        Color bgc = BR;
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             if(m.isSelected() || m.isRollover()) {
@@ -130,9 +128,6 @@ class ToggleButtonBarCellIcon implements Icon {
     private static final Color BR = new Color(0f,0f,0f,.2f);
     private static final Color ST = new Color(1f,1f,1f,.4f);
     private static final Color SB = new Color(1f,1f,1f,.1f);
-
-    private Color ssc;
-    private Color bgc;
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int r = 8;
@@ -175,8 +170,8 @@ class ToggleButtonBarCellIcon implements Icon {
         g2.setPaint(c.getBackground());
         g2.fill(area);
 
-        ssc = TL;
-        bgc = BR;
+        Color ssc = TL;
+        Color bgc = BR;
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             if(m.isSelected() || m.isRollover()) {

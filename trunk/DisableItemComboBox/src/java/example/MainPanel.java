@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         add(combo, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static MyComboBox makeComboBox() {
@@ -43,18 +43,19 @@ public class MainPanel extends JPanel {
         combo.setModel(model);
         return combo;
     }
+
     private Set<Integer> getDisableIndexFromTextField() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         Set<Integer> set = new HashSet<>();
-//         try{
-        while(st.hasMoreTokens()) {
-            set.add(Integer.valueOf(st.nextToken()));
+        try{
+            while(st.hasMoreTokens()) {
+                set.add(Integer.valueOf(st.nextToken().trim()));
+            }
+        }catch(NumberFormatException nfe) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+                                          "Error", JOptionPane.ERROR_MESSAGE);
         }
-//         }catch(NumberFormatException nfe) {
-//             Toolkit.getDefaultToolkit().beep();
-//             JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
-//                                           "Error", JOptionPane.ERROR_MESSAGE);
-//         }
         return set;
     }
 

@@ -100,7 +100,6 @@ class TableRowTransferHandler extends TransferHandler {
     private int addIndex  = -1;
     private int addCount  = 0;
     private final DataFlavor localObjectFlavor;
-    private Object[] transferedObjects = null;
     private JComponent source = null;
     public TableRowTransferHandler() {
         super();
@@ -115,7 +114,7 @@ class TableRowTransferHandler extends TransferHandler {
         for(int i: rows) {
             list.add(model.getDataVector().elementAt(i));
         }
-        transferedObjects = list.toArray();
+        Object[] transferedObjects = list.toArray();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {

@@ -64,7 +64,7 @@ class RandomDissolve extends JComponent implements ActionListener {
     private final Timer animator;
     private final BufferedImage image1;
     private final BufferedImage image2;
-    private BufferedImage srcimg, dstimg;
+    private BufferedImage srcimg;
     private boolean mode = true;
     private int currentStage;
     private int[] src, dst, step;
@@ -73,7 +73,7 @@ class RandomDissolve extends JComponent implements ActionListener {
         super();
         this.image1 = i1;
         this.image2 = i2;
-        this.srcimg = copyImage(mode?image2:image1);
+        this.srcimg = copyImage(mode ? image2 : image1);
         animator = new Timer(10, this);
     }
     public boolean nextStage() {
@@ -105,10 +105,9 @@ class RandomDissolve extends JComponent implements ActionListener {
     private static final int STAGES = 16;
     public void animationStart() {
         currentStage = STAGES;
-        dstimg = copyImage(mode?image1:image2);
-        srcimg = copyImage(mode?image2:image1);
+        srcimg = copyImage(mode ? image2 : image1);
         src    = getData(srcimg);
-        dst    = getData(dstimg);
+        dst    = getData(copyImage(mode ? image1 : image2));
         step   = new int[src.length];
         mode   = !mode;
         Random rnd = new Random();

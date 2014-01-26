@@ -28,12 +28,10 @@ public class MainPanel extends JPanel {
         }
     };
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-    private final JTable fixedTable;
-    private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
-        fixedTable = new JTable(model);
-        table      = new JTable(model);
+        JTable fixedTable = new JTable(model);
+        JTable table      = new JTable(model);
         fixedTable.setSelectionModel(table.getSelectionModel());
 
         for(int i=model.getColumnCount()-1;i>=0;i--) {

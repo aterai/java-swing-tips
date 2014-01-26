@@ -158,7 +158,6 @@ class StarIcon0 implements Icon {
 }
 class StarIcon1 implements Icon {
     private static final int R = 40;
-    private final AffineTransform at;
     private final Shape star;
     public StarIcon1() {
         double agl = 0.0;
@@ -170,7 +169,7 @@ class StarIcon1 implements Icon {
             agl+=add+add;
         }
         p.closePath();
-        at = AffineTransform.getRotateInstance(-Math.PI/2,R,0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,R,0);
         star = new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {
@@ -194,7 +193,6 @@ class StarIcon2 implements Icon {
     private static final int R1 = 20;
     //private static final double R1 = R2*Math.sin(Math.PI/10.0)/Math.cos(Math.PI/5.0); //=15.0;
     private static final int VC = 5; //16;
-    private final AffineTransform at;
     private final Shape star;
     public StarIcon2() {
         double agl = 0.0;
@@ -210,7 +208,7 @@ class StarIcon2 implements Icon {
             }
         }
         p.closePath();
-        at = AffineTransform.getRotateInstance(-Math.PI/2,R2,0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,R2,0);
         star = new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {

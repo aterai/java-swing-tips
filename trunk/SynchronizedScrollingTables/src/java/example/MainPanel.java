@@ -23,12 +23,11 @@ public class MainPanel extends JPanel {
             return modelIndex<2?Integer.class:Object.class;
         }
     };
-    private final JTable leftTable;
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
-        leftTable = makeTable(model);
-        table     = makeTable(model);
+        JTable leftTable = makeTable(model);
+        table = makeTable(model);
 
         table.setAutoCreateRowSorter(true);
         leftTable.setRowSorter(table.getRowSorter());

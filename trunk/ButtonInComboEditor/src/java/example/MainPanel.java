@@ -12,12 +12,11 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private final ImageIcon image1;
     private final ImageIcon image2;
-    private final ImageIcon rss;
     public MainPanel() {
         super(new GridLayout(2,1));
         image1  = new ImageIcon(getClass().getResource("favicon.png"));
         image2  = new ImageIcon(getClass().getResource("16x16.png"));
-        rss     = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
+        ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
 
         JComboBox<URLItem> combo01 = new JComboBox<>(makeTestModel());
         initComboBox(combo01);

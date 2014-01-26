@@ -121,7 +121,6 @@ class StarburstIcon implements Icon {
     private static final int R2 = 24;
     private static final int R1 = 20;
     private static final int VC = 18;
-    private final AffineTransform at;
     private final Shape star;
     public StarburstIcon() {
         double agl = 0.0;
@@ -137,7 +136,7 @@ class StarburstIcon implements Icon {
             }
         }
         p.closePath();
-        at = AffineTransform.getRotateInstance(-Math.PI/2,R2,0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,R2,0);
         star = new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {

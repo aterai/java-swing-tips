@@ -265,7 +265,6 @@ class ReorderbleList extends JList<ListItem> {
 
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    private Object[] transferedObjects = null;
     public ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
@@ -275,7 +274,7 @@ class ListItemTransferHandler extends TransferHandler {
         //System.out.println("createTransferable");
         JList list = (JList) c;
         indices = list.getSelectedIndices();
-        transferedObjects = list.getSelectedValues();
+        Object[] transferedObjects = list.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport support) {
