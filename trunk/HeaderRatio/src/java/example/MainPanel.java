@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -53,14 +54,14 @@ public class MainPanel extends JPanel {
         return panel;
     }
     private void setTableHeaderColumnRaito() {
-        int[] list = getWidthRaitoArray();
+        List<Integer> list = getWidthRaitoArray();
         //System.out.println("a: "+table.getColumnModel().getTotalColumnWidth());
         //System.out.println("b: "+table.getSize().width);
         int total = table.getSize().width; //table.getColumnModel().getTotalColumnWidth();
-        int raito = total/getRaitoTotal(list);
+        double raito = total/(double)getRaitoTotal(list);
         for(int i=0;i<table.getColumnModel().getColumnCount()-1;i++) {
             TableColumn col = table.getColumnModel().getColumn(i);
-            int colwidth = list[i]*raito;
+            int colwidth = (int)(0.5 + list.get(i)*raito);
             //col.setMaxWidth(colwidth);
             col.setPreferredWidth(colwidth);
             total -= colwidth;
@@ -69,19 +70,21 @@ public class MainPanel extends JPanel {
         table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setPreferredWidth(total);
         table.revalidate();
     }
-    private static int getRaitoTotal(int[] list) {
+    private static int getRaitoTotal(List<Integer> list) {
         int w = 0;
         for(int i:list) {
             w += i;
         }
         return w;
     }
-    private int[] getWidthRaitoArray() {
+    private List<Integer> getWidthRaitoArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ":");
-        int[] list = {1,1,1};
-        int i = 0;
-        while(st.hasMoreTokens() && i<list.length) {
-            list[i++] = Integer.valueOf(st.nextToken().trim()).intValue();
+        List<Integer> list = new ArrayList<>();
+        while(st.hasMoreTokens()) {
+            list.add(Integer.valueOf(st.nextToken().trim()));
+        }
+        while(list.size()<columnNames.length) {
+            list.add(1);
         }
         return list;
     }
