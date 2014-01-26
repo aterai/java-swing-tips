@@ -4,12 +4,13 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.Position;
 
 public class MainPanel extends JPanel {
+    private static final Dimension preferredSize = new Dimension(320, 240);
     public MainPanel() {
         super(new BorderLayout());
         String[] columnNames = {"String", "Integer", "Boolean"};
@@ -30,7 +31,6 @@ public class MainPanel extends JPanel {
 
         add(new JScrollPane(table));
     }
-    private static final Dimension preferredSize = new Dimension(320, 240);
     @Override public Dimension getPreferredSize() {
         return preferredSize;
     }
@@ -64,8 +64,9 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     private String prefix;
     private String typedString;
     private long lastTime = 0L;
-    private long timeFactor;
+    private final long timeFactor;
     public TableNextMatchKeyHandler() {
+        super();
         //Long l = (Long)UIManager.get("List.timeFactor");
         timeFactor = 500L; //(l!=null) ? l.longValue() : 1000L;
     }
@@ -115,20 +116,22 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         selectAndScrollNextMatch(src, max, e, prefix, startIndex, startingFromSelection);
     }
     private static void selectAndScrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIndex, boolean startingFromSelection) {
-        if(startIndex < 0 || startIndex >= max) {
+        int start = startIndex;
+        boolean isStartingSelection = startingFromSelection;
+        if(start < 0 || start >= max) {
             if(e.isShiftDown()) {
-                startIndex = max-1;
+                start = max-1;
             }else{
-                startingFromSelection = false;
-                startIndex = 0;
+                isStartingSelection = false;
+                start = 0;
             }
         }
         Position.Bias bias = e.isShiftDown()?Position.Bias.Backward:Position.Bias.Forward;
-        int index = getNextMatch(src, prefix, startIndex, bias);
+        int index = getNextMatch(src, prefix, start, bias);
         if(index >= 0) {
             src.getSelectionModel().setSelectionInterval(index, index);
             src.scrollRectToVisible(src.getCellRect(index, TARGET_COLUMN, true));
-        }else if(startingFromSelection) { // wrap
+        }else if(isStartingSelection) { // wrap
             index = getNextMatch(src, prefix, 0, bias);
             if(index >= 0) {
                 src.getSelectionModel().setSelectionInterval(index, index);
@@ -143,7 +146,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         if(prefix == null || startingRow < 0 || startingRow >= max) {
             throw new IllegalArgumentException();
         }
-        prefix = prefix.toUpperCase();
+        String uprefix = prefix.toUpperCase(Locale.ENGLISH);
 
         // start search from the next/previous element froom the
         // selected element
@@ -152,7 +155,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         do{
             Object value = table.getValueAt(row, TARGET_COLUMN);
             String text = Objects.toString(value, "");
-            if(text.toUpperCase().startsWith(prefix)) {
+            if(text.toUpperCase(Locale.ENGLISH).startsWith(uprefix)) {
                 return row;
             }
             row = (row + increment + max) % max;

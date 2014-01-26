@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         add(makeButtonPanel(), BorderLayout.EAST);
         setPreferredSize(new Dimension(320, 240));
     }
-    public JPanel makeButtonPanel() {
+    private JPanel makeButtonPanel() {
         JPanel p = new JPanel(new GridLayout(0,1,5,5));
         p.add(new JButton(new AbstractAction("<html>depthFirst<br>postorder") {
             @Override public void actionPerformed(ActionEvent ev) {

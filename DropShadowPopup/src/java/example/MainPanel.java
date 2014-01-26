@@ -142,6 +142,7 @@ class ShadowBorder extends AbstractBorder {
     private BufferedImage shadow = null;
 
     public ShadowBorder(int x, int y, JComponent c, Point p) {
+        super();
         this.xoff = x;
         this.yoff = y;
         this.insets = new Insets(0,0,xoff,yoff);

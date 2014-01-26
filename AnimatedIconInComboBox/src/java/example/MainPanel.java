@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 class MainPanel extends JPanel {
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         URL url1 = getClass().getResource("favicon.png");
         URL url2 = getClass().getResource("animated.gif");

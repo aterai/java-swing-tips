@@ -135,8 +135,14 @@ class CardLayoutTabbedPane extends JPanel {
         cardLayout.show(contentsPanel, title);
     }
 }
+
 class TabButton extends JRadioButton {
     private static final String uiClassID = "TabViewButtonUI";
+    private Color textColor = Color.WHITE;
+    private Color pressedTextColor = Color.WHITE.darker();
+    private Color rolloverTextColor = Color.WHITE;
+    private Color rolloverSelectedTextColor = Color.WHITE;
+    private Color selectedTextColor = Color.WHITE;
     @Override public void updateUI() {
         if(UIManager.get(getUIClassID())!=null) {
             setUI((TabViewButtonUI)UIManager.getUI(this));
@@ -154,22 +160,19 @@ class TabButton extends JRadioButton {
         return (TabViewButtonUI)ui;
     }
     public TabButton() {
-        this(null, null);
+        super(null, null);
     }
     public TabButton(Icon icon) {
-        this(null, icon);
+        super(null, icon);
     }
     public TabButton(String text) {
-        this(text, null);
+        super(text, null);
     }
     public TabButton(Action a) {
-        this();
-        super.setAction(a);
-        updateUI();
+        super(a);
     }
     public TabButton(String text, Icon icon) {
         super(text, icon);
-        updateUI();
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
@@ -186,11 +189,6 @@ class TabButton extends JRadioButton {
         }
         super.fireStateChanged();
     };
-    private Color textColor = Color.BLACK;
-    private Color pressedTextColor = Color.BLACK;
-    private Color rolloverTextColor = Color.BLACK;
-    private Color rolloverSelectedTextColor = Color.BLACK;
-    private Color selectedTextColor = Color.BLACK;
     public Color getTextColor() {
         return textColor;
     }
@@ -222,6 +220,7 @@ class TabButton extends JRadioButton {
         selectedTextColor = color;
     }
 }
+
 class TableHeaderTabbedPane extends JPanel {
     protected final CardLayout cardLayout = new CardLayout();
     protected final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
@@ -314,6 +313,7 @@ class TableHeaderTabbedPane extends JPanel {
         }
     }
 }
+
 class CloseTabIcon implements Icon {
     private int width;
     private int height;

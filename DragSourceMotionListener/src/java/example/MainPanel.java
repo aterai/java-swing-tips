@@ -68,11 +68,12 @@ public class MainPanel {
 }
 
 class DragPanel extends JPanel {
-    public DragPanel() {
-        super();
-    }
+//     public DragPanel() {
+//         super();
+//     }
     public JLabel draggingLabel;
 }
+
 class Handler extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         DragPanel p = (DragPanel)e.getSource();
@@ -83,6 +84,7 @@ class Handler extends MouseAdapter {
         }
     }
 }
+
 class LabelTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private final JLabel label = new JLabel() {

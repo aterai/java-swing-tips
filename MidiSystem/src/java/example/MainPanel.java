@@ -11,14 +11,14 @@ import javax.sound.midi.*;
 //import javax.sound.midi.spi.*;
 
 class MainPanel extends JPanel {
+    private static byte END_OF_TRACK = 0x2F;
     private long tickpos = 0;
     private final JButton start;
     private final JButton stop;
-    private final JButton init;
+    private Sequencer sequencer;
     public MainPanel() {
         super(new BorderLayout(5, 5));
         URL url = getClass().getResource("Mozart_toruko_k.mid");
-        final Sequencer sequencer;
         try{
             Sequence s = MidiSystem.getSequence(url);
             sequencer = MidiSystem.getSequencer();
@@ -28,13 +28,12 @@ class MainPanel extends JPanel {
             ex.printStackTrace();
             start = null;
             stop = null;
-            init = null;
             add(new JLabel(ex.toString()));
             return;
         }
         sequencer.addMetaEventListener(new MetaEventListener() {
             @Override public void meta(MetaMessage meta) {
-                if(meta.getType() == 47) {
+                if(meta.getType() == END_OF_TRACK) {
                     tickpos = 0;
                     start.setEnabled(true);
                     stop.setEnabled(false);
@@ -57,7 +56,7 @@ class MainPanel extends JPanel {
                 stop.setEnabled(false);
             }
         });
-        init = new JButton(new AbstractAction("init") {
+        JButton init = new JButton(new AbstractAction("init") {
             @Override public void actionPerformed(ActionEvent ae) {
                 sequencer.stop();
                 tickpos = 0;

@@ -82,13 +82,15 @@ class TableRowTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private Object[] transferedObjects = null;
     public TableRowTransferHandler() {
+        super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         ArrayList<Object> list = new ArrayList<Object>();
-        for(int i: indices = table.getSelectedRows()) {
+        indices = table.getSelectedRows();
+        for(int i: indices) {
             list.add(model.getDataVector().elementAt(i));
         }
         transferedObjects = list.toArray();

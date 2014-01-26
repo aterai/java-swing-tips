@@ -13,8 +13,8 @@ public class MainPanel extends JPanel {
     private final BarFactory barFactory;
     private final JFrame frame;
 
-    private List<String> fh = new ArrayList<>();
-    private JMenuItem noFile = new JMenuItem("なし");
+    private final List<String> fh = new ArrayList<>();
+    private final JMenuItem noFile = new JMenuItem("なし");
     private JMenu fileHistory;
 
     public MainPanel(final JFrame frame) {
@@ -33,7 +33,7 @@ public class MainPanel extends JPanel {
         menupanel.add(createToolbar(), BorderLayout.SOUTH);
         add(menupanel, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
-        setPreferredSize(new Dimension(320,200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private void initHistory() {
@@ -124,7 +124,7 @@ public class MainPanel extends JPanel {
     protected JToolBar createToolbar() {
         return barFactory.createToolbar();
     }
-    protected JMenuBar createMenubar() {
+    private JMenuBar createMenubar() {
         JMenuBar mb = barFactory.createMenubar();
         initHistory();
         return mb;

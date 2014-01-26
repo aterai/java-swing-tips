@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
         add(makeTitlePanel(field1, "Default"));
         add(makeTitlePanel(field2, "FirstCharToUpperCase"));
         setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
@@ -73,9 +73,10 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
         }
     }
     @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+        String str = text;
         if(offset==0 && text!=null && text.length()>0) {
-            text = text.substring(0,1).toUpperCase()+text.substring(1);
+            str = text.substring(0,1).toUpperCase()+text.substring(1);
         }
-        fb.replace(offset, length, text, attrs);
+        fb.replace(offset, length, str, attrs);
     }
 }

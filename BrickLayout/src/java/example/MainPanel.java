@@ -5,14 +5,11 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        add(createBrickLayoutPanel());
-        setPreferredSize(new Dimension(320, 200));
-    }
+public final class MainPanel extends JPanel {
     private static int SIZE = 6;
-    public JComponent createBrickLayoutPanel() {
+    private MainPanel() {
+        super(new BorderLayout());
+
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Brick Layout"));
         GridBagConstraints c = new GridBagConstraints();
@@ -37,9 +34,10 @@ public class MainPanel extends JPanel {
         }
         //</dummy-row>
         //</blockquote>
-        return panel;
-    }
 
+        add(panel);
+        setPreferredSize(new Dimension(320, 240));
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

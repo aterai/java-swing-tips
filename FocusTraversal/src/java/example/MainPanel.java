@@ -132,6 +132,7 @@ public class MainPanel extends JPanel {
 class CustomFocusTraversalPolicy extends FocusTraversalPolicy {
     private final List<? extends Component> order;
     public CustomFocusTraversalPolicy(List<? extends Component> order) {
+        super();
         this.order = order;
     }
     @Override public Component getFirstComponent(Container focusCycleRoot) {

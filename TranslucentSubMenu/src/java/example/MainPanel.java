@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         popup.add(new JMenuItem("Delete"));
         return popup;
     }
-    public JMenuBar createMenubar() {
+    private JMenuBar createMenubar() {
         JMenuBar mb = new JMenuBar();
         String[] menuKeys = {"File", "Edit", "Help"};
         for(String key: menuKeys) {

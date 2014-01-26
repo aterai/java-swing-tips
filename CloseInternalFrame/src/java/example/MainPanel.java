@@ -14,6 +14,10 @@ class MainPanel extends JPanel {
     private final Action closeSelectedFrameAction3;
     private final Action disposeSelectedFrameAction;
     private final Action createNewFrameAction;
+    private int openFrameCount = 0;
+    private int row = 0;
+    private int col = 0;
+
     public MainPanel() {
         super(new BorderLayout());
         closeSelectedFrameAction1 = new AbstractAction() {
@@ -76,7 +80,7 @@ class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected JToolBar createToolBar() {
+    private JToolBar createToolBar() {
         JToolBar toolbar = new JToolBar("toolbar");
         toolbar.setFloatable(false);
         ToolBarButton b = new ToolBarButton(createNewFrameAction);
@@ -103,13 +107,10 @@ class MainPanel extends JPanel {
         return toolbar;
     }
 
-    private static int openFrameCount = 0;
-    private static int row = 0;
-    private static int col = 0;
     class MyInternalFrame extends JInternalFrame implements InternalFrameListener {
         public MyInternalFrame() {
             super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
-            row = row + 1;
+            row += 1;
             setSize(240, 120);
             setLocation(20*row+20*col, 20*row);
             setVisible(true);
@@ -119,7 +120,7 @@ class MainPanel extends JPanel {
                     drect.setLocation(0,0);
                     if(!drect.contains(getBounds())) {
                         row = 0;
-                        col = col + 1;
+                        col += 1;
                     }
                 }
             });
@@ -202,13 +203,9 @@ class ToolBarButton extends JButton {
 }
 
 class CloseIcon implements Icon {
-    private int width;
-    private int height;
     private final Color color;
     public CloseIcon(Color color) {
         this.color = color;
-        width  = 16;
-        height = 16;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.translate(x, y);
@@ -222,9 +219,9 @@ class CloseIcon implements Icon {
         g.translate(-x, -y);
     }
     @Override public int getIconWidth() {
-        return width;
+        return 16;
     }
     @Override public int getIconHeight() {
-        return height;
+        return 16;
     }
 }

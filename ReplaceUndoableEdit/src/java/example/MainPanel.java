@@ -44,6 +44,7 @@ public class MainPanel extends JPanel {
             private final String newValue;
             private int offset;
             public ReplaceUndoableEdit(int offset, int length, String newValue) {
+                super();
                 String txt;
                 try{
                     txt = getText(offset, length);

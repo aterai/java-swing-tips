@@ -99,21 +99,21 @@ class VerticalTitledBorder extends TitledBorder {
     }
     @Override public Insets getBorderInsets(Component c, Insets insets) {
         Border border = getBorder();
-        insets = getBorderInsets(border, c, insets);
+        Insets ins = getBorderInsets(border, c, insets);
         String title = getTitle();
         if(title != null && !title.isEmpty()) {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
-            if(insets.left < size.height) {
-                insets.left = size.height - edge;
+            if(ins.left < size.height) {
+                ins.left = size.height - edge;
             }
-            insets.top += edge + TEXT_SPACING;
-            insets.left += edge + TEXT_SPACING;
-            insets.right += edge + TEXT_SPACING;
-            insets.bottom += edge + TEXT_SPACING;
+            ins.top += edge + TEXT_SPACING;
+            ins.left += edge + TEXT_SPACING;
+            ins.right += edge + TEXT_SPACING;
+            ins.bottom += edge + TEXT_SPACING;
         }
-        return insets;
+        return ins;
     }
 
     //Copied from TitledBorder
@@ -126,7 +126,7 @@ class VerticalTitledBorder extends TitledBorder {
         if(color != null) {
             return color;
         }
-        return (c != null) ? c.getForeground() : null;
+        return c != null ? c.getForeground() : null;
     }
     private JLabel getLabel(Component c) {
         this.label.setText(getTitle());
@@ -137,16 +137,16 @@ class VerticalTitledBorder extends TitledBorder {
         this.label.setBackground(c.getBackground()); //???
         return this.label;
     }
-    private static Insets getBorderInsets(Border border, Component c, Insets insets) {
+    private static Insets getBorderInsets(Border border, Component c, Insets i) {
+        Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
         if(border == null) {
-            insets.set(0, 0, 0, 0);
+            ins.set(0, 0, 0, 0);
         }else if(border instanceof AbstractBorder) {
-            AbstractBorder ab = (AbstractBorder) border;
-            insets = ab.getBorderInsets(c, insets);
+            AbstractBorder ab = (AbstractBorder)border;
+            ins = ab.getBorderInsets(c, i);
         }else{
-            Insets i = border.getBorderInsets(c);
-            insets.set(i.top, i.left, i.bottom, i.right);
+            ins = border.getBorderInsets(c);
         }
-        return insets;
+        return ins;
     }
 }

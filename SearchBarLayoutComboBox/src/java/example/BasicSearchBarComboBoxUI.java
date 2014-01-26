@@ -22,7 +22,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     }
     @Override protected void installListeners() {
         super.installListeners();
-        if((popupMenuListener = createPopupMenuListener()) != null) {
+        popupMenuListener = createPopupMenuListener()
+        if(popupMenuListener != null) {
             comboBox.addPopupMenuListener(popupMenuListener);
         }
     }

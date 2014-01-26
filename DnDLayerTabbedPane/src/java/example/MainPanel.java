@@ -421,6 +421,7 @@ class TabTransferHandler extends TransferHandler {
         setDragImage(null);
     }
     public TabTransferHandler() {
+        super();
         System.out.println("TabTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
         dialog.add(label);
@@ -643,6 +644,7 @@ class ButtonTabComponent extends JPanel {
     }
     private class TabButton extends JButton implements ActionListener {
         public TabButton() {
+            super();
             int size = 17;
             setPreferredSize(new Dimension(size, size));
             setToolTipText("close this tab");

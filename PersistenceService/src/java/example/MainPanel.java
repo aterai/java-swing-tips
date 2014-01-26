@@ -69,6 +69,7 @@ public class MainPanel extends JPanel {
 class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
     private final WindowState windowState;
     public LoadSaveTask(WindowState windowState) {
+        super();
         this.windowState = windowState;
     }
     @Override public WindowAdapter doInBackground() {

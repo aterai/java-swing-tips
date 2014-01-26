@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
         frame.setJMenuBar(createMenubar());
         setPreferredSize(new Dimension(320, 200));
     }
-    public JMenuBar createMenubar() {
+    private JMenuBar createMenubar() {
         JMenuBar mb = new JMenuBar() {
             private final TexturePaint texture = makeCheckerTexture();
             @Override protected void paintComponent(Graphics g) {

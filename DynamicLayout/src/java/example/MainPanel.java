@@ -24,10 +24,15 @@ public class MainPanel extends JPanel {
         });
         add(label);
         add(cbox,  BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
-        setMinimumSize(new Dimension(300, 150));
+//         setPreferredSize(new Dimension(320, 200));
+//         setMinimumSize(new Dimension(300, 150));
     }
-
+    @Override public Dimension getPreferredSize() {
+        return new Dimension(320, 200);
+    }
+    @Override public Dimension getMinimumSize() {
+        return new Dimension(300, 150);
+    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -42,16 +47,16 @@ public class MainPanel extends JPanel {
                IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final JFrame frame = new JFrame("@title@");
-        final int mw = 256;
-        final int mh = 100;
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                int fw = frame.getSize().width;
-                int fh = frame.getSize().height;
-                frame.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
-            }
-        });
+        JFrame frame = new JFrame("@title@");
+//         frame.addComponentListener(new ComponentAdapter() {
+//             private final int mw = 256;
+//             private final int mh = 100;
+//             @Override public void componentResized(ComponentEvent e) {
+//                 int fw = frame.getSize().width;
+//                 int fh = frame.getSize().height;
+//                 frame.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
+//             }
+//         });
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();

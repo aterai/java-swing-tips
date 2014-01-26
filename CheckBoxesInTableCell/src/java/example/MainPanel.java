@@ -92,7 +92,7 @@ class CheckBoxesPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
-    protected void initButtons() {
+    private void initButtons() {
         buttons = new JCheckBox[title.length];
         for(int i=0; i<buttons.length; i++) {
             JCheckBox b = new JCheckBox(title[i]);
@@ -136,6 +136,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Seria
 //         }
 //     };
     public CheckBoxesEditor() {
+        super();
         ActionMap am = getActionMap();
         for(int i=0; i<buttons.length; i++) {
             //buttons[i].addActionListener(al);

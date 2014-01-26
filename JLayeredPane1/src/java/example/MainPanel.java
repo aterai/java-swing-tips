@@ -108,10 +108,6 @@ class MainPanel extends JPanel {
 
     //背景画像を描画する JLayeredPane
     static class BGImageLayeredPane extends JLayeredPane {
-        public BGImageLayeredPane() {
-            super();
-        }
-
         void setImage(Image img) {
             bgImage = img;
         }

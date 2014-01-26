@@ -162,6 +162,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     private final int max;
     private final int itemsPerPage;
     public LoadTask(int max, int itemsPerPage) {
+        super();
         this.max = max;
         this.itemsPerPage = itemsPerPage;
     }

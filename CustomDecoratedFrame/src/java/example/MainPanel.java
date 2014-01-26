@@ -8,22 +8,25 @@ import java.util.Arrays;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        add(new JScrollPane(new JTree()));
-        setPreferredSize(new Dimension(320, 240));
-    }
     private static final int W = 4;
-    private static final Color borderColor = new Color(100,100,100);
-    private SideLabel left, right, top, bottom, topleft, topright, bottomleft, bottomright;
-    private JPanel resizePanel = new JPanel(new BorderLayout()) {
+    private static final Color BORDER_COLOR = new Color(100, 100, 100);
+    private final SideLabel left        = new SideLabel(Side.W);
+    private final SideLabel right       = new SideLabel(Side.E);
+    private final SideLabel top         = new SideLabel(Side.N);
+    private final SideLabel bottom      = new SideLabel(Side.S);
+    private final SideLabel topleft     = new SideLabel(Side.NW);
+    private final SideLabel topright    = new SideLabel(Side.NE);
+    private final SideLabel bottomleft  = new SideLabel(Side.SW);
+    private final SideLabel bottomright = new SideLabel(Side.SE);
+    private final JPanel contentPanel   = new JPanel(new BorderLayout());
+    private final JPanel resizePanel    = new JPanel(new BorderLayout()) {
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g.create();
             int w = getWidth();
             int h = getHeight();
             g2.setPaint(Color.ORANGE);
             g2.fillRect(0,0,w,h);
-            g2.setPaint(borderColor);
+            g2.setPaint(BORDER_COLOR);
             g2.drawRect(0,0,w-1,h-1);
 
             g2.drawLine(0,2,2,0);
@@ -37,8 +40,11 @@ class MainPanel extends JPanel {
             g2.dispose();
         }
     };
-    private JPanel contentPanel = new JPanel(new BorderLayout());
-
+    public MainPanel() {
+        super(new BorderLayout());
+        add(new JScrollPane(new JTree()));
+        setPreferredSize(new Dimension(320, 240));
+    }
     private static JButton makeCloseButton() {
         JButton button = new JButton(new CloseIcon());
         button.setContentAreaFilled(false);
@@ -94,11 +100,7 @@ class MainPanel extends JPanel {
         //title.add(iconify, BorderLayout.WEST);
 
         ResizeWindowListener rwl = new ResizeWindowListener(frame);
-        for(SideLabel l:Arrays.asList(
-            left       = new SideLabel(Side.W),  right       = new SideLabel(Side.E),
-            top        = new SideLabel(Side.N),  bottom      = new SideLabel(Side.S),
-            topleft    = new SideLabel(Side.NW), topright    = new SideLabel(Side.NE),
-            bottomleft = new SideLabel(Side.SW), bottomright = new SideLabel(Side.SE))) {
+        for(SideLabel l:Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
             l.addMouseListener(rwl);
             l.addMouseMotionListener(rwl);
         }
@@ -197,6 +199,7 @@ class ResizeWindowListener extends MouseAdapter {
     private final JFrame frame;
     private Rectangle rect;
     public ResizeWindowListener(JFrame frame) {
+        super();
         this.frame = frame;
         this.rect  = frame.getBounds();
     }
@@ -204,8 +207,11 @@ class ResizeWindowListener extends MouseAdapter {
         rect = frame.getBounds();
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if(rect==null) { return; }
-        int dx = e.getX(), dy = e.getY();
+        if(rect==null) {
+            return;
+        }
+        int dx = e.getX();
+        int dy = e.getY();
         switch(((SideLabel)e.getComponent()).side) {
           case NW:
             rect.y      += dy;
@@ -270,12 +276,6 @@ class DragWindowListener extends MouseAdapter {
 }
 
 class CloseIcon implements Icon {
-    private int width;
-    private int height;
-    public CloseIcon() {
-        width  = 16;
-        height = 16;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.translate(x, y);
         g.setColor(Color.BLACK);
@@ -288,9 +288,9 @@ class CloseIcon implements Icon {
         g.translate(-x, -y);
     }
     @Override public int getIconWidth() {
-        return width;
+        return 16;
     }
     @Override public int getIconHeight() {
-        return height;
+        return 16;
     }
 }

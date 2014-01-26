@@ -56,6 +56,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     private JButton prevButton = null;
     private final JList<String> list;
     public CellButtonsMouseListener(JList<String> list) {
+        super();
         this.list = list;
     }
     @Override public void mouseMoved(MouseEvent e) {

@@ -402,6 +402,7 @@ class DnDTabbedPane extends JTabbedPane {
         private Point location = new Point(0, 0);
         private BufferedImage draggingGhost = null;
         public GhostGlassPane() {
+            super();
             setOpaque(false);
             composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
             // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation

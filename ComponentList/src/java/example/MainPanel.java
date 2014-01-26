@@ -7,6 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private final Box box = Box.createVerticalBox();
+    private final Component glue = Box.createVerticalGlue();
     public MainPanel() {
         super(new BorderLayout());
         box.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
@@ -22,9 +24,7 @@ public class MainPanel extends JPanel {
         addComp(MakeComponentUtil.makeLabel());
         setPreferredSize(new Dimension(320, 240));
     }
-    private final Box box = Box.createVerticalBox();
-    private final Component glue = Box.createVerticalGlue();
-    public void addComp(final JComponent comp) {
+    private void addComp(final JComponent comp) {
         comp.setMaximumSize(new Dimension(Short.MAX_VALUE, comp.getPreferredSize().height));
         box.remove(glue);
         box.add(Box.createVerticalStrut(5));
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         });
     }
 
-    public JToolBar makeToolBar() {
+    private JToolBar makeToolBar() {
         JToolBar bar = new JToolBar();
         bar.add(new AbstractAction("add JLabel") {
             @Override public void actionPerformed(ActionEvent ae) {
@@ -83,6 +83,7 @@ public class MainPanel extends JPanel {
 }
 
 class MakeComponentUtil {
+    private MakeComponentUtil() {}
     public static JComponent makeLabel() {
         JLabel label = new JLabel("Height: 50");
         label.setOpaque(true);

@@ -134,6 +134,7 @@ public class MainPanel extends JPanel {
 class Task extends SwingWorker<String, String> {
     private final int lengthOfTask;
     public Task(int lengthOfTask) {
+        super();
         this.lengthOfTask = lengthOfTask;
     }
     @Override public String doInBackground() {

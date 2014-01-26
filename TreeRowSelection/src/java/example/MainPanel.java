@@ -51,12 +51,12 @@ public class MainPanel extends JPanel {
                 return null;
             }
             private Rectangle getPathBounds(TreePath path, Insets insets, Rectangle bounds) {
-                bounds = treeState.getBounds(path, bounds);
-                if(bounds != null) {
-                    bounds.width = tree.getWidth();
-                    bounds.y += insets.top;
+                Rectangle rect = treeState.getBounds(path, bounds);
+                if(rect != null) {
+                    rect.width = tree.getWidth();
+                    rect.y += insets.top;
                 }
-                return bounds;
+                return rect;
             }
         });
 

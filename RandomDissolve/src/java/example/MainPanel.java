@@ -70,6 +70,7 @@ class RandomDissolve extends JComponent implements ActionListener {
     private int[] src, dst, step;
 
     public RandomDissolve(BufferedImage i1, BufferedImage i2) {
+        super();
         this.image1 = i1;
         this.image2 = i2;
         this.srcimg = copyImage(mode?image2:image1);

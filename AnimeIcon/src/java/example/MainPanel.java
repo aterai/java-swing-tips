@@ -373,8 +373,9 @@ class AnimeIcon4 implements Icon {
         int idx = 0;
         while(!i.isDone()) {
             i.currentSegment(coords);
-            if(idx++ < 8) { // XXX
+            if(idx < 8) { // XXX
                 list.add(new Ellipse2D.Float(coords[0]-r, coords[1]-r, 2*r, 2*r));
+                idx++;
             }
             i.next();
         }

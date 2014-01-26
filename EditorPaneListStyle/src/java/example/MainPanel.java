@@ -9,16 +9,20 @@ import javax.swing.text.html.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(2, 1));
-        add(new JScrollPane(makeEditorPane(null)));
-        add(new JScrollPane(makeEditorPane("bullet.png")));
+        add(new JScrollPane(makeEditorPane(true)));
+        add(new JScrollPane(makeEditorPane(false)));
         setPreferredSize(new Dimension(320, 240));
     }
 
-    public JComponent makeEditorPane(String bullet) {
+    private JComponent makeEditorPane(boolean isDefault) {
         JEditorPane pane = new JEditorPane();
         pane.setContentType("text/html");
         pane.setEditable(false);
-        if(bullet!=null) {
+        String bullet;
+        if(isDefault) {
+            bullet = "Default";
+        }else{
+            bullet = "bullet.png";
             HTMLEditorKit htmlEditorKit = (HTMLEditorKit)pane.getEditorKit();
             StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
             String u = getClass().getResource(bullet).toString();
@@ -32,19 +36,10 @@ public class MainPanel extends JPanel {
             //Pseudo element is not supported in javax.swing.text.html.CSS
             //styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
             //styleSheet.addRule("ul li:before{content: "\u00BB";}");
-        }else{
-            bullet = "Default";
         }
         pane.setText("<html><h2>H2</h2>text<ul><li>list: "+bullet+"</li></ul></html>");
         return pane;
     }
-    public JComponent makeUI() {
-        JPanel p = new JPanel(new GridLayout(2,1));
-        p.add(new JScrollPane(makeEditorPane(null)));
-        p.add(new JScrollPane(makeEditorPane("bullet.png")));
-        return p;
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

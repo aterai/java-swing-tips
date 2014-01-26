@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         UIManager.put("ComboBox.foreground", Color.WHITE);
         UIManager.put("ComboBox.background", Color.BLACK);
@@ -113,14 +113,16 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class ArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(Color.WHITE);
+        int shift = 0;
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             if(m.isPressed()) {
-                y++;
+                shift = 1;
             }else{
                 if(m.isRollover()) {
                     g2.setPaint(Color.WHITE);
@@ -129,11 +131,11 @@ class ArrowIcon implements Icon {
                 }
             }
         }
-        g2.translate(x,y);
-        g2.drawLine( 2, 3, 6, 3 );
-        g2.drawLine( 3, 4, 5, 4 );
-        g2.drawLine( 4, 5, 4, 5 );
-        g2.translate(-x,-y);
+        g2.translate(x, y+shift);
+        g2.drawLine(2, 3, 6, 3);
+        g2.drawLine(3, 4, 5, 4);
+        g2.drawLine(4, 5, 4, 5);
+        g2.translate(-x,-y-shift);
     }
     @Override public int getIconWidth()  {
         return 9;

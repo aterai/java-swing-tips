@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super();
 
         Dimension d = new Dimension(64, 64);
@@ -117,7 +117,7 @@ class CompoundButton extends JButton {
     @Override public Dimension getPreferredSize() {
         return dim;
     }
-    protected void initShape() {
+    private void initShape() {
         if(!getBounds().equals(base)) {
             base = getBounds();
             float ww = getWidth() * 0.5f;

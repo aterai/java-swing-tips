@@ -111,9 +111,9 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      */
     public void addTab(String title, Component component, Icon extraIcon) {
         boolean doPaintCloseIcon = true;
-        Object prop = null;
-        if((prop = ((JComponent) component).getClientProperty("isClosable")) != null) {
-            doPaintCloseIcon = ((Boolean) prop).booleanValue();
+        Object prop = ((JComponent)component).getClientProperty("isClosable");
+        if(prop != null) {
+            doPaintCloseIcon = ((Boolean)prop).booleanValue();
         }
         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
 
@@ -377,9 +377,9 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
                 JTabbedPane tabbedpane = (JTabbedPane) c;
                 int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
                 JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
-                Object prop = null;
-                if((prop = curPanel.getClientProperty("isClosable")) != null) {
-                    doPaintCloseIcon = ((Boolean) prop).booleanValue();
+                Object prop = curPanel.getClientProperty("isClosable");
+                if(prop != null) {
+                    doPaintCloseIcon = ((Boolean)prop).booleanValue();
                 }
 //             }catch(Exception ignored) {
 //                 /*Could probably be a ClassCastException*/
@@ -465,6 +465,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * Creates a new instance of <code>CloseableTabbedPaneUI</code>
          */
         public CloseableWindowsTabbedPaneUI() {
+            super();
         }
 
         /**
@@ -473,6 +474,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * SwingUtilities.TRAILING or SwingUtilities.LEFT)
          */
         public CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
+            super();
             this.horizontalTextPosition = horizontalTextPosition;
         }
 
@@ -536,6 +538,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * Creates a new instance of <code>CloseableTabbedPaneUI</code>
          */
         public CloseableTabbedPaneUI() {
+            super();
         }
 
         /**
@@ -544,6 +547,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * SwingUtilities.TRAILING or SwingUtilities.LEFT)
          */
         public CloseableTabbedPaneUI(int horizontalTextPosition) {
+            super();
             this.horizontalTextPosition = horizontalTextPosition;
         }
 
@@ -608,6 +612,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * Creates a new instance of <code>CloseableMetalTabbedPaneUI</code>
          */
         public CloseableMetalTabbedPaneUI() {
+            super();
         }
 
         /**
@@ -616,6 +621,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * SwingUtilities.TRAILING or SwingUtilities.LEFT)
          */
         public CloseableMetalTabbedPaneUI(int horizontalTextPosition) {
+            super();
             this.horizontalTextPosition = horizontalTextPosition;
         }
 

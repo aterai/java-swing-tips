@@ -53,10 +53,10 @@ public class MainPanel extends JPanel {
                 if(!pointOutsidePrefSize(e.getPoint())) {
                     super.processMouseMotionEvent(e);
                 }else{
-                    e = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
-                                       e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
-                                       e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
-                    super.processMouseEvent(e);
+                    MouseEvent ev = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
+                                                   e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
+                                                   e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
+                    super.processMouseEvent(ev);
                 }
             }
         };

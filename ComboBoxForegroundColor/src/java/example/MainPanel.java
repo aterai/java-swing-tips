@@ -21,6 +21,7 @@ public class MainPanel extends JPanel {
         private final Color selectionBackground = new Color(240,245,250);
         private final JComboBox combo;
         public ComboForegroundRenderer(JComboBox combo) {
+            super();
             this.combo = combo;
         }
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {

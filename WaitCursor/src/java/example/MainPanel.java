@@ -85,6 +85,7 @@ class Task extends SwingWorker<String, Void> {
 
 class LockingGlassPane extends JComponent {
     public LockingGlassPane() {
+        super();
         setOpaque(false);
         super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }

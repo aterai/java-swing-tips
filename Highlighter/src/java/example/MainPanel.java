@@ -51,10 +51,11 @@ public class MainPanel extends JPanel {
             Highlighter hilite = jtc.getHighlighter();
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
-            int pos = 0;
-            while((pos = text.indexOf(pattern, pos)) >= 0) {
-                hilite.addHighlight(pos, pos+pattern.length(), highlightPainter);
-                pos += pattern.length();
+            int pos = text.indexOf(pattern);
+            while(pos >= 0) {
+                int nextp = pos + pattern.length();
+                hilite.addHighlight(pos, nextp, highlightPainter);
+                pos = text.indexOf(pattern, nextp);
             }
         }catch(BadLocationException e) {
             e.printStackTrace();

@@ -70,6 +70,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
     private Rectangle rect = new Rectangle();
     private Timer animator;
     public LightboxGlassPane() {
+        super();
         setOpaque(false);
         super.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         image = new ImageIcon(getClass().getResource("test.png"));

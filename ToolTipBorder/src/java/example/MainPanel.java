@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         JButton button0 = new JButton("ToolTip") {
             public JToolTip createToolTip() {

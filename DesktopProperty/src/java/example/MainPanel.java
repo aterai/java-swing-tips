@@ -8,9 +8,9 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    String[] columnNames = {"Name", "Class", "Value"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames);
-    JTable table = new JTable(model);
+    private final String[] columnNames = {"Name", "Class", "Value"};
+    private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
+    private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
@@ -33,7 +33,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320,240));
         add(new JScrollPane(table));
     }
-    public void initModel() {
+    private void initModel() {
         model.setRowCount(0);
         Toolkit tk = Toolkit.getDefaultToolkit();
         for(String s:(String[])tk.getDesktopProperty("win.propNames")) {

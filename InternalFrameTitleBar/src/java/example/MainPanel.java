@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
-    public JComponent makeUI() {
+    private static JComponent makeUI() {
         final JInternalFrame internal = new JInternalFrame("@title@");
         BasicInternalFrameUI ui = (BasicInternalFrameUI)internal.getUI();
         Component title = ui.getNorthPane();

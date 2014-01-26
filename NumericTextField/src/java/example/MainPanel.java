@@ -106,9 +106,6 @@ class IntegerInputVerifier extends InputVerifier {
 //Validating with a Custom Document
 class IntegerDocument extends PlainDocument {
     int currentValue = 0;
-    public IntegerDocument() {
-        super();
-    }
     public int getValue() {
         return currentValue;
     }

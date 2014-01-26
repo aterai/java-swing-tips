@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
     }
 
     //<blockquote cite="SwingSet2.java">
-    protected JMenu createLookAndFeelMenu() {
+    private JMenu createLookAndFeelMenu() {
         JMenu lafMenu = new JMenu("Look&Feel");
         JMenuItem mi = createLafMenuItem(lafMenu, "Metal", metal);
         mi.setSelected(true); //this is the default l&f

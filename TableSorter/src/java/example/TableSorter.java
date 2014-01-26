@@ -145,6 +145,7 @@ public class TableSorter extends AbstractTableModel {
     }
 
     public TableSorter() {
+        super();
         this.mouseListener = new MouseHandler();
         this.tableModelListener = new TableModelHandler();
     }

@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 200));
     }
-    public JMenuBar createMenubar() {
+    private JMenuBar createMenubar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT,2,2) {
             @Override public Dimension preferredLayoutSize(Container target) {

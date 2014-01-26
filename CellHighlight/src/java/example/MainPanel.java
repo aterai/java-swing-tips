@@ -54,6 +54,7 @@ class HighlightListener extends MouseAdapter {
     private int col = -1;
     private final JTable table;
     public HighlightListener(JTable table) {
+        super();
         this.table = table;
     }
     private final Color highlight1 = new Color(200,200,255);

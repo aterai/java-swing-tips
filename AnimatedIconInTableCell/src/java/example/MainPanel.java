@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 class MainPanel extends JPanel {
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         URL url = getClass().getResource("restore_to_background_color.gif");
         JTable table = new JTable();

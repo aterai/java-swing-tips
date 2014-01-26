@@ -118,11 +118,10 @@ class LeafTreeCellEditor extends DefaultTreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         boolean b = super.isCellEditable(e);
         Object o = tree.getLastSelectedPathComponent();
-        if(b && o!=null && o instanceof TreeNode) {
-            return ((TreeNode)o).isLeaf();
-        }else{
-            return b;
+        if(b && o instanceof TreeNode) {
+            b = ((TreeNode)o).isLeaf();
         }
+        return b;
     }
 }
 
@@ -151,15 +150,20 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         //setText(stringValue);
         JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         //setEnabled(tree.isEnabled());
-        Color bColor, fColor;
+        Color bColor;
+        Color fColor;
         if(isSelected) {
             bColor = renderer.getBackgroundSelectionColor();
             fColor = renderer.getTextSelectionColor();
         }else{
             bColor = renderer.getBackgroundNonSelectionColor();
             fColor = renderer.getTextNonSelectionColor();
-            if(bColor == null) { bColor = renderer.getBackground(); }
-            if(fColor == null) { fColor = renderer.getForeground(); }
+            if(bColor == null) {
+                bColor = renderer.getBackground();
+            }
+            if(fColor == null) {
+                fColor = renderer.getForeground();
+            }
         }
         text.setFont(l.getFont());
         text.setText(l.getText());
@@ -191,15 +195,17 @@ class CellTextArea extends JTextArea {
     //http://www.codeguru.com/java/articles/141.shtml
     @Override public void setText(String str) {
         FontMetrics fm = getFontMetrics(getFont());
-        String line;
-        int maxWidth = 0, lines = 0;
+        int maxWidth = 0;
+        int lines = 0;
         try(BufferedReader br = new BufferedReader(new StringReader(str))) {
+            String line;
             while((line = br.readLine()) != null) {
                 int width = SwingUtilities.computeStringWidth(fm, line);
                 if(maxWidth < width) {
                     maxWidth = width;
                 }
                 lines++;
+                line = br.readLine();
             }
         }catch(IOException ex) {
             ex.printStackTrace();

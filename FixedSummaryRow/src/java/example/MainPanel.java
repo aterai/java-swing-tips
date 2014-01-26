@@ -8,19 +8,14 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        add(new JScrollPane(makeTable()));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    String[] columnNames = {"aaa", "bbb"};
-    Object[][] data = {
+    private final String[] columnNames = {"aaa", "bbb"};
+    private final Object[][] data = {
         {Integer.MIN_VALUE, Integer.MIN_VALUE},
         {1, 1}, {1, 2}, {1, -1}, {1, 3}, {1, 0},
         {1, 5}, {1, 4}, {1, -5}, {1, 0}, {1, 6},
         {Integer.MAX_VALUE, Integer.MAX_VALUE}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return Integer.class; //getValueAt(0, column).getClass();
         }
@@ -28,7 +23,12 @@ public class MainPanel extends JPanel {
             return row>0 && row!=model.getRowCount()-1;
         }
     };
-    public JTable makeTable() {
+    public MainPanel() {
+        super(new BorderLayout());
+        add(new JScrollPane(makeTable()));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private JTable makeTable() {
         final JTable table = new JTable(model);
         final RowFilter<TableModel,Integer> filter = new RowFilter<TableModel,Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {

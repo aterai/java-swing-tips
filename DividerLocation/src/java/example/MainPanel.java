@@ -25,20 +25,6 @@ public class MainPanel extends JPanel {
     private final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                                                  new JScrollPane(new JTable(model)),
                                                  new JScrollPane(new JTree()));
-    public JComponent makeUI() {
-//         JScrollPane s1, s2;
-//         System.out.println(s1.getPreferredSize());
-//         System.out.println(s2.getPreferredSize());
-//         s1.setPreferredSize(new Dimension(320, 100));
-//         s2.setPreferredSize(new Dimension(320, 100));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                sp.setDividerLocation(0.5);
-                //sp.setResizeWeight(0.5);
-            }
-        });
-        return sp;
-    }
     public MainPanel() {
         super(new BorderLayout());
         ActionListener al = new ActionListener() {
@@ -62,8 +48,14 @@ public class MainPanel extends JPanel {
         }
         r0.setSelected(true);
         add(p, BorderLayout.NORTH);
-        add(makeUI());
+        add(sp);
         setPreferredSize(new Dimension(320, 240));
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                sp.setDividerLocation(0.5);
+                //sp.setResizeWeight(0.5);
+            }
+        });
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

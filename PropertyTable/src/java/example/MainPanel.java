@@ -230,6 +230,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
     private Color currentColor;
 
     public ColorEditor() {
+        super();
         //Set up the editor (from the table's point of view),
         //which is a button.
         //This button brings up the color chooser dialog,

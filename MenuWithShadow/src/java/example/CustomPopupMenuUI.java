@@ -94,6 +94,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
     static class ShadowBorder extends AbstractBorder {
         private BufferedImage screenShot = null;
         public ShadowBorder(JComponent c, Point p) {
+            super();
             try{
                 Robot robot = new Robot();
                 Dimension dim = c.getPreferredSize();

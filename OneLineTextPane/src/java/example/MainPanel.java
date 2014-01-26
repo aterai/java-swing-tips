@@ -106,8 +106,10 @@ public class MainPanel extends JPanel {
 
 //@see http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
+    private static final char LB = '\n';
     //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
+    private final static String operands = ".,";
     public SimpleSyntaxDocument() {
         super();
         Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
@@ -117,14 +119,15 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         StyleConstants.setForeground(addStyle("green", normal), Color.GREEN);
         StyleConstants.setForeground(addStyle("blue",  normal), Color.BLUE);
     }
-    @Override public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+    @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
         // @see PlainDocument#insertString(...)
         int length = 0;
-        if(str != null && str.indexOf('\n') >= 0) {
+        String str = text;
+        if(str != null && str.indexOf(LB) >= 0) {
             StringBuilder filtered = new StringBuilder(str);
             int n = filtered.length();
             for(int i = 0; i < n; i++) {
-                if(filtered.charAt(i) == '\n') {
+                if(filtered.charAt(i) == LB) {
                     filtered.setCharAt(i, ' ');
                 }
             }
@@ -158,15 +161,16 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         checkForTokens(content, startOffset, endOffset);
     }
     private void checkForTokens(String content, int startOffset, int endOffset) {
-        while(startOffset <= endOffset) {
-            while(isDelimiter(content.substring(startOffset, startOffset+1))) {
-                if(startOffset < endOffset) {
-                    startOffset++;
+        int index = startOffset;
+        while(index <= endOffset) {
+            while(isDelimiter(content.substring(index, index+1))) {
+                if(index < endOffset) {
+                    index++;
                 }else{
                     return;
                 }
             }
-            startOffset = getOtherToken(content, startOffset, endOffset);
+            index = getOtherToken(content, index, endOffset);
         }
     }
     private int getOtherToken(String content, int startOffset, int endOffset) {
@@ -186,7 +190,6 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         }
         return endOfToken + 1;
     }
-    String operands = ".,";
     protected boolean isDelimiter(String character) {
         return Character.isWhitespace(character.charAt(0)) || operands.indexOf(character)!=-1;
     }

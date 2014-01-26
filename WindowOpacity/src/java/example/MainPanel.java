@@ -10,22 +10,13 @@ import javax.imageio.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private TexturePaint texture;
-    public JComponent makeUI() {
-        final JPanel p = new JPanel() {
-            @Override public void paintComponent(Graphics g) {
-                if(texture!=null) {
-                    Graphics2D g2 = (Graphics2D)g;
-                    g2.setPaint(texture);
-                    g2.fillRect(0, 0, getWidth(), getHeight());
-                }
-                super.paintComponent(g);
-            }
-        };
-        p.setBackground(new Color(.5f,.8f,.5f,.5f));
-        p.add(new JLabel("aaa: "));
-        p.add(new JTextField(10));
-        p.add(new JButton("bbb"));
+    private transient TexturePaint texture;
+    public MainPanel() {
+        super();
+        setBackground(new Color(.5f,.8f,.5f,.5f));
+        add(new JLabel("aaa: "));
+        add(new JTextField(10));
+        add(new JButton("bbb"));
 
         JComboBox<String> combo = new JComboBox<>(new String[] {"Color(.5f,.8f,.5f,.5f)", "ImageTexturePaint", "CheckerTexturePaint"});
 
@@ -37,7 +28,7 @@ class MainPanel extends JPanel {
 //             combo.addPopupMenuListener(new TranslucencyFrameComboBoxPopupMenuListener());
 //         }
         combo.addItemListener(new ItemListener() {
-            private final TexturePaint imageTexture = makeImageTexture();
+            private final TexturePaint imageTexture   = makeImageTexture();
             private final TexturePaint checkerTexture = makeCheckerTexture();
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
@@ -45,28 +36,35 @@ class MainPanel extends JPanel {
                     Object o = cbox.getSelectedItem();
                     if("ImageTexturePaint".equals(o)) {
                         texture = imageTexture;
-                        p.setOpaque(false);
+                        setOpaque(false);
                     }else if("CheckerTexturePaint".equals(o)) {
                         texture = checkerTexture;
-                        p.setOpaque(false);
+                        setOpaque(false);
                     }else{
                         texture = null;
-                        p.setOpaque(true);
+                        setOpaque(true);
                     }
-                    Window w = SwingUtilities.getWindowAncestor(p);
+                    Window w = SwingUtilities.getWindowAncestor(MainPanel.this);
                     if(w instanceof JFrame) { //XXX: JDK 1.7.0 ???
                         //((JFrame)w).getRootPane().repaint();
                         ((JFrame)w).getContentPane().repaint();
                     }else{
-                        p.revalidate();
-                        p.repaint();
+                        revalidate();
+                        repaint();
                     }
                 }
             }
         });
-        p.add(combo);
-        p.setPreferredSize(new Dimension(320, 240));
-        return p;
+        add(combo);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    @Override public void paintComponent(Graphics g) {
+        if(texture!=null) {
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setPaint(texture);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+        super.paintComponent(g);
     }
     private TexturePaint makeImageTexture() {
         BufferedImage bi = null;
@@ -116,7 +114,7 @@ class MainPanel extends JPanel {
             frame.setBackground(new Color(0,0,0,0)); //1.7.0
         //}
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel().makeUI());
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

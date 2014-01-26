@@ -99,6 +99,7 @@ public class MainPanel extends JPanel {
 class ScalingButton extends JButton {
     private final BufferedImage image;
     public ScalingButton(String title, BufferedImage image) {
+        super();
         this.image = image;
         setModel(new DefaultButtonModel());
         init(title, null);
@@ -126,6 +127,7 @@ class NineSliceScalingButton extends JButton {
     private final BufferedImage image;
     private static final int a = 37, b = 36, c = 36, d = 36;
     public NineSliceScalingButton(String title, BufferedImage image) {
+        super();
         this.image = image;
         setModel(new DefaultButtonModel());
         init(title, null);

@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JDesktopPane desktop          = new JDesktopPane();
         JInternalFrame magneticFrame1 = createFrame("Frame");
@@ -105,10 +105,10 @@ class MagneticDesktopManager extends DefaultDesktopManager {
         int w = desktop.getSize().width  - frame.getSize().width  - e;
         int s = desktop.getSize().height - frame.getSize().height - n;
         if(isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
-            x = getX(e, w);
-            y = getY(n, s);
+            super.dragFrame(frame, getX(e, w), getY(n, s));
+        }else{
+            super.dragFrame(frame, x, y);
         }
-        super.dragFrame(frame, x, y);
     }
     private static int getX(int e, int w) {
         return e<w ? isNear(e) ? 0 : e : isNear(w) ? w+e : e;
