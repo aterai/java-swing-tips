@@ -6,8 +6,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         sorter.setTableHeader(table.getTableHeader());
 
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

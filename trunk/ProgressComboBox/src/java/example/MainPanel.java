@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
         });
         add(createPanel(combo, button, "ProgressComboBox: "), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class ProgressCellRenderer extends DefaultListCellRenderer {
@@ -147,14 +147,14 @@ public class MainPanel extends JPanel {
 }
 
 class Task extends SwingWorker<String[], Integer> {
-    private int max = 30;
+    private static final int MAX = 30;
     @Override public String[] doInBackground() {
         int current = 0;
         List<String> list = new ArrayList<>();
-        while(current<=max && !isCancelled()) {
+        while(current<=MAX && !isCancelled()) {
             try{
                 Thread.sleep(50);
-                int iv = 100 * current / max;
+                int iv = 100 * current / MAX;
                 publish(iv);
                 //setProgress(iv);
                 list.add("Test: " + current);
@@ -163,6 +163,6 @@ class Task extends SwingWorker<String[], Integer> {
             }
             current++;
         }
-        return list.toArray(new String[0]);
+        return list.toArray(new String[list.size()]);
     }
 }

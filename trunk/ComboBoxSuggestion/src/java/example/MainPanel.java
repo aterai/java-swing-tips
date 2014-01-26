@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         String[] array = {
             "aaaa", "aaaabbb", "aaaabbbcc", "aaaabbbccddd",
@@ -46,7 +46,7 @@ public class MainPanel extends JPanel {
         box.add(p);
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox(String[] model) {
         return new JComboBox<String>(model);
@@ -139,6 +139,7 @@ public class MainPanel extends JPanel {
 class ComboKeyHandler extends KeyAdapter {
     private final JComboBox<String> comboBox;
     private final List<String> list = new ArrayList<>();
+    private boolean shouldHide = false;
     public ComboKeyHandler(JComboBox<String> combo) {
         super();
         this.comboBox = combo;
@@ -146,14 +147,13 @@ class ComboKeyHandler extends KeyAdapter {
             list.add((String)comboBox.getItemAt(i));
         }
     }
-    private boolean shouldHide = false;
     @Override public void keyTyped(final KeyEvent e) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 String text = ((JTextField)e.getSource()).getText();
                 ComboBoxModel<String> m;
-                if(text.length()==0) {
-                    String[] array = list.toArray(new String[0]);
+                if(text.isEmpty()) {
+                    String[] array = list.toArray(new String[list.size()]);
                     m = new DefaultComboBoxModel<String>(array);
                     setSuggestionModel(comboBox, m, "");
                     comboBox.hidePopup();

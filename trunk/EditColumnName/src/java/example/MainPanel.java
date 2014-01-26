@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         String[] columnNames = {"AAA", "BBB", "CCC"};
@@ -97,14 +97,17 @@ class TablePopupMenu extends JPopupMenu {
     });
 
     private int index = -1;
-    public TablePopupMenu(String[] columnNames) {
+    public TablePopupMenu(String[] arrays) {
         super();
-        this.columnNames = columnNames;
+        columnNames = new String[arrays.length];
+        for(int i=0;i<arrays.length;i++) {
+            columnNames[i] = arrays[i];
+        }
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent event) {}
+            @Override public void ancestorMoved(AncestorEvent e) {}
             @Override public void ancestorRemoved(AncestorEvent e) {}
         });
         add(editItem1);

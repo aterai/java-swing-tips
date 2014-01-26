@@ -165,7 +165,7 @@ class FileTransferHandler extends TransferHandler {
             if(canImport(support)) {
                 //FileTableModel model = (FileTableModel)((JTable)support.getComponent()).getModel();
                 //List<?> list = (List<?>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                //model.setFiles((File[])list.toArray(new File[0]));
+                //model.setFiles((File[])list.toArray(new File[list.size()]));
                 DefaultTableModel model = (DefaultTableModel)((JTable)support.getComponent()).getModel();
                 for(Object o: (List<?>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
                     if(o instanceof File) {
