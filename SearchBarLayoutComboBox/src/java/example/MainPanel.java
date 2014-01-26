@@ -97,10 +97,11 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //         super.setUI(newUI);
 //     }
     @Override public void updateUI() {
-        if(UIManager.get(getUIClassID())!=null) {
-            setUI((SearchBarComboBoxUI)UIManager.getUI(this));
-        }else{
+        super.updateUI();
+        if(UIManager.get(getUIClassID())==null) {
             setUI(new BasicSearchBarComboBoxUI());
+        }else{
+            setUI((SearchBarComboBoxUI)UIManager.getUI(this));
         }
         UIManager.put("ComboBox.font", getFont()); //XXX: ???
         JButton arrowButton = (JButton)getComponent(0);
@@ -113,31 +114,31 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //             SwingUtilities.updateComponentTreeUI((Component)renderer);
 //         }
     }
-    public JSearchBar() {
-        super();
-        setModel(new DefaultComboBoxModel<SearchEngine>());
-        init();
-    }
+//     public JSearchBar() {
+//         super();
+//         setModel(new DefaultComboBoxModel<SearchEngine>());
+//         init();
+//     }
     public JSearchBar(ComboBoxModel<SearchEngine> aModel) {
-        super();
-        setModel(aModel);
-        init();
+        super(aModel);
+        //setModel(aModel);
+        //init();
     }
     public JSearchBar(SearchEngine[] items) {
-        super();
-        setModel(new DefaultComboBoxModel<SearchEngine>(items));
-        init();
+        super(items);
+        //setModel(new DefaultComboBoxModel<SearchEngine>(items));
+        //init();
     }
 //     public JSearchBar(Vector<?> items) {
 //         super();
 //         setModel(new DefaultComboBoxModel(items));
 //         init();
 //     }
-    private void init() {
-        installAncestorListener();
-        //setUIProperty("opaque", true);
-        updateUI();
-    }
+//     private void init() {
+//         installAncestorListener();
+//         //setUIProperty("opaque", true);
+//         updateUI();
+//     }
     @Override protected void processFocusEvent(java.awt.event.FocusEvent e) {
         System.out.println("processFocusEvent");
     }

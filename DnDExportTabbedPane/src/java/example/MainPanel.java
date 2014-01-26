@@ -248,7 +248,7 @@ class DnDTabbedPane extends JTabbedPane {
 
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
-        if(tab!=null && tab instanceof JComponent) {
+        if(tab instanceof JComponent) {
             ((JComponent)tab).scrollRectToVisible(tab.getBounds());
         }
     }

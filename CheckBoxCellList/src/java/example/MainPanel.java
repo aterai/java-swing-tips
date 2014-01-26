@@ -185,10 +185,10 @@ class CheckBoxNode {
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
     private TreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
+        if(leaf && value instanceof DefaultMutableTreeNode) {
             this.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-            if(userObject!=null && userObject instanceof CheckBoxNode) {
+            if(userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode)userObject;
                 this.setText(node.text);
                 this.setSelected(node.selected);
@@ -212,9 +212,9 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         });
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-        if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
+        if(leaf && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-            if(userObject!=null && userObject instanceof CheckBoxNode) {
+            if(userObject instanceof CheckBoxNode) {
                 this.setSelected(((CheckBoxNode)userObject).selected);
             }else{
                 this.setSelected(false);
@@ -227,7 +227,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         return new CheckBoxNode(getText(), isSelected());
     }
     @Override public boolean isCellEditable(EventObject e) {
-        return e != null && e instanceof MouseEvent;
+        return e instanceof MouseEvent;
     }
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();

@@ -114,7 +114,7 @@ class EditableTabbedPane extends JTabbedPane {
             setTitleAt(getSelectedIndex(), editor.getText());
             //java 1.6.0 ---->
             Component c = getTabComponentAt(getSelectedIndex());
-            if(c!=null && c instanceof JComponent) {
+            if(c instanceof JComponent) {
                 ((JComponent)c).revalidate();
             }
             //<----

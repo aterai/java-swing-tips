@@ -76,27 +76,33 @@ class RoundedCornerButton extends JButton {
     protected Shape border;
     protected Shape base;
     public RoundedCornerButton() {
-        this(null, null);
+        super();
     }
     public RoundedCornerButton(Icon icon) {
-        this(null, icon);
+        super(icon);
     }
     public RoundedCornerButton(String text) {
-        this(text, null);
+        super(text);
     }
     public RoundedCornerButton(Action a) {
-        this();
-        setAction(a);
+        super(a);
+        //setAction(a);
     }
     public RoundedCornerButton(String text, Icon icon) {
-        super();
-        setModel(new DefaultButtonModel());
-        init(text, icon);
+        super(text, icon);
+        //setModel(new DefaultButtonModel());
+        //init(text, icon);
+        //setContentAreaFilled(false);
+        //setBackground(new Color(250, 250, 250));
+        //initShape();
+    }
+    @Override public void updateUI() {
+        super.updateUI();
         setContentAreaFilled(false);
+        setFocusPainted(false);
         setBackground(new Color(250, 250, 250));
         initShape();
     }
-
     protected void initShape() {
         if(!getBounds().equals(base)) {
             base = getBounds();
@@ -149,24 +155,22 @@ class RoundedCornerButton extends JButton {
 
 class RoundButton extends RoundedCornerButton {
     public RoundButton() {
-        this(null, null);
+        super();
     }
     public RoundButton(Icon icon) {
-        this(null, icon);
+        super(icon);
     }
     public RoundButton(String text) {
-        this(text, null);
+        super(text);
     }
     public RoundButton(Action a) {
-        this();
-        setAction(a);
+        super(a);
+        //setAction(a);
     }
     public RoundButton(String text, Icon icon) {
-        super();
-        setModel(new DefaultButtonModel());
-        init(text, icon);
-        setFocusPainted(false);
-        initShape();
+        super(text, icon);
+        //setModel(new DefaultButtonModel());
+        //init(text, icon);
     }
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();

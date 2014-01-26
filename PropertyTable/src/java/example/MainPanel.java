@@ -212,7 +212,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
 class ColorRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if(value!=null && value instanceof Color) {
+        if(value instanceof Color) {
             Color color = (Color)value;
             l.setIcon(new ColorIcon(color));
             l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));

@@ -12,7 +12,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private JTree tree = new JTree() {
+    private final JTree tree = new JTree() {
         @Override public void updateUI() {
             super.updateUI();
             setCellRenderer(new ProgressBarRenderer());
@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
                          Enumeration e = root.breadthFirstEnumeration();
                          while(e.hasMoreElements()) {
                              DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                             if(node != root && !model.isLeaf(node)) {
+                             if(!root.equals(node ) && !model.isLeaf(node)) {
                                  executor.execute(new NodeProgressWorker(tree, node));
                              }
                          }
@@ -107,8 +107,8 @@ public class MainPanel extends JPanel {
 }
 
 class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
-    private int sleepDummy = new Random().nextInt(100) + 1;
-    private int lengthOfTask = 120;
+    private final static int lengthOfTask = 120;
+    private final int sleepDummy = new Random().nextInt(100) + 1;
     private final JTree tree;
     private final DefaultTreeModel model;
     private final DefaultMutableTreeNode treeNode;
@@ -139,14 +139,11 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
         //valueForPathChanged(path, str);
     }
     @Override protected void done() {
-        TreeNode n = null;
         try{
-            n = get();
+            TreeNode n = get();
+            tree.expandPath(new TreePath(model.getPathToRoot(n)));
         }catch(InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
-        }
-        if(n!=null) {
-            tree.expandPath(new TreePath(model.getPathToRoot(n)));
         }
     }
 }
@@ -176,23 +173,23 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
         b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        Object o = ((DefaultMutableTreeNode)value).getUserObject();
         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if(o==null || !(o instanceof ProgressObject)) {
-            return c;
+        Object o = ((DefaultMutableTreeNode)value).getUserObject();
+        if(o instanceof ProgressObject) {
+            ProgressObject n = (ProgressObject)o;
+            int i = n.getValue();
+            b.setValue(i);
+
+            FontMetrics metrics = c.getFontMetrics(c.getFont());
+            int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + metrics.stringWidth(n.title);
+            nodeWidth = ww;
+
+            p.removeAll();
+            p.add(c);
+            p.add(i<100 ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
+            c = p;
         }
-        ProgressObject n = (ProgressObject)o;
-        int i = n.getValue();
-        b.setValue(i);
-
-        FontMetrics metrics = c.getFontMetrics(c.getFont());
-        int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + metrics.stringWidth(n.title);
-        nodeWidth = ww;
-
-        p.removeAll();
-        p.add(c);
-        p.add(i<100 ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
-        return p;
+        return c;
     }
 }
 

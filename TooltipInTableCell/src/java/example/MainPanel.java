@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
                         c.doLayout();
                         pt.translate(-r.x, -r.y);
                         Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-                        if(l!=null && l instanceof JLabel) {
+                        if(l instanceof JLabel) {
                             ImageIcon icon = (ImageIcon)((JLabel)l).getIcon();
                             return icon.getDescription();
                         }
@@ -87,9 +87,9 @@ class ListIconRenderer extends JPanel implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAll();
         setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        if(value != null && value instanceof List<?>) {
+        if(value instanceof List<?>) {
             for(Object o: (List<?>) value) {
-                if(o!=null && o instanceof Icon) {
+                if(o instanceof Icon) {
                     Icon icon = (Icon)o;
                     JLabel label = new JLabel(icon);
                     label.setToolTipText(icon.toString());
