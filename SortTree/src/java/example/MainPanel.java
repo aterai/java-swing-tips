@@ -4,12 +4,13 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
+    private static final boolean DEBUG = true;
     private final DefaultMutableTreeNode root = makeTreeRoot();
     private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot()));
     private final TreeNodeComparator tnc = new TreeNodeComparator();
@@ -103,7 +104,6 @@ public class MainPanel extends JPanel {
     }
 
     // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
-    public static final boolean DEBUG = true;
     public void sortTree0(DefaultMutableTreeNode root) {
         for(int i=0;i<root.getChildCount();i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
@@ -211,7 +211,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
+    private class TreeNodeComparator implements Comparator<DefaultMutableTreeNode> { //, Serializable {
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
             compare_count++;
             if(a.isLeaf() && !b.isLeaf()) {

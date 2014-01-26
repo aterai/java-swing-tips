@@ -20,7 +20,8 @@ class MainPanel extends JPanel {
         Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
         ImageReader reader = (ImageReader)readers.next();
         final StringBuilder buf = new StringBuilder();
-        try(ImageInputStream iis = ImageIO.createImageInputStream(getClass().getResourceAsStream("test.jpg"))) {
+        try(InputStream is = getClass().getResourceAsStream("test.jpg");
+            ImageInputStream iis = ImageIO.createImageInputStream(is)) {
             //FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
             reader.setInput(iis, true);
 

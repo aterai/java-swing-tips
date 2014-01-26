@@ -24,17 +24,11 @@ public class MainPanel extends JPanel {
     private final JButton prev  = new JButton("<");
     private final JButton next  = new JButton(">");
     private final JButton last  = new JButton(">|");
-    private final ActionListener jumpActionListener = new ActionListener() {
+    private final Action enterAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            Object c = e.getSource();
-            if(c==first) {
-                currentPageIndex = 1;
-            }else if(c==prev) {
-                currentPageIndex -= 1;
-            }else if(c==next) {
-                currentPageIndex += 1;
-            }else if(c==last) {
-                currentPageIndex = maxPageIndex;
+            int v = Integer.parseInt(field.getText());
+            if(v>0 && v<=maxPageIndex) {
+                currentPageIndex = v;
             }
             initFilterAndButton();
         }
@@ -42,6 +36,11 @@ public class MainPanel extends JPanel {
 
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
+
+    private static final int itemsPerPage = 100;
+    private int maxPageIndex;
+    private int currentPageIndex = 1;
+
     public MainPanel() {
         super(new BorderLayout());
         table.setFillsViewportHeight(true);
@@ -59,16 +58,24 @@ public class MainPanel extends JPanel {
 
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
-        field.getActionMap().put("Enter", new AbstractAction() {
+        field.getActionMap().put("Enter", enterAction);
+
+        ActionListener jumpActionListener = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                int v = Integer.parseInt(field.getText());
-                if(v>0 && v<=maxPageIndex) {
-                    currentPageIndex = v;
+                Object c = e.getSource();
+                if(first.equals(c)) {
+                    currentPageIndex = 1;
+                }else if(prev.equals(c)) {
+                    currentPageIndex -= 1;
+                }else if(next.equals(c)) {
+                    currentPageIndex += 1;
+                }else if(last.equals(c)) {
+                    currentPageIndex = maxPageIndex;
                 }
                 initFilterAndButton();
             }
-        });
-        for(JButton b:Arrays.asList(first, prev, next, last)) {
+        };
+        for(JButton b: Arrays.asList(first, prev, next, last)) {
             b.addActionListener(jumpActionListener);
         }
 
@@ -116,9 +123,6 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private static final int itemsPerPage = 100;
-    private int maxPageIndex;
-    private int currentPageIndex = 1;
     private void initFilterAndButton() {
         sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
