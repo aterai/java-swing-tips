@@ -19,7 +19,8 @@ public class MainPanel extends JPanel implements HierarchyListener {
         progressBar.setOrientation(SwingConstants.VERTICAL);
 
         JProgressBar progressBar0 = new JProgressBar(m);
-        initProgressBar(progressBar0);
+        progressBar0.setOrientation(SwingConstants.VERTICAL);
+        progressBar0.setStringPainted(false);
         progressBar0.setStringPainted(true);
 
         JPanel p = new JPanel();
@@ -67,60 +68,14 @@ public class MainPanel extends JPanel implements HierarchyListener {
         }
     }
     private static JProgressBar makeProgressBar1(BoundedRangeModel model) {
-        JProgressBar progressBar = new JProgressBar(model) {
-            private JLabel label = new JLabel("000/100", SwingConstants.CENTER);
-            private ChangeListener changeListener = null;
-            @Override public void updateUI() {
-                removeAll();
-                if(changeListener!=null) {
-                    removeChangeListener(changeListener);
-                }
-                super.updateUI();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        setLayout(new BorderLayout());
-                        changeListener = new ChangeListener() {
-                            @Override public void stateChanged(ChangeEvent e) {
-                                int iv = (int)(100 * getPercentComplete());
-                                label.setText(String.format("%03d/100", iv));
-                                //label.setText(getString());
-                            }
-                        };
-                        addChangeListener(changeListener);
-                        add(label);
-                        label.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
-                    }
-                });
-            }
-            @Override public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                Insets i = label.getInsets();
-                d.width = label.getPreferredSize().width + i.left + i.right;
-                return d;
-            }
-        };
-        initProgressBar(progressBar);
+        JProgressBar progressBar = new TextLabelProgressBar(model);
+        progressBar.setOrientation(SwingConstants.VERTICAL);
+        progressBar.setStringPainted(false);
         return progressBar;
     }
     private static JComponent makeProgressBar2(BoundedRangeModel model) {
         final JLabel label = new JLabel("000/100");
         label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-        LayerUI<JProgressBar> layerUI = new LayerUI<JProgressBar>() {
-            private final JPanel rubberStamp = new JPanel();
-            @Override public void paint(Graphics g, JComponent c) {
-                super.paint(g, c);
-                Dimension d = label.getPreferredSize();
-                int x = (c.getWidth()  - d.width)  / 2;
-                int y = (c.getHeight() - d.height) / 2;
-                JLayer jlayer = (JLayer)c;
-                JProgressBar progress = (JProgressBar)jlayer.getView();
-                int iv = (int)(100 * progress.getPercentComplete());
-                label.setText(String.format("%03d/100", iv));
-                //label.setText(progress.getString());
-                SwingUtilities.paintComponent(
-                    g, label, rubberStamp, x, y, d.width, d.height);
-            }
-        };
         JProgressBar progressBar = new JProgressBar(model) {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -129,13 +84,9 @@ public class MainPanel extends JPanel implements HierarchyListener {
                 return d;
             }
         };
-        initProgressBar(progressBar);
-        return new JLayer<JProgressBar>(progressBar, layerUI);
-    }
-    private static void initProgressBar(JProgressBar progressBar) {
         progressBar.setOrientation(SwingConstants.VERTICAL);
         progressBar.setStringPainted(false);
-        //progressBar.setForeground(Color.GREEN);
+        return new JLayer<JProgressBar>(progressBar, new ProgressBarLayerUI(label));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -191,5 +142,62 @@ class ProgressListener implements PropertyChangeListener {
             int progress = (Integer)evt.getNewValue();
             progressBar.setValue(progress);
         }
+    }
+}
+
+class TextLabelProgressBar extends JProgressBar {
+    public TextLabelProgressBar(BoundedRangeModel model) {
+        super(model);
+    }
+    private JLabel label = new JLabel("000/100", SwingConstants.CENTER);
+    private ChangeListener changeListener = null;
+    @Override public void updateUI() {
+        removeAll();
+        if(changeListener!=null) {
+            removeChangeListener(changeListener);
+        }
+        super.updateUI();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                setLayout(new BorderLayout());
+                changeListener = new ChangeListener() {
+                    @Override public void stateChanged(ChangeEvent e) {
+                        int iv = (int)(100 * getPercentComplete());
+                        label.setText(String.format("%03d/100", iv));
+                        //label.setText(getString());
+                    }
+                };
+                addChangeListener(changeListener);
+                add(label);
+                label.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
+            }
+        });
+    }
+    @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        Insets i = label.getInsets();
+        d.width = label.getPreferredSize().width + i.left + i.right;
+        return d;
+    }
+}
+
+class ProgressBarLayerUI extends LayerUI<JProgressBar> {
+    private final JPanel rubberStamp = new JPanel();
+    final JLabel label;
+    public ProgressBarLayerUI(JLabel label) {
+        super();
+        this.label = label;
+    }
+    @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        Dimension d = label.getPreferredSize();
+        int x = (c.getWidth()  - d.width)  / 2;
+        int y = (c.getHeight() - d.height) / 2;
+        JLayer jlayer = (JLayer)c;
+        JProgressBar progress = (JProgressBar)jlayer.getView();
+        int iv = (int)(100 * progress.getPercentComplete());
+        label.setText(String.format("%03d/100", iv));
+        //label.setText(progress.getString());
+        SwingUtilities.paintComponent(g, label, rubberStamp, x, y, d.width, d.height);
     }
 }

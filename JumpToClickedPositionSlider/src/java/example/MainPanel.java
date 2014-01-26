@@ -38,66 +38,9 @@ public class MainPanel extends JPanel {
     }
     private static void setSilderUI(JSlider slider) {
         if(slider.getUI() instanceof WindowsSliderUI) {
-            slider.setUI(new WindowsSliderUI(slider) {
-//                 // JSlider question: Position after leftclick - Stack Overflow
-//                 // http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
-//                 protected void scrollDueToClickInTrack(int direction) {
-//                     int value = slider.getValue();
-//                     if(slider.getOrientation() == JSlider.HORIZONTAL) {
-//                         value = this.valueForXPosition(slider.getMousePosition().x);
-//                     }else if(slider.getOrientation() == JSlider.VERTICAL) {
-//                         value = this.valueForYPosition(slider.getMousePosition().y);
-//                     }
-//                     slider.setValue(value);
-//                 }
-                protected TrackListener createTrackListener(JSlider slider) {
-                    return new TrackListener() {
-                        @Override public void mousePressed(MouseEvent e) {
-                            JSlider slider = (JSlider)e.getSource();
-                            switch(slider.getOrientation()) {
-                              case JSlider.VERTICAL:
-                                slider.setValue(valueForYPosition(e.getY()));
-                                break;
-                              case JSlider.HORIZONTAL:
-                                slider.setValue(valueForXPosition(e.getX()));
-                                break;
-                              default:
-                                throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
-                            }
-                            super.mousePressed(e); //isDragging = true;
-                            super.mouseDragged(e);
-                        }
-                        @Override public boolean shouldScroll(int direction) {
-                            return false;
-                        }
-                    };
-                }
-            });
+            slider.setUI(new WindowsJumpToClickedPositionSliderUI(slider));
         }else{
-            slider.setUI(new MetalSliderUI() {
-                protected TrackListener createTrackListener(JSlider slider) {
-                    return new TrackListener() {
-                        @Override public void mousePressed(MouseEvent e) {
-                            JSlider slider = (JSlider)e.getSource();
-                            switch(slider.getOrientation()) {
-                              case JSlider.VERTICAL:
-                                slider.setValue(valueForYPosition(e.getY()));
-                                break;
-                              case JSlider.HORIZONTAL:
-                                slider.setValue(valueForXPosition(e.getX()));
-                                break;
-                              default:
-                                throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
-                            }
-                            super.mousePressed(e); //isDragging = true;
-                            super.mouseDragged(e);
-                        }
-                        @Override public boolean shouldScroll(int direction) {
-                            return false;
-                        }
-                    };
-                }
-            });
+            slider.setUI(new MetalJumpToClickedPositionSliderUI());
         }
 //         slider.setSnapToTicks(false);
 //         slider.setPaintTicks(true);
@@ -129,5 +72,70 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
+    public WindowsJumpToClickedPositionSliderUI(JSlider slider) {
+        super(slider);
+    }
+//     // JSlider question: Position after leftclick - Stack Overflow
+//     // http://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
+//     //TEST:
+//     protected void scrollDueToClickInTrack(int direction) {
+//         int value = slider.getValue();
+//         if(slider.getOrientation() == JSlider.HORIZONTAL) {
+//             value = this.valueForXPosition(slider.getMousePosition().x);
+//         }else if(slider.getOrientation() == JSlider.VERTICAL) {
+//             value = this.valueForYPosition(slider.getMousePosition().y);
+//         }
+//         slider.setValue(value);
+//     }
+    protected TrackListener createTrackListener(JSlider slider) {
+        return new TrackListener() {
+            @Override public void mousePressed(MouseEvent e) {
+                JSlider slider = (JSlider)e.getSource();
+                switch(slider.getOrientation()) {
+                  case JSlider.VERTICAL:
+                    slider.setValue(valueForYPosition(e.getY()));
+                    break;
+                  case JSlider.HORIZONTAL:
+                    slider.setValue(valueForXPosition(e.getX()));
+                    break;
+                  default:
+                    throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                }
+                super.mousePressed(e); //isDragging = true;
+                super.mouseDragged(e);
+            }
+            @Override public boolean shouldScroll(int direction) {
+                return false;
+            }
+        };
+    }
+}
+
+class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
+    protected TrackListener createTrackListener(JSlider slider) {
+        return new TrackListener() {
+            @Override public void mousePressed(MouseEvent e) {
+                JSlider slider = (JSlider)e.getSource();
+                switch(slider.getOrientation()) {
+                  case JSlider.VERTICAL:
+                    slider.setValue(valueForYPosition(e.getY()));
+                    break;
+                  case JSlider.HORIZONTAL:
+                    slider.setValue(valueForXPosition(e.getX()));
+                    break;
+                  default:
+                    throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                }
+                super.mousePressed(e); //isDragging = true;
+                super.mouseDragged(e);
+            }
+            @Override public boolean shouldScroll(int direction) {
+                return false;
+            }
+        };
     }
 }
