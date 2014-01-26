@@ -98,20 +98,11 @@ import javax.swing.table.*;
  */
 
 public class TableSorter extends AbstractTableModel {
-    protected TableModel tableModel;
-
     public static final int DESCENDING = -1;
     public static final int NOT_SORTED = 0;
     public static final int ASCENDING  = 1;
 
     private static Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
-
-    private static class ComparableComparator implements Comparator, Serializable {
-        @SuppressWarnings("unchecked")
-        public int compare(Object o1, Object o2) {
-            return ((Comparable)o1).compareTo(o2);
-        }
-    }
     public static final ComparableComparator COMPARABLE_COMAPRATOR = new ComparableComparator();
     //{
     //    @SuppressWarnings("unchecked")
@@ -119,21 +110,24 @@ public class TableSorter extends AbstractTableModel {
     //        return o1.compareTo(o2);
     //    }
     //};
+
+    protected TableModel tableModel;
+
     public static final ComparableComparator LEXICAL_COMPARATOR = new ComparableComparator() {
         @SuppressWarnings("unchecked")
         public int compare(Object o1, Object o2) {
             return o1.toString().compareTo(o2.toString());
         }
     };
-
     private transient Row[] viewToModel;
     private int[] modelToView;
 
     private JTableHeader tableHeader;
-    private Map<Class, Comparator> columnComparators = new HashMap<Class, Comparator>();
-    private transient List<Directive> sortingColumns = new ArrayList<Directive>();
+    private final Map<Class, Comparator> columnComparators = new HashMap<Class, Comparator>();
+    private final List<Directive> sortingColumns = new ArrayList<Directive>();
     private transient MouseListener mouseListener;
     private transient TableModelListener tableModelListener;
+
     public void readObject() {
         this.mouseListener = new MouseHandler();
         this.tableModelListener = new TableModelHandler();
@@ -204,7 +198,7 @@ public class TableSorter extends AbstractTableModel {
     }
 
     public boolean isSorting() {
-        return sortingColumns.size() != 0;
+        return !sortingColumns.isEmpty();
     }
 
     private Directive getDirective(int column) {
@@ -230,7 +224,7 @@ public class TableSorter extends AbstractTableModel {
 
     public void setSortingStatus(int column, int status) {
         Directive directive = getDirective(column);
-        if(directive != EMPTY_DIRECTIVE) {
+        if(!EMPTY_DIRECTIVE.equals(directive)) {
             sortingColumns.remove(directive);
         }
         if(status != NOT_SORTED) {
@@ -241,7 +235,7 @@ public class TableSorter extends AbstractTableModel {
 
     protected Icon getHeaderRendererIcon(int column, int size) {
         Directive directive = getDirective(column);
-        if(directive == EMPTY_DIRECTIVE) {
+        if(EMPTY_DIRECTIVE.equals(directive)) {
             return null;
         }
         return new Arrow(directive.direction == DESCENDING, size, sortingColumns.indexOf(directive));
@@ -279,7 +273,6 @@ public class TableSorter extends AbstractTableModel {
             for(int row = 0; row < tableModelRowCount; row++) {
                 viewToModel[row] = new Row(row);
             }
-
             if(isSorting()) {
                 Arrays.sort(viewToModel);
             }
@@ -449,7 +442,9 @@ public class TableSorter extends AbstractTableModel {
             TableColumnModel columnModel = h.getColumnModel();
             int viewColumn = columnModel.getColumnIndexAtX(e.getX());
             // ArrayIndexOutOfBoundsException: -1
-            if(viewColumn<0) { return; }
+            if(viewColumn<0) {
+                return;
+            }
             int column = columnModel.getColumn(viewColumn).getModelIndex();
             if(column != -1) {
                 int status = getSortingStatus(column);
@@ -467,10 +462,17 @@ public class TableSorter extends AbstractTableModel {
     }
 }
 
+class ComparableComparator implements Comparator, Serializable {
+    @SuppressWarnings("unchecked")
+    public int compare(Object o1, Object o2) {
+        return ((Comparable)o1).compareTo(o2);
+    }
+}
+
 class Arrow implements Icon {
-    private boolean descending;
-    private int size;
-    private int priority;
+    private final boolean descending;
+    private final int size;
+    private final int priority;
 
     public Arrow(boolean descending, int size, int priority) {
         this.descending = descending;
@@ -484,7 +486,9 @@ class Arrow implements Icon {
         // In a compound sort, make each succesive triangle 20%
         // smaller than the previous one.
         int dx = (int)(size/2d*Math.pow(0.8, priority));
-        int dy, d, shift;
+        int dy;
+        int d;
+        int shift;
 
         if(descending) {
             color2 = color1.darker().darker();
@@ -497,9 +501,9 @@ class Arrow implements Icon {
             dy = -dx;
             d = 0; // Align icon (roughly) with font baseline.
         }
-        y += 5*size/6 + d;
+        int ty = y + 5*size/6 + d;
 
-        g.translate(x, y);
+        g.translate(x, ty);
 
         // Right diagonal.
         g.setColor(color1.darker());
@@ -516,7 +520,7 @@ class Arrow implements Icon {
         g.drawLine(dx, 0, 0, 0);
 
         g.setColor(color2);
-        g.translate(-x, -y);
+        g.translate(-x, -ty);
     }
 
     @Override public int getIconWidth() {

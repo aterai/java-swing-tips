@@ -158,9 +158,13 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
 }
 class SelectedImageFilter extends RGBImageFilter {
     private final float[] filter;
-    public SelectedImageFilter(float[] filter) {
+    public SelectedImageFilter(float[] arrays) {
         super();
-        this.filter = filter;
+        //filter = arrays;
+        filter = new float[arrays.length];
+        for(int i=0;i<arrays.length;i++) {
+            filter[i] = arrays[i];
+        }
         canFilterIndexColorModel = false;
     }
 //     @Override public int filterRGB(int x, int y, int argb) {
