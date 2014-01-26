@@ -49,11 +49,14 @@ public class MainPanel extends JPanel {
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                int itb=0, ilr=0;
+                int itb = 0;
+                int ilr = 0;
                 Insets insets = getInsets();
-                itb+=insets.top+insets.bottom; ilr+=insets.left+insets.right;
+                itb += insets.top+insets.bottom;
+                ilr += insets.left+insets.right;
                 insets = combo.getInsets();
-                itb+=insets.top+insets.bottom; ilr+=insets.left+insets.right;
+                itb += insets.top+insets.bottom;
+                ilr += insets.left+insets.right;
                 int availableWidth = combo.getWidth()-ilr;
                 if(index<0) {
                     //@see BasicComboBoxUI#rectangleForCurrentValue

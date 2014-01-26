@@ -22,7 +22,8 @@ public class MainPanel extends JPanel {
 
         add(new JCheckBox(new AbstractAction("JTree: paint expanded, collapsed Icon") {
             @Override public void actionPerformed(ActionEvent e) {
-                Icon ei, ci;
+                Icon ei;
+                Icon ci;
                 if(((JCheckBox)e.getSource()).isSelected()) {
                     UIDefaults lnfdef = UIManager.getLookAndFeelDefaults();
                     ei = lnfdef.getIcon("Tree.expandedIcon");

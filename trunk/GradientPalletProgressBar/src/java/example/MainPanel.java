@@ -86,7 +86,8 @@ public class MainPanel extends JPanel {
 
 class Task extends SwingWorker<Void,Void> {
     @Override public Void doInBackground() {
-        int current = 0, lengthOfTask = 100;
+        int current = 0;
+        int lengthOfTask = 100;
         while(current<=lengthOfTask && !isCancelled()) {
             try{ // dummy task
                 Thread.sleep(50);

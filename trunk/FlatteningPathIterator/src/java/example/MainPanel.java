@@ -25,10 +25,13 @@ public class MainPanel extends JPanel {
     }
     public static Polygon convertEllipse2Polygon(Ellipse2D e) {
         Rectangle b = e.getBounds();
-        int r1 = b.width/2, r2 = b.height/2;
-        int x0 = b.x + r1,  y0 = b.y + r2;
+        int r1 = b.width/2;
+        int r2 = b.height/2;
+        int x0 = b.x + r1;
+        int y0 = b.y + r2;
         int v  = 60;
-        double a = 0.0, d = 2*Math.PI/v;
+        double a = 0.0;
+        double d = 2*Math.PI/v;
         Polygon polygon = new Polygon();
         for(int i=0; i<v; i++) {
             polygon.addPoint((int)(r1*Math.cos(a)+x0), (int)(r2*Math.sin(a)+y0));

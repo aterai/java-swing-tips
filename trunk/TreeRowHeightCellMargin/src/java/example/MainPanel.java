@@ -86,15 +86,20 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        Color bColor, fColor;
+        Color bColor;
+        Color fColor;
         if(selected) {
             bColor = getBackgroundSelectionColor();
             fColor = getTextSelectionColor();
         }else{
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
-            if(bColor == null) { bColor = getBackground(); }
-            if(fColor == null) { fColor = getForeground(); }
+            if(bColor == null) {
+                bColor = getBackground();
+            }
+            if(fColor == null) {
+                fColor = getForeground();
+            }
         }
         text.setForeground(fColor);
         text.setBackground(bColor);

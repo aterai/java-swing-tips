@@ -80,9 +80,10 @@ class GridPanel extends JPanel implements Scrollable {
 }
 
 class ScrollAction extends AbstractAction {
-    private static Timer scroller;
+    private static double SIZE = 100d;
     private final Point vec;
     private final JScrollPane scrollPane;
+    private Timer scroller;
     public ScrollAction(String name, JScrollPane scrollPane, Point vec) {
         super(name);
         this.scrollPane = scrollPane;
@@ -91,16 +92,15 @@ class ScrollAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         final JViewport vport = scrollPane.getViewport();
         final JComponent v = (JComponent)vport.getView();
-        final int w   = vport.getWidth(),
-                  h   = vport.getHeight(),
-                  sx  = vport.getViewPosition().x,
-                  sy  = vport.getViewPosition().y;
+        final int w  = vport.getWidth();
+        final int h  = vport.getHeight();
+        final int sx = vport.getViewPosition().x;
+        final int sy = vport.getViewPosition().y;
         final Rectangle rect = new Rectangle(w, h);
         if(scroller!=null && scroller.isRunning()) {
             return;
         }
         scroller = new Timer(5, new ActionListener() {
-            double SIZE = 100d;
             int count = (int)SIZE;
             @Override public void actionPerformed(ActionEvent e) {
                 double a = easeInOut(--count/SIZE);
