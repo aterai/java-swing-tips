@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
 
         JButton b = new JButton(new AbstractAction("dummy button") {
             @Override public void actionPerformed(ActionEvent e) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
             }
         });
         b.setMnemonic(KeyEvent.VK_B);

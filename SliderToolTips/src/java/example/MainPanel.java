@@ -38,19 +38,10 @@ public class MainPanel extends JPanel {
         slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
         //slider.setPaintLabels(true);
-        slider.addMouseWheelListener(new MouseWheelListener() {
-            @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSlider source = (JSlider)e.getSource();
-                int intValue = (int)source.getValue()-e.getWheelRotation();
-                BoundedRangeModel model = source.getModel();
-                if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {
-                    source.setValue(intValue);
-                }
-            }
-        });
+        slider.addMouseWheelListener(new SliderMouseWheelListener());
         return slider;
     }
-    private JComponent makeTitledPanel(String title, JComponent c) {
+    private static JComponent makeTitledPanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
@@ -58,55 +49,9 @@ public class MainPanel extends JPanel {
     }
     private static void setSilderUI(JSlider slider) {
         if(slider.getUI() instanceof WindowsSliderUI) {
-            slider.setUI(new WindowsSliderUI(slider) {
-                @Override protected TrackListener createTrackListener(JSlider slider) {
-                    return new TrackListener() {
-                        @Override public void mousePressed(MouseEvent e) {
-                            JSlider slider = (JSlider)e.getSource();
-                            switch(slider.getOrientation()) {
-                              case JSlider.VERTICAL:
-                                slider.setValue(valueForYPosition(e.getY()));
-                                break;
-                              case JSlider.HORIZONTAL:
-                                slider.setValue(valueForXPosition(e.getX()));
-                                break;
-                              default:
-                                throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
-                            }
-                            super.mousePressed(e); //isDragging = true;
-                            super.mouseDragged(e);
-                        }
-                        @Override public boolean shouldScroll(int direction) {
-                            return false;
-                        }
-                    };
-                }
-            });
+            slider.setUI(new WindowsTooltipSliderUI(slider));
         }else{
-            slider.setUI(new MetalSliderUI() {
-                @Override protected TrackListener createTrackListener(JSlider slider) {
-                    return new TrackListener() {
-                        @Override public void mousePressed(MouseEvent e) {
-                            JSlider slider = (JSlider)e.getSource();
-                            switch(slider.getOrientation()) {
-                              case JSlider.VERTICAL:
-                                slider.setValue(valueForYPosition(e.getY()));
-                                break;
-                              case JSlider.HORIZONTAL:
-                                slider.setValue(valueForXPosition(e.getX()));
-                                break;
-                              default:
-                                throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
-                            }
-                            super.mousePressed(e); //isDragging = true;
-                            super.mouseDragged(e);
-                        }
-                        @Override public boolean shouldScroll(int direction) {
-                            return false;
-                        }
-                    };
-                }
-            });
+            slider.setUI(new MetalTooltipSliderUI());
         }
     }
     public static void main(String[] args) {
@@ -129,6 +74,62 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class WindowsTooltipSliderUI extends WindowsSliderUI {
+    public WindowsTooltipSliderUI(JSlider slider) {
+        super(slider);
+    }
+    @Override protected TrackListener createTrackListener(JSlider slider) {
+        return new TrackListener() {
+            @Override public void mousePressed(MouseEvent e) {
+                JSlider slider = (JSlider)e.getSource();
+                switch(slider.getOrientation()) {
+                  case JSlider.VERTICAL:
+                    slider.setValue(valueForYPosition(e.getY()));
+                    break;
+                  case JSlider.HORIZONTAL:
+                    slider.setValue(valueForXPosition(e.getX()));
+                    break;
+                  default:
+                    throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                }
+                super.mousePressed(e); //isDragging = true;
+                super.mouseDragged(e);
+            }
+            @Override public boolean shouldScroll(int direction) {
+                return false;
+            }
+        };
+    }
+}
+
+class MetalTooltipSliderUI extends MetalSliderUI {
+    public MetalTooltipSliderUI() {
+        super();
+    }
+    @Override protected TrackListener createTrackListener(JSlider slider) {
+        return new TrackListener() {
+            @Override public void mousePressed(MouseEvent e) {
+                JSlider slider = (JSlider)e.getSource();
+                switch(slider.getOrientation()) {
+                  case JSlider.VERTICAL:
+                    slider.setValue(valueForYPosition(e.getY()));
+                    break;
+                  case JSlider.HORIZONTAL:
+                    slider.setValue(valueForXPosition(e.getX()));
+                    break;
+                  default:
+                    throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                }
+                super.mousePressed(e); //isDragging = true;
+                super.mouseDragged(e);
+            }
+            @Override public boolean shouldScroll(int direction) {
+                return false;
+            }
+        };
     }
 }
 
@@ -166,5 +167,16 @@ class SliderPopupListener extends MouseAdapter {
     }
     @Override public void mouseReleased(MouseEvent me) {
         toolTip.setVisible(false);
+    }
+}
+
+class SliderMouseWheelListener implements MouseWheelListener {
+    @Override public void mouseWheelMoved(MouseWheelEvent e) {
+        JSlider source = (JSlider)e.getSource();
+        int intValue = (int)source.getValue()-e.getWheelRotation();
+        BoundedRangeModel model = source.getModel();
+        if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {
+            source.setValue(intValue);
+        }
     }
 }

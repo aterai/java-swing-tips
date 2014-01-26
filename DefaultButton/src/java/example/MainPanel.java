@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
         box.add(b2);
         b2.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
             }
         });
         return box;

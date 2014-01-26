@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -46,106 +47,28 @@ public class MainPanel extends JPanel {
         scrollbar.setUnitIncrement(10);
 
         if(scrollbar.getUI() instanceof WindowsScrollBarUI) {
-            scrollbar.setUI(new WindowsScrollBarUI() {
-                @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-                    super.paintTrack(g, c, trackBounds);
-
-                    Rectangle rect = textArea.getBounds();
-                    double sy = trackBounds.getHeight() / rect.getHeight();
-                    AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
-                    Highlighter highlighter = textArea.getHighlighter();
-                    g.setColor(Color.YELLOW);
-                    try{
-                        for(Highlighter.Highlight hh: highlighter.getHighlights()) {
-                            Rectangle r = textArea.modelToView(hh.getStartOffset());
-                            Rectangle s = at.createTransformedShape(r).getBounds();
-                            int h = 2; //Math.max(2, s.height-2);
-                            g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
-                        }
-                    }catch(BadLocationException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
         }else{
-            scrollbar.setUI(new MetalScrollBarUI() {
-                @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-                    super.paintTrack(g, c, trackBounds);
-
-                    Rectangle rect = textArea.getBounds();
-                    double sy = trackBounds.getHeight() / rect.getHeight();
-                    AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
-                    Highlighter highlighter = textArea.getHighlighter();
-                    g.setColor(Color.YELLOW);
-                    try{
-                        for(Highlighter.Highlight hh: highlighter.getHighlights()) {
-                            Rectangle r = textArea.modelToView(hh.getStartOffset());
-                            Rectangle s = at.createTransformedShape(r).getBounds();
-                            int h = 2; //Math.max(2, s.height-2);
-                            g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
-                        }
-                    }catch(BadLocationException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            scrollbar.setUI(new MetalHighlightScrollBarUI(textArea));
         }
 
-        JLabel label = new JLabel(new Icon() {
-            private final Color THUMB_COLOR = new Color(0,0,255,50);
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Rectangle rect   = textArea.getBounds();
-                Dimension sbSize = scrollbar.getSize();
-                Insets sbInsets  = scrollbar.getInsets();
-                double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
-                AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
-                Highlighter highlighter = textArea.getHighlighter();
-
-                g.setColor(Color.RED);
-                try{
-                    for(Highlighter.Highlight hh: highlighter.getHighlights()) {
-                        Rectangle r = textArea.modelToView(hh.getStartOffset());
-                        Rectangle s = at.createTransformedShape(r).getBounds();
-                        int h = 2; //Math.max(2, s.height-2);
-                        g.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
-                    }
-                }catch(BadLocationException e) {
-                    e.printStackTrace();
-                }
-
-                //paint Thumb
-                JViewport vport = scroll.getViewport();
-                Rectangle vrect = c.getBounds();
-                vrect.y = vport.getViewPosition().y;
-                g.setColor(THUMB_COLOR);
-                Rectangle rr = at.createTransformedShape(vrect).getBounds();
-                g.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
-            }
-            @Override public int getIconWidth() {
-                return 4;
-            }
-            @Override public int getIconHeight() {
-                return scrollbar.getHeight();
-            }
-        });
-
         scroll.setVerticalScrollBar(scrollbar);
+        scroll.setRowHeaderView(new JLabel(new HighlightIcon(textArea, scrollbar)));
+
         /*
-        // Fixed Versions: 7 (b134)
-        scroll.setRowHeaderView(label);
-        /*/
         // Bug ID: JDK-6826074 JScrollPane does not revalidate the component hierarchy after scrolling
         // http://bugs.sun.com/view_bug.do?bug_id=6826074
         // Affected Versions: 6u12,6u16,7
+        // Fixed Versions: 7 (b134)
         JViewport vp = new JViewport() {
             @Override public void setViewPosition(Point p) {
                 super.setViewPosition(p);
                 revalidate();
             }
         };
-        vp.setView(label);
+        vp.setView(new JLabel(new HighlightIcon(textArea, scrollbar)));
         scroll.setRowHeader(vp);
-        //*/
+        */
         add(scroll);
 
         Box box = Box.createHorizontalBox();
@@ -205,5 +128,102 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class HighlightIcon implements Icon {
+    private static final Color THUMB_COLOR = new Color(0,0,255,50);
+    private final JTextComponent textArea;
+    private final JScrollBar scrollbar;
+    public HighlightIcon(JTextComponent textArea, JScrollBar scrollbar) {
+        this.textArea  = textArea;
+        this.scrollbar = scrollbar;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        Rectangle rect   = textArea.getBounds();
+        Dimension sbSize = scrollbar.getSize();
+        Insets sbInsets  = scrollbar.getInsets();
+        double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
+        AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+        Highlighter highlighter = textArea.getHighlighter();
+
+        //paint Highlight
+        g.setColor(Color.RED);
+        try{
+            for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+                Rectangle r = textArea.modelToView(hh.getStartOffset());
+                Rectangle s = at.createTransformedShape(r).getBounds();
+                int h = 2; //Math.max(2, s.height-2);
+                g.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
+            }
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
+
+        //paint Thumb
+        Rectangle crect = c.getBounds();
+        JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+        crect.y = vport.getViewPosition().y;
+        g.setColor(THUMB_COLOR);
+        Rectangle rr = at.createTransformedShape(crect).getBounds();
+        g.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
+    }
+    @Override public int getIconWidth() {
+        return 4;
+    }
+    @Override public int getIconHeight() {
+        return scrollbar.getHeight();
+    }
+}
+
+class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
+    private final JTextComponent textArea;
+    public WindowsHighlightScrollBarUI(JTextComponent textArea) {
+        this.textArea = textArea;
+    }
+    @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+        super.paintTrack(g, c, trackBounds);
+
+        Rectangle rect = textArea.getBounds();
+        double sy = trackBounds.getHeight() / rect.getHeight();
+        AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+        Highlighter highlighter = textArea.getHighlighter();
+        g.setColor(Color.YELLOW);
+        try{
+            for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+                Rectangle r = textArea.modelToView(hh.getStartOffset());
+                Rectangle s = at.createTransformedShape(r).getBounds();
+                int h = 2; //Math.max(2, s.height-2);
+                g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
+            }
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class MetalHighlightScrollBarUI extends MetalScrollBarUI {
+    private final JTextComponent textArea;
+    public MetalHighlightScrollBarUI(JTextComponent textArea) {
+        this.textArea = textArea;
+    }
+    @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+        super.paintTrack(g, c, trackBounds);
+
+        Rectangle rect = textArea.getBounds();
+        double sy = trackBounds.getHeight() / rect.getHeight();
+        AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+        Highlighter highlighter = textArea.getHighlighter();
+        g.setColor(Color.YELLOW);
+        try{
+            for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+                Rectangle r = textArea.modelToView(hh.getStartOffset());
+                Rectangle s = at.createTransformedShape(r).getBounds();
+                int h = 2; //Math.max(2, s.height-2);
+                g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
+            }
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 }

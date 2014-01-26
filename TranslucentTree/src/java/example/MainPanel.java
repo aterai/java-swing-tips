@@ -11,39 +11,8 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,2,2,2));
-        JTree tree1 = new JTree() {
-            @Override public void updateUI() {
-                super.updateUI();
-                setCellRenderer(new TranslucentTreeCellRenderer());
-                setOpaque(false);
-                setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-            }
-        };
-        JTree tree2 = new JTree() {
-            //http://terai.xrea.jp/Swing/TreeRowSelection.html
-            private final Color SELC = new Color(100,100,255,100);
-            @Override public void paintComponent(Graphics g) {
-                if(getSelectionCount()>0) {
-                    for(int i: getSelectionRows()) {
-                        Rectangle r = getRowBounds(i);
-                        g.setColor(SELC);
-                        g.fillRect(0, r.y, getWidth(), r.height);
-                    }
-                }
-                super.paintComponent(g);
-                if(getLeadSelectionPath()!=null) {
-                    Rectangle r = getRowBounds(getRowForPath(getLeadSelectionPath()));
-                    g.setColor(SELC.darker());
-                    g.drawRect(0, r.y, getWidth()-1, r.height-1);
-                }
-            }
-            @Override public void updateUI() {
-                super.updateUI();
-                setCellRenderer(new TransparentTreeCellRenderer());
-                setOpaque(false);
-                setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-            }
-        };
+        JTree tree1 = new TranslucentTree();
+        JTree tree2 = new TransparentTree();
 
 //         //NimbusLookAndFeel(SynthLookAndFeel) JDK 1.7.0
 //         UIDefaults d = new UIDefaults();
@@ -63,22 +32,6 @@ public class MainPanel extends JPanel {
         scroll.getViewport().setOpaque(false);
         return scroll;
     }
-    private static TexturePaint makeCheckerTexture() {
-        int cs = 6;
-        int sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = img.createGraphics();
-        g2.setPaint(new Color(220,220,220));
-        g2.fillRect(0,0,sz,sz);
-        g2.setPaint(new Color(200,200,200,200));
-        for(int i=0;i*cs<sz;i++) {
-            for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
-            }
-        }
-        g2.dispose();
-        return new TexturePaint(img, new Rectangle(0,0,sz,sz));
-    }
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -88,22 +41,7 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@") {
             @Override protected JRootPane createRootPane() {
-                //http://terai.xrea.jp/Swing/RootPaneBackground.html
-                JRootPane rp = new JRootPane() {
-                    private final TexturePaint texture = makeCheckerTexture();
-                    @Override protected void paintComponent(Graphics g) {
-                        super.paintComponent(g);
-                        Graphics2D g2 = (Graphics2D)g.create();
-                        g2.setPaint(texture);
-                        g2.fillRect(0, 0, getWidth(), getHeight());
-                        g2.dispose();
-                    }
-                    @Override public void updateUI() {
-                        super.updateUI();
-                        setOpaque(false);
-                    }
-                };
-                return rp;
+                return new TransparentRootPane();
             }
         };
         ((JComponent)frame.getContentPane()).setOpaque(false);
@@ -119,6 +57,73 @@ public class MainPanel extends JPanel {
                 createAndShowGUI();
             }
         });
+    }
+}
+
+class TranslucentTree extends JTree {
+    @Override public void updateUI() {
+        super.updateUI();
+        setCellRenderer(new TranslucentTreeCellRenderer());
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+    }
+}
+
+class TransparentTree extends JTree {
+    //http://terai.xrea.jp/Swing/TreeRowSelection.html
+    private final Color SELC = new Color(100,100,255,100);
+    @Override public void paintComponent(Graphics g) {
+        if(getSelectionCount()>0) {
+            for(int i: getSelectionRows()) {
+                Rectangle r = getRowBounds(i);
+                g.setColor(SELC);
+                g.fillRect(0, r.y, getWidth(), r.height);
+            }
+        }
+        super.paintComponent(g);
+        if(getLeadSelectionPath()!=null) {
+            Rectangle r = getRowBounds(getRowForPath(getLeadSelectionPath()));
+            g.setColor(SELC.darker());
+            g.drawRect(0, r.y, getWidth()-1, r.height-1);
+        }
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        setCellRenderer(new TransparentTreeCellRenderer());
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+    }
+}
+
+//http://terai.xrea.jp/Swing/RootPaneBackground.html
+class TransparentRootPane extends JRootPane {
+    @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(texture);
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+    }
+    private final TexturePaint texture = makeCheckerTexture();
+    private static TexturePaint makeCheckerTexture() {
+        int cs = 6;
+        int sz = cs*cs;
+        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = img.createGraphics();
+        g2.setPaint(new Color(220,220,220));
+        g2.fillRect(0,0,sz,sz);
+        g2.setPaint(new Color(200,200,200,200));
+        for(int i=0;i*cs<sz;i++) {
+            for(int j=0;j*cs<sz;j++) {
+                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
+            }
+        }
+        g2.dispose();
+        return new TexturePaint(img, new Rectangle(0,0,sz,sz));
     }
 }
 

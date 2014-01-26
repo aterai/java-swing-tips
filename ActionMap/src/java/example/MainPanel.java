@@ -25,12 +25,12 @@ public class MainPanel extends JPanel {
             @Override public void copy() {
                 //System.out.println("copy");
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
-                //java.awt.Toolkit.getDefaultToolkit().beep();
+                //Toolkit.getDefaultToolkit().beep();
             }
             @Override public void cut() {
                 //System.out.println("cut");
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
-                //java.awt.Toolkit.getDefaultToolkit().beep();
+                //Toolkit.getDefaultToolkit().beep();
             }
         };
         am = pf2.getActionMap();
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent ae) {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        java.awt.Toolkit.getDefaultToolkit().beep();
+                        Toolkit.getDefaultToolkit().beep();
                         JOptionPane.showMessageDialog(
                             MainPanel.this, "paste is disabled", "title",
                             JOptionPane.ERROR_MESSAGE);

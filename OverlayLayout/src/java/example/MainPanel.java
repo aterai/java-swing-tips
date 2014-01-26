@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         b1.setBorder(BorderFactory.createEmptyBorder(i.top,i.left,i.bottom,4));
         b1.setAction(new AbstractAction("OverlayLayoutButton") {
             @Override public void actionPerformed(ActionEvent e) {
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
             }
         });
         JButton b2 = new JButton();

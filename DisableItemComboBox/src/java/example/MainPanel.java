@@ -45,16 +45,16 @@ public class MainPanel extends JPanel {
     }
     private Set<Integer> getDisableIndexFromTextField() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
-        HashSet<Integer> set = new HashSet<Integer>();
-        try{
-            while(st.hasMoreTokens()) {
-                set.add(Integer.valueOf(st.nextToken()));
-            }
-        }catch(NumberFormatException nfe) {
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
-                                          "Error", JOptionPane.ERROR_MESSAGE);
+        Set<Integer> set = new HashSet<>();
+//         try{
+        while(st.hasMoreTokens()) {
+            set.add(Integer.valueOf(st.nextToken()));
         }
+//         }catch(NumberFormatException nfe) {
+//             Toolkit.getDefaultToolkit().beep();
+//             JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+//                                           "Error", JOptionPane.ERROR_MESSAGE);
+//         }
         return set;
     }
 

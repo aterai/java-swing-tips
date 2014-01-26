@@ -164,7 +164,7 @@ public class MainPanel extends JPanel {
                 File file = fileChooser.getSelectedFile();
                 if(file==null || !file.isDirectory()) {
                     Object[] obj = {"Please select directory."};
-                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    Toolkit.getDefaultToolkit().beep();
                     JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -174,7 +174,7 @@ public class MainPanel extends JPanel {
                 return;
             }else{
                 Object[] obj = {"Error."};
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
                 return;
             }

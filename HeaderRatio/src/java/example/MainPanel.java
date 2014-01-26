@@ -80,14 +80,8 @@ public class MainPanel extends JPanel {
         StringTokenizer st = new StringTokenizer(field.getText(), ":");
         int[] list = {1,1,1};
         int i = 0;
-        try{
-            while(st.hasMoreTokens() && i<list.length) {
-                list[i++] = Integer.valueOf(st.nextToken().trim()).intValue();
-            }
-        }catch(final NumberFormatException nfe) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
-                                          "Error", JOptionPane.ERROR_MESSAGE);
+        while(st.hasMoreTokens() && i<list.length) {
+            list[i++] = Integer.valueOf(st.nextToken().trim()).intValue();
         }
         return list;
     }

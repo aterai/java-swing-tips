@@ -8,17 +8,11 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static enum Vertical {
-        TOP, CENTER, BOTTOM;
-    }
-    private static enum Horizontal {
-        LEFT, CENTER, RIGHT, LEADING, TRAILING;
-    }
-    private final JComboBox<Vertical> verticalAlignmentChoices        = new JComboBox<>(Vertical.values());
-    private final JComboBox<Vertical> verticalTextPositionChoices     = new JComboBox<>(Vertical.values());
-    private final JComboBox<Horizontal> horizontalAlignmentChoices    = new JComboBox<>(Horizontal.values());
-    private final JComboBox<Horizontal> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
-    private final JLabel label   = new JLabel("Test Test", new StarburstIcon(), SwingConstants.CENTER);
+    private final JComboBox<? extends Enum> verticalAlignmentChoices      = new JComboBox<>(Vertical.values());
+    private final JComboBox<? extends Enum> verticalTextPositionChoices   = new JComboBox<>(Vertical.values());
+    private final JComboBox<? extends Enum> horizontalAlignmentChoices    = new JComboBox<>(Horizontal.values());
+    private final JComboBox<? extends Enum> horizontalTextPositionChoices = new JComboBox<>(Horizontal.values());
+    private final JLabel label = new JLabel("Test Test", new StarburstIcon(), SwingConstants.CENTER);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -34,7 +28,15 @@ public class MainPanel extends JPanel {
         ItemListener il = new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
-                    initTitleBorder();
+                    Vertical v1 = (Vertical)verticalAlignmentChoices.getSelectedItem();
+                    label.setVerticalAlignment(v1.alignment);
+                    Vertical v2 = (Vertical)verticalTextPositionChoices.getSelectedItem();
+                    label.setVerticalTextPosition(v2.alignment);
+                    Horizontal h1 = (Horizontal)horizontalAlignmentChoices.getSelectedItem();
+                    label.setHorizontalAlignment(h1.alignment);
+                    Horizontal h2 = (Horizontal)horizontalTextPositionChoices.getSelectedItem();
+                    label.setHorizontalTextPosition(h2.alignment);
+                    label.repaint();
                 }
             }
         };
@@ -70,34 +72,6 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initTitleBorder() {
-        switch((Vertical)verticalAlignmentChoices.getSelectedItem()) {
-          case TOP:    label.setVerticalAlignment(SwingConstants.TOP);    break;
-          case CENTER: label.setVerticalAlignment(SwingConstants.CENTER); break;
-          case BOTTOM: label.setVerticalAlignment(SwingConstants.BOTTOM); break;
-        }
-        switch((Vertical)verticalTextPositionChoices.getSelectedItem()) {
-          case TOP:    label.setVerticalTextPosition(SwingConstants.TOP);    break;
-          case CENTER: label.setVerticalTextPosition(SwingConstants.CENTER); break;
-          case BOTTOM: label.setVerticalTextPosition(SwingConstants.BOTTOM); break;
-        }
-        switch((Horizontal)horizontalAlignmentChoices.getSelectedItem()) {
-          case LEFT:     label.setHorizontalAlignment(SwingConstants.LEFT);     break;
-          case CENTER:   label.setHorizontalAlignment(SwingConstants.CENTER);   break;
-          case RIGHT:    label.setHorizontalAlignment(SwingConstants.RIGHT);    break;
-          case LEADING:  label.setHorizontalAlignment(SwingConstants.LEADING);  break;
-          case TRAILING: label.setHorizontalAlignment(SwingConstants.TRAILING); break;
-        }
-        switch((Horizontal)horizontalTextPositionChoices.getSelectedItem()) {
-          case LEFT:     label.setHorizontalTextPosition(SwingConstants.LEFT);     break;
-          case CENTER:   label.setHorizontalTextPosition(SwingConstants.CENTER);   break;
-          case RIGHT:    label.setHorizontalTextPosition(SwingConstants.RIGHT);    break;
-          case LEADING:  label.setHorizontalTextPosition(SwingConstants.LEADING);  break;
-          case TRAILING: label.setHorizontalTextPosition(SwingConstants.TRAILING); break;
-        }
-        label.repaint();
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -120,6 +94,29 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum Vertical {
+    TOP(SwingConstants.TOP),
+    CENTER(SwingConstants.CENTER),
+    BOTTOM(SwingConstants.BOTTOM);
+    public final int alignment;
+    private Vertical(int alignment) {
+        this.alignment = alignment;
+    }
+}
+
+enum Horizontal {
+    LEFT(SwingConstants.LEFT),
+    CENTER(SwingConstants.CENTER),
+    RIGHT(SwingConstants.RIGHT),
+    LEADING(SwingConstants.LEADING),
+    TRAILING(SwingConstants.TRAILING);
+    public final int alignment;
+    private Horizontal(int alignment) {
+        this.alignment = alignment;
+    }
+}
+
 class StarburstIcon implements Icon {
     private static final int R2 = 24;
     private static final int R1 = 20;

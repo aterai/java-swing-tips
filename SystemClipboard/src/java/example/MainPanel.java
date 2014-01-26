@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
                     Transferable t = (cs==null)?Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
                                                :cs.getContents();
                     if(t==null) {
-                        java.awt.Toolkit.getDefaultToolkit().beep();
+                        Toolkit.getDefaultToolkit().beep();
                         return;
                     }
                     String str = "";

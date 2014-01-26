@@ -3,33 +3,19 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-//import java.awt.event.*;
 import javax.swing.*;
-//import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    private final JDesktopPane desktop          = new JDesktopPane();
-    private final JInternalFrame magneticFrame1 = createFrame("Frame");
-    private final JInternalFrame magneticFrame2 = createFrame("Frame");
     public MainPanel() {
         super(new BorderLayout());
+        JDesktopPane desktop          = new JDesktopPane();
+        JInternalFrame magneticFrame1 = createFrame("Frame");
+        JInternalFrame magneticFrame2 = createFrame("Frame");
+
         desktop.setBackground(Color.GRAY.brighter());
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-        desktop.setDesktopManager(new DefaultDesktopManager() {
-            @Override public void dragFrame(JComponent frame, int x, int y) {
-                int e = x; int n = y;
-                int w = desktop.getSize().width -frame.getSize().width -e;
-                int s = desktop.getSize().height-frame.getSize().height-n;
-                if(isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
-                    x = e<w ? isNear(e)?0:e : isNear(w)?w+e:e;
-                    y = n<s ? isNear(n)?0:n : isNear(s)?s+n:n;
-                }
-                super.dragFrame(frame, x, y);
-            }
-            private boolean isNear(int c) {
-                return Math.abs(c)<10;
-            }
-        });
+        desktop.setDesktopManager(new MagneticDesktopManager(desktop));
+
 //         BasicInternalFrameUI ui = (BasicInternalFrameUI)magneticFrame.getUI();
 //         Component north = ui.getNorthPane();
 //         MouseInputAdapter mml = new MagneticListener(magneticFrame);
@@ -46,7 +32,7 @@ public class MainPanel extends JPanel {
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
-    private JInternalFrame createFrame(String title) {
+    private static JInternalFrame createFrame(String title) {
         //title, resizable, closable, maximizable, iconifiable
         JInternalFrame frame = new JInternalFrame(title, false, false, true, true);
         frame.setSize(200, 100);
@@ -104,5 +90,33 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class MagneticDesktopManager extends DefaultDesktopManager {
+    private final JDesktopPane desktop;
+    public MagneticDesktopManager(JDesktopPane desktop) {
+        super();
+        this.desktop = desktop;
+    }
+    @Override public void dragFrame(JComponent frame, int x, int y) {
+        int e = x;
+        int n = y;
+        int w = desktop.getSize().width  - frame.getSize().width  - e;
+        int s = desktop.getSize().height - frame.getSize().height - n;
+        if(isNear(e) || isNear(n) || isNear(w) || isNear(s)) {
+            x = getX(e, w);
+            y = getY(n, s);
+        }
+        super.dragFrame(frame, x, y);
+    }
+    private static int getX(int e, int w) {
+        return e<w ? isNear(e) ? 0 : e : isNear(w) ? w+e : e;
+    }
+    private static int getY(int n, int s) {
+        return n<s ? isNear(n) ? 0 : n : isNear(s) ? s+n : n;
+    }
+    private static boolean isNear(int c) {
+        return Math.abs(c)<10;
     }
 }

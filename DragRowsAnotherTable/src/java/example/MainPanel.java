@@ -44,8 +44,7 @@ public class MainPanel extends JPanel {
                 }
             }
         });
-        t.getSelectionModel().setSelectionMode(
-            ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        t.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         t.setTransferHandler(handler);
         t.setDropMode(DropMode.INSERT_ROWS);
         t.setDragEnabled(true);
@@ -95,6 +94,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TableRowTransferHandler extends TransferHandler {
     private int[] rows    = null;
     private int addIndex  = -1;
@@ -114,11 +114,11 @@ class TableRowTransferHandler extends TransferHandler {
             list.add(model.getDataVector().elementAt(i));
         }
         transferedObjects = list.toArray();
-        return new DataHandler(transferedObjects,localObjectFlavor.getMimeType());
+        return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
         JTable t = (JTable)info.getComponent();
-        boolean b = info.isDrop()&&info.isDataFlavorSupported(localObjectFlavor);
+        boolean b = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
         //XXX bug?
         t.setCursor(b?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
         return b;
@@ -132,7 +132,9 @@ class TableRowTransferHandler extends TransferHandler {
         DefaultTableModel model = (DefaultTableModel)target.getModel();
         int index = dl.getRow();
         int max = model.getRowCount();
-        if(index<0 || index>max) { index = max; }
+        if(index<0 || index>max) {
+            index = max;
+        }
         addIndex = index;
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try{
@@ -144,10 +146,8 @@ class TableRowTransferHandler extends TransferHandler {
                 target.getSelectionModel().addSelectionInterval(idx, idx);
             }
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }

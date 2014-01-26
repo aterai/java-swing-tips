@@ -38,57 +38,7 @@ public class MainPanel extends JPanel {
         ftf.setFormatterFactory(makeFFactory());
 
         add(spinner, BorderLayout.NORTH);
-        add(new JPanel() {
-            @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(Color.WHITE);
-                g2.fillRect(0,0,getWidth(),getHeight());
-
-                int code = ((Integer)spinner.getValue()).intValue();
-                //char[] ca = Character.toChars(code);
-                //int len = Character.charCount(code);
-                //http://docs.oracle.com/javase/tutorial/i18n/text/usage.html
-                String str = new String(Character.toChars(code)); //, 0, len);
-
-//                 //if(code<0x10000) {
-//                     str = Character.toString((char)code);
-//                 }else{
-//                     int x = code-0x10000;
-//                     char[] ca = new char[2];
-//                     ca[0] = (char)(Math.floor(x / 0x400) + 0xD800);
-//                     ca[1] = (char)(x % 0x400 + 0xDC00);
-//                     str = new String(ca, 0, 2);
-//                 }
-
-                Shape exShape = new TextLayout(str, ipaEx, frc).getOutline(null);
-                Shape mjShape = new TextLayout(str, ipaMj, frc).getOutline(null);
-
-                Rectangle2D b = exShape.getBounds();
-                Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth()/2d, b.getY() + b.getHeight()/2d);
-                AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth()/2d - p.getX(), getHeight()/2d - p.getY());
-
-                g2.setPaint(Color.YELLOW);
-                g2.draw(toCenterAT.createTransformedShape(b));
-
-                Shape s1 = toCenterAT.createTransformedShape(exShape);
-                Shape s2 = toCenterAT.createTransformedShape(mjShape);
-
-                if(exMi.isSelected() || both.isSelected()) {
-                    g2.setPaint(Color.CYAN);
-                    g2.fill(s1);
-                }
-                if(mjMi.isSelected() || both.isSelected()) {
-                    g2.setPaint(Color.MAGENTA);
-                    g2.fill(s2);
-                }
-                if(both.isSelected()) {
-                    g2.setClip(s1);
-                    g2.setPaint(Color.BLACK);
-                    g2.fill(s2);
-                }
-            }
-        });
+        add(new GlyphPaintPanel());
 
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
@@ -105,14 +55,66 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+    private class GlyphPaintPanel extends JPanel {
+        @Override public void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(Color.WHITE);
+            g2.fillRect(0,0,getWidth(),getHeight());
+
+            int code = ((Integer)spinner.getValue()).intValue();
+            //char[] ca = Character.toChars(code);
+            //int len = Character.charCount(code);
+            //http://docs.oracle.com/javase/tutorial/i18n/text/usage.html
+            String str = new String(Character.toChars(code)); //, 0, len);
+
+//                 //if(code<0x10000) {
+//                     str = Character.toString((char)code);
+//                 }else{
+//                     int x = code-0x10000;
+//                     char[] ca = new char[2];
+//                     ca[0] = (char)(Math.floor(x / 0x400) + 0xD800);
+//                     ca[1] = (char)(x % 0x400 + 0xDC00);
+//                     str = new String(ca, 0, 2);
+//                 }
+
+            Shape exShape = new TextLayout(str, ipaEx, frc).getOutline(null);
+            Shape mjShape = new TextLayout(str, ipaMj, frc).getOutline(null);
+
+            Rectangle2D b = exShape.getBounds();
+            Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth()/2d, b.getY() + b.getHeight()/2d);
+            AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth()/2d - p.getX(), getHeight()/2d - p.getY());
+
+            g2.setPaint(Color.YELLOW);
+            g2.draw(toCenterAT.createTransformedShape(b));
+
+            Shape s1 = toCenterAT.createTransformedShape(exShape);
+            Shape s2 = toCenterAT.createTransformedShape(mjShape);
+
+            if(exMi.isSelected() || both.isSelected()) {
+                g2.setPaint(Color.CYAN);
+                g2.fill(s1);
+            }
+            if(mjMi.isSelected() || both.isSelected()) {
+                g2.setPaint(Color.MAGENTA);
+                g2.fill(s2);
+            }
+            if(both.isSelected()) {
+                g2.setClip(s1);
+                g2.setPaint(Color.BLACK);
+                g2.fill(s2);
+            }
+        }
+    }
     private static DefaultFormatterFactory makeFFactory() {
         DefaultFormatter formatter = new DefaultFormatter() {
             @Override public Object stringToValue(String text) throws ParseException {
-                try{
-                    return Integer.valueOf(text, 16);
-                }catch(NumberFormatException nfe) {
-                    throw new ParseException(text, 0);
-                }
+                return Integer.valueOf(text, 16);
+//                 try{
+//                     return Integer.valueOf(text, 16);
+//                 }catch(NumberFormatException nfe) {
+//                     throw new ParseException(text, 0);
+//                 }
             }
             private static final String MASK = "000000";
             @Override public String valueToString(Object value) throws ParseException {

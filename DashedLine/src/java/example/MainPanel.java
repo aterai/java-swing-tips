@@ -14,18 +14,21 @@ public class MainPanel extends JPanel {
     private float[] getDashList() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         float[] list = new float[st.countTokens()];
-        int i=0;
-        try{
-            while(st.hasMoreTokens()) {
-                list[i] = Float.valueOf(st.nextToken());
-                i++;
-            }
-        }catch(final NumberFormatException nfe) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            float[] fd = {1.0f};
-            return fd;
+        int i = 0;
+//         try{
+        while(st.hasMoreTokens()) {
+            list[i] = Float.valueOf(st.nextToken());
+            i++;
         }
+        if(i==0) {
+            list = new float[] { 1f };
+        }
+//         }catch(NumberFormatException nfe) {
+//             Toolkit.getDefaultToolkit().beep();
+//             JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//             float[] fd = {1.0f};
+//             return fd;
+//         }
         return list;
     }
 

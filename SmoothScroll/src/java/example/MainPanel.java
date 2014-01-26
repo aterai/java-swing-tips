@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private final JTextField textField = new JTextField("10");
+    private final JTextField textField = new JTextField("100");
     private final JTextArea textArea   = new JTextArea();
     private final JScrollPane scroll   = new JScrollPane(textArea);
 
@@ -28,55 +28,62 @@ public class MainPanel extends JPanel {
 
         JButton button = new JButton(new AbstractAction("Goto Line") {
             @Override public void actionPerformed(ActionEvent e) {
-                Document doc = textArea.getDocument();
-                Element root = doc.getDefaultRootElement();
-                int ln = getDestLineNumber(textField, root);
-                if(ln<0) { Toolkit.getDefaultToolkit().beep(); return; }
-                try{
-                    final Element elem = root.getElement(ln-1);
-                    final Rectangle dest = textArea.modelToView(elem.getStartOffset());
-                    final Rectangle current = scroll.getViewport().getViewRect();
-                    new Timer(20, new ActionListener() {
-                        @Override public void actionPerformed(ActionEvent ae) {
-                            Timer animator = (Timer)ae.getSource();
-                            if(dest.y < current.y && animator.isRunning()) {
-                                int d = Math.max(1, (current.y-dest.y)/2);
-                                current.y = current.y - d;
-                                textArea.scrollRectToVisible(current);
-                            }else if(dest.y > current.y && animator.isRunning()) {
-                                int d = Math.max(1, (dest.y-current.y)/2);
-                                current.y = current.y + d;
-                                textArea.scrollRectToVisible(current);
-                            }else{
-                                textArea.setCaretPosition(elem.getStartOffset());
-                                animator.stop();
-                            }
-                        }
-                    }).start();
-                }catch(BadLocationException ble) {
-                    Toolkit.getDefaultToolkit().beep();
-                }
+                startScroll();
             }
         });
         frame.getRootPane().setDefaultButton(button);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(textField);
-        panel.add(button,    BorderLayout.EAST);
-        add(panel,  BorderLayout.NORTH);
+        panel.add(button, BorderLayout.EAST);
+
+        add(panel, BorderLayout.NORTH);
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static int getDestLineNumber(JTextField textField, Element root) {
-        int lineNumber = 1;
+
+    private void startScroll() {
+        Document doc = textArea.getDocument();
+        Element root = doc.getDefaultRootElement();
+        int ln = getDestLineNumber(textField, root);
+//         if(ln<0) {
+//             Toolkit.getDefaultToolkit().beep();
+//             return;
+//         }
         try{
-            lineNumber = Integer.parseInt(textField.getText().trim());
-            lineNumber = Math.max(1, Math.min(root.getElementCount(), lineNumber));
-        }catch(NumberFormatException nfe) {
-            //nfe.printStackTrace();
-            lineNumber = -1;
+            final Element elem = root.getElement(ln-1);
+            final Rectangle dest = textArea.modelToView(elem.getStartOffset());
+            final Rectangle current = scroll.getViewport().getViewRect();
+            new Timer(20, new ActionListener() {
+                @Override public void actionPerformed(ActionEvent e) {
+                    Timer animator = (Timer)e.getSource();
+                    if(dest.y < current.y && animator.isRunning()) {
+                        int d = Math.max(1, (current.y-dest.y)/2);
+                        current.y = current.y - d;
+                        textArea.scrollRectToVisible(current);
+                    }else if(dest.y > current.y && animator.isRunning()) {
+                        int d = Math.max(1, (dest.y-current.y)/2);
+                        current.y = current.y + d;
+                        textArea.scrollRectToVisible(current);
+                    }else{
+                        textArea.setCaretPosition(elem.getStartOffset());
+                        animator.stop();
+                    }
+                }
+            }).start();
+        }catch(BadLocationException ble) {
+            Toolkit.getDefaultToolkit().beep();
         }
-        return lineNumber;
+    }
+
+    private static int getDestLineNumber(JTextField textField, Element root) {
+        int lineNumber = Integer.parseInt(textField.getText().trim());
+        return Math.max(1, Math.min(root.getElementCount(), lineNumber));
+//         }catch(NumberFormatException nfe) {
+//             //nfe.printStackTrace();
+//             lineNumber = -1;
+//         }
+//         return lineNumber;
     }
 
     public static void main(String[] args) {

@@ -27,15 +27,8 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 Document doc = textArea.getDocument();
                 Element root = doc.getDefaultRootElement();
-                int i = 1;
-                try{
-                    i = Integer.parseInt(textField.getText().trim());
-                    i = Math.max(1, Math.min(root.getElementCount(), i));
-                }catch(NumberFormatException nfe) {
-                    //nfe.printStackTrace();
-                    java.awt.Toolkit.getDefaultToolkit().beep();
-                    return;
-                }
+                int i = Integer.parseInt(textField.getText().trim());
+                i = Math.max(1, Math.min(root.getElementCount(), i));
                 try{
                     Element elem = root.getElement(i-1);
                     Rectangle rect = textArea.modelToView(elem.getStartOffset());
@@ -45,7 +38,7 @@ public class MainPanel extends JPanel {
                     textArea.setCaretPosition(elem.getStartOffset());
                     //textArea.requestFocus();
                 }catch(BadLocationException ble) {
-                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    Toolkit.getDefaultToolkit().beep();
                 }
             }
         });

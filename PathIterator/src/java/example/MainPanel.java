@@ -231,7 +231,7 @@ class StarburstSVGMaker {
 //                 w.writeData(textArea.getText());
 //                 //outfile.deleteOnExit();
 //             }catch(IOException ioe) {
-//                 java.awt.Toolkit.getDefaultToolkit().beep();
+//                 Toolkit.getDefaultToolkit().beep();
 //                 JOptionPane.showMessageDialog(null,"Could not create file.","Error",JOptionPane.ERROR_MESSAGE);
 //                 return;
 //             }

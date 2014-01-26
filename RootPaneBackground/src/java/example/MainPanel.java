@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    private static final TexturePaint texture = makeCheckerTexture();
+    private static final TexturePaint texture = ImageUtil.makeCheckerTexture();
     private final JDesktopPane desktop = new JDesktopPane() {
         @Override public void updateUI() {
             super.updateUI();
@@ -28,31 +28,70 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                JPanel p = new JPanel() {
-                    @Override public void paintComponent(Graphics g) {
-                        Graphics2D g2 = (Graphics2D) g;
-                        g2.setPaint(texture);
-                        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));
-                        g2.fillRect(0,0,getWidth(),getHeight());
-                    }
-                };
-                p.add(new JButton("button"));
-                JInternalFrame iframe = new JInternalFrame("InternalFrame", true, true, true, true);
-                iframe.setContentPane(p);
-                iframe.setSize(160, 80);
-                iframe.setLocation(10, 10);
-                iframe.setOpaque(false);
-                iframe.setVisible(true);
-                desktop.add(iframe);
-            }
-        });
+        JPanel p = new TranslucentTexturePanel(texture);
+        p.add(new JButton("button"));
+        JInternalFrame iframe = new JInternalFrame("InternalFrame", true, true, true, true);
+        iframe.setContentPane(p);
+        iframe.setSize(160, 80);
+        iframe.setLocation(10, 10);
+        iframe.setOpaque(false);
+        iframe.setVisible(true);
+        desktop.add(iframe);
+
         add(desktop);
         setOpaque(false);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        PopupFactory.setSharedInstance(new TranslucentPopupFactory());
+        JFrame frame = new JFrame("@title@") {
+            @Override protected JRootPane createRootPane() {
+                return new JRootPane() {
+                    //private final TexturePaint texture = makeCheckerTexture();
+                    @Override protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        Graphics2D g2 = (Graphics2D)g.create();
+                        g2.setPaint(texture);
+                        g2.fillRect(0, 0, getWidth(), getHeight());
+                        g2.dispose();
+                    }
+                    @Override public void updateUI() {
+                        super.updateUI();
+                        BufferedImage bi = ImageUtil.getFilteredImage(MainPanel.class.getResource("test.jpg"));
+                        setBorder(new CentredBackgroundBorder(bi));
+                        setOpaque(false);
+                    }
+                };
+            }
+        };
+        //frame.getRootPane().setBackground(Color.BLUE);
+        //frame.getLayeredPane().setBackground(Color.GREEN);
+        //frame.getContentPane().setBackground(Color.RED);
+        ((JComponent)frame.getContentPane()).setOpaque(false);
+        frame.setJMenuBar(ImageUtil.createMenubar());
+        frame.getContentPane().add(new MainPanel());
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+}
+
+class ImageUtil {
     public static JMenuBar createMenubar() {
         UIManager.put("Menu.background", new Color(200,0,0,0));
         UIManager.put("Menu.selectionBackground", new Color(100,100,255,100));
@@ -69,12 +108,13 @@ public class MainPanel extends JPanel {
         mb.setOpaque(false);
         for(String key: new String[] {"File", "Edit", "Help"}) {
             JMenu m = createMenu(key);
-            if(m != null) { mb.add(m); }
+            if(m != null) {
+                mb.add(m);
+            }
         }
         return mb;
     }
-
-    private static JMenu createMenu(String key) {
+    public static JMenu createMenu(String key) {
         JMenu menu = new TransparentMenu(key);
         menu.setForeground(new Color(200,200,200));
         menu.setOpaque(false); // Motif lnf
@@ -86,57 +126,7 @@ public class MainPanel extends JPanel {
         menu.add("dummy2");
         return menu;
     }
-
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        PopupFactory.setSharedInstance(new TranslucentPopupFactory());
-        JFrame frame = new JFrame("@title@") {
-            @Override protected JRootPane createRootPane() {
-                JRootPane rp = new JRootPane() {
-                    //private final TexturePaint texture = makeCheckerTexture();
-                    @Override protected void paintComponent(Graphics g) {
-                        super.paintComponent(g);
-                        Graphics2D g2 = (Graphics2D)g.create();
-                        g2.setPaint(texture);
-                        g2.fillRect(0, 0, getWidth(), getHeight());
-                        g2.dispose();
-                    }
-                    @Override public void updateUI() {
-                        super.updateUI();
-                        BufferedImage bi = getFilteredImage(MainPanel.class.getResource("test.jpg"));
-                        setBorder(new CentredBackgroundBorder(bi));
-                        setOpaque(false);
-                    }
-                };
-                return rp;
-            }
-        };
-        //frame.getRootPane().setBackground(Color.BLUE);
-        //frame.getLayeredPane().setBackground(Color.GREEN);
-        //frame.getContentPane().setBackground(Color.RED);
-        ((JComponent)frame.getContentPane()).setOpaque(false);
-        frame.setJMenuBar(createMenubar());
-        frame.getContentPane().add(new MainPanel());
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-
-    private static BufferedImage getFilteredImage(URL url) {
+    public static BufferedImage getFilteredImage(URL url) {
         BufferedImage image;
         try{
             image = ImageIO.read(url);
@@ -153,8 +143,7 @@ public class MainPanel extends JPanel {
         op.filter(image, dest);
         return dest;
     }
-
-    private static TexturePaint makeCheckerTexture() {
+    public static TexturePaint makeCheckerTexture() {
         int cs = 6;
         int sz = cs*cs;
         BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
@@ -169,6 +158,20 @@ public class MainPanel extends JPanel {
         }
         g2.dispose();
         return new TexturePaint(img, new Rectangle(0,0,sz,sz));
+    }
+}
+
+class TranslucentTexturePanel extends JPanel {
+    private final TexturePaint texture;
+    public TranslucentTexturePanel(TexturePaint texture) {
+        super();
+        this.texture = texture;
+    }
+    @Override public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setPaint(texture);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));
+        g2.fillRect(0, 0, getWidth(), getHeight());
     }
 }
 
