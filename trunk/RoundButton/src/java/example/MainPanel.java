@@ -89,6 +89,7 @@ class RoundedCornerButton extends JButton {
         setAction(a);
     }
     public RoundedCornerButton(String text, Icon icon) {
+        super();
         setModel(new DefaultButtonModel());
         init(text, icon);
         setContentAreaFilled(false);
@@ -161,6 +162,7 @@ class RoundButton extends RoundedCornerButton {
         setAction(a);
     }
     public RoundButton(String text, Icon icon) {
+        super();
         setModel(new DefaultButtonModel());
         init(text, icon);
         setFocusPainted(false);
@@ -285,6 +287,7 @@ class ShapeButton extends JButton {
     protected final Color rc = Color.ORANGE;
     protected Shape shape;
     public ShapeButton(Shape s) {
+        super();
         shape = s;
         setModel(new DefaultButtonModel());
         init("Shape", new DummySizeIcon(s));

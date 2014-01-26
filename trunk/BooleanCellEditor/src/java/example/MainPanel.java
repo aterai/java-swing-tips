@@ -9,7 +9,7 @@ import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public JComponent makeUI() {
+    private static JComponent makeUI() {
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
             {"aaa", 12, true}, {"bbb", 5, false},

@@ -112,6 +112,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     private Point delta   = new Point();
 
     public KineticScrollingListener1(JComponent comp) {
+        super();
         this.label = comp;
         this.dc = comp.getCursor();
         this.scroller = new Timer(DELAY, new ActionListener() {
@@ -172,6 +173,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                vp.y>=0 && vp.y+vport.getHeight()-comp.getHeight()<=0;
     }
     public KineticScrollingListener2(JComponent comp) {
+        super();
         this.label = comp;
         this.dc = comp.getCursor();
         this.inside = new Timer(DELAY, new ActionListener() {

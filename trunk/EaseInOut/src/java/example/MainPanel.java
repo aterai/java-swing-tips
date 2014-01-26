@@ -10,7 +10,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super();
         String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SEREIAL NO: 00000000";
         ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
@@ -60,6 +60,7 @@ class ImageCaptionLabel extends JLabel {
         this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));
     }
     public ImageCaptionLabel(String caption, Icon icon) {
+        super();
         setIcon(icon);
         textArea.setFont(textArea.getFont().deriveFont(11f));
         textArea.setText(caption);
@@ -84,7 +85,9 @@ class ImageCaptionLabel extends JLabel {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
-                if(ncomponents == 0) { return; }
+                if(ncomponents == 0) {
+                    return;
+                }
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
                 int x = 0; //insets.left; int y = insets.top;
@@ -108,15 +111,16 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     private final JComponent textArea;
     private int txah = 0;
     public LabelHandler(JComponent textArea) {
+        super();
         this.textArea = textArea;
     }
     public int getTextAreaHeight() {
         return txah;
     }
-    private int count = 0;
     private Timer createTimer(final int dir) {
         final double height = (double)textArea.getPreferredSize().height;
         return new Timer(DELAY, new ActionListener() {
+            private int count = 0;
             @Override public void actionPerformed(ActionEvent e) {
                 double a = AnimationUtil.easeInOut(count/height);
                 count += dir;
@@ -163,9 +167,10 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
 }
 
 class AnimationUtil {
+    private static final int N = 3;
+    private AnimationUtil() {}
     //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
     //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
-    private static int N = 3;
     public static double easeIn(double t) {
         //range: 0.0<=t<=1.0
         return Math.pow(t, N);
@@ -182,17 +187,21 @@ class AnimationUtil {
         }
     }
 /*/
-        if(t<0.5d) {
-            return 0.5d*intpow(t*2d, N);
+        double ret;
+        if(t < .5) {
+            ret = .5*intpow(t*2d, N);
         }else{
-            return 0.5d*(intpow(t*2d-2d, N) + 2d);
+            ret = .5*(intpow(t*2d-2d, N) + 2d);
         }
+        return ret;
     }
     //http://d.hatena.ne.jp/pcl/20120617/p1
     //http://d.hatena.ne.jp/rexpit/20110328/1301305266
     //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
     //http://www.osix.net/modules/article/?id=696
-    public static double intpow(double a, int b) {
+    public static double intpow(double da, int ib) {
+        double a = da;
+        int b = ib;
         double d = 1.0;
         if(b < 0) {
             //return d / intpow(a, -b);

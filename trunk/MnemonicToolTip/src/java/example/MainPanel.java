@@ -8,7 +8,7 @@ import java.beans.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -89,6 +89,7 @@ public class MainPanel extends JPanel {
 class MnemonicToolTip extends JToolTip {
     private final JLabel mnemonicLabel = new JLabel();
     public MnemonicToolTip() {
+        super();
         setLayout(new BorderLayout());
         //LookAndFeel.installColorsAndFont(mnemonicLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
         mnemonicLabel.setForeground(Color.GRAY);

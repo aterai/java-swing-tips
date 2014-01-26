@@ -63,6 +63,7 @@ class DraggableImageMouseListener extends MouseAdapter {
     private boolean moverHover, rotatorHover;
 
     public DraggableImageMouseListener(ImageIcon ii) {
+        super();
         image   = ii.getImage();
         width   = ii.getIconWidth();
         height  = ii.getIconHeight();

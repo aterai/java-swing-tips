@@ -11,14 +11,15 @@ class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel();
     private final JLabel label2 = new JLabel() {
         @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
+            int info = infoflags;
             if(!isEnabled()) {
-                infoflags &= ~FRAMEBITS;
+                info &= ~FRAMEBITS;
             }
-            return super.imageUpdate(img, infoflags, x, y, w, h);
+            return super.imageUpdate(img, info, x, y, w, h);
         }
     };
     private final JLabel label3 = new JLabel();
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         ImageIcon icon = new ImageIcon(getClass().getResource("duke.running.gif"));
         label1.setIcon(icon);

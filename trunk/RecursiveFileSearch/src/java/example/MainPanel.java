@@ -214,6 +214,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     private int scount = 0;
     private final File dir;
     public RecursiveFileSearchTask(File dir) {
+        super();
         this.dir = dir;
     }
     @Override public String doInBackground() {

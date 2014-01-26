@@ -8,8 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
 class MainPanel {
-    private JFrame frame;
-    private JWindow splashScreen;
+    private transient JFrame frame;
+    private transient JWindow splashScreen;
 
     public void start(JFrame f) {
         this.frame = f;
@@ -138,8 +138,8 @@ class MainPanel {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private MouseEvent start;
-    private Window window;
+    private transient MouseEvent start;
+    private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
         if(window==null) {
             Object o = me.getSource();

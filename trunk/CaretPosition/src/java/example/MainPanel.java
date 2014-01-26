@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
+    private static final String LINESEPARATOR = "\n";
+    private static final int LIMIT = 1000;
     private final JTextPane jtp = new JTextPane();
     private final JButton startButton = new JButton("Start");
     private final JButton stopButton  = new JButton("Stop");
@@ -58,7 +60,7 @@ public class MainPanel extends JPanel {
 
         add(new JScrollPane(jtp));
         add(box, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private void timerStop() {
@@ -71,18 +73,22 @@ public class MainPanel extends JPanel {
         stopButton.setEnabled(true);
         timer.start();
     }
-    private static final String LINESEPARATOR = "\n";
     private void append(String str) {
         Document doc = jtp.getDocument();
-        if(doc.getLength()>1000) {
+        String text;
+        if(doc.getLength()>LIMIT) {
             timerStop();
             startButton.setEnabled(false);
-            str = "doc.getLength()>1000";
+            text = "doc.getLength()>1000";
+        }else{
+            text = str;
         }
         try{
-            doc.insertString(doc.getLength(), str+LINESEPARATOR, null);
+            doc.insertString(doc.getLength(), text+LINESEPARATOR, null);
             jtp.setCaretPosition(doc.getLength());
-        }catch(BadLocationException e) { e.printStackTrace(); }
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

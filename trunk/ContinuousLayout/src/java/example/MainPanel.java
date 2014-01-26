@@ -12,7 +12,9 @@ public class MainPanel extends JPanel {
     private final JSplitPane rightPane  = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     private final JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
-    public JComponent makeUI() {
+    public MainPanel() {
+        super(new BorderLayout());
+
         //leftPane.setContinuousLayout(true);
         //rightPane.setContinuousLayout(true);
         //centerPane.setContinuousLayout(true);
@@ -43,8 +45,7 @@ public class MainPanel extends JPanel {
         leftPane.addPropertyChangeListener(pcl);
         rightPane.addPropertyChangeListener(pcl);
 
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(new JCheckBox(new AbstractAction("setContinuousLayout") {
+        add(new JCheckBox(new AbstractAction("setContinuousLayout") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flag = ((JCheckBox)e.getSource()).isSelected();
                 leftPane.setContinuousLayout(flag);
@@ -52,12 +53,7 @@ public class MainPanel extends JPanel {
                 centerPane.setContinuousLayout(flag);
             }
         }), BorderLayout.NORTH);
-        p.add(centerPane);
-        return p;
-    }
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI());
+        add(centerPane);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {

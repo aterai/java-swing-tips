@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
         List<String> list = Arrays.asList(

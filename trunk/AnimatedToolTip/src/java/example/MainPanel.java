@@ -14,7 +14,7 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private final URL url = getClass().getResource("anime.gif");
     private final ImageIcon icon = new ImageIcon(url);
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         JLabel l1 = new JLabel("Timer Animated ToolTip") {
             @Override public JToolTip createToolTip() {
@@ -82,6 +82,7 @@ class MainPanel extends JPanel {
 class AnimatedToolTip extends JToolTip {
     private final JLabel iconlabel;
     public AnimatedToolTip(JLabel label) {
+        super();
         this.iconlabel = label;
         LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
         iconlabel.setOpaque(true);

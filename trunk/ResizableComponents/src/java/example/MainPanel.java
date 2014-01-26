@@ -111,6 +111,7 @@ class JResizer extends JComponent { // implements Serializable {
         this(comp, new DefaultResizableBorder(6));
     }
     public JResizer(Component comp, ResizableBorder border) {
+        super();
         resizeListener = new ResizeMouseListener();
         setLayout(new BorderLayout());
         add(comp);

@@ -131,11 +131,11 @@ class MainPanel extends JPanel {
 
 //http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 class LookAndFeelPanel extends JPanel {
+    private ButtonGroup lookAndFeelRadioGroup;
+    private String lookAndFeel;
     public LookAndFeelPanel(LayoutManager lm) {
         super(lm);
     }
-    private ButtonGroup lookAndFeelRadioGroup;
-    private String lookAndFeel;
     public JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         lookAndFeel = UIManager.getLookAndFeel().getClass().getName();

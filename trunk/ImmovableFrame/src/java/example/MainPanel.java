@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    protected JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Window");
         menu.setMnemonic(KeyEvent.VK_W);

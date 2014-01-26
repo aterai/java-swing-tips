@@ -174,6 +174,7 @@ class RoundButton extends JButton {
         setAction(a);
     }
     public RoundButton(String text, Icon icon) {
+        super();
         setModel(new DefaultButtonModel());
         init(text, icon);
         if(icon==null) {

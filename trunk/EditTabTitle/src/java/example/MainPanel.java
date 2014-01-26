@@ -59,6 +59,7 @@ class EditableTabbedPane extends JTabbedPane {
     private Rectangle rect;
 
     public EditableTabbedPane(JFrame _frame) {
+        super();
         this.frame = _frame;
         editor.setBorder(BorderFactory.createEmptyBorder(0,3,0,3));
         editor.addFocusListener(new FocusAdapter() {
@@ -122,6 +123,7 @@ class EditableTabbedPane extends JTabbedPane {
     }
     class MyGlassPane extends JComponent {
         public MyGlassPane() {
+            super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
                 @Override public boolean accept(Component c) { return c==editor; }

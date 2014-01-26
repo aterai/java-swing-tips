@@ -200,21 +200,22 @@ class ArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(color);
+        int shift = 0;
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             if(m.isPressed()) {
-                y++;
+                shift = 1;
             }else{
                 if(m.isRollover()) {
                     g2.setPaint(rollover);
                 }
             }
         }
-        g2.translate(x,y);
-        g2.drawLine( 2, 3, 6, 3 );
-        g2.drawLine( 3, 4, 5, 4 );
-        g2.drawLine( 4, 5, 4, 5 );
-        g2.translate(-x,-y);
+        g2.translate(x, y+shift);
+        g2.drawLine(2, 3, 6, 3);
+        g2.drawLine(3, 4, 5, 4);
+        g2.drawLine(4, 5, 4, 5);
+        g2.translate(-x, -y-shift);
     }
     @Override public int getIconWidth()  {
         return 9;

@@ -67,6 +67,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
     private Point move    = new Point();
 
     public ViewportDragScrollListener(JComponent comp) {
+        super();
         this.label = comp;
         this.dc = comp.getCursor();
         this.scroller = new Timer(DELAY, new ActionListener() {
@@ -123,6 +124,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     private Point move    = new Point();
 
     public ComponentDragScrollListener(JComponent comp) {
+        super();
         this.label = comp;
         this.dc = comp.getCursor();
         this.scroller = new Timer(DELAY, new ActionListener() {

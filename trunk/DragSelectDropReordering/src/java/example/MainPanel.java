@@ -267,6 +267,7 @@ class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private Object[] transferedObjects = null;
     public ListItemTransferHandler() {
+        super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
     @SuppressWarnings("deprecation")

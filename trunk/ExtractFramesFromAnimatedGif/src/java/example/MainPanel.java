@@ -12,7 +12,7 @@ import javax.imageio.stream.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private MainPanel() {
+    public MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();
         label.setIcon(new ImageIcon(getClass().getResource("duke.running.gif")));

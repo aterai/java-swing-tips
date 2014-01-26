@@ -92,7 +92,7 @@ class RadioButtonsPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
-    protected void initButtons() {
+    private void initButtons() {
         bg = new ButtonGroup();
         buttons = new JRadioButton[answer.length];
         for(int i=0;i<buttons.length;i++) {

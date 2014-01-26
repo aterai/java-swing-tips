@@ -175,18 +175,19 @@ class BasicComboPopup3 extends BasicComboPopup {
                 if(SwingUtilities.isRightMouseButton(e)) {
                     return;
                 }
+                MouseEvent ev = e;
                 if(e.isControlDown())  {
                     // Fix for 4234053. Filter out the Control Key from the list.
                     // ie., don't allow CTRL key deselection.
-                    e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(),
-                                       e.getModifiers() ^ InputEvent.CTRL_MASK,
-                                       e.getX(), e.getY(),
-                                       e.getXOnScreen(), e.getYOnScreen(),
-                                       e.getClickCount(),
-                                       e.isPopupTrigger(),
-                                       MouseEvent.NOBUTTON);
+                    ev = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(),
+                                        e.getModifiers() ^ InputEvent.CTRL_MASK,
+                                        e.getX(), e.getY(),
+                                        e.getXOnScreen(), e.getYOnScreen(),
+                                        e.getClickCount(),
+                                        e.isPopupTrigger(),
+                                        MouseEvent.NOBUTTON);
                 }
-                super.processMouseEvent(e);
+                super.processMouseEvent(ev);
             }
         };
     }

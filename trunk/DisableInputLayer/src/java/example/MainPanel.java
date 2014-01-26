@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public class MainPanel extends JPanel {
-    public JComponent makeUI() {
+    private static JComponent makeUI() {
         final JPanel p = new JPanel();
         final DisableInputLayerUI layerUI = new DisableInputLayerUI();
         final JLayer<JPanel> jlayer = new JLayer<JPanel>(p, layerUI);

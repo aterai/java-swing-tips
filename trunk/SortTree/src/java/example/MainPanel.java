@@ -12,6 +12,10 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     private final DefaultMutableTreeNode root = makeTreeRoot();
     private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot()));
+    private final TreeNodeComparator tnc = new TreeNodeComparator();
+    private int compare_count = 0;
+    private int swap_count = 0;
+
     public MainPanel() {
         super(new BorderLayout());
         JPanel box = new JPanel(new GridLayout(2,2));
@@ -98,13 +102,9 @@ public class MainPanel extends JPanel {
         return p;
     }
 
-    private static int compare_count = 0;
-    private static int swap_count = 0;
-    private static final TreeNodeComparator tnc = new TreeNodeComparator();
-
     // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
     public static final boolean DEBUG = true;
-    public static void sortTree0(DefaultMutableTreeNode root) {
+    public void sortTree0(DefaultMutableTreeNode root) {
         for(int i=0;i<root.getChildCount();i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
             for(int j=0; j<i; j++) {
@@ -125,7 +125,7 @@ public class MainPanel extends JPanel {
     }
 
     // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
-    public static void sortTree1(DefaultMutableTreeNode root) {
+    public void sortTree1(DefaultMutableTreeNode root) {
         int n = root.getChildCount();
         for(int i=0;i<n-1;i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
@@ -143,7 +143,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    public static void sort2(DefaultMutableTreeNode parent) {
+    public void sort2(DefaultMutableTreeNode parent) {
         int n = parent.getChildCount();
         for(int i=0; i<n-1; i++) {
             int min = i;
@@ -165,7 +165,7 @@ public class MainPanel extends JPanel {
             }
         }
     }
-    public static void sortTree2(DefaultMutableTreeNode root) {
+    public void sortTree2(DefaultMutableTreeNode root) {
         Enumeration e = root.depthFirstEnumeration();
         while(e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
@@ -174,7 +174,7 @@ public class MainPanel extends JPanel {
             }
         }
     }
-//     public static void sortTree2(DefaultMutableTreeNode root) {
+//     public void sortTree2(DefaultMutableTreeNode root) {
 //         Enumeration e = root.children();
 //         while(e.hasMoreElements()) {
 //             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
@@ -185,7 +185,7 @@ public class MainPanel extends JPanel {
 //         sort2(root);
 //     }
 
-    public static void sort3(DefaultMutableTreeNode parent) {
+    public void sort3(DefaultMutableTreeNode parent) {
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> e = parent.children();
         ArrayList<DefaultMutableTreeNode> children = Collections.list(e);
@@ -201,7 +201,7 @@ public class MainPanel extends JPanel {
             parent.add(node);
         }
     }
-    public static void sortTree3(DefaultMutableTreeNode root) {
+    public void sortTree3(DefaultMutableTreeNode root) {
         Enumeration e = root.depthFirstEnumeration();
         while(e.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
@@ -211,7 +211,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
+    private class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
             compare_count++;
             if(a.isLeaf() && !b.isLeaf()) {

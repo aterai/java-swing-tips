@@ -78,6 +78,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     private final Map<Integer, Integer> state = new Hashtable<>();
 
     public SortButtonRenderer() {
+        super();
         setHorizontalTextPosition(JButton.LEFT);
         setIcon(NONE_SORT_ICON);
     }

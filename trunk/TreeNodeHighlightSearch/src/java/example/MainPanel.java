@@ -9,15 +9,11 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI());
-        setPreferredSize(new Dimension(320, 240));
-    }
     private final JTree tree       = new JTree();
     private final JTextField field = new JTextField("foo");
     private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();
-    public JPanel makeUI() {
+    public MainPanel() {
+        super(new BorderLayout(5, 5));
         field.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e) {
                 fireDocumentChangeEvent();
@@ -35,11 +31,10 @@ public class MainPanel extends JPanel {
         renderer.q = field.getText();
         fireDocumentChangeEvent();
 
-        JPanel p = new JPanel(new BorderLayout(5, 5));
-        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        p.add(n, BorderLayout.NORTH);
-        p.add(new JScrollPane(tree));
-        return p;
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        add(n, BorderLayout.NORTH);
+        add(new JScrollPane(tree));
+        setPreferredSize(new Dimension(320, 240));
     }
     private void fireDocumentChangeEvent() {
         String q = field.getText();

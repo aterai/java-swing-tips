@@ -179,6 +179,7 @@ class HighlightIcon implements Icon {
 class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
     private final JTextComponent textArea;
     public WindowsHighlightScrollBarUI(JTextComponent textArea) {
+        super();
         this.textArea = textArea;
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
@@ -205,6 +206,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
 class MetalHighlightScrollBarUI extends MetalScrollBarUI {
     private final JTextComponent textArea;
     public MetalHighlightScrollBarUI(JTextComponent textArea) {
+        super();
         this.textArea = textArea;
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {

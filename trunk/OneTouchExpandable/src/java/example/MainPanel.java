@@ -10,7 +10,8 @@ import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public JComponent makeUI() {
+    public MainPanel() {
+        super(new BorderLayout());
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
             {"aaa", 12, true}, {"bbb", 5, false},
@@ -72,11 +73,7 @@ public class MainPanel extends JPanel {
                 }
             }
         }
-        return splitPane;
-    }
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI());
+        add(splitPane);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {

@@ -407,6 +407,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     public TabTransferHandler() {
+        super();
         System.out.println("TabTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
     }
@@ -555,6 +556,7 @@ class TabTransferHandler extends TransferHandler {
 class GhostGlassPane extends JPanel {
     private DnDTabbedPane tabbedPane;
     public GhostGlassPane(DnDTabbedPane tabbedPane) {
+        super();
         this.tabbedPane = tabbedPane;
         //System.out.println("new GhostGlassPane");
         setOpaque(false);

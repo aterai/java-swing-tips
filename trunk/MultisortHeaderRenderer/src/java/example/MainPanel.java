@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -61,6 +62,7 @@ public class MainPanel extends JPanel {
 
 class MultisortHeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        String str = Objects.toString(value, "");
         if(table.getRowSorter()!=null) {
             List<?> keys = table.getRowSorter().getSortKeys();
             int max = keys.size();
@@ -71,11 +73,11 @@ class MultisortHeaderRenderer implements TableCellRenderer {
                     //String k = sortKey.getSortOrder()==SortOrder.ASCENDING ? "\u25B2 " : "\u25BC ";
                     //BLACK SMALL TRIANGLE
                     String k = sortKey.getSortOrder()==SortOrder.ASCENDING ? "\u25B4 " : "\u25BE ";
-                    value = "<html>"+value.toString() + " <small color='gray'>" + k + (i+1);
+                    str = String.format("<html>%s<small color='gray'>%s%d", str, k, i+1);
                 }
             }
         }
         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-        return r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        return r.getTableCellRendererComponent(table, str, isSelected, hasFocus, row, column);
     }
 }

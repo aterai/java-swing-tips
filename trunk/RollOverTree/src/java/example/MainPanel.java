@@ -62,6 +62,7 @@ class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseM
     private static final Color rollOverRowColor = new Color(220,240,255);
     private final JTree tree;
     public RollOverTreeCellRenderer(JTree tree) {
+        super();
         this.tree = tree;
         tree.addMouseMotionListener(this);
     }

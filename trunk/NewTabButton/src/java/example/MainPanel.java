@@ -162,6 +162,11 @@ class CardLayoutTabbedPane extends JPanel {
 }
 class TabButton extends JRadioButton {
     private static final String uiClassID = "TabViewButtonUI";
+    private Color textColor = Color.WHITE;
+    private Color pressedTextColor = Color.WHITE.darker();
+    private Color rolloverTextColor = Color.WHITE;
+    private Color rolloverSelectedTextColor = Color.WHITE;
+    private Color selectedTextColor = Color.WHITE;
     @Override public void updateUI() {
         if(UIManager.get(getUIClassID())!=null) {
             setUI((TabViewButtonUI)UIManager.getUI(this));
@@ -179,22 +184,22 @@ class TabButton extends JRadioButton {
         return (TabViewButtonUI)ui;
     }
     public TabButton() {
-        this(null, null);
+        super(null, null);
     }
     public TabButton(Icon icon) {
-        this(null, icon);
+        super(null, icon);
     }
     public TabButton(String text) {
-        this(text, null);
+        super(text, null);
     }
     public TabButton(Action a) {
-        this();
-        super.setAction(a);
-        updateUI();
+        super(a);
+        //super.setAction(a);
+        //updateUI();
     }
     public TabButton(String text, Icon icon) {
         super(text, icon);
-        updateUI();
+        //updateUI();
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
@@ -210,12 +215,7 @@ class TabButton extends JRadioButton {
             setForeground(getTextColor());
         }
         super.fireStateChanged();
-    };
-    private Color textColor = Color.BLACK;
-    private Color pressedTextColor = Color.BLACK;
-    private Color rolloverTextColor = Color.BLACK;
-    private Color rolloverSelectedTextColor = Color.BLACK;
-    private Color selectedTextColor = Color.BLACK;
+    }
     public Color getTextColor() {
         return textColor;
     }

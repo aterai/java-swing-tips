@@ -45,8 +45,8 @@ public class MainPanel extends JPanel {
                     Charset cs = Charset.forName("EUC-JP");
                     String ret = "Done";
                     int index = 19; //1 + random.nextInt(27-1);
-                    //String path = String.format("http://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index); //???: UTF-8
-                    String path = String.format("http://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index); //EUC-JP
+                    String path = String.format("http://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index); //???: UTF-8
+                    //String path = String.format("http://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index); //EUC-JP
                     //String path = "http://terai.xrea.jp/";
                     System.out.println(path);
                     URLConnection urlConnection;
@@ -92,9 +92,10 @@ public class MainPanel extends JPanel {
                         int size = 0;
                         String line;
                         while((line = reader.readLine()) != null) {
-                            if(i++%50==0) { //Wait
+                            if(i%50==0) { //Wait
                                 Thread.sleep(10);
                             }
+                            i++;
                             size += line.getBytes(cs).length + 1; //+1: \n
                             String note = String.format("%03d%% - %d/%d%n", 100*size/length, size, length);
                             publish(new Chunk(line, note));

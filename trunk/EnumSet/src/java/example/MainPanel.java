@@ -103,6 +103,7 @@ public class MainPanel extends JPanel {
 }
 
 enum Permissions { EXECUTE, WRITE, READ; }
+
 class CheckBoxesPanel extends JPanel {
     private static final String OSNAME = System.getProperty("os.name");
     protected final String[] title = {"r", "w", "x"};
@@ -114,7 +115,7 @@ class CheckBoxesPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
-    protected void initButtons() {
+    private void initButtons() {
         buttons = new JCheckBox[title.length];
         for(int i=0; i<buttons.length; i++) {
             JCheckBox b = new JCheckBox(title[i]);
@@ -154,6 +155,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, j
 
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
     public CheckBoxesEditor() {
+        super();
         ActionMap am = getActionMap();
         for(int i=0; i<buttons.length; i++) {
             //buttons[i].addActionListener(al);

@@ -54,9 +54,6 @@ public class MainPanel extends JPanel {
 
 // class MyJTabbedPane extends JTabbedPane {
 //     private static final Icon icon = new CloseTabIcon();
-//     public MyJTabbedPane() {
-//         super();
-//     }
 //     @Override public void addTab(String title, final Component content) {
 //         JPanel tab = new JPanel(new BorderLayout());
 //         tab.setOpaque(false);

@@ -7,8 +7,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static String str = "Can only edit last line, version 0.0\n";
-    public MainPanel() {
+    private static final String str = "Can only edit last line, version 0.0\n";
+    private MainPanel() {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea();
         textArea.setMargin(new Insets(2,5,2,2));
@@ -42,6 +42,7 @@ public class MainPanel extends JPanel {
 }
 
 class NonEditableLineDocumentFilter extends DocumentFilter {
+    public static final String LB = "\n";
     public static final String PROMPT = "> ";
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
         if(string == null) {
@@ -61,18 +62,19 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
         Element cur = root.getElement(index);
         int promptPosition = cur.getStartOffset()+PROMPT.length();
         if(index==count-1 && offset-promptPosition>=0) {
-            if(text.equals("\n")) {
+            String str = text;
+            if(str.equals(LB)) {
                 String line = doc.getText(promptPosition, offset-promptPosition);
                 String[] args = line.split(" ");
                 String cmd = args[0];
                 if(cmd.isEmpty()) {
-                    text = "";
+                    str = "";
                 }else{
-                    text = String.format("%n%s: command not found", cmd);
+                    str = String.format("%n%s: command not found", cmd);
                 }
-                text += "\n"+PROMPT;
+                str += LB + PROMPT;
             }
-            fb.replace(offset, length, text, attrs);
+            fb.replace(offset, length, str, attrs);
         }
     }
 }

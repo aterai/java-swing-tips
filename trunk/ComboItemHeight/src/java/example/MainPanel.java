@@ -3,16 +3,13 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 //import javax.swing.plaf.basic.BasicComboBoxUI;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
-        add(makeUI(), BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
-    public JComponent makeUI() {
         Box p = Box.createVerticalBox();
         String[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
 
@@ -27,21 +24,12 @@ public class MainPanel extends JPanel {
         p.add(Box.createVerticalStrut(5));
 
         JComboBox<String> combo2 = new JComboBox<>(items);
-        final Dimension dim = ((JLabel)combo2.getRenderer()).getPreferredSize();
-/*      //TEST:
-        combo2.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                c.setPreferredSize(new Dimension(100, index<0?dim.height:32));
-                return c;
-            }
-        });
-/*/
         combo2.setRenderer(new DefaultListCellRenderer() {
             private int cheight;
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                cheight = index<0 ? dim.height : 32;
+                Dimension d = super.getPreferredSize();
+                cheight = index<0 ? d.height : 32;
                 return c;
             }
             @Override public Dimension getPreferredSize() {
@@ -50,7 +38,6 @@ public class MainPanel extends JPanel {
                 return d;
             }
         });
-//*/
         p.add(makeTitledPanel("getListCellRendererComponent", combo2));
         p.add(Box.createVerticalStrut(5));
 
@@ -58,10 +45,11 @@ public class MainPanel extends JPanel {
         combo3.setRenderer(new DefaultListCellRenderer() {
             private int cheight;
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if(index>=0) {
-                    value = String.format("<html><table><td height='32'>%s", value);
+                String title = Objects.toString(value, "");
+                if(index >= 0) {
+                    title = String.format("<html><table><td height='32'>%s", value);
                 }
-                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                return super.getListCellRendererComponent(list, title, index, isSelected, cellHasFocus);
             }
         });
         p.add(makeTitledPanel("html", combo3));
@@ -79,7 +67,9 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 //         p.add(makeTitledPanel("BasicComboBoxUI", combo4));
-        return p;
+        add(p, BorderLayout.NORTH);
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeTitledPanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());

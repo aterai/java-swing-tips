@@ -58,6 +58,7 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
     private ImageIcon thumbnail = null;
     private File file = null;
     public ImagePreview(JFileChooser fc) {
+        super();
         setPreferredSize(new Dimension(PREVIEW_WIDTH+PREVIEW_MARGIN*2, 50));
         fc.addPropertyChangeListener(this);
         //setBorder(BorderFactory.createMatteBorder(1,0,1,1,SystemColor.inactiveCaption));

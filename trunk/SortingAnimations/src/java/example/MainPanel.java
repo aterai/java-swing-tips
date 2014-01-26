@@ -206,6 +206,7 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     private final SortAlgorithms sortAlgorithm;
 
     public SortingTask(SortAlgorithms sortAlgorithm, int number, float[] a, Rectangle rect, float factorx, float factory) {
+        super();
         this.sortAlgorithm = sortAlgorithm;
         this.number = number;
         this.a = a;

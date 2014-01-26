@@ -140,6 +140,7 @@ class ComboKeyHandler extends KeyAdapter {
     private final JComboBox<String> comboBox;
     private final List<String> list = new ArrayList<>();
     public ComboKeyHandler(JComboBox<String> combo) {
+        super();
         this.comboBox = combo;
         for(int i=0;i<comboBox.getModel().getSize();i++) {
             list.add((String)comboBox.getItemAt(i));

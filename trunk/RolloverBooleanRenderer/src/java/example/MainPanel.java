@@ -10,7 +10,8 @@ import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public JComponent makeUI() {
+    public MainPanel() {
+        super(new BorderLayout());
         String[] columnNames = {"String", "Integer", "Boolean"};
         Object[][] data = {
             {"aaa", 12, true}, {"bbb", 5, false},
@@ -53,11 +54,7 @@ public class MainPanel extends JPanel {
                                        new JScrollPane(new JTable(model)),
                                        new JScrollPane(table));
         sp.setResizeWeight(0.5);
-        return sp;
-    }
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI());
+        add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -88,6 +85,7 @@ class HighlightListener extends MouseAdapter {
     private int col = -1;
     private final JTable table;
     public HighlightListener(JTable table) {
+        super();
         this.table = table;
     }
     public boolean isHighlightableCell(int row, int column) {

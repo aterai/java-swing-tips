@@ -60,6 +60,7 @@ public class MainPanel extends JPanel {
 class TextAreaCellEditor extends JTextArea implements TableCellEditor {
     private final JScrollPane scroll;
     public TextAreaCellEditor() {
+        super();
         scroll = new JScrollPane(this);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         //scroll.setViewportBorder(BorderFactory.createEmptyBorder());

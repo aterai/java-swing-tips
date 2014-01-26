@@ -81,6 +81,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     private final JTableHeader header;
 
     public SortButtonRenderer(JTableHeader header) {
+        super();
         this.header = header;
         header.setDefaultRenderer(this);
         header.addMouseListener(new MouseAdapter() {

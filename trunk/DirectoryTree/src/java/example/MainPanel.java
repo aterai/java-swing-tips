@@ -111,6 +111,7 @@ class Task extends SwingWorker<String, File> {
     private final FileSystemView fileSystemView;
     private final File parent;
     public Task(FileSystemView fileSystemView, File parent) {
+        super();
         this.fileSystemView = fileSystemView;
         this.parent = parent;
     }
@@ -134,6 +135,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
     private final TreeCellRenderer renderer;
     private final FileSystemView fileSystemView;
     public FileTreeCellRenderer(TreeCellRenderer renderer, FileSystemView fileSystemView) {
+        super();
         this.renderer = renderer;
         this.fileSystemView = fileSystemView;
     }

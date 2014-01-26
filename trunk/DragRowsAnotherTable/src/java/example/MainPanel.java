@@ -103,6 +103,7 @@ class TableRowTransferHandler extends TransferHandler {
     private Object[] transferedObjects = null;
     private JComponent source = null;
     public TableRowTransferHandler() {
+        super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
@@ -110,7 +111,8 @@ class TableRowTransferHandler extends TransferHandler {
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         ArrayList<Object> list = new ArrayList<Object>();
-        for(int i: rows = table.getSelectedRows()) {
+        rows = table.getSelectedRows();
+        for(int i: rows) {
             list.add(model.getDataVector().elementAt(i));
         }
         transferedObjects = list.toArray();

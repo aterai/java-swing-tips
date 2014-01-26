@@ -98,6 +98,7 @@ public class MainPanel extends JPanel {
 class MySynthStyleFactory extends SynthStyleFactory {
     private SynthStyleFactory wrappedFactory;
     public MySynthStyleFactory(SynthStyleFactory factory) {
+        super();
         this.wrappedFactory = factory;
     }
     @Override public SynthStyle getStyle(JComponent c, Region id) {
@@ -112,6 +113,7 @@ class MySynthStyleFactory extends SynthStyleFactory {
 class TranslucentSynthSytle extends SynthStyle {
     private final SynthStyle style;
     public TranslucentSynthSytle(SynthStyle s) {
+        super();
         style = s;
     }
     @Override public Object get(SynthContext context, Object key) {

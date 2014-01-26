@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
         };
     }
 
-    public JPanel makePanel() {
+    private JPanel makePanel() {
         button.setFocusable(false);
         controls.setBorder(BorderFactory.createTitledBorder("Search down"));
         controls.add(new JLabel("Find what:"), BorderLayout.WEST);

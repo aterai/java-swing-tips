@@ -88,9 +88,9 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        x += (width-image.getWidth())/2;
-        y += (height-image.getHeight())/2;
-        ((Graphics2D) g).drawRenderedImage(image, AffineTransform.getTranslateInstance(x,y));
+        int cx = x + (width-image.getWidth())/2;
+        int cy = y + (height-image.getHeight())/2;
+        ((Graphics2D)g).drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
     }
     @Override public Insets getBorderInsets(Component c) {
         return insets;

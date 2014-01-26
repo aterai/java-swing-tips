@@ -147,6 +147,7 @@ class RowHeaderList extends JList {
     class RowHeaderRenderer extends JLabel implements ListCellRenderer {
         private final JTableHeader header; // = table.getTableHeader();
         public RowHeaderRenderer(JTableHeader header) {
+            super();
             this.header = header;
             this.setOpaque(true);
             //this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));

@@ -106,9 +106,6 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
 }
 
 class MetalTooltipSliderUI extends MetalSliderUI {
-    public MetalTooltipSliderUI() {
-        super();
-    }
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
@@ -138,6 +135,7 @@ class SliderPopupListener extends MouseAdapter {
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final Dimension size = new Dimension(30, 20);
     public SliderPopupListener() {
+        super();
         label.setOpaque(false);
         label.setBackground(UIManager.getColor("ToolTip.background"));
         label.setBorder(UIManager.getBorder("ToolTip.border"));

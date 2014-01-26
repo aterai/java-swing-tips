@@ -53,6 +53,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     private final JTextField editor = new JTextField();
     private final JTabbedPane tabbedPane;
     public TabTitleEditListener(final JTabbedPane tabbedPane) {
+        super();
         this.tabbedPane = tabbedPane;
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.addFocusListener(new FocusAdapter() {
