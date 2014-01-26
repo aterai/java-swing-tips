@@ -200,7 +200,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
 //*
 // extends JCheckBox TreeCellRenderer Editor version
 class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer {
-    private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final JPanel panel = new JPanel(new BorderLayout());
     public CheckBoxNodeRenderer() {
         super();
@@ -254,7 +254,7 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
 }
 
 class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
-    private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final JPanel panel = new JPanel(new BorderLayout());
     private String str = null;
     public CheckBoxNodeEditor() {

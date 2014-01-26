@@ -41,7 +41,9 @@ class MarqueePanel extends JComponent implements ActionListener {
     public final Timer animator;
     private final GlyphVector gv;
     private final LineMetrics lm;
-    private float xx, baseline, xheight;
+    private final float xheight;
+    private float xx;
+    private float baseline;
 
     public MarqueePanel() {
         super();

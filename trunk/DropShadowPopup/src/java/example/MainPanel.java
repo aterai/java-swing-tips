@@ -138,27 +138,31 @@ class DropShadowPopupMenu extends JPopupMenu {
 class ShadowBorder extends AbstractBorder {
     private final int xoff, yoff;
     private final Insets insets;
-    private BufferedImage screen = null;
-    private BufferedImage shadow = null;
+    private final BufferedImage screen;
+    private BufferedImage shadow;
 
     public ShadowBorder(int x, int y, JComponent c, Point p) {
         super();
         this.xoff = x;
         this.yoff = y;
         this.insets = new Insets(0,0,xoff,yoff);
+        BufferedImage bi = null;
         try{
             Robot robot = new Robot();
             Dimension d = c.getPreferredSize();
-            screen = robot.createScreenCapture(new Rectangle(p.x, p.y, d.width+xoff, d.height+yoff));
+            bi = robot.createScreenCapture(new Rectangle(p.x, p.y, d.width+xoff, d.height+yoff));
         }catch(AWTException ex) {
             ex.printStackTrace();
         }
+        screen = bi;
     }
     @Override public Insets getBorderInsets(Component c) {
         return insets;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        if(screen==null) { return; }
+        if(screen==null) {
+            return;
+        }
         if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();

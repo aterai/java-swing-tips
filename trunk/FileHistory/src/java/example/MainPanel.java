@@ -10,6 +10,7 @@ import java.io.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static final int MAXHISTORY = 3;
     private final BarFactory barFactory;
     private final JFrame frame;
 
@@ -66,12 +67,13 @@ public class MainPanel extends JPanel {
             }
         }
     }
-    private int MAXHISTORY = 3;
     private void updateHistory(String str) {
         fileHistory.removeAll();
         fh.remove(str);
         fh.add(0, str);
-        if(fh.size()>MAXHISTORY) { fh.remove(fh.size()-1); }
+        if(fh.size()>MAXHISTORY) {
+            fh.remove(fh.size()-1);
+        }
         for(int i=0;i<fh.size();i++) {
             String name = fh.get(i);
             String num  = Integer.toString(i+1);
@@ -114,7 +116,7 @@ public class MainPanel extends JPanel {
     private Action[] getActions() {
         return defaultActions;
     }
-    private Action[] defaultActions = {
+    private final Action[] defaultActions = {
         new NewAction(),
         new OpenAction(),
         new ExitAction(),

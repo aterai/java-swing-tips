@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
     private Action[] getActions() {
         return defaultActions;
     }
-    private Action[] defaultActions = {
+    private final Action[] defaultActions = {
         new NewAction(),
         new ExitAction(),
         new HelpAction(),

@@ -187,8 +187,8 @@ class CellButtonsMouseListener extends MouseAdapter {
 }
 
 class ButtonsRenderer extends JPanel implements ListCellRenderer {
-    private JLabel label = new DefaultListCellRenderer();
-    private JButton deleteButton = new JButton(new AbstractAction("x") {
+    private final JLabel label = new DefaultListCellRenderer();
+    private final JButton deleteButton = new JButton(new AbstractAction("x") {
         @Override public void actionPerformed(ActionEvent e) {
             MutableComboBoxModel m = (MutableComboBoxModel)list.getModel();
             if(m.getSize()>1) {

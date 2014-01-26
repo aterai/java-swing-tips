@@ -10,9 +10,9 @@ import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
 public class MainPanel extends JPanel {
-    private Box northBox  = Box.createVerticalBox();
-    private Box centerBox = Box.createVerticalBox();
-    private Box southBox  = Box.createVerticalBox();
+    private final Box northBox  = Box.createVerticalBox();
+    private final Box centerBox = Box.createVerticalBox();
+    private final Box southBox  = Box.createVerticalBox();
     public MainPanel() {
         super(new BorderLayout());
         JPanel panel = new JPanel(new BorderLayout());

@@ -313,8 +313,9 @@ class TranslucentPopupFactory extends PopupFactory {
          return new TranslucentPopup(owner, contents, x, y);
      }
 }
+
 class TranslucentPopup extends Popup {
-    private JWindow popupWindow;
+    private final JWindow popupWindow;
     public TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
         super(owner, contents, ownerX, ownerY);
         // create a new heavyweight window

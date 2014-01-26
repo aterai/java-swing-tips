@@ -96,7 +96,7 @@ public class MainPanel extends JPanel {
     }
 }
 class MySynthStyleFactory extends SynthStyleFactory {
-    private SynthStyleFactory wrappedFactory;
+    private final SynthStyleFactory wrappedFactory;
     public MySynthStyleFactory(SynthStyleFactory factory) {
         super();
         this.wrappedFactory = factory;

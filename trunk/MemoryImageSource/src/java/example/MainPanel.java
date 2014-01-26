@@ -40,10 +40,10 @@ public class MainPanel extends JPanel {
 
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Point startPoint = new Point(-1,-1);
-    private BufferedImage backImage = null;
-    private TexturePaint texture  = makeTexturePaint();
-    private int[] pixels = new int[320 * 240];
-    private MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
+    private final BufferedImage backImage;
+    private final TexturePaint texture = makeTexturePaint();
+    private final int[] pixels = new int[320 * 240];
+    private final MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
     public PaintPanel() {
         super();
         addMouseMotionListener(this);

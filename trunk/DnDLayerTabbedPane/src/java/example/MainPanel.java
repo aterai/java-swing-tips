@@ -213,7 +213,7 @@ class DnDTabbedPane extends JTabbedPane {
         addMouseMotionListener(h);
         addPropertyChangeListener(h);
     }
-    private DropMode dropMode = DropMode.INSERT;
+    private final DropMode dropMode = DropMode.INSERT;
     public DropLocation dropLocationForPoint(Point p) {
         //boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {

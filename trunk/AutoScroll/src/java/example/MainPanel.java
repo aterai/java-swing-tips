@@ -63,8 +63,8 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Timer scroller;
     private final JComponent label;
-    private Point startPt = new Point();
-    private Point move    = new Point();
+    private final Point startPt = new Point();
+    private final Point move    = new Point();
 
     public ViewportDragScrollListener(JComponent comp) {
         super();
@@ -120,8 +120,8 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Timer scroller;
     private final JComponent label;
-    private Point startPt = new Point();
-    private Point move    = new Point();
+    private final Point startPt = new Point();
+    private final Point move    = new Point();
 
     public ComponentDragScrollListener(JComponent comp) {
         super();

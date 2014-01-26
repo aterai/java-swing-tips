@@ -183,7 +183,7 @@ class CheckBoxNode {
 }
 
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
-    private TreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         if(leaf && value instanceof DefaultMutableTreeNode) {
             this.setOpaque(false);

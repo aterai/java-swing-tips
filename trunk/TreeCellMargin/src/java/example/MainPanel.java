@@ -75,9 +75,9 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     //protected boolean hasFocus;
 
     private boolean drawsFocusBorderAroundIcon;
-    private boolean drawDashedFocusIndicator = true;
+    private final boolean drawDashedFocusIndicator = true;
     //private boolean isDropCell;
-    private boolean fillBackground = true;
+    private final boolean fillBackground = true;
 
     private Color treeBGColor;
     private Color focusBGColor;

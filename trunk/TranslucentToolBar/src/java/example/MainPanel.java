@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
 class LabelWithToolBox extends JLabel implements HierarchyListener {
     private Timer animator;
     private int yy = 0;
-    private JToolBar toolBox = new JToolBar() {
+    private final JToolBar toolBox = new JToolBar() {
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
             g2.setPaint(getBackground());

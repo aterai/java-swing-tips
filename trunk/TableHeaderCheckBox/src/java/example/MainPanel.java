@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
 }
 class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     private final JLabel label = new JLabel("Check All");
-    private int targetColumnIndex;
+    private final int targetColumnIndex;
     public HeaderRenderer(JTableHeader header, int index) {
         super((String)null);
         this.targetColumnIndex = index;
