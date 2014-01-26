@@ -36,8 +36,8 @@ class MainPanel extends JPanel {
             boolean flag = false;
             @Override public void mouseClicked(MouseEvent e) {
                 JLabel l = (JLabel)e.getSource();
-                l.setIcon(flag?image:orgImage);
-                flag = !flag;
+                l.setIcon(flag ? image : orgImage);
+                flag ^= true;
             }
         });
         return label;

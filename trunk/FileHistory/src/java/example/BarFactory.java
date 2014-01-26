@@ -210,7 +210,7 @@ public final class BarFactory {
         JMenu menu = new JMenu(mitext);
         String mn = getResourceString(key + mneSuffix);
         if(mn!=null) {
-            String tmp = mn.toUpperCase().trim();
+            String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
             if(tmp.length()==1) {
                 if(mitext.indexOf(tmp)<0) {
                     menu.setText(mitext+" ("+tmp+")");
@@ -246,7 +246,7 @@ public final class BarFactory {
         String mn = getResourceString(cmd + mneSuffix);
         //System.out.println(mn);
         if(mn!=null) {
-            String tmp = mn.toUpperCase().trim();
+            String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
             if(tmp.length()==1) {
                 if(mitext.indexOf(tmp)<0) {
                     mi.setText(mitext+" ("+tmp+")");

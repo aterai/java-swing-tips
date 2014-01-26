@@ -78,6 +78,7 @@ public class MainPanel extends JPanel {
 }
 
 class ClearSelectionListener extends MouseAdapter {
+    private boolean startOutside = false;
     private static void clearSelectionAndFocus(JList list) {
         list.clearSelection();
         list.getSelectionModel().setAnchorSelectionIndex(-1);
@@ -92,10 +93,10 @@ class ClearSelectionListener extends MouseAdapter {
         }
         return false;
     }
-    private boolean startOutside = false;
     @Override public void mousePressed(MouseEvent e) {
         JList list = (JList)e.getSource();
-        startOutside = !contains(list, e.getPoint());
+        startOutside = contains(list, e.getPoint());
+        startOutside ^= true;
         if(startOutside) {
             clearSelectionAndFocus(list);
         }

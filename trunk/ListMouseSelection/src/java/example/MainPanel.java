@@ -145,7 +145,8 @@ class ClearSelectionListener extends MouseAdapter {
     public boolean  isCellInsideDragging = false;
     @Override public void mousePressed(MouseEvent e) {
         JList list = (JList)e.getSource();
-        startOutside = !contains(list, e.getPoint());
+        startOutside = contains(list, e.getPoint());
+        startOutside ^= true;
         startIndex = list.locationToIndex(e.getPoint());
         if(startOutside) {
             clearSelectionAndFocus(list);
