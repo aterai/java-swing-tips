@@ -40,13 +40,11 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
 class CloseTabIcon implements Icon {
     private int x_pos;
     private int y_pos;
-    private final int width;
-    private final int height;
-    private Icon fileIcon;
+    private static final int width  = 16;
+    private static final int height = 16;
+    private final Icon fileIcon;
     public CloseTabIcon(Icon fileIcon) {
         this.fileIcon=fileIcon;
-        width  = 16;
-        height = 16;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         this.x_pos=x;

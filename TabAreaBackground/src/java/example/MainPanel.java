@@ -42,7 +42,7 @@ class MainPanel extends JPanel {
         //UIManager.put("TabbedPane.tabRunOverlay", Boolean.FALSE);
         //UIManager.put("TabbedPane.tabsOverlapBorder", Boolean.FALSE);
         ////UIManager.put("TabbedPane.selectionFollowsFocus", Boolean.FALSE);
-        final Map<String, Color> map = new HashMap<String, Color>();
+        final Map<String, Color> map = new HashMap<>();
         map.put("TabbedPane.darkShadow",            Color.GRAY);
         map.put("TabbedPane.light",                 Color.GRAY);
         map.put("TabbedPane.tabAreaBackground",     Color.GRAY);

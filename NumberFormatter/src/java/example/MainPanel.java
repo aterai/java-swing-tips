@@ -97,7 +97,7 @@ class WarningSpinner extends JSpinner {
                 try{
                     Long.parseLong(text);
                 }catch(NumberFormatException e) {
-                    throw new ParseException("xxx", 0);
+                    throw new ParseException(e.getMessage(), 0);
                 }
                 Object o = format.parse(text);
                 if(o instanceof Long) {
@@ -105,11 +105,11 @@ class WarningSpinner extends JSpinner {
                     Long max = (Long)m.getMaximum();
                     Long min = (Long)m.getMinimum();
                     if(max.compareTo(val)<0 || min.compareTo(val)>0) {
-                        throw new ParseException("xxx", 0);
+                        throw new ParseException("out of bounds", 0);
                     }
                     return val;
                 }
-                throw new ParseException("xxx", 0);
+                throw new ParseException("not Long", 0);
             }
         };
         //editFormatter.setAllowsInvalid(false);

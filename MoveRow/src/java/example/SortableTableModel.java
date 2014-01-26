@@ -75,7 +75,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         }
     };
     private int pushedColumn = -1;
-    private final Map<Integer, Integer> state = new Hashtable<>();
+    private final Map<Integer, Integer> state = new HashMap<>();
 
     public SortButtonRenderer() {
         super();

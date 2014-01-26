@@ -48,13 +48,13 @@ public class MainPanel extends JPanel {
     public void setHighlight(JTextComponent jtc, String pattern) {
         jtc.getHighlighter().removeAllHighlights();
         try{
-            Highlighter hilite = jtc.getHighlighter();
+            //Highlighter hilite = jtc.getHighlighter();
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = text.indexOf(pattern);
             while(pos >= 0) {
                 int nextp = pos + pattern.length();
-                hilite.addHighlight(pos, nextp, highlightPainter);
+                jtc.getHighlighter().addHighlight(pos, nextp, highlightPainter);
                 pos = text.indexOf(pattern, nextp);
             }
         }catch(BadLocationException e) {
