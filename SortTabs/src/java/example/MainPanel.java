@@ -162,7 +162,6 @@ public class MainPanel extends JPanel {
 class EditableTabbedPane extends JTabbedPane {
     private final MyGlassPane panel  = new MyGlassPane();
     private final JTextField  editor = new JTextField();
-    private final JFrame      frame;
     private Rectangle rect;
 
 //     private final Rectangle2D lineRect = new Rectangle2D.Double();
@@ -173,9 +172,8 @@ class EditableTabbedPane extends JTabbedPane {
 //         128);
 //     private int dragTab = -1;
 
-    public EditableTabbedPane(JFrame _frame) {
+    public EditableTabbedPane(JFrame frame) {
         super();
-        this.frame = _frame;
         editor.setBorder(BorderFactory.createEmptyBorder(0,3,0,3));
         editor.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(final FocusEvent e) {

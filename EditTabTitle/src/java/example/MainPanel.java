@@ -11,7 +11,7 @@ public class MainPanel extends JPanel {
         " Start editing: Double-Click, Enter-Key\n"+
         " Commit rename: field-focusLost, Enter-Key\n"+
         "Cancel editing: Esc-Key, title.isEmpty\n";
-    public MainPanel(JFrame frame) {
+    private MainPanel(JFrame frame) {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new EditableTabbedPane(frame);
         //for(int i = 0; i < 5; i++) {
@@ -55,12 +55,10 @@ public class MainPanel extends JPanel {
 class EditableTabbedPane extends JTabbedPane {
     private final MyGlassPane panel  = new MyGlassPane();
     private final JTextField  editor = new JTextField();
-    private final JFrame      frame;
     private Rectangle rect;
 
-    public EditableTabbedPane(JFrame _frame) {
+    public EditableTabbedPane(JFrame frame) {
         super();
-        this.frame = _frame;
         editor.setBorder(BorderFactory.createEmptyBorder(0,3,0,3));
         editor.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(final FocusEvent e) {
@@ -126,11 +124,15 @@ class EditableTabbedPane extends JTabbedPane {
             super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-                @Override public boolean accept(Component c) { return c==editor; }
+                @Override public boolean accept(Component c) {
+                    return editor.equals(c);
+                }
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if(rect==null || rect.contains(me.getPoint())) { return; }
+                    if(rect==null || rect.contains(me.getPoint())) {
+                        return;
+                    }
                     renameTab();
                 }
             });

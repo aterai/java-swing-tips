@@ -54,7 +54,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(list));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static JList makeList(final Set<Integer> disableIndexSet) {
@@ -90,18 +90,19 @@ public class MainPanel extends JPanel {
 
         return list;
     }
+
     private void initDisableIndex(Set<Integer> set) {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         set.clear();
-//         try{
-        while(st.hasMoreTokens()) {
-            set.add(Integer.valueOf(st.nextToken()));
+        try{
+            while(st.hasMoreTokens()) {
+                set.add(Integer.valueOf(st.nextToken().trim()));
+            }
+        }catch(NumberFormatException nfe) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+                                          "Error", JOptionPane.ERROR_MESSAGE);
         }
-//         }catch(NumberFormatException nfe) {
-//             Toolkit.getDefaultToolkit().beep();
-//             JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
-//                                           "Error", JOptionPane.ERROR_MESSAGE);
-//         }
     }
 
     public static void main(String[] args) {

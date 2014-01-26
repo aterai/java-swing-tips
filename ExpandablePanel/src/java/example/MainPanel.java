@@ -119,21 +119,18 @@ public class MainPanel extends JPanel {
 abstract class ExpansionPanel extends JPanel {
     abstract public Container makePanel();
 
-    private final JButton button;
-    private final Container panel;
     private final JScrollPane scroll;
     private boolean openFlag = false;
 
     public ExpansionPanel(String title) {
         super(new BorderLayout());
-        button = new JButton(new AbstractAction(title) {
+        JButton button = new JButton(new AbstractAction(title) {
             @Override public void actionPerformed(ActionEvent e) {
                 setSelected(!isSelected());
                 fireExpansionEvent();
             }
         });
-        panel  = makePanel();
-        scroll = new JScrollPane(panel);
+        scroll = new JScrollPane(makePanel());
         scroll.getVerticalScrollBar().setUnitIncrement(25);
         add(button, BorderLayout.NORTH);
     }

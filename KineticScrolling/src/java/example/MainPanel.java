@@ -13,7 +13,6 @@ class MainPanel extends JPanel {
                                                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     private static boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
     private final JViewport viewport; // = scroll.getViewport();
-    private final JLabel label;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -37,7 +36,7 @@ class MainPanel extends JPanel {
         };
         scroll.setViewport(viewport);
 
-        label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
         viewport.add(label);
         final KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
         final KineticScrollingListener2 l2 = new KineticScrollingListener2(label);

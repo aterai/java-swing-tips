@@ -108,13 +108,12 @@ public final class BarFactory {
     }
 
     private String[] tokenize(String input) {
-        ArrayList<String> v = new ArrayList<String>();
+        List<String> v = new ArrayList<>();
         StringTokenizer t = new StringTokenizer(input);
-        String[] cmd;
         while(t.hasMoreTokens()) {
             v.add(t.nextToken());
         }
-        cmd = new String[v.size()];
+        String[] cmd = new String[v.size()];
         for(int i=0;i<cmd.length;i++) {
             cmd[i] = v.get(i);
         }

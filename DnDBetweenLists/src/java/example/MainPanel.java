@@ -83,7 +83,6 @@ public class MainPanel extends JPanel {
 //Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    private Object[] transferedObjects = null;
     public ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
@@ -93,7 +92,7 @@ class ListItemTransferHandler extends TransferHandler {
     @Override protected Transferable createTransferable(JComponent c) {
         source = (JList) c;
         indices = source.getSelectedIndices();
-        transferedObjects = source.getSelectedValues();
+        Object[] transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {

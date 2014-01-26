@@ -21,22 +21,26 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    private final JTextField field = new JTextField("5:3:2");
+    private final JTextField field = new JTextField("5 : 3 : 2");
     private final JCheckBox check  = new JCheckBox("ComponentListener#componentResized(...)", true);
+
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         table.setAutoCreateRowSorter(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                if(check.isSelected()) { setTableHeaderColumnRaito(); }
+                if(check.isSelected()) {
+                    setTableHeaderColumnRaito();
+                }
             }
         });
         add(makeSettingPanel(), BorderLayout.NORTH);
         add(scrollPane);
         setPreferredSize(new Dimension(320, 240));
     }
+
     private JPanel makeSettingPanel() {
         JPanel p = new JPanel(new BorderLayout(5,5));
         p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -53,6 +57,7 @@ public class MainPanel extends JPanel {
         panel.add(check);
         return panel;
     }
+
     private void setTableHeaderColumnRaito() {
         List<Integer> list = getWidthRaitoArray();
         //System.out.println("a: "+table.getColumnModel().getTotalColumnWidth());
@@ -70,18 +75,26 @@ public class MainPanel extends JPanel {
         table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setPreferredWidth(total);
         table.revalidate();
     }
-    private static int getRaitoTotal(List<Integer> list) {
+
+    private int getRaitoTotal(List<Integer> list) {
         int w = 0;
-        for(int i:list) {
-            w += i;
+        for(int i=0;i<table.getColumnModel().getColumnCount();i++) {
+            w += list.get(i);
         }
         return w;
     }
+
     private List<Integer> getWidthRaitoArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ":");
         List<Integer> list = new ArrayList<>();
-        while(st.hasMoreTokens()) {
-            list.add(Integer.valueOf(st.nextToken().trim()));
+        try{
+            while(st.hasMoreTokens()) {
+                list.add(Integer.valueOf(st.nextToken().trim()));
+            }
+        }catch(NumberFormatException nfe) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+                                          "Error", JOptionPane.ERROR_MESSAGE);
         }
         while(list.size()<columnNames.length) {
             list.add(1);
@@ -96,6 +109,7 @@ public class MainPanel extends JPanel {
             }
         });
     }
+
     public static void createAndShowGUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

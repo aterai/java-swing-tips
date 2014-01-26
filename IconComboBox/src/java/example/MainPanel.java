@@ -9,10 +9,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 class MainPanel extends JPanel {
-    private final ImageIcon image;
     public MainPanel() {
         super(new GridLayout(2,1));
-        image = new ImageIcon(getClass().getResource("16x16.png"));
+        ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));
 
         JComboBox combo01 = makeComboBox();
 

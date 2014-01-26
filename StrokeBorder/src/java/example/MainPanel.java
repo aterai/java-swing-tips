@@ -17,29 +17,26 @@ public class MainPanel extends JPanel {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         float[] list = new float[st.countTokens()];
         int i = 0;
-//         try{
-        while(st.hasMoreTokens()) {
-            list[i] = Float.valueOf(st.nextToken());
-            i++;
+        try{
+            while(st.hasMoreTokens()) {
+                list[i] = Float.valueOf(st.nextToken());
+                i++;
+            }
+        }catch(NumberFormatException nfe) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         if(i==0) {
             list = new float[] { 1f };
         }
-//         }catch(NumberFormatException nfe) {
-//             Toolkit.getDefaultToolkit().beep();
-//             JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//             float[] fd = {1.0f};
-//             return fd;
-//         }
         return list;
     }
 
-    private BasicStroke dashedStroke;
     public MainPanel() {
         super(new BorderLayout());
         button = new JButton(new AbstractAction("Change") {
             @Override public void actionPerformed(ActionEvent ae) {
-                dashedStroke = new BasicStroke(5.0f,
+                BasicStroke dashedStroke = new BasicStroke(5.0f,
                     ((EndCapStyle)endcapCombo.getSelectedItem()).style,
                     ((JoinStyle)joinCombo.getSelectedItem()).style,
                     5.0f, getDashArray(), 0.0f);

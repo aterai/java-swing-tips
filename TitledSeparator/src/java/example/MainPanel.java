@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
         box.add(new TitledSeparator("TitledBorder", 2, TitledBorder.DEFAULT_POSITION));
@@ -52,8 +52,8 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TitledSeparator extends JLabel {
-    private Color color;
     private final String title;
     private final Color target;
     private final int height;
@@ -61,43 +61,19 @@ class TitledSeparator extends JLabel {
     public TitledSeparator(String title, int height, int titlePosition) {
         this(title, null, height, titlePosition);
     }
-    public TitledSeparator(String _title, Color _target, int _height, int _titlePosition) {
+    public TitledSeparator(String title, Color target, int height, int titlePosition) {
         super();
-        this.title = _title;
-        this.target = _target;
-        this.height = _height;
-        this.titlePosition = _titlePosition;
-        Icon icon = new Icon() {
-            private int width = -1;
-            private Paint painter1, painter2;
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                int w = c.getWidth();
-                if(w!=width || painter1==null || painter2==null || color==null) {
-                    width = w;
-                    Point2D start = new Point2D.Float(0f, 0f);
-                    Point2D end   = new Point2D.Float((float)width, 0f);
-                    float[] dist  = {0.0f, 1.0f};
-                    color = getBackground();
-                    color = color==null ? UIManager.getColor("Panel.background") : color;
-                    Color tc = target==null ? color : target;
-                    painter1 = new LinearGradientPaint(start, end, dist, new Color[] {tc.darker(),   color});
-                    painter2 = new LinearGradientPaint(start, end, dist, new Color[] {tc.brighter(), color});
-                }
-                int h = getIconHeight()/2;
-                Graphics2D g2  = (Graphics2D)g.create();
-                g2.setPaint(painter1);
-                g2.fillRect(x, y,   width, getIconHeight());
-                g2.setPaint(painter2);
-                g2.fillRect(x, y+h, width, getIconHeight()-h);
-                g2.dispose();
-            }
-            @Override public int getIconWidth()  { return 200; } //dummy width
-            @Override public int getIconHeight() { return height; }
-        };
-        this.setBorder(BorderFactory.createTitledBorder(
+        this.title = title;
+        this.target = target;
+        this.height = height;
+        this.titlePosition = titlePosition;
+        updateBorder();
+    }
+    private void updateBorder() {
+        Icon icon = new TitledSeparatorIcon();
+        setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createMatteBorder(height, 0, 0, 0, icon), title,
             TitledBorder.DEFAULT_JUSTIFICATION, titlePosition));
-        //System.out.println(getInsets());
     }
     @Override public Dimension getMaximumSize() {
         Dimension d = super.getPreferredSize();
@@ -106,6 +82,34 @@ class TitledSeparator extends JLabel {
     }
     @Override public void updateUI() {
         super.updateUI();
-        color = null;
+        updateBorder();
+    }
+    private class TitledSeparatorIcon implements Icon {
+        private int width = -1;
+        private Paint painter1;
+        private Paint painter2;
+        @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+            int w = c.getWidth();
+            Color color = getBackground();
+            if(w!=width || painter1==null || painter2==null) {
+                width = w;
+                Point2D start = new Point2D.Float(0f, 0f);
+                Point2D end   = new Point2D.Float((float)width, 0f);
+                float[] dist  = {0.0f, 1.0f};
+                color = color==null ? UIManager.getColor("Panel.background") : color;
+                Color tc = target==null ? color : target;
+                painter1 = new LinearGradientPaint(start, end, dist, new Color[] {tc.darker(),   color});
+                painter2 = new LinearGradientPaint(start, end, dist, new Color[] {tc.brighter(), color});
+            }
+            int h = getIconHeight()/2;
+            Graphics2D g2  = (Graphics2D)g.create();
+            g2.setPaint(painter1);
+            g2.fillRect(x, y,   width, getIconHeight());
+            g2.setPaint(painter2);
+            g2.fillRect(x, y+h, width, getIconHeight()-h);
+            g2.dispose();
+        }
+        @Override public int getIconWidth()  { return 200; } //dummy width
+        @Override public int getIconHeight() { return height; }
     }
 }

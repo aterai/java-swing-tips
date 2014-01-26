@@ -18,7 +18,7 @@ class MainPanel extends JPanel {
         toolbar.add(new PressAndHoldButton(new ImageIcon(url), makeIconList()));
         add(toolbar, BorderLayout.NORTH);
         add(new JLabel("press and hold the button for 1000 milliseconds"));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private List<MenuContext> makeIconList() {
         return Arrays.asList(
@@ -68,10 +68,10 @@ class PressAndHoldButton extends JToggleButton {
 //         this(text, null);
 //     }
 //     public PressAndHoldButton(String text, Icon icon) {
-    private final List<MenuContext> iconList;
-    public PressAndHoldButton(Icon icon, List<MenuContext> list) {
+    //private final List<MenuContext> iconList;
+    public PressAndHoldButton(Icon icon, List<MenuContext> iconList) {
         super();
-        this.iconList = list;
+        //this.iconList = iconList;
         pop.setLayout(new GridLayout(0,3));
         for(MenuContext m: iconList) {
             AbstractButton b = new JRadioButton();

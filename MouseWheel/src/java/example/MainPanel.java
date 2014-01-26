@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private final SpinnerNumberModel model;
     private final JSpinner spinner;
     private final JSlider  slider;
 
@@ -27,7 +26,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        model   = new SpinnerNumberModel(500, 0, 1000, 10);
+        SpinnerNumberModel model = new SpinnerNumberModel(500, 0, 1000, 10);
         spinner = new JSpinner(model);
 
         spinner.addChangeListener(new ChangeListener() {
