@@ -10,6 +10,18 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
+    protected PopupMenuListener popupMenuListener;
+    protected JButton loupeButton;
+    protected Action loupeAction = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            comboBox.setPopupVisible(false);
+            Object o = listBox.getSelectedValue();
+            if(o==null) {
+                o = comboBox.getItemAt(0);
+            }
+            System.out.println(o + ": " +comboBox.getEditor().getItem());
+        }
+    };
     public static javax.swing.plaf.ComponentUI createUI(JComponent c) {
         return new BasicSearchBarComboBoxUI();
     }
@@ -22,7 +34,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     }
     @Override protected void installListeners() {
         super.installListeners();
-        popupMenuListener = createPopupMenuListener()
+        popupMenuListener = createPopupMenuListener();
         if(popupMenuListener != null) {
             comboBox.addPopupMenuListener(popupMenuListener);
         }
@@ -33,7 +45,6 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
             comboBox.removePopupMenuListener(popupMenuListener);
         }
     }
-    protected PopupMenuListener popupMenuListener;
     protected PopupMenuListener createPopupMenuListener() {
         if(popupMenuListener == null) {
             popupMenuListener = new PopupMenuListener() {
@@ -44,7 +55,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 }
                 @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                     Object o = listBox.getSelectedValue();
-                    if(o!=null && o instanceof SearchEngine) {
+                    if(o instanceof SearchEngine) {
                         SearchEngine se = (SearchEngine) o;
                         arrowButton.setIcon(se.favicon);
                         arrowButton.setRolloverIcon(makeRolloverIcon(se.favicon));
@@ -67,16 +78,6 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         }
         return keyListener;
     }
-    protected Action loupeAction = new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-            comboBox.setPopupVisible(false);
-            Object o = listBox.getSelectedValue();
-            if(o==null) {
-                o = comboBox.getItemAt(0);
-            }
-            System.out.println(o + ": " +comboBox.getEditor().getItem());
-        }
-    };
     @Override protected void configureEditor() {
         //super.configureEditor();
         // Should be in the same state as the combobox
@@ -139,7 +140,6 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         loupeButton = null;
         super.uninstallComponents();
     }
-    protected JButton loupeButton;
     protected JButton createLoupeButton() {
         JButton button = new JButton(loupeAction);
         ImageIcon loupe = new ImageIcon(getClass().getResource("loupe.png"));
@@ -264,7 +264,7 @@ class TriangleIcon implements Icon {
 }
 
 class TriangleArrowButton extends JButton {
-    private transient Icon triangleIcon = new TriangleIcon();
+    private final transient Icon triangleIcon = new TriangleIcon();
 //     @Override public void setIcon(Icon favicon) {
 //         super.setIcon(favicon);
 //         if(favicon!=null) {

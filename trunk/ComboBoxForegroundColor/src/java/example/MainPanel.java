@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
             this.combo = combo;
         }
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-            if(value!=null && value instanceof ColorItem) {
+            if(value instanceof ColorItem) {
                 ColorItem item = (ColorItem) value;
                 Color ic = item.color;
                 if(index<0 && ic!=null && !ic.equals(combo.getForeground())) {

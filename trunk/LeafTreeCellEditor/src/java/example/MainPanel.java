@@ -58,7 +58,7 @@ class LeafTreeCellEditor extends DefaultTreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         boolean b = super.isCellEditable(e);
         Object o = tree.getLastSelectedPathComponent();
-        if(b && o!=null && o instanceof TreeNode) {
+        if(b && o instanceof TreeNode) {
             return ((TreeNode)o).isLeaf();
         }else{
             return b;

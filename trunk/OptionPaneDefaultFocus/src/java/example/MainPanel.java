@@ -75,7 +75,7 @@ public class MainPanel extends JPanel {
                 dialog.setVisible(true);
                 Object selectedValue = pane.getValue();
                 int result = JOptionPane.CLOSED_OPTION;
-                if(selectedValue != null && selectedValue instanceof Integer) {
+                if(selectedValue instanceof Integer) {
                     result = ((Integer)selectedValue).intValue();
                 }
                 if(result==JOptionPane.OK_OPTION) { textArea.setText(textField.getText()); }

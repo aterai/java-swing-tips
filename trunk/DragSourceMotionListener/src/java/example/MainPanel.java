@@ -78,7 +78,7 @@ class Handler extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         DragPanel p = (DragPanel)e.getSource();
         Component c = SwingUtilities.getDeepestComponentAt(p, e.getX(), e.getY());
-        if(c!=null && c instanceof JLabel) {
+        if(c instanceof JLabel) {
             p.draggingLabel = (JLabel)c;
             p.getTransferHandler().exportAsDrag(p, e, TransferHandler.MOVE);
         }
