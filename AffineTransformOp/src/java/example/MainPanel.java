@@ -14,35 +14,37 @@ import javax.imageio.*;
 
 class MainPanel extends JPanel {
     private Flip mode = Flip.NONE;
-    private BufferedImage bi = null;
+    private final BufferedImage bufferedImage;
     private final JPanel p = new JPanel() {
         @Override public void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
-            int w = bi.getWidth(this);
-            int h = bi.getHeight(this);
+            int w = bufferedImage.getWidth(this);
+            int h = bufferedImage.getHeight(this);
             if(mode==Flip.NONE) {
-                g.drawImage(bi, 0, 0, w, h, this);
+                g.drawImage(bufferedImage, 0, 0, w, h, this);
             }else if(mode==Flip.VERTICAL) {
                 AffineTransform at = AffineTransform.getScaleInstance(1.0, -1.0);
                 at.translate(0, -h);
-                g2.drawImage(bi, at, this);
+                g2.drawImage(bufferedImage, at, this);
             }else if(mode==Flip.HORIZONTAL) {
                 AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
                 at.translate(-w, 0);
                 AffineTransformOp atOp = new AffineTransformOp(at, null);
-                g.drawImage(atOp.filter(bi, null), 0, 0, w, h, this);
+                g.drawImage(atOp.filter(bufferedImage, null), 0, 0, w, h, this);
             }
         }
     };
     public MainPanel() {
         super(new BorderLayout());
+        BufferedImage bi = null;
         try{
             bi = ImageIO.read(getClass().getResource("test.jpg"));
         }catch(IOException ioe) {
             ioe.printStackTrace();
         }
+        bufferedImage = bi;
         List<AbstractAction> list = Arrays.asList(
             new AbstractAction("NONE") {
                 @Override public void actionPerformed(ActionEvent e) {

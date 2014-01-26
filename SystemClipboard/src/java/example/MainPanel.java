@@ -11,15 +11,17 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
-    private ClipboardService cs = null;
+    private final ClipboardService cs;
     public MainPanel() {
         super(new BorderLayout());
 
+        ClipboardService tmp;
         try{
-            cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
+            tmp = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
         }catch(UnavailableServiceException t) {
-            cs = null;
+            tmp = null;
         }
+        cs = tmp;
         add(new JScrollPane(label));
         add(new JButton(new AbstractAction("get Clipboard DataFlavor") {
             @Override public void actionPerformed(ActionEvent e) {

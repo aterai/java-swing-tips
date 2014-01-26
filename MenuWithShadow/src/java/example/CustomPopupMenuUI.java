@@ -92,15 +92,19 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
         }
     }
     static class ShadowBorder extends AbstractBorder {
-        private BufferedImage screenShot = null;
+        private final BufferedImage screenShot;
         public ShadowBorder(JComponent c, Point p) {
             super();
+            BufferedImage bi = null;
             try{
                 Robot robot = new Robot();
                 Dimension dim = c.getPreferredSize();
                 Rectangle rect = new Rectangle(p.x, p.y, dim.width+OFF, dim.height+OFF);
-                screenShot = robot.createScreenCapture(rect);
-            }catch(AWTException ex) { ex.printStackTrace(); }
+                bi = robot.createScreenCapture(rect);
+            }catch(AWTException ex) {
+                ex.printStackTrace();
+            }
+            screenShot = bi;
         }
         @Override public Insets getBorderInsets(Component c) {
             return insets;

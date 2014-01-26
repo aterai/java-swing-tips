@@ -116,10 +116,10 @@ public class MainPanel extends JPanel {
     }
 
     class DeleteAction extends AbstractAction {
+        private final Set<Integer> deleteRowSet = new TreeSet<>();
         public DeleteAction(String label, Icon icon) {
             super(label,icon);
         }
-        private Set<Integer> deleteRowSet = new TreeSet<>();
         @Override public void actionPerformed(ActionEvent evt) {
             int[] selection = table.getSelectedRows();
             if(selection.length == 0) {
@@ -189,8 +189,8 @@ public class MainPanel extends JPanel {
 }
 
 class Task extends SwingWorker<Integer, Integer> {
-    private int sleepDummy = new Random().nextInt(100) + 1;
-    private int lengthOfTask = 120;
+    private final int sleepDummy = new Random().nextInt(100) + 1;
+    private final int lengthOfTask = 120;
     @Override protected Integer doInBackground() {
         int current = 0;
         while(current<lengthOfTask && !isCancelled()) {

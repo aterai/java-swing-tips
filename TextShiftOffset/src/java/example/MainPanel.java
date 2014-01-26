@@ -40,10 +40,10 @@ class MainPanel extends JPanel {
 
         add(box, BorderLayout.NORTH);
         add(p);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     class TextShiftOffsetAction extends AbstractAction {
-        private int offset = 0;
+        private final int offset; // = 0;
         public TextShiftOffsetAction(int offset) {
             super(" "+offset+" ");
             this.offset = offset;

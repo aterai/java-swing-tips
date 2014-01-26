@@ -167,7 +167,7 @@ class TableOfContents {
 class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
     private static BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] { 1f }, 0f);
     private String pn;
-    private Point pnPt = new Point();
+    private final Point pnPt = new Point();
     private int rxs, rxe;
     private boolean isSynth = false;
     private final JPanel p = new JPanel(new BorderLayout()) {

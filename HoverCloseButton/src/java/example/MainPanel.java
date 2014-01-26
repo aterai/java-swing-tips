@@ -142,12 +142,6 @@ class TabPanel extends JPanel {
     }
 }
 class CloseTabIcon implements Icon {
-    private int width;
-    private int height;
-    public CloseTabIcon() {
-        width  = 12;
-        height = 12;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.translate(x, y);
         g.setColor(Color.ORANGE);
@@ -160,10 +154,10 @@ class CloseTabIcon implements Icon {
         g.translate(-x, -y);
     }
     @Override public int getIconWidth() {
-        return width;
+        return 12;
     }
     @Override public int getIconHeight() {
-        return height;
+        return 12;
     }
 //     public Rectangle getBounds() {
 //         return new Rectangle(0, 0, width, height);

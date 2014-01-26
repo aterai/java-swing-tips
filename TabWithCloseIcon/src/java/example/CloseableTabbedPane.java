@@ -329,17 +329,17 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
         /**
          * the width the icon
          */
-        private int width;
+        private final int width;
 
         /**
          * the height the icon
          */
-        private int height;
+        private final int height;
 
         /**
          * the additional fileicon
          */
-        private Icon fileIcon;
+        private final Icon fileIcon;
 
         /**
          * true whether the mouse is over this icon, false otherwise

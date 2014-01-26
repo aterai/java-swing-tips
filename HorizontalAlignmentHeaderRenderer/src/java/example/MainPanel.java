@@ -100,7 +100,7 @@ public class MainPanel extends JPanel {
 }
 
 class HorizontalAlignmentHeaderRenderer implements TableCellRenderer {
-    private int horizontalAlignment = SwingConstants.LEFT;
+    private final int horizontalAlignment; // = SwingConstants.LEFT;
     public HorizontalAlignmentHeaderRenderer(int horizontalAlignment) {
         this.horizontalAlignment = horizontalAlignment;
     }

@@ -11,12 +11,16 @@ class MainPanel extends JPanel {
     private final Image[] imglist = new Image[4];
     private final PopupMenu popup = new PopupMenu();
     private final JFrame frame;
-    private SystemTray tray;
-    private TrayIcon icon;
-    private Timer animator;
+    private final SystemTray tray;
+    private final TrayIcon icon;
+    private final Timer animator;
 
     public MainPanel(JFrame frame) {
         super();
+        if(!SystemTray.isSupported()) {
+            throw new UnsupportedOperationException("SystemTray is not supported");
+        }
+
         setPreferredSize(new Dimension(320, 240));
         this.frame = frame;
 
@@ -29,10 +33,6 @@ class MainPanel extends JPanel {
         dialog.setLocationRelativeTo(null);
         dialog.setTitle("xxxxxxxxx");
 
-        if(!SystemTray.isSupported()) {
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            return;
-        }
         tray = SystemTray.getSystemTray();
         //TEST: icon   = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
         icon = new TrayIcon(imglist[0], "TRAY", popup);

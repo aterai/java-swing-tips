@@ -136,8 +136,8 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     static final int CHECKICON_SELECTED_MOUSEOVER = 7;
     static final int CHECKICON_ENABLED            = 8;
     static final int CHECKICON_MOUSEOVER          = 9;
-    private int state;
-    private PaintContext ctx;
+    private final int state;
+    private final PaintContext ctx;
     public MyCheckBoxMenuItemPainter(int state) {
         super();
         this.state = state;
@@ -181,9 +181,9 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
 }
 
 class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
-    private List<List<Integer>> rowColHeight = new ArrayList<List<Integer>>();
-    private Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
-    private Border epb = BorderFactory.createEmptyBorder(2,5,2,5);
+    private final List<List<Integer>> rowColHeight = new ArrayList<List<Integer>>();
+    private final Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
+    private final Border epb = BorderFactory.createEmptyBorder(2,5,2,5);
     public MultiLineTableCellRenderer() {
         super();
 

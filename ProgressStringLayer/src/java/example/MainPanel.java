@@ -149,7 +149,7 @@ class TextLabelProgressBar extends JProgressBar {
     public TextLabelProgressBar(BoundedRangeModel model) {
         super(model);
     }
-    private JLabel label = new JLabel("000/100", SwingConstants.CENTER);
+    private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
     private ChangeListener changeListener = null;
     @Override public void updateUI() {
         removeAll();

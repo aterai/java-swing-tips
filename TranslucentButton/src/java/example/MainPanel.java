@@ -145,7 +145,7 @@ class TranslucentButton extends JButton {
     private static final Color BR = new Color(0f,0f,0f,.4f);
     private static final Color ST = new Color(1f,1f,1f,.2f);
     private static final Color SB = new Color(1f,1f,1f,.1f);
-    private int r = 8;
+    private static final int R = 8;
     public TranslucentButton(String text) {
         super(text);
     }
@@ -167,7 +167,7 @@ class TranslucentButton extends JButton {
         int h = getHeight();
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Shape area = new RoundRectangle2D.Float(x, y, w-1, h-1, r, r);
+        Shape area = new RoundRectangle2D.Float(x, y, w-1, h-1, R, R);
         Color ssc = TL;
         Color bgc = BR;
         ButtonModel m = getModel();
@@ -192,14 +192,14 @@ class TranslucentButtonIcon implements Icon {
     private static final Color BR = new Color(0f,0f,0f,.4f);
     private static final Color ST = new Color(1f,1f,1f,.2f);
     private static final Color SB = new Color(1f,1f,1f,.1f);
-    private int r = 8;
+    private static final int R = 8;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int w = c.getWidth();
         int h = c.getHeight();
 
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Shape area = new RoundRectangle2D.Float(x, y, w-1, h-1, r, r);
+        Shape area = new RoundRectangle2D.Float(x, y, w-1, h-1, R, R);
         Color ssc = TL;
         Color bgc = BR;
         if(c instanceof AbstractButton) {

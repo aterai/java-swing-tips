@@ -75,7 +75,7 @@ public class MainPanel extends JPanel {
         add(t);
         setPreferredSize(new Dimension(320, 240));
     }
-    private transient Timer timer;
+    private final transient Timer timer;
     private transient HierarchyListener hierarchyListener;
     @Override public void updateUI() {
         if(hierarchyListener!=null) { removeHierarchyListener(hierarchyListener); }

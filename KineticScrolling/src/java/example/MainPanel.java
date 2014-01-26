@@ -107,8 +107,8 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Timer scroller;
     private final JComponent label;
-    private Point startPt = new Point();
-    private Point delta   = new Point();
+    private final Point startPt = new Point();
+    private final Point delta   = new Point();
 
     public KineticScrollingListener1(JComponent comp) {
         super();
@@ -164,8 +164,8 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     private final Timer inside;
     private final Timer outside;
     private final JComponent label;
-    private Point startPt = new Point();
-    private Point delta   = new Point();
+    private final Point startPt = new Point();
+    private final Point delta   = new Point();
     private static boolean isInside(JViewport vport, JComponent comp) {
         Point vp = vport.getViewPosition();
         return vp.x>=0 && vp.x+vport.getWidth() -comp.getWidth() <=0 &&

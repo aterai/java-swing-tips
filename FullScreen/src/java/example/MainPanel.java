@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private static final String KEY = "full-screen";
-    private JDialog dialog;
+    private final JDialog dialog;
     public MainPanel(JDialog frame) {
         super(new BorderLayout());
         this.dialog = frame;

@@ -42,7 +42,7 @@ public class MainPanel extends JPanel {
         class ReplaceUndoableEdit extends AbstractUndoableEdit {
             private final String oldValue;
             private final String newValue;
-            private int offset;
+            private final int offset;
             public ReplaceUndoableEdit(int offset, int length, String newValue) {
                 super();
                 String txt;

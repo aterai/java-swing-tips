@@ -100,6 +100,7 @@ public class MainPanel extends JPanel {
 }
 
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
+    private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         if(leaf && value instanceof DefaultMutableTreeNode) {
             this.setEnabled(tree.isEnabled());
@@ -115,7 +116,6 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
         }
         return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     }
-    private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public void updateUI() {
         super.updateUI();
         setName("Tree.cellRenderer");

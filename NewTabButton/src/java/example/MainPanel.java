@@ -248,13 +248,9 @@ class TabButton extends JRadioButton {
     }
 }
 class CloseTabIcon implements Icon {
-    private int width;
-    private int height;
     private final Color color;
     public CloseTabIcon(Color color) {
         this.color = color;
-        width  = 12;
-        height = 12;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         //g.translate(x, y);
@@ -268,10 +264,10 @@ class CloseTabIcon implements Icon {
         //g.translate(-x, -y);
     }
     @Override public int getIconWidth() {
-        return width;
+        return 12;
     }
     @Override public int getIconHeight() {
-        return height;
+        return 12;
     }
 }
 

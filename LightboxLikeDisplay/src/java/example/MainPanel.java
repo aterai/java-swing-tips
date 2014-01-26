@@ -67,7 +67,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
     private float alpha = 0.0f;
     private int w = 0;
     private int h = 0;
-    private Rectangle rect = new Rectangle();
+    private final Rectangle rect = new Rectangle();
     private Timer animator;
     public LightboxGlassPane() {
         super();

@@ -58,7 +58,7 @@ class MainPanel extends JPanel {
 
 class RotateIcon implements Icon {
     private int width, height;
-    private Image image;
+    private final Image image;
     private AffineTransform trans;
     public RotateIcon(Icon icon, int rotate) {
         if(rotate%90 != 0) {

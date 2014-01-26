@@ -63,9 +63,9 @@ class DragHandler extends MouseAdapter {
     private final JWindow window = new JWindow();
     private Component draggingComonent = null;
     private int index = -1;
-    private Component gap = Box.createHorizontalStrut(24);
+    private final Component gap = Box.createHorizontalStrut(24);
     private Point startPt = null;
-    private int gestureMotionThreshold = DragSource.getDragThreshold();
+    private final int gestureMotionThreshold = DragSource.getDragThreshold();
     public DragHandler() {
         super();
         window.setBackground(new Color(0, true));
