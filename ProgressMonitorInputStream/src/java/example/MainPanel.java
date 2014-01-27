@@ -57,9 +57,7 @@ public class MainPanel extends JPanel {
                         System.out.println(urlConnection.getContentType());
 
                         String encoding = urlConnection.getContentEncoding();
-                        if(encoding!=null) {
-                            cs = Charset.forName(encoding);
-                        }else{
+                        if(encoding == null) {
                             String contentType = urlConnection.getContentType();
                             for(String value: contentType.split(";")) {
                                 value = value.trim();
@@ -67,9 +65,11 @@ public class MainPanel extends JPanel {
                                     encoding = value.substring("charset=".length());
                                 }
                             }
-                            if(encoding!=null) {
+                            if(encoding != null) {
                                 cs = Charset.forName(encoding);
                             }
+                        }else{
+                            cs = Charset.forName(encoding);
                         }
                         System.out.println(cs);
                     }catch(IOException ex) {

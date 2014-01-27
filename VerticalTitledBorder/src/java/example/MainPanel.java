@@ -62,7 +62,9 @@ class VerticalTitledBorder extends TitledBorder {
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
         String title = getTitle();
-        if(title != null && !title.isEmpty() && border != null) {
+        if(title == null || title.isEmpty() || border == null) {
+            super.paintBorder(c, g, x, y, width, height);
+        }else{
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
@@ -93,8 +95,6 @@ class VerticalTitledBorder extends TitledBorder {
             label.setSize(labelW, labelH);
             label.paint(g2);
             g2.dispose();
-        }else{
-            super.paintBorder(c, g, x, y, width, height);
         }
     }
     @Override public Insets getBorderInsets(Component c, Insets insets) {
@@ -126,7 +126,7 @@ class VerticalTitledBorder extends TitledBorder {
         if(color != null) {
             return color;
         }
-        return c != null ? c.getForeground() : null;
+        return c == null ? null : c.getForeground();
     }
     private JLabel getLabel(Component c) {
         this.label.setText(getTitle());

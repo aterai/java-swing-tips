@@ -142,13 +142,15 @@ public class MainPanel extends JPanel {
             return;
         }
         DefaultTableModel mdl = (DefaultTableModel) table.getModel();
-        if((e.getModifiers() & ActionEvent.SHIFT_MASK)!=0) {
-            mdl.moveRow(pos[0], pos[pos.length-1], 0);
-            table.setRowSelectionInterval(0, pos.length-1);
-        }else{
-            if(pos[0]==0) { return; }
+        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+            if(pos[0]==0) {
+                return;
+            }
             mdl.moveRow(pos[0], pos[pos.length-1], pos[0]-1);
             table.setRowSelectionInterval(pos[0]-1, pos[pos.length-1]-1);
+        }else{
+            mdl.moveRow(pos[0], pos[pos.length-1], 0);
+            table.setRowSelectionInterval(0, pos.length-1);
         }
         scrollSelectedRow();
     }
@@ -169,13 +171,15 @@ public class MainPanel extends JPanel {
             return;
         }
         DefaultTableModel mdl = (DefaultTableModel) table.getModel();
-        if((e.getModifiers() & ActionEvent.SHIFT_MASK)!=0) {
-            mdl.moveRow(pos[0], pos[pos.length-1], mdl.getRowCount()-pos.length);
-            table.setRowSelectionInterval(mdl.getRowCount()-pos.length, mdl.getRowCount()-1);
-        }else{
-            if(pos[pos.length-1]==mdl.getRowCount()-1) { return; }
+        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+            if(pos[pos.length-1]==mdl.getRowCount()-1) {
+                return;
+            }
             mdl.moveRow(pos[0], pos[pos.length-1], pos[0]+1);
             table.setRowSelectionInterval(pos[0]+1, pos[pos.length-1]+1);
+        }else{
+            mdl.moveRow(pos[0], pos[pos.length-1], mdl.getRowCount()-pos.length);
+            table.setRowSelectionInterval(mdl.getRowCount()-pos.length, mdl.getRowCount()-1);
         }
         scrollSelectedRow();
     }

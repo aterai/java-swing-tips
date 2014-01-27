@@ -110,7 +110,7 @@ public class MainPanel extends JPanel {
                 }else if(e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
-                    editorPane.setToolTipText((url!=null)?url.toExternalForm():null);
+                    editorPane.setToolTipText((url==null) ? null : url.toExternalForm());
                 }else if(e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editorPane.setToolTipText(tooltip);
                 }
@@ -153,7 +153,7 @@ class TooltipEditorKit extends HTMLEditorKit {
             @Override public View create(Element elem) {
                 AttributeSet attrs = elem.getAttributes();
                 Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-                Object o = (elementName != null) ? null : attrs.getAttribute(StyleConstants.NameAttribute);
+                Object o = (elementName == null) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
                 if(o instanceof HTML.Tag) {
                     HTML.Tag kind = (HTML.Tag) o;
                     if(kind == HTML.Tag.DIV) {

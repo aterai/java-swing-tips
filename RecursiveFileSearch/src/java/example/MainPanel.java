@@ -147,9 +147,9 @@ public class MainPanel extends JPanel {
             worker = null;
         }
     }
-    private boolean isCancelled() {
-        return (worker!=null)?worker.isCancelled():true;
-    }
+//     private boolean isCancelled() {
+//         return (worker!=null)?worker.isCancelled():true;
+//     }
     class OpenAction extends AbstractAction {
         public OpenAction() {
             super("Choose...");

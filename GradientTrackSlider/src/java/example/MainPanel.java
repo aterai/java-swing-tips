@@ -169,28 +169,28 @@ class GradientPalletSliderUI extends MetalSliderUI {
         if(slider.getOrientation() == JSlider.HORIZONTAL) {
             middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-            fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
-            fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
+            fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
+            fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
 
-            if(!drawInverted()) {
-                fillLeft = !slider.isEnabled() ? trackLeft : trackLeft + 1;
-                fillRight = middleOfThumb;
-            }else{
+            if(drawInverted()) {
                 fillLeft = middleOfThumb;
-                fillRight = !slider.isEnabled() ? trackRight - 1 : trackRight - 2;
+                fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+            }else{
+                fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
+                fillRight = middleOfThumb;
             }
         }else{
             middleOfThumb = thumbRect.y + thumbRect.height / 2;
             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-            fillLeft = !slider.isEnabled() ? trackLeft : trackLeft + 1;
-            fillRight = !slider.isEnabled() ? trackRight - 1 : trackRight - 2;
+            fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
+            fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
 
-            if(!drawInverted()) {
-                fillTop = middleOfThumb;
-                fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
-            }else{
-                fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
+            if(drawInverted()) {
+                fillTop = slider.isEnabled() ? trackTop  + 1 : trackTop;
                 fillBottom = middleOfThumb;
+            }else{
+                fillTop = middleOfThumb;
+                fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
             }
         }
 

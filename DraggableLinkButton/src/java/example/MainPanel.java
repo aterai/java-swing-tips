@@ -197,10 +197,10 @@ class LinkViewButtonUI extends BasicButtonUI {
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v!=null) {
-            v.paint(g, textRect);
-        }else{
+        if(v==null) {
             paintText(g, b, textRect, text);
+        }else{
+            v.paint(g, textRect);
         }
     }
 }

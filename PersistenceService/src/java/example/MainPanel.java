@@ -83,7 +83,9 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             ps = null;
             bs = null;
         }
-        if(ps != null && bs != null) {
+        if(ps == null || bs == null) {
+            return null;
+        }else{
             final PersistenceService persistenceService = ps;
             final URL codebase = bs.getCodeBase();
             loadWindowState(persistenceService, codebase, windowState);
@@ -99,8 +101,6 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
                     saveWindowState(persistenceService, codebase, windowState);
                 }
             };
-        }else{
-            return null;
         }
     }
     private static void loadWindowState(PersistenceService ps, URL codebase, WindowState windowState) {

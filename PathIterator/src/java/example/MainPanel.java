@@ -53,27 +53,27 @@ class StarburstSVGMaker {
     private ClipboardService cs;
     private final JTextArea textArea = new JTextArea() {
         @Override public void copy() {
-            if(cs != null) {
-                cs.setContents(new StringSelection(getSelectedText()));
-            }else{
+            if(cs == null) {
                 super.copy();
+            }else{
+                cs.setContents(new StringSelection(getSelectedText()));
             }
         }
         @Override public void cut() {
-            if(cs != null) {
-                cs.setContents(new StringSelection(getSelectedText()));
-            }else{
+            if(cs == null) {
                 super.cut();
+            }else{
+                cs.setContents(new StringSelection(getSelectedText()));
             }
         }
         @Override public void paste() {
-            if(cs != null) {
+            if(cs == null) {
+                super.paste();
+            }else{
                 Transferable tr = cs.getContents();
                 if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                     getTransferHandler().importData(this, tr);
                 }
-            }else{
-                super.paste();
             }
         }
     };
@@ -290,7 +290,7 @@ class StarIcon implements Icon {
 
 // class FileWriter {
 //     private final File file;
-//     public FileWriter(File file){
+//     public FileWriter(File file) {
 //         this.file = file;
 //     }
 //     public void writeData(String str) {
@@ -299,12 +299,12 @@ class StarIcon implements Icon {
 //             bufferedWriter = new BufferedWriter(
 //                 new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
 //             bufferedWriter.write(str, 0, str.length());
-//         }catch(IOException e){
+//         }catch(IOException e) {
 //             e.printStackTrace();
 //         }finally{
 //             try{
 //                 bufferedWriter.close();
-//             }catch(IOException e){
+//             }catch(IOException e) {
 //                 e.printStackTrace();
 //             }
 //         }

@@ -99,7 +99,7 @@ class MyTabbedPane extends JTabbedPane {
     }
     @Override public String getToolTipText(MouseEvent e) {
         int index = indexAtLocation(e.getX(), e.getY());
-        String str = (current!=index)?null:super.getToolTipText(e);
+        String str = (current==index) ? super.getToolTipText(e) : null;
         current = index;
         return str;
     }

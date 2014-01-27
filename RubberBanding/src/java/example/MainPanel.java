@@ -38,11 +38,11 @@ public class MainPanel extends JPanel {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 setCellRenderer(null);
-                if(renderer!=null) {
+                if(renderer==null) {
+                    renderer = new RubberBandListCellRenderer();
+                }else{
                     removeMouseMotionListener(renderer);
                     removeMouseListener(renderer);
-                }else{
-                    renderer = new RubberBandListCellRenderer();
                 }
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
@@ -208,14 +208,14 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
         JList list = (JList)e.getSource();
         int index = list.locationToIndex(e.getPoint());
         Rectangle rect = list.getCellBounds(index,index);
-        if(!rect.contains(e.getPoint())) {
+        if(rect.contains(e.getPoint())) {
+            list.setFocusable(true);
+        }else{
             list.clearSelection();
             list.getSelectionModel().setAnchorSelectionIndex(-1);
             list.getSelectionModel().setLeadSelectionIndex(-1);
             //list.getSelectionModel().setLeadSelectionIndex(list.getModel().getSize());
             list.setFocusable(false);
-        }else{
-            list.setFocusable(true);
         }
     }
     private int[] getIntersectsIcons(JList l, Shape p) {

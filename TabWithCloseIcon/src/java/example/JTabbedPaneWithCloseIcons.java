@@ -68,7 +68,7 @@ class CloseTabIcon implements Icon {
         }
     }
     @Override public int getIconWidth() {
-        return fileIcon != null ? width + fileIcon.getIconWidth() : width;
+        return fileIcon == null ? width : width + fileIcon.getIconWidth();
     }
     @Override public int getIconHeight() {
         return height;

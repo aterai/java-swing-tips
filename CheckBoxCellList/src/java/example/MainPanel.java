@@ -50,13 +50,13 @@ public class MainPanel extends JPanel {
                 }
             }
             @Override protected void processMouseMotionEvent(MouseEvent e) {
-                if(!pointOutsidePrefSize(e.getPoint())) {
-                    super.processMouseMotionEvent(e);
-                }else{
+                if(pointOutsidePrefSize(e.getPoint())) {
                     MouseEvent ev = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
                                                    e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
                                                    e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
                     super.processMouseEvent(ev);
+                }else{
+                    super.processMouseMotionEvent(e);
                 }
             }
         };

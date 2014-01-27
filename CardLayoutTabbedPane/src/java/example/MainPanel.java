@@ -144,10 +144,10 @@ class TabButton extends JRadioButton {
     private Color rolloverSelectedTextColor = Color.WHITE;
     private Color selectedTextColor = Color.WHITE;
     @Override public void updateUI() {
-        if(UIManager.get(getUIClassID())!=null) {
-            setUI((TabViewButtonUI)UIManager.getUI(this));
-        }else{
+        if(UIManager.get(getUIClassID())==null) {
             setUI(new BasicTabViewButtonUI());
+        }else{
+            setUI((TabViewButtonUI)UIManager.getUI(this));
         }
     }
     @Override public String getUIClassID() {

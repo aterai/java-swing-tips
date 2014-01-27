@@ -117,12 +117,12 @@ class TriSliderUI extends MetalSliderUI {
             //fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
             //fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
 
-            if( !drawInverted() ) {
-                fillLeft = !slider.isEnabled() ? trackLeft : trackLeft + 1;
-                fillRight = middleOfThumb;
-            }else{
+            if( drawInverted() ) {
                 fillLeft = middleOfThumb;
-                fillRight = !slider.isEnabled() ? trackRight - 1 : trackRight - 2;
+                fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+            }else{
+                fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
+                fillRight = middleOfThumb;
             }
 
             g2.setPaint(new GradientPaint(0, 0, new Color(0,100,100), cw, 0, new Color(0,255,100), true));

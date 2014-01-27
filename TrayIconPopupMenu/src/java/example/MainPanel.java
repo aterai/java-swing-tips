@@ -121,13 +121,13 @@ class MainPanel extends JPanel {
             gc = popup.getInvoker().getGraphicsConfiguration();
         }
 
-        if(gc != null) {
+        if(gc == null) {
+            // If we don't have GraphicsConfiguration use primary screen
+            screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        }else{
             // If we have GraphicsConfiguration use it to get
             // screen bounds
             screenBounds = gc.getBounds();
-        }else{
-            // If we don't have GraphicsConfiguration use primary screen
-            screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         }
 
         Dimension size = popup.getPreferredSize();

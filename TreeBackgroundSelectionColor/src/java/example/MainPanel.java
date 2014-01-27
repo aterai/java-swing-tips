@@ -97,6 +97,6 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
         color = null;
     }
     @Override public Color getBackgroundSelectionColor() {
-        return color!=null ? color : super.getBackgroundSelectionColor();
+        return color==null ? super.getBackgroundSelectionColor() : color;
     }
 }

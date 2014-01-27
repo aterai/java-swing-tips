@@ -57,6 +57,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class ClippedTitleTabbedPane extends JTabbedPane {
     public ClippedTitleTabbedPane() {
         super();
@@ -65,28 +66,30 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super(tabPlacement);
     }
     private Insets getTabInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabInsets");
-        if(i!=null) {
-            return i;
-        }else{
+        Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
+        if(insets==null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
+        }else{
+            return insets;
         }
     }
     private Insets getTabAreaInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(i!=null) {
-            return i;
-        }else{
+        Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
+        if(insets==null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
+        }else{
+            return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount  = getTabCount();
-        if(tabCount==0) { return; }
+        if(tabCount==0) {
+            return;
+        }
         Insets tabInsets     = getTabInsets();
         Insets tabAreaInsets = getTabAreaInsets();
         Insets insets = getInsets();
@@ -107,7 +110,6 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
         for(int i=0;i<tabCount;i++) {
             JComponent l = (JComponent)getTabComponentAt(i);
-            if(l==null) { break; }
             int v = i < gap ? 1 : 0;
             l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
         }

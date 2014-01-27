@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
                 JCheckBox cb = (JCheckBox)e.getSource();
                 if(!cb.isSelected()) {
                     cb.setIcon(icon);
-                }else if(cb.getIcon()!=null){
+                }else if(cb.getIcon()!=null) {
                     cb.setIcon(null);
                     cb.setSelected(false);
                 }
@@ -33,7 +33,9 @@ public class MainPanel extends JPanel {
             super.updateUI();
             EventQueue.invokeLater(new Runnable() {
                 @Override public void run() {
-                    if(listener==null) { listener = new TriStateActionListener(); }
+                    if(listener==null) {
+                        listener = new TriStateActionListener();
+                    }
                     Icon icon = new IndeterminateIcon();
                     listener.setIcon(icon);
                     addActionListener(listener);
@@ -286,9 +288,7 @@ class HeaderCheckBoxHandler implements TableModelListener {
         if(e.getType()==TableModelEvent.UPDATE && e.getColumn()==targetColumnIndex) {
             int vci = table.convertColumnIndexToView(targetColumnIndex);
             TableColumn column = table.getColumnModel().getColumn(vci);
-            if(!Status.INDETERMINATE.equals(column.getHeaderValue())) {
-                column.setHeaderValue(Status.INDETERMINATE);
-            }else{
+            if(Status.INDETERMINATE.equals(column.getHeaderValue())) {
                 boolean selected = true;
                 boolean deselected = true;
                 TableModel m = table.getModel();
@@ -307,6 +307,8 @@ class HeaderCheckBoxHandler implements TableModelListener {
                 }else{
                     return;
                 }
+            }else{
+                column.setHeaderValue(Status.INDETERMINATE);
             }
             JTableHeader h = table.getTableHeader();
             h.repaint(h.getHeaderRect(vci));

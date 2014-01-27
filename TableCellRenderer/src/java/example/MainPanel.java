@@ -112,7 +112,9 @@ class WrappedLabel extends JLabel {
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
-        if(gvtext!=null) {
+        if(gvtext==null) {
+            super.paintComponent(g);
+        }else{
             Insets i = getInsets();
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setPaint(getBackground());
@@ -120,8 +122,6 @@ class WrappedLabel extends JLabel {
             g2.setPaint(getForeground());
             g2.drawGlyphVector(gvtext, i.left, getFont().getSize()+i.top);
             g2.dispose();
-        }else{
-            super.paintComponent(g);
         }
     }
     private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {

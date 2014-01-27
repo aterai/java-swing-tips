@@ -202,8 +202,15 @@ class ReorderbleList extends JList<ListItem> {
         @Override public void mousePressed(MouseEvent e) {
             int index = locationToIndex(e.getPoint());
             Rectangle rect = getCellBounds(index,index);
-            if(!rect.contains(e.getPoint())) {
-                //System.out.println("aaa:");
+            if(rect.contains(e.getPoint())) {
+                setFocusable(true);
+                if(getDragEnabled()) {
+                    return;
+                }else{
+                    //System.out.println("ccc:"+startSelectedIndex);
+                    setSelectedIndex(index);
+                }
+            }else{
                 JList list = (JList)e.getSource();
                 Component glassPane = list.getRootPane().getGlassPane();
                 //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -214,15 +221,6 @@ class ReorderbleList extends JList<ListItem> {
                 getSelectionModel().setLeadSelectionIndex(-1);
                 setFocusable(false);
                 setDragEnabled(false);
-            }else{
-                //System.out.println("bbb");
-                setFocusable(true);
-                if(getDragEnabled()) {
-                    return;
-                }else{
-                    //System.out.println("ccc:"+startSelectedIndex);
-                    setSelectedIndex(index);
-                }
             }
             repaint();
         }
