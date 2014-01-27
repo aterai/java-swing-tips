@@ -157,9 +157,7 @@ class HeaderCheckBoxHandler implements TableModelListener {
         if(e.getType()==TableModelEvent.UPDATE && e.getColumn()==targetColumnIndex) {
             int vci = table.convertColumnIndexToView(targetColumnIndex);
             TableColumn column = table.getColumnModel().getColumn(vci);
-            if(!Status.INDETERMINATE.equals(column.getHeaderValue())) {
-                column.setHeaderValue(Status.INDETERMINATE);
-            }else{
+            if(Status.INDETERMINATE.equals(column.getHeaderValue())) {
                 boolean selected = true;
                 boolean deselected = true;
                 TableModel m = table.getModel();
@@ -178,12 +176,15 @@ class HeaderCheckBoxHandler implements TableModelListener {
                 }else{
                     return;
                 }
+            }else{
+                column.setHeaderValue(Status.INDETERMINATE);
             }
             JTableHeader h = table.getTableHeader();
             h.repaint(h.getHeaderRect(vci));
         }
     }
 }
+
 class ComponentIcon implements Icon {
     private final JComponent cmp;
     public ComponentIcon(JComponent cmp) {
@@ -199,4 +200,5 @@ class ComponentIcon implements Icon {
         SwingUtilities.paintComponent(g, cmp, (Container)c, x, y, getIconWidth(), getIconHeight());
     }
 }
+
 enum Status { SELECTED, DESELECTED, INDETERMINATE }

@@ -114,7 +114,19 @@ class CellButtonsMouseListener extends MouseAdapter {
             JButton button = getButton(list, pt, index);
             ButtonsRenderer renderer = (ButtonsRenderer)list.getCellRenderer();
             renderer.button = button;
-            if(button != null) {
+            if(button == null) {
+                renderer.rolloverIndex = -1;
+                Rectangle r = null;
+                if(prevIndex != index) {
+                    r = list.getCellBounds(index, index);
+                }else if(prevIndex>=0 && prevButton!=null) {
+                    r = list.getCellBounds(prevIndex, prevIndex);
+                }
+                if(r != null) {
+                    list.repaint(r);
+                }
+                prevIndex = -1;
+            }else{
                 button.getModel().setRollover(true);
                 renderer.rolloverIndex = index;
                 if(!button.equals(prevButton)) {
@@ -123,18 +135,6 @@ class CellButtonsMouseListener extends MouseAdapter {
                         list.repaint(r);
                     }
                 }
-            }else{
-                renderer.rolloverIndex = -1;
-                Rectangle r = null;
-                if(prevIndex != index) {
-                    r = list.getCellBounds(index, index);
-                }else if(prevIndex>=0 && prevButton!=null) {
-                    r = list.getCellBounds(prevIndex, prevIndex);
-                }
-                if(r!=null) {
-                    list.repaint(r);
-                }
-                prevIndex = -1;
             }
             prevButton = button;
         }

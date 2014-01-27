@@ -40,10 +40,10 @@ public class MainPanel extends JPanel {
                 prevIndex = i;
                 pt.translate(-r.x, -r.y);
                 Component cmp = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-                if(cmp != null) {
-                    setCursor(cmp.getCursor());
-                }else{
+                if(cmp == null) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                }else{
+                    setCursor(cmp.getCursor());
                 }
             }
         };

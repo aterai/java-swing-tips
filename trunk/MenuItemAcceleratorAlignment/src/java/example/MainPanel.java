@@ -151,14 +151,14 @@ class MenuItemUIHelper {
             g.setFont(lh.getAccFontMetrics().getFont());
             if(!model.isEnabled()) {
                 // *** paint the accText disabled
-                if(disabledForeground != null) {
-                    g.setColor(disabledForeground);
-                    SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
-                }else{
+                if(disabledForeground == null) {
                     g.setColor(lh.getMenuItem().getBackground().brighter());
                     SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
                     g.setColor(lh.getMenuItem().getBackground().darker());
                     SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x - 1, lr.getAccRect().y + lh.getFontMetrics().getAscent() - 1);
+                }else{
+                    g.setColor(disabledForeground);
+                    SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
                 }
             }else{
                 // *** paint the accText normally
@@ -228,13 +228,13 @@ class RAAWindowsMenuItemUI extends com.sun.java.swing.plaf.windows.WindowsMenuIt
         g.setFont(holdf);
     }
     private void paintText(Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr) {
-        if(!lh.getText().equals("")) {
-            if(lh.getHtmlView() != null) {
-                // Text is HTML
-                lh.getHtmlView().paint(g, lr.getTextRect());
-            }else{
+        if(!lh.getText().isEmpty()) {
+            if(lh.getHtmlView() == null) {
                 // Text isn't HTML
                 paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
+            }else{
+                // Text is HTML
+                lh.getHtmlView().paint(g, lr.getTextRect());
             }
         }
     }
@@ -271,13 +271,13 @@ class RAABasicMenuItemUI extends javax.swing.plaf.basic.BasicMenuItemUI {
         g.setFont(holdf);
     }
     private void paintText(Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr) {
-        if(!lh.getText().equals("")) {
-            if(lh.getHtmlView() != null) {
-                // Text is HTML
-                lh.getHtmlView().paint(g, lr.getTextRect());
-            }else{
+        if(!lh.getText().isEmpty()) {
+            if(lh.getHtmlView() == null) {
                 // Text isn't HTML
                 paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
+            }else{
+                // Text is HTML
+                lh.getHtmlView().paint(g, lr.getTextRect());
             }
         }
     }

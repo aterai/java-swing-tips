@@ -72,23 +72,23 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super(tabPlacement);
     }
     private Insets getTabInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabInsets");
-        if(i!=null) {
-            return i;
-        }else{
+        Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
+        if(insets==null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
+        }else{
+            return insets;
         }
     }
     private Insets getTabAreaInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(i!=null) {
-            return i;
-        }else{
+        Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
+        if(insets==null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
+        }else{
+            return insets;
         }
     }
     @Override public void doLayout() {

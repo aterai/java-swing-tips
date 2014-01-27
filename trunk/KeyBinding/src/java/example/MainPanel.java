@@ -121,10 +121,10 @@ public class MainPanel extends JPanel {
         for(KeyStroke ks:im.allKeys()) {
             Object actionMapKey = im.get(ks);
             Action action = am.get(actionMapKey);
-            if(action!=null) {
-                model.addBinding(new Binding(focusType, actionMapKey.toString(), ks.toString()));
-            }else{
+            if(action==null) {
                 model.addBinding(new Binding(focusType, "____"+actionMapKey.toString(), ks.toString()));
+            }else{
+                model.addBinding(new Binding(focusType, actionMapKey.toString(), ks.toString()));
             }
             tmpAm.remove(actionMapKey);
         }

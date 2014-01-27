@@ -64,11 +64,11 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         }
 
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v!=null) {
-            v.paint(g, textRect);
-        }else{
+        if(v==null) {
             textRect.x += 4;
             paintText(g, b, textRect, text);
+        }else{
+            v.paint(g, textRect);
         }
         if(icon!=null) {
             icon.paintIcon(c, g, iconRect.x+4, iconRect.y+2);

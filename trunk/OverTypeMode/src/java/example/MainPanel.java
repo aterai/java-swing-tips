@@ -122,11 +122,11 @@ class OvertypeTextArea extends JTextArea {
                     if(isOvertypeMode()) {
                         int pos = getCaretPosition();
                         if(pos<getDocument().getLength()) {
-                            if(getSelectedText()!=null) {
-                                width = 0;
-                            }else{
+                            if(getSelectedText()==null) {
                                 String str = getText(pos, 1);
                                 width = g.getFontMetrics().stringWidth(str);
+                            }else{
+                                width = 0;
                             }
                         }
                     } // <<<<

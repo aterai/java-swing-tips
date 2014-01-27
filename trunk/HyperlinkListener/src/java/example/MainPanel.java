@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
                 }else if(e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
-                    editorPane.setToolTipText((url!=null)?url.toExternalForm():null);
+                    editorPane.setToolTipText(url==null ? null : url.toExternalForm());
                 }else if(e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editorPane.setToolTipText(tooltip);
                 }
@@ -118,10 +118,10 @@ class HyperlinkButton extends JButton {
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if(UIManager.get(uiClassID)!=null) {
-            setUI((LinkViewButtonUI)UIManager.getUI(this));
-        }else{
+        if(UIManager.get(uiClassID)==null) {
             setUI(BasicLinkViewButtonUI.createUI(this));
+        }else{
+            setUI((LinkViewButtonUI)UIManager.getUI(this));
         }
         setForeground(Color.BLUE);
         setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
@@ -201,10 +201,10 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v!=null) {
-            v.paint(g, textRect);
-        }else{
+        if(v==null) {
             paintText(g, b, textRect, text);
+        }else{
+            v.paint(g, textRect);
         }
     }
 }

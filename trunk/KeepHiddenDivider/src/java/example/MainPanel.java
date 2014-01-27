@@ -51,10 +51,10 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 Insets i = splitPane.getInsets();
                 if(splitPane.getOrientation()==JSplitPane.VERTICAL_SPLIT) {
-                    int v = i!=null ? i.bottom : 0;
+                    int v = i==null ? 0 : i.bottom;
                     splitPane.setDividerLocation(splitPane.getHeight() - v);
                 }else{
-                    int v = i!=null ? i.right : 0;
+                    int v = i==null ? 0 : i.right;
                     splitPane.setDividerLocation(splitPane.getWidth() - v);
                 }
 //                 int lastLoc    = splitPane.getLastDividerLocation();

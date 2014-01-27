@@ -169,14 +169,14 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //     public static ComponentUI createUI(JComponent b) {
 //         return radioButtonUI;
 //     }
-//     @Override protected void installDefaults(AbstractButton b){
+//     @Override protected void installDefaults(AbstractButton b) {
 //         super.installDefaults(b);
 //         if(!defaults_initialized) {
 //             icon = null; //UIManager.getIcon(getPropertyPrefix() + "icon");
 //             defaults_initialized = true;
 //         }
 //     }
-//     @Override protected void uninstallDefaults(AbstractButton b){
+//     @Override protected void uninstallDefaults(AbstractButton b) {
 //         super.uninstallDefaults(b);
 //         defaults_initialized = false;
 //     }
@@ -231,10 +231,10 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v!=null) {
-            v.paint(g, textRect);
-        }else{
+        if(v==null) {
             paintText(g, b, textRect, text);
+        }else{
+            v.paint(g, textRect);
         }
     }
 }

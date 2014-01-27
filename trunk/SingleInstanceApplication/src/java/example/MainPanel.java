@@ -91,7 +91,7 @@ public class MainPanel extends JPanel {
 //     public static final <T> List<T> findAll(List<T> list, IPredicate<T> match) {
 //         List<T> temp = new ArrayList<T>();
 //         for(T t : list) {
-//             if(match.evaluate(t)){
+//             if(match.evaluate(t)) {
 //                 temp.add(t);
 //             }
 //         }
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
 //     public PseudoFileSemaphoreCounter(String appName, int launchLimit) {
 //         this.semaphore = new PseudoFileSemaphore(appName, launchLimit);
 //         this.launchLimit = launchLimit;
-//         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable(){
+//         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 //             @Override public void run() {
 //                 semaphore.release();
 //             }

@@ -298,7 +298,7 @@ class TriangleArrowButton extends JButton {
     @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
         Icon favicon = getIcon();
-        int fw = (favicon!=null)?favicon.getIconWidth():16;
+        int fw = favicon==null ? 16 : favicon.getIconWidth();
         int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
         return new Dimension(w, w);
     }

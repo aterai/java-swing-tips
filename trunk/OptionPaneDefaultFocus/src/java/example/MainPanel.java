@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 final JComponent c = (JComponent)e.getComponent();
                 if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && c.isShowing()) {
-                    EventQueue.invokeLater(new Runnable(){
+                    EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
                             c.requestFocusInWindow();
                             //or textField3.requestFocusInWindow();

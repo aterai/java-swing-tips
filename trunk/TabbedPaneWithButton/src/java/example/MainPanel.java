@@ -85,7 +85,7 @@ class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        frame.setMinimumSize(new Dimension(256, 80));
+        frame.setMinimumSize(new Dimension(256, 200));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -118,29 +118,31 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     public ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
-    protected Insets getTabInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabInsets");
-        if(i!=null) {
-            return i;
-        }else{
+    private Insets getTabInsets() {
+        Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
+        if(insets==null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
+        }else{
+            return insets;
         }
     }
-    protected Insets getTabAreaInsets() {
-        Insets i = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(i!=null) {
-            return i;
-        }else{
+    private Insets getTabAreaInsets() {
+        Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
+        if(insets==null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
+        }else{
+            return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount  = getTabCount();
-        if(tabCount==0) { return; }
+        if(tabCount==0) {
+            return;
+        }
         Insets tabInsets     = getTabInsets();
         Insets tabAreaInsets = getTabAreaInsets();
         Insets insets = getInsets();

@@ -33,13 +33,13 @@ public class MainPanel extends JPanel {
                 super.cut();
             }
             @Override public void paste() {
-                if(cs != null) {
+                if(cs == null) {
+                    super.paste();
+                }else{
                     Transferable tr = cs.getContents();
                     if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                         getTransferHandler().importData(this, tr);
                     }
-                }else{
-                    super.paste();
                 }
             }
         };

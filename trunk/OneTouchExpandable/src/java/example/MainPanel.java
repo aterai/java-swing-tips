@@ -39,7 +39,20 @@ public class MainPanel extends JPanel {
         }
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
-        if(bs != null) {
+        if(bs == null) {
+            if(splitPane.getUI() instanceof BasicSplitPaneUI) {
+                try{
+                    //splitPane.setDividerLocation(1);
+                    splitPane.setDividerLocation(0);
+                    Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
+                        "setKeepHidden", new Class<?>[] { Boolean.TYPE }); //boolean.class });
+                    setKeepHidden.setAccessible(true);
+                    setKeepHidden.invoke(splitPane.getUI(), new Object[] { Boolean.TRUE });
+                }catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
 //             s1.setMinimumSize(new Dimension(0, 0));
 //             s2.setMinimumSize(new Dimension(0, 0));
 //             EventQueue.invokeLater(new Runnable() {
@@ -59,19 +72,6 @@ public class MainPanel extends JPanel {
                     }
                 }
             });
-        }else{
-            if(splitPane.getUI() instanceof BasicSplitPaneUI) {
-                try{
-                    //splitPane.setDividerLocation(1);
-                    splitPane.setDividerLocation(0);
-                    Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
-                        "setKeepHidden", new Class<?>[] { Boolean.TYPE }); //boolean.class });
-                    setKeepHidden.setAccessible(true);
-                    setKeepHidden.invoke(splitPane.getUI(), new Object[] { Boolean.TRUE });
-                }catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         add(splitPane);
         setPreferredSize(new Dimension(320, 240));

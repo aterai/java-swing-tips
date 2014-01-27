@@ -104,10 +104,10 @@ class JustifiedLabel extends JLabel {
             gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
             prev_width = w;
         }
-        if(gvtext!=null) {
-            g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());
-        }else{
+        if(gvtext==null) {
             super.paintComponent(g);
+        }else{
+            g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());
         }
     }
     private GlyphVector getJustifiedGlyphVector(String str, Font font, FontRenderContext frc) {

@@ -149,12 +149,12 @@ public final class BarFactory {
     private JButton createToolbarButton(String key) {
         URL url = getResource(key + imageSuffix);
         JButton b;
-        if(url!=null) {
-            b = new JButton(new ImageIcon(url)) {
+        if(url==null) {
+            b = new JButton(getResourceString(key + labelSuffix)) {
                 @Override public float getAlignmentY() { return 0.5f; }
             };
         }else{
-            b = new JButton(getResourceString(key + labelSuffix)) {
+            b = new JButton(new ImageIcon(url)) {
                 @Override public float getAlignmentY() { return 0.5f; }
             };
         }
@@ -168,17 +168,17 @@ public final class BarFactory {
             astr = key;
         }
         Action a = getAction(astr);
-        if(a != null) {
+        if(a == null) {
+            b.setEnabled(false);
+        }else{
             b.setActionCommand(astr);
             b.addActionListener(a);
-        }else{
-            b.setEnabled(false);
         }
 
         String tip = getResourceString(key + tipSuffix);
-        if(tip != null) {
-            b.setToolTipText(tip);
-        }
+        //if(tip != null) {
+        b.setToolTipText(tip);
+        //}
 
         toolButtons.put(key, b);
         return b;
@@ -258,12 +258,12 @@ public final class BarFactory {
         }
         mi.setActionCommand(astr);
         Action a = getAction(astr);
-        if(a!=null) {
-            mi.addActionListener(a);
-        //    a.addPropertyChangeListener(createActionChangeListener(mi));
-            mi.setEnabled(a.isEnabled());
-        }else{
+        if(a==null) {
             mi.setEnabled(false);
+        }else{
+            mi.addActionListener(a);
+            //a.addPropertyChangeListener(createActionChangeListener(mi));
+            mi.setEnabled(a.isEnabled());
         }
         menuItems.put(cmd, mi);
         return mi;

@@ -25,10 +25,10 @@ public class MainPanel extends JPanel {
                 String str = field.getText().trim();
                 ParsePosition pp = new ParsePosition(0);
                 Date date = format.parse(str, pp);
-                if(date!=null) {
-                    outf.setText(df.format(date));
-                }else{
+                if(date==null) {
                     outf.setText("error");
+                }else{
+                    outf.setText(df.format(date));
                 }
             }
         });
