@@ -151,18 +151,24 @@ public class MainPanel extends JPanel {
 }
 
 class DnDTabbedPane extends JTabbedPane {
+    private static final int SCROLL_SIZE = 20; //Test
+    private static final int BUTTON_SIZE = 30; //XXX 30 is magic number of scroll button size
+    public static Rectangle rBackward = new Rectangle();
+    public static Rectangle rForward  = new Rectangle();
+    private final DropMode dropMode   = DropMode.INSERT;
     public int dragTabIndex = -1;
+    private transient DropLocation dropLocation;
 
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
-        private DropLocation(Point p, int index) {
+        private boolean dropable = true;
+        public DropLocation(Point p, int index) {
             super(p);
             this.index = index;
         }
         public int getIndex() {
             return index;
         }
-        private boolean dropable = true;
         public void setDropable(boolean flag) {
             dropable = flag;
         }
@@ -176,7 +182,6 @@ class DnDTabbedPane extends JTabbedPane {
 //                    + "insert=" + isInsert + "]";
 //         }
     }
-
     private void clickArrowButton(String actionKey) {
         ActionMap map = getActionMap();
         if(map != null) {
@@ -186,19 +191,15 @@ class DnDTabbedPane extends JTabbedPane {
             }
         }
     }
-    public static Rectangle rBackward = new Rectangle();
-    public static Rectangle rForward  = new Rectangle();
-    private static int rwh = 20;
-    private static int buttonsize = 30; //XXX 30 is magic number of scroll button size
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
         int tabPlacement = getTabPlacement();
         if(tabPlacement==TOP || tabPlacement==BOTTOM) {
-            rBackward.setBounds(r.x, r.y, rwh, r.height);
-            rForward.setBounds(r.x+r.width-rwh-buttonsize, r.y, rwh+buttonsize, r.height);
-        }else if(tabPlacement==LEFT || tabPlacement==RIGHT) {
-            rBackward.setBounds(r.x, r.y, r.width, rwh);
-            rForward.setBounds(r.x, r.y+r.height-rwh-buttonsize, r.width, rwh+buttonsize);
+            rBackward.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
+            rForward.setBounds(r.x+r.width-SCROLL_SIZE-BUTTON_SIZE, r.y, SCROLL_SIZE+BUTTON_SIZE, r.height);
+        }else{ // if(tabPlacement==LEFT || tabPlacement==RIGHT) {
+            rBackward.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
+            rForward.setBounds(r.x, r.y+r.height-SCROLL_SIZE-BUTTON_SIZE, r.width, SCROLL_SIZE+BUTTON_SIZE);
         }
         if(rBackward.contains(pt)) {
             clickArrowButton("scrollTabsBackwardAction");
@@ -213,7 +214,6 @@ class DnDTabbedPane extends JTabbedPane {
         addMouseMotionListener(h);
         addPropertyChangeListener(h);
     }
-    private final DropMode dropMode = DropMode.INSERT;
     public DropLocation dropLocationForPoint(Point p) {
         //boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {
@@ -235,7 +235,6 @@ class DnDTabbedPane extends JTabbedPane {
         }
         return new DropLocation(p, -1);
     }
-    private transient DropLocation dropLocation;
     public final DropLocation getDropLocation() {
         return dropLocation;
     }
@@ -251,12 +250,16 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         System.out.println("exportTab");
-        if(targetIndex<0) { return; }
+        if(targetIndex<0) {
+            return;
+        }
 
         Component cmp    = getComponentAt(dragIndex);
         Container parent = target;
         while(parent!=null) {
-            if(cmp==parent) { return; } //target==child: JTabbedPane in JTabbedPane
+            if(cmp.equals(parent)) { //target==child: JTabbedPane in JTabbedPane
+                return;
+            }
             parent = parent.getParent();
         }
 
@@ -306,10 +309,12 @@ class DnDTabbedPane extends JTabbedPane {
 
     public Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
+        Component c = getSelectedComponent();
+        if(c==null) {
+            return tabbedRect;
+        }
         int xx = tabbedRect.x;
         int yy = tabbedRect.y;
-        Component c = getSelectedComponent();
-        if(c==null) { return tabbedRect; }
         Rectangle compRect = getSelectedComponent().getBounds();
         int tabPlacement = getTabPlacement();
         if(tabPlacement==TOP) {
@@ -319,7 +324,7 @@ class DnDTabbedPane extends JTabbedPane {
             tabbedRect.height = tabbedRect.height - compRect.height;
         }else if(tabPlacement==LEFT) {
             tabbedRect.width = tabbedRect.width - compRect.width;
-        }else if(tabPlacement==RIGHT) {
+        }else{ // if(tabPlacement==RIGHT) {
             tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
             tabbedRect.width = tabbedRect.width - compRect.width;
         }
@@ -329,6 +334,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
 
     private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
+        private Point startPt;
+        private final int gestureMotionThreshold = DragSource.getDragThreshold();
+        //private final Integer gestureMotionThreshold = (Integer)Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
         // PropertyChangeListener
         @Override public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
@@ -351,9 +359,6 @@ class DnDTabbedPane extends JTabbedPane {
             boolean flag = idx<0 || !src.isEnabledAt(idx) || src.getComponentAt(idx)==null;
             startPt = flag ? null : tabPt;
         }
-        private Point startPt;
-        int gestureMotionThreshold = DragSource.getDragThreshold();
-        //private final Integer gestureMotionThreshold = (Integer)Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
         @Override public void mouseDragged(MouseEvent e)  {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
             if(startPt!=null && Math.sqrt(Math.pow(tabPt.x-startPt.x, 2)+Math.pow(tabPt.y-startPt.y, 2))>gestureMotionThreshold) {
@@ -364,11 +369,6 @@ class DnDTabbedPane extends JTabbedPane {
                 startPt = null;
             }
         }
-//         @Override public void mouseClicked(MouseEvent e)  {}
-//         @Override public void mouseEntered(MouseEvent e)  {}
-//         @Override public void mouseExited(MouseEvent e)   {}
-//         @Override public void mouseMoved(MouseEvent e)    {}
-//         @Override public void mouseReleased(MouseEvent e) {}
     }
 }
 
@@ -407,6 +407,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 
 class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
+    private DnDTabbedPane source = null;
     private final JLabel label = new JLabel() {
         //Free the pixel: GHOST drag and drop, over multiple windows
         //http://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html
@@ -436,7 +437,6 @@ class TabTransferHandler extends TransferHandler {
             }
         });
     }
-    private DnDTabbedPane source = null;
     @Override protected Transferable createTransferable(JComponent c) {
         System.out.println("createTransferable");
         if(c instanceof DnDTabbedPane) { source = (DnDTabbedPane)c; }
@@ -445,7 +445,7 @@ class TabTransferHandler extends TransferHandler {
     private boolean isDropable(DnDTabbedPane target, Point pt, int idx) {
         boolean isDropable = false;
         Rectangle tr = target.getTabAreaBounds();
-        if(target==source) {
+        if(target.equals(source)) {
             //System.out.println("target==source");
             isDropable = tr.contains(pt) && idx>=0 && idx!=target.dragTabIndex && idx!=target.dragTabIndex+1;
         }else{
@@ -523,7 +523,9 @@ class TabTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
         DnDTabbedPane src = (DnDTabbedPane)c;
-        if(src.dragTabIndex<0) { return NONE; }
+        if(src.dragTabIndex<0) {
+            return NONE;
+        }
         if(mode == DragImageMode.Heavyweight) {
             label.setIcon(new ImageIcon(makeDragTabImage(src)));
             dialog.pack();
@@ -535,14 +537,16 @@ class TabTransferHandler extends TransferHandler {
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
-        if(!canImport(support)) { return false; }
+        if(!canImport(support)) {
+            return false;
+        }
 
         DnDTabbedPane target = (DnDTabbedPane)support.getComponent();
         DnDTabbedPane.DropLocation dl = target.getDropLocation();
         try{
             DnDTabbedPane source = (DnDTabbedPane)support.getTransferable().getTransferData(localObjectFlavor);
             int index = dl.getIndex(); //boolean insert = dl.isInsert();
-            if(target==source) {
+            if(target.equals(source)) {
                 source.convertTab(source.dragTabIndex, index); //getTargetTabIndex(e.getLocation()));
             }else{
                 source.exportTab(source.dragTabIndex, target, index);
@@ -605,6 +609,22 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 // http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
+    private final static MouseListener buttonMouseListener = new MouseAdapter() {
+        @Override public void mouseEntered(MouseEvent e) {
+            Component component = e.getComponent();
+            if(component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(true);
+            }
+        }
+        @Override public void mouseExited(MouseEvent e) {
+            Component component = e.getComponent();
+            if(component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(false);
+            }
+        }
+    };
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if(pane == null) {
@@ -612,7 +632,7 @@ class ButtonTabComponent extends JPanel {
         }
         this.pane = pane;
         setOpaque(false);
-        JLabel label = new JLabel() {
+        add(new JLabel() {
             @Override public String getText() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
                 if(i != -1) {
@@ -626,8 +646,7 @@ class ButtonTabComponent extends JPanel {
             @Override public String getToolTipText() {
                 return null;
             }
-        };
-        add(label);
+        });
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         ////Pointed out by ron190jSQL
         //label.setToolTipText("label tooltip test");
@@ -660,7 +679,9 @@ class ButtonTabComponent extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            if(i != -1) { pane.remove(i); }
+            if(i != -1) {
+                pane.remove(i);
+            }
         }
         @Override public void updateUI() {}
         @Override protected void paintComponent(Graphics g) {
@@ -680,20 +701,4 @@ class ButtonTabComponent extends JPanel {
             g2.dispose();
         }
     }
-    private final static MouseListener buttonMouseListener = new MouseAdapter() {
-        @Override public void mouseEntered(MouseEvent e) {
-            Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(true);
-            }
-        }
-        @Override public void mouseExited(MouseEvent e) {
-            Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(false);
-            }
-        }
-    };
 }
