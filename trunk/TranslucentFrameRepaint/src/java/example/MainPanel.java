@@ -14,7 +14,8 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 class MainPanel extends JPanel {
-    private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+    private final JComboBox<? extends Enum> combo = new JComboBox<>(TexturePaints.values());
+    private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private final JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);
     private final Timer timer = new Timer(1000, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
@@ -25,13 +26,14 @@ class MainPanel extends JPanel {
             }
         }
     });
+    private final TexturePanel tp;
+
     private void repaintWindowAncestor(JComponent c) {
         JRootPane root = c.getRootPane();
         if(root==null) {
             return;
         }
-        Rectangle r = c.getBounds();
-        r = SwingUtilities.convertRectangle(c, r, root);
+        Rectangle r = SwingUtilities.convertRectangle(c, c.getBounds(), root);
         root.repaint(r.x, r.y, r.width, r.height);
     }
 //     private void repaintWindowAncestor(Component c) {
@@ -49,8 +51,6 @@ class MainPanel extends JPanel {
 //             c.repaint();
 //         }
 //     }
-    private final JComboBox<? extends Enum> combo = new JComboBox<>(TexturePaints.values());
-    private final TexturePanel tp;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -66,27 +66,27 @@ class MainPanel extends JPanel {
             }
         });
         JToggleButton button = new JToggleButton(new AbstractAction("timer") {
-            private JFrame frame = null;
+            private JFrame digitalClock  = null;
             @Override public void actionPerformed(ActionEvent e) {
-                if(frame==null) {
-                    frame = new JFrame();
-                    frame.setUndecorated(true);
-                    //frame.setAlwaysOnTop(true);
-                    //com.sun.awt.AWTUtilities.setWindowOpaque(frame, false); //JDK 1.6.0
-                    frame.setBackground(new Color(0,0,0,0)); //JDK 1.7.0
-                    frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-                    frame.getContentPane().add(tp);
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
+                if(digitalClock==null) {
+                    digitalClock = new JFrame();
+                    digitalClock.setUndecorated(true);
+                    //digitalClock.setAlwaysOnTop(true);
+                    //com.sun.awt.AWTUtilities.setWindowOpaque(digitalClock, false); //JDK 1.6.0
+                    digitalClock.setBackground(new Color(0,0,0,0)); //JDK 1.7.0
+                    digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                    digitalClock.getContentPane().add(tp);
+                    digitalClock.pack();
+                    digitalClock.setLocationRelativeTo(null);
                 }
                 if(((AbstractButton)e.getSource()).isSelected()) {
                     TexturePaints t = (TexturePaints)combo.getSelectedItem();
                     tp.setTexturePaint(t.getTexturePaint());
                     timer.start();
-                    frame.setVisible(true);
+                    digitalClock.setVisible(true);
                 }else{
                     timer.stop();
-                    frame.setVisible(false);
+                    digitalClock.setVisible(false);
                 }
             }
         });
@@ -121,13 +121,13 @@ class MainPanel extends JPanel {
 }
 
 class TexturePanel extends JPanel {
+    protected TexturePaint texture;
     public TexturePanel() {
         super();
     }
     public TexturePanel(LayoutManager lm) {
         super(lm);
     }
-    protected TexturePaint texture;
     public void setTexturePaint(TexturePaint texture) {
         this.texture = texture;
         //setOpaque(false);
@@ -162,6 +162,7 @@ enum TexturePaints {
 }
 
 class TextureUtil {
+    private TextureUtil() {}
     public static TexturePaint makeImageTexture() {
         BufferedImage bi = null;
         try{
