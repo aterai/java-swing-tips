@@ -97,9 +97,9 @@ class MyJTabbedPane extends JTabbedPane {
 class TabPanel extends JPanel {
     private static final Icon icon = new CloseTabIcon();
     private static final Dimension buttonSize = new Dimension(icon.getIconWidth(), icon.getIconHeight());
-    final JButton button = new JButton(icon);
-    final JLabel label = new JLabel();
-    final Dimension ldim;
+    private final JButton button = new JButton(icon);
+    private final JLabel label = new JLabel();
+    private final Dimension ldim;
     public TabPanel(final JTabbedPane pane, String title, final Component content) {
         super(new BorderLayout());
         setOpaque(false);

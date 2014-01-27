@@ -9,7 +9,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    DraggableImageMouseListener di;
+    private final DraggableImageMouseListener di;
     public MainPanel() {
         super();
         di = new DraggableImageMouseListener(new ImageIcon(getClass().getResource("test.png")));

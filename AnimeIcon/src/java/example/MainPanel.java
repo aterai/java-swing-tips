@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
         add(new JScrollPane(area));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class RunAction extends AbstractAction {
@@ -72,18 +72,16 @@ public class MainPanel extends JPanel {
                     canButton.setEnabled(false);
                     statusPanel.remove(bar);
                     statusPanel.revalidate();
-                    String text = null;
-                    if(isCancelled()) {
-                        text = "Cancelled";
-                    }else{
-                        try{
-                            text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
+                    try{
+                        if(isCancelled()) {
+                            appendLine("Cancelled");
+                        }else{
+                            appendLine(get());
                         }
+                    }catch(InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
+                        appendLine("Exception");
                     }
-                    appendLine(text);
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));
@@ -103,9 +101,9 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private boolean isCancelled() {
-        return (worker!=null)?worker.isCancelled():true;
-    }
+//     private boolean isCancelled() {
+//         return (worker!=null) ? worker.isCancelled() : true;
+//     }
 
     private void appendLine(String str) {
         area.append(str+"\n");
@@ -312,7 +310,7 @@ class AnimeIcon3 implements Icon {
     private final List<Shape> list = new ArrayList<Shape>();
     private final Dimension dim;
     private boolean isRunning = false;
-    int rotate = 45;
+    private int rotate = 45;
     public AnimeIcon3() {
         super();
         int r = 4;
@@ -359,24 +357,24 @@ class AnimeIcon3 implements Icon {
 }
 
 class AnimeIcon4 implements Icon {
+    private static final int R = 4;
     private static final Color cColor = new Color(0.5f,0.8f,0.5f);
     private final Dimension dim;
     private boolean isRunning = false;
     private final List<Shape> list = new ArrayList<Shape>();
-    int r = 4;
     public AnimeIcon4() {
         super();
-        int d = (int)r*2*(1+3);
+        int d = (int)R*2*(1+3);
         dim = new Dimension(d, d);
 
-        Ellipse2D.Float cricle = new Ellipse2D.Float(r, r, d-2*r, d-2*r);
-        PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), r);
+        Ellipse2D.Float cricle = new Ellipse2D.Float(R, R, d-2*R, d-2*R);
+        PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), R);
         float[] coords = new float[6];
         int idx = 0;
         while(!i.isDone()) {
             i.currentSegment(coords);
             if(idx < 8) { // XXX
-                list.add(new Ellipse2D.Float(coords[0]-r, coords[1]-r, 2*r, 2*r));
+                list.add(new Ellipse2D.Float(coords[0]-R, coords[1]-R, 2*R, 2*R));
                 idx++;
             }
             i.next();

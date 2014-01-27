@@ -19,8 +19,8 @@ class MainPanel extends JPanel {
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));
     private static final String PATTERN = "[Ff]rame";
     private static final Color SELECTION_COLOR = new Color(0xC86464FF,true);
-    //JTextArea area = new JTextArea();
-    JEditorPane area = new JEditorPane();
+    //private final JTextArea area = new JTextArea();
+    private final JEditorPane area = new JEditorPane();
     private final JCheckBox check = new JCheckBox(new AbstractAction("setSelectionColor(#C86464FF)") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox)e.getSource();

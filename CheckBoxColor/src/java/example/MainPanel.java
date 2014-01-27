@@ -107,7 +107,7 @@ class MyCheckBoxIcon2 implements Icon {
 
 class MyCheckBoxIcon implements Icon {
     //com/sun/java/swing/plaf/windows/WindowsIconFactory.java
-    final static int csize = 13;
+    private final static int CSIZE = 13;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         JCheckBox cb = (JCheckBox) c;
         ButtonModel model = cb.getModel();
@@ -142,17 +142,17 @@ class MyCheckBoxIcon implements Icon {
                 //g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
                 g.setColor(color);
             }
-            g.fillRect(x+2, y+2, csize-4, csize-4);
+            g.fillRect(x+2, y+2, CSIZE-4, CSIZE-4);
         }else{
             g.setColor(UIManager.getColor("CheckBox.shadow"));
-            g.drawRect(x+1, y+1, csize-3, csize-3);
+            g.drawRect(x+1, y+1, CSIZE-3, CSIZE-3);
 
             if(model.isPressed() && model.isArmed()) {
                 g.setColor(UIManager.getColor("CheckBox.background"));
             }else{
                 g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
             }
-            g.fillRect(x+2, y+2, csize-4, csize-4);
+            g.fillRect(x+2, y+2, CSIZE-4, CSIZE-4);
         }
 
         if(model.isEnabled()) {
@@ -177,15 +177,15 @@ class MyCheckBoxIcon implements Icon {
 
         if(model.isRollover()) {
             g.setColor(Color.ORANGE);
-            g.drawLine(x+1, y+1, x+1+csize-3, y+1);
-            g.drawLine(x+1, y+1, x+1, y+1+csize-3);
+            g.drawLine(x+1, y+1, x+1+CSIZE-3, y+1);
+            g.drawLine(x+1, y+1, x+1, y+1+CSIZE-3);
         }
     }
     @Override public int getIconWidth() {
-        return csize;
+        return CSIZE;
     }
     @Override public int getIconHeight() {
-        return csize;
+        return CSIZE;
     }
 }
 

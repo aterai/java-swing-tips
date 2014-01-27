@@ -14,9 +14,9 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    TransferHandler handler = new TableRowTransferHandler();
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
+    private final TransferHandler handler = new TableRowTransferHandler();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
         {"BBB", 13, true}, {"bbb", 2, false},
         {"CCC", 15, true}, {"ccc", 3, false},
@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
         {"FFF", 19, true}, {"fff", 6, false},
         {"GGG", 92, true}, {"ggg", 0, false}
     };
-    private JTable makeDnDTable() {
+    private final JTable makeDnDTable() {
         JTable t = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 // ArrayIndexOutOfBoundsException:  0 >= 0

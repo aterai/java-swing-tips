@@ -101,7 +101,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         setBackgroundNonSelectionColor(null);
         super.updateUI();
     }
-    boolean rollOver = false;
+    private boolean rollOver = false;
     @Override public Color getBackgroundNonSelectionColor() {
         return rollOver ? rollOverRowColor : super.getBackgroundNonSelectionColor();
     }

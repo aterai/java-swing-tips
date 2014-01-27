@@ -52,27 +52,14 @@ public class MainPanel extends JPanel {
         menuItem.setActionCommand("new");
         menuItem.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                createFrame();
+                JInternalFrame frame = new MyInternalFrame();
+                desktop.add(frame);
+                frame.setVisible(true);
+                //desktop.getDesktopManager().activateFrame(frame);
             }
         });
         menu.add(menuItem);
         return menuBar;
-    }
-
-    protected void createFrame() {
-        MyInternalFrame frame = new MyInternalFrame();
-        desktop.add(frame);
-        frame.setVisible(true);
-        //desktop.getDesktopManager().activateFrame(frame);
-    }
-
-    static int openFrameCount = 0;
-    static class MyInternalFrame extends JInternalFrame {
-        public MyInternalFrame() {
-            super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
-            setSize(160, 100);
-            setLocation(30*openFrameCount, 30*openFrameCount);
-        }
     }
 
     public static void main(String[] args) {
@@ -95,5 +82,16 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class MyInternalFrame extends JInternalFrame {
+    private static final int XOFFSET = 30;
+    private static final int YOFFSET = 30;
+    private static int openFrameCount = 0;
+    public MyInternalFrame() {
+        super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
+        setSize(160, 100);
+        setLocation(XOFFSET*openFrameCount, YOFFSET*openFrameCount);
     }
 }

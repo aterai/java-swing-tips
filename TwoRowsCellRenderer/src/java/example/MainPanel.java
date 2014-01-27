@@ -56,8 +56,8 @@ public class MainPanel extends JPanel {
 }
 
 class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
-    JLabel top = new JLabel();
-    JLabel bottom = new JLabel();
+    private final JLabel top = new JLabel();
+    private final JLabel bottom = new JLabel();
     public TwoRowsCellRenderer() {
         super(new GridLayout(2,1,0,0));
         add(top);

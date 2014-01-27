@@ -7,8 +7,6 @@ import java.net.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    JTextField field = new JTextField("example/test.png");
-
     public MainPanel() {
         super(new BorderLayout());
 

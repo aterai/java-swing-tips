@@ -7,9 +7,9 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    String tabTest = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-    String zsTest = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
-    String zs_tab_zsTest = "\u3000\u3000\u65E5\u672C\u8A9E\u3000\n";
+    private static final String tabTest = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
+    private static final String zsTest = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
+    private static final String zs_tab_zsTest = "\u3000\u3000\u65E5\u672C\u8A9E\u3000\n";
     public MainPanel() {
         super(new BorderLayout());
         JTextPane editor = new JTextPane();
@@ -68,6 +68,7 @@ class MyEditorKit extends StyledEditorKit {
         return d;
     }
 }
+
 class MyViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
@@ -87,6 +88,7 @@ class MyViewFactory implements ViewFactory {
         return new WhitespaceLabelView(elem);
     }
 }
+
 class MyParagraphView extends ParagraphView {
     private static final Color pc = new Color(120, 130, 110);
     public MyParagraphView(Element elem) {
