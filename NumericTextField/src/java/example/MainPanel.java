@@ -143,7 +143,9 @@ class IntegerDocument extends PlainDocument {
             try{
                 return Integer.parseInt(proposedValue);
             }catch(NumberFormatException e) {
-                throw new BadLocationException(proposedValue, offset);
+                BadLocationException ex = new BadLocationException(proposedValue, offset);
+                ex.initCause(e);
+                throw ex;
             }
         }
     }
@@ -182,7 +184,9 @@ class IntegerDocumentFilter extends DocumentFilter {
             try{
                 return Integer.parseInt(proposedValue);
             }catch(NumberFormatException e) {
-                throw new BadLocationException(proposedValue, offset);
+                BadLocationException ex = new BadLocationException(proposedValue, offset);
+                ex.initCause(e);
+                throw ex;
             }
         }
     }

@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
         add(makeTitlePanel(s1, "NumberFormatter#setAllowsInvalid(false)"));
         add(makeTitlePanel(s2, "BackgroundColor"));
         setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static SpinnerNumberModel makeSpinnerNumberModel() {
         return new SpinnerNumberModel(Long.valueOf(10),    Long.valueOf(0),
@@ -88,7 +88,6 @@ class WarningSpinner extends JSpinner {
     }
     private static DefaultFormatterFactory makeFFactory(final SpinnerNumberModel m) { //DecimalFormatSymbols dfs) {
         final NumberFormat format = new DecimalFormat("####0"); //, dfs);
-        NumberFormatter displayFormatter = new NumberFormatter(format);
         NumberFormatter editFormatter = new NumberFormatter(format) {
             //@Override protected DocumentFilter getDocumentFilter() {
             //    return new IntegerDocumentFilter();
@@ -97,7 +96,9 @@ class WarningSpinner extends JSpinner {
                 try{
                     Long.parseLong(text);
                 }catch(NumberFormatException e) {
-                    throw new ParseException(e.getMessage(), 0);
+                    ParseException ex = new ParseException(e.getMessage(), 0);
+                    ex.initCause(e);
+                    throw ex;
                 }
                 Object o = format.parse(text);
                 if(o instanceof Long) {
@@ -115,6 +116,7 @@ class WarningSpinner extends JSpinner {
         //editFormatter.setAllowsInvalid(false);
         //editFormatter.setCommitsOnValidEdit(true);
         editFormatter.setValueClass(Long.class);
+        NumberFormatter displayFormatter = new NumberFormatter(format);
         return new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);
     }
 }
