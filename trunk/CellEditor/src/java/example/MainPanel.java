@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    private final ActionListener al = new ActionListener() {
+    private transient final ActionListener al = new ActionListener() {
         private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
         @Override public void actionPerformed(ActionEvent e) {
             table.clearSelection();

@@ -124,19 +124,19 @@ public class TableSorter extends AbstractTableModel {
 
     private JTableHeader tableHeader;
     private final Map<Class, Comparator> columnComparators = new HashMap<>();
-    private final List<Directive> sortingColumns = new ArrayList<>();
+    private transient final List<Directive> sortingColumns = new ArrayList<>();
     private transient MouseListener mouseListener;
     private transient TableModelListener tableModelListener;
 
-    public void readObject() {
-        this.mouseListener = new MouseHandler();
-        this.tableModelListener = new TableModelHandler();
-    }
-    public Object readResolve() {
-        this.mouseListener = new MouseHandler();
-        this.tableModelListener = new TableModelHandler();
-        return this;
-    }
+//     public void readObject() {
+//         this.mouseListener = new MouseHandler();
+//         this.tableModelListener = new TableModelHandler();
+//     }
+//     public Object readResolve() {
+//         this.mouseListener = new MouseHandler();
+//         this.tableModelListener = new TableModelHandler();
+//         return this;
+//     }
 
     public TableSorter() {
         super();
