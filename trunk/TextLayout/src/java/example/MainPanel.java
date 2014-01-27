@@ -38,10 +38,10 @@ public class MainPanel extends JPanel {
 }
 
 class TextLayoutPanel extends JComponent {
-    String text = "abcdefthijklmnopqrstuvwxyz";
-    Font font = new Font(Font.SERIF, Font.ITALIC, 64);
-    FontRenderContext frc = new FontRenderContext(null,true,true);
-    TextLayout tl = new TextLayout(text, font, frc);
+    private static final String text = "abcdefthijklmnopqrstuvwxyz";
+    private final Font font = new Font(Font.SERIF, Font.ITALIC, 64);
+    private final FontRenderContext frc = new FontRenderContext(null,true,true);
+    private final TextLayout tl = new TextLayout(text, font, frc);
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         int w = getWidth();
@@ -72,11 +72,11 @@ class TextLayoutPanel extends JComponent {
 }
 
 class GlyphVectorPanel extends JComponent {
-    String text = "abcdefthijklmnopqrstuvwxyz";
-    Font font = new Font(Font.SERIF, Font.ITALIC, 64);
-    FontRenderContext frc = new FontRenderContext(null,true,true);
-    GlyphVector gv = font.createGlyphVector(frc, text);
-    LineMetrics lm = font.getLineMetrics(text, frc);
+    private static final String text = "abcdefthijklmnopqrstuvwxyz";
+    private final Font font = new Font(Font.SERIF, Font.ITALIC, 64);
+    private final FontRenderContext frc = new FontRenderContext(null,true,true);
+    private final GlyphVector gv = font.createGlyphVector(frc, text);
+    private final LineMetrics lm = font.getLineMetrics(text, frc);
 
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;

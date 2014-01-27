@@ -11,13 +11,13 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    String[] columnNames = {"Integer", "String", "Date"};
-    Object[][] data = {
+    private final String[] columnNames = {"Integer", "String", "Date"};
+    private final Object[][] data = {
         {-1, "AAA", new Date()}, {2, "BBB", new Date()},
         {-9, "EEE", new Date()}, {1, "",    new Date()},
         {10, "CCC", new Date()}, {7, "FFF", new Date()},
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

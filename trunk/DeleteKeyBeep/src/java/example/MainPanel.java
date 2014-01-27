@@ -94,10 +94,10 @@ public class MainPanel extends JPanel {
 }
 
 class SizeFilter extends DocumentFilter {
-    int max = 5;
+    private static final int MAX = 5;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
         int len = fb.getDocument().getLength();
-        if(len+string.length()>max) {
+        if(len+string.length()>MAX) {
             Toolkit.getDefaultToolkit().beep();
             return;
         }
@@ -108,7 +108,7 @@ class SizeFilter extends DocumentFilter {
     }
     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)throws BadLocationException {
         int len = fb.getDocument().getLength();
-        if(len-length+text.length()>max) {
+        if(len-length+text.length()>MAX) {
             Toolkit.getDefaultToolkit().beep();
             return;
         }

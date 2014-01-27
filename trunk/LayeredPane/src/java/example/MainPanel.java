@@ -35,7 +35,10 @@ public class MainPanel extends JPanel {
         menuItem.setActionCommand("new");
         menuItem.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                createInternalFrame();
+                JInternalFrame iframe = new MyInternalFrame();
+                desktop.add(iframe);
+                iframe.setVisible(true);
+                //desktop.getDesktopManager().activateFrame(iframe);
             }
         });
         menu.add(menuItem);
@@ -51,13 +54,6 @@ public class MainPanel extends JPanel {
         });
         menu.add(menuItem);
         return menuBar;
-    }
-
-    protected void createInternalFrame() {
-        MyInternalFrame iframe = new MyInternalFrame();
-        desktop.add(iframe);
-        iframe.setVisible(true);
-        //desktop.getDesktopManager().activateFrame(iframe);
     }
 
     public static void main(String[] args) {
@@ -84,12 +80,13 @@ public class MainPanel extends JPanel {
 }
 
 class MyInternalFrame extends JInternalFrame {
-    static int openFrameCount = 0;
-    static final int xOffset = 10, yOffset = 10;
+    private static final int XOFFSET = 30;
+    private static final int YOFFSET = 30;
+    private static int openFrameCount = 0;
     public MyInternalFrame() {
         //title, resizable, closable, maximizable, iconifiable
         super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
-        setSize(180, 60);
-        setLocation(xOffset*openFrameCount, yOffset*openFrameCount);
+        setSize(180, 100);
+        setLocation(XOFFSET*openFrameCount, YOFFSET*openFrameCount);
     }
 }

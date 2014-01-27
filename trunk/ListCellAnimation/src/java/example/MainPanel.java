@@ -65,6 +65,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private final Timer animator;
     private final JList list;
     private boolean isRunning = false;
+    private int animate_index = -1;
 
     public AnimeListCellRenderer(final JList l) {
         super(new BorderLayout());
@@ -104,7 +105,6 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private boolean isAnimatingCell() {
         return isRunning && animate_index==list.getSelectedIndex();
     }
-    int animate_index = -1;
     private class MarqueeLabel extends JLabel {
         private float xx;
         public MarqueeLabel() {

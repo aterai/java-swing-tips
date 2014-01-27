@@ -44,6 +44,8 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private final TexturePaint texture = makeTexturePaint();
     private final int[] pixels = new int[320 * 240];
     private final MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
+    private int penc = 0x0;
+
     public PaintPanel() {
         super();
         addMouseMotionListener(this);
@@ -88,7 +90,6 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
             g.drawImage(createImage(source), 0, 0, null);
         }
     }
-    int penc = 0x0;
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
         double xDelta = e.getX() - startPoint.getX();

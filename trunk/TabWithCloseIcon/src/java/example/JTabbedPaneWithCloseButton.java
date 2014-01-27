@@ -36,7 +36,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     }
     class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
         //a list of our close buttons
-        List<JButton> closeButtons = new ArrayList<>();
+        private final List<JButton> closeButtons = new ArrayList<>();
         @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
             //ensure that there are at least as many close buttons as tabs
@@ -75,7 +75,7 @@ class CloseButtonWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
             }
         }
         class CloseButtonAction extends AbstractAction {
-            int index;
+            private final int index;
             public CloseButtonAction(int index) {
                 super("x");
                 this.index = index;
@@ -103,7 +103,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
 
     class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
         //a list of our close buttons
-        List<JButton> closeButtons = new ArrayList<>();
+        private final List<JButton> closeButtons = new ArrayList<>();
         @Override public void layoutContainer(Container parent) {
             super.layoutContainer(parent);
             //ensure that there are at least as many close buttons as tabs
@@ -142,7 +142,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
             }
         }
         class CloseButtonAction extends AbstractAction {
-            int index;
+            private final int index;
             public CloseButtonAction(int index) {
                 super("x");
                 this.index = index;

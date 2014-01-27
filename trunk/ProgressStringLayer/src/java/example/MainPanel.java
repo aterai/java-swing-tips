@@ -183,7 +183,7 @@ class TextLabelProgressBar extends JProgressBar {
 
 class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     private final JPanel rubberStamp = new JPanel();
-    final JLabel label;
+    private final JLabel label;
     public ProgressBarLayerUI(JLabel label) {
         super();
         this.label = label;

@@ -13,8 +13,8 @@ import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    String[] columnNames = {"Name", "Comment"};
-    Object[][] data = {
+    private final String[] columnNames = {"Name", "Comment"};
+    private final Object[][] data = {
         {"test1.jpg", "adfasd"},
         {"test1234.jpg", "  "},
         {"test15354.gif", "fasdf"},
@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         {"fffffffffffasdfasdf", ""},
         {"test1.jpg", ""}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

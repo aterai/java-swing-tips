@@ -132,20 +132,18 @@ public class MainPanel extends JPanel {
 
 //@see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
-    static final int CHECKICON_ENABLED_SELECTED   = 6;
-    static final int CHECKICON_SELECTED_MOUSEOVER = 7;
-    static final int CHECKICON_ENABLED            = 8;
-    static final int CHECKICON_MOUSEOVER          = 9;
+    private static final int CHECKICON_ENABLED_SELECTED   = 6;
+    private static final int CHECKICON_SELECTED_MOUSEOVER = 7;
+    private static final int CHECKICON_ENABLED            = 8;
+    private static final int CHECKICON_MOUSEOVER          = 9;
     private final int state;
     private final PaintContext ctx;
     public MyCheckBoxMenuItemPainter(int state) {
         super();
         this.state = state;
-        this.ctx = new AbstractRegionPainter.PaintContext(
-            new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1.0, 1.0);
+        this.ctx = new AbstractRegionPainter.PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1.0, 1.0);
     }
-    @Override protected void doPaint(Graphics2D g, JComponent c,
-                                     int width, int height, Object[] eckey) {
+    @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] eckey) {
         switch(state) {
           case CHECKICON_ENABLED:
             paintcheckIconEnabled(g);              break;
