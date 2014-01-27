@@ -119,11 +119,11 @@ public class TableSorter extends AbstractTableModel {
             return o1.toString().compareTo(o2.toString());
         }
     };
-    private transient Row[] viewToModel;
-    private int[] modelToView;
+    private transient final List<Row> viewToModel = new ArrayList<>();
+    private transient final List<Integer> modelToView = new ArrayList<>();
 
     private JTableHeader tableHeader;
-    private final Map<Class, Comparator> columnComparators = new HashMap<>();
+    private transient final Map<Class, Comparator> columnComparators = new HashMap<>();
     private transient final List<Directive> sortingColumns = new ArrayList<>();
     private transient MouseListener mouseListener;
     private transient TableModelListener tableModelListener;
@@ -156,8 +156,8 @@ public class TableSorter extends AbstractTableModel {
     }
 
     private void clearSortingState() {
-        viewToModel = null;
-        modelToView = null;
+        viewToModel.clear();
+        modelToView.clear();
     }
 
     public TableModel getTableModel() {
@@ -266,30 +266,30 @@ public class TableSorter extends AbstractTableModel {
         return LEXICAL_COMPARATOR;
     }
 
-    private Row[] getViewToModel() {
-        if(viewToModel == null) {
+    private List<Row> getViewToModel() {
+        if(viewToModel.isEmpty()) {
             int tableModelRowCount = tableModel.getRowCount();
-            viewToModel = new Row[tableModelRowCount];
+            //viewToModel = new Row[tableModelRowCount];
             for(int row = 0; row < tableModelRowCount; row++) {
-                viewToModel[row] = new Row(row);
+                viewToModel.add(new Row(row));
             }
             if(isSorting()) {
-                Arrays.sort(viewToModel);
+                Collections.sort(viewToModel);
             }
         }
         return viewToModel;
     }
 
     public int modelIndex(int viewIndex) {
-        return getViewToModel()[viewIndex].modelIndex;
+        return getViewToModel().get(viewIndex).modelIndex;
     }
 
-    private int[] getModelToView() {
-        if(modelToView == null) {
-            int n = getViewToModel().length;
-            modelToView = new int[n];
+    private List<Integer> getModelToView() {
+        if(modelToView.isEmpty()) {
+            int n = getViewToModel().size();
+            //modelToView = new int[n];
             for(int i = 0; i < n; i++) {
-                modelToView[modelIndex(i)] = i;
+                modelToView.set(modelIndex(i), i);
             }
         }
         return modelToView;
@@ -349,7 +349,7 @@ public class TableSorter extends AbstractTableModel {
                 Object o1 = tableModel.getValueAt(row1, column);
                 Object o2 = tableModel.getValueAt(row2, column);
 
-                int comparison = 0;
+                int comparison;
                 // Define null less than everything, except null.
                 if(o1 == null && o2 == null) {
                     comparison = 0;
@@ -406,7 +406,7 @@ public class TableSorter extends AbstractTableModel {
             // clause avoids this problem.
             int column = e.getColumn();
             if(e.getFirstRow() == e.getLastRow() && column != TableModelEvent.ALL_COLUMNS && getSortingStatus(column) == NOT_SORTED && modelToView != null) {
-                int viewIndex = getModelToView()[e.getFirstRow()];
+                int viewIndex = getModelToView().get(e.getFirstRow());
                 fireTableChanged(new TableModelEvent(TableSorter.this, viewIndex, viewIndex, column, e.getType()));
                 return;
             }
@@ -450,14 +450,14 @@ public class TableSorter extends AbstractTableModel {
                 JTable t = h.getTable();
                 int keyCol = 0;
                 List<?> list = saveSelectedRow(t, keyCol);
-                int status = getSortingStatus(column);
+                int status = getSortingStatus(column) + (e.isShiftDown() ? -1 : 1);
                 if(!e.isControlDown()) {
                     cancelSorting();
                 }
                 // Cycle the sorting states through {NOT_SORTED, ASCENDING, DESCENDING} or
                 // {NOT_SORTED, DESCENDING, ASCENDING} depending on whether shift is pressed.
-                int d = e.isShiftDown() ? -1 : 1;
-                status = status + d;
+                //int d = e.isShiftDown() ? -1 : 1;
+                //status = status + d;
                 status = (status + 4) % 3 - 1; // signed mod, returning {-1, 0, 1}
                 setSortingStatus(column, status);
                 loadSelectedRow(t, list, keyCol);
