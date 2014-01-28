@@ -646,8 +646,12 @@ class ButtonTabComponent extends JPanel {
             @Override public String getToolTipText() {
                 return null;
             }
+            @Override public void updateUI() {
+                super.updateUI();
+                setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+            }
         });
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
         ////Pointed out by ron190jSQL
         //label.setToolTipText("label tooltip test");
         //label.setOpaque(false);
