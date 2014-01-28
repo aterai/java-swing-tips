@@ -73,17 +73,13 @@ public class MainPanel extends JPanel {
     public JMenuBar createMenuBar() {
         UIDefaults d = new UIDefaults();
         d.put("CheckBoxMenuItem[Enabled].checkIconPainter",
-              new MyCheckBoxMenuItemPainter(
-                  MyCheckBoxMenuItemPainter.CHECKICON_ENABLED));
+              new MyCheckBoxMenuItemPainter(CheckIcon.ENABLED));
         d.put("CheckBoxMenuItem[MouseOver].checkIconPainter",
-              new MyCheckBoxMenuItemPainter(
-                  MyCheckBoxMenuItemPainter.CHECKICON_MOUSEOVER));
+              new MyCheckBoxMenuItemPainter(CheckIcon.MOUSEOVER));
         d.put("CheckBoxMenuItem[Enabled+Selected].checkIconPainter",
-              new MyCheckBoxMenuItemPainter(
-                  MyCheckBoxMenuItemPainter.CHECKICON_ENABLED_SELECTED));
+              new MyCheckBoxMenuItemPainter(CheckIcon.ENABLED_SELECTED));
         d.put("CheckBoxMenuItem[MouseOver+Selected].checkIconPainter",
-              new MyCheckBoxMenuItemPainter(
-                  MyCheckBoxMenuItemPainter.CHECKICON_SELECTED_MOUSEOVER));
+              new MyCheckBoxMenuItemPainter(CheckIcon.SELECTED_MOUSEOVER));
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
         menuBar.add(menu);
@@ -130,28 +126,35 @@ public class MainPanel extends JPanel {
     }
 }
 
+enum CheckIcon {
+    ENABLED_SELECTED,
+    SELECTED_MOUSEOVER,
+    ENABLED,
+    MOUSEOVER;
+}
+
 //@see CheckBoxMenuItemPainter.java
 class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
-    private static final int CHECKICON_ENABLED_SELECTED   = 6;
-    private static final int CHECKICON_SELECTED_MOUSEOVER = 7;
-    private static final int CHECKICON_ENABLED            = 8;
-    private static final int CHECKICON_MOUSEOVER          = 9;
-    private final int state;
+//     public static final int CHECKICON_ENABLED_SELECTED   = 6;
+//     public static final int CHECKICON_SELECTED_MOUSEOVER = 7;
+//     public static final int CHECKICON_ENABLED            = 8;
+//     public static final int CHECKICON_MOUSEOVER          = 9;
+    private final CheckIcon state;
     private final PaintContext ctx;
-    public MyCheckBoxMenuItemPainter(int state) {
+    public MyCheckBoxMenuItemPainter(CheckIcon state) {
         super();
         this.state = state;
         this.ctx = new AbstractRegionPainter.PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1.0, 1.0);
     }
     @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] eckey) {
         switch(state) {
-          case CHECKICON_ENABLED:
+          case ENABLED:
             paintcheckIconEnabled(g);              break;
-          case CHECKICON_MOUSEOVER:
+          case MOUSEOVER:
             paintcheckIconMouseOver(g);            break;
-          case CHECKICON_ENABLED_SELECTED:
+          case ENABLED_SELECTED:
             paintcheckIconEnabledAndSelected(g);   break;
-          case CHECKICON_SELECTED_MOUSEOVER:
+          case SELECTED_MOUSEOVER:
             paintcheckIconSelectedAndMouseOver(g); break;
           default:
             break;
