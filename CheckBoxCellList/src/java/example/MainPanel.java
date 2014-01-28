@@ -17,50 +17,7 @@ public class MainPanel extends JPanel {
         Box list1 = Box.createVerticalBox();
 
         DefaultListModel<CheckBoxNode> model = new DefaultListModel<>();
-        JList<CheckBoxNode> list2 = new JList<CheckBoxNode>(model) {
-            private CheckBoxCellRenderer renderer;
-            @Override public void updateUI() {
-                setForeground(null);
-                setBackground(null);
-                setSelectionForeground(null);
-                setSelectionBackground(null);
-                if(renderer!=null) {
-                    removeMouseListener(renderer);
-                    removeMouseMotionListener(renderer);
-                }
-                super.updateUI();
-                renderer = new CheckBoxCellRenderer();
-                setCellRenderer(renderer);
-                addMouseListener(renderer);
-                addMouseMotionListener(renderer);
-            }
-            //@see SwingUtilities2.pointOutsidePrefSize(...)
-            private boolean pointOutsidePrefSize(Point p) {
-                int i = locationToIndex(p);
-                DefaultListModel m = (DefaultListModel)getModel();
-                CheckBoxNode n = (CheckBoxNode)m.get(i);
-                Component c = getCellRenderer().getListCellRendererComponent(this, n, i, false, false);
-                Rectangle r = getCellBounds(i, i);
-                r.width = c.getPreferredSize().width;
-                return i < 0 || !r.contains(p);
-            }
-            @Override protected void processMouseEvent(MouseEvent e) {
-                if(!pointOutsidePrefSize(e.getPoint())) {
-                    super.processMouseEvent(e);
-                }
-            }
-            @Override protected void processMouseMotionEvent(MouseEvent e) {
-                if(pointOutsidePrefSize(e.getPoint())) {
-                    MouseEvent ev = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
-                                                   e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
-                                                   e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
-                    super.processMouseEvent(ev);
-                }else{
-                    super.processMouseMotionEvent(e);
-                }
-            }
-        };
-        list2.putClientProperty("List.isFileList", Boolean.TRUE);
+        JList<CheckBoxNode> list2 = new CheckBoxList<>(model);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
         JTree list3 = new JTree();
@@ -131,9 +88,58 @@ class CheckBoxNode {
     }
 }
 
-class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBoxNode>, MouseListener, MouseMotionListener {
+class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
+    private CheckBoxCellRenderer<E> renderer;
+    public CheckBoxList(ListModel<E> model) {
+        super(model);
+    }
+    @Override public void updateUI() {
+        setForeground(null);
+        setBackground(null);
+        setSelectionForeground(null);
+        setSelectionBackground(null);
+        if(renderer!=null) {
+            removeMouseListener(renderer);
+            removeMouseMotionListener(renderer);
+        }
+        super.updateUI();
+        renderer = new CheckBoxCellRenderer<E>();
+        setCellRenderer(renderer);
+        addMouseListener(renderer);
+        addMouseMotionListener(renderer);
+        putClientProperty("List.isFileList", Boolean.TRUE);
+    }
+    //@see SwingUtilities2.pointOutsidePrefSize(...)
+    private boolean pointOutsidePrefSize(Point p) {
+        int i = locationToIndex(p);
+        DefaultListModel<E> m = (DefaultListModel<E>)getModel();
+        E n = m.get(i);
+        ListCellRenderer<? super E> renderer = getCellRenderer();
+        Component c = renderer.getListCellRendererComponent(this, n, i, false, false);
+        Rectangle r = getCellBounds(i, i);
+        r.width = c.getPreferredSize().width;
+        return i < 0 || !r.contains(p);
+    }
+    @Override protected void processMouseEvent(MouseEvent e) {
+        if(!pointOutsidePrefSize(e.getPoint())) {
+            super.processMouseEvent(e);
+        }
+    }
+    @Override protected void processMouseMotionEvent(MouseEvent e) {
+        if(pointOutsidePrefSize(e.getPoint())) {
+            MouseEvent ev = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
+                                           e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
+                                           e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
+            super.processMouseEvent(ev);
+        }else{
+            super.processMouseMotionEvent(e);
+        }
+    }
+}
+
+class CheckBoxCellRenderer<E extends CheckBoxNode> extends JCheckBox implements ListCellRenderer<E>, MouseListener, MouseMotionListener {
     private int rollOverRowIndex = -1;
-    @Override public Component getListCellRendererComponent(JList list, CheckBoxNode value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         this.setOpaque(true);
         if(isSelected) {
             this.setBackground(list.getSelectionBackground());
