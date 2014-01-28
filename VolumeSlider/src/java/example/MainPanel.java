@@ -174,7 +174,7 @@ class TriSliderUI extends MetalSliderUI {
 //   }
 // }
 // class TickIcon implements Icon {
-//   @Override public void paintIcon(Component c,Graphics g,int x,int y) {
+//   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     g.setColor(Color.GREEN);
 //     g.drawLine( x+2, y-1, x+2, y+1 );
 //     g.drawLine( x+1, y+0, x+3, y+0 );

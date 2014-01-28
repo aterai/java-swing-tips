@@ -24,7 +24,7 @@ class MainPanel extends JPanel {
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
 
     private static final Icon emptyIcon = new Icon() {
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
+        @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
         @Override public int getIconWidth()  { return 0; }
         @Override public int getIconHeight() { return 0; }
     };

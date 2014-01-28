@@ -61,11 +61,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     @Override public void mousePressed(MouseEvent e) {
         startPoint = e.getPoint();
     }
-    @Override public void mouseMoved(MouseEvent e) {}
-    @Override public void mouseExited(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
-    @Override public void mouseClicked(MouseEvent e) {}
+    @Override public void mouseMoved(MouseEvent e)    { /* not needed */ }
+    @Override public void mouseExited(MouseEvent e)   { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+    @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
 }
 
 // class PaintPanel2 extends JPanel implements MouseMotionListener, MouseListener {

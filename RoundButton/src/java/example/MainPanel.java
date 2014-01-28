@@ -353,7 +353,7 @@ class ShapeButton extends JButton {
         @Override public int getIconHeight() {
             return shape.getBounds().height;
         }
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
+        @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
     }
 //*/
 }

@@ -80,7 +80,7 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
             }
         }
     }
-    @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {}
+    @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException { /* not needed */ }
 }
 
 class FolderSelectionListener implements TreeSelectionListener {

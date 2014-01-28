@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setRowSorter(new TableRowSorter<TableModel>(model) {
-            @Override public void toggleSortOrder(int column) {}
+            @Override public void toggleSortOrder(int column) { /* Disable header click sorting */ }
         });
         table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
@@ -39,7 +39,6 @@ public class MainPanel extends JPanel {
         final JTableHeader header = table.getTableHeader();
         header.setComponentPopupMenu(pop);
         pop.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuCanceled(PopupMenuEvent e) {}
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 //System.out.println("popupMenuWillBecomeInvisible");
                 header.setDraggedColumn(null);
@@ -47,7 +46,8 @@ public class MainPanel extends JPanel {
                 //header.setDraggedDistance(0);
                 header.repaint();
             }
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+            @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
         });
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 200));

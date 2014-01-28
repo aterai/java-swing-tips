@@ -110,6 +110,6 @@ class FIFODocumentListener implements DocumentListener {
             ble.printStackTrace();
         }
     }
-    @Override public void removeUpdate(DocumentEvent e) {}
-    @Override public void changedUpdate(DocumentEvent e) {}
+    @Override public void removeUpdate(DocumentEvent e)  { /* not needed */ }
+    @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
 }

@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
             }
         });
         panel.setComponentPopupMenu(popup);
-        panel.addMouseListener(new MouseAdapter() {});
+        panel.addMouseListener(new MouseAdapter() { /* Dummy listener */ });
         add(panel);
         toolbar.add(new AbstractAction("add table") {
             @Override public void actionPerformed(ActionEvent e) {

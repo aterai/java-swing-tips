@@ -22,7 +22,7 @@ public class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
     }
     public UIDefaults getDefaults() {
         UIDefaults table = new UIDefaults() {
-            @Override protected void getUIError(String msg) {}
+            @Override protected void getUIError(String msg) { /* not needed */ }
         };
         //final String packageName = "example.AuxiliaryWindows";
         Object[] uiDefaults = {

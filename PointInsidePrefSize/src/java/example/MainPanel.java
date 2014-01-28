@@ -203,10 +203,10 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             }
         }
     }
-    @Override public void mouseDragged(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
 }
 
 class TestModel extends DefaultTableModel {

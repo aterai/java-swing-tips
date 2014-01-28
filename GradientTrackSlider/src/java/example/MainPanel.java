@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         UIManager.put("Slider.horizontalThumbIcon", new Icon() {
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
+            @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
             @Override public int getIconWidth()  { return 15; }
             @Override public int getIconHeight() { return 64; }
         });

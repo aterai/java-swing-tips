@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridLayout(1,3));
@@ -119,7 +119,20 @@ public class MainPanel extends JPanel {
     }
 }
 
+class CheckBoxNode {
+    public final String text;
+    public final boolean selected;
+    public CheckBoxNode(String text, boolean selected) {
+        this.text = text;
+        this.selected = selected;
+    }
+    @Override public String toString() {
+        return text;
+    }
+}
+
 class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBoxNode>, MouseListener, MouseMotionListener {
+    private int rollOverRowIndex = -1;
     @Override public Component getListCellRendererComponent(JList list, CheckBoxNode value, int index, boolean isSelected, boolean cellHasFocus) {
         this.setOpaque(true);
         if(isSelected) {
@@ -134,10 +147,9 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBo
         this.setText(value.text);
         return this;
     }
-    private int rollOverRowIndex = -1;
     @Override public void mouseExited(MouseEvent e) {
-        JList l = (JList)e.getSource();
         if(rollOverRowIndex>=0) {
+            JList l = (JList)e.getSource();
             l.repaint(l.getCellBounds(rollOverRowIndex, rollOverRowIndex));
             rollOverRowIndex = -1;
         }
@@ -145,11 +157,11 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBo
     @Override public void mouseClicked(MouseEvent e) {
         if(e.getButton()==MouseEvent.BUTTON1) {
             JList l = (JList)e.getComponent();
-            @SuppressWarnings("unchecked")
-            DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>)l.getModel();
             Point p = e.getPoint();
             int index  = l.locationToIndex(p);
             if(index>=0) {
+                @SuppressWarnings("unchecked")
+                DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>)l.getModel();
                 CheckBoxNode n = m.get(index);
                 m.set(index, new CheckBoxNode(n.text, !n.selected));
                 l.repaint(l.getCellBounds(index, index));
@@ -164,22 +176,10 @@ class CheckBoxCellRenderer extends JCheckBox implements ListCellRenderer<CheckBo
             l.repaint();
         }
     }
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
-    @Override public void mouseDragged(MouseEvent e) {}
-}
-
-class CheckBoxNode {
-    public final String text;
-    public final boolean selected;
-    public CheckBoxNode(String text, boolean selected) {
-        this.text = text;
-        this.selected = selected;
-    }
-    @Override public String toString() {
-        return text;
-    }
+    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
 }
 
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
@@ -195,8 +195,7 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
             }
             return this;
         }
-        return renderer.getTreeCellRendererComponent(
-            tree, value, selected, expanded, leaf, row, hasFocus);
+        return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     }
 }
 

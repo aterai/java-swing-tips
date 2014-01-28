@@ -73,7 +73,7 @@ class LineNumberView extends JComponent {
             @Override public void removeUpdate(DocumentEvent e) {
                 repaint();
             }
-            @Override public void changedUpdate(DocumentEvent e) {}
+            @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
         });
         textArea.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {

@@ -272,8 +272,8 @@ class CloseTabIcon implements Icon {
 }
 
 class TabLayout implements LayoutManager, java.io.Serializable {
-    @Override public void addLayoutComponent(String name, Component comp) {}
-    @Override public void removeLayoutComponent(Component comp) {}
+    @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
+    @Override public void removeLayoutComponent(Component comp)           { /* not needed */ }
     @Override public Dimension preferredLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();

@@ -67,7 +67,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     private static Icon ASCENDING_SORT_ICON  = UIManager.getIcon("Table.ascendingSortIcon");
     private static Icon DESCENDING_SORT_ICON = UIManager.getIcon("Table.descendingSortIcon");
     private static Icon NONE_SORT_ICON = new Icon() {
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) {}
+        @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
         @Override public int getIconWidth() {
             return ASCENDING_SORT_ICON.getIconWidth();
         }

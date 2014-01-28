@@ -11,7 +11,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private static final Color EVEN_COLOR = new Color(250, 250, 250);
+    private MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
@@ -34,7 +35,6 @@ public class MainPanel extends JPanel {
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private static JTable makeTable() {
         TestModel model = new TestModel();
         try{
@@ -166,10 +166,10 @@ class URLRenderer1 extends DefaultTableCellRenderer implements MouseListener, Mo
             }
         }
     }
-    @Override public void mouseDragged(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
 }
 
 class URLRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
@@ -289,10 +289,10 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
             }
         }
     }
-    @Override public void mouseDragged(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
 }
 
 class TestModel extends DefaultTableModel {

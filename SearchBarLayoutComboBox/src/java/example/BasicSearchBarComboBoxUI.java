@@ -66,7 +66,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                         }
                     });
                 }
-                @Override public void popupMenuCanceled(PopupMenuEvent e) {}
+                @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
             };
         }
         return popupMenuListener;

@@ -130,9 +130,9 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     @Override public void dragExit(DragSourceEvent e) {
         e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
     }
-    @Override public void dragOver(DragSourceDragEvent e) {}
-    @Override public void dropActionChanged(DragSourceDragEvent e) {}
-    @Override public void dragDropEnd(DragSourceDropEvent e) {}
+    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
+    @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
+    @Override public void dragDropEnd(DragSourceDropEvent e)       { /* not needed */ }
 
     // Interface: Transferable
     @Override public Object getTransferData(DataFlavor flavor) {
