@@ -22,11 +22,13 @@ public class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    private final DefaultListModel listModel = new DefaultListModel();
-    @SuppressWarnings("unchecked")
-    private final JList list = new JList(listModel);
+    private final DefaultListModel<Date> listModel = new DefaultListModel<>();
+    private final JList<Date> list = new JList<>(listModel);
 
     private final JTree tree = new JTree();
+
+    private final transient Timer timer;
+    private transient HierarchyListener hierarchyListener;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -40,7 +42,6 @@ public class MainPanel extends JPanel {
         t.addTab("JTree",  new JScrollPane(tree));
 
         timer = new Timer(1000, new ActionListener() {
-            @SuppressWarnings("unchecked")
             @Override public void actionPerformed(ActionEvent e) {
                 Date date = new Date();
 
@@ -75,8 +76,6 @@ public class MainPanel extends JPanel {
         add(t);
         setPreferredSize(new Dimension(320, 240));
     }
-    private final transient Timer timer;
-    private transient HierarchyListener hierarchyListener;
     @Override public void updateUI() {
         if(hierarchyListener!=null) { removeHierarchyListener(hierarchyListener); }
         super.updateUI();

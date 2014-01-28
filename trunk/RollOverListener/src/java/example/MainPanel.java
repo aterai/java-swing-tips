@@ -5,17 +5,11 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(makeList()));
-        setPreferredSize(new Dimension(320, 200));
-    }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("Name1-comment");
         model.addElement("Name2-test");
         model.addElement("asdfasd");
@@ -26,9 +20,10 @@ public class MainPanel extends JPanel {
         model.addElement("asdfffasddddddddddddddddd");
         model.addElement("asdfasdfasdfasdfas");
         model.addElement("4352345123452345234523452345234534");
-        JList list = new RollOverList();
-        list.setModel(model);
-        return list;
+
+        JList<String> list = new RollOverList<>(model);
+        add(new JScrollPane(list));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -53,10 +48,13 @@ public class MainPanel extends JPanel {
     }
 }
 
-class RollOverList extends JList {
+class RollOverList<E> extends JList<E> {
     private static final Color ROLLOVERBACKGROUND = new Color(220,240,255);
     private int rollOverRowIndex = -1;
     private RollOverListener rollOverListener = null;
+    public RollOverList(ListModel<E> model) {
+        super(model);
+    }
     @Override public void updateUI() {
         if(rollOverListener!=null) {
             removeMouseListener(rollOverListener);
@@ -65,7 +63,6 @@ class RollOverList extends JList {
         setSelectionBackground(null); //Nimbus
         super.updateUI();
         EventQueue.invokeLater(new Runnable() {
-            @SuppressWarnings("unchecked")
             @Override public void run() {
                 rollOverListener = new RollOverListener();
                 addMouseMotionListener(rollOverListener);

@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final DefaultListModel listModel = new DefaultListModel();
+    private final DefaultListModel<String> listModel = new DefaultListModel<>();
     private final TestModel model = new TestModel(listModel);
     private final JTable table = new JTable(model);
     public MainPanel() {
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        RowHeaderList rowHeader = new RowHeaderList(listModel, table);
+        RowHeaderList rowHeader = new RowHeaderList<String>(listModel, table);
         rowHeader.setFixedCellWidth(50);
 
         final JScrollPane scroll = new JScrollPane(table);
@@ -125,16 +125,18 @@ public class MainPanel extends JPanel {
     }
 }
 
-class RowHeaderList extends JList {
+class RowHeaderList<E> extends JList<E> {
     private final JTable table;
     private final ListSelectionModel tableSelection;
     private final ListSelectionModel rListSelection;
-    @SuppressWarnings("unchecked")
-    public RowHeaderList(ListModel model, JTable table) {
+    private int rollOverRowIndex = -1;
+    private int pressedRowIndex  = -1;
+
+    public RowHeaderList(ListModel<E> model, JTable table) {
         super(model);
         this.table = table;
         setFixedCellHeight(table.getRowHeight());
-        setCellRenderer(new RowHeaderRenderer(table.getTableHeader()));
+        setCellRenderer(new RowHeaderRenderer<E>(table.getTableHeader()));
         //setSelectionModel(table.getSelectionModel());
         RollOverListener rol = new RollOverListener();
         addMouseListener(rol);
@@ -144,7 +146,7 @@ class RowHeaderList extends JList {
         tableSelection = table.getSelectionModel();
         rListSelection = getSelectionModel();
     }
-    class RowHeaderRenderer extends JLabel implements ListCellRenderer {
+    class RowHeaderRenderer<E> extends JLabel implements ListCellRenderer<E> {
         private final JTableHeader header; // = table.getTableHeader();
         public RowHeaderRenderer(JTableHeader header) {
             super();
@@ -157,7 +159,7 @@ class RowHeaderList extends JList {
             this.setBackground(header.getBackground());
             this.setFont(header.getFont());
         }
-        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
             if(index==pressedRowIndex) {
                 setBackground(Color.GRAY);
             }else if(index==rollOverRowIndex) {
@@ -172,8 +174,6 @@ class RowHeaderList extends JList {
             return this;
         }
     }
-    private int rollOverRowIndex = -1;
-    private int pressedRowIndex  = -1;
     class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             if(pressedRowIndex<0) {
@@ -229,6 +229,7 @@ class RowHeaderList extends JList {
         }
     }
 }
+
 class TestModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         //new ColumnContext("No.",     Integer.class, false),
@@ -236,12 +237,11 @@ class TestModel extends DefaultTableModel {
         new ColumnContext("Comment", String.class,  false)
     };
     private int number = 0;
-    private final DefaultListModel rowListModel;
-    public TestModel(DefaultListModel lm) {
+    private final DefaultListModel<String> rowListModel;
+    public TestModel(DefaultListModel<String> lm) {
         super();
         rowListModel = lm;
     }
-    @SuppressWarnings("unchecked")
     public void addTest(Test t) {
         Object[] obj = {t.getName(), t.getComment()};
         super.addRow(obj);
@@ -275,6 +275,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     public Test(String name, String comment) {

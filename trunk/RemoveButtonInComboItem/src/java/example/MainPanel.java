@@ -14,34 +14,34 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(2,1));
-        final JComboBox c0 = makeComboBox(true,  false);
-        final JComboBox c1 = makeComboBox(false, false);
-        final JComboBox c2 = makeComboBox(true,  true);
-        final JComboBox c3 = makeComboBox(false, true);
+        final JComboBox<String> c0 = makeComboBox(true,  false);
+        final JComboBox<String> c1 = makeComboBox(false, false);
+        final JComboBox<String> c2 = makeComboBox(true,  true);
+        final JComboBox<String> c3 = makeComboBox(false, true);
 
         p.add(makeTitlePanel("setEditable(false)", Arrays.asList(c0, c1)));
         p.add(makeTitlePanel("setEditable(true)",  Arrays.asList(c2, c3)));
         p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(p, BorderLayout.NORTH);
         add(new JButton(new AbstractAction("add") {
-            @SuppressWarnings("unchecked")
             @Override public void actionPerformed(ActionEvent e) {
                 String str = new Date().toString();
-                for(JComboBox c: Arrays.asList(c0, c1, c2, c3)) {
-                    MutableComboBoxModel m = (MutableComboBoxModel)c.getModel();
+                for(JComboBox<String> c: Arrays.asList(c0, c1, c2, c3)) {
+                    MutableComboBoxModel<String> m = (MutableComboBoxModel<String>)c.getModel();
                     m.insertElementAt(str, m.getSize());
                 }
             }
         }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(final boolean isDefault, boolean isEditable) {
-        String[] m = new String[] {"aaa", "bbb", "ccc"};
-        JComboBox comboBox = new JComboBox(m) {
+    private static JComboBox<String> makeComboBox(final boolean isDefault, boolean isEditable) {
+        String[] m = {"aaa", "bbb", "ccc"};
+        JComboBox<String> comboBox = new JComboBox<String>(m) {
             @Override public void updateUI() {
                 super.updateUI();
-                if(isDefault) { return; }
+                if(isDefault) {
+                    return;
+                }
                 setRenderer(new ButtonsRenderer(this));
                 Accessible a = getAccessibleContext().getAccessibleChild(0);
                 if(a instanceof BasicComboPopup) {
@@ -92,6 +92,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
     private JButton prevButton = null;
@@ -186,7 +187,13 @@ class CellButtonsMouseListener extends MouseAdapter {
     }
 }
 
-class ButtonsRenderer extends JPanel implements ListCellRenderer {
+class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
+    private static final Color EVEN_COLOR = new Color(230,255,230);
+    private final JComboBox comboBox;
+    private JList list;
+    private int index;
+    public int rolloverIndex = -1;
+    public JButton button = null;
     private final JLabel label = new DefaultListCellRenderer();
     private final JButton deleteButton = new JButton(new AbstractAction("x") {
         @Override public void actionPerformed(ActionEvent e) {
@@ -213,11 +220,8 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         deleteButton.setContentAreaFilled(false);
         add(deleteButton, BorderLayout.EAST);
     }
-    private final JComboBox comboBox;
-    private JList list;
-    private int index;
-    private static final Color EVEN_COLOR = new Color(230,255,230);
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
+//  @Override public Component getListCellRendererComponent(JList list, E value, int index, boolean isSelected, boolean hasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(Objects.toString(value, ""));
         this.list = list;
         this.index = index;
@@ -243,6 +247,4 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer {
         }
         return this;
     }
-    public int rolloverIndex = -1;
-    public JButton button = null;
 }

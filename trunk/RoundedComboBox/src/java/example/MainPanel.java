@@ -20,9 +20,9 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JComboBox combo0 = makeComboBox();
-        JComboBox combo1 = makeComboBox();
-        JComboBox combo2 = makeComboBox();
+        JComboBox<String> combo0 = new JComboBox<>(makeModel());
+        JComboBox<String> combo1 = new JComboBox<>(makeModel());
+        JComboBox<String> combo2 = new JComboBox<>(makeModel());
 
         combo0.setBorder(new RoundedCornerBorder());
         combo1.setBorder(new KamabokoBorder());
@@ -65,11 +65,11 @@ public class MainPanel extends JPanel {
         //UIManager.put("ComboBox.editorBorder", BorderFactory.createLineBorder(Color.GREEN));
         UIManager.put("ComboBox.border", new KamabokoBorder());
 
-        JComboBox combo00 = makeComboBox();
-        JComboBox combo01 = makeComboBox();
+        JComboBox<String> combo00 = new JComboBox<>(makeModel());
+        JComboBox<String> combo01 = new JComboBox<>(makeModel());
 
         UIManager.put("ComboBox.border", new KamabokoBorder());
-        JComboBox combo02 = makeComboBox();
+        JComboBox<String> combo02 = new JComboBox<>(makeModel());
 
         combo00.setUI(new MetalComboBoxUI());
         combo01.setUI(new BasicComboBoxUI());
@@ -123,7 +123,7 @@ public class MainPanel extends JPanel {
         tabbedPane.add("Windows", createPanel(box0, null, null));
 
         add(tabbedPane);
-        final List<JComboBox> list = Arrays.asList(combo00, combo01, combo02, combo0, combo1, combo2);
+        final List<JComboBox<String>> list = Arrays.asList(combo00, combo01, combo02, combo0, combo1, combo2);
         add(new JCheckBox(new AbstractAction("editable") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flag = ((JCheckBox)e.getSource()).isSelected();
@@ -157,16 +157,12 @@ public class MainPanel extends JPanel {
         }
         return panel;
     }
-//     //JDK 1.7.0
-//     private static DefaultComboBoxModel<String> makeModel() {
-//         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static DefaultComboBoxModel<String> makeModel() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("1234");
         model.addElement("5555555555555555555555");
         model.addElement("6789000000000");
-        return new JComboBox(model);
+        return model;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

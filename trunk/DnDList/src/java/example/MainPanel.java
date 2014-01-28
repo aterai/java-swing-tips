@@ -14,9 +14,8 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(makeList()));
         setPreferredSize(new Dimension(320, 200));
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static JList<String> makeList() {
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("1111");
         model.addElement("22222222");
         model.addElement("333333333333");
@@ -24,7 +23,7 @@ public class MainPanel extends JPanel {
         model.addElement("AAAAAAAAAAAAAA");
         model.addElement("****");
 
-        DnDList list = new DnDList();
+        JList<String> list = new DnDList<String>();
         list.setModel(model);
         list.setCellRenderer(new DefaultListCellRenderer() {
             private final Color ec = new Color(240, 240, 240);
@@ -65,9 +64,10 @@ public class MainPanel extends JPanel {
     }
 }
 
-class DnDList extends JList implements DragGestureListener, DragSourceListener, Transferable {
+class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
+    private static final Color LINE_COLOR = new Color(100,100,255);
     private static final String NAME = "test";
-    private static final Color lineColor = new Color(100,100,255);
+    private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private final Rectangle2D targetLine = new Rectangle2D.Float();
     private int draggedIndex = -1;
     private int targetIndex  = -1;
@@ -82,7 +82,7 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
         super.paintComponent(g);
         if(targetIndex>=0) {
             Graphics2D g2 = (Graphics2D)g;
-            g2.setPaint(lineColor);
+            g2.setPaint(LINE_COLOR);
             g2.fill(targetLine);
         }
     }
@@ -109,12 +109,18 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
 
     // Interface: DragGestureListener
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        if(getSelectedIndices().length>1) { return; }
+        if(getSelectedIndices().length>1) {
+            return;
+        }
         draggedIndex = locationToIndex(e.getDragOrigin());
-        if(draggedIndex<0) { return; }
+        if(draggedIndex<0) {
+            return;
+        }
         try{
             e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, (DragSourceListener)this);
-        }catch(InvalidDnDOperationException idoe) { idoe.printStackTrace(); }
+        }catch(InvalidDnDOperationException idoe) {
+            idoe.printStackTrace();
+        }
     }
 
     // Interface: DragSourceListener
@@ -129,7 +135,6 @@ class DnDList extends JList implements DragGestureListener, DragSourceListener, 
     @Override public void dragDropEnd(DragSourceDropEvent e) {}
 
     // Interface: Transferable
-    private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     @Override public Object getTransferData(DataFlavor flavor) {
         return this;
     }

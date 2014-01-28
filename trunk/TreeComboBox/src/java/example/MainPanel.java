@@ -9,12 +9,11 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private final TreeComboBox combo = new TreeComboBox();
-    @SuppressWarnings("unchecked")
+    private final TreeComboBox<DefaultMutableTreeNode> combo = new TreeComboBox<>();
     public MainPanel() {
         super(new BorderLayout());
-        DefaultComboBoxModel model1 = new DefaultComboBoxModel();
-        DefaultComboBoxModel model2 = new DefaultComboBoxModel();
+        DefaultComboBoxModel<DefaultMutableTreeNode> model1 = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<DefaultMutableTreeNode> model2 = new DefaultComboBoxModel<>();
         TreeModel tm = makeModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)tm.getRoot();
 //         Enumeration depth = root.depthFirstEnumeration();
@@ -27,18 +26,16 @@ public class MainPanel extends JPanel {
         makeComboBoxModel(model2, root);
         combo.setModel(model2);
         combo.setSelectedIndex(-1);
-        //combo.setMaximumRowCount(100);
 
         Box box = Box.createVerticalBox();
-        box.add(createPanel(new JComboBox(model1), "default:"));
+        box.add(createPanel(new JComboBox<DefaultMutableTreeNode>(model1), "default:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo, "Tree ComboBoxModel:"));
         box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static void makeComboBoxModel(DefaultComboBoxModel model, DefaultMutableTreeNode node) {
+    private static void makeComboBoxModel(DefaultComboBoxModel<DefaultMutableTreeNode> model, DefaultMutableTreeNode node) {
         if(!node.isRoot()) {
             model.addElement(node);
         }
@@ -58,8 +55,8 @@ public class MainPanel extends JPanel {
 //         set1.add(new DefaultMutableTreeNode("111111111"));
 //         set1.add(new DefaultMutableTreeNode("22222222222"));
 //         set1.add(new DefaultMutableTreeNode("33333"));
-//         set2.add(set3);
 //         set2.add(new DefaultMutableTreeNode("asdfasdfas"));
+//         set2.add(set3);
 //         set2.add(new DefaultMutableTreeNode("asdf"));
 //         set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
 //         set3.add(new DefaultMutableTreeNode("qwerqwer"));
@@ -97,58 +94,34 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TreeComboBox extends JComboBox {
-    //private JTree tree = new JTree();
-    @SuppressWarnings("unchecked")
+class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
+    private boolean isNotSelectableIndex = false;
+    private final Action up = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            int si = getSelectedIndex();
+            for(int i = si-1;i>=0;i--) {
+                //E o = getItemAt(i);
+                //if(o instanceof TreeNode && ((TreeNode)o).isLeaf()) {
+                if(getItemAt(i).isLeaf()) {
+                    setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    };
+    private final Action down = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            int si = getSelectedIndex();
+            for(int i = si+1;i<getModel().getSize();i++) {
+                if(getItemAt(i).isLeaf()) {
+                    setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    };
     public TreeComboBox() {
         super();
-        setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JComponent c;
-                if(value instanceof DefaultMutableTreeNode) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-                    int indent = 2 + index<0 ? 0 : (node.getPath().length-2)*16;
-                    //String str = node.toString();
-                    if(node.isLeaf()) {
-                        c = (JComponent)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                    }else{
-                        c = (JComponent)super.getListCellRendererComponent(list,value,index,false,false);
-                        //c = (JComponent)tree.getCellRenderer().getTreeCellRendererComponent(tree,value,isSelected,true,false,0,cellHasFocus);
-                        JLabel l = (JLabel)c;
-                        l.setForeground(Color.WHITE);
-                        l.setBackground(Color.GRAY.darker());
-                    }
-                    c.setBorder(BorderFactory.createEmptyBorder(0,indent,0,0));
-                }else{
-                    c = (JComponent)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                }
-                return c;
-            }
-        });
-        Action up = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int si = getSelectedIndex();
-                for(int i = si-1;i>=0;i--) {
-                    Object o = getItemAt(i);
-                    if(o instanceof TreeNode && ((TreeNode)o).isLeaf()) {
-                        setSelectedIndex(i);
-                        break;
-                    }
-                }
-            }
-        };
-        Action down = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int si = getSelectedIndex();
-                for(int i = si+1;i<getModel().getSize();i++) {
-                    Object o = getItemAt(i);
-                    if(o instanceof TreeNode && ((TreeNode)o).isLeaf()) {
-                        setSelectedIndex(i);
-                        break;
-                    }
-                }
-            }
-        };
         ActionMap am = getActionMap();
         am.put("selectPrevious3", up);
         am.put("selectNext3", down);
@@ -158,7 +131,31 @@ class TreeComboBox extends JComboBox {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
     }
-    private boolean isNotSelectableIndex = false;
+    @Override public void updateUI() {
+        super.updateUI();
+        final ListCellRenderer<? super E> r = getRenderer();
+        setRenderer(new ListCellRenderer<E>() {
+            @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel c;
+                if(value instanceof DefaultMutableTreeNode) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
+                    int indent = 2 + index<0 ? 0 : (node.getPath().length-2)*16;
+                    if(node.isLeaf()) {
+                        c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    }else{
+                        c = (JLabel)r.getListCellRendererComponent(list, value, index, false, false);
+                        JLabel l = (JLabel)c;
+                        l.setForeground(Color.WHITE);
+                        l.setBackground(Color.GRAY.darker());
+                    }
+                    c.setBorder(BorderFactory.createEmptyBorder(0, indent, 0, 0));
+                }else{
+                    c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                }
+                return c;
+            }
+        });
+    }
     @Override public void setPopupVisible(boolean v) {
         if(!v && isNotSelectableIndex) {
             isNotSelectableIndex = false;
@@ -167,11 +164,11 @@ class TreeComboBox extends JComboBox {
         }
     }
     @Override public void setSelectedIndex(int index) {
-        Object o = getItemAt(index);
-        if(o instanceof TreeNode && !((TreeNode)o).isLeaf()) {
-            isNotSelectableIndex = true;
-        }else{
+        TreeNode node = getItemAt(index);
+        if(node!=null && node.isLeaf()) {
             super.setSelectedIndex(index);
+        }else{
+            isNotSelectableIndex = true;
         }
     }
 }

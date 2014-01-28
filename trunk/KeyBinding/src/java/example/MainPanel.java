@@ -27,47 +27,7 @@ public class MainPanel extends JPanel {
             return c;
         }
     };
-
-    private static enum JComponentType {
-        JComboBox(new JComboBox()),
-        JFormattedTextField(new JFormattedTextField()),
-        //JFileChooser(new JFileChooser()),
-        JInternalFrame(new JInternalFrame()),
-        JLabel(new JLabel()),
-        JLayeredPane(new JLayeredPane()),
-        JList(new JList()),
-        JMenuBar(new JMenuBar()),
-        JOptionPane(new JOptionPane()),
-        JPanel(new JPanel()),
-        JPopupMenu(new JPopupMenu()),
-        JProgressBar(new JProgressBar()),
-        JRootPane(new JRootPane()),
-        JScrollBar(new JScrollBar()),
-        JScrollPane(new JScrollPane()),
-        JSeparator(new JSeparator()),
-        JSlider(new JSlider()),
-        JSpinner(new JSpinner()),
-        JSplitPane(new JSplitPane()),
-        JTabbedPane(new JTabbedPane()),
-        JTable(new JTable()),
-        JTableHeader(new JTableHeader()),
-        JToolBar(new JToolBar()),
-        JToolTip(new JToolTip()),
-        JTree(new JTree()),
-        JEditorPane(new JEditorPane()),
-        JTextArea(new JTextArea()),
-        JTextField(new JTextField());
-        public final JComponent component;
-        private JComponentType(JComponent component) {
-            this.component = component;
-        }
-    }
-    private final JComboBox componentChoices = makeComboBox(JComponentType.values());
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Object[] model) {
-        return new JComboBox(model);
-    }
-
+    private final JComboBox<? extends Enum> componentChoices = new JComboBox<>(JComponentType.values());
     private final List<Integer> focusType = Arrays.asList(
         JComponent.WHEN_FOCUSED, JComponent.WHEN_IN_FOCUSED_WINDOW,
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -159,6 +119,42 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum JComponentType {
+    JComboBox(new JComboBox()),
+    JFormattedTextField(new JFormattedTextField()),
+    //JFileChooser(new JFileChooser()),
+    JInternalFrame(new JInternalFrame()),
+    JLabel(new JLabel()),
+    JLayeredPane(new JLayeredPane()),
+    JList(new JList()),
+    JMenuBar(new JMenuBar()),
+    JOptionPane(new JOptionPane()),
+    JPanel(new JPanel()),
+    JPopupMenu(new JPopupMenu()),
+    JProgressBar(new JProgressBar()),
+    JRootPane(new JRootPane()),
+    JScrollBar(new JScrollBar()),
+    JScrollPane(new JScrollPane()),
+    JSeparator(new JSeparator()),
+    JSlider(new JSlider()),
+    JSpinner(new JSpinner()),
+    JSplitPane(new JSplitPane()),
+    JTabbedPane(new JTabbedPane()),
+    JTable(new JTable()),
+    JTableHeader(new JTableHeader()),
+    JToolBar(new JToolBar()),
+    JToolTip(new JToolTip()),
+    JTree(new JTree()),
+    JEditorPane(new JEditorPane()),
+    JTextArea(new JTextArea()),
+    JTextField(new JTextField());
+    public final JComponent component;
+    private JComponentType(JComponent component) {
+        this.component = component;
+    }
+}
+
 class BindingMapModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("Focus", String.class, false),
@@ -196,6 +192,7 @@ class BindingMapModel extends DefaultTableModel {
         }
     }
 }
+
 class Binding {
     private Integer focusType;
     private String actionName, keyDescription;

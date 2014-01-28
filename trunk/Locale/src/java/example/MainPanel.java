@@ -8,7 +8,30 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo = makeComboBox();
+    private static final Locale[] array = {
+        Locale.ENGLISH,
+        Locale.FRENCH,
+        Locale.GERMAN,
+        Locale.ITALIAN,
+        Locale.JAPANESE,
+        Locale.KOREAN,
+        Locale.CHINESE,
+        Locale.SIMPLIFIED_CHINESE,
+        Locale.TRADITIONAL_CHINESE,
+        Locale.FRANCE,
+        Locale.GERMANY,
+        Locale.ITALY,
+        Locale.JAPAN,
+        Locale.KOREA,
+        Locale.CHINA,
+        Locale.PRC,
+        Locale.TAIWAN,
+        Locale.UK,
+        Locale.US,
+        Locale.CANADA,
+        Locale.CANADA_FRENCH,
+    };
+    private final JComboBox<Locale> combo = new JComboBox<Locale>(array);
     private final JPanel panel = new JPanel(new BorderLayout(5, 5));
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {
@@ -33,34 +56,7 @@ public class MainPanel extends JPanel {
             }
         }), BorderLayout.EAST);
         add(panel, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        Locale[] array = {
-            Locale.ENGLISH,
-            Locale.FRENCH,
-            Locale.GERMAN,
-            Locale.ITALIAN,
-            Locale.JAPANESE,
-            Locale.KOREAN,
-            Locale.CHINESE,
-            Locale.SIMPLIFIED_CHINESE,
-            Locale.TRADITIONAL_CHINESE,
-            Locale.FRANCE,
-            Locale.GERMANY,
-            Locale.ITALY,
-            Locale.JAPAN,
-            Locale.KOREA,
-            Locale.CHINA,
-            Locale.PRC,
-            Locale.TAIWAN,
-            Locale.UK,
-            Locale.US,
-            Locale.CANADA,
-            Locale.CANADA_FRENCH,
-        };
-        return new JComboBox(array);
+        setPreferredSize(new Dimension(320, 240));
     }
 //     private static void printLocale(JFileChooser fileChooser) {
 //         System.out.println("Locale: "+fileChooser.getLocale());

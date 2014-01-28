@@ -133,14 +133,13 @@ class MainPanel extends JPanel {
         return tabs;
     }
 
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Map<String, Color> map) {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static JComboBox<String> makeComboBox(Map<String, Color> map) {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("gray-white");
         for(Map.Entry<String, Color> entry: map.entrySet()) {
             model.addElement(entry.getKey());
         }
-        return new JComboBox(model);
+        return new JComboBox<String>(model);
     }
 
     public static void main(String[] args) {

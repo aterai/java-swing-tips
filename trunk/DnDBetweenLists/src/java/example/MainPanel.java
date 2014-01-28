@@ -22,9 +22,8 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @SuppressWarnings("unchecked")
-    private static JList makeList(TransferHandler handler) {
-        DefaultListModel listModel = new DefaultListModel();
+    private static JList<Color> makeList(TransferHandler handler) {
+        DefaultListModel<Color> listModel = new DefaultListModel<>();
         listModel.addElement(Color.RED);
         listModel.addElement(Color.BLUE);
         listModel.addElement(Color.GREEN);
@@ -32,7 +31,7 @@ public class MainPanel extends JPanel {
         listModel.addElement(Color.ORANGE);
         listModel.addElement(Color.PINK);
         listModel.addElement(Color.MAGENTA);
-        JList list = new JList(listModel);
+        JList<Color> list = new JList<>(listModel);
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -83,16 +82,19 @@ public class MainPanel extends JPanel {
 //Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
+    private JList source = null;
+    private int[] indices = null;
+    private int addIndex  = -1; //Location where items were added
+    private int addCount  = 0;  //Number of items added.
+
     public ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
-    private JList source = null;
-    @SuppressWarnings("deprecation")
     @Override protected Transferable createTransferable(JComponent c) {
-        source = (JList) c;
+        source = (JList)c;
         indices = source.getSelectedIndices();
-        Object[] transferedObjects = source.getSelectedValues();
+        @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
@@ -124,7 +126,7 @@ class ListItemTransferHandler extends TransferHandler {
                 listModel.add(idx, values[i]);
                 target.addSelectionInterval(idx, idx);
             }
-            addCount = (target==source)? values.length : 0;
+            addCount = source.equals(target) ? values.length : 0;
             return true;
         }catch(UnsupportedFlavorException ufe) {
             ufe.printStackTrace();
@@ -138,8 +140,6 @@ class ListItemTransferHandler extends TransferHandler {
     }
     private void cleanup(JComponent c, boolean remove) {
         if(remove && indices != null) {
-            JList source = (JList)c;
-            DefaultListModel model  = (DefaultListModel)source.getModel();
             //If we are moving items around in the same list, we
             //need to adjust the indices accordingly, since those
             //after the insertion point have moved.
@@ -150,6 +150,8 @@ class ListItemTransferHandler extends TransferHandler {
                     }
                 }
             }
+            JList source = (JList)c;
+            DefaultListModel model  = (DefaultListModel)source.getModel();
             for(int i=indices.length-1;i>=0;i--) {
                 model.remove(indices[i]);
             }
@@ -158,7 +160,4 @@ class ListItemTransferHandler extends TransferHandler {
         addCount = 0;
         addIndex = -1;
     }
-    private int[] indices = null;
-    private int addIndex  = -1; //Location where items were added
-    private int addCount  = 0;  //Number of items added.
 }

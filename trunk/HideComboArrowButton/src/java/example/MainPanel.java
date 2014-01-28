@@ -18,55 +18,53 @@ public class MainPanel extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(25, 25));
         panel.add(makePanel(), BorderLayout.NORTH);
         panel.add(p, BorderLayout.SOUTH);
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(panel, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
     private static JPanel makePanel() {
         final JPanel p = new JPanel(new BorderLayout(5, 5));
-        p.add(makeComboBox(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
+        p.add(new JComboBox<String>(new String[] {"aaaa", "bbbbbbbbbb", "ccccc"}));
 
-        final Color bgc = UIManager.getColor("ComboBox.background");
-        UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-        UIManager.put("ComboBox.background",   p.getBackground());
-        Object[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
-        JComboBox comboBox = makeComboBox(items);
-        final ListCellRenderer r = comboBox.getRenderer();
-        comboBox.setRenderer(new ListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                c.setHorizontalAlignment(SwingConstants.RIGHT);
-                if(isSelected) {
-                    c.setForeground(list.getSelectionForeground());
-                    c.setBackground(list.getSelectionBackground());
-                }else{
-                    c.setForeground(list.getForeground());
-                    c.setBackground(bgc);
-                }
-                return c;
+        String[] items = {"JComboBox 11111:", "JComboBox 222:", "JComboBox 33:"};
+        JComboBox<String> comboBox = new JComboBox<String>(items) {
+            @Override public void updateUI() {
+                super.updateUI();
+                UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+                UIManager.put("ComboBox.background",   p.getBackground());
+                setUI(new BasicComboBoxUI() {
+                    @Override protected JButton createArrowButton() {
+                        JButton button = new JButton(); //.createArrowButton();
+                        button.setBorder(BorderFactory.createEmptyBorder());
+                        button.setVisible(false);
+                        return button;
+                    }
+                });
+                final ListCellRenderer<? super String> r = getRenderer();
+                setRenderer(new ListCellRenderer<String>() {
+                    private final Color bgc = UIManager.getColor("ComboBox.background");
+                    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JLabel c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        c.setHorizontalAlignment(SwingConstants.RIGHT);
+                        if(isSelected) {
+                            c.setForeground(list.getSelectionForeground());
+                            c.setBackground(list.getSelectionBackground());
+                        }else{
+                            c.setForeground(list.getForeground());
+                            c.setBackground(bgc);
+                        }
+                        return c;
+                    }
+                });
+                setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
+                //setBackground(p.getBackground());
+                setOpaque(false);
+                setFocusable(false);
             }
-        });
-        comboBox.setUI(new BasicComboBoxUI() {
-            @Override protected JButton createArrowButton() {
-                JButton button = new JButton(); //.createArrowButton();
-                button.setBorder(BorderFactory.createEmptyBorder());
-                button.setVisible(false);
-                return button;
-            }
-        });
-        comboBox.setOpaque(false);
-        //comboBox.setBackground(p.getBackground());
-        comboBox.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
-        comboBox.setFocusable(false);
-
+        };
         p.add(comboBox, BorderLayout.WEST);
         p.setBorder(BorderFactory.createTitledBorder("JComboBox+JComboBox"));
         return p;
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Object[] model) {
-        return new JComboBox(model);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

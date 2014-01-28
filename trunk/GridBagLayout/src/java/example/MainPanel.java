@@ -7,8 +7,8 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private static final int GAP = 5;
-    private final JComboBox combo1 = makeComboBox();
-    private final JComboBox combo2 = makeComboBox();
+    private final JComboBox<String> combo1 = new JComboBox<>(new String[] {"aaaaaa", "bbbbb"});
+    private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"cccccccc", "ddd"});
     private final JButton button1 = new JButton("Open");
     private final JButton button2 = new JButton("Open");
 
@@ -21,12 +21,7 @@ public class MainPanel extends JPanel {
         box.add(createCompButtonPanel2(combo2, button2, "GridBagLayout:"));
         box.add(Box.createVerticalStrut(20));
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
-    }
-
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        return new JComboBox(new String[] {"aaaaaa", "bbbbb"});
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static JPanel createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
