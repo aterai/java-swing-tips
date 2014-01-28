@@ -96,6 +96,11 @@ public class MainPanel extends JPanel {
 class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
     private JButton prevButton = null;
+    private static void listRepaint(JList list, Rectangle rect) {
+        if(rect!=null) {
+            list.repaint(rect);
+        }
+    }
     @Override public void mouseMoved(MouseEvent e) {
         JList list = (JList)e.getComponent();
         Point pt = e.getPoint();
@@ -103,9 +108,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         if(!list.getCellBounds(index, index).contains(pt)) {
             if(prevIndex>=0) {
                 Rectangle r = list.getCellBounds(prevIndex, prevIndex);
-                if(r!=null) {
-                    list.repaint(r);
-                }
+                listRepaint(list, r);
             }
             index = -1;
             prevButton = null;
@@ -118,23 +121,21 @@ class CellButtonsMouseListener extends MouseAdapter {
             if(button == null) {
                 renderer.rolloverIndex = -1;
                 Rectangle r = null;
-                if(prevIndex != index) {
+                if(prevIndex == index) {
+                    if(prevIndex>=0 && prevButton!=null) {
+                        r = list.getCellBounds(prevIndex, prevIndex);
+                    }
+                }else{
                     r = list.getCellBounds(index, index);
-                }else if(prevIndex>=0 && prevButton!=null) {
-                    r = list.getCellBounds(prevIndex, prevIndex);
                 }
-                if(r != null) {
-                    list.repaint(r);
-                }
+                listRepaint(list, r);
                 prevIndex = -1;
             }else{
                 button.getModel().setRollover(true);
                 renderer.rolloverIndex = index;
                 if(!button.equals(prevButton)) {
                     Rectangle r = list.getCellBounds(prevIndex, index);
-                    if(r!=null) {
-                        list.repaint(r);
-                    }
+                    listRepaint(list, r);
                 }
             }
             prevButton = button;
@@ -150,7 +151,8 @@ class CellButtonsMouseListener extends MouseAdapter {
             if(button != null) {
                 ButtonsRenderer renderer = (ButtonsRenderer)list.getCellRenderer();
                 renderer.button = button;
-                list.repaint(list.getCellBounds(index, index));
+                Rectangle r = list.getCellBounds(index, index);
+                listRepaint(list, r);
             }
         }
     }
@@ -165,9 +167,7 @@ class CellButtonsMouseListener extends MouseAdapter {
                 renderer.button = null;
                 button.doClick();
                 Rectangle r = list.getCellBounds(index, index);
-                if(r!=null) {
-                    list.repaint(r);
-                }
+                listRepaint(list, r);
             }
         }
     }

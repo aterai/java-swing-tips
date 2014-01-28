@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalCheckBoxIcon;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         //System.setProperty("swing.noxp", "true");
         //UIManager.put("CheckBox.interiorBackground", new ColorUIResource(Color.GREEN));
@@ -112,7 +112,17 @@ class MyCheckBoxIcon implements Icon {
         JCheckBox cb = (JCheckBox) c;
         ButtonModel model = cb.getModel();
         // outer bevel
-        if(!cb.isBorderPaintedFlat()) {
+        if(cb.isBorderPaintedFlat()) {
+            g.setColor(UIManager.getColor("CheckBox.shadow"));
+            g.drawRect(x+1, y+1, CSIZE-3, CSIZE-3);
+
+            if(model.isPressed() && model.isArmed()) {
+                g.setColor(UIManager.getColor("CheckBox.background"));
+            }else{
+                g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
+            }
+            g.fillRect(x+2, y+2, CSIZE-4, CSIZE-4);
+        }else{
             // Outer top/left
             g.setColor(UIManager.getColor("CheckBox.shadow"));
             g.drawLine(x, y, x+11, y);
@@ -141,16 +151,6 @@ class MyCheckBoxIcon implements Icon {
             }else{
                 //g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
                 g.setColor(color);
-            }
-            g.fillRect(x+2, y+2, CSIZE-4, CSIZE-4);
-        }else{
-            g.setColor(UIManager.getColor("CheckBox.shadow"));
-            g.drawRect(x+1, y+1, CSIZE-3, CSIZE-3);
-
-            if(model.isPressed() && model.isArmed()) {
-                g.setColor(UIManager.getColor("CheckBox.background"));
-            }else{
-                g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
             }
             g.fillRect(x+2, y+2, CSIZE-4, CSIZE-4);
         }
