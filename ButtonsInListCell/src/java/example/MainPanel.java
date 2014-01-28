@@ -8,12 +8,9 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(makeList()));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private static JList<String> makeList() {
+
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("11\n1");
         model.addElement("222222222222222\n222222222222222");
@@ -26,7 +23,9 @@ public class MainPanel extends JPanel {
         list.addMouseListener(cbml);
         list.addMouseMotionListener(cbml);
         list.setCellRenderer(new ButtonsRenderer(model));
-        return list;
+
+        add(new JScrollPane(list));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -78,10 +77,12 @@ class CellButtonsMouseListener extends MouseAdapter {
             if(button == null) {
                 renderer.rolloverIndex = -1;
                 Rectangle r = null;
-                if(prevIndex != index) {
+                if(prevIndex == index) {
+                    if(prevIndex>=0 && prevButton!=null) {
+                        r = list.getCellBounds(prevIndex, prevIndex);
+                    }
+                }else{
                     r = list.getCellBounds(index, index);
-                }else if(prevIndex>=0 && prevButton!=null) {
-                    r = list.getCellBounds(prevIndex, prevIndex);
                 }
                 listRepaint(list, r);
                 prevIndex = -1;
@@ -146,7 +147,8 @@ class CellButtonsMouseListener extends MouseAdapter {
 }
 
 class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
-    public JTextArea label = new JTextArea();
+    private static final Color EVEN_COLOR = new Color(230,255,230);
+    private final JTextArea label = new JTextArea();
     private final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             if(model.getSize()>1) {
@@ -160,6 +162,11 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
         }
     });
     private final DefaultListModel<String> model;
+    private int index;
+    public int pressedIndex  = -1;
+    public int rolloverIndex = -1;
+    public JButton button = null;
+
     public ButtonsRenderer(DefaultListModel<String> model) {
         super(new BorderLayout());
         this.model = model;
@@ -178,8 +185,6 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
         }
         add(box, BorderLayout.EAST);
     }
-    private int index;
-    private static final Color EVEN_COLOR = new Color(230,255,230);
     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
         label.setText((value==null)?"":value);
         this.index = index;
@@ -211,7 +216,4 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
             m.setSelected(false);
         }
     }
-    public int pressedIndex  = -1;
-    public int rolloverIndex = -1;
-    public JButton button = null;
 }

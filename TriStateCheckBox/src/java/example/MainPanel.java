@@ -9,73 +9,40 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private final JCheckBox checkBox = new JCheckBox("TriState JCheckBox") {
-        protected TriStateActionListener listener = null;
-        class TriStateActionListener implements ActionListener {
-            protected Icon icon;
-            public void setIcon(Icon icon) {
-                this.icon = icon;
-            }
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                if(!cb.isSelected()) {
-                    cb.setIcon(icon);
-                }else if(cb.getIcon()!=null) {
-                    cb.setIcon(null);
-                    cb.setSelected(false);
-                }
-            }
-        }
-        @Override public void updateUI() {
-            final Icon oi = getIcon();
-            removeActionListener(listener);
-            setIcon(null);
-            super.updateUI();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    if(listener==null) {
-                        listener = new TriStateActionListener();
-                    }
-                    Icon icon = new IndeterminateIcon();
-                    listener.setIcon(icon);
-                    addActionListener(listener);
-                    if(oi!=null) {
-                        setIcon(icon);
-                    }
-                }
-            });
+    private final JCheckBox checkBox = new TriStateCheckBox("TriState JCheckBox");
+    private final Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
+    private final Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}};
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
         }
     };
-    private static JTable makeTable() {
-        Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
-        Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
-            {true, 2, "DDD"}, {false, 5, "CCC"},
-            {true, 3, "EEE"}, {false, 6, "GGG"},
-            {true, 4, "FFF"}, {false, 7, "HHH"}};
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
+    private final JTable table = new JTable(model) {
+        @Override public void updateUI() {
+            super.updateUI();
+            //XXX: Nimbus
+            TableCellRenderer r = getDefaultRenderer(Boolean.class);
+            if(r instanceof JComponent) {
+                ((JComponent)r).updateUI();
             }
-        };
-        JTable table = new JTable(model) {
-            @Override public void updateUI() {
-                super.updateUI();
-                //XXX: Nimbus
-                TableCellRenderer r = getDefaultRenderer(Boolean.class);
-                if(r instanceof JComponent) {
-                    ((JComponent)r).updateUI();
-                }
+        }
+        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+            Component c = super.prepareEditor(editor, row, column);
+            if(c instanceof JCheckBox) {
+                JCheckBox b = (JCheckBox)c;
+                b.setBackground(getSelectionBackground());
+                b.setBorderPainted(true);
             }
-            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-                Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
-                    b.setBackground(getSelectionBackground());
-                    b.setBorderPainted(true);
-                }
-                return c;
-            }
-        };
+            return c;
+        }
+    };
+
+    public MainPanel() {
+        super(new BorderLayout());
+
         int modelColmunIndex = 0;
         TableCellRenderer renderer = new HeaderRenderer(table.getTableHeader(), modelColmunIndex);
         TableColumn column = table.getColumnModel().getColumn(modelColmunIndex);
@@ -83,19 +50,14 @@ public class MainPanel extends JPanel {
         column.setHeaderValue(Status.INDETERMINATE);
         //column.setResizable(false);
         //column.setMaxWidth(32);
-
         model.addTableModelListener(new HeaderCheckBoxHandler(table, modelColmunIndex));
-        return table;
-    }
 
-    public MainPanel() {
-        super(new BorderLayout());
         JPanel p = new JPanel();
         p.add(checkBox);
 
         JTabbedPane tp = new JTabbedPane();
         tp.addTab("JCheckBox", p);
-        tp.addTab("JTableHeader", new JScrollPane(makeTable()));
+        tp.addTab("JTableHeader", new JScrollPane(table));
 
         add(tp);
         setPreferredSize(new Dimension(320, 240));
@@ -130,61 +92,54 @@ public class MainPanel extends JPanel {
     }
 }
 
-//http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
-class LookAndFeelPanel extends JPanel {
-    private ButtonGroup lookAndFeelRadioGroup;
-    private String lookAndFeel;
-    public LookAndFeelPanel(LayoutManager lm) {
-        super(lm);
+class TriStateActionListener implements ActionListener {
+    protected Icon icon;
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
-    public JMenu createLookAndFeelMenu() {
-        JMenu menu = new JMenu("LookAndFeel");
-        lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-        lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
-            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
+    @Override public void actionPerformed(ActionEvent e) {
+        JCheckBox cb = (JCheckBox)e.getSource();
+        if(cb.isSelected()) {
+            if(cb.getIcon()!=null) {
+                cb.setIcon(null);
+                cb.setSelected(false);
+            }
+        }else{
+            cb.setIcon(icon);
         }
-        return menu;
     }
-    public JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
-        final JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
-        lafItem.setSelected(lafClassName.equals(lookAndFeel));
-        lafItem.setHideActionText(true);
-        lafItem.setAction(new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
-                    setLookAndFeel(m.getActionCommand(), lafItem);
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                    ex.printStackTrace();
+}
+
+class TriStateCheckBox extends JCheckBox {
+    protected TriStateActionListener listener = null;
+    public TriStateCheckBox(String title) {
+        super(title);
+    }
+    @Override public void updateUI() {
+        final Icon oi = getIcon();
+        removeActionListener(listener);
+        setIcon(null);
+        super.updateUI();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                if(listener==null) {
+                    listener = new TriStateActionListener();
+                }
+                Icon icon = new IndeterminateIcon();
+                listener.setIcon(icon);
+                addActionListener(listener);
+                if(oi!=null) {
+                    setIcon(icon);
                 }
             }
         });
-        lafItem.setText(lafName);
-        lafItem.setActionCommand(lafClassName);
-        lookAndFeelRadioGroup.add(lafItem);
-        return lafItem;
-    }
-    public void setLookAndFeel(String lookAndFeel, JComponent c) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        String oldLookAndFeel = this.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
-            UIManager.setLookAndFeel(lookAndFeel);
-            this.lookAndFeel = lookAndFeel;
-            updateLookAndFeel();
-            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
-        }
-    }
-    private void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
-            SwingUtilities.updateComponentTreeUI(window);
-        }
     }
 }
 
 class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     private final JLabel label = new JLabel("Check All");
     private final int targetColumnIndex;
+    private Icon icon;
     public HeaderRenderer(JTableHeader header, int index) {
         super((String)null);
         this.targetColumnIndex = index;
@@ -243,7 +198,6 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 //         }
         return l;
     }
-    private Icon icon;
     @Override public void updateUI() {
         final Icon oi = getIcon();
         super.updateUI();
@@ -333,3 +287,55 @@ class ComponentIcon implements Icon {
 }
 
 enum Status { SELECTED, DESELECTED, INDETERMINATE }
+
+//http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
+class LookAndFeelPanel extends JPanel {
+    private ButtonGroup lookAndFeelRadioGroup;
+    private String lookAndFeel;
+    public LookAndFeelPanel(LayoutManager lm) {
+        super(lm);
+    }
+    public JMenu createLookAndFeelMenu() {
+        JMenu menu = new JMenu("LookAndFeel");
+        lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+        lookAndFeelRadioGroup = new ButtonGroup();
+        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
+        }
+        return menu;
+    }
+    public JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
+        final JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
+        lafItem.setSelected(lafClassName.equals(lookAndFeel));
+        lafItem.setHideActionText(true);
+        lafItem.setAction(new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                ButtonModel m = lookAndFeelRadioGroup.getSelection();
+                try{
+                    setLookAndFeel(m.getActionCommand(), lafItem);
+                }catch(ClassNotFoundException | InstantiationException |
+                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        lafItem.setText(lafName);
+        lafItem.setActionCommand(lafClassName);
+        lookAndFeelRadioGroup.add(lafItem);
+        return lafItem;
+    }
+    public void setLookAndFeel(String lookAndFeel, JComponent c) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        String oldLookAndFeel = this.lookAndFeel;
+        if(!oldLookAndFeel.equals(lookAndFeel)) {
+            UIManager.setLookAndFeel(lookAndFeel);
+            this.lookAndFeel = lookAndFeel;
+            updateLookAndFeel();
+            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+        }
+    }
+    private void updateLookAndFeel() {
+        for(Window window: Frame.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(window);
+        }
+    }
+}
