@@ -6,9 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JList list1 = makeList();
-    private final JList list2 = makeList();
-    private final JList list3 = makeList();
+    private final JList<String> list1 = new JList<>(makeModel());
+    private final JList<String> list2 = new JList<>(makeModel());
+    private final JList<String> list3 = new JList<>(makeModel());
 
     public MainPanel() {
         super(new GridLayout(1,0));
@@ -28,11 +28,10 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(list1));
         add(new JScrollPane(list2));
         add(new JScrollPane(list3));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel model = new DefaultListModel();
+    private static ListModel<String> makeModel() {
+        DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("bbbbb");
         model.addElement("ccc");
@@ -42,10 +41,9 @@ public class MainPanel extends JPanel {
         model.addElement("gggggggg");
         model.addElement("hhhhhh");
         model.addElement("iiiiiiiiiiii");
-        return new JList(model);
+        return model;
     }
-    @SuppressWarnings("unchecked")
-    private static void setListCellRenderer(JList l) {
+    private static void setListCellRenderer(JList<String> l) {
         l.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 return super.getListCellRendererComponent(list, value, index, false, false);

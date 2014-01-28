@@ -7,7 +7,7 @@ import javax.swing.*;
 // import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo  = makeComboBox();
+    private final JComboBox<String> combo = new JComboBox<>(makeModel());
     private final JLabel label     = new JLabel();
     private final JToolBar toolbar = new JToolBar("toolbar");
     private final JButton button   = new JButton("button");
@@ -43,14 +43,13 @@ public class MainPanel extends JPanel {
         add(label);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static ComboBoxModel<String> makeModel() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("1111111");
         model.addElement("22222");
         model.addElement("3333333333333333");
         model.addElement("44444444444");
-        return new JComboBox(model);
+        return model;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

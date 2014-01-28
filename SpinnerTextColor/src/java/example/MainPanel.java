@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        Object[] items = {
+        String[] items = {
             "<html><font color='red'>Sunday</font> <font color='gray'>(Sun.)",
             "<html><font color='black'>Monday</font> <font color='gray'>(Mon.)",
             "<html><font color='black'>Tuesday</font> <font color='gray'>(Tue.)",
@@ -37,13 +37,12 @@ public class MainPanel extends JPanel {
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JPanel makeColorSpinner(Object[] items) {
+    private static JPanel makeColorSpinner(String[] items) {
         UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-        final JComboBox comboBox = new JComboBox(items);
-        final ListCellRenderer r = comboBox.getRenderer();
-        comboBox.setRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        final JComboBox<String> comboBox = new JComboBox<>(items);
+        final ListCellRenderer<? super String> r = comboBox.getRenderer();
+        comboBox.setRenderer(new ListCellRenderer<String>() {
+            @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
                 JComponent c = (JComponent)r.getListCellRendererComponent(list, value, index, false, false);
                 c.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
                 return c;

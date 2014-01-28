@@ -56,7 +56,6 @@ public class MainPanel extends JPanel {
         add(statusPanel, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    //@SuppressWarnings("unchecked")
     public static void addItem(JComboBox<String> dirCombo, String str, int max) {
         if(str==null || str.trim().isEmpty()) {
             return;

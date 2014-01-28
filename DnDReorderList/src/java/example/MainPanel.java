@@ -20,9 +20,8 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
         add(p);
     }
-    @SuppressWarnings("unchecked")
-    private static JList makeList() {
-        DefaultListModel listModel = new DefaultListModel();
+    private static JList<Color> makeList() {
+        DefaultListModel<Color> listModel = new DefaultListModel<>();
         listModel.addElement(Color.RED);
         listModel.addElement(Color.BLUE);
         listModel.addElement(Color.GREEN);
@@ -30,7 +29,7 @@ public class MainPanel extends JPanel {
         listModel.addElement(Color.ORANGE);
         listModel.addElement(Color.PINK);
         listModel.addElement(Color.MAGENTA);
-        JList list = new JList(listModel) {
+        JList<Color> list = new JList<Color>(listModel) {
             @Override public void updateUI() {
                 setSelectionBackground(null); //Nimbus
                 super.updateUI();
@@ -89,6 +88,10 @@ public class MainPanel extends JPanel {
 //Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
+    private int[] indices = null;
+    private int addIndex  = -1; //Location where items were added
+    private int addCount  = 0;  //Number of items added.
+
     public ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
@@ -172,7 +175,4 @@ class ListItemTransferHandler extends TransferHandler {
         addCount = 0;
         addIndex = -1;
     }
-    private int[] indices = null;
-    private int addIndex  = -1; //Location where items were added
-    private int addCount  = 0;  //Number of items added.
 }

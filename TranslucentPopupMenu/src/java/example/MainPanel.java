@@ -14,13 +14,13 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void updateUI() {
-        super.updateUI();
-        if(tree!=null && System.getProperty("java.version").startsWith("1.6.0")) {
-            System.out.println("???: 1.6.0_xx bug??? remake JPopupMenu");
-            tree.setComponentPopupMenu(makePopupMenu());
-        }
-    }
+//     @Override public void updateUI() {
+//         super.updateUI();
+//         if(tree!=null && System.getProperty("java.version").startsWith("1.6.0")) {
+//             System.out.println("???: 1.6.0_xx bug??? remake JPopupMenu");
+//             tree.setComponentPopupMenu(makePopupMenu());
+//         }
+//     }
     private static JPopupMenu makePopupMenu() {
         JPopupMenu popup = new TranslucentPopupMenu();
         popup.add(new JMenuItem("Undo"));
@@ -65,8 +65,7 @@ class TranslucentPopupMenu extends JPopupMenu {
     }
     @Override public void updateUI() {
         super.updateUI();
-        boolean isNimbus = UIManager.getBorder("PopupMenu.border")==null;
-        if(isNimbus) {
+        if(UIManager.getBorder("PopupMenu.border")==null) {
             setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.GRAY)));
         }
     }
@@ -82,15 +81,15 @@ class TranslucentPopupMenu extends JPopupMenu {
                 if(p instanceof JWindow) {
                     System.out.println("Heavy weight");
                     JWindow w = (JWindow)p;
-                    if(System.getProperty("java.version").startsWith("1.6.0")) {
-                        w.dispose();
-                        if(com.sun.awt.AWTUtilities.isWindowOpaque(w)) {
-                            com.sun.awt.AWTUtilities.setWindowOpaque(w, false);
-                        }
-                        w.setVisible(true);
-                    }else{
+//                     if(System.getProperty("java.version").startsWith("1.6.0")) {
+//                         w.dispose();
+//                         if(com.sun.awt.AWTUtilities.isWindowOpaque(w)) {
+//                             com.sun.awt.AWTUtilities.setWindowOpaque(w, false);
+//                         }
+//                         w.setVisible(true);
+//                     }else{
                         w.setBackground(ALPHA_ZERO);
-                    }
+//                     }
                 }else{
                     System.out.println("Light weight");
                 }

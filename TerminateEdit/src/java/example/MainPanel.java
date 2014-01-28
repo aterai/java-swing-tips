@@ -31,9 +31,11 @@ public class MainPanel extends JPanel {
             return c;
         }
     };
+    private final JComboBox<? extends Enum> combobox = new JComboBox<>(AutoResizeMode.values());
     private final JCheckBox checkbox    = new JCheckBox("terminateEditOnFocusLost", true);
     private final JCheckBox focusCheck  = new JCheckBox("DefaultCellEditor:focusLost", true);
     private final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
+
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
@@ -61,7 +63,9 @@ public class MainPanel extends JPanel {
         DefaultCellEditor dce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
         dce.getComponent().addFocusListener(new FocusAdapter() {
             @Override public void focusLost(FocusEvent e) {
-                if(!focusCheck.isSelected()) { return; }
+                if(!focusCheck.isSelected()) {
+                    return;
+                }
                 if(table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
@@ -71,7 +75,9 @@ public class MainPanel extends JPanel {
 
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                if(!headerCheck.isSelected()) { return; }
+                if(!headerCheck.isSelected()) {
+                    return;
+                }
                 if(table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
@@ -96,18 +102,11 @@ public class MainPanel extends JPanel {
         });
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        JComboBox combobox = makeComboBox(new String[] {
-            "AUTO_RESIZE_OFF",
-            "AUTO_RESIZE_ALL_COLUMNS"
-        });
         combobox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) { return; }
-                JComboBox cb = (JComboBox)e.getSource();
-                if("AUTO_RESIZE_OFF".equals(cb.getSelectedItem())) {
-                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                }else{
-                    table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                    JComboBox cb = (JComboBox)e.getSource();
+                    table.setAutoResizeMode(((AutoResizeMode)cb.getSelectedItem()).mode);
                 }
             }
         });
@@ -122,10 +121,6 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Object[] model) {
-        return new JComboBox(model);
     }
 
     public static void main(String[] args) {
@@ -156,5 +151,14 @@ public class MainPanel extends JPanel {
 
         frame2.setVisible(true);
         frame.setVisible(true);
+    }
+}
+
+enum AutoResizeMode{
+    AUTO_RESIZE_OFF(JTable.AUTO_RESIZE_OFF),
+    AUTO_RESIZE_ALL_COLUMNS(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    public int mode;
+    private AutoResizeMode(int mode) {
+        this.mode = mode;
     }
 }

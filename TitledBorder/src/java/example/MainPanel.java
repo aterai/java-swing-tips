@@ -8,39 +8,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    private static enum VerticalOrientation {
-        DEFAULT_POSITION ("Default Position"),
-        ABOVE_TOP        ("Above Top"),
-        TOP              ("Top"),
-        BELOW_TOP        ("Below Top"),
-        ABOVE_BOTTOM     ("Above Bottom"),
-        BOTTOM           ("Bottom"),
-        BELOW_BOTTOM     ("Below Bottom");
-        private final String description;
-        private VerticalOrientation(String description) {
-            this.description = description;
-        }
-        @Override public String toString() {
-            return description;
-        }
-    }
-    private static enum Justification {
-        DEFAULT_JUSTIFICATION ("Default Justification"),
-        LEFT                  ("Left"),
-        CENTER                ("Center"),
-        RIGHT                 ("Right"),
-        LEADING               ("Leading"),
-        TRAILING              ("Trailing");
-        private final String description;
-        private Justification(String description) {
-            this.description = description;
-        }
-        @Override public String toString() {
-            return description;
-        }
-    }
-    private final JComboBox verticalOrientationChoices = makeComboBox(VerticalOrientation.values());
-    private final JComboBox justificationChoices       = makeComboBox(Justification.values());
+    private final JComboBox<? extends Enum> verticalOrientationChoices = new JComboBox<>(VerticalOrientation.values());
+    private final JComboBox<? extends Enum> justificationChoices       = new JComboBox<>(Justification.values());
     private final TitledBorder border = BorderFactory.createTitledBorder("Test Test");
     private final JPanel panel = new JPanel();
 
@@ -78,33 +47,14 @@ public class MainPanel extends JPanel {
 
         add(p2, BorderLayout.NORTH); add(panel);
         setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private void initTitleBorder() {
         VerticalOrientation vo = (VerticalOrientation)verticalOrientationChoices.getSelectedItem();
-        switch(vo) {
-          case DEFAULT_POSITION: border.setTitlePosition(TitledBorder.DEFAULT_POSITION); break;
-          case ABOVE_TOP:        border.setTitlePosition(TitledBorder.ABOVE_TOP);        break;
-          case TOP:              border.setTitlePosition(TitledBorder.TOP);              break;
-          case BELOW_TOP:        border.setTitlePosition(TitledBorder.BELOW_TOP);        break;
-          case ABOVE_BOTTOM:     border.setTitlePosition(TitledBorder.ABOVE_BOTTOM);     break;
-          case BOTTOM:           border.setTitlePosition(TitledBorder.BOTTOM);           break;
-          case BELOW_BOTTOM:     border.setTitlePosition(TitledBorder.BELOW_BOTTOM);     break;
-        }
+        border.setTitlePosition(vo.mode);
         Justification jc = (Justification)justificationChoices.getSelectedItem();
-        switch(jc) {
-          case DEFAULT_JUSTIFICATION: border.setTitleJustification(TitledBorder.DEFAULT_JUSTIFICATION); break;
-          case LEFT:     border.setTitleJustification(TitledBorder.LEFT);     break;
-          case CENTER:   border.setTitleJustification(TitledBorder.CENTER);   break;
-          case RIGHT:    border.setTitleJustification(TitledBorder.RIGHT);    break;
-          case LEADING:  border.setTitleJustification(TitledBorder.LEADING);  break;
-          case TRAILING: border.setTitleJustification(TitledBorder.TRAILING); break;
-        }
+        border.setTitleJustification(jc.mode);
         panel.repaint();
-    }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox(Object[] model) {
-        return new JComboBox(model);
     }
 
     public static void main(String[] args) {
@@ -129,3 +79,41 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+enum VerticalOrientation {
+    DEFAULT_POSITION (TitledBorder.DEFAULT_POSITION, "Default Position"),
+    ABOVE_TOP        (TitledBorder.ABOVE_TOP,        "Above Top"),
+    TOP              (TitledBorder.TOP,              "Top"),
+    BELOW_TOP        (TitledBorder.BELOW_TOP,        "Below Top"),
+    ABOVE_BOTTOM     (TitledBorder.ABOVE_BOTTOM,     "Above Bottom"),
+    BOTTOM           (TitledBorder.BOTTOM,           "Bottom"),
+    BELOW_BOTTOM     (TitledBorder.BELOW_BOTTOM,     "Below Bottom");
+    public final int mode;
+    private final String description;
+    private VerticalOrientation(int mode, String description) {
+        this.mode = mode;
+        this.description = description;
+    }
+    @Override public String toString() {
+        return description;
+    }
+}
+
+enum Justification {
+    DEFAULT_JUSTIFICATION (TitledBorder.DEFAULT_JUSTIFICATION, "Default Justification"),
+    LEFT                  (TitledBorder.LEFT,                  "Left"),
+    CENTER                (TitledBorder.CENTER,                "Center"),
+    RIGHT                 (TitledBorder.RIGHT,                 "Right"),
+    LEADING               (TitledBorder.LEADING,               "Leading"),
+    TRAILING              (TitledBorder.TRAILING,              "Trailing");
+    public final int mode;
+    private final String description;
+    private Justification(int mode, String description) {
+        this.mode = mode;
+        this.description = description;
+    }
+    @Override public String toString() {
+        return description;
+    }
+}
+

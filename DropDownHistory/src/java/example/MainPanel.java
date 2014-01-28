@@ -10,7 +10,7 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel {
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea = new JTextArea();
-    private final JComboBox combo    = makeComboBox();
+    private final JComboBox<String> combo = new JComboBox<>();
     private static final String initTxt =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
@@ -27,6 +27,10 @@ public class MainPanel extends JPanel {
         textArea.setText(initTxt);
         textArea.setLineWrap(true);
         textArea.setEditable(false);
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        model.addElement("swing");
+        combo.setModel(model);
 
         JButton searchButton = new JButton(new AbstractAction("Search") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -58,18 +62,13 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("swing");
-        return new JComboBox(model);
-    }
-    @SuppressWarnings("unchecked")
-    public static boolean addItem(JComboBox combo, String str, int max) {
+    public static boolean addItem(JComboBox<String> combo, String str, int max) {
         //if(str==null || str.trim().length()==0) { return false; }
-        if(str==null || str.length()==0) { return false; }
+        if(str==null || str.length()==0) {
+            return false;
+        }
         combo.setVisible(false);
-        DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)combo.getModel();
         model.removeElement(str);
         model.insertElementAt(str, 0);
         if(model.getSize()>max) {

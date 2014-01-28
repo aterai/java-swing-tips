@@ -11,8 +11,9 @@ import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo00 = makeComboBox();
-    private final JComboBox combo01 = makeComboBox();
+    private final JComboBox<String> combo00 = new JComboBox<>(makeModel());
+    private final JComboBox<String> combo01 = new JComboBox<>(makeModel());
+    private final ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
     public MainPanel() {
         super(new BorderLayout());
         initComboBox(combo01);
@@ -22,9 +23,8 @@ public class MainPanel extends JPanel {
         p.add(combo01); p.add(new JLabel("<- RightPopupMenuListener"));
         setBorder(BorderFactory.createEmptyBorder(g,g,g,g));
         add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
-    private final ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
     private void initComboBox(JComboBox combo) {
         if(combo.getUI() instanceof WindowsComboBoxUI) {
             combo.setUI(new WindowsComboBoxUI() {
@@ -63,16 +63,15 @@ public class MainPanel extends JPanel {
         g.dispose();
         return new ImageIcon(op.filter(img, null));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static ComboBoxModel<String> makeModel() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
         model.addElement("aaaabbbcc");
         model.addElement("asdfasdfas");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return new JComboBox(model);
+        return model;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

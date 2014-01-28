@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JComboBox combo01 = makeComboBox();
-    private final JComboBox combo02 = makeComboBox();
+    private final JComboBox<String> combo01 = new JComboBox<>(makeModel());
+    private final JComboBox<String> combo02 = new JComboBox<>(makeModel());
 
     public MainPanel() {
         super(new BorderLayout());
@@ -47,16 +47,15 @@ public class MainPanel extends JPanel {
         panel.add(cmp);
         return panel;
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+    private static ComboBoxModel<String> makeModel() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
         model.addElement("aaaabbbcc");
         model.addElement("1354123451234513512");
         model.addElement("bbb1");
         model.addElement("bbb12");
-        return new JComboBox(model);
+        return model;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

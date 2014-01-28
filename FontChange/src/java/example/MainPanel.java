@@ -11,31 +11,39 @@ public class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     private static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
-    private final JButton button  = new JButton("Dialog");
-    private final JLabel  label   = new JLabel("Test:");
-    private final JComboBox combo = makeComboBox();
+    private final JToolBar toolbar = new JToolBar();
+    private final JLabel label = new JLabel("Test:");
+    private final JComboBox<String> combo = new JComboBox<>(new String[] { "Test" });
+    private final JButton button = new JButton(new AbstractAction("Dialog") {
+        @Override public void actionPerformed(ActionEvent e) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(button, "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
+        }
+    });
     public MainPanel() {
         super(new BorderLayout());
-        button.addActionListener(new ActionListener() {
+        toolbar.add(new AbstractAction("12") {
             @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(button, "MessageDialog",
-                                              "Change All Font Size",
-                                              JOptionPane.ERROR_MESSAGE);
+                updateFont(FONT12);
             }
         });
-        add(createFontToolBar(), BorderLayout.NORTH);
+        toolbar.add(new AbstractAction("24") {
+            @Override public void actionPerformed(ActionEvent e) {
+                updateFont(FONT24);
+            }
+        });
+        toolbar.add(new AbstractAction("32") {
+            @Override public void actionPerformed(ActionEvent e) {
+                updateFont(FONT32);
+            }
+        });
+
+        add(toolbar, BorderLayout.NORTH);
         add(createCompButtonPanel());
         updateFont(FONT12);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
-    @SuppressWarnings("unchecked")
-    private static JComboBox makeComboBox() {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("Test");
-        return new JComboBox(model);
-    }
-    private void updateFont(final Font font) {
+    private void updateFont(Font font) {
         FontUIResource fontUIResource = new FontUIResource(font);
         for(Object o: UIManager.getLookAndFeelDefaults().keySet()) {
             if(o.toString().toLowerCase().endsWith("font")) {
@@ -59,7 +67,9 @@ public class MainPanel extends JPanel {
             }else if(c instanceof JComponent) {
                 JComponent jc = (JComponent)c;
                 jc.updateUI();
-                if(jc.getComponentCount()>0) { recursiveUpdateUI(jc); }
+                if(jc.getComponentCount()>0) {
+                    recursiveUpdateUI(jc);
+                }
             }
         }
     }
@@ -90,25 +100,6 @@ public class MainPanel extends JPanel {
         panel.add(button, c);
 
         return panel;
-    }
-    private JToolBar createFontToolBar() {
-        JToolBar bar = new JToolBar();
-        bar.add(new AbstractAction("12") {
-            @Override public void actionPerformed(ActionEvent e) {
-                updateFont(FONT12);
-            }
-        });
-        bar.add(new AbstractAction("24") {
-            @Override public void actionPerformed(ActionEvent e) {
-                updateFont(FONT24);
-            }
-        });
-        bar.add(new AbstractAction("32") {
-            @Override public void actionPerformed(ActionEvent e) {
-                updateFont(FONT32);
-            }
-        });
-        return bar;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
