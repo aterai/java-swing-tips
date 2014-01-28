@@ -203,7 +203,7 @@ class DnDTabbedPane extends JTabbedPane {
             glassPane.setVisible(false);
             glassPane.setImage(null);
         }
-        @Override public void dropActionChanged(DragSourceDragEvent e) {}
+        @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
     }
 
     class TabDropTargetListener implements DropTargetListener {
@@ -218,7 +218,7 @@ class DnDTabbedPane extends JTabbedPane {
             Component c = e.getDropTargetContext().getComponent();
             System.out.println("DropTargetListener#dragExit: "+c.getName());
         }
-        @Override public void dropActionChanged(DropTargetDragEvent e) {}
+        @Override public void dropActionChanged(DropTargetDragEvent e) { /* not needed */ }
 
         private Point prevGlassPt = new Point();
         @Override public void dragOver(final DropTargetDragEvent e) {

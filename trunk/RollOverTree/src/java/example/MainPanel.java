@@ -86,5 +86,5 @@ class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseM
             tree.repaint();
         }
     }
-    @Override public void mouseDragged(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e) { /* not needed */ }
 }

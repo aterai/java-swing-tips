@@ -105,8 +105,8 @@ class MenuToggleButton extends JToggleButton {
     public void setPopupMenu(final JPopupMenu pop) {
         this.pop = pop;
         pop.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuCanceled(PopupMenuEvent e) {}
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+            @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 setSelected(false);
             }

@@ -89,13 +89,13 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
 //             super.firePropertyChange(propertyName, oldValue, newValue);
 //         }
     }
-    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
-    @Override public void repaint(long tm, int x, int y, int width, int height) {}
-    @Override public void repaint(Rectangle r) {}
-    @Override public void repaint() {}
-    @Override public void invalidate() {}
-    @Override public void validate() {}
-    @Override public void revalidate() {}
+    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void invalidate() { /* Overridden for performance reasons. */ }
+    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void revalidate() { /* Overridden for performance reasons. */ }
     //<---- Overridden for performance reasons.
 }
 

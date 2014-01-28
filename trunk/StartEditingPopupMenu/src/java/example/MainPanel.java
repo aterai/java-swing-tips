@@ -103,8 +103,8 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent event) {}
-            @Override public void ancestorRemoved(AncestorEvent e) {}
+            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add(editAction);
         add(editDialogAction);

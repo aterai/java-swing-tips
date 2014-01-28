@@ -93,5 +93,5 @@ class WatermarkPasswordField extends JPasswordField implements FocusListener, Do
         showWatermark = e.getDocument().getLength()==0;
         repaint();
     }
-    @Override public void changedUpdate(DocumentEvent e) {}
+    @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
 }

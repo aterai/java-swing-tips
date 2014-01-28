@@ -46,7 +46,7 @@ public class MainPanel extends JPanel implements PropertyChangeListener {
             @Override public void removeUpdate(DocumentEvent e) {
                 fireUnsavedFlagChangeEvent(true);
             }
-            @Override public void changedUpdate(DocumentEvent e) {}
+            @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
         });
         saveButton.setEnabled(false);
         add(new JScrollPane(textarea));

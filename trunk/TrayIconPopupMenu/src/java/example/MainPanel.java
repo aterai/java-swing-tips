@@ -64,7 +64,7 @@ class MainPanel extends JPanel {
         // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
         // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
         popup.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 dummy.setVisible(false);
             }

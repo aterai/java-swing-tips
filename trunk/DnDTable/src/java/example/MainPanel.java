@@ -173,8 +173,8 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
     @Override public void dragExit(DragSourceEvent e) {
         e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
     }
-    @Override public void dragOver(DragSourceDragEvent e) {}
-    @Override public void dropActionChanged(DragSourceDragEvent e) {}
+    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
+    @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
     @Override public void dragDropEnd(DragSourceDropEvent e) {
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }

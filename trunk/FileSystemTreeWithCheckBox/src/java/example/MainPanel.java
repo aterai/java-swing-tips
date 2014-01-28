@@ -500,7 +500,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
             node.setUserObject(new CheckBoxNode(check.file, status));
         }
     }
-    @Override public void treeNodesInserted(TreeModelEvent e) {}
-    @Override public void treeNodesRemoved(TreeModelEvent e) {}
-    @Override public void treeStructureChanged(TreeModelEvent e) {}
+    @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
+    @Override public void treeNodesRemoved(TreeModelEvent e)     { /* not needed */ }
+    @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
 }

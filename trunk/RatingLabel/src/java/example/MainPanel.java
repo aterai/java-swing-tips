@@ -130,7 +130,9 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
         for(int i=0;i<labelList.size();i++) {
             Rectangle r = labelList.get(i).getBounds();
             r.grow(gap, gap);
-            if(r.contains(p)) { return i; }
+            if(r.contains(p)) {
+                return i;
+            }
         }
         return -1;
     }
@@ -152,10 +154,11 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
     @Override public void mouseExited(MouseEvent e) {
         repaintIcon(clicked);
     }
-    @Override public void mouseDragged(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
+    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
 }
+
 class SelectedImageFilter extends RGBImageFilter {
     private final float[] filter;
     public SelectedImageFilter(float[] arrays) {

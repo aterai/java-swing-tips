@@ -178,7 +178,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
         }
         return this;
     }
-    @Override public void mouseMoved(MouseEvent e) {}
+    @Override public void mouseMoved(MouseEvent e) { /* not needed */ }
     @Override public void mouseDragged(MouseEvent e) {
         JList list = (JList)e.getSource();
         list.setFocusable(true);
@@ -195,9 +195,9 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
         list.setSelectedIndices(getIntersectsIcons(list, polygon));
         list.repaint();
     }
-    @Override public void mouseClicked(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseExited(MouseEvent e) {}
+    @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+    @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+    @Override public void mouseExited(MouseEvent e)  { /* not needed */ }
     @Override public void mouseReleased(MouseEvent e) {
         JList list = (JList)e.getSource();
         list.setFocusable(true);

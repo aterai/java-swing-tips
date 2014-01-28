@@ -141,8 +141,8 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
         });
         autoRepeatTimer.setInitialDelay(1000);
         pop.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuCanceled(PopupMenuEvent e) {}
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+            @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 if(arrowButton!=null) {
                     arrowButton.setSelected(false);
@@ -175,8 +175,8 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
             autoRepeatTimer.stop();
         }
     }
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseClicked(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+    @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
 }
 
 class MenuArrowIcon implements Icon {

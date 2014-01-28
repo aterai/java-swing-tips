@@ -9,7 +9,7 @@ import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 //         Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
 //             @Override public void eventDispatched(AWTEvent event) {
@@ -117,13 +117,9 @@ class BasicComboPopup2 extends BasicComboPopup {
         }
         return handler2;
     }
-    private class Handler2 implements MouseListener {
-        @Override public void mouseEntered(MouseEvent e) {}
-        @Override public void mouseExited(MouseEvent e)  {}
-        @Override public void mouseClicked(MouseEvent e) {}
-        @Override public void mousePressed(MouseEvent e) {}
+    private class Handler2 extends MouseAdapter {
         @Override public void mouseReleased(MouseEvent e) {
-            if(e.getSource() == list) {
+            if(e.getSource().equals(list)) {
                 if(list.getModel().getSize() > 0) {
                     // <ins>
                     if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {

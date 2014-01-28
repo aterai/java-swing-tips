@@ -26,9 +26,9 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
 //         //super.uninstallUI( c );
 //     }
     //Override all UI-specific methods your UI classes inherit.
-    @Override protected void configureEditor() {}
-    @Override protected void unconfigureEditor() {}
-    @Override public void removeEditor() {}
+    @Override protected void configureEditor()   { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override protected void unconfigureEditor() { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void removeEditor()         { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override public void addEditor() {
         removeEditor();
         ComboBoxEditor cbe = comboBox.getEditor();
@@ -46,11 +46,12 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
     }
 //     @Override public void unconfigureArrowButton() {}
 //     @Override public void configureArrowButton() {}
-    @Override public void update(Graphics g, JComponent c) {}
-    @Override public void paint(Graphics g, JComponent c) {}
-    @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus) {}
-    @Override public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {}
+    @Override public void update(Graphics g, JComponent c) { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void paint(Graphics g, JComponent c)  { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void paintCurrentValue(Graphics g, Rectangle bounds, boolean hasFocus)           { /* Override all UI-specific methods your UI classes inherit. */ }
+    @Override public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) { /* Override all UI-specific methods your UI classes inherit. */ }
 }
+
 class BasicComboPopup2 extends BasicComboPopup {
     private Handler2 handler2;
     public BasicComboPopup2(JComboBox combo) {
@@ -67,15 +68,17 @@ class BasicComboPopup2 extends BasicComboPopup {
         return handler2;
     }
     private class Handler2 implements MouseListener {
-        @Override public void mouseEntered(MouseEvent e) {}
-        @Override public void mouseExited(MouseEvent e)  {}
-        @Override public void mouseClicked(MouseEvent e) {}
-        @Override public void mousePressed(MouseEvent e) {}
+        @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
+        @Override public void mouseExited(MouseEvent e)  { /* not needed */ }
+        @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+        @Override public void mousePressed(MouseEvent e) { /* not needed */ }
         @Override public void mouseReleased(MouseEvent e) {
             if(e.getSource() == list) {
                 if(list.getModel().getSize() > 0) {
                     // <ins>
-                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) { return; }
+                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
+                        return;
+                    }
                     // </ins>
                     // JList mouse listener
                     if(comboBox.getSelectedIndex() == list.getSelectedIndex()) {

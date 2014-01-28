@@ -35,8 +35,8 @@ public class MainPanel extends JPanel {
                 e.getComponent().requestFocusInWindow();
                 //or textField4.requestFocusInWindow();
             }
-            @Override public void ancestorMoved(AncestorEvent e) {}
-            @Override public void ancestorRemoved(AncestorEvent e) {}
+            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
 
         JPanel p = new JPanel(new GridLayout(2,2,5,5));

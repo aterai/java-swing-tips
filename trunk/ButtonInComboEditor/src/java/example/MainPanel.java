@@ -210,8 +210,8 @@ class ComboBoxLayout implements LayoutManager {
         this.label = label;
         this.button = button;
     }
-    @Override public void addLayoutComponent(String name, Component comp) {}
-    @Override public void removeLayoutComponent(Component comp) {}
+    @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
+    @Override public void removeLayoutComponent(Component comp) { /* not needed */ }
     @Override public Dimension preferredLayoutSize(Container parent) {
         return parent.getPreferredSize();
     }

@@ -53,7 +53,7 @@ public class MainPanel extends JPanel {
                         ex.printStackTrace();
                     }
                 }
-                @Override public void focusLost(FocusEvent e) {}
+                @Override public void focusLost(FocusEvent e) { /* not needed */ }
             });
             Dimension d = field.getPreferredSize();
             int baseline = field.getBaseline(d.width, d.height);
