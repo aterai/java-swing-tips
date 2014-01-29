@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -76,8 +77,8 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         }
     };
     private int pushedColumn = -1;
-    private final HashMap<Integer, Integer> state = new HashMap<>();
-    private final HashMap<Integer, Boolean> dmap  = new HashMap<>();
+    private final ConcurrentMap<Integer, Integer> state = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Boolean> dmap  = new ConcurrentHashMap<>();
     private final JTableHeader header;
 
     public SortButtonRenderer(JTableHeader header) {
