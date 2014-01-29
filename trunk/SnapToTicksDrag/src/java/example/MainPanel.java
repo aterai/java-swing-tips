@@ -11,7 +11,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         final List<JSlider> list = Arrays.asList(
             makeSilder("Default SnapToTicks"),

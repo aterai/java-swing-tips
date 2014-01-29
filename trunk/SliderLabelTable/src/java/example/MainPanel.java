@@ -6,8 +6,8 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         Dictionary<Integer, Component> labelTable = new Hashtable<>();

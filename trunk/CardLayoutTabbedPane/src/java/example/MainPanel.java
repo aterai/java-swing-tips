@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(3, 1));
         JTabbedPane tab1 = new JTabbedPane();
         tab1.setBorder(BorderFactory.createTitledBorder("JTabbedPane"));

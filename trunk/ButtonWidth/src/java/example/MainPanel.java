@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         JComponent box1 = Box.createHorizontalBox();

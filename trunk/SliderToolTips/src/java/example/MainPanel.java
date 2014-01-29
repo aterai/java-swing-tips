@@ -10,7 +10,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JSlider slider1 = makeSlider();
         JSlider slider2 = makeSlider();

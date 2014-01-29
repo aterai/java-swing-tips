@@ -13,7 +13,7 @@ import javax.jnlp.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 //         //Test
 //         JButton clearButton = new JButton(new AbstractAction("clear muf and JFrame#dispose()") {

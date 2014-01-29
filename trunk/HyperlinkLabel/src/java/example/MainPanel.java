@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
         }
     };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new GridBagLayout());
 
         JEditorPane editor = new JEditorPane("text/html", "<html><a href='"+MYSITE+"'>"+MYSITE+"</a>");

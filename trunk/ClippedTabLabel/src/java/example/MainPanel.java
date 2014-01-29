@@ -10,11 +10,11 @@ import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
 public class MainPanel extends JPanel {
+    private final List<? extends JTabbedPane> list = Arrays.asList(
+        makeTestTabbedPane(new JTabbedPane()),
+        makeTestTabbedPane(new ClippedTitleTabbedPane()));
     public MainPanel() {
         super(new BorderLayout());
-        final List<? extends JTabbedPane> list = Arrays.asList(
-            makeTestTabbedPane(new JTabbedPane()),
-            makeTestTabbedPane(new ClippedTitleTabbedPane()));
 
         JPanel p = new JPanel(new GridLayout(2,1));
         for(JTabbedPane t:list) {

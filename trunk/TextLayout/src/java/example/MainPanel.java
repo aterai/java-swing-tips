@@ -8,7 +8,7 @@ import java.awt.geom.Line2D;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2,1));
         add(new TextLayoutPanel());
         add(new GlyphVectorPanel());

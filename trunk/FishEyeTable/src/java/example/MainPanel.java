@@ -11,7 +11,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         final FishEyeTable table = new FishEyeTable(makeTestModel());
         table.setRowSelectionInterval(0,0);

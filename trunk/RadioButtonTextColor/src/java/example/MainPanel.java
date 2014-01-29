@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1, 3));
         ButtonGroup bg = new ButtonGroup();
         Box box0 = Box.createVerticalBox();

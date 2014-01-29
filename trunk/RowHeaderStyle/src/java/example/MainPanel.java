@@ -8,23 +8,24 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"ccc", 92, true}, {"ddd", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+        @Override public boolean isCellEditable(int row, int column) {
+            return column != 0;
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
 
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"ccc", 92, true}, {"ddd", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-            @Override public boolean isCellEditable(int row, int column) {
-                return column!=0;
-            }
-        };
-        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(24);
         //table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -58,6 +59,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class RowHeaderRenderer extends JLabel implements TableCellRenderer {
     public RowHeaderRenderer(JTable table) {
         super();
@@ -128,6 +130,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
         }
     }
 }
+
 class ComponentIcon implements Icon {
     private final JComponent cmp;
     public ComponentIcon(JComponent cmp) {

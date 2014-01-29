@@ -9,7 +9,7 @@ import java.awt.image.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new PaintPanel());
         setPreferredSize(new Dimension(320, 240));

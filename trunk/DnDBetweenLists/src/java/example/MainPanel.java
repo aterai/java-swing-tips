@@ -10,7 +10,7 @@ import javax.activation.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(1,2,10,0));
         TransferHandler h = new ListItemTransferHandler();

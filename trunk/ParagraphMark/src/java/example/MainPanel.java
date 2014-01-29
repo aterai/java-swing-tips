@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JEditorPane editor = new JEditorPane();
         editor.setEditorKit(new MyEditorKit());

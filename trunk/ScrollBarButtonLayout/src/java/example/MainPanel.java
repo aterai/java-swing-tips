@@ -9,7 +9,7 @@ import javax.swing.plaf.metal.MetalScrollBarUI;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);

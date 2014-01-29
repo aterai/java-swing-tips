@@ -8,7 +8,7 @@ import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1,0));
         add(new JScrollPane(makeList(true)));
         add(new JScrollPane(makeList(false)));

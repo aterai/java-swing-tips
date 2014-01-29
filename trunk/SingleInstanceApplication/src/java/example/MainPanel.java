@@ -8,11 +8,11 @@ import java.net.*;
 import javax.swing.*;
 //import com.sun.tools.attach.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(new JTree()));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -10,12 +10,12 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final String[] columnNames = {"Integer", "String", "Boolean"};
-    private static final Object[][] data = {
-        { 1, "D", true }, { 2, "B", false }, { 3, "C", false },
+    private final String[] columnNames = {"Integer", "String", "Boolean"};
+    private final Object[][] data = {
+        { 1, "D", true },  { 2, "B", false }, { 3, "C", false },
         { 4, "E", false }, { 5, "A", false }
     };
-    private static final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
@@ -29,10 +29,10 @@ public class MainPanel extends JPanel {
             }
         }
     };
+    private final JTable table = new JTable(model);
 
     public MainPanel() {
         super(new BorderLayout());
-        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         TableColumn c = table.getColumnModel().getColumn(2);
         c.setCellRenderer(new RadioButtonsRenderer());
@@ -77,6 +77,7 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
         return this;
     }
 }
+
 class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
     //public RadioButtonsEditor(final DefaultTableModel model) {
     public RadioButtonsEditor() {

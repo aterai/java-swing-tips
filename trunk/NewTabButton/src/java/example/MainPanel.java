@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         UIManager.put("example.TabButton", "TabViewButtonUI");
         UIManager.put("TabViewButtonUI", "example.OperaTabViewButtonUI");

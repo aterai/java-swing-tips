@@ -272,6 +272,7 @@ class PrintGlassPane extends JPanel {
 
 class TextureFactory {
     private static final Color defaultColor = new Color(100,100,100,100);
+    private TextureFactory() { /* Singleton */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {
         int size = cs*cs;
         BufferedImage img = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);

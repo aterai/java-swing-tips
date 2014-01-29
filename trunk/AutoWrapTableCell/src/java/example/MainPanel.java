@@ -12,7 +12,7 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private static final int AUTOWRAP_COLUMN = 1;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         String[] columnNames = {"Default", "AutoWrap"};

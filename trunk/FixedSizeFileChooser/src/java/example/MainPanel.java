@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new GridLayout(2,1));
         final JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("JFileChooser setResizable"));

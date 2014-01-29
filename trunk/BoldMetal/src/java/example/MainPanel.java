@@ -12,7 +12,7 @@ import javax.swing.plaf.metal.*;
 
 public class MainPanel extends JPanel {
     private static final String TAG = "<html><b>";
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JCheckBox check = new JCheckBox("swing.boldMetal");

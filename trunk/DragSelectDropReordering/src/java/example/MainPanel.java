@@ -12,16 +12,12 @@ import java.util.*;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(makeList()));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private static JList<ListItem> makeList() {
+
         DefaultListModel<ListItem> model = new DefaultListModel<>();
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("asdasdfsd",  "wi0009-32.png"));
@@ -43,7 +39,9 @@ public class MainPanel extends JPanel {
         list.setTransferHandler(new ListItemTransferHandler());
         list.setDropMode(DropMode.INSERT);
         list.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        return list;
+
+        add(new JScrollPane(list));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -169,7 +167,7 @@ class ReorderbleList extends JList<ListItem> {
         setSelectionBackground(null); //Nimbus
         super.updateUI();
     }
-    class RubberBandingListener extends MouseInputAdapter {
+    class RubberBandingListener extends MouseAdapter {
         @Override public void mouseDragged(MouseEvent e) {
             JList list = (JList)e.getSource();
             if(list.getDragEnabled()) {
@@ -263,6 +261,9 @@ class ReorderbleList extends JList<ListItem> {
 
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
+    private int[] indices = null;
+    private int addIndex  = -1; //Location where items were added
+    private int addCount  = 0;  //Number of items added.
     public ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
@@ -362,7 +363,4 @@ class ListItemTransferHandler extends TransferHandler {
         addCount = 0;
         addIndex = -1;
     }
-    private int[] indices = null;
-    private int addIndex  = -1; //Location where items were added
-    private int addCount  = 0;  //Number of items added.
 }

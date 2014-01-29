@@ -12,7 +12,7 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.text.DefaultEditorKit;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));

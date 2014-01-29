@@ -13,12 +13,12 @@ import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     private static final String LINK = "http://terai.xrea.jp/";
-    private static final String htmlText =
+    private static final String HTML_TEXT =
       "<html><body>" +
       "html tag: <br /><a href='"+LINK+"'>"+LINK+"</a>" +
       "</body></html>";
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setResizeWeight(.5);
@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
         editorPane.setEditable(editable);
         editorPane.setContentType("text/html");
         editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-        editorPane.setText(htmlText);
+        editorPane.setText(HTML_TEXT);
         editorPane.addHyperlinkListener(new HyperlinkListener() {
             private String tooltip;
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {

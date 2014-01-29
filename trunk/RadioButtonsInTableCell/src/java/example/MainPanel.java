@@ -11,19 +11,21 @@ import javax.swing.table.*;
 
 //http://www.crionics.com/products/opensource/faq/swing_ex/JTableExamples2.html
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"Integer", "Answer"};
+    private final Object[][] data = {
+        { 1, Answer.A }, { 2, Answer.B }, { 3, Answer.C },
+        { 4, Answer.C }, { 5, Answer.A }
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"Integer", "Answer"};
-        Object[][] data = {
-            { 1, Answer.A }, { 2, Answer.B }, { 3, Answer.C },
-            { 4, Answer.C }, { 5, Answer.A }
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        final JTable table = new JTable(model);
+
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         if(System.getProperty("java.version").startsWith("1.6.0")) {
             //1.6.0_xx bug? column header click -> edit cancel?

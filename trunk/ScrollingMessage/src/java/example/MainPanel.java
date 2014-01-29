@@ -9,7 +9,7 @@ import java.awt.geom.Line2D;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new MarqueePanel());
         setPreferredSize(new Dimension(320, 240));

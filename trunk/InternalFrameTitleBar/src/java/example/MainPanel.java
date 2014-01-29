@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(makeUI());
         setOpaque(false);

@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("New Frame") {
             @Override public void actionPerformed(final ActionEvent ae) {

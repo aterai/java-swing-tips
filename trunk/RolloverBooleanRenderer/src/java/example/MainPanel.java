@@ -10,44 +10,46 @@ import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"CCC", 92, true}, {"DDD", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+            Component c = super.prepareEditor(editor, row, column);
+            if(c instanceof JCheckBox) {
+                ((JCheckBox)c).setBackground(getSelectionBackground());
             }
-        };
-        JTable table = new JTable(model) {
-            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-                Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    ((JCheckBox)c).setBackground(getSelectionBackground());
-                }
-                return c;
-            }
-            private transient HighlightListener highlighter;
-            @Override public void updateUI() {
-                if(highlighter!=null) {
-                    addMouseListener(highlighter);
-                    addMouseMotionListener(highlighter);
-                    setDefaultRenderer(Object.class,  null);
-                    setDefaultRenderer(Number.class,  null);
-                    setDefaultRenderer(Boolean.class, null);
-                }
-                super.updateUI();
-                highlighter = new HighlightListener(this);
+            return c;
+        }
+        private transient HighlightListener highlighter;
+        @Override public void updateUI() {
+            if(highlighter!=null) {
                 addMouseListener(highlighter);
                 addMouseMotionListener(highlighter);
-                setDefaultRenderer(Object.class,  new RolloverDefaultTableCellRenderer(highlighter));
-                setDefaultRenderer(Number.class,  new RolloverNumberRenderer(highlighter));
-                setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
+                setDefaultRenderer(Object.class,  null);
+                setDefaultRenderer(Number.class,  null);
+                setDefaultRenderer(Boolean.class, null);
             }
-        };
+            super.updateUI();
+            highlighter = new HighlightListener(this);
+            addMouseListener(highlighter);
+            addMouseMotionListener(highlighter);
+            setDefaultRenderer(Object.class,  new RolloverDefaultTableCellRenderer(highlighter));
+            setDefaultRenderer(Number.class,  new RolloverNumberRenderer(highlighter));
+            setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
+        }
+    };
+
+    public MainPanel() {
+        super(new BorderLayout());
+
         table.setAutoCreateRowSorter(true);
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,

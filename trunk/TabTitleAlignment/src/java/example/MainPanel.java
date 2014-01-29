@@ -14,7 +14,7 @@ import javax.swing.text.View;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
         if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {

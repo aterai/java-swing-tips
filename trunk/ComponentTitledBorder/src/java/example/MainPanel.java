@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(3, 1, 5, 5));
         final JTree tree = new JTree();
         final JCheckBox c = new JCheckBox("CheckBox", true);

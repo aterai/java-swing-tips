@@ -11,7 +11,7 @@ import javax.activation.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JScrollPane(makeList()));

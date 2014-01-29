@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("BrowserLauncher.openURL(...)"));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -69,6 +69,7 @@ public class MainPanel extends JPanel {
 //class BareBonesBrowserLaunch {
 class BrowserLauncher {
     private static final String ERR_MSG = "Error attempting to launch web browser";
+    private BrowserLauncher() { /* Singleton */ }
     public static void openURL(String url) {
         String osName = System.getProperty("os.name");
         try{

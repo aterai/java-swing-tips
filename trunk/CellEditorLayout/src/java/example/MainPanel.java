@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTable table = new JTable(8, 4);
 

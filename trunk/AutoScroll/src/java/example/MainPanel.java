@@ -8,7 +8,7 @@ import javax.swing.*;
 //import javax.swing.event.*;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/

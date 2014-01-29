@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
         final ZoomImage zoom = new ZoomImage(icon);

@@ -11,58 +11,59 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"Type", "Value"};
+    private final Object[][] data = {
+        {"String",  "text"      },
+        {"Date",    new Date()  },
+        {"Integer", 12          },
+        {"Double",  3.45        },
+        {"Boolean", Boolean.TRUE},
+        {"Color",   Color.RED   }
+    };
+    private final JTable table = new JTable(data, columnNames) {
+        private Class<?> editingClass;
+        private Class<?> getClassAt(int row, int column) {
+            int mc = convertColumnIndexToModel(column);
+            int mr = convertRowIndexToModel(row);
+            return getModel().getValueAt(mr, mc).getClass();
+        }
+        @Override public TableCellRenderer getCellRenderer(int row, int column) {
+            //editingClass = null;
+            if(convertColumnIndexToModel(column)==1) {
+                //System.out.println("getCellRenderer");
+                return getDefaultRenderer(getClassAt(row, column));
+            }else{
+                return super.getCellRenderer(row, column);
+            }
+        }
+        @Override public TableCellEditor getCellEditor(int row, int column) {
+            if(convertColumnIndexToModel(column)==1) {
+                //System.out.println("getCellEditor");
+                editingClass = getClassAt(row, column);
+                return getDefaultEditor(editingClass);
+            }else{
+                editingClass = null;
+                return super.getCellEditor(row, column);
+            }
+        }
+        // http://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
+        // This method is also invoked by the editor when the value in the editor
+        // component is saved in the TableModel. The class was saved when the
+        // editor was invoked so the proper class can be created.
+        @Override public Class<?> getColumnClass(int column) {
+            //return editingClass != null ? editingClass : super.getColumnClass(column);
+            if(convertColumnIndexToModel(column)==1) {
+                //System.out.println("getColumnClass");
+                return editingClass;
+            }else{
+                return super.getColumnClass(column);
+            }
+        }
+    };
+
     public MainPanel() {
         super(new BorderLayout());
 
-        String[] columnNames = {"Type", "Value"};
-        Object[][] data = {
-            {"String",  "text"      },
-            {"Date",    new Date()  },
-            {"Integer", 12          },
-            {"Double",  3.45        },
-            {"Boolean", Boolean.TRUE},
-            {"Color",   Color.RED   }
-        };
-        JTable table = new JTable(data, columnNames) {
-            private Class<?> editingClass;
-            private Class<?> getClassAt(int row, int column) {
-                int mc = convertColumnIndexToModel(column);
-                int mr = convertRowIndexToModel(row);
-                return getModel().getValueAt(mr, mc).getClass();
-            }
-            @Override public TableCellRenderer getCellRenderer(int row, int column) {
-                //editingClass = null;
-                if(convertColumnIndexToModel(column)==1) {
-                    //System.out.println("getCellRenderer");
-                    return getDefaultRenderer(getClassAt(row, column));
-                }else{
-                    return super.getCellRenderer(row, column);
-                }
-            }
-            @Override public TableCellEditor getCellEditor(int row, int column) {
-                if(convertColumnIndexToModel(column)==1) {
-                    //System.out.println("getCellEditor");
-                    editingClass = getClassAt(row, column);
-                    return getDefaultEditor(editingClass);
-                }else{
-                    editingClass = null;
-                    return super.getCellEditor(row, column);
-                }
-            }
-            // http://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
-            // This method is also invoked by the editor when the value in the editor
-            // component is saved in the TableModel. The class was saved when the
-            // editor was invoked so the proper class can be created.
-            @Override public Class<?> getColumnClass(int column) {
-                //return editingClass != null ? editingClass : super.getColumnClass(column);
-                if(convertColumnIndexToModel(column)==1) {
-                    //System.out.println("getColumnClass");
-                    return editingClass;
-                }else{
-                    return super.getColumnClass(column);
-                }
-            }
-        };
         table.setAutoCreateRowSorter(true);
         table.setDefaultRenderer(Color.class, new ColorRenderer());
         table.setDefaultEditor(Color.class,   new ColorEditor());

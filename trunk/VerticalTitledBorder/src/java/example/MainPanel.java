@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1,3,5,5));
 
         JPanel p1 = new JPanel(new BorderLayout());

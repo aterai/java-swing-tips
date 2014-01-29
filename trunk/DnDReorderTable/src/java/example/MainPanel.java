@@ -14,24 +14,25 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"AAA", 12, true}, {"aaa", 1, false},
+        {"BBB", 13, true}, {"bbb", 2, false},
+        {"CCC", 15, true}, {"ccc", 3, false},
+        {"DDD", 17, true}, {"ddd", 4, false},
+        {"EEE", 18, true}, {"eee", 5, false},
+        {"FFF", 19, true}, {"fff", 6, false},
+        {"GGG", 92, true}, {"ggg", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"AAA", 12, true}, {"aaa", 1, false},
-            {"BBB", 13, true}, {"bbb", 2, false},
-            {"CCC", 15, true}, {"ccc", 3, false},
-            {"DDD", 17, true}, {"ddd", 4, false},
-            {"EEE", 18, true}, {"eee", 5, false},
-            {"FFF", 19, true}, {"fff", 6, false},
-            {"GGG", 92, true}, {"ggg", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model);
         table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setTransferHandler(new TableRowTransferHandler());
         table.setDropMode(DropMode.INSERT_ROWS);

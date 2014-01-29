@@ -6,8 +6,8 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         JComboBox<String> combo = makeComboBox();

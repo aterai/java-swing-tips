@@ -6,9 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.Position;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final JCheckBox check = new JCheckBox("<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select");
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout(5, 5));
 
         add(new JScrollPane(makeList()));

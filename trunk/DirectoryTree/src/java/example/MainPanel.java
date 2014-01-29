@@ -11,7 +11,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();

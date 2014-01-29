@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         HighlightCursorTextArea textArea= new HighlightCursorTextArea();
         textArea.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));

@@ -8,7 +8,7 @@ import java.awt.image.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super();
         Icon i = new ImageIcon(getClass().getResource("duke.gif"));
         //Icon i = UIManager.getIcon("OptionPane.warningIcon");

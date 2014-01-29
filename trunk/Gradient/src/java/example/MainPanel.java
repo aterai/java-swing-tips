@@ -8,7 +8,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridLayout(2,1));

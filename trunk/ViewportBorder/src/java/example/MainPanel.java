@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String INIT_TXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
@@ -16,7 +16,8 @@ public class MainPanel extends JPanel {
       " The handling of events is also discussed, as are layout management and accessibility." +
       " This lesson ends with a set of questions and exercises so you can test yourself on what you?ve learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
-    public MainPanel() {
+
+    private MainPanel() {
         super(new BorderLayout());
 
         JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + INIT_TXT);

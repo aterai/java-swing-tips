@@ -9,7 +9,7 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         TestModel model = new TestModel();
         model.addTest(new Test("Name 1", "comment..."));

@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         try{
             Thread.sleep(5000); //dummy task

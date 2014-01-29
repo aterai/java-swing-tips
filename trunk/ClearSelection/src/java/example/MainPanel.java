@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1,2));
         add(makeTitledPanel("Default", makeList(true)));
         add(makeTitledPanel("clearSelection", makeList(false)));

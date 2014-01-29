@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JTabbedPane tabbedPane = new JTabbedPane();

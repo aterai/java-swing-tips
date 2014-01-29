@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();
         List<String> list = Arrays.asList(
@@ -24,7 +24,7 @@ class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         add(box);
         setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

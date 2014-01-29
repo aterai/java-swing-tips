@@ -6,8 +6,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new BorderLayout(5, 5));

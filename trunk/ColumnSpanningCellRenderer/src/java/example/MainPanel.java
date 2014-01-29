@@ -9,22 +9,23 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final String SEE = "See Also: Constan Field Values";
+    private final String[] columnNames = {"AAA", "BBB"};
+    private final Object[][] data = {
+        {new Test("errorIcon",       UIManager.getIcon("OptionPane.errorIcon"),       "public static final int ERROR_MESSAGE\nUsed for error messages."), SEE},
+        {new Test("informationIcon", UIManager.getIcon("OptionPane.informationIcon"), "public static final int INFORMATION_MESSAGE\nUsed for information messages."), SEE},
+        {new Test("questionIcon",    UIManager.getIcon("OptionPane.questionIcon"),    "public static final int QUESTION_MESSAGE\nUsed for questions."), SEE},
+        {new Test("warningIcon",     UIManager.getIcon("OptionPane.warningIcon"),     "public static final int WARNING_MESSAGE\nUsed for warning messages."), SEE},
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        String see = "See Also: Constan Field Values";
-        String[] columnNames = {"AAA", "BBB"};
-        Object[][] data = {
-            {new Test("errorIcon",       UIManager.getIcon("OptionPane.errorIcon"),       "public static final int ERROR_MESSAGE\nUsed for error messages."), see},
-            {new Test("informationIcon", UIManager.getIcon("OptionPane.informationIcon"), "public static final int INFORMATION_MESSAGE\nUsed for information messages."), see},
-            {new Test("questionIcon",    UIManager.getIcon("OptionPane.questionIcon"),    "public static final int QUESTION_MESSAGE\nUsed for questions."), see},
-            {new Test("warningIcon",     UIManager.getIcon("OptionPane.warningIcon"),     "public static final int WARNING_MESSAGE\nUsed for warning messages."), see},
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getTableHeader().setReorderingAllowed(false);
         table.setRowSelectionAllowed(true);
