@@ -7,85 +7,11 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        JMenuBar mb = new JMenuBar();
-        mb.add(createLookAndFeelMenu());
-        add(mb, BorderLayout.NORTH);
         add(new JScrollPane(makeTestBox()));
         setPreferredSize(new Dimension(320, 240));
     }
-
-    //<blockquote cite="SwingSet2.java">
-    private JMenu createLookAndFeelMenu() {
-        JMenu lafMenu = new JMenu("Look&Feel");
-        JMenuItem mi = createLafMenuItem(lafMenu, "Metal", metal);
-        mi.setSelected(true); //this is the default l&f
-        createLafMenuItem(lafMenu, "Mac", mac);
-        createLafMenuItem(lafMenu, "Motif", motif);
-        createLafMenuItem(lafMenu, "Windows", windows);
-        createLafMenuItem(lafMenu, "GTK", gtk);
-        createLafMenuItem(lafMenu, "Nimbus", nimbus);
-        return lafMenu;
-    }
-
-    // Possible Look & Feels
-    private static final String mac     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String metal   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String motif   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-    private static final String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String gtk     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String nimbus  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
-
-    // The current Look & Feel
-    private static String currentLookAndFeel = metal;
-    private final ButtonGroup lafMenuGroup = new ButtonGroup();
-    public JMenuItem createLafMenuItem(JMenu menu, String label, String laf) {
-        JMenuItem mi = (JRadioButtonMenuItem) menu.add(new JRadioButtonMenuItem(label));
-        lafMenuGroup.add(mi);
-        mi.addActionListener(new ChangeLookAndFeelAction(laf));
-        mi.setEnabled(isAvailableLookAndFeel(laf));
-        return mi;
-    }
-    protected static boolean isAvailableLookAndFeel(String laf) {
-        try{
-            Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel)(lnfClass.newInstance());
-            return newLAF.isSupportedLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            return false;
-        }
-    }
-
-    private class ChangeLookAndFeelAction extends AbstractAction {
-        private final String laf;
-        protected ChangeLookAndFeelAction(String laf) {
-            super("ChangeTheme");
-            this.laf = laf;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            setLookAndFeel(laf);
-        }
-    }
-    private void setLookAndFeel(String laf) {
-        if(currentLookAndFeel.equals(laf)) { return; }
-        currentLookAndFeel = laf;
-        try{
-            UIManager.setLookAndFeel(currentLookAndFeel);
-            updateLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-            System.out.println("Failed loading L&F: " + currentLookAndFeel);
-        }
-    }
-    private void updateLookAndFeel() {
-        Window windows[] = Frame.getWindows();
-        for(Window window : windows) {
-            SwingUtilities.updateComponentTreeUI(window);
-        }
-    }
-    //</blockquote>
 
     private static Box makeTestBox() {
         Box box = Box.createVerticalBox();
@@ -145,11 +71,89 @@ public class MainPanel extends JPanel {
 //                IllegalAccessException | UnsupportedLookAndFeelException ex) {
 //             ex.printStackTrace();
 //         }
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
+
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
+        frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+//@see SwingSet2.java
+class LookAndFeelUtil {
+    // Possible Look & Feels
+    private static final String mac     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
+    private static final String metal   = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String motif   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static final String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    private static final String gtk     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    private static final String nimbus  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+
+    // The current Look & Feel
+    private static String currentLookAndFeel = metal;
+
+    private LookAndFeelUtil() { /* Singleton */ }
+
+    public static JMenu createLookAndFeelMenu() {
+        ButtonGroup lafMenuGroup = new ButtonGroup();
+        JMenu lafMenu = new JMenu("Look&Feel");
+        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", metal);
+        mi.setSelected(true); //this is the default l&f
+        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     mac);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   motif);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", windows);
+        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     gtk);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  nimbus);
+        return lafMenu;
+    }
+    private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
+        JMenuItem mi = (JRadioButtonMenuItem)menu.add(new JRadioButtonMenuItem(label));
+        lafMenuGroup.add(mi);
+        mi.addActionListener(new ChangeLookAndFeelAction(laf));
+        mi.setEnabled(isAvailableLookAndFeel(laf));
+        return mi;
+    }
+    private static boolean isAvailableLookAndFeel(String laf) {
+        try{
+            Class lnfClass = Class.forName(laf);
+            LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
+            return newLAF.isSupportedLookAndFeel();
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            return false;
+        }
+    }
+    private static class ChangeLookAndFeelAction extends AbstractAction {
+        private final String laf;
+        protected ChangeLookAndFeelAction(String laf) {
+            super("ChangeTheme");
+            this.laf = laf;
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            setLookAndFeel(laf);
+        }
+    }
+    private static void setLookAndFeel(String laf) {
+        if(currentLookAndFeel.equals(laf)) {
+            return;
+        }
+        currentLookAndFeel = laf;
+        try{
+            UIManager.setLookAndFeel(currentLookAndFeel);
+            updateLookAndFeel();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+            System.out.println("Failed loading L&F: " + currentLookAndFeel);
+        }
+    }
+    private static void updateLookAndFeel() {
+        for(Window window : Frame.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(window);
+        }
     }
 }

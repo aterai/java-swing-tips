@@ -51,7 +51,24 @@ public class MainPanel extends JPanel {
 //How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 //http://download.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
+    private static final MouseListener buttonMouseListener = new MouseAdapter() {
+        @Override public void mouseEntered(MouseEvent e) {
+            Component component = e.getComponent();
+            if(component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(true);
+            }
+        }
+        @Override public void mouseExited(MouseEvent e) {
+            Component component = e.getComponent();
+            if(component instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) component;
+                button.setBorderPainted(false);
+            }
+        }
+    };
     private final JTabbedPane pane;
+
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if(pane == null) {
@@ -111,22 +128,6 @@ class ButtonTabComponent extends JPanel {
             g2.dispose();
         }
     }
-    private final static MouseListener buttonMouseListener = new MouseAdapter() {
-        @Override public void mouseEntered(MouseEvent e) {
-            Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(true);
-            }
-        }
-        @Override public void mouseExited(MouseEvent e) {
-            Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(false);
-            }
-        }
-    };
 }
 
 class TabTitleRenamePopupMenu extends JPopupMenu {

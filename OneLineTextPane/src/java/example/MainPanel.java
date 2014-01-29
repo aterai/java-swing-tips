@@ -109,7 +109,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
     //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
-    private final static String operands = ".,";
+    private static final String operands = ".,";
     public SimpleSyntaxDocument() {
         super();
         Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);

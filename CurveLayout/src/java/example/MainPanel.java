@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final static double A2 = 4.0;
+    private static final double A2 = 4.0;
     private MainPanel() {
         super(new BorderLayout());
 

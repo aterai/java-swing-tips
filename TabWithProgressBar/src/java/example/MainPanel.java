@@ -10,6 +10,7 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static int count = 0;
     //private final Executor executor = Executors.newCachedThreadPool();
     private final JTabbedPane tab = new JTabbedPane() {
         @Override public void addTab(String title, final Component content) {
@@ -71,7 +72,6 @@ public class MainPanel extends JPanel {
             add(new CloseAllAction("Close All", null));
         }
     }
-    static private int count = 0;
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
             super(label,icon);

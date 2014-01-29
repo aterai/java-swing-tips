@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static final Dimension preferredSize = new Dimension(320, 240);
     private static final String LF = "\n";
     public MainPanel() {
         super(new BorderLayout());
@@ -23,7 +24,6 @@ public class MainPanel extends JPanel {
         sp.setResizeWeight(.5);
         add(sp);
     }
-    private static final Dimension preferredSize = new Dimension(320, 240);
     @Override public Dimension getPreferredSize() {
         return preferredSize;
     }

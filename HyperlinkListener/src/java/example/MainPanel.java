@@ -151,7 +151,12 @@ class HyperlinkButton extends JButton {
 abstract class LinkViewButtonUI extends BasicButtonUI {}
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
-    private final static LinkViewButtonUI linkViewButtonUI = new BasicLinkViewButtonUI();
+    private static final LinkViewButtonUI linkViewButtonUI = new BasicLinkViewButtonUI();
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
+
     public static LinkViewButtonUI createUI(JButton b) {
 //         b.setForeground(Color.BLUE);
 //         b.setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
@@ -161,10 +166,6 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
     private BasicLinkViewButtonUI() {
         super();
     }
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();

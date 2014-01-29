@@ -7,11 +7,6 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makePanel());
-        setPreferredSize(new Dimension(320, 240));
-    }
     private final JTree tree       = new JTree();
     private final JTextField field = new JTextField("", 10);
     private final JButton button   = new JButton("Find Next(dummy)");
@@ -28,9 +23,13 @@ public class MainPanel extends JPanel {
             controlsPreferredHeight = ps.height;
             if(animator!=null) {
                 if(isHidden) {
-                    if(controls.getHeight()<controlsPreferredHeight) { controlsHeight += 5; }
+                    if(controls.getHeight()<controlsPreferredHeight) {
+                        controlsHeight += 5;
+                    }
                 }else{
-                    if(controls.getHeight()>0) { controlsHeight -= 5; }
+                    if(controls.getHeight()>0) {
+                        controlsHeight -= 5;
+                    }
                 }
                 if(controlsHeight<=0) {
                     controlsHeight = 0;
@@ -44,6 +43,13 @@ public class MainPanel extends JPanel {
             return ps;
         }
     });
+
+    public MainPanel() {
+        super(new BorderLayout());
+        add(makePanel());
+        setPreferredSize(new Dimension(320, 240));
+    }
+
     private Action makeShowHideAction() {
         return new AbstractAction("Show/Hide Search Box") {
             @Override public void actionPerformed(ActionEvent e) {

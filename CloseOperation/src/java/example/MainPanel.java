@@ -7,6 +7,23 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+    private static int number = 0;
+    public static JFrame createFrame(String title) {
+        JFrame frame = new JFrame((title==null)?"Frame #"+number:title);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        number++;
+        frame.addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) {
+                number--;
+                if(number==0) {
+                    JFrame f = (JFrame)e.getWindow();
+                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                }
+            }
+        });
+        return frame;
+    }
+
     private MainPanel() {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("New Frame") {
@@ -24,23 +41,6 @@ public final class MainPanel extends JPanel {
         });
         add(button);
         setPreferredSize(new Dimension(320, 100));
-    }
-
-    private static int number = 0;
-    public static JFrame createFrame(String title) {
-        JFrame frame = new JFrame((title==null)?"Frame #"+number:title);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        number++;
-        frame.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosing(WindowEvent e) {
-                number--;
-                if(number==0) {
-                    JFrame f = (JFrame)e.getWindow();
-                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                }
-            }
-        });
-        return frame;
     }
 
     public static void main(String[] args) {

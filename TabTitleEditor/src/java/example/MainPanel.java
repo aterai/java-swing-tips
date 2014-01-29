@@ -52,6 +52,11 @@ public class MainPanel extends JPanel {
 class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     private final JTextField editor = new JTextField();
     private final JTabbedPane tabbedPane;
+    private int editing_idx = -1;
+    private int len = -1;
+    private Dimension dim;
+    private Component tabComponent = null;
+
     public TabTitleEditListener(final JTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
@@ -92,10 +97,6 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
             renameTabTitle();
         }
     }
-    private int editing_idx = -1;
-    private int len = -1;
-    private Dimension dim;
-    private Component tabComponent = null;
     private void startEditing() {
         editing_idx = tabbedPane.getSelectedIndex();
         tabComponent = tabbedPane.getTabComponentAt(editing_idx);

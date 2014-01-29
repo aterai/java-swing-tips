@@ -13,6 +13,8 @@ import javax.swing.border.*;
 // import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
+    private final TexturePaint texture = makeCheckerTexture();
+
     public MainPanel() {
         super();
         //Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
@@ -131,7 +133,6 @@ public class MainPanel extends JPanel {
         g2.dispose();
         return new TexturePaint(img, new Rectangle(0,0,sz,sz));
     }
-    private final TexturePaint texture = makeCheckerTexture();
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(texture);

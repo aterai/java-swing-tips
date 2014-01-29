@@ -50,21 +50,22 @@ public class MainPanel extends JPanel {
 }
 
 class HighlightListener extends MouseAdapter {
+    private static final Color HIGHLIGHT1 = new Color(200,200,255);
+    private static final Color HIGHLIGHT2 = new Color(240,240,255);
     private int row = -1;
     private int col = -1;
     private final JTable table;
+
     public HighlightListener(JTable table) {
         super();
         this.table = table;
     }
-    private final Color highlight1 = new Color(200,200,255);
-    private final Color highlight2 = new Color(240,240,255);
     public Color getHighlightableCellColor(int row, int column) {
         if(this.row==row || this.col==column) {
             if(this.row==row && this.col==column) {
-                return highlight1;
+                return HIGHLIGHT1;
             }else{
-                return highlight2;
+                return HIGHLIGHT2;
             }
         }
         return null;

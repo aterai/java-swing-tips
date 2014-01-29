@@ -10,7 +10,12 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
-    //private final static TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
+    //private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
+
     protected TabButton tabViewButton;
 
     public static ComponentUI createUI(JComponent c) {
@@ -33,10 +38,6 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     }
 //     @Override public void installDefaults() {}
 
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();

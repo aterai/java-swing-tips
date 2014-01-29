@@ -45,7 +45,10 @@ public class MainPanel extends JPanel {
 }
 
 class SplitPaneWrapper extends JPanel {
-    private final static JTextArea log = new JTextArea();
+    private final JSplitPane sp;
+    private boolean flag = true;
+    private int prev_state = Frame.NORMAL;
+    private static final JTextArea log = new JTextArea();
 //     private final JSplitPane splitPane = new JSplitPane() {
 //         @Override public void setDividerLocation(double proportionalLocation) {
 //             if(proportionalLocation < 0.0 || proportionalLocation > 1.0) {
@@ -69,7 +72,6 @@ class SplitPaneWrapper extends JPanel {
 // //             }
 // //         }
 //     };
-    private final JSplitPane sp;
     public SplitPaneWrapper() {
         this(new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(log), new JScrollPane(new JTree())));
     }
@@ -83,7 +85,6 @@ class SplitPaneWrapper extends JPanel {
             }
         });
     }
-    private boolean flag = true;
     public void setTestFlag(boolean flag) {
         this.flag = flag;
     }
@@ -92,7 +93,6 @@ class SplitPaneWrapper extends JPanel {
             ? sp.getHeight() - sp.getDividerSize()
             : sp.getWidth()  - sp.getDividerSize();
     }
-    private int prev_state = Frame.NORMAL;
     @Override public void doLayout() {
         int size = getOrientedSize(sp);
         final double proportionalLocation = sp.getDividerLocation()/(double)size;

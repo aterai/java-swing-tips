@@ -84,13 +84,14 @@ class WrappingLabel extends JLabel {
 
 class WrappedLabel extends JLabel {
     private GlyphVector gvtext;
+    private int width = -1;
+
     public WrappedLabel() {
         this(null);
     }
     public WrappedLabel(String str) {
         super(str);
     }
-    private int width = -1;
     @Override public void doLayout() {
         Insets i = getInsets();
         int w = getWidth()-i.left-i.right;

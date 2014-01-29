@@ -142,6 +142,8 @@ public class MainPanel extends JPanel {
 // }
 
 class LineFocusTable extends JTable {
+    private final DotBorder dotBorder = new DotBorder(2,2,2,2);
+    private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
     public LineFocusTable(DefaultTableModel model) {
         super(model);
     }
@@ -195,15 +197,13 @@ class LineFocusTable extends JTable {
         });
         setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
     }
-    private final DotBorder dotBorder = new DotBorder(2,2,2,2);
-    private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
     private void updateBorderType(DotBorder border, int column) {
-        border.type = EnumSet.noneOf(DotBorder.Type.class);
+        border.type = EnumSet.noneOf(Type.class);
         if(column==0) {
-            border.type.add(DotBorder.Type.START);
+            border.type.add(Type.START);
         }
         if(column==getColumnCount()-1) {
-            border.type.add(DotBorder.Type.END);
+            border.type.add(Type.END);
         }
     }
     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -235,24 +235,26 @@ class LineFocusTable extends JTable {
     }
 }
 
+enum Type { START, END; }
+
 class DotBorder extends EmptyBorder {
-    public enum Type { START, END; }
-    private static final BasicStroke dashed = new BasicStroke(
+    private static final BasicStroke DASHED = new BasicStroke(
         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
         10.0f, new float[] {1.0f}, 0.0f);
-    private static final Color dotColor = new Color(200,150,150);
+    private static final Color DOT_COLOR = new Color(200,150,150);
+    public EnumSet<Type> type = EnumSet.noneOf(Type.class);
+
     public DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);
     }
-    public EnumSet<Type> type = EnumSet.noneOf(Type.class);
     @Override public boolean isBorderOpaque() {
         return true;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         Graphics2D g2 = (Graphics2D)g;
         g2.translate(x,y);
-        g2.setPaint(dotColor);
-        g2.setStroke(dashed);
+        g2.setPaint(DOT_COLOR);
+        g2.setStroke(DASHED);
         if(type.contains(Type.START)) {
             g2.drawLine(0,0,0,h);
         }
@@ -343,7 +345,7 @@ class DotBorder extends EmptyBorder {
 //   private static final BasicStroke dashed = new BasicStroke(
 //     1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
 //     10.0f, (new float[] {1.0f}), 0.0f);
-//   private static final Color dotColor = new Color(200,150,150);
+//   private static final Color DOT_COLOR = new Color(200,150,150);
 //   public DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);
 //   }
@@ -354,7 +356,7 @@ class DotBorder extends EmptyBorder {
 //     Component c, Graphics g, int x, int y, int w, int h) {
 //     Graphics2D g2 = (Graphics2D)g;
 //     g2.translate(x,y);
-//     g2.setPaint(dotColor);
+//     g2.setPaint(DOT_COLOR);
 //     g2.setStroke(dashed);
 //     if(type.contains(Type.WEST)) {
 //       g2.drawLine(0,0,0,h);

@@ -146,11 +146,12 @@ class ProgressListener implements PropertyChangeListener {
 }
 
 class TextLabelProgressBar extends JProgressBar {
+    private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
+    private ChangeListener changeListener = null;
+
     public TextLabelProgressBar(BoundedRangeModel model) {
         super(model);
     }
-    private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
-    private ChangeListener changeListener = null;
     @Override public void updateUI() {
         removeAll();
         if(changeListener!=null) {

@@ -200,6 +200,8 @@ class MyIconTable extends JTable {
 
 class EditorFromList extends JList<MyIcon> {
     private static final int ins = 2;
+    private int rollOverRowIndex = -1;
+
     public EditorFromList(DefaultListModel<MyIcon> list) {
         super(list);
         ImageIcon icon = ((MyIcon)list.elementAt(0)).small;
@@ -232,7 +234,6 @@ class EditorFromList extends JList<MyIcon> {
         addMouseMotionListener(lst);
         addMouseListener(lst);
     }
-    private int rollOverRowIndex = -1;
     private class RollOverListener extends MouseInputAdapter {
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;

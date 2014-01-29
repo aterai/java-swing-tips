@@ -44,6 +44,9 @@ public class MainPanel extends JPanel {
 }
 
 class HighlightCursorTextArea extends JTextArea {
+    private static final Color LINE_COLOR = new Color(250,250,220);
+    private int rollOverRowIndex = -1;
+
     public HighlightCursorTextArea() {
         super();
         setOpaque(false);
@@ -51,17 +54,15 @@ class HighlightCursorTextArea extends JTextArea {
         addMouseMotionListener(rol);
         addMouseListener(rol);
     }
-    private final Color linecolor = new Color(250,250,220);
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         Insets i = getInsets();
         int h = g2.getFontMetrics().getHeight();
         int y = rollOverRowIndex*h+i.top;
-        g2.setPaint(linecolor);
+        g2.setPaint(LINE_COLOR);
         g2.fillRect(i.left, y, getSize().width-i.left-i.right, h);
         super.paintComponent(g);
     }
-    private int rollOverRowIndex = -1;
     private class RollOverListener extends MouseInputAdapter {
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;

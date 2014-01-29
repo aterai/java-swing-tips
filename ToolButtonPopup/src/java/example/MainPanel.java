@@ -79,6 +79,8 @@ class MenuArrowIcon implements Icon {
 }
 class MenuToggleButton extends JToggleButton {
     private static final Icon i = new MenuArrowIcon();
+    protected JPopupMenu pop;
+
     public MenuToggleButton() {
         this("", null);
     }
@@ -101,7 +103,6 @@ class MenuToggleButton extends JToggleButton {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+i.getIconWidth()));
     }
-    protected JPopupMenu pop;
     public void setPopupMenu(final JPopupMenu pop) {
         this.pop = pop;
         pop.addPopupMenuListener(new PopupMenuListener() {

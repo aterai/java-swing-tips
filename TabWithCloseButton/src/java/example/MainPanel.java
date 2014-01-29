@@ -7,8 +7,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static int count = 0;
     private final MyJTabbedPane tab = new MyJTabbedPane();
     private final JPopupMenu pop = new JPopupMenu();
+
     public MainPanel() {
         super(new BorderLayout());
         pop.add(new NewTabAction("Add", null));
@@ -20,7 +22,6 @@ public class MainPanel extends JPanel {
         add(tab);
         setPreferredSize(new Dimension(320, 240));
     }
-    static private int count = 0;
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
             super(label,icon);

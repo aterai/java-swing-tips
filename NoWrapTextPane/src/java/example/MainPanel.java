@@ -9,11 +9,13 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
+    private static String text = null;
     private final JPanel panel = new JPanel(new GridLayout(2,1));
     //private final JTextPane   textPane;
     private final JEditorPane editorPane;
     private final JTextArea   textArea;
     //private final ExecutorService threadPool;
+
     public MainPanel(final ExecutorService threadPool) {
         super(new BorderLayout());
         //this.threadPool = threadPool;
@@ -87,7 +89,6 @@ public class MainPanel extends JPanel {
         sp.setBorder(BorderFactory.createTitledBorder(title));
         panel.add(sp);
     }
-    private static String text = null;
     private static void initLongLineStringInBackground(ExecutorService threadPool, final int length) {
         threadPool.execute(new Runnable() {
             @Override public void run() {

@@ -8,6 +8,17 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
+    // Possible Look & Feels
+    private static final String mac     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
+    private static final String metal   = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String motif   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static final String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    private static final String gtk     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    private static final String nimbus  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+
+    // The current Look & Feel
+    private static String currentLookAndFeel = metal;
+    private static final ButtonGroup lafMenuGroup = new ButtonGroup();
     private static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
     private static JCheckBox check = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
         @Override public void actionPerformed(ActionEvent e) {
@@ -15,6 +26,7 @@ public class MainPanel extends JPanel {
             UIManager.put(DISABLED_ARE_NAVIGABLE, b);
         }
     });
+
     private MainPanel() {
         super();
         Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
@@ -85,17 +97,6 @@ public class MainPanel extends JPanel {
         return lafMenu;
     }
 
-    // Possible Look & Feels
-    private static final String mac     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String metal   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String motif   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-    private static final String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String gtk     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String nimbus  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
-
-    // The current Look & Feel
-    private static String currentLookAndFeel = metal;
-    private static final ButtonGroup lafMenuGroup = new ButtonGroup();
     public static JMenuItem createLafMenuItem(JMenu menu, String label, String laf) {
         JMenuItem mi = (JRadioButtonMenuItem) menu.add(new JRadioButtonMenuItem(label));
         lafMenuGroup.add(mi);
@@ -103,7 +104,7 @@ public class MainPanel extends JPanel {
         mi.setEnabled(isAvailableLookAndFeel(laf));
         return mi;
     }
-    protected static boolean isAvailableLookAndFeel(String laf) {
+    private static boolean isAvailableLookAndFeel(String laf) {
         try{
             Class lnfClass = Class.forName(laf);
             LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
@@ -112,7 +113,6 @@ public class MainPanel extends JPanel {
             return false;
         }
     }
-
     private static class ChangeLookAndFeelAction extends AbstractAction {
         private final String laf;
         protected ChangeLookAndFeelAction(String laf) {
@@ -142,8 +142,7 @@ public class MainPanel extends JPanel {
         }
     }
     private static void updateLookAndFeel() {
-        Window windows[] = Frame.getWindows();
-        for(Window window : windows) {
+        for(Window window : Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

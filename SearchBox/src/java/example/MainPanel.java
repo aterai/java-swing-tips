@@ -48,37 +48,6 @@ public class MainPanel extends JPanel {
             return ps;
         }
     });
-    public MainPanel() {
-        super(new BorderLayout());
-
-        button.setAction(findNextAction);
-        button.setFocusable(false);
-
-        field.getActionMap().put("find-next", findNextAction);
-        field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 SwingUtilities.getRootPane(button).setDefaultButton(button);
-//             }
-//         });
-
-        controls.setBorder(BorderFactory.createTitledBorder("Search down"));
-        controls.add(new JLabel("Find what:"), BorderLayout.WEST);
-        controls.add(field);
-        controls.add(button, BorderLayout.EAST);
-
-        showHideButton.setAction(showHideAction);
-        showHideButton.setFocusable(false);
-
-        InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK), "open-searchbox");
-        getActionMap().put("open-searchbox", showHideAction);
-
-        add(controls, BorderLayout.NORTH);
-        add(new JScrollPane(tree));
-        add(showHideButton, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
     private final Action findNextAction = new AbstractAction("Find Next") {
         @Override public void actionPerformed(ActionEvent e) {
             TreePath selectedPath = tree.getSelectionPath();
@@ -114,6 +83,38 @@ public class MainPanel extends JPanel {
             animator.start();
         }
     };
+
+    public MainPanel() {
+        super(new BorderLayout());
+
+        button.setAction(findNextAction);
+        button.setFocusable(false);
+
+        field.getActionMap().put("find-next", findNextAction);
+        field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
+//         EventQueue.invokeLater(new Runnable() {
+//             @Override public void run() {
+//                 SwingUtilities.getRootPane(button).setDefaultButton(button);
+//             }
+//         });
+
+        controls.setBorder(BorderFactory.createTitledBorder("Search down"));
+        controls.add(new JLabel("Find what:"), BorderLayout.WEST);
+        controls.add(field);
+        controls.add(button, BorderLayout.EAST);
+
+        showHideButton.setAction(showHideAction);
+        showHideButton.setFocusable(false);
+
+        InputMap imap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK), "open-searchbox");
+        getActionMap().put("open-searchbox", showHideAction);
+
+        add(controls, BorderLayout.NORTH);
+        add(new JScrollPane(tree));
+        add(showHideButton, BorderLayout.SOUTH);
+        setPreferredSize(new Dimension(320, 240));
+    }
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");

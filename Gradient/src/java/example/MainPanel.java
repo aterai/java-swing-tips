@@ -119,10 +119,11 @@ class GradientSeparator extends JSeparator {
     }
 }
 class GradientSeparatorUI extends BasicSeparatorUI{
+    private Color bgc,ssc,shc;
+
     public static ComponentUI createUI(JComponent c) {
         return new GradientSeparatorUI();
     }
-    private Color bgc,ssc,shc;
     private void updateColors(JComponent j) {
         Color c = UIManager.getColor("Panel.background");
         bgc = c instanceof ColorUIResource ? c : j.getBackground();

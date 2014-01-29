@@ -13,8 +13,10 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 class MainPanel extends JPanel {
-    private final static TexturePaint texture = makeTexturePaint();
+    private static int openFrameCount = 0;
+    private static final TexturePaint texture = makeTexturePaint();
     private final JDesktopPane desktop = new JDesktopPane();
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -87,7 +89,6 @@ class MainPanel extends JPanel {
         return frame;
     }
 
-    private static int openFrameCount = 0;
     private static class MyInternalFrame extends JInternalFrame {
         public MyInternalFrame() {
             super(String.format("Frame #%s", ++openFrameCount), true, true, true, true);

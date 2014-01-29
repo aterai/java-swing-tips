@@ -216,8 +216,8 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 class IndeterminateIcon implements Icon {
     private final Color FOREGROUND = Color.BLACK; //TEST: UIManager.getColor("CheckBox.foreground");
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
-    private final static int a = 4;
-    private final static int b = 2;
+    private static final int a = 4;
+    private static final int b = 2;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         icon.paintIcon(c, g, x, y);
         int w = getIconWidth();

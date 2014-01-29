@@ -10,6 +10,11 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class CustomPopupMenuUI extends BasicPopupMenuUI {
+    private static final int OFF = 4;
+    private static final int ARC = 2;
+    private static final float ALPHA = 0.12f;
+    private static final Insets insets = new Insets(0, 0, OFF, OFF);
+
     public static ComponentUI createUI(JComponent c) {
         return new CustomPopupMenuUI();
     }
@@ -63,9 +68,6 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
     }
 //*/
 
-    private static int OFF = 4;
-    private static int ARC = 2;
-    private static float ALPHA = 0.12f;
     private static BufferedImage makeShadowImage(int x, int y, int w, int h) {
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = image.createGraphics();
@@ -81,7 +83,6 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
         return image;
     }
 
-    private static final Insets insets = new Insets(0, 0, OFF, OFF);
     static class ShadowBorderInPanel extends AbstractBorder {
         @Override public Insets getBorderInsets(Component c) {
             return insets;

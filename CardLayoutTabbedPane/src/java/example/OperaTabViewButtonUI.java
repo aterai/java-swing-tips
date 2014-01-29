@@ -14,7 +14,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     private static Rectangle iconRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
     private static int CLOSEICON_WIDTH = 12;
-    //private final static TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
+    //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }

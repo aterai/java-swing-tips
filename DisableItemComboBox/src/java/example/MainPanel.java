@@ -83,6 +83,9 @@ public class MainPanel extends JPanel {
 }
 
 class MyComboBox extends JComboBox<String> {
+    private final Set<Integer> disableIndexSet = new HashSet<>();
+    private boolean isDisableIndex = false;
+
     public MyComboBox() {
         super();
         setRenderer(new DefaultListCellRenderer() {
@@ -129,8 +132,6 @@ class MyComboBox extends JComboBox<String> {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
     }
-    private final Set<Integer> disableIndexSet = new HashSet<>();
-    private boolean isDisableIndex = false;
     public void setDisableIndex(Set<Integer> set) {
         disableIndexSet.clear();
         for(Integer i:set) {
