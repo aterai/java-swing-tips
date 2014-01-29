@@ -112,6 +112,7 @@ enum QuadrantRotate {
     public int getNumQuadrants() {
         return numquadrants;
     }
+
 }
 class QuadrantRotateIcon implements Icon {
     private final QuadrantRotate rotate;
@@ -129,6 +130,7 @@ class QuadrantRotateIcon implements Icon {
           case CLOCKWISE:         g2.translate(h, 0); break;
           case VERTICAL_FLIP:     g2.translate(w, h); break;
           case COUNTER_CLOCKWISE: g2.translate(0, w); break;
+          default:                throw new AssertionError("Unknown QuadrantRotateIcon");
         }
         g2.rotate(Math.toRadians(90*rotate.getNumQuadrants()));
         icon.paintIcon(c, g2, 0, 0);

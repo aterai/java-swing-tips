@@ -247,6 +247,7 @@ class ResizeWindowListener extends MouseAdapter {
             rect.height += dy;
             rect.width  += dx;
             break;
+          default: throw new AssertionError("Unknown SideLabel");
         }
         frame.setBounds(rect);
     }

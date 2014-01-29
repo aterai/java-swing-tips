@@ -82,6 +82,7 @@ public class MainPanel extends JPanel {
                               }
                               break;
                           }
+                          default: throw new AssertionError("Unknown Progress");
                         }
                     }
                 }
