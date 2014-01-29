@@ -120,6 +120,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
                   case SELECTED:      setSelected(true);  setEnabled(true);  break;
                   case DESELECTED:    setSelected(false); setEnabled(true);  break;
                   case INDETERMINATE: setSelected(true);  setEnabled(false); break;
+                  default:            throw new AssertionError("Unknown Status");
                 }
             }else{
                 setSelected(true); setEnabled(false);

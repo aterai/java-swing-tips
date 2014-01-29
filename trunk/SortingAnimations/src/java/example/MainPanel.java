@@ -147,6 +147,7 @@ public class MainPanel extends JPanel {
               case Random:     a[i] = (float) Math.random(); break;
               case Ascending:  a[i] = ((float) i)/n; break;
               case Descending: a[i] = (float) (1.0 - ((float) i)/n); break;
+              default:         throw new AssertionError("Unknown GenerateInputs");
             }
         }
     }
@@ -226,6 +227,7 @@ class SortingTask extends SwingWorker<String, Rectangle> {
               case Hsort:     heapsort(number);    break;
               case Qsort:     qsort(0, number-1);  break;
               case Qsort2:    qsort2(0, number-1); break;
+              default:        throw new AssertionError("Unknown SortAlgorithms");
             }
         }catch(InterruptedException ie) {
             return "Interrupted";

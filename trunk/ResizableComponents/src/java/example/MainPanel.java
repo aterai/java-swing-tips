@@ -412,8 +412,9 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
           case NORTH_EAST: return new Rectangle(x+w-dist, y, dist, dist);
           case SOUTH_WEST: return new Rectangle(x, y+h-dist, dist, dist);
           case SOUTH_EAST: return new Rectangle(x+w-dist, y+h-dist, dist, dist);
+          default:         return null; //throw  new AssertionError("Unknown location");
         }
-        return null;
+        //return null;
     }
 
     public int getResizeCursor(MouseEvent e) {
