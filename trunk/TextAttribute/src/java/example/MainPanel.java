@@ -53,7 +53,7 @@ public class MainPanel extends JPanel {
     }
     private void initUnderline(JTextComponent tc, Object style) {
         Font font = tc.getFont();
-        Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
+        HashMap<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
         attrs.put(TextAttribute.UNDERLINE, style);
         tc.setFont(font.deriveFont(attrs));
     }

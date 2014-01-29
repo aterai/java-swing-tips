@@ -212,7 +212,7 @@ class WorkerModel extends DefaultTableModel {
         new ColumnContext("Name",     String.class, false),
         new ColumnContext("Progress", Integer.class, false)
     };
-    private final Map<Integer, SwingWorker> swmap = new HashMap<>();
+    private final HashMap<Integer, SwingWorker> swmap = new HashMap<>();
     private int number = 0;
     public void addProgressValue(ProgressValue t, SwingWorker worker) {
         Object[] obj = {number, t.getName(), t.getProgress()};

@@ -18,10 +18,10 @@ public final class BarFactory {
 
     private final ResourceBundle resources;
 
-    private final Map<String, JMenuItem> menuItems   = new HashMap<>();
-    private final Map<String, JButton>   toolButtons = new HashMap<>();
-    private final Map<Object, Action>    commands    = new HashMap<>();
-    private final Map<String, JMenu>     menus       = new HashMap<>();
+    private final HashMap<String, JMenuItem> menuItems   = new HashMap<>();
+    private final HashMap<String, JButton>   toolButtons = new HashMap<>();
+    private final HashMap<Object, Action>    commands    = new HashMap<>();
+    private final HashMap<String, JMenu>     menus       = new HashMap<>();
     //private Action[] actions;
 
     public BarFactory(String restr) {
