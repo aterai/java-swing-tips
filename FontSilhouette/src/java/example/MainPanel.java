@@ -11,7 +11,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private static final int SIZE = 50;
     private static final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(4,6,0,0));
         // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
         // http://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels

@@ -7,7 +7,7 @@ import java.beans.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         try{
             Thread.sleep(3000); //dummy task

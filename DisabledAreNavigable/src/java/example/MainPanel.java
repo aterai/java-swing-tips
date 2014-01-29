@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
             UIManager.put(DISABLED_ARE_NAVIGABLE, b);
         }
     });
-    public MainPanel() {
+    private MainPanel() {
         super();
         Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
         System.out.println(b);

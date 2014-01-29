@@ -9,46 +9,48 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final int MODEL_COLUMN_INDEX = 0;
+    private final Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
+    private final Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
+        {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"},
+        {true, 4, "FFF"}, {false, 7, "HHH"}};
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model) {
+        @Override public void updateUI() {
+            super.updateUI();
+            //XXX: Nimbus
+            TableCellRenderer r = getDefaultRenderer(Boolean.class);
+            if(r instanceof JComponent) {
+                ((JComponent)r).updateUI();
+            }
+        }
+        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+            Component c = super.prepareEditor(editor, row, column);
+            if(c instanceof JCheckBox) {
+                JCheckBox b = (JCheckBox)c;
+                b.setBackground(getSelectionBackground());
+                b.setBorderPainted(true);
+            }
+            return c;
+        }
+    };
+
     public MainPanel() {
         super(new BorderLayout());
-        Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
-        Object[][] data = {{true, 1, "BBB"}, {false, 12, "AAA"},
-            {true, 2, "DDD"}, {false, 5, "CCC"},
-            {true, 3, "EEE"}, {false, 6, "GGG"},
-            {true, 4, "FFF"}, {false, 7, "HHH"}};
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model) {
-            @Override public void updateUI() {
-                super.updateUI();
-                //XXX: Nimbus
-                TableCellRenderer r = getDefaultRenderer(Boolean.class);
-                if(r instanceof JComponent) {
-                    ((JComponent)r).updateUI();
-                }
-            }
-            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-                Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
-                    b.setBackground(getSelectionBackground());
-                    b.setBorderPainted(true);
-                }
-                return c;
-            }
-        };
-        int modelColmunIndex = 0;
-        TableCellRenderer renderer = new HeaderRenderer(table.getTableHeader(), modelColmunIndex);
+
+        TableCellRenderer renderer = new HeaderRenderer(table.getTableHeader(), MODEL_COLUMN_INDEX);
 //         for(int i=0;i<table.getColumnCount();i++) {
 //             table.getColumnModel().getColumn(i).setHeaderRenderer(renderer);
 //         }
-//         table.getColumnModel().getColumn(modelColmunIndex).setHeaderValue(Status.INDETERMINATE);
-        table.getColumnModel().getColumn(modelColmunIndex).setHeaderRenderer(renderer);
+//         table.getColumnModel().getColumn(MODEL_COLUMN_INDEX).setHeaderValue(Status.INDETERMINATE);
+        table.getColumnModel().getColumn(MODEL_COLUMN_INDEX).setHeaderRenderer(renderer);
 
-        model.addTableModelListener(new HeaderCheckBoxHandler(table, modelColmunIndex));
+        model.addTableModelListener(new HeaderCheckBoxHandler(table, MODEL_COLUMN_INDEX));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

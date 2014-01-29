@@ -7,16 +7,17 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final String tabTest = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-    private static final String zsTest = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
-    private static final String zs_tab_zsTest = "\u3000\u3000\u65E5\u672C\u8A9E\u3000\n";
-    public MainPanel() {
+    private static final String TABTEST = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
+    private static final String ZSTEST = "adfasdfasdfasdf\nffas2\u3000\u30001 3 dfas\n\n\u300000000\u300012345\u3000\n";
+    private static final String ZS_TAB_ZSTEST = "\u3000\u3000\u65E5\u672C\u8A9E\u3000\n";
+
+    private MainPanel() {
         super(new BorderLayout());
         JTextPane editor = new JTextPane();
 
         editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         editor.setEditorKit(new MyEditorKit());
-        editor.setText(zsTest+zs_tab_zsTest+tabTest);
+        editor.setText(ZSTEST+ZS_TAB_ZSTEST+TABTEST);
 
         add(new JScrollPane(editor));
         setPreferredSize(new Dimension(320, 240));

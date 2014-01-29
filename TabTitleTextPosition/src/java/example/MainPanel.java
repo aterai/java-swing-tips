@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
         //label.setHorizontalAlignment(SwingConstants.CENTER);
         tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, label);
     }
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTabbedPane t = new ClippedTitleTabbedPane();
         t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);

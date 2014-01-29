@@ -8,7 +8,7 @@ import java.beans.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {

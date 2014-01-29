@@ -9,7 +9,7 @@ import javax.swing.plaf.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         OvertypeTextArea textArea= new OvertypeTextArea();
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));

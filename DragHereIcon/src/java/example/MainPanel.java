@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super();
 
         JLabel label = new JLabel(new DragHereIcon());

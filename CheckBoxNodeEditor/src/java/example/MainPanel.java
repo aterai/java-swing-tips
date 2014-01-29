@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JTree tree = new JTree() {

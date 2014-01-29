@@ -8,7 +8,7 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea();
         textArea.setText("aaaaaaaasdfasdfasdfasdf\nasdfasdfasdfasdfasdfasdf\n1234567890\naaaaaaaaaaaaaaaaaasdfasd");

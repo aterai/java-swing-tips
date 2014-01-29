@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));
         int w = image.getIconWidth();

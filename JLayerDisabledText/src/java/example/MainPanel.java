@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super();
 
         UIManager.put("Button.disabledText", Color.RED);

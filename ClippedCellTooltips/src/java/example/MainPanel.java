@@ -7,37 +7,37 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"String-String/String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 12, true},
+        {"BBB", 2, true}, {"EEE", 3, false},
+        {"CCC", 4, true}, {"FFF", 5, false},
+        {"DDD", 6, true}, {"GGG", 7, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model) {
+        public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if(c instanceof JComponent) {
+                JComponent l = (JComponent)c;
+                Object o = getValueAt(row, column);
+                Insets i = l.getInsets();
+                Rectangle rect = getCellRect(row, column, false);
+                rect.width -= i.left + i.right;
+                FontMetrics fm = l.getFontMetrics(l.getFont());
+                String str = o.toString();
+                int cellTextWidth = fm.stringWidth(str);
+                l.setToolTipText(cellTextWidth>rect.width?str:null);
+            }
+            return c;
+        }
+    };
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"String-String/String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 12, true},
-            {"BBB", 2, true}, {"EEE", 3, false},
-            {"CCC", 4, true}, {"FFF", 5, false},
-            {"DDD", 6, true}, {"GGG", 7, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model) {
-            public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(c instanceof JComponent) {
-                    JComponent l = (JComponent)c;
-                    Object o = getValueAt(row, column);
-                    Insets i = l.getInsets();
-                    Rectangle rect = getCellRect(row, column, false);
-                    rect.width -= i.left + i.right;
-                    FontMetrics fm = l.getFontMetrics(l.getFont());
-                    String str = o.toString();
-                    int cellTextWidth = fm.stringWidth(str);
-                    l.setToolTipText(cellTextWidth>rect.width?str:null);
-                }
-                return c;
-            }
-        };
         table.setAutoCreateRowSorter(true);
 
         TableCellRenderer r = new ToolTipHeaderRenderer();

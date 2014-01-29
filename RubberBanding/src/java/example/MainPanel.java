@@ -13,12 +13,9 @@ import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        add(new JScrollPane(makeList()));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private static JList<ListItem> makeList() {
+
         DefaultListModel<ListItem> model = new DefaultListModel<>();
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         model.addElement(new ListItem("ADFFDF asd", "wi0054-32.png"));
@@ -30,55 +27,10 @@ public class MainPanel extends JPanel {
         model.addElement(new ListItem("22222",      "wi0062-32.png"));
         model.addElement(new ListItem("3333",       "wi0063-32.png"));
 
-        JList<ListItem> list = new JList<ListItem>(model) {
-            private RubberBandListCellRenderer renderer;
-            private AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
-            private Color PCOLOR;
-            @Override public void updateUI() {
-                setSelectionForeground(null);
-                setSelectionBackground(null);
-                setCellRenderer(null);
-                if(renderer==null) {
-                    renderer = new RubberBandListCellRenderer();
-                }else{
-                    removeMouseMotionListener(renderer);
-                    removeMouseListener(renderer);
-                }
-                super.updateUI();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        setCellRenderer(renderer);
-                        addMouseMotionListener(renderer);
-                        addMouseListener(renderer);
-                    }
-                });
-                Color c = getSelectionBackground();
-                int r = c.getRed();
-                int g = c.getGreen();
-                int b = c.getBlue();
-                PCOLOR = r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
-                             : g>b ? new Color(0,g,0) : new Color(0,0,b);
-            }
-            @Override public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if(renderer.polygon!=null) {
-                    Graphics2D g2d = (Graphics2D) g;
-                    g2d.setPaint(getSelectionBackground());
-                    g2d.draw(renderer.polygon);
-                    g2d.setComposite(alcomp);
-                    g2d.setPaint(PCOLOR);
-                    g2d.fill(renderer.polygon);
-                }
-            }
-        };
-
-        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        list.setVisibleRowCount(0);
-        list.setFixedCellWidth(62);
-        list.setFixedCellHeight(62);
-        list.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        return list;
+        add(new JScrollPane(new RubberBandSelectionList<ListItem>(model)));
+        setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -101,6 +53,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class ListItem {
     public final ImageIcon nicon;
     public final ImageIcon sicon;
@@ -113,6 +66,57 @@ class ListItem {
         this.title = title;
     }
 }
+
+class RubberBandSelectionList<E extends ListItem> extends JList<E> {
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+    private RubberBandListCellRenderer<E> renderer;
+    private Color polygonColor;
+    public RubberBandSelectionList(ListModel<E> model) {
+        super(model);
+    }
+    @Override public void updateUI() {
+        setSelectionForeground(null);
+        setSelectionBackground(null);
+        setCellRenderer(null);
+        if(renderer==null) {
+            renderer = new RubberBandListCellRenderer<E>();
+        }else{
+            removeMouseMotionListener(renderer);
+            removeMouseListener(renderer);
+        }
+        super.updateUI();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                setCellRenderer(renderer);
+                addMouseMotionListener(renderer);
+                addMouseListener(renderer);
+                setLayoutOrientation(JList.HORIZONTAL_WRAP);
+                setVisibleRowCount(0);
+                setFixedCellWidth(62);
+                setFixedCellHeight(62);
+                setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+            }
+        });
+        Color c = getSelectionBackground();
+        int r = c.getRed();
+        int g = c.getGreen();
+        int b = c.getBlue();
+        polygonColor = r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
+                           : g>b ? new Color(0,g,0) : new Color(0,0,b);
+    }
+    @Override public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if(renderer.polygon!=null) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setPaint(getSelectionBackground());
+            g2d.draw(renderer.polygon);
+            g2d.setComposite(ALPHA);
+            g2d.setPaint(polygonColor);
+            g2d.fill(renderer.polygon);
+        }
+    }
+}
+
 class SelectedImageFilter extends RGBImageFilter {
     //public SelectedImageFilter() {
     //    canFilterIndexColorModel = false;
@@ -125,6 +129,7 @@ class SelectedImageFilter extends RGBImageFilter {
         return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
     }
 }
+
 class DotBorder extends EmptyBorder {
     public DotBorder(Insets borderInsets) {
         super(borderInsets);
@@ -146,7 +151,8 @@ class DotBorder extends EmptyBorder {
     //@Override public Insets getBorderInsets(Component c)
     //@Override public Insets getBorderInsets(Component c, Insets insets)
 }
-class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<ListItem>, MouseListener, MouseMotionListener {
+
+class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements ListCellRenderer<E>, MouseListener, MouseMotionListener {
     private final JLabel icon  = new JLabel((Icon)null, JLabel.CENTER);
     private final JLabel label = new JLabel("", JLabel.CENTER);
     private final Border dotBorder = new DotBorder(2,2,2,2);
@@ -165,7 +171,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
         this.add(icon);
         this.add(label, BorderLayout.SOUTH);
     }
-    @Override public Component getListCellRendererComponent(JList list, ListItem item, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E item, int index, boolean isSelected, boolean cellHasFocus) {
         icon.setIcon(isSelected?item.sicon:item.nicon);
         label.setText(item.title);
         label.setBorder(cellHasFocus?dotBorder:empBorder);
@@ -178,7 +184,6 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
         }
         return this;
     }
-    @Override public void mouseMoved(MouseEvent e) { /* not needed */ }
     @Override public void mouseDragged(MouseEvent e) {
         JList list = (JList)e.getSource();
         list.setFocusable(true);
@@ -195,6 +200,7 @@ class RubberBandListCellRenderer extends JPanel implements ListCellRenderer<List
         list.setSelectedIndices(getIntersectsIcons(list, polygon));
         list.repaint();
     }
+    @Override public void mouseMoved(MouseEvent e)   { /* not needed */ }
     @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
     @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
     @Override public void mouseExited(MouseEvent e)  { /* not needed */ }

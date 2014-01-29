@@ -8,32 +8,12 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTree tree = new JTree();
         tree.setComponentPopupMenu(new TreePopupMenu());
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
-    }
-    static class TreePopupMenu extends JPopupMenu {
-        private TreePath[] tsp;
-        public TreePopupMenu() {
-            super();
-            add(new AbstractAction("path") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    //for(TreePath path:tsp) System.out.println(path);
-                    JOptionPane.showMessageDialog(null, tsp, "path", JOptionPane.INFORMATION_MESSAGE);
-                }
-            });
-            add(new JMenuItem("dummy"));
-        }
-        @Override public void show(Component c, int x, int y) {
-            JTree tree = (JTree)c;
-            tsp = tree.getSelectionPaths();
-            if(tsp.length > 0) {
-                super.show(c, x, y);
-            }
-        }
     }
 
     public static void main(String[] args) {
@@ -56,5 +36,26 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TreePopupMenu extends JPopupMenu {
+    private TreePath[] tsp;
+    public TreePopupMenu() {
+        super();
+        add(new AbstractAction("path") {
+            @Override public void actionPerformed(ActionEvent e) {
+                //for(TreePath path:tsp) System.out.println(path);
+                JOptionPane.showMessageDialog(null, tsp, "path", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        add(new JMenuItem("dummy"));
+    }
+    @Override public void show(Component c, int x, int y) {
+        JTree tree = (JTree)c;
+        tsp = tree.getSelectionPaths();
+        if(tsp.length > 0) {
+            super.show(c, x, y);
+        }
     }
 }

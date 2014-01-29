@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JLabel(new ImageIcon(getClass().getResource("test.png"))));
         setPreferredSize(new Dimension(320, 200));

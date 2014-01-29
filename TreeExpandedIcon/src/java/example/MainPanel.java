@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         final Icon emptyIcon = new EmptyIcon();

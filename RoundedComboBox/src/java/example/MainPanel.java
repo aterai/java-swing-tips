@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
     private final static Color BACKGROUND = Color.BLACK; //RED;
     private final static Color FOREGROUND = Color.WHITE; //YELLOW;
     private final static Color SELECTIONFOREGROUND = Color.CYAN;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JComboBox<String> combo0 = new JComboBox<>(makeModel());

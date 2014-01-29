@@ -10,24 +10,25 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final String STR0 = "Default Default Default Default";
+    private static final String STR1 = "GlyphVector GlyphVector GlyphVector GlyphVector";
+    private static final String STR2 = "JTextArea JTextArea JTextArea JTextArea";
+    private static final String STR3 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+    private final String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
+    private final Object[][] data = {
+        {STR0, STR1, STR2}, {STR0, STR1, STR2},
+        {STR3, STR3, STR3}, {STR3, STR3, STR3}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        String str0 = "Default Default Default Default";
-        String str1 = "GlyphVector GlyphVector GlyphVector GlyphVector";
-        String str2 = "JTextArea JTextArea JTextArea JTextArea";
-        String str3 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-
-        String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
-        Object[][] data = {
-            {str0, str1, str2}, {str0, str1, str2},
-            {str3, str3, str3}, {str3, str3, str3}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model);
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         table.setRowHeight(50);

@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new PaintPanel());
         //add(new PaintPanel3());

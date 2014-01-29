@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea("ComponentPopupMenu Test\naaaaaaaaaaa\nbbbbbbbbbbbbbb\ncccccccccccccc");
         textArea.setComponentPopupMenu(new TextComponentPopupMenu());

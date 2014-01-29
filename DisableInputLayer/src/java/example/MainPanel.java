@@ -9,15 +9,18 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public class MainPanel extends JPanel {
-    private static JComponent makeUI() {
-        final JPanel p = new JPanel();
-        final DisableInputLayerUI layerUI = new DisableInputLayerUI();
-        final JLayer<JPanel> jlayer = new JLayer<JPanel>(p, layerUI);
-        final Timer stopper = new Timer(5000, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                layerUI.stop();
-            }
-        });
+    private final JPanel p = new JPanel();
+    private final DisableInputLayerUI layerUI = new DisableInputLayerUI();
+    private final JLayer<JPanel> jlayer = new JLayer<JPanel>(p, layerUI);
+    private final Timer stopper = new Timer(5000, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            layerUI.stop();
+        }
+    });
+
+    public MainPanel() {
+        super(new BorderLayout());
+
         p.add(new JCheckBox());
         p.add(new JTextField(10));
         p.add(new JButton(new AbstractAction("Stop 5sec") {
@@ -29,11 +32,8 @@ public class MainPanel extends JPanel {
             }
         }));
         stopper.setRepeats(false);
-        return jlayer;
-    }
-    public MainPanel() {
-        super(new BorderLayout());
-        add(makeUI(), BorderLayout.NORTH);
+
+        add(jlayer, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("dummy")));
         setPreferredSize(new Dimension(320, 240));
     }

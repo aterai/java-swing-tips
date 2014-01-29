@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1,2,5,5));
 
         Box box1 = makeTestBox();

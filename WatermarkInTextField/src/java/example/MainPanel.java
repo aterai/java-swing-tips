@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JTextField field1 = new JTextField("Please enter your E-mail address");
         field1.addFocusListener(new GhostFocusListener(field1));

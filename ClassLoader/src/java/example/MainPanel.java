@@ -6,8 +6,8 @@ import java.awt.*;
 import java.net.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
         URL url1 = getClass().getClassLoader().getResource("example/test.png");

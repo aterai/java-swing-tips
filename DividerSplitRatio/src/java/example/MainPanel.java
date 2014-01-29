@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         final SplitPaneWrapper sp = new SplitPaneWrapper();
         final JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio");

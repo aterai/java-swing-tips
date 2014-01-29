@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         List<String> list = Arrays.asList("aaa", "bb", "c");
 

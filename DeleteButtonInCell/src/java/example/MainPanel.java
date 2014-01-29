@@ -11,17 +11,18 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private static int BUTTON_COLUMN = 3;
+    private final TestModel model = new TestModel();
+//     private final JTable table = new JTable(model) {
+//         @Override public int rowAtPoint(Point pt) {
+//             // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
+//             // http://bugs.sun.com/view_bug.do?bug_id=6291631
+//             return (pt.y<0)?-1:super.rowAtPoint(pt);
+//         }
+//     };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        final TestModel model = new TestModel();
-//         final JTable table = new JTable(model) {
-//             @Override public int rowAtPoint(Point pt) {
-//                 // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
-//                 // http://bugs.sun.com/view_bug.do?bug_id=6291631
-//                 return (pt.y<0)?-1:super.rowAtPoint(pt);
-//             }
-//         };
-        final JTable table = new JTable(model);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
         sorter.setSortable(BUTTON_COLUMN, false);

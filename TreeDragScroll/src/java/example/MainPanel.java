@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2, 1));
 
         JTree tree1 = new JTree();

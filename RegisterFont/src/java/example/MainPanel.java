@@ -8,7 +8,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static Font makeFont(URL url) {
         Font font = null;
         try(InputStream is = url.openStream()) {
@@ -18,7 +18,7 @@ public class MainPanel extends JPanel {
         }
         return font;
     }
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         Font font = makeFont(getClass().getResource("Burnstown Dam.ttf"));
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);

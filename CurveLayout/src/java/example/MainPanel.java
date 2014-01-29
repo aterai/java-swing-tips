@@ -5,9 +5,9 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final static double A2 = 4.0;
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));

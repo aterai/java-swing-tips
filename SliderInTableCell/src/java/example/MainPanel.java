@@ -9,25 +9,27 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"Integer", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {50, 50, false},
+        {13, 13, true},
+        {0,  0,  false},
+        {20, 20, true},
+        {99, 99, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+        @Override public boolean isCellEditable(int row, int column) {
+            return column!=0;
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"Integer", "Integer", "Boolean"};
-        Object[][] data = {
-            {50, 50, false},
-            {13, 13, true},
-            {0,  0,  false},
-            {20, 20, true},
-            {99, 99, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-            @Override public boolean isCellEditable(int row, int column) {
-                return column!=0;
-            }
-        };
-        JTable table = new JTable(model);
+
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(26);
@@ -36,7 +38,7 @@ public class MainPanel extends JPanel {
         table.getColumnModel().getColumn(1).setCellRenderer(new SliderRednerer());
         table.getColumnModel().getColumn(1).setCellEditor(new SliderEditor(table));
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

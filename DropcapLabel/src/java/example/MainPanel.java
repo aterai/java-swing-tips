@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
       " As you learned in the \"Hello World!\" lesson, the NetBeans IDE is a free, open-source, cross-platform integrated" +
       " development environment with built-in support for the Java programming language.";
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JLabel label = new DropcapLabel(TEXT);
         label.setFont(new Font(Font.SERIF, Font.PLAIN, 17));

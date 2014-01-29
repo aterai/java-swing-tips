@@ -6,8 +6,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new GridLayout(1, 2));
         UIManager.put("ScrollBar.minimumThumbSize", new Dimension(32, 32));
 

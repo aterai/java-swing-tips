@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(makeList(), ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         setPreferredSize(new Dimension(320, 240));

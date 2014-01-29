@@ -8,8 +8,8 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-class MainPanel extends JPanel {
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
         URL url1 = getClass().getResource("favicon.png");
         URL url2 = getClass().getResource("animated.gif");

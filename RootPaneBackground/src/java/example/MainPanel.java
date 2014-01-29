@@ -92,6 +92,7 @@ public class MainPanel extends JPanel {
 }
 
 class ImageUtil {
+    private ImageUtil() { /* Singleton */ }
     public static JMenuBar createMenubar() {
         UIManager.put("Menu.background", new Color(200,0,0,0));
         UIManager.put("Menu.selectionBackground", new Color(100,100,255,100));

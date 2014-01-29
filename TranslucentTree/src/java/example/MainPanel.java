@@ -9,7 +9,7 @@ import javax.swing.tree.*;
 //import javax.swing.plaf.nimbus.*; //JDK 1.7.0
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(1,2,2,2));
         JTree tree1 = new TranslucentTree();
         JTree tree2 = new TransparentTree();

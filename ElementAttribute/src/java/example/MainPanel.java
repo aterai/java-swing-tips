@@ -12,7 +12,7 @@ import javax.swing.text.html.*;
 
 public class MainPanel extends JPanel {
     private static URL image = MainPanel.class.getResource("favicon.png");
-    private final String htmlText =
+    private final String HTML_TEXT =
       "<html><body>" +
       "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />" +
       "<div title='tooltip: div[@title]'>div tag: div div div div</div>" +
@@ -72,7 +72,7 @@ public class MainPanel extends JPanel {
             }
         };
         editor1.setEditorKit(new HTMLEditorKit());
-        editor1.setText(htmlText);
+        editor1.setText(HTML_TEXT);
         editor1.setEditable(false);
         ToolTipManager.sharedInstance().registerComponent(editor1);
         editor1.addHyperlinkListener(new HyperlinkListener() {
@@ -99,7 +99,7 @@ public class MainPanel extends JPanel {
 
         JEditorPane editor2 = new JEditorPane();
         editor2.setEditorKit(new TooltipEditorKit());
-        editor2.setText(htmlText);
+        editor2.setText(HTML_TEXT);
         editor2.setEditable(false);
         editor2.addHyperlinkListener(new HyperlinkListener() {
             private String tooltip;
