@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.*;
 import javax.swing.*;
 
 public final class BarFactory {
@@ -18,10 +19,10 @@ public final class BarFactory {
 
     private final ResourceBundle resources;
 
-    private final HashMap<String, JMenuItem> menuItems   = new HashMap<>();
-    private final HashMap<String, JButton>   toolButtons = new HashMap<>();
-    private final HashMap<Object, Action>    commands    = new HashMap<>();
-    private final HashMap<String, JMenu>     menus       = new HashMap<>();
+    private final ConcurrentMap<String, JMenuItem> menuItems   = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, JButton>   toolButtons = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Object, Action>    commands    = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, JMenu>     menus       = new ConcurrentHashMap<>();
     //private Action[] actions;
 
     public BarFactory(String restr) {

@@ -39,7 +39,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
-
+import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -123,7 +123,7 @@ public class TableSorter extends AbstractTableModel {
     private transient final List<Integer> modelToView = new ArrayList<>();
 
     private JTableHeader tableHeader;
-    private transient final HashMap<Class, Comparator> columnComparators = new HashMap<>();
+    private transient final ConcurrentMap<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
     private transient final List<Directive> sortingColumns = new ArrayList<>();
     private transient MouseListener mouseListener;
     private transient TableModelListener tableModelListener;
