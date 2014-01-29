@@ -48,7 +48,7 @@ public class MainPanel extends JPanel {
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 //         //TransferHandler
 //         final DataFlavor uriflavor  = new DataFlavor(String.class, "text/uri-list");
@@ -123,6 +123,11 @@ class LinkViewButtonUI extends BasicButtonUI {
     private static final LinkViewButtonUI linkViewButtonUI = new LinkViewButtonUI();
     //private static final DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
     private static final DataFlavor uriflavor = DataFlavor.stringFlavor;
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
+
     public static ButtonUI createUI(JButton b, final String href) {
         b.setForeground(Color.BLUE);
         b.setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
@@ -159,10 +164,6 @@ class LinkViewButtonUI extends BasicButtonUI {
     private LinkViewButtonUI() {
         super();
     }
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();

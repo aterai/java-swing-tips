@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public class MainPanel extends JPanel {
+    private final TexturePaint texture = makeCheckerTexture();
+
     public MainPanel() {
         super(new BorderLayout());
         UIManager.put("Slider.horizontalThumbIcon", new Icon() {
@@ -65,7 +67,6 @@ public class MainPanel extends JPanel {
         });
         return slider;
     }
-    private final TexturePaint texture = makeCheckerTexture();
     private static TexturePaint makeCheckerTexture() {
         int cs = 6;
         int sz = cs*cs;

@@ -12,38 +12,11 @@ import javax.swing.event.*;
 
 public class MainPanel extends JPanel implements HierarchyListener {
     private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
-    public JProgressBar makeProgressBar(final int halign) {
-        return new JProgressBar(model) {
-            private final JLabel label = new JLabel(getString(), halign);
-            private ChangeListener changeListener = null;
-            @Override public void updateUI() {
-                removeAll();
-                if(changeListener!=null) {
-                    removeChangeListener(changeListener);
-                }
-                super.updateUI();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        setLayout(new BorderLayout());
-                        changeListener = new ChangeListener() {
-                            @Override public void stateChanged(ChangeEvent e) {
-                                //BoundedRangeModel m = (BoundedRangeModel)e.getSource(); //label.setText(m.getValue()+"%");
-                                label.setText(getString());
-                            }
-                        };
-                        addChangeListener(changeListener);
-                        add(label);
-                        label.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
-                    }
-                });
-            }
-        };
-    }
-
-    private final JProgressBar progressBar1 = makeProgressBar(SwingConstants.RIGHT);
-    private final JProgressBar progressBar2 = makeProgressBar(SwingConstants.LEFT);
+    private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
+    private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
     private final List<JProgressBar> list = Arrays.<JProgressBar>asList(progressBar1, progressBar2);
     private SwingWorker<String, Void> worker;
+
     public MainPanel() {
         super(new BorderLayout());
 
@@ -116,6 +89,37 @@ public class MainPanel extends JPanel implements HierarchyListener {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class StringAlignmentProgressBar extends JProgressBar {
+    private final JLabel label;
+    private ChangeListener changeListener = null;
+
+    public StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
+        super(model);
+        label = new JLabel(getString(), halign);
+    }
+    @Override public void updateUI() {
+        removeAll();
+        if(changeListener!=null) {
+            removeChangeListener(changeListener);
+        }
+        super.updateUI();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                setLayout(new BorderLayout());
+                changeListener = new ChangeListener() {
+                    @Override public void stateChanged(ChangeEvent e) {
+                        //BoundedRangeModel m = (BoundedRangeModel)e.getSource(); //label.setText(m.getValue()+"%");
+                        label.setText(getString());
+                    }
+                };
+                addChangeListener(changeListener);
+                add(label);
+                label.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
+            }
+        });
     }
 }
 

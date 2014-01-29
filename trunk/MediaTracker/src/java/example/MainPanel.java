@@ -14,6 +14,8 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private final FileModel model = new FileModel();
     private final JTable table = new JTable(model);
+    private MediaTracker tracker;
+    private static final int id = 0;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -72,8 +74,6 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private MediaTracker tracker;
-    private static final int id = 0;
     private void addImageFile(File file) {
         String path = file.getAbsolutePath();
         Image img = Toolkit.getDefaultToolkit().createImage(path);

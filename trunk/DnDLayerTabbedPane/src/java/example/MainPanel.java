@@ -609,7 +609,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 // http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
-    private final static MouseListener buttonMouseListener = new MouseAdapter() {
+    private static final MouseListener buttonMouseListener = new MouseAdapter() {
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if(component instanceof AbstractButton) {

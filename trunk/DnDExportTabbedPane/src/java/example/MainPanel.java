@@ -683,7 +683,7 @@ class GhostGlassPane extends JPanel {
 //             g2.dispose();
 //         }
 //     }
-//     private final static MouseListener buttonMouseListener = new MouseAdapter() {
+//     private static final MouseListener buttonMouseListener = new MouseAdapter() {
 //         @Override public void mouseEntered(MouseEvent e) {
 //             Component component = e.getComponent();
 //             if(component instanceof AbstractButton) {

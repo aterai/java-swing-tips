@@ -107,7 +107,7 @@ public class MainPanel extends JPanel {
 }
 
 class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
-    private final static int lengthOfTask = 120;
+    private static final int lengthOfTask = 120;
     private final int sleepDummy = new Random().nextInt(100) + 1;
     private final JTree tree;
     private final DefaultTreeModel model;

@@ -10,6 +10,11 @@ import java.io.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static final String COPYRIGHT = "Copyright(C) 2006";
+    private static final String APP_NAME  = "@title@";
+    private static final String VERSION   = "0.0";
+    private static final int    RELEASE   = 1;
+
     private static final int MAXHISTORY = 3;
     private final BarFactory barFactory;
     private final JFrame frame;
@@ -188,10 +193,6 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private static final String COPYRIGHT = "Copyright(C) 2006";
-    private static final String APP_NAME  = "@title@";
-    private static final String VERSION   = "0.0";
-    private static final int    RELEASE   = 1;
     protected class VersionAction extends AbstractAction {
         public VersionAction() {
             super("version");

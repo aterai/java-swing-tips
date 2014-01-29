@@ -11,11 +11,11 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public final class BarFactory {
-    final static private String imageSuffix  = "Image";
-    final static private String labelSuffix  = "Label";
-    final static private String actionSuffix = "Action";
-    final static private String tipSuffix    = "Tooltip";
-    final static private String mneSuffix    = "Mnemonic";
+    private static final String imageSuffix  = "Image";
+    private static final String labelSuffix  = "Label";
+    private static final String actionSuffix = "Action";
+    private static final String tipSuffix    = "Tooltip";
+    private static final String mneSuffix    = "Mnemonic";
 
     private final ResourceBundle resources;
 

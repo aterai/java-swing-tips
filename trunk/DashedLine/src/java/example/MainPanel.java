@@ -10,6 +10,8 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private final JTextField field = new JTextField("1.0f, 1.0f, 5.0f, 1.0f");
     private final JLabel label;
+    private BasicStroke dashedStroke;
+
     private float[] getDashArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         float[] list = new float[st.countTokens()];
@@ -28,7 +30,6 @@ public class MainPanel extends JPanel {
         }
         return list;
     }
-    private BasicStroke dashedStroke;
     public MainPanel() {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("Change") {

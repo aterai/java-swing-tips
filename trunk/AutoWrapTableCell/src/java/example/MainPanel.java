@@ -105,6 +105,8 @@ public class MainPanel extends JPanel {
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
+    private final List<List<Integer>> rowColHeight = new ArrayList<>();
+
     //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
     public TextAreaCellRenderer() {
         super();
@@ -126,7 +128,6 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
      * Calculate the new preferred height for a given row, and sets the height on the table.
      * http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
      */
-    private final List<List<Integer>> rowColHeight = new ArrayList<>();
     private void adjustRowHeight(JTable table, int row, int column) {
         //The trick to get this to work properly is to set the width of the column to the
         //textarea. The reason for this is that getPreferredSize(), without a width tries

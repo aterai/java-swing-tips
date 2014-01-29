@@ -17,6 +17,7 @@ public class MainPanel extends JPanel {
     private final URL u2 = MainPanel.class.getResource("i03-10.gif");
     private final ImageIcon i1 = new ImageIcon(u1);
     private final ImageIcon i2 = new ImageIcon(u2);
+    private File file = null;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -103,8 +104,6 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 200));
     }
-
-    private File file = null;
     private File getFile() {
         return file;
     }

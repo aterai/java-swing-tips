@@ -61,6 +61,8 @@ public class MainPanel extends JPanel {
 }
 
 class RowHeaderRenderer extends JLabel implements TableCellRenderer {
+    private int rollOverRowIndex = -1;
+
     public RowHeaderRenderer(JTable table) {
         super();
         RollOverListener rol = new RollOverListener();
@@ -79,7 +81,6 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
             return l;
         }
     }
-    private int rollOverRowIndex = -1;
     class RollOverListener extends MouseAdapter {
 //         @Override public void mouseMoved(MouseEvent e) {
 //             JTable table = (JTable)e.getSource();

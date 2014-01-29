@@ -14,7 +14,7 @@ class MainPanel extends JPanel {
     private static final int BACKLAYER = 1;
     //private static final int FORELAYER = 2;
     private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    private final static int[] colors = {
+    private static final int[] colors = {
         0xdddddd, 0xaaaaff, 0xffaaaa, 0xaaffaa, 0xffffaa, 0xffaaff, 0xaaffff };
     private final JLayeredPane layerPane;
 

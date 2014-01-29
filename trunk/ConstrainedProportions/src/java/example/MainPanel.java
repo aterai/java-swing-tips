@@ -7,9 +7,12 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static final int MW = 300;
+    private static final int MH = 200;
     private final JFrame frame;
     private final JLabel label = new JLabel();
     private final JCheckBox checkbox = new JCheckBox();
+
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         this.frame = frame;
@@ -43,8 +46,6 @@ public class MainPanel extends JPanel {
         add(label);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static final int MW = 300;
-    private static final int MH = 200;
     private void initFrameSize() {
         if(!checkbox.isSelected()) { return; }
         int fw = frame.getSize().width;

@@ -55,6 +55,14 @@ class CardLayoutTabbedPane extends JPanel {
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final ButtonGroup bg = new ButtonGroup();
 
+    private int count = 0;
+    private final JButton button = new JButton(new AbstractAction("+") {
+        @Override public void actionPerformed(ActionEvent e) {
+            addTab("new tab:"+count, new JLabel("xxx:"+count));
+            count++;
+        }
+    });
+
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final List<ImageIcon> icons = Arrays.asList(
         new ImageIcon(getClass().getResource("wi0009-16.png")),
@@ -67,7 +75,8 @@ class CardLayoutTabbedPane extends JPanel {
         new ImageIcon(getClass().getResource("wi0122-16.png")),
         new ImageIcon(getClass().getResource("wi0124-16.png")),
         new ImageIcon(getClass().getResource("wi0126-16.png"))
-        );
+    );
+
     public CardLayoutTabbedPane() {
         super(new BorderLayout());
         int left  = 0;
@@ -144,13 +153,6 @@ class CardLayoutTabbedPane extends JPanel {
         tab.setSelected(true);
         return tab;
     }
-    private int count = 0;
-    private final JButton button = new JButton(new AbstractAction("+") {
-        @Override public void actionPerformed(ActionEvent e) {
-            addTab("new tab:"+count, new JLabel("xxx:"+count));
-            count++;
-        }
-    });
     public void addTab(String title, Component comp) {
         tabPanel.remove(button);
         tabPanel.add(createTabComponent(title, comp));
@@ -160,6 +162,7 @@ class CardLayoutTabbedPane extends JPanel {
         cardLayout.show(contentsPanel, title);
     }
 }
+
 class TabButton extends JRadioButton {
     private static final String uiClassID = "TabViewButtonUI";
     private Color textColor = Color.WHITE;

@@ -113,10 +113,11 @@ public class MainPanel extends JPanel {
 }
 
 abstract class ExpansionPanel extends JPanel {
-    abstract public JPanel makePanel();
     private final String title;
     private final JLabel label;
     private final JPanel panel;
+
+    abstract public JPanel makePanel();
 
     public ExpansionPanel(String title_) {
         super(new BorderLayout());

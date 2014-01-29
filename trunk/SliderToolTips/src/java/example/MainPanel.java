@@ -134,6 +134,8 @@ class SliderPopupListener extends MouseAdapter {
     private final JWindow toolTip = new JWindow();
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final Dimension size = new Dimension(30, 20);
+    private int prevValue = -1;
+
     public SliderPopupListener() {
         super();
         label.setOpaque(false);
@@ -142,7 +144,6 @@ class SliderPopupListener extends MouseAdapter {
         toolTip.add(label);
         toolTip.setSize(size);
     }
-    private int prevValue = -1;
     protected void updateToolTip(MouseEvent me) {
         JSlider slider = (JSlider)me.getSource();
         int intValue = (int)slider.getValue();

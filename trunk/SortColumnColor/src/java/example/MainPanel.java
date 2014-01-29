@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
 }
 
 class SortingColumnColorTable extends JTable {
-    private final static Color EVEN_COLOR = new Color(250, 230, 230);
+    private static final Color EVEN_COLOR = new Color(250, 230, 230);
     public SortingColumnColorTable(TableModel model) {
         super(model);
     }

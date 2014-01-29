@@ -92,10 +92,11 @@ public class MainPanel extends JPanel {
 }
 
 class DisabledHtmlLabel extends JLabel {
+    private BufferedImage shadow;
+
     public DisabledHtmlLabel(String text) {
         super(text);
     }
-    private BufferedImage shadow;
     @Override public void setEnabled(boolean b) {
         setForeground(b ? UIManager.getColor("Label.foreground")
                         : UIManager.getColor("Label.disabledForeground"));

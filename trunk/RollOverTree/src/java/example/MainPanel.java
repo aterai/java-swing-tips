@@ -59,8 +59,10 @@ public class MainPanel extends JPanel {
 }
 
 class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseMotionListener {
-    private static final Color rollOverRowColor = new Color(220,240,255);
+    private static final Color ROLLOVER_ROW_COLOR = new Color(220,240,255);
     private final JTree tree;
+    private int rollOverRowIndex = -1;
+
     public RollOverTreeCellRenderer(JTree tree) {
         super();
         this.tree = tree;
@@ -70,14 +72,15 @@ class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseM
         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         if(row==rollOverRowIndex) {
             c.setOpaque(true);
-            c.setBackground(rollOverRowColor);
-            if(isSelected) { c.setForeground(getTextNonSelectionColor()); }
+            c.setBackground(ROLLOVER_ROW_COLOR);
+            if(isSelected) {
+                c.setForeground(getTextNonSelectionColor());
+            }
         }else{
             c.setOpaque(false);
         }
         return c;
     }
-    private int rollOverRowIndex = -1;
     @Override public void mouseMoved(MouseEvent e) {
         int row = tree.getRowForLocation(e.getX(), e.getY());
         if(row!=rollOverRowIndex) {

@@ -9,7 +9,13 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
-    //private final static TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
+    //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
+    private static int CLOSEICON_WIDTH = 12;
+
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }
@@ -24,11 +30,6 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         tabViewButton.setRolloverSelectedTextColor(Color.WHITE);
         tabViewButton.setSelectedTextColor(Color.WHITE);
     }
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
-    private static int CLOSEICON_WIDTH = 12;
     @Override public synchronized void paint(Graphics g, JComponent c) {
         Graphics2D g2 = (Graphics2D)g;
         AbstractButton b = (AbstractButton) c;

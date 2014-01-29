@@ -107,7 +107,7 @@ class MyCheckBoxIcon2 implements Icon {
 
 class MyCheckBoxIcon implements Icon {
     //com/sun/java/swing/plaf/windows/WindowsIconFactory.java
-    private final static int CSIZE = 13;
+    private static final int CSIZE = 13;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         JCheckBox cb = (JCheckBox) c;
         ButtonModel model = cb.getModel();

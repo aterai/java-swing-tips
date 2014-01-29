@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
@@ -13,17 +14,7 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private TexturePaint makeImageTexture() {
-        BufferedImage bi = null;
-        try{
-            bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
-        }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
-    }
-    private final TexturePaint texture = makeImageTexture();
+    private final TexturePaint texture = makeImageTexture(getClass().getResource("unkaku_w.png"));
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -120,6 +111,17 @@ public class MainPanel extends JPanel {
             }
         }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
+    }
+
+    private static TexturePaint makeImageTexture(URL url) {
+        BufferedImage bi = null;
+        try{
+            bi = ImageIO.read(url);
+        }catch(IOException ioe) {
+            ioe.printStackTrace();
+            throw new IllegalArgumentException(ioe);
+        }
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
     }
 
     public static void main(String[] args) {

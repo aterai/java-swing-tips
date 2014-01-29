@@ -54,6 +54,8 @@ public class MainPanel extends JPanel {
 class RippleBorder extends EmptyBorder {
     private final Timer animator;
     private final JComponent comp;
+    private float count = 1.0f;
+
     public RippleBorder(JComponent c, int width) {
         super(width, width, width, width);
         this.comp = c;
@@ -73,7 +75,6 @@ class RippleBorder extends EmptyBorder {
             }
         });
     }
-    private float count = 1.0f;
     @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
         if(!animator.isRunning()) {
             super.paintBorder(comp, g, x, y, w, h);

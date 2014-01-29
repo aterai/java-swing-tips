@@ -264,6 +264,7 @@ class ListItemTransferHandler extends TransferHandler {
     private int[] indices = null;
     private int addIndex  = -1; //Location where items were added
     private int addCount  = 0;  //Number of items added.
+
     public ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");

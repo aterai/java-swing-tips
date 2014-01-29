@@ -75,11 +75,12 @@ public class MainPanel extends JPanel {
     }
     private class SortAction extends AbstractAction {
         private final SortOrder dir;
+        private int index = -1;
+
         public SortAction(SortOrder dir) {
             super(dir.toString());
             this.dir = dir;
         }
-        private int index = -1;
         public void setIndex(int index) {
             this.index = index;
         }

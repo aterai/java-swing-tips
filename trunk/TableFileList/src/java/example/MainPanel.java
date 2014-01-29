@@ -123,18 +123,19 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TestRenderer extends JPanel implements TableCellRenderer {
-    private static class SelectedImageFilter extends RGBImageFilter {
-        //public SelectedImageFilter() {
-        //    canFilterIndexColorModel = false;
-        //}
-        @Override public int filterRGB(int x, int y, int argb) {
-            int r = (argb >> 16) & 0xff;
-            int g = (argb >>  8) & 0xff;
-            return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);
-            //return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
-        }
+class SelectedImageFilter extends RGBImageFilter {
+    //public SelectedImageFilter() {
+    //    canFilterIndexColorModel = false;
+    //}
+    @Override public int filterRGB(int x, int y, int argb) {
+        int r = (argb >> 16) & 0xff;
+        int g = (argb >>  8) & 0xff;
+        return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);
+        //return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
     }
+}
+
+class TestRenderer extends JPanel implements TableCellRenderer {
     private final ImageIcon nicon;
     private final ImageIcon sicon;
     private final MyLabel textLabel;
@@ -224,6 +225,8 @@ class TestRenderer extends JPanel implements TableCellRenderer {
 class MyLabel extends JLabel {
     private final Border dotBorder;
     private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
+    private boolean focusflag = false;
+
     public MyLabel(Color color) {
         super("dummy");
         setOpaque(true);
@@ -231,7 +234,6 @@ class MyLabel extends JLabel {
         setBorder(empBorder);
         //setFocusable(true);
     }
-    private boolean focusflag = false;
     private boolean isFocusedBorder() {
         return focusflag;
     }
@@ -283,7 +285,7 @@ class MyLabel extends JLabel {
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
     //<---- Overridden for performance reasons.
 }
-//
+
 class MyTable extends JTable {
     private final Color rcolor;
     private final Color pcolor;

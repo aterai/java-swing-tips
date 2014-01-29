@@ -14,6 +14,8 @@ import javax.swing.border.*;
 class MainPanel extends JPanel {
     private static final Color BG_COLOR = new Color(1f,.8f,.8f,.2f);
     private final JTextField field0,field1,field2;
+    private TexturePaint texture = null;
+
     public MainPanel() {
         super();
         field0 = new JTextField("aaaaaaaaa");
@@ -59,7 +61,6 @@ class MainPanel extends JPanel {
         c.gridy   = 1; add(field1, c);
         c.gridy   = 2; add(field2, c);
     }
-    private TexturePaint texture = null;
     private TexturePaint makeTexturePaint() {
         //Viva! edo>http://www.viva-edo.com/komon/edokomon.html
         URL url = getClass().getResource("unkaku_w.gif");

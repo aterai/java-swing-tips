@@ -164,8 +164,13 @@ public class MainPanel extends JPanel {
 }
 
 class LinkViewRadioButtonUI extends BasicRadioButtonUI {
-//     private final static LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
+//     private static final LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
 //     private boolean defaults_initialized = false;
+    private static Dimension size = new Dimension();
+    private static Rectangle viewRect = new Rectangle();
+    private static Rectangle iconRect = new Rectangle();
+    private static Rectangle textRect = new Rectangle();
+
 //     public static ComponentUI createUI(JComponent b) {
 //         return radioButtonUI;
 //     }
@@ -183,10 +188,6 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     @Override public Icon getDefaultIcon() {
         return null;
     }
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();

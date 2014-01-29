@@ -81,6 +81,10 @@ public class MainPanel extends JPanel {
 //Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class TableRowTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
+    private int[] indices = null;
+    private int addIndex  = -1; //Location where items were added
+    private int addCount  = 0;  //Number of items added.
+
     public TableRowTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
@@ -159,7 +163,4 @@ class TableRowTransferHandler extends TransferHandler {
         addCount = 0;
         addIndex = -1;
     }
-    private int[] indices = null;
-    private int addIndex  = -1; //Location where items were added
-    private int addCount  = 0;  //Number of items added.
 }

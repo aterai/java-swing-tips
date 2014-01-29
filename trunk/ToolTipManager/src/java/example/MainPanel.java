@@ -10,6 +10,10 @@ public class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel("label");
     private final JTextField field = new JTextField(20);
     private final JButton button = new JButton("button");
+    private final JRadioButton onRadio  = new JRadioButton("on");
+    private final JRadioButton offRadio = new JRadioButton("off");
+    private final ButtonGroup group = new ButtonGroup();
+
     public MainPanel() {
         super(new BorderLayout());
         label1.setToolTipText("label - ToolTip");
@@ -30,12 +34,9 @@ public class MainPanel extends JPanel {
         panel.add(new JScrollPane(new JTextArea("dummy")));
         add(makeToolPanel(), BorderLayout.NORTH);
         add(panel);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
-    private final JRadioButton onRadio  = new JRadioButton("on");
-    private final JRadioButton offRadio = new JRadioButton("off");
-    private final ButtonGroup group = new ButtonGroup();
     private JComponent makeToolPanel() {
         JPanel panel = new JPanel();
         group.add(onRadio);
