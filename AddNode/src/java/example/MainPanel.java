@@ -45,14 +45,23 @@ class TreePopupMenu extends JPopupMenu {
     private TreePath path;
     private final Action addNodeAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
+            final JTree tree = (JTree)getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
+            DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
+            model.insertNodeInto(child, parent, parent.getChildCount());
+            tree.scrollPathToVisible(new TreePath(child.getPath())); //http://terai.xrea.jp/Swing/ScrollRectToVisible.html
+        }
+    };
+    private final Action addReloadNodeAction = new AbstractAction("add & reload") {
+        @Override public void actionPerformed(ActionEvent e) {
             JTree tree = (JTree)getInvoker();
             DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
-            //model.insertNodeInto(child, parent, 0);
             parent.add(child);
-            model.nodeStructureChanged(parent);
-            tree.expandPath(path);
+            model.reload(parent); //= model.nodeStructureChanged(parent);
+            tree.scrollPathToVisible(new TreePath(child.getPath()));
         }
     };
     private final Action editNodeAction = new AbstractAction("edit") {
@@ -99,6 +108,7 @@ class TreePopupMenu extends JPopupMenu {
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
         });
         add(addNodeAction);
+        add(addReloadNodeAction);
         add(editNodeAction);
         addSeparator();
         add(removeNodeAction);
