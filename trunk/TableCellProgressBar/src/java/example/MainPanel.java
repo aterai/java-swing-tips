@@ -217,7 +217,9 @@ class WorkerModel extends DefaultTableModel {
     public void addProgressValue(ProgressValue t, SwingWorker worker) {
         Object[] obj = {number, t.getName(), t.getProgress()};
         super.addRow(obj);
-        swmap.put(number, worker);
+        if(worker!=null) {
+            swmap.put(number, worker);
+        }
         number++;
     }
     public synchronized SwingWorker getSwingWorker(int identifier) {
