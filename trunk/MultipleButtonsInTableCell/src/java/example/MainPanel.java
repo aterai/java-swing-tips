@@ -104,9 +104,10 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
     }
 }
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
+    transient protected ChangeEvent changeEvent = null;
+
     public ButtonsEditor(final JTable table) {
         super();
-
         //---->
         //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
         MouseListener ml = new MouseAdapter() {
@@ -154,8 +155,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    transient protected ChangeEvent changeEvent = null;
-
+    //transient protected ChangeEvent changeEvent = null;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

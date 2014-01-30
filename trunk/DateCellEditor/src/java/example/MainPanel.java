@@ -59,7 +59,9 @@ public class MainPanel extends JPanel {
 }
 //class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
 class SpinnerCellEditor extends JSpinner implements TableCellEditor {
+    transient protected ChangeEvent changeEvent = null;
     private final JSpinner.DateEditor editor;
+
     public SpinnerCellEditor() {
         super(new SpinnerDateModel());
         setEditor(editor = new JSpinner.DateEditor(this, "yyyy/MM/dd"));
@@ -107,8 +109,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    transient protected ChangeEvent changeEvent = null;
-
+    //transient protected ChangeEvent changeEvent = null;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

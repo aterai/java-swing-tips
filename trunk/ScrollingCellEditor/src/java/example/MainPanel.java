@@ -58,7 +58,9 @@ public class MainPanel extends JPanel {
 }
 
 class TextAreaCellEditor extends JTextArea implements TableCellEditor {
+    transient protected ChangeEvent changeEvent = null;
     private final JScrollPane scroll;
+
     public TextAreaCellEditor() {
         super();
         scroll = new JScrollPane(this);
@@ -115,7 +117,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    transient protected ChangeEvent changeEvent = null;
+    //transient protected ChangeEvent changeEvent = null;
     @Override public boolean shouldSelectCell(EventObject e) {
         return true;
     }

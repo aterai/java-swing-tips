@@ -198,7 +198,7 @@ class FolderSelectionListener implements TreeSelectionListener {
                     return;
                 }
                 for(File file: chunks) {
-                    model.insertNodeInto(new DefaultMutableTreeNode(file), node, node.getChildCount());
+                    model.insertNodeInto(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)), node, node.getChildCount());
                     //node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)));
                 }
                 //model.reload(parent); //= model.nodeStructureChanged(parent);
