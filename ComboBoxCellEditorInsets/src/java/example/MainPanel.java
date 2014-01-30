@@ -115,6 +115,8 @@ class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
     }
 }
 class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
+    transient protected ChangeEvent changeEvent = null;
+
     public ComboBoxCellEditor() {
         super();
         comboBox.addActionListener(new ActionListener() {
@@ -155,8 +157,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    transient protected ChangeEvent changeEvent = null;
-
+    //transient protected ChangeEvent changeEvent = null;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

@@ -131,6 +131,8 @@ class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRendere
     }
 }
 class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
+    transient protected ChangeEvent changeEvent = null;
+
     public RadioButtonsEditor() {
         super();
         ActionListener al = new ActionListener() {
@@ -152,8 +154,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    transient protected ChangeEvent changeEvent = null;
-
+    //transient protected ChangeEvent changeEvent = null;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }
