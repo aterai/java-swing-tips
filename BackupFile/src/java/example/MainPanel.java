@@ -5,59 +5,56 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private static final String REGULAR = "regular";
-    private static final String ERROR   = "error";
-    private static final String BLUE    = "blue";
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 6, 1));
     private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(2, 0, 6, 1));
     private final JLabel label      = new JLabel("2", SwingConstants.RIGHT);
     private final JTextPane jtp     = new JTextPane();
-    private final JButton ok        = new JButton("backup-testファイルを生成");
+    private final JButton ok        = new JButton(new AbstractAction("backup-testファイルを生成") {
+        @Override public void actionPerformed(ActionEvent e) {
+            File file = new File(System.getProperty("java.io.tmpdir"), "backup-test");
+            int i1 = ((Integer)spinner1.getValue()).intValue();
+            int i2 = ((Integer)spinner2.getValue()).intValue();
+            new Task(file, i1, i2) {
+                @Override protected void process(List<Message> chunks) {
+                    for(Message m: chunks) {
+                        append(m);
+                    }
+                }
+                @Override public void done() {
+                    try{
+                        File nf = get();
+                        if(nf==null) {
+                            append(new Message("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
+                        }else if(!nf.createNewFile()) {
+                            append(new Message(nf.getName()+"の生成に失敗しました。", MessageType.REGULAR));
+                        }
+                    }catch(InterruptedException | ExecutionException | IOException ex) {
+                        append(new Message(ex.getMessage(), MessageType.ERROR));
+                        append(new Message("----------------------------------", MessageType.REGULAR));
+                    }
+                }
+            }.execute();
+        }
+    });
+
     public MainPanel() {
         super(new BorderLayout());
         jtp.setEditable(false);
         StyledDocument doc = jtp.getStyledDocument();
         Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        Style regular = doc.addStyle(REGULAR, def);
+        Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
         //StyleConstants.setForeground(error, Color.BLACK);
         //Style error = doc.addStyle(ERROR, regular);
-        StyleConstants.setForeground(doc.addStyle(ERROR, regular), Color.RED);
-        StyleConstants.setForeground(doc.addStyle(BLUE,  regular), Color.BLUE);
+        StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), regular), Color.RED);
+        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  regular), Color.BLUE);
 
-        ok.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                try{
-                    File file = new File(System.getProperty("java.io.tmpdir"), "backup-test");
-                    if(file.exists()) {
-                        int i1 = ((Integer)spinner1.getValue()).intValue();
-                        int i2 = ((Integer)spinner2.getValue()).intValue();
-                        File nf = makeBackupFile(file, i1, i2);
-                        if(nf==null) {
-                            append("バックアップファイルの生成に失敗しました。", ERROR);
-                        }else if(!nf.createNewFile()) {
-                            append(nf.getName()+"の生成に失敗しました。", REGULAR);
-                        }
-                        //append(nf.getName()+"を更新しました。", ERROR);
-                    }else{
-                        if(!file.createNewFile()) {
-                            append(file.getName()+"の生成に失敗しました。", ERROR);
-                            return;
-                        }
-                        //file.deleteOnExit();
-                        append(file.getName()+"を生成しました。", REGULAR);
-                    }
-                }catch(IOException ioe) {
-                    ioe.printStackTrace();
-                    append("ファイルの生成に失敗しました。", ERROR);
-                }
-                append("----------------------------------", REGULAR);
-            }
-        });
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
         box.add(Box.createHorizontalGlue());
@@ -108,17 +105,80 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static String makeBackupFileName(String name, int num) {
-        return String.format("%s.%d~", name, num);
+    private void append(Message m) {
+        StyledDocument doc = jtp.getStyledDocument();
+        try{
+            doc.insertString(doc.getLength(), m.message+"\n", doc.getStyle(m.type.toString()));
+        }catch(BadLocationException e) {
+            e.printStackTrace();
+        }
     }
-    private File makeBackupFile(File file, int intold, int intnew) {
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+enum MessageType {
+    REGULAR,
+    ERROR,
+    BLUE;
+}
+
+class Message {
+    public final String message;
+    public final MessageType type;
+    public Message(String message, MessageType type) {
+        this.message = message;
+        this.type = type;
+    }
+}
+
+class Task extends SwingWorker<File, Message> {
+    private final File file;
+    private final int intold;
+    private final int intnew;
+    public Task(File file, int intold, int intnew) {
+        this.file = file;
+        this.intold = intold;
+        this.intnew = intnew;
+    }
+    @Override public File doInBackground() throws IOException {
+        if(!file.exists()) {
+            if(!file.createNewFile()) {
+                publish(new Message(file.getName()+"の生成に失敗しました。", MessageType.ERROR));
+                return null;
+            }else{
+                //file.deleteOnExit();
+                publish(new Message(file.getName()+"を生成しました。", MessageType.REGULAR));
+                return file;
+            }
+        }
+
         File testFile = null;
         String newfilename = file.getAbsolutePath();
         if(intold==0 && intnew==0) {
             if(file.delete()) {
                 return new File(newfilename);
             }else{
-                append("古いバックアップファイル削除に失敗", ERROR);
+                publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
                 return null;
             }
         }
@@ -141,69 +201,41 @@ public class MainPanel extends JPanel {
         }
         if(testFileFlag) {
             if(file.renameTo(testFile)) {
-                append("古い同名ファイルをリネーム", REGULAR);
-                append("    "+file.getName()+" -> "+testFile.getName(), BLUE);
+                publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
+                publish(new Message("    "+file.getName()+" -> "+testFile.getName(), MessageType.BLUE));
             }else{
-                append("ファイルのリネームに失敗", ERROR);
+                publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
                 return null;
             }
         }else{
             File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+1));
-            append("古いバックアップファイルを削除", REGULAR);
-            append("    del:"+tmpFile3.getAbsolutePath(), BLUE);
+            publish(new Message("古いバックアップファイルを削除", MessageType.REGULAR));
+            publish(new Message("    del:"+tmpFile3.getAbsolutePath(), MessageType.BLUE));
             if(!tmpFile3.delete()) {
-                append("古いバックアップファイル削除に失敗", ERROR);
+                publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
                 return null;
             }
             for(int i=intold+2;i<=intold+intnew;i++) {
                 File tmpFile1 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
                 File tmpFile2 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i-1));
                 if(!tmpFile1.renameTo(tmpFile2)) {
-                    append("ファイルのリネームに失敗", ERROR);
+                    publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
                     return null;
                 }
-                append("古いバックアップファイルの番号を更新", REGULAR);
-                append("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), BLUE);
+                publish(new Message("古いバックアップファイルの番号を更新", MessageType.REGULAR));
+                publish(new Message("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), MessageType.BLUE));
             }
             File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+intnew));
-            append("古い同名ファイルをリネーム", REGULAR);
-            append("    "+file.getName()+" -> "+tmpFile.getName(), BLUE);
+            publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
+            publish(new Message("    "+file.getName()+" -> "+tmpFile.getName(), MessageType.BLUE));
             if(!file.renameTo(tmpFile)) {
-                append("ファイルのリネームに失敗", ERROR);
+                publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
                 return null;
             }
         }
         return new File(newfilename);
     }
-
-    private void append(String str, String style) {
-        StyledDocument doc = jtp.getStyledDocument();
-        try{
-            doc.insertString(doc.getLength(), str+"\n", doc.getStyle(style));
-        }catch(BadLocationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    private static String makeBackupFileName(String name, int num) {
+        return String.format("%s.%d~", name, num);
     }
 }
