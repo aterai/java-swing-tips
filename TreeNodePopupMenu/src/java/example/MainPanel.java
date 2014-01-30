@@ -8,11 +8,16 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private MainPanel() {
+    private final JTree tree = new JTree();
+    public MainPanel() {
         super(new BorderLayout());
-        JTree tree = new JTree();
         tree.setComponentPopupMenu(new TreePopupMenu());
         add(new JScrollPane(tree));
+        add(new JButton(new AbstractAction("Clear node selection") {
+            @Override public void actionPerformed(ActionEvent e) {
+                tree.clearSelection();
+            }
+        }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -54,7 +59,7 @@ class TreePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         JTree tree = (JTree)c;
         tsp = tree.getSelectionPaths();
-        if(tsp.length > 0) {
+        if(tsp != null && tsp.length > 0) {
             super.show(c, x, y);
         }
     }
