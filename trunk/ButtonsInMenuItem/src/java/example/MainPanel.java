@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         p.setOpaque(false);
 
-        return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(list.size()-1)));
+        return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size-1)));
     }
     private static AbstractButton makeButton(String title, Action action) {
         JButton b = new JButton(action);
