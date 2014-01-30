@@ -86,10 +86,10 @@ class TreePopupMenu extends JPopupMenu {
             DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
-            //model.insertNodeInto(child, parent, 0);
-            parent.add(child);
-            model.nodeStructureChanged(parent);
-            tree.expandPath(path);
+            model.insertNodeInto(child, parent, parent.getChildCount());
+            //parent.add(child);
+            //model.reload(parent); //= model.nodeStructureChanged(parent);
+            tree.scrollPathToVisible(new TreePath(child.getPath()));
         }
     };
     private final Action editNodeAction = new AbstractAction("edit") {
