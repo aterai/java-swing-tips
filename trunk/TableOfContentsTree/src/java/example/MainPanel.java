@@ -196,7 +196,9 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
 
                 p.removeAll();
                 p.add(l, BorderLayout.WEST);
-                if(isSynth) { p.setForeground(l.getForeground()); }
+                if(isSynth) {
+                    p.setForeground(l.getForeground());
+                }
 
                 pn = String.format("%s%3d", READER, toc.page);
                 pnx = tree.getWidth() - metrics.stringWidth(pn) - gap;
@@ -235,17 +237,14 @@ class TableOfContentsTree extends JTree {
             visRect.y -= i.top;
         }
         // we should consider a non-visible area above
-        Component component = SwingUtilities.getUnwrappedParent(this);
-        if(component instanceof JViewport) {
-            component = component.getParent();
-            if(component instanceof JScrollPane) {
-                JScrollPane pane = (JScrollPane) component;
-                JScrollBar bar = pane.getHorizontalScrollBar();
-                if(bar != null && bar.isVisible()) {
-                    int height = bar.getHeight();
-                    visRect.y -= height;
-                    visRect.height += height;
-                }
+        Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+        if(container != null) {
+            JScrollPane pane = (JScrollPane)container;
+            JScrollBar bar = pane.getHorizontalScrollBar();
+            if(bar != null && bar.isVisible()) {
+                int height = bar.getHeight();
+                visRect.y -= height;
+                visRect.height += height;
             }
         }
         return visRect;
