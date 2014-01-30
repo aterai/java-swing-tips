@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
             }
             SortAlgorithms sa = (SortAlgorithms)algorithmsChoices.getSelectedItem();
             Rectangle paintArea = new Rectangle(MINX, MINY, MAXX-MINX, MAXY-MINY);
-            worker = new SortingTask(sa, number, a, paintArea, factorx, factory) {
+            worker = new SortingTask(sa, number, array, paintArea, factorx, factory) {
                 @Override protected void process(List<Rectangle> chunks) {
                     if(!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
@@ -52,19 +52,13 @@ public class MainPanel extends JPanel {
                         return;
                     }
                     setComponentEnabled(true);
-                    String text = null;
-                    if(isCancelled()) {
-                        text = "Cancelled";
-                    }else{
-                        try{
-                            text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
-                        }
+                    try{
+                        String text = isCancelled() ? "Cancelled" : get();
+                        System.out.println(text);
+                    }catch(InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
                     }
                     repaint();
-                    System.out.println(text);
                 }
             };
             worker.execute();
@@ -83,7 +77,7 @@ public class MainPanel extends JPanel {
             //g.setColor(drawColor);
             for(int i = 0; i < number; i++) {
                 int px = (int) (MINX + factorx*i);
-                int py = MAXY - (int)(factory*a[i]);
+                int py = MAXY - (int)(factory*array.get(i));
                 g.setColor((i%5==0)?Color.RED:drawColor);
                 g.drawOval(px, py, 4, 4);
             }
@@ -95,9 +89,9 @@ public class MainPanel extends JPanel {
     private static final int MINX = 5,  MAXX = 315;
     private static final int MINY = 5,  MAXY = 175;
     private static final int MINN = 50, MAXN = 500;;
-    private static final float[] a = new float[MAXN];
+    private static final List<Double> array = new ArrayList<>(MAXN);
     private int number = 150;
-    private float factorx, factory;
+    private double factorx, factory;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -139,14 +133,15 @@ public class MainPanel extends JPanel {
         algorithmsChoices.setEnabled(flag);
     }
     private void genArray(int n) {
-        factorx = (MAXX-MINX) / (float)n;
-        factory = MAXY-MINY;
+        array.clear();
+        factorx = (MAXX - MINX) / (double)n;
+        factory = MAXY - MINY;
         GenerateInputs gi = (GenerateInputs)distributionsChoices.getSelectedItem();
         for(int i = 0; i < n; i++) {
             switch(gi) {
-              case Random:     a[i] = (float) Math.random(); break;
-              case Ascending:  a[i] = ((float) i)/n; break;
-              case Descending: a[i] = (float) (1.0 - ((float) i)/n); break;
+              case Random:     array.add((double)Math.random()); break;
+              case Ascending:  array.add(i/(double)n);           break;
+              case Descending: array.add(1.0 - i/(double)n);     break;
               default:         throw new AssertionError("Unknown GenerateInputs");
             }
         }
@@ -198,20 +193,20 @@ enum GenerateInputs {
 }
 
 class SortingTask extends SwingWorker<String, Rectangle> {
-    private final float[] a;
+    private final List<Double> array;
     private final int number;
-    private final float factorx;
-    private final float factory;
+    private final double factorx;
+    private final double factory;
     private final Rectangle rect;
     private final Rectangle repaintArea;
     private final SortAlgorithms sortAlgorithm;
 
-    public SortingTask(SortAlgorithms sortAlgorithm, int number, float[] a, Rectangle rect, float factorx, float factory) {
+    public SortingTask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
         super();
         this.sortAlgorithm = sortAlgorithm;
-        this.number = number;
-        this.a = a;
-        this.rect = rect;
+        this.number  = number;
+        this.array   = array;
+        this.rect    = rect;
         this.factorx = factorx;
         this.factory = factory;
         this.repaintArea = new Rectangle(rect);
@@ -240,15 +235,15 @@ class SortingTask extends SwingWorker<String, Rectangle> {
             throw new InterruptedException();
         }
         int px = (int) (rect.x + factorx*i);
-        int py = rect.y + rect.height - (int)(factory*a[i]);
+        int py = rect.y + rect.height - (int)(factory*array.get(i));
         publish(new Rectangle(px, py, 4, 4));
 
-        float t = a[i];
-        a[i] = a[j];
-        a[j] = t;
+        double t = array.get(i);
+        array.set(i, array.get(j));
+        array.set(j, t);
 
         px = (int) (rect.x + factorx*i);
-        py = rect.y + rect.height - (int)(factory*a[i]);
+        py = rect.y + rect.height - (int)(factory*array.get(i));
         publish(new Rectangle(px, py, 4, 4));
 
         publish(repaintArea);
@@ -258,7 +253,7 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     // Sorting Algs
     private void isort(int n) throws InterruptedException {
         for(int i = 1; i < n; i++) {
-            for(int j = i; j > 0 && a[j-1] > a[j]; j--) {
+            for(int j = i; j > 0 && array.get(j-1) > array.get(j); j--) {
                 swap(j-1, j);
             }
         }
@@ -267,7 +262,7 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     private void ssort(int n) throws InterruptedException {
         for(int i = 0; i < n-1; i++) {
             for(int j = i; j < n; j++) {
-                if(a[j] < a[i]) {
+                if(array.get(j) < array.get(i)) {
                     swap(i, j);
                 }
             }
@@ -281,10 +276,14 @@ class SortingTask extends SwingWorker<String, Rectangle> {
         for(h = 1; h < n; h = 3*h + 1) {}
         for(;;) {
             h /= 3;
-            if(h < 1) { break; }
+            if(h < 1) {
+                break;
+            }
             for(i = h; i < n; i++) {
                 for(j = i; j >= h; j -= h) {
-                    if(a[j-h] < a[j]) { break; }
+                    if(array.get(j-h) < array.get(j)) {
+                        break;
+                    }
                     swap(j-h, j);
                 }
             }
@@ -299,10 +298,10 @@ class SortingTask extends SwingWorker<String, Rectangle> {
             if(c > u) {
                 break;
             }
-            if(c+1 <= u && a[c+1] > a[c]) {
+            if(c+1 <= u && array.get(c+1) > array.get(c)) {
                 c++;
             }
-            if(a[i] >= a[c]) {
+            if(array.get(i) >= array.get(c)) {
                 break;
             }
             swap(i, c);
@@ -322,10 +321,14 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     }
 
     private void qsort(int l, int u) throws InterruptedException {
-        if(l >= u) { return; }
+        if(l >= u) {
+            return;
+        }
         int m = l;
         for(int i = l+1; i <= u; i++) {
-            if(a[i] < a[l]) { swap(++m, i); }
+            if(array.get(i) < array.get(l)) {
+                swap(++m, i);
+            }
         }
         swap(l, m);
         qsort(l, m-1);
@@ -333,13 +336,17 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     }
 
     private void qsort2(int l, int u) throws InterruptedException {
-        if(l >= u) { return; }
+        if(l >= u) {
+            return;
+        }
         int i = l;
         int j = u+1;
         for(;;) {
-            do i++; while(i <= u && a[i] < a[l]);
-            do j--; while(a[j] > a[l]);
-            if(i > j) { break; }
+            do i++; while(i <= u && array.get(i) < array.get(l));
+            do j--; while(array.get(j) > array.get(l));
+            if(i > j) {
+                break;
+            }
             swap(i, j);
         }
         swap(l, j);
