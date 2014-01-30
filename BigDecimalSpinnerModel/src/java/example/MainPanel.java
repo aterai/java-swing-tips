@@ -75,18 +75,20 @@ class BigDecimalSpinnerModel extends SpinnerNumberModel {
         Number v = getNumber();
         BigDecimal value    = new BigDecimal(v.toString());
         BigDecimal stepSize = new BigDecimal(getStepSize().toString());
-        BigDecimal maximum  = new BigDecimal(getMaximum().toString());
-        BigDecimal minimum  = new BigDecimal(getMinimum().toString());
-        BigDecimal newValue;
 
+        BigDecimal newValue;
         if(dir>0) {
             newValue = value.add(stepSize);
         }else{
             newValue = value.subtract(stepSize);
         }
+
+        BigDecimal maximum  = new BigDecimal(getMaximum().toString());
         if(maximum != null && maximum.compareTo(newValue) < 0) {
             return null;
         }
+
+        BigDecimal minimum  = new BigDecimal(getMinimum().toString());
         if(minimum != null && minimum.compareTo(newValue) > 0) {
             return null;
         }

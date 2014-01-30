@@ -44,10 +44,9 @@ public class MainPanel extends JPanel {
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
                 JTabbedPane t = (JTabbedPane)e.getSource();
-                int index = t.getSelectedIndex();
                 for(int i=0;i<t.getTabCount();i++) {
                     String title = t.getTitleAt(i);
-                    if(i==index) {
+                    if(i==t.getSelectedIndex()) {
                         t.setTitleAt(i, TAG+title);
                     }else if(title.startsWith(TAG)) {
                         t.setTitleAt(i, title.substring(TAG.length()));

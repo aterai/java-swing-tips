@@ -18,7 +18,7 @@ class MainPanel extends JPanel {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"
     };
-    private final LookAndFeelPanel panel = new LookAndFeelPanel(new GridLayout(2,1,5,5));
+    private final JPanel panel = new JPanel(new GridLayout(2,1,5,5));
     public MainPanel() {
         super(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -36,7 +36,7 @@ class MainPanel extends JPanel {
             }
         })));
         JMenuBar mb = new JMenuBar();
-        mb.add(panel.createLookAndFeelMenu());
+        mb.add(LookAndFeelUtil.createLookAndFeelMenu());
         add(mb, BorderLayout.NORTH);
         add(panel);
         setPreferredSize(new Dimension(320, 240));
@@ -130,30 +130,27 @@ class MainPanel extends JPanel {
 }
 
 //http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
-class LookAndFeelPanel extends JPanel {
-    private ButtonGroup lookAndFeelRadioGroup;
-    private String lookAndFeel;
-    public LookAndFeelPanel(LayoutManager lm) {
-        super(lm);
-    }
-    public JMenu createLookAndFeelMenu() {
+class LookAndFeelUtil {
+    private static String lookAndFeel;
+    private LookAndFeelUtil() {}
+    public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-        lookAndFeelRadioGroup = new ButtonGroup();
+        ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
         for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
-            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
+            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
     }
-    public JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName) {
-        final JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
+    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, final ButtonGroup lookAndFeelRadioGroup) {
+        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
         lafItem.setSelected(lafClassName.equals(lookAndFeel));
         lafItem.setHideActionText(true);
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
                 try{
-                    setLookAndFeel(m.getActionCommand(), lafItem);
+                    setLookAndFeel(m.getActionCommand());
                 }catch(ClassNotFoundException | InstantiationException |
                        IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
@@ -165,16 +162,16 @@ class LookAndFeelPanel extends JPanel {
         lookAndFeelRadioGroup.add(lafItem);
         return lafItem;
     }
-    public void setLookAndFeel(String lookAndFeel, JComponent c) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        String oldLookAndFeel = this.lookAndFeel;
+    private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
         if(!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
-            this.lookAndFeel = lookAndFeel;
+            LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-            firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
     }
-    private void updateLookAndFeel() {
+    private static void updateLookAndFeel() {
         for(Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
