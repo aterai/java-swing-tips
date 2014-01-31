@@ -94,21 +94,24 @@ class SplitPaneWrapper extends JPanel {
             : sp.getWidth()  - sp.getDividerSize();
     }
     @Override public void doLayout() {
-        int size = getOrientedSize(sp);
-        final double proportionalLocation = sp.getDividerLocation()/(double)size;
-        super.doLayout();
-        if(!flag) { return; }
-        int state = ((Frame)SwingUtilities.getWindowAncestor(sp)).getExtendedState();
-        if(sp.isShowing() && state!=prev_state) {
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    int s = getOrientedSize(sp);
-                    int iv = (int)Math.round(s * proportionalLocation);
-                    log.append(String.format("DividerLocation: %d%n", iv));
-                    sp.setDividerLocation(iv);
-                }
-            });
-            prev_state = state;
+        if(flag) {
+            int size = getOrientedSize(sp);
+            final double proportionalLocation = sp.getDividerLocation()/(double)size;
+            super.doLayout();
+            int state = ((Frame)SwingUtilities.getWindowAncestor(sp)).getExtendedState();
+            if(sp.isShowing() && state!=prev_state) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        int s = getOrientedSize(sp);
+                        int iv = (int)Math.round(s * proportionalLocation);
+                        log.append(String.format("DividerLocation: %d%n", iv));
+                        sp.setDividerLocation(iv);
+                    }
+                });
+                prev_state = state;
+            }
+        }else{
+            super.doLayout();
         }
     }
 }

@@ -130,13 +130,13 @@ class ToggleButtonBarCellIcon implements Icon {
     private static final Color SB = new Color(1f,1f,1f,.1f);
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        int r = 8;
-        int w = c.getWidth();
-        int h = c.getHeight();
         Container parent = c.getParent();
         if(parent==null) {
             return;
         }
+        int r = 8;
+        int w = c.getWidth();
+        int h = c.getHeight();
 
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

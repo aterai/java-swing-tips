@@ -55,7 +55,7 @@ class CardLayoutTabbedPane extends JPanel {
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final ButtonGroup bg = new ButtonGroup();
 
-    private int count = 0;
+    private int count;
     private final JButton button = new JButton(new AbstractAction("+") {
         @Override public void actionPerformed(ActionEvent e) {
             addTab("new tab:"+count, new JLabel("xxx:"+count));
@@ -302,15 +302,14 @@ class TabLayout implements LayoutManager, java.io.Serializable {
 
     @Override public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
-            Insets insets = parent.getInsets();
             int ncomponents = parent.getComponentCount();
-            //int nrows = 1;
-            int ncols = ncomponents-1;
-            //boolean ltr = parent.getComponentOrientation().isLeftToRight();
-
             if(ncomponents == 0) {
                 return;
             }
+            //int nrows = 1;
+            //boolean ltr = parent.getComponentOrientation().isLeftToRight();
+            Insets insets = parent.getInsets();
+            int ncols = ncomponents-1;
             int lastw = parent.getComponent(ncomponents-1).getPreferredSize().width;
             int width = parent.getWidth() - insets.left - insets.right - lastw;
             int h = parent.getHeight() - insets.top - insets.bottom;

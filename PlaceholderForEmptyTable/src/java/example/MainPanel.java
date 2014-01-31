@@ -87,11 +87,11 @@ class TablePopupMenu extends JPopupMenu {
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable)getInvoker();
-            DefaultTableModel model = (DefaultTableModel)table.getModel();
             int[] selection = table.getSelectedRows();
             if(selection.length == 0) {
                 return;
             }
+            DefaultTableModel model = (DefaultTableModel)table.getModel();
             for(int i=selection.length-1;i>=0;i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }

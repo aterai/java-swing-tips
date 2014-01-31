@@ -40,7 +40,6 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
-        ButtonModel model = b.getModel();
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -66,6 +65,8 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         if(text==null) {
             return;
         }
+
+        ButtonModel model = b.getModel();
         if(model.isSelected() || model.isArmed()) {
             g.setColor(Color.WHITE);
         }else{

@@ -16,10 +16,10 @@ public class MainPanel extends JPanel {
 
         DefaultComboBoxModel<LRItem> model = new DefaultComboBoxModel<>();
         model.addElement(new LRItem("asdfasdf", "846876"));
-        model.addElement(new LRItem("bxcvzx", "asdfasd"));
-        model.addElement(new LRItem("qwerqwe", "iop.ioqqadfa"));
+        model.addElement(new LRItem("bxcvzx",   "asdfasd"));
+        model.addElement(new LRItem("qwerqwe",  "iop.ioqqadfa"));
         model.addElement(new LRItem("14234125", "64345424684"));
-        model.addElement(new LRItem("hjklhjk", "asdfasdfasdfasdfasdfasd"));
+        model.addElement(new LRItem("hjklhjk",  "asdfasdfasdfasdfasdfasd"));
         JComboBox<LRItem> combo = new JComboBox<>(model);
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
@@ -45,28 +45,6 @@ public class MainPanel extends JPanel {
         leftTextField.setText(item.getLeftText());
         rightTextField.setText(item.getRightText());
     }
-    static class LRItem {
-        private final String leftText;
-        private final String rightText;
-        public LRItem(String strLeft, String strRight) {
-            leftText  = strLeft;
-            rightText = strRight;
-        }
-        public String getHtmlText() {
-            String str = "<html><table width='290'><tr><td align='left'>" + leftText;
-            str = str + "</td><td align='right'>" + rightText + "</td></tr></table></html>";
-            return str;
-        }
-        public String getLeftText() {
-            return leftText;
-        }
-        public String getRightText() {
-            return rightText;
-        }
-        @Override public String toString() {
-            return getHtmlText();
-        }
-    }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -87,5 +65,26 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class LRItem {
+    private final String leftText;
+    private final String rightText;
+    public LRItem(String strLeft, String strRight) {
+        leftText  = strLeft;
+        rightText = strRight;
+    }
+    public String getHtmlText() {
+        return String.format("<html><table width='290'><tr><td align='left'>%s</td><td align='right'>%s</td></tr></table></html>", leftText, rightText);
+    }
+    public String getLeftText() {
+        return leftText;
+    }
+    public String getRightText() {
+        return rightText;
+    }
+    @Override public String toString() {
+        return getHtmlText();
     }
 }

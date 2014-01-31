@@ -175,7 +175,6 @@ class FolderSelectionListener implements TreeSelectionListener {
     @Override public void valueChanged(TreeSelectionEvent e) {
         final JTree tree = (JTree)e.getSource();
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
-        final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
 
         if(!node.isLeaf()) {
             return;
@@ -190,6 +189,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         }
         final Status parent_status = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
 
+        final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         Task worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 if(!tree.isDisplayable()) {

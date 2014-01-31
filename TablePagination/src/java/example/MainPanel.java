@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -43,7 +44,7 @@ public class MainPanel extends JPanel {
         table.setRowSorter(sorter);
 
         for(int i=1;i<=2013;i++) {
-            model.addRow(new Object[] {i, "Test: "+i, (i%2==0)?"":"comment..."});
+            model.addRow(Arrays.asList(i, "Test: "+i, (i%2==0)?"":"comment...").toArray());
         }
         initLinkBox(100, 1);
         box.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
@@ -190,7 +191,6 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
-        ButtonModel model = b.getModel();
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -226,6 +226,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //             //b.setForeground(Color.BLACK);
 //         }else if(b.isRolloverEnabled() && model.isRollover()) {
 
+        ButtonModel model = b.getModel();
         g.setColor(b.getForeground());
         if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.drawLine(viewRect.x,                viewRect.y+viewRect.height,

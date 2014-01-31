@@ -90,6 +90,9 @@ class ScrollAction extends AbstractAction {
         this.vec = vec;
     }
     @Override public void actionPerformed(ActionEvent e) {
+        if(scroller!=null && scroller.isRunning()) {
+            return;
+        }
         final JViewport vport = scrollPane.getViewport();
         final JComponent v = (JComponent)vport.getView();
         final int w  = vport.getWidth();
@@ -97,9 +100,6 @@ class ScrollAction extends AbstractAction {
         final int sx = vport.getViewPosition().x;
         final int sy = vport.getViewPosition().y;
         final Rectangle rect = new Rectangle(w, h);
-        if(scroller!=null && scroller.isRunning()) {
-            return;
-        }
         scroller = new Timer(5, new ActionListener() {
             int count = (int)SIZE;
             @Override public void actionPerformed(ActionEvent e) {
