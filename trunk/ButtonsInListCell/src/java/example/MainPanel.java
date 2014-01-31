@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 
 class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
-    private JButton prevButton = null;
+    private JButton prevButton;
     private final JList<String> list;
     public CellButtonsMouseListener(JList<String> list) {
         super();
@@ -165,7 +165,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
     private int index;
     public int pressedIndex  = -1;
     public int rolloverIndex = -1;
-    public JButton button = null;
+    public JButton button;
 
     public ButtonsRenderer(DefaultListModel<String> model) {
         super(new BorderLayout());

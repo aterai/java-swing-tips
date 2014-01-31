@@ -33,7 +33,7 @@ class MainPanel extends JPanel {
     private JLabel makeLabel(final ImageIcon image, String str) {
         JLabel label = new JLabel(str, image, JLabel.LEFT);
         label.addMouseListener(new MouseAdapter() {
-            boolean flag = false;
+            private boolean flag;
             @Override public void mouseClicked(MouseEvent e) {
                 JLabel l = (JLabel)e.getSource();
                 l.setIcon(flag ? image : orgImage);

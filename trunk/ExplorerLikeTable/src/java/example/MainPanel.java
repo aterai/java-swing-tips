@@ -252,7 +252,7 @@ class TestModel extends DefaultTableModel {
         new ColumnContext("Name",    String.class,  false),
         new ColumnContext("Comment", String.class,  false)
     };
-    private int number = 0;
+    private int number;
     public void addTest(Test t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);

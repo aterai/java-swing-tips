@@ -154,7 +154,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, j
 }
 
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
-    transient protected ChangeEvent changeEvent = null;
+    transient protected ChangeEvent changeEvent;
 
     public CheckBoxesEditor() {
         super();
@@ -193,7 +193,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    //transient protected ChangeEvent changeEvent = null;
+    //transient protected ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

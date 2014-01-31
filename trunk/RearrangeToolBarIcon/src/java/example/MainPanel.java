@@ -61,10 +61,10 @@ public class MainPanel extends JPanel {
 
 class DragHandler extends MouseAdapter {
     private final JWindow window = new JWindow();
-    private Component draggingComonent = null;
+    private Component draggingComonent;
     private int index = -1;
     private final Component gap = Box.createHorizontalStrut(24);
-    private Point startPt = null;
+    private Point startPt;
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
     public DragHandler() {
         super();

@@ -85,7 +85,7 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
         }
         return c;
     }
-    private Color color = null;
+    private Color color;
     private void setParticularCondition(Object value) {
         if(value instanceof DefaultMutableTreeNode) {
             Object uo = ((DefaultMutableTreeNode)value).getUserObject();

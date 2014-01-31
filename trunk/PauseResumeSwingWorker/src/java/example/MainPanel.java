@@ -192,7 +192,7 @@ class Progress {
 
 class Task extends SwingWorker<String, Progress> {
     private final Random r = new Random();
-    public boolean isPaused = false;
+    public boolean isPaused;
 
     @Override public String doInBackground() {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());

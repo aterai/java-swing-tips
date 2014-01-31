@@ -14,9 +14,9 @@ class MainPanel extends JPanel {
     private final Action closeSelectedFrameAction3;
     private final Action disposeSelectedFrameAction;
     private final Action createNewFrameAction;
-    private int openFrameCount = 0;
-    private int row = 0;
-    private int col = 0;
+    private int openFrameCount;
+    private int row;
+    private int col;
 
     public MainPanel() {
         super(new BorderLayout());

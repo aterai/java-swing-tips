@@ -77,7 +77,7 @@ public class MainPanel extends JPanel {
     }
 
     class OpenFrameAction extends AbstractAction {
-        private int openFrameCount = 0;
+        private int openFrameCount;
         public OpenFrameAction(String label) {
             super(label);
         }

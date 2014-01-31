@@ -44,7 +44,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private final TexturePaint texture = makeTexturePaint();
     private final int[] pixels = new int[320 * 240];
     private final MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
-    private int penc = 0x0;
+    private int penc;
 
     public PaintPanel() {
         super();

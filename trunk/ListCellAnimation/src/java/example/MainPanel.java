@@ -64,7 +64,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private final MarqueeLabel label = new MarqueeLabel();
     private final Timer animator;
     private final JList list;
-    private boolean isRunning = false;
+    private boolean isRunning;
     private int animate_index = -1;
 
     public AnimeListCellRenderer(final JList l) {

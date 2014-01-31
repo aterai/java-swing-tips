@@ -96,10 +96,10 @@ class SingleMouseClickSelectList<E> extends JList<E> {
 }
 
 class ClearSelectionListener extends MouseAdapter {
-    private boolean startOutside = false;
+    public boolean  isDragging;
+    public boolean  isCellInsideDragging;
+    private boolean startOutside;
     private int     startIndex = -1;
-    public boolean  isDragging = false;
-    public boolean  isCellInsideDragging = false;
 
     private static void clearSelectionAndFocus(JList list) {
         list.getSelectionModel().clearSelection();

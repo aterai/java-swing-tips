@@ -9,7 +9,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private final MyJTabbedPane tab = new MyJTabbedPane();
     private final JPopupMenu pop = new JPopupMenu();
-    private static int count = 0;
+    private static int count;
 
     public MainPanel() {
         super(new BorderLayout());

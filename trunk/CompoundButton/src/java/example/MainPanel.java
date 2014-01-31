@@ -77,7 +77,7 @@ class CompoundButton extends JButton {
     protected final Color ac = new Color(230,230,230);
     protected final Color rc = Color.ORANGE;
     protected Shape shape;
-    protected Shape base = null;
+    protected Shape base;
     private final ButtonLocation bl;
     private final Dimension dim;
     public CompoundButton(Dimension d, ButtonLocation bl) {

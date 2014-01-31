@@ -236,7 +236,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     }
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    //transient protected ChangeEvent changeEvent = null;
+    //transient protected ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }

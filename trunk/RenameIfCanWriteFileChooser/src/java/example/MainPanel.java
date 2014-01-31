@@ -86,7 +86,7 @@ public class MainPanel extends JPanel {
 }
 
 class WindowsCanWriteFileChooserUI extends com.sun.java.swing.plaf.windows.WindowsFileChooserUI{
-    private BasicDirectoryModel model2 = null;
+    private BasicDirectoryModel model2;
 
     protected WindowsCanWriteFileChooserUI(JFileChooser chooser) {
         super(chooser);
@@ -110,7 +110,7 @@ class WindowsCanWriteFileChooserUI extends com.sun.java.swing.plaf.windows.Windo
 }
 
 class CanWriteFileChooserUI extends MetalFileChooserUI{
-    private BasicDirectoryModel model2 = null;
+    private BasicDirectoryModel model2;
 
     protected CanWriteFileChooserUI(JFileChooser chooser) {
         super(chooser);

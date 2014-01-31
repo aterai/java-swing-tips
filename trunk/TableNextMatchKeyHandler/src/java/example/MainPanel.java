@@ -63,7 +63,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     private static final int TARGET_COLUMN = 0;
     private String prefix;
     private String typedString;
-    private long lastTime = 0L;
+    private long lastTime;
     private final long timeFactor;
     public TableNextMatchKeyHandler() {
         super();

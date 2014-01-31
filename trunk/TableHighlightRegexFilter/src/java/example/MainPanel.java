@@ -102,7 +102,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
     private static final Color backgroundSelectionColor = new Color(220, 240, 255);
     private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private String pattern = "";
-    private String prev = null;
+    private String prev;
 
     public boolean setPattern(String str) {
         if(str==null || str.equals(pattern)) {

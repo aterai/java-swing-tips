@@ -23,27 +23,27 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
     /**
      * The <code>EventListenerList</code>.
      */
-    private EventListenerList eventListenerList = null;
+    private EventListenerList eventListenerList;
 
     /**
      * The viewport of the scrolled tabs.
      */
-    private JViewport headerViewport = null;
+    private JViewport headerViewport;
 
     /**
      * The normal closeicon.
      */
-    private Icon normalCloseIcon = null;
+    private Icon normalCloseIcon;
 
     /**
      * The closeicon when the mouse is over.
      */
-    private Icon hooverCloseIcon = null;
+    private Icon hooverCloseIcon;
 
     /**
      * The closeicon when the mouse is pressed.
      */
-    private Icon pressedCloseIcon = null;
+    private Icon pressedCloseIcon;
 
     /**
      * Creates a new instance of <code>CloseableTabbedPane</code>
@@ -344,12 +344,12 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
         /**
          * true whether the mouse is over this icon, false otherwise
          */
-        private boolean mouseover = false;
+        private boolean mouseover;
 
         /**
          * true whether the mouse is pressed on this icon, false otherwise
          */
-        private boolean mousepressed = false;
+        private boolean mousepressed;
 
         /**
          * Creates a new instance of <code>CloseTabIcon</code>

@@ -147,7 +147,7 @@ class FileModel extends DefaultTableModel {
         new ColumnContext("Width",     Integer.class, false),
         new ColumnContext("Height",    Integer.class, false)
     };
-    private int number = 0;
+    private int number;
     public void addTest(Test t) {
         Object[] obj = {
             number, t.getName(), t.getComment(),

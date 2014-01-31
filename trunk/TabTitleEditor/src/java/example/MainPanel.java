@@ -55,7 +55,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     private int editing_idx = -1;
     private int len = -1;
     private Dimension dim;
-    private Component tabComponent = null;
+    private Component tabComponent;
 
     public TabTitleEditListener(final JTabbedPane tabbedPane) {
         super();

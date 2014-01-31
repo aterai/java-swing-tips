@@ -228,7 +228,7 @@ class AnimeIcon implements Icon {
         new Ellipse2D.Double(sx+0*r, sy+3*r, 2*r, 2*r),
         new Ellipse2D.Double(sx+1*r, sy+1*r, 2*r, 2*r)));
 
-    private boolean isRunning = false;
+    private boolean isRunning;
     public void next() {
         if(isRunning) { list.add(list.remove(0)); }
     }
@@ -258,7 +258,7 @@ class AnimeIcon2 implements Icon {
     private static final Color cColor = new Color(0.5f,0.8f,0.5f);
     private final List<Shape> list = new ArrayList<Shape>();
     private final Dimension dim;
-    private boolean isRunning = false;
+    private boolean isRunning;
     public AnimeIcon2() {
         super();
         int r = 4;
@@ -309,7 +309,7 @@ class AnimeIcon3 implements Icon {
     private static final Color cColor = new Color(0.9f,0.7f,0.7f);
     private final List<Shape> list = new ArrayList<Shape>();
     private final Dimension dim;
-    private boolean isRunning = false;
+    private boolean isRunning;
     private int rotate = 45;
     public AnimeIcon3() {
         super();
@@ -360,7 +360,7 @@ class AnimeIcon4 implements Icon {
     private static final int R = 4;
     private static final Color cColor = new Color(0.5f,0.8f,0.5f);
     private final Dimension dim;
-    private boolean isRunning = false;
+    private boolean isRunning;
     private final List<Shape> list = new ArrayList<Shape>();
     public AnimeIcon4() {
         super();

@@ -90,7 +90,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     private static Rectangle trect = new Rectangle();
     private int row = -1;
     private int col = -1;
-    private boolean isRollover = false;
+    private boolean isRollover;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
 
@@ -215,7 +215,7 @@ class TestModel extends DefaultTableModel {
         new ColumnContext("Name", String.class, false),
         new ColumnContext("URL",  URL.class, false)
     };
-    private int number = 0;
+    private int number;
     public void addTest(Test t) {
         Object[] obj = {number, t.getName(), t.getURL()};
         super.addRow(obj);

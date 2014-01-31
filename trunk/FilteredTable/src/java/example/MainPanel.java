@@ -96,7 +96,7 @@ class TestModel extends DefaultTableModel {
         new ColumnContext("Comment", String.class,  true)
     };
     private final List<Test> list = new ArrayList<>();
-    private int number = 0;
+    private int number;
 
     public void addTest(Test t) {
         Object[] obj = {number, t.getName(), t.getComment()};

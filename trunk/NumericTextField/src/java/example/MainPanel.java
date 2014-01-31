@@ -105,7 +105,7 @@ class IntegerInputVerifier extends InputVerifier {
 //>http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 //Validating with a Custom Document
 class IntegerDocument extends PlainDocument {
-    private int currentValue = 0;
+    private int currentValue;
     public int getValue() {
         return currentValue;
     }

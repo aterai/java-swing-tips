@@ -142,8 +142,8 @@ class JResizer extends JComponent { // implements Serializable {
 
     private class ResizeMouseListener extends MouseInputAdapter {
         private int cursor;
-        private Point startPos = null;
-        private Rectangle startingBounds = null;
+        private Point startPos;
+        private Rectangle startingBounds;
         @Override public void mouseMoved(MouseEvent e) {
             ResizableBorder border = (ResizableBorder)getBorder();
             setCursor(Cursor.getPredefinedCursor(border.getResizeCursor(e)));

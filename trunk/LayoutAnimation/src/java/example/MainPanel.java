@@ -12,11 +12,11 @@ public class MainPanel extends JPanel {
     private final JButton button   = new JButton("Find Next(dummy)");
     private final JButton showHideButton = new JButton();
 
-    private Timer animator = null;
+    private Timer animator;
     private boolean isHidden = true;
     private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
-        private int controlsHeight = 0;
-        private int controlsPreferredHeight = 0;
+        private int controlsHeight;
+        private int controlsPreferredHeight;
         @Override public Dimension preferredLayoutSize(Container target) {
             //synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);

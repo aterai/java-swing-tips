@@ -26,12 +26,12 @@ public class MainPanel extends JPanel {
             }
         });
         addButton.addActionListener(new ActionListener() {
-            int n = 0;
+            private int n;
             @Override public void actionPerformed(ActionEvent e) {
                 JInternalFrame f = createFrame("#"+n, n*10, n*10);
                 desktop.add(f);
                 desktop.getDesktopManager().activateFrame(f);
-                n = n+1;
+                n++;
             }
         });
         addIconifiedFrame(createFrame("Frame", 30, 10));

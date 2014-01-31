@@ -22,7 +22,7 @@ class MainPanel extends JPanel {
         list[1] = tk.createCustomCursor(tk.createImage(url01), pt, "01");
         list[2] = tk.createCustomCursor(tk.createImage(url02), pt, "02");
         animator = new Timer(100, new ActionListener() {
-            private int counter = 0;
+            private int counter;
             @Override public void actionPerformed(ActionEvent e) {
                 button.setCursor(list[counter]);
                 counter = (counter + 1 + list.length) % list.length;

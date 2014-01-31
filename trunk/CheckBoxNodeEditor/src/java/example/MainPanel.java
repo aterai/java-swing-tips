@@ -132,7 +132,7 @@ class CheckBoxNode {
 }
 
 class CheckBoxStatusUpdateListener implements TreeModelListener {
-    private boolean adjusting = false;
+    private boolean adjusting;
     @Override public void treeNodesChanged(TreeModelEvent e) {
         if(adjusting) { return; }
         adjusting = true;
@@ -263,7 +263,8 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
 class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final JPanel panel = new JPanel(new BorderLayout());
-    private String str = null;
+    private String str;
+
     public CheckBoxNodeEditor() {
         super();
         this.addActionListener(new ActionListener() {
@@ -342,7 +343,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
 
     //Copid from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
-//     transient protected ChangeEvent changeEvent = null;
+//     transient protected ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
@@ -527,7 +528,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
 
     //Copid from AbstractCellEditor
     protected EventListenerList listenerList = new EventListenerList();
-    transient protected ChangeEvent changeEvent = null;
+    transient protected ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }

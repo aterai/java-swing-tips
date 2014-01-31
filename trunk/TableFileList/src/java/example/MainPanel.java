@@ -225,7 +225,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
 class MyLabel extends JLabel {
     private final Border dotBorder;
     private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
-    private boolean focusflag = false;
+    private boolean focusflag;
 
     public MyLabel(Color color) {
         super("dummy");
@@ -291,7 +291,7 @@ class MyTable extends JTable {
     private final Color pcolor;
     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Path2D polygon = new Path2D.Double();
-    private Point srcPoint = null;
+    private Point srcPoint;
     public MyTable(TableModel model) {
         super(model);
         rcolor = SystemColor.activeCaption;

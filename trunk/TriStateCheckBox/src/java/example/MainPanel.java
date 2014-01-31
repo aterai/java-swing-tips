@@ -109,7 +109,7 @@ class TriStateActionListener implements ActionListener {
 }
 
 class TriStateCheckBox extends JCheckBox {
-    protected TriStateActionListener listener = null;
+    protected TriStateActionListener listener;
     public TriStateCheckBox(String title) {
         super(title);
     }

@@ -55,8 +55,8 @@ public class MainPanel extends JPanel {
 class ImagePreview extends JComponent implements PropertyChangeListener {
     private static final int PREVIEW_WIDTH  = 90;
     private static final int PREVIEW_MARGIN = 5;
-    private ImageIcon thumbnail = null;
-    private File file = null;
+    private ImageIcon thumbnail;
+    private File file;
     public ImagePreview(JFileChooser fc) {
         super();
         setPreferredSize(new Dimension(PREVIEW_WIDTH+PREVIEW_MARGIN*2, 50));

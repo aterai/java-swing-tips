@@ -125,7 +125,7 @@ class MenuContext {
 class ArrowButtonHandler extends AbstractAction implements MouseListener {
     private final Timer autoRepeatTimer;
     private final JPopupMenu pop;
-    private AbstractButton arrowButton = null;
+    private AbstractButton arrowButton;
     public ArrowButtonHandler(JPopupMenu popup) {
         super();
         this.pop = popup;

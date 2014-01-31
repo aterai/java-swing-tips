@@ -37,7 +37,7 @@ class MainPanel extends JPanel {
         //TEST: icon   = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
         icon = new TrayIcon(imglist[0], "TRAY", popup);
         animator = new Timer(100, new ActionListener() {
-            private int idx = 0;
+            private int idx;
             @Override public void actionPerformed(ActionEvent e) {
                 icon.setImage(imglist[idx]);
                 idx = (idx + 1 + imglist.length) % imglist.length;

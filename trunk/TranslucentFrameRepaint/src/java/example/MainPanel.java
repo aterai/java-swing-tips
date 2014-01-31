@@ -66,7 +66,7 @@ class MainPanel extends JPanel {
             }
         });
         JToggleButton button = new JToggleButton(new AbstractAction("timer") {
-            private JFrame digitalClock  = null;
+            private JFrame digitalClock;
             @Override public void actionPerformed(ActionEvent e) {
                 if(digitalClock==null) {
                     digitalClock = new JFrame();

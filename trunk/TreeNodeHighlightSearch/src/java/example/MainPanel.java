@@ -94,6 +94,8 @@ public class MainPanel extends JPanel {
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color rollOverRowColor = new Color(220, 240, 255);
     public String q;
+    private boolean rollOver;
+
     @Override public void updateUI() {
         setTextSelectionColor(null);
         setTextNonSelectionColor(null);
@@ -101,7 +103,6 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         setBackgroundNonSelectionColor(null);
         super.updateUI();
     }
-    private boolean rollOver = false;
     @Override public Color getBackgroundNonSelectionColor() {
         return rollOver ? rollOverRowColor : super.getBackgroundNonSelectionColor();
     }

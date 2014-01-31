@@ -93,6 +93,7 @@ class ButtonsPanel extends JPanel {
 //         super.updateUI();
 //     }
 }
+
 class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
     public ButtonsRenderer() {
         super();
@@ -103,8 +104,9 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
         return this;
     }
 }
+
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
-    transient protected ChangeEvent changeEvent = null;
+    transient protected ChangeEvent changeEvent;
 
     public ButtonsEditor(final JTable table) {
         super();
@@ -155,7 +157,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    //transient protected ChangeEvent changeEvent = null;
+    //transient protected ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

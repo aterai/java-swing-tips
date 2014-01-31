@@ -12,7 +12,7 @@ import javax.sound.midi.*;
 
 class MainPanel extends JPanel {
     private static byte END_OF_TRACK = 0x2F;
-    private long tickpos = 0;
+    private long tickpos;
     private final JButton start;
     private final JButton stop;
     private Sequencer sequencer;

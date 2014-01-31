@@ -95,7 +95,7 @@ public class MainPanel extends JPanel {
 
 class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
-    private JButton prevButton = null;
+    private JButton prevButton;
     private static void listRepaint(JList list, Rectangle rect) {
         if(rect!=null) {
             list.repaint(rect);
@@ -193,7 +193,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
     private JList list;
     private int index;
     public int rolloverIndex = -1;
-    public JButton button = null;
+    public JButton button;
     private final JLabel label = new DefaultListCellRenderer();
     private final JButton deleteButton = new JButton(new AbstractAction("x") {
         @Override public void actionPerformed(ActionEvent e) {

@@ -63,16 +63,15 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
         int promptPosition = cur.getStartOffset()+PROMPT.length();
         if(index==count-1 && offset-promptPosition>=0) {
             String str = text;
-            if(str.equals(LB)) {
+            if(LB.equals(str)) {
                 String line = doc.getText(promptPosition, offset-promptPosition);
                 String[] args = line.split(" ");
                 String cmd = args[0];
                 if(cmd.isEmpty()) {
-                    str = "";
+                    str = String.format("%n%s", PROMPT);
                 }else{
-                    str = String.format("%n%s: command not found", cmd);
+                    str = String.format("%n%s: command not found%n%s", cmd, PROMPT);
                 }
-                str += LB + PROMPT;
             }
             fb.replace(offset, length, str, attrs);
         }
