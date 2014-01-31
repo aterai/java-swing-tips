@@ -89,7 +89,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
     private String pn;
     private final Point pnPt = new Point();
     private int rxs, rxe;
-    private boolean isSynth = false;
+    private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
         @Override public void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -157,7 +157,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
     private static String READER = "... ";
     private String pn;
     private int pnx = -1, pny = -1;
-    private boolean isSynth = false;
+    private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
         @Override public void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -215,7 +215,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
 
 class TableOfContentsTree extends JTree {
     private static final BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] { 1f }, 0f);
-    private boolean isSynth = false;
+    private boolean isSynth;
     public TableOfContentsTree(TreeModel model) {
         super(model);
     }
@@ -276,7 +276,7 @@ class TableOfContentsTree extends JTree {
                 Object o = node.getUserObject();
                 if(o instanceof TableOfContents) {
                     TableOfContents toc = (TableOfContents)o;
-                    String pn = "" + toc.page;
+                    String pn = Integer.toString(toc.page);
                     int x = getWidth() -1 - fm.stringWidth(pn) - ins.right;
                     //int y = (int)(0.5 + r.y + (r.height + fm.getAscent()) * 0.5);
                     int y = r.y + c.getBaseline(r.width, r.height);

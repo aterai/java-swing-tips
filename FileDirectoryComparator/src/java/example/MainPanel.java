@@ -30,29 +30,30 @@ public class MainPanel extends JPanel {
     };
     //private final FileTableModel model = new FileTableModel();
     private final JTable table = new JTable(model);
+    private final ButtonGroup bg = new ButtonGroup();
+    private final JPanel p = new JPanel();
+    private final transient ActionListener al = new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            TableRowSorter<?> sorter = (TableRowSorter<?>)table.getRowSorter();
+            Object source = e.getSource();
+            if(source.equals(check2)) {
+                sorter.setComparator(0, new FileComparator(0));
+                sorter.setComparator(1, new FileComparator(1));
+                sorter.setComparator(2, new FileComparator(2));
+            }else if(source.equals(check3)) {
+                sorter.setComparator(0, new FileGroupComparator(table, 0));
+                sorter.setComparator(1, new FileGroupComparator(table, 1));
+                sorter.setComparator(2, new FileGroupComparator(table, 2));
+            }else{
+                sorter.setComparator(0, new DefaultFileComparator(0));
+                sorter.setComparator(1, new DefaultFileComparator(1));
+                sorter.setComparator(2, new DefaultFileComparator(2));
+            }
+        }
+    };
 
     public MainPanel() {
         super(new BorderLayout());
-        ButtonGroup bg = new ButtonGroup();
-        JPanel p = new JPanel();
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                TableRowSorter<?> sorter = (TableRowSorter<?>)table.getRowSorter();
-                if(e.getSource()==check2) {
-                    sorter.setComparator(0, new FileComparator(0));
-                    sorter.setComparator(1, new FileComparator(1));
-                    sorter.setComparator(2, new FileComparator(2));
-                }else if(e.getSource()==check3) {
-                    sorter.setComparator(0, new FileGroupComparator(table, 0));
-                    sorter.setComparator(1, new FileGroupComparator(table, 1));
-                    sorter.setComparator(2, new FileGroupComparator(table, 2));
-                }else{
-                    sorter.setComparator(0, new DefaultFileComparator(0));
-                    sorter.setComparator(1, new DefaultFileComparator(1));
-                    sorter.setComparator(2, new DefaultFileComparator(2));
-                }
-            }
-        };
         for(JRadioButton rb: Arrays.asList(check1,check2,check3)) {
             rb.addActionListener(al);
             bg.add(rb);
@@ -69,39 +70,8 @@ public class MainPanel extends JPanel {
         ((TableRowSorter<?>)table.getRowSorter()).setComparator(1, new DefaultFileComparator(1));
         ((TableRowSorter<?>)table.getRowSorter()).setComparator(2, new DefaultFileComparator(2));
 
-        final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                l.setHorizontalAlignment(JLabel.LEFT);
-                l.setIcon(null);
-                File file = (File)value;
-                int c = table.convertColumnIndexToModel(column);
-                switch(c) {
-                  case 0:
-                    //???: WindowsLnF, Java 1.7.0
-                    //if(file.isDirectory()) {
-                    //    l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
-                    //}else{
-                    //    l.setIcon(UIManager.getIcon("FileView.fileIcon"));
-                    //}
-                    l.setIcon(fileSystemView.getSystemIcon(file));
-                    l.setText(fileSystemView.getSystemDisplayName(file));
-                    //l.setText(file.getName());
-                    break;
-                  case 1:
-                    l.setHorizontalAlignment(JLabel.RIGHT);
-                    l.setText(file.isDirectory()?"":""+file.length());
-                    break;
-                  case 2:
-                    l.setText(file.getAbsolutePath());
-                    break;
-                  default:
-                    break;
-                }
-                return l;
-            }
-        });
+        FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+        table.setDefaultRenderer(Object.class, new FileIconTableCellRenderer(fileSystemView));
 
         table.setDropMode(DropMode.INSERT_ROWS);
         table.setTransferHandler(new FileTransferHandler());
@@ -159,6 +129,45 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class FileIconTableCellRenderer extends DefaultTableCellRenderer {
+    private final FileSystemView fileSystemView;
+    public FileIconTableCellRenderer(FileSystemView fileSystemView) {
+        super();
+        this.fileSystemView = fileSystemView;
+    }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        JLabel l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        l.setHorizontalAlignment(JLabel.LEFT);
+        l.setIcon(null);
+        File file = (File)value;
+        int c = table.convertColumnIndexToModel(column);
+        switch(c) {
+          case 0:
+            //???: WindowsLnF, Java 1.7.0
+            //if(file.isDirectory()) {
+            //    l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
+            //}else{
+            //    l.setIcon(UIManager.getIcon("FileView.fileIcon"));
+            //}
+            l.setIcon(fileSystemView.getSystemIcon(file));
+            l.setText(fileSystemView.getSystemDisplayName(file));
+            //l.setText(file.getName());
+            break;
+          case 1:
+            l.setHorizontalAlignment(JLabel.RIGHT);
+            l.setText(file.isDirectory() ? null : Long.toString(file.length()));
+            break;
+          case 2:
+            l.setText(file.getAbsolutePath());
+            break;
+          default:
+            break;
+        }
+        return l;
+    }
+}
+
 class FileTransferHandler extends TransferHandler {
     @Override public boolean importData(TransferSupport support) {
         try{
@@ -171,7 +180,7 @@ class FileTransferHandler extends TransferHandler {
                     if(o instanceof File) {
                         File file = (File)o;
                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-                        model.addRow(new Object[] {file, file, file});
+                        model.addRow(Arrays.asList(file, file, file).toArray());
                     }
                 }
                 return true;
@@ -213,6 +222,7 @@ class FileTransferHandler extends TransferHandler {
         return COPY;
     }
 }
+
 class DefaultFileComparator implements Comparator<File>, Serializable {
     protected final int column;
     public DefaultFileComparator(int column) {
@@ -226,6 +236,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
         }
     }
 }
+
 class FileComparator extends DefaultFileComparator {
     public FileComparator(int column) {
         super(column);
