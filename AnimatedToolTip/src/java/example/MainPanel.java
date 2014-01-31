@@ -157,7 +157,7 @@ class AnimeIcon implements Icon {
         new Ellipse2D.Double(sx+0*r, sy+3*r, 2*r, 2*r),
         new Ellipse2D.Double(sx+1*r, sy+1*r, 2*r, 2*r)));
 
-    private boolean isRunning = false;
+    private boolean isRunning;
     public void next() {
         if(isRunning) { list.add(list.remove(0)); }
     }

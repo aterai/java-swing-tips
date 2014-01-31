@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static int count = 0;
+    private static int count;
     private final MyJTabbedPane tab = new MyJTabbedPane();
     private final JPopupMenu pop = new JPopupMenu();
 

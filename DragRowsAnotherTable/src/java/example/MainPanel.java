@@ -96,11 +96,11 @@ public class MainPanel extends JPanel {
 }
 
 class TableRowTransferHandler extends TransferHandler {
-    private int[] rows    = null;
-    private int addIndex  = -1;
-    private int addCount  = 0;
+    private int[] rows;
+    private int addIndex = -1;
+    private int addCount;
     private final DataFlavor localObjectFlavor;
-    private JComponent source = null;
+    private JComponent source;
     public TableRowTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");

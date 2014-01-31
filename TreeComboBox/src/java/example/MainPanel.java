@@ -95,7 +95,7 @@ public class MainPanel extends JPanel {
 }
 
 class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
-    private boolean isNotSelectableIndex = false;
+    private boolean isNotSelectableIndex;
     private final Action up = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int si = getSelectedIndex();

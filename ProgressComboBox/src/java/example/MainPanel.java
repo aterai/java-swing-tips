@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     private final JComboBox<String> combo = new JComboBox<>();
     private final JButton button;
     private SwingWorker<String[], Integer> worker;
-    private int counter = 0;
+    private int counter;
     public MainPanel() {
         super(new BorderLayout());
         combo.setRenderer(new ProgressCellRenderer());

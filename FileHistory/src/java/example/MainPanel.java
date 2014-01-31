@@ -141,7 +141,7 @@ public class MainPanel extends JPanel {
     }
 
     private class OpenAction extends AbstractAction {
-        private int count = 0;
+        private int count;
         public OpenAction() {
             super("open");
         }

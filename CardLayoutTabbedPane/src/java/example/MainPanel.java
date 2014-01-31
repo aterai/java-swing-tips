@@ -228,7 +228,7 @@ class TableHeaderTabbedPane extends JPanel {
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final TableColumnModel model;
     private final JTableHeader header;
-    private Object selectedColumn = null;
+    private Object selectedColumn;
     private int rolloverColumn = -1;
     public TableHeaderTabbedPane() {
         super(new BorderLayout());

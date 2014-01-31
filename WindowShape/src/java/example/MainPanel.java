@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     private final Font font = new Font(Font.SERIF, Font.PLAIN, 300);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final JToggleButton button = new JToggleButton(new AbstractAction("show") {
-        private JFrame frame = null;
+        private JFrame frame;
         @Override public void actionPerformed(ActionEvent e) {
             AbstractButton button = (AbstractButton)e.getSource();
             Window parent = SwingUtilities.getWindowAncestor(button);

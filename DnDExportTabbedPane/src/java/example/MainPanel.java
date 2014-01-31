@@ -408,7 +408,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 class TabTransferHandler extends TransferHandler {
     private static GhostGlassPane glassPane;
     private final DataFlavor localObjectFlavor;
-    private DnDTabbedPane source = null;
+    private DnDTabbedPane source;
 
     public TabTransferHandler() {
         super();
@@ -560,7 +560,7 @@ class TabTransferHandler extends TransferHandler {
 //*
 class GhostGlassPane extends JPanel {
     private DnDTabbedPane tabbedPane;
-    private BufferedImage draggingGhost = null;
+    private BufferedImage draggingGhost;
     public GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;

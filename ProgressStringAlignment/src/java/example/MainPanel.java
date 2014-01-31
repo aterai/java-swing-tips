@@ -94,7 +94,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
 
 class StringAlignmentProgressBar extends JProgressBar {
     private final JLabel label;
-    private ChangeListener changeListener = null;
+    private ChangeListener changeListener;
 
     public StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
         super(model);

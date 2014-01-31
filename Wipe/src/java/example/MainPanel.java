@@ -38,7 +38,7 @@ class MainPanel extends JPanel {
     }
 
     class WipeImage extends JComponent implements ActionListener {
-        private int ww = 0;
+        private int ww;
         public WipeImage() {
             super();
             setBackground(Color.BLACK);

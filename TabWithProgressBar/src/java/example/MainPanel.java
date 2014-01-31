@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static int count = 0;
+    private static int count;
     //private final Executor executor = Executors.newCachedThreadPool();
     private final JTabbedPane tab = new JTabbedPane() {
         @Override public void addTab(String title, final Component content) {

@@ -400,7 +400,7 @@ class DnDTabbedPane extends JTabbedPane {
     class GhostGlassPane extends JPanel {
         private final AlphaComposite composite;
         private Point location = new Point(0, 0);
-        private BufferedImage draggingGhost = null;
+        private BufferedImage draggingGhost;
         public GhostGlassPane() {
             super();
             setOpaque(false);

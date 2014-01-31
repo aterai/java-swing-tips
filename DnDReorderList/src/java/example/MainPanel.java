@@ -88,9 +88,9 @@ public class MainPanel extends JPanel {
 //Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    private int[] indices = null;
-    private int addIndex  = -1; //Location where items were added
-    private int addCount  = 0;  //Number of items added.
+    private int[] indices;
+    private int addIndex = -1; //Location where items were added
+    private int addCount; //Number of items added.
 
     public ListItemTransferHandler() {
         super();

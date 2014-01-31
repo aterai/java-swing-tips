@@ -13,7 +13,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 class MainPanel extends JPanel {
-    private static int openFrameCount = 0;
+    private static int openFrameCount;
     private static final TexturePaint texture = makeTexturePaint();
     private final JDesktopPane desktop = new JDesktopPane();
 

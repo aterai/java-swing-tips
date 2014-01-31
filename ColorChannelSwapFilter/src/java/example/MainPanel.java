@@ -106,7 +106,7 @@ class MainPanel extends JPanel implements HierarchyListener {
 }
 
 class BlockedColorLayerUI extends LayerUI<JProgressBar>{
-    public boolean isPreventing = false;
+    public boolean isPreventing;
     private BufferedImage bi;
     private int prevw = -1;
     private int prevh = -1;

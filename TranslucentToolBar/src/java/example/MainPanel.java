@@ -39,7 +39,7 @@ public class MainPanel extends JPanel {
 
 class LabelWithToolBox extends JLabel implements HierarchyListener {
     private Timer animator;
-    private int yy = 0;
+    private int yy;
     private final JToolBar toolBox = new JToolBar() {
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
@@ -99,7 +99,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
 
         addMouseListener(new MouseAdapter() {
             private int delay = 8;
-            private int count = 0;
+            private int count;
             @Override public void mouseEntered(MouseEvent e) {
                 if(animator!=null && animator.isRunning() || yy==toolBox.getPreferredSize().height) {
                     return;

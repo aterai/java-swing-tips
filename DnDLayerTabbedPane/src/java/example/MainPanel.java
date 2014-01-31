@@ -407,7 +407,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 
 class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    private DnDTabbedPane source = null;
+    private DnDTabbedPane source;
     private final JLabel label = new JLabel() {
         //Free the pixel: GHOST drag and drop, over multiple windows
         //http://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html

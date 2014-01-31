@@ -139,7 +139,8 @@ public class MainPanel extends JPanel {
 class ComboKeyHandler extends KeyAdapter {
     private final JComboBox<String> comboBox;
     private final List<String> list = new ArrayList<>();
-    private boolean shouldHide = false;
+    private boolean shouldHide;
+
     public ComboKeyHandler(JComboBox<String> combo) {
         super();
         this.comboBox = combo;

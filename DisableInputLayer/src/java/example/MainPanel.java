@@ -62,7 +62,7 @@ public class MainPanel extends JPanel {
 }
 
 class DisableInputLayerUI extends LayerUI<JPanel> {
-    private boolean isRunning = false;
+    private boolean isRunning;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if(!isRunning) { return; }

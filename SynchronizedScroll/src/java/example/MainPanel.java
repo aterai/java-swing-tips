@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         add(sp2);
 
         ChangeListener cl = new ChangeListener() {
-            boolean adjflg = false;
+            private boolean adjflg;
             @Override public void stateChanged(ChangeEvent e) {
                 JViewport src = null;
                 JViewport tgt = null;

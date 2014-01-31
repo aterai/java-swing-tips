@@ -25,6 +25,7 @@ class MainPanel extends JPanel {
         //UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets(b));
 
         tabs = new ClippedTitleTabbedPane() {
+            private Insets tabAreaInsets;
             @Override public void updateUI() {
                 UIManager.put("TabbedPane.tabAreaInsets", null); //uninstall
                 super.updateUI();
@@ -38,7 +39,6 @@ class MainPanel extends JPanel {
                               getButtonPaddingTabAreaInsets(b, getTabInsets(), tabAreaInsets));
                 super.updateUI();
             }
-            private Insets tabAreaInsets = null;
         };
         tabs.addTab("asdfasd", new JLabel("456746"));
         tabs.addTab("1234123", new JScrollPane(new JTree()));

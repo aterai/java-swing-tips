@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static int number = 0;
+    private static int number;
     public static JFrame createFrame(String title) {
         JFrame frame = new JFrame((title==null)?"Frame #"+number:title);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

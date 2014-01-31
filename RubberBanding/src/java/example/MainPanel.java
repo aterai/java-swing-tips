@@ -158,7 +158,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
     private final Border dotBorder = new DotBorder(2,2,2,2);
     private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
     private final Point srcPoint = new Point();
-    public Path2D polygon = null;
+    public Path2D polygon;
     public RubberBandListCellRenderer() {
         super(new BorderLayout());
         icon.setOpaque(false);

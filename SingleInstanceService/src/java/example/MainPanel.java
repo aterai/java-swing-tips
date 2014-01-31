@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         try{
             SingleInstanceService singleInstanceService = (SingleInstanceService)ServiceManager.lookup("javax.jnlp.SingleInstanceService");
             singleInstanceService.addSingleInstanceListener(new SingleInstanceListener() {
-                private int count = 0;
+                private int count;
                 @Override public void newActivation(String[] args) {
                     //System.out.println(EventQueue.isDispatchThread());
                     EventQueue.invokeLater(new Runnable() {

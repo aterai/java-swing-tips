@@ -68,7 +68,7 @@ public class MainPanel extends JPanel {
 class AutomaticallyCloseListener implements HierarchyListener {
     private static final int SECONDS = 5;
     private final AtomicInteger atomicDown = new AtomicInteger(SECONDS);
-    private Timer timer = null;
+    private Timer timer;
     private final JTextArea textArea;
     public AutomaticallyCloseListener(JTextArea textArea) {
         this.textArea = textArea;

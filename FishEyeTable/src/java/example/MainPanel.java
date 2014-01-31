@@ -62,9 +62,9 @@ class FishEyeRowContext {
 class FishEyeTable extends JTable {
     private final List<FishEyeRowContext> fishEyeRowList;
     private final Font font_s;
-    private int prev_row = 0;
-    private int prev_height = 0;
-    private FishEyeTableHandler handler = null;
+    private int prev_row = -1;
+    private int prev_height;
+    private FishEyeTableHandler handler;
 
     public FishEyeTable(TableModel m) {
         super(m);
@@ -111,13 +111,17 @@ class FishEyeTable extends JTable {
     private class FishEyeTableHandler extends MouseAdapter implements ListSelectionListener {
         @Override public void mouseMoved(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
-            if(prev_row==row) { return; }
+            if(prev_row==row) {
+                return;
+            }
             initRowHeigth(prev_height, row);
             prev_row = row;
         }
         @Override public void mouseDragged(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
-            if(prev_row==row) { return; }
+            if(prev_row==row) {
+                return;
+            }
             initRowHeigth(prev_height, row);
             prev_row = row;
         }
@@ -127,7 +131,9 @@ class FishEyeTable extends JTable {
         @Override public void valueChanged(ListSelectionEvent e) {
             if(e.getValueIsAdjusting()) { return; }
             int row = getSelectedRow();
-            if(prev_row==row) { return; }
+            if(prev_row==row) {
+                return;
+            }
             initRowHeigth(prev_height, row);
             prev_row = row;
         }
@@ -220,7 +226,7 @@ class TestModel extends DefaultTableModel {
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
-    private int number = 0;
+    private int number;
     public void addTest(Test t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);

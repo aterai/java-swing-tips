@@ -154,7 +154,7 @@ class FileModel extends DefaultTableModel {
         new ColumnContext("Name",      String.class,  true),
         new ColumnContext("Full Path", String.class,  true)
     };
-    private int number = 0;
+    private int number;
     public void addFileName(FileName t) {
         Object[] obj = {number, t.getName(), t.getAbsolutePath()};
         super.addRow(obj);

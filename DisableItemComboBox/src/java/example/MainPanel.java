@@ -84,7 +84,7 @@ public class MainPanel extends JPanel {
 
 class MyComboBox extends JComboBox<String> {
     private final Set<Integer> disableIndexSet = new HashSet<>();
-    private boolean isDisableIndex = false;
+    private boolean isDisableIndex;
 
     public MyComboBox() {
         super();

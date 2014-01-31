@@ -14,8 +14,8 @@ public class MainPanel extends JPanel {
     private final DefaultMutableTreeNode root = makeTreeRoot();
     private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot()));
     private final TreeNodeComparator tnc = new TreeNodeComparator();
-    private int compare_count = 0;
-    private int swap_count = 0;
+    private int compare_count;
+    private int swap_count;
 
     public MainPanel() {
         super(new BorderLayout());

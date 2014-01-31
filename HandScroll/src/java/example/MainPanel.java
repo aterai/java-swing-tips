@@ -11,7 +11,7 @@ class MainPanel extends JPanel {
     private final JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
     private final JRadioButton r1    = new JRadioButton("scrollRectToVisible");
     private final JRadioButton r2    = new JRadioButton("setViewPosition");
-    private static boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
+    private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createHorizontalBox();
@@ -24,9 +24,11 @@ class MainPanel extends JPanel {
         //JViewport vport = scroll.getViewport();
         //JDK 1.7.0
         JViewport vport = new JViewport() {
-            private boolean flag = false;
+            private boolean flag;
             @Override public void revalidate() {
-                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) { return; }
+                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
+                    return;
+                }
                 super.revalidate();
             }
             @Override public void setViewPosition(Point p) {

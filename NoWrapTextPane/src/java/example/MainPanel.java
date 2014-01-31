@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static String text = null;
+    private static String text;
     private final JPanel panel = new JPanel(new GridLayout(2,1));
     //private final JTextPane   textPane;
     private final JEditorPane editorPane;

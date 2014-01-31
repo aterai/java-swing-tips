@@ -120,9 +120,9 @@ public class MainPanel extends JPanel {
 
 abstract class ExpansionPanel extends JPanel {
     private final EventListenerList listenerList = new EventListenerList();
-    private ExpansionEvent expansionEvent = null;
+    private ExpansionEvent expansionEvent;
     private final JScrollPane scroll;
-    private boolean openFlag = false;
+    private boolean openFlag;
 
     public ExpansionPanel(String title) {
         super(new BorderLayout());

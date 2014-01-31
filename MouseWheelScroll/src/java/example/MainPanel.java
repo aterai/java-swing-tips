@@ -8,7 +8,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private boolean isPressed = false;
+    private boolean isPressed;
     private final JLabel label = new JLabel();
     private final JScrollPane scroll = new JScrollPane(label);
     private final JScrollBar vBar = scroll.getVerticalScrollBar();

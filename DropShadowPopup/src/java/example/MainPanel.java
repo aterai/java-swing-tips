@@ -81,8 +81,8 @@ class MainPanel extends JPanel {
 //*
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int off = 4;
-    private BufferedImage shadow = null;
-    private Border inner = null;
+    private BufferedImage shadow;
+    private Border inner;
     @Override public boolean isOpaque() {
         return false;
     }

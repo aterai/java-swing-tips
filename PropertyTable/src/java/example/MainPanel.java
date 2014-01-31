@@ -97,7 +97,7 @@ public class MainPanel extends JPanel {
 }
 
 class DateEditor extends JSpinner implements TableCellEditor {
-    transient protected ChangeEvent changeEvent = null;
+    transient protected ChangeEvent changeEvent;
     private final JSpinner.DateEditor editor;
 
     public DateEditor() {
@@ -147,7 +147,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    //transient protected ChangeEvent changeEvent = null;
+    //transient protected ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

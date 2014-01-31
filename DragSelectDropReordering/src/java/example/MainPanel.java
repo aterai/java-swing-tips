@@ -121,7 +121,7 @@ class ReorderbleList extends JList<ListItem> {
     private final Color pcolor;
     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Polygon polygon = new Polygon();
-    private Point srcPoint = null;
+    private Point srcPoint;
 
     public ReorderbleList() {
         super();
@@ -261,9 +261,9 @@ class ReorderbleList extends JList<ListItem> {
 
 class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    private int[] indices = null;
-    private int addIndex  = -1; //Location where items were added
-    private int addCount  = 0;  //Number of items added.
+    private int[] indices;
+    private int addIndex = -1; //Location where items were added
+    private int addCount; //Number of items added.
 
     public ListItemTransferHandler() {
         super();

@@ -213,7 +213,7 @@ class WorkerModel extends DefaultTableModel {
         new ColumnContext("Progress", Integer.class, false)
     };
     private final ConcurrentMap<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
-    private int number = 0;
+    private int number;
     public void addProgressValue(ProgressValue t, SwingWorker worker) {
         Object[] obj = {number, t.getName(), t.getProgress()};
         super.addRow(obj);

@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
 class MyInternalFrame extends JInternalFrame {
     private static final int XOFFSET = 30;
     private static final int YOFFSET = 30;
-    private static int openFrameCount = 0;
+    private static int openFrameCount;
     public MyInternalFrame() {
         super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
         setSize(160, 100);

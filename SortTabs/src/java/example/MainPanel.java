@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     private static final String MENUITEM_CLOSEALL  = "Close all";
     private static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
     private static final String MENUITEM_SORT = "Sort";
-    private static int count = 0;
+    private static int count;
 
     private final JTabbedPane tab;
     private final AbstractAction closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE, null);
