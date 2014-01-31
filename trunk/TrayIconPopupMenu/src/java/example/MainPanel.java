@@ -136,13 +136,21 @@ class MainPanel extends JPanel {
         long pw = (long) p.x + (long) size.width;
         long ph = (long) p.y + (long) size.height;
 
-        if(pw > screenBounds.x + screenBounds.width)  { p.x -= size.width;  }
-        if(ph > screenBounds.y + screenBounds.height) { p.y -= size.height; }
+        if(pw > screenBounds.x + screenBounds.width)  {
+            p.x -= size.width;
+        }
+        if(ph > screenBounds.y + screenBounds.height) {
+            p.y -= size.height;
+        }
 
         // Change is made to the desired (X,Y) values, when the
         // PopupMenu is too tall OR too wide for the screen
-        if(p.x < screenBounds.x) { p.x = screenBounds.x; }
-        if(p.y < screenBounds.y) { p.y = screenBounds.y; }
+        if(p.x < screenBounds.x) {
+            p.x = screenBounds.x;
+        }
+        if(p.y < screenBounds.y) {
+            p.y = screenBounds.y;
+        }
 
         return p;
     }
@@ -156,41 +164,6 @@ class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         box.setBorder(BorderFactory.createEmptyBorder(5,25,5,25));
         return box;
-    }
-    private static class ChangeLookAndFeelAction extends AbstractAction {
-        private final String lnf;
-        private final JComponent[] list;
-        protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, JComponent... list) {
-            super(lnfe.toString());
-            this.list = list;
-            this.lnf = lnfe.getClassName();
-            this.setEnabled(isAvailableLookAndFeel(lnf));
-        }
-        private static boolean isAvailableLookAndFeel(String lnf) {
-            try{
-                Class lnfClass = Class.forName(lnf);
-                LookAndFeel newLnF = (LookAndFeel)(lnfClass.newInstance());
-                return newLnF.isSupportedLookAndFeel();
-            }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                return false;
-            }
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            try{
-                UIManager.setLookAndFeel(lnf);
-            }catch(ClassNotFoundException | InstantiationException |
-                   IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                ex.printStackTrace();
-                System.out.println("Failed loading L&F: " + lnf);
-            }
-            for(Frame f:Frame.getFrames()) {
-                SwingUtilities.updateComponentTreeUI(f);
-                f.pack();
-            }
-            for(JComponent c:list) {
-                SwingUtilities.updateComponentTreeUI(c);
-            }
-        }
     }
 
     public static void main(String[] args) {
@@ -234,5 +207,41 @@ enum LookAndFeelEnum {
     }
     public String getClassName() {
         return clazz;
+    }
+}
+
+class ChangeLookAndFeelAction extends AbstractAction {
+    private final String lnf;
+    private final JComponent[] list;
+    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, JComponent... list) {
+        super(lnfe.toString());
+        this.list = list;
+        this.lnf = lnfe.getClassName();
+        this.setEnabled(isAvailableLookAndFeel(lnf));
+    }
+    private static boolean isAvailableLookAndFeel(String lnf) {
+        try{
+            Class lnfClass = Class.forName(lnf);
+            LookAndFeel newLnF = (LookAndFeel)(lnfClass.newInstance());
+            return newLnF.isSupportedLookAndFeel();
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            return false;
+        }
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        try{
+            UIManager.setLookAndFeel(lnf);
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+            System.out.println("Failed loading L&F: " + lnf);
+        }
+        for(Frame f:Frame.getFrames()) {
+            SwingUtilities.updateComponentTreeUI(f);
+            f.pack();
+        }
+        for(JComponent c:list) {
+            SwingUtilities.updateComponentTreeUI(c);
+        }
     }
 }

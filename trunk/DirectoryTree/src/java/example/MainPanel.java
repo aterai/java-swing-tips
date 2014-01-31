@@ -79,7 +79,6 @@ class FolderSelectionListener implements TreeSelectionListener {
 //         }
 //         frame.getGlassPane().setVisible(true);
 
-        final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         //final TreePath path = e.getPath();
 
         if(!node.isLeaf()) {
@@ -90,6 +89,7 @@ class FolderSelectionListener implements TreeSelectionListener {
             return;
         }
 
+        final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         SwingWorker<String, File> worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 if(!tree.isDisplayable()) {

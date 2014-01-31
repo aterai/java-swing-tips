@@ -32,9 +32,11 @@ public final class MainPanel extends JPanel {
         panel2.setLayout(new FlowLayout() {
             @Override public void layoutContainer(Container target) {
                 synchronized(target.getTreeLock()) {
-                    Insets insets = target.getInsets();
                     int nmembers  = target.getComponentCount();
-                    if(nmembers<=0) { return; }
+                    if(nmembers<=0) {
+                        return;
+                    }
+                    Insets insets = target.getInsets();
                     int vgap = getVgap();
                     int hgap = getHgap();
                     int rowh = (target.getHeight() - insets.top - insets.bottom - vgap*2) / nmembers;

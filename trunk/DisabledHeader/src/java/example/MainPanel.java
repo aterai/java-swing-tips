@@ -54,7 +54,7 @@ public class MainPanel extends JPanel {
 
         add(new JScrollPane(table));
         add(cbox, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -79,13 +79,14 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TestModel extends SortableTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
-    private int number = 0;
+    private int number; // = 0;
     public void addTest(Test t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);
@@ -114,6 +115,7 @@ class TestModel extends SortableTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     public Test(String name, String comment) {

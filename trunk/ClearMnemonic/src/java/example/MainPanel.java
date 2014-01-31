@@ -23,7 +23,9 @@ public class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("setMnemonic(...)") {
             @Override public void actionPerformed(ActionEvent e) {
                 String str = textField.getText().trim();
-                str = str.isEmpty()?button.getText():str;
+                if(str.isEmpty()) {
+                    str = button.getText();
+                }
                 button.setMnemonic(str.charAt(0));
             }
         }));
@@ -35,7 +37,7 @@ public class MainPanel extends JPanel {
 
         add(button);
         add(p);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -66,8 +66,8 @@ public class MainPanel extends JPanel {
 //Java Swing Hacks - HACK #26: DnD JTree
 //http://www.oreilly.co.jp/books/4873112788/
 class DnDTree extends JTree {
-    private TreeNode dropTargetNode = null;
-    private TreeNode draggedNode = null;
+    private TreeNode dropTargetNode; // = null;
+    private TreeNode draggedNode; // = null;
 
     public DnDTree() {
         super();
@@ -170,9 +170,8 @@ class DnDTree extends JTree {
             //    draggingObject = getSelectionPath().getLastPathComponent();
             //}
             Object draggingObject  = getSelectionPath().getLastPathComponent();
-            DefaultTreeModel model = (DefaultTreeModel)getModel();
-            Point p = dtde.getLocation();
-            TreePath path = getPathForLocation(p.x, p.y);
+            Point pt = dtde.getLocation();
+            TreePath path = getPathForLocation(pt.x, pt.y);
             if(path==null || !(draggingObject instanceof MutableTreeNode)) {
                 dtde.dropComplete(false);
                 return;
@@ -180,14 +179,17 @@ class DnDTree extends JTree {
             //System.out.println("drop path is " + path);
             MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
             DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
             if(targetNode.equals(draggingNode)) {
                 //自分を自分にはドロップ不可
                 dtde.dropComplete(false);
                 return;
             }
             dtde.acceptDrop(DnDConstants.ACTION_MOVE);
+
+            DefaultTreeModel model = (DefaultTreeModel)getModel();
             model.removeNodeFromParent(draggingNode);
+
+            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
             if(parentNode!=null && targetNode.isLeaf()) {
                 model.insertNodeInto(draggingNode, parentNode, parentNode.getIndex(targetNode));
             }else{
