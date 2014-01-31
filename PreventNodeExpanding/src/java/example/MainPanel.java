@@ -75,7 +75,7 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
             File file = (File)node.getUserObject();
             String title = file.getName();
             System.out.println(title);
-            if(title.startsWith(".")) {
+            if(title.charAt(0)=='.') {
                 throw new ExpandVetoException(e, "Tree expansion cancelled");
             }
         }

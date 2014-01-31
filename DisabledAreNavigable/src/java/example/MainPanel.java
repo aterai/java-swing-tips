@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -52,24 +53,14 @@ public class MainPanel extends JPanel {
         m.add("About");
         mb.add(m);
 
-//         String[] menuKeys = {"File", "Edit", "Help"};
-//         for(String key: menuKeys) {
-//             JMenu m = createMenu(key);
-//             if(m != null) { mb.add(m); }
-//         }
         return mb;
     }
     private static JMenu createMenu(String key) {
         JMenu menu = new JMenu(key);
-        String[] itemKeys = {"Cut", "Copy", "Paste", "Delete"};
-        for(String k: itemKeys) {
+        for(String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
             JMenuItem m = new JMenuItem(k);
-            if(k.startsWith("C")) {
-                m.setEnabled(false);
-            }
-            if(m != null) {
-                menu.add(m);
-            }
+            m.setEnabled(false);
+            menu.add(m);
         }
         return menu;
     }
