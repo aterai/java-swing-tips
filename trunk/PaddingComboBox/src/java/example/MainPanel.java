@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
             c.gridx   = 0;
             c.insets  = new Insets(5, 5, 5, 0);
             c.anchor  = GridBagConstraints.WEST;
-            c.gridy   = i; p2.add(new JLabel(""+i+":"), c);
+            c.gridy   = i; p2.add(new JLabel(String.format("%d:", i)), c);
             c.gridx   = 1;
             c.weightx = 1.0;
             c.fill    = GridBagConstraints.HORIZONTAL;
