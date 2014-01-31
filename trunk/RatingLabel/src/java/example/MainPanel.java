@@ -11,7 +11,7 @@ import javax.swing.*;
 
 class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,2));
+        super(new GridLayout(2,2,4,4));
         //PI Diagona Icons Pack 1.0 - Download Royalty Free Icons and Stock Images For Web & Graphics Design
         //http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
         ImageIcon defaultIcon = new ImageIcon(getClass().getResource("31g.png"));
@@ -161,13 +161,14 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
 
 class SelectedImageFilter extends RGBImageFilter {
     private final float[] filter;
-    public SelectedImageFilter(float[] arrays) {
+    public SelectedImageFilter(float[] array) {
         super();
-        //filter = arrays;
-        filter = new float[arrays.length];
-        for(int i=0;i<arrays.length;i++) {
-            filter[i] = arrays[i];
-        }
+        //filter = array;
+        filter = new float[array.length];
+        System.arraycopy(array, 0, filter, 0, array.length);
+//         for(int i=0;i<arrays.length;i++) {
+//             filter[i] = arrays[i];
+//         }
         canFilterIndexColorModel = false;
     }
 //     @Override public int filterRGB(int x, int y, int argb) {

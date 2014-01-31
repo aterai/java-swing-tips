@@ -100,9 +100,10 @@ class TablePopupMenu extends JPopupMenu {
     public TablePopupMenu(String[] arrays) {
         super();
         columnNames = new String[arrays.length];
-        for(int i=0;i<arrays.length;i++) {
-            columnNames[i] = arrays[i];
-        }
+        System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
+//         for(int i=0;i<arrays.length;i++) {
+//             columnNames[i] = arrays[i];
+//         }
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
