@@ -109,7 +109,9 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     private static int DELAY = 4;
     private Timer animator;
     private final JComponent textArea;
-    private int txah = 0;
+    private int txah;
+    private int count;
+
     public LabelHandler(JComponent textArea) {
         super();
         this.textArea = textArea;
@@ -120,7 +122,6 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     private Timer createTimer(final int dir) {
         final double height = (double)textArea.getPreferredSize().height;
         return new Timer(DELAY, new ActionListener() {
-            private int count = 0;
             @Override public void actionPerformed(ActionEvent e) {
                 double a = AnimationUtil.easeInOut(count/height);
                 count += dir;
@@ -200,13 +201,13 @@ class AnimationUtil {
     //http://c2.com/cgi/wiki?IntegerPowerAlgorithm
     //http://www.osix.net/modules/article/?id=696
     public static double intpow(double da, int ib) {
-        double a = da;
         int b = ib;
-        double d = 1.0;
         if(b < 0) {
             //return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
+        double a = da;
+        double d = 1.0;
         for(; b > 0; a *= a, b >>>= 1) {
             if((b & 1) != 0) {
                 d *= a;
