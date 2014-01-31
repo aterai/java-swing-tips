@@ -49,11 +49,9 @@ public class MainPanel extends JPanel {
         p.removeAll();
         ButtonGroup bg = new ButtonGroup();
         TreePath tp = tree.getSelectionPath();
-        Object[] list = tp.getPath();
-        ArrayList<Object> al = new ArrayList<>();
-        for(int i=0;i<list.length;i++) {
-            al.add(list[i]);
-            TreePath cur = new TreePath(al.toArray());
+        Object[] paths = tp.getPath();
+        for(int i=0;i<paths.length;i++) {
+            TreePath cur = new TreePath(Arrays.copyOf(paths, i+1));
             AbstractButton b = makeButton(tree, cur, Color.ORANGE);
             p.add(b);
             bg.add(b);

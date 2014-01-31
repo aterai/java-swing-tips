@@ -180,7 +180,7 @@ class FileTransferHandler extends TransferHandler {
                     if(o instanceof File) {
                         File file = (File)o;
                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
-                        model.addRow(Arrays.asList(file, file, file).toArray());
+                        model.addRow(Collections.nCopies(3, file).toArray());
                     }
                 }
                 return true;
