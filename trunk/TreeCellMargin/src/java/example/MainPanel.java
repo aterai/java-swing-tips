@@ -211,7 +211,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 
         return p;
     }
-    @Override public void paint(Graphics g) {}
+    //@Override public void paint(Graphics g) {}
 }
 
 class DotBorder extends LineBorder {

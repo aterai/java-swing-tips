@@ -156,23 +156,23 @@ class Task extends SwingWorker<File, Message> {
     private final int intold;
     private final int intnew;
     public Task(File file, int intold, int intnew) {
+        super();
         this.file = file;
         this.intold = intold;
         this.intnew = intnew;
     }
     @Override public File doInBackground() throws IOException {
         if(!file.exists()) {
-            if(!file.createNewFile()) {
-                publish(new Message(file.getName()+"の生成に失敗しました。", MessageType.ERROR));
-                return null;
-            }else{
+            if(file.createNewFile()) {
                 //file.deleteOnExit();
                 publish(new Message(file.getName()+"を生成しました。", MessageType.REGULAR));
                 return file;
+            }else{
+                publish(new Message(file.getName()+"の生成に失敗しました。", MessageType.ERROR));
+                return null;
             }
         }
 
-        File testFile = null;
         String newfilename = file.getAbsolutePath();
         if(intold==0 && intnew==0) {
             if(file.delete()) {
@@ -182,7 +182,9 @@ class Task extends SwingWorker<File, Message> {
                 return null;
             }
         }
+
         boolean testFileFlag = false;
+        File testFile = null;
         for(int i=1;i<=intold;i++) {
             testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
             if(!testFile.exists()) {

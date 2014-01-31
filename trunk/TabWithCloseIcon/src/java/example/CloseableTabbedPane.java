@@ -146,7 +146,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      * Invoked when the mouse enters a component.
      * @param e the <code>MouseEvent</code>
      */
-    @Override public void mouseEntered(MouseEvent e) { }
+    @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
 
     /**
      * Invoked when the mouse exits a component.
@@ -174,7 +174,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      * Invoked when a mouse button has been released on a component.
      * @param e the <code>MouseEvent</code>
      */
-    @Override public void mouseReleased(MouseEvent e) { }
+    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
 
     /**
      * Invoked when a mouse button is pressed on a component and then dragged.
