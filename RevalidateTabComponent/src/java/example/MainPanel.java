@@ -110,7 +110,9 @@ class ButtonTabComponent extends JPanel {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
             if(i != -1) { pane.remove(i); }
         }
-        @Override public void updateUI() {}
+        @Override public void updateUI() {
+            //we don't want to update UI for this button
+        }
         @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();

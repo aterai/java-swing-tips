@@ -109,8 +109,9 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 
         return p;
     }
-    @Override public void paint(Graphics g) {}
+    //@Override public void paint(Graphics g) {}
 }
+
 class DotBorder extends LineBorder {
     private final Color borderSelectionColor;
     public DotBorder(Color color, Color borderSelectionColor) {
@@ -128,6 +129,7 @@ class DotBorder extends LineBorder {
         //g2.translate(-x,-y);
     }
 }
+
 class ColorIcon implements Icon {
     private final Color color;
     public ColorIcon(Color color) {

@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     private final Box centerBox = Box.createVerticalBox();
     private final Box southBox  = Box.createVerticalBox();
     private final List<ExpansionPanel> panelList = makeList();
-    private final ExpansionListener rl = new ExpansionListener() {
+    private final transient ExpansionListener rl = new ExpansionListener() {
         @Override public void expansionStateChanged(ExpansionEvent e) {
             initComps(panelList, (JComponent)e.getSource());
         }
