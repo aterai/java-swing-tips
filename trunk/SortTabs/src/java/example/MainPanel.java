@@ -320,11 +320,15 @@ class EditableTabbedPane extends JTabbedPane {
             super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-                @Override public boolean accept(Component c) { return c==editor; }
+                @Override public boolean accept(Component c) {
+                    return Objects.equals(c, editor);
+                }
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if(rect==null || rect.contains(me.getPoint())) { return; }
+                    if(rect==null || rect.contains(me.getPoint())) {
+                        return;
+                    }
                     renameTab();
                 }
             });

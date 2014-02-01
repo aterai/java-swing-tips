@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -248,7 +249,7 @@ class TableHeaderTabbedPane extends JPanel {
         header.setDefaultRenderer(new TableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
                 l.setText((String)val);
-                l.setSelected(val==selectedColumn || col==rolloverColumn);
+                l.setSelected(Objects.equals(val, selectedColumn) || Objects.equals(col, rolloverColumn));
                 return l;
 //                 JLabel l;
 //                 if(val==selectedColumn) {

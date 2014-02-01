@@ -212,7 +212,7 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
                 }
             }
         }
-        if(s!=shape) {
+        if(!Objects.equals(s, shape)) {
             shape = s;
             l.getView().repaint();
         }

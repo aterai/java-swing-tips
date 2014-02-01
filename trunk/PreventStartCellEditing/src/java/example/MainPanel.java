@@ -51,8 +51,8 @@ public class MainPanel extends JPanel {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JRadioButton rb = (JRadioButton)e.getSource();
-                table.putClientProperty("JTable.autoStartsEdit", rb!=r1 && rb!=r3);
-                ce.setClickCountToStart(rb==r2 || rb==r3 ? Integer.MAX_VALUE : 2);
+                table.putClientProperty("JTable.autoStartsEdit", !rb.equals(r1) && !rb.equals(r3));
+                ce.setClickCountToStart(rb.equals(r2) || rb.equals(r3) ? Integer.MAX_VALUE : 2);
             }
         };
         r0.setSelected(true);

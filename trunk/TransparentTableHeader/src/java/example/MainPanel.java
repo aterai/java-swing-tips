@@ -212,7 +212,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         //String literal pool
         //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
         boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-        if(flag && oldValue != newValue) {
+        if(flag && !Objects.equals(oldValue, newValue)) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

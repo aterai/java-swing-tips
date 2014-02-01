@@ -20,9 +20,9 @@ public class MainPanel extends JPanel {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JRadioButton rb = (JRadioButton)e.getSource();
-                if(rb==r2) {
+                if(rb.equals(r2)) {
                     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-                }else if(rb==r1) {
+                }else if(rb.equals(r1)) {
                     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
                 }else{
                     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);

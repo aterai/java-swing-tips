@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -103,7 +104,7 @@ public class MainPanel extends JPanel {
                 //String literal pool
                 //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
                 boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-                if(flag && oldValue != newValue) {
+                if(flag && !Objects.equals(oldValue, newValue)) {
                     super.firePropertyChange(propertyName, oldValue, newValue);
                 }
             }

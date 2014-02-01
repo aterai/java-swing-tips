@@ -192,7 +192,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         Enumeration breadth = root.breadthFirstEnumeration();
         while(breadth.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)breadth.nextElement();
-            if(root==node) {
+            if(Objects.equals(root, node)) {
                 continue;
             }
             CheckBoxNode check = (CheckBoxNode)node.getUserObject();

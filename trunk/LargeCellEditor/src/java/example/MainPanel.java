@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -154,7 +155,7 @@ class MyIconTable extends JTable {
         });
         panel.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
             @Override public boolean accept(Component c) {
-                return c==editor;
+                return Objects.equals(c, editor);
             }
         });
         panel.add(editor);
