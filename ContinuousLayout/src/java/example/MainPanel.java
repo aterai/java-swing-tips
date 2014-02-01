@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -35,7 +36,7 @@ public class MainPanel extends JPanel {
                 if(JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(e.getPropertyName())) {
                     JSplitPane source = (JSplitPane)e.getSource();
                     int location = ((Integer)e.getNewValue()).intValue();
-                    JSplitPane target = (source==leftPane)?rightPane:leftPane;
+                    JSplitPane target = Objects.equals(source, leftPane) ? rightPane : leftPane;
                     if(location != target.getDividerLocation()) {
                         target.setDividerLocation(location);
                     }

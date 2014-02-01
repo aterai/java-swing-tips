@@ -22,13 +22,13 @@ class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton)e.getSource();
                 Image image = null;
-                if(b==r2) {
+                if(b.equals(r2)) {
                     //JDK 1.5
                     image = new ImageIcon("").getImage();
-                }else if(b==r3) {
+                }else if(b.equals(r3)) {
                     //size=(1x1)
                     image = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB);
-                }else if(b==r4) {
+                }else if(b.equals(r4)) {
                     //16x16transparent.png
                     image = Toolkit.getDefaultToolkit().createImage(url);
                 }

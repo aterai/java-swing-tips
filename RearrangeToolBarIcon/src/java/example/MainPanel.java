@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
-import java.util.Arrays;
 import java.net.*;
+import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -81,7 +81,7 @@ class DragHandler extends MouseAdapter {
     private void startDragging(JComponent parent, Point pt) {
         Component c = parent.getComponentAt(pt);
         index = parent.getComponentZOrder(c);
-        if(c == parent || index < 0) {
+        if(Objects.equals(c, parent) || index < 0) {
             return;
         }
         draggingComonent = c;

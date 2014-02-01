@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -227,12 +227,12 @@ class EditMenuLayerUI extends LayerUI<JPanel> {
         Shape s = null;
         if(id==MouseEvent.MOUSE_ENTERED || id==MouseEvent.MOUSE_MOVED) {
             Component c = e.getComponent();
-            if(c!=lastButton) {
+            if(!Objects.equals(c, lastButton)) {
                 Rectangle r = c.getBounds();
                 s = new Line2D.Double(r.x+r.width, r.y, r.x+r.width, r.y+r.height-1);
             }
         }
-        if(s!=shape) {
+        if(!Objects.equals(s, shape)) {
             shape = s;
             l.getView().repaint();
         }

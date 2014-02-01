@@ -42,10 +42,10 @@ class MainPanel extends JPanel {
                 JRadioButton r = (JRadioButton)e.getSource();
                 Icon ascending  = null;
                 Icon descending = null;
-                if(r==r0) {
+                if(r.equals(r0)) {
                     ascending  = defaultAscendingSortIcon;
                     descending = defaultDescendingSortIcon;
-                }else if(r==r1) {
+                }else if(r.equals(r1)) {
                     ascending  = new IconUIResource(emptyIcon);
                     descending = new IconUIResource(emptyIcon);
                 }else{

@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
 
         frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
             @Override protected boolean accept(Component c) {
-                return (c==textarea)?false:super.accept(c);
+                return Objects.equals(c, textarea) ? false : super.accept(c);
             }
             @Override public Component getDefaultComponent(Container aContainer) {
                 return b;

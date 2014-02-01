@@ -7,8 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.*;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -140,7 +139,9 @@ class TableRowTransferHandler extends TransferHandler {
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try{
             Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
-            if(source==target) { addCount = values.length; }
+            if(Objects.equals(source, target)) {
+                addCount = values.length;
+            }
             for(int i=0;i<values.length;i++) {
                 int idx = index++;
                 model.insertRow(idx, (Vector)values[i]);

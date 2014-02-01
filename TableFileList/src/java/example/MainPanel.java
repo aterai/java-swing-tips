@@ -161,7 +161,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
             @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
                 //String literal pool
                 //if(propertyName == "labelFor" || ((propertyName=="icon" || propertyName == "foreground") && oldValue != newValue)) {
-                if("labelFor".equals(propertyName) || oldValue != newValue && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
+                if("labelFor".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
                     //System.out.println(propertyName);
                     super.firePropertyChange(propertyName, oldValue, newValue);
                 }
@@ -272,7 +272,7 @@ class MyLabel extends JLabel {
 //      if(propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(BasicHTML.propertyKey) != null)) {
         if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName) ||
-                oldValue != newValue && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
+                !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
