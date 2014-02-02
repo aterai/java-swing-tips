@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static int BUTTON_COLUMN = 3;
+    private static final int BUTTON_COLUMN = 3;
     private final TestModel model = new TestModel();
 //     private final JTable table = new JTable(model) {
 //         @Override public int rowAtPoint(Point pt) {

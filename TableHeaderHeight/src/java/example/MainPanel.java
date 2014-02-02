@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static int HEADER_HEIGHT = 32;
+    private static final int HEADER_HEIGHT = 32;
     private JTable makeTable() {
         JTable table = new JTable(new DefaultTableModel(2, 20));
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
