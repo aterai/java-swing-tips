@@ -14,7 +14,7 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
             }
         });
     }
-    public void addTab(String title, Component component) {
+    @Override public void addTab(String title, Component component) {
         this.addTab(title, component, null);
     }
     public void addTab(String title, Component component, Icon extraIcon) {
@@ -32,48 +32,51 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
     }
 }
 
+//Copid from
+//JTabbedPane with close Icons | Oracle Forums
+//https://community.oracle.com/thread/1356993
 /**
  * The class which generates the 'X' icon for the tabs. The constructor
  * accepts an icon which is extra to the 'X' icon, so you can have tabs
  * like in JBuilder. This value is null if no extra icon is required.
  */
 class CloseTabIcon implements Icon {
-    private int x_pos;
-    private int y_pos;
-    private static final int width  = 16;
-    private static final int height = 16;
     private final Icon fileIcon;
+    private final Dimension dim = new Dimension(16, 16);
+    private final Point pos = new Point();
+
     public CloseTabIcon(Icon fileIcon) {
         this.fileIcon=fileIcon;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        this.x_pos=x;
-        this.y_pos=y;
-        Color col=g.getColor();
+        pos.setLocation(x, y);
+        Color col = g.getColor();
         g.setColor(Color.BLACK);
-        int y_p=y+2;
-        g.drawLine(x+1, y_p, x+12, y_p);
-        g.drawLine(x+1, y_p+13, x+12, y_p+13);
-        g.drawLine(x, y_p+1, x, y_p+12);
-        g.drawLine(x+13, y_p+1, x+13, y_p+12);
-        g.drawLine(x+3, y_p+3, x+10, y_p+10);
-        g.drawLine(x+3, y_p+4, x+9, y_p+10);
-        g.drawLine(x+4, y_p+3, x+10, y_p+9);
-        g.drawLine(x+10, y_p+3, x+3, y_p+10);
-        g.drawLine(x+10, y_p+4, x+4, y_p+10);
-        g.drawLine(x+9, y_p+3, x+3, y_p+9);
+
+        int yp = y + 2;
+        g.drawLine(x+1,  yp,    x+12, yp);
+        g.drawLine(x+1,  yp+13, x+12, yp+13);
+        g.drawLine(x,    yp+1,  x,    yp+12);
+        g.drawLine(x+13, yp+1,  x+13, yp+12);
+        g.drawLine(x+3,  yp+3,  x+10, yp+10);
+        g.drawLine(x+3,  yp+4,  x+9,  yp+10);
+        g.drawLine(x+4,  yp+3,  x+10, yp+9);
+        g.drawLine(x+10, yp+3,  x+3,  yp+10);
+        g.drawLine(x+10, yp+4,  x+4,  yp+10);
+        g.drawLine(x+9,  yp+3,  x+3,  yp+9);
+
         g.setColor(col);
         if(fileIcon != null) {
-            fileIcon.paintIcon(c, g, x+width, y_p);
+            fileIcon.paintIcon(c, g, x+dim.width, yp);
         }
     }
     @Override public int getIconWidth() {
-        return fileIcon == null ? width : width + fileIcon.getIconWidth();
+        return fileIcon == null ? dim.width : dim.width + fileIcon.getIconWidth();
     }
     @Override public int getIconHeight() {
-        return height;
+        return dim.height;
     }
     public Rectangle getBounds() {
-        return new Rectangle(x_pos, y_pos, width, height);
+        return new Rectangle(pos, dim);
     }
 }

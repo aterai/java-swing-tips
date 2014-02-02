@@ -7,8 +7,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor", true);
-    private static ActionListener al = new ActionListener() {
+    private static final String TXT = "JMenu: hover(show popup automatically) on cursor";
+    private final JCheckBox check = new JCheckBox(TXT, true);
+    private final transient ActionListener al = new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             Toolkit.getDefaultToolkit().beep();
         }
@@ -19,7 +20,7 @@ public final class MainPanel extends JPanel {
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    public static JMenuBar makeMenuBar() {
+    public JMenuBar makeMenuBar() {
         JMenuBar bar = new JMenuBar();
 
         JMenu menu = new JMenu("File");
@@ -97,10 +98,11 @@ public final class MainPanel extends JPanel {
                IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
+        MainPanel mainPanel = new MainPanel();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.setJMenuBar(makeMenuBar());
+        frame.getContentPane().add(mainPanel);
+        frame.setJMenuBar(mainPanel.makeMenuBar());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

@@ -7,9 +7,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
+    private static final String LF = "\n";
     private MainPanel() {
         super(new BorderLayout());
-        String LF = "\n";
         StringBuffer buf = new StringBuffer();
         for(int i=0;i<100;i++) {
             String s = i + LF;

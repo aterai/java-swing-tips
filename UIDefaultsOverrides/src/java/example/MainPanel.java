@@ -15,24 +15,25 @@ import javax.swing.table.*;
 import javax.swing.plaf.nimbus.*;
 
 public class MainPanel extends JPanel {
+    private final String[] columnNames = {"A", "B", "C"};
+    private final Object[][] data = {
+        { "A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1" },
+        { "A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1" },
+        { "A2, Line1", "B2, Line1", "C2, Line1" }
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+        @Override public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    private final JTable table1 = new JTable(model);
+
     public MainPanel() {
         super(new GridLayout(2, 0));
 
-        String[] columnNames = {"A", "B", "C"};
-        Object[][] data = {
-            { "A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1" },
-            { "A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1" },
-            { "A2, Line1", "B2, Line1", "C2, Line1" }
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-            @Override public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        JTable table1 = new JTable(model);
         table1.setAutoCreateRowSorter(true);
         table1.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
 

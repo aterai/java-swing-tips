@@ -213,20 +213,21 @@ class AnimatedLabel extends JLabel implements ActionListener {
 }
 
 class AnimeIcon implements Icon {
-    private static final Color cColor = new Color(0.5f,0.5f,0.5f);
-    private static final double r  = 2.0d;
-    private static final double sx = 1.0d;
-    private static final double sy = 1.0d;
-    private static final Dimension dim = new Dimension((int)(r*8+sx*2), (int)(r*8+sy*2));
+    private static final Color ELLIPSE_COLOR = new Color(0.5f,0.5f,0.5f);
+    private static final double R  = 2.0d;
+    private static final double SX = 1.0d;
+    private static final double SY = 1.0d;
+    private static final int WIDTH  = (int)(R*8+SX*2);
+    private static final int HEIGHT = (int)(R*8+SY*2);
     private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
-        new Ellipse2D.Double(sx+3*r, sy+0*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+5*r, sy+1*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+6*r, sy+3*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+5*r, sy+5*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+3*r, sy+6*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+1*r, sy+5*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+0*r, sy+3*r, 2*r, 2*r),
-        new Ellipse2D.Double(sx+1*r, sy+1*r, 2*r, 2*r)));
+        new Ellipse2D.Double(SX+3*R, SY+0*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+5*R, SY+1*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+6*R, SY+3*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+5*R, SY+5*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+3*R, SY+6*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+1*R, SY+5*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+0*R, SY+3*R, 2*R, 2*R),
+        new Ellipse2D.Double(SX+1*R, SY+1*R, 2*R, 2*R)));
 
     private boolean isRunning;
     public void next() {
@@ -235,14 +236,12 @@ class AnimeIcon implements Icon {
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
-    @Override public int getIconWidth()  { return dim.width;  }
-    @Override public int getIconHeight() { return dim.height; }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(cColor);
+        g2.setColor(ELLIPSE_COLOR);
         g2.translate(x, y);
         int size = list.size();
         for(int i=0;i<size;i++) {
@@ -252,11 +251,17 @@ class AnimeIcon implements Icon {
         }
         g2.translate(-x, -y);
     }
+    @Override public int getIconWidth() {
+        return WIDTH;
+    }
+    @Override public int getIconHeight() {
+        return HEIGHT;
+    }
 }
 
 class AnimeIcon2 implements Icon {
-    private static final Color cColor = new Color(0.5f,0.8f,0.5f);
-    private final List<Shape> list = new ArrayList<Shape>();
+    private static final Color ELLIPSE_COLOR = new Color(0.5f,0.8f,0.5f);
+    private final List<Shape> list = new ArrayList<>();
     private final Dimension dim;
     private boolean isRunning;
     public AnimeIcon2() {
@@ -283,7 +288,7 @@ class AnimeIcon2 implements Icon {
         g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(cColor);
+        g2.setColor(ELLIPSE_COLOR);
         int xx = x + dim.width/2;
         int yy = y + dim.height/2;
         g2.translate(xx, yy);
@@ -306,7 +311,7 @@ class AnimeIcon2 implements Icon {
 }
 
 class AnimeIcon3 implements Icon {
-    private static final Color cColor = new Color(0.9f,0.7f,0.7f);
+    private static final Color ELLIPSE_COLOR = new Color(0.9f,0.7f,0.7f);
     private final List<Shape> list = new ArrayList<Shape>();
     private final Dimension dim;
     private boolean isRunning;
@@ -334,7 +339,7 @@ class AnimeIcon3 implements Icon {
         g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(cColor);
+        g2.setColor(ELLIPSE_COLOR);
         int xx = x + dim.width/2;
         int yy = y + dim.height/2;
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), xx, yy);
@@ -358,7 +363,7 @@ class AnimeIcon3 implements Icon {
 
 class AnimeIcon4 implements Icon {
     private static final int R = 4;
-    private static final Color cColor = new Color(0.5f,0.8f,0.5f);
+    private static final Color ELLIPSE_COLOR = new Color(0.5f,0.8f,0.5f);
     private final Dimension dim;
     private boolean isRunning;
     private final List<Shape> list = new ArrayList<Shape>();
@@ -391,7 +396,7 @@ class AnimeIcon4 implements Icon {
         g2.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(cColor);
+        g2.setColor(ELLIPSE_COLOR);
         int size = list.size();
         for(int i=0;i<size;i++) {
             float alpha = isRunning ? (i+1)/(float)size : .5f;

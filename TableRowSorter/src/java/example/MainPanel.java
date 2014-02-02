@@ -9,8 +9,8 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private static final String[] columnNames = {"String", "Integer", "Boolean"};
-    private static final Object[][] data = {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
@@ -70,7 +70,7 @@ public class MainPanel extends JPanel {
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

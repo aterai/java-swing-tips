@@ -6,8 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final Dimension preferredSize = new Dimension(320, 240);
     private static final String LF = "\n";
+    private final Dimension preferredSize = new Dimension(320, 240);
+
     public MainPanel() {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();

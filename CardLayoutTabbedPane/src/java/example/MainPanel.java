@@ -138,7 +138,7 @@ class CardLayoutTabbedPane extends JPanel {
 }
 
 class TabButton extends JRadioButton {
-    private static final String uiClassID = "TabViewButtonUI";
+    private static final String UI_CLASS_ID = "TabViewButtonUI";
     private Color textColor = Color.WHITE;
     private Color pressedTextColor = Color.WHITE.darker();
     private Color rolloverTextColor = Color.WHITE;
@@ -152,7 +152,7 @@ class TabButton extends JRadioButton {
         }
     }
     @Override public String getUIClassID() {
-        return uiClassID;
+        return UI_CLASS_ID;
     }
 //     @Override public void setUI(TabViewButtonUI ui) {
 //         super.setUI(ui);

@@ -11,11 +11,11 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public final class BarFactory {
-    private static final String imageSuffix  = "Image";
-    private static final String labelSuffix  = "Label";
-    private static final String actionSuffix = "Action";
-    private static final String tipSuffix    = "Tooltip";
-    private static final String mneSuffix    = "Mnemonic";
+    private static final String IMAGE_SUFFIX  = "Image";
+    private static final String LABEL_SUFFIX  = "Label";
+    private static final String ACTION_SUFFIX = "Action";
+    private static final String TIP_SUFFIX    = "Tooltip";
+    private static final String MNE_SUFFIX    = "Mnemonic";
 
     private final ResourceBundle resources;
 
@@ -34,18 +34,17 @@ public final class BarFactory {
                     Objects.requireNonNull(baseName, "baseName must not be null");
                     return Arrays.asList("properties");
                 }
-                @Override public ResourceBundle newBundle(String _baseName, Locale _locale, String _format, ClassLoader _loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-                    String baseName = Objects.requireNonNull(_baseName,  "baseName must not be null");
-                    Locale locale   = Objects.requireNonNull(_locale,    "locale must not be null");
-                    String format   = Objects.requireNonNull(_format,    "format must not be null");
-                    ClassLoader loader = Objects.requireNonNull(_loader, "baseName must not be null");
+                @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
                     ResourceBundle bundle = null;
                     if("properties".equals(format)) {
-                        String bundleName = toBundleName(baseName, locale);
-                        String resourceName = toResourceName(bundleName, format);
+                        String bundleName = toBundleName(
+                            Objects.requireNonNull(baseName, "baseName must not be null"),
+                            Objects.requireNonNull(locale,   "locale must not be null"));
+                        String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
                         InputStream stream = null;
+                        ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
                         if(reload) {
-                            URL url = loader.getResource(resourceName);
+                            URL url = cloader.getResource(resourceName);
                             if(url != null) {
                                 URLConnection connection = url.openConnection();
                                 if(connection != null) {
@@ -54,7 +53,7 @@ public final class BarFactory {
                                 }
                             }
                         }else{
-                            stream = loader.getResourceAsStream(resourceName);
+                            stream = cloader.getResourceAsStream(resourceName);
                         }
                         if(stream != null) {
                             //BufferedInputStream bis = new BufferedInputStream(stream);
@@ -76,8 +75,8 @@ public final class BarFactory {
         //actions   = act;
         //initActions();
     }
-    public BarFactory(ResourceBundle res_) {
-        resources = res_;
+    public BarFactory(ResourceBundle res) {
+        resources = res;
         //actions   = act;
         //initActions();
     }
@@ -148,10 +147,10 @@ public final class BarFactory {
     }
 
     private JButton createToolbarButton(String key) {
-        URL url = getResource(key + imageSuffix);
+        URL url = getResource(key + IMAGE_SUFFIX);
         JButton b;
         if(url==null) {
-            b = new JButton(getResourceString(key + labelSuffix)) {
+            b = new JButton(getResourceString(key + LABEL_SUFFIX)) {
                 @Override public float getAlignmentY() { return 0.5f; }
             };
         }else{
@@ -164,7 +163,7 @@ public final class BarFactory {
         b.setRequestFocusEnabled(false);
         b.setMargin(new Insets(1,1,1,1));
 
-        String astr = getResourceString(key + actionSuffix);
+        String astr = getResourceString(key + ACTION_SUFFIX);
         if(astr == null) {
             astr = key;
         }
@@ -176,7 +175,7 @@ public final class BarFactory {
             b.addActionListener(a);
         }
 
-        String tip = getResourceString(key + tipSuffix);
+        String tip = getResourceString(key + TIP_SUFFIX);
         //if(tip != null) {
         b.setToolTipText(tip);
         //}
@@ -207,9 +206,9 @@ public final class BarFactory {
 
     private JMenu createMenu(String key) {
         String[] itemKeys = tokenize(getResourceString(key));
-        String mitext = getResourceString(key + labelSuffix);
+        String mitext = getResourceString(key + LABEL_SUFFIX);
         JMenu menu = new JMenu(mitext);
-        String mn = getResourceString(key + mneSuffix);
+        String mn = getResourceString(key + MNE_SUFFIX);
         if(mn!=null) {
             String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
             if(tmp.length()==1) {
@@ -233,18 +232,18 @@ public final class BarFactory {
     }
 
     private JMenuItem createMenuItem(String cmd) {
-        String mitext = getResourceString(cmd + labelSuffix);
+        String mitext = getResourceString(cmd + LABEL_SUFFIX);
         JMenuItem mi = new JMenuItem(mitext);
-        URL url = getResource(cmd+imageSuffix);
+        URL url = getResource(cmd+IMAGE_SUFFIX);
         if(url!=null) {
             mi.setHorizontalTextPosition(JButton.RIGHT);
             mi.setIcon(new ImageIcon(url));
         }
-        String astr = getResourceString(cmd + actionSuffix);
+        String astr = getResourceString(cmd + ACTION_SUFFIX);
         if(astr == null) {
             astr = cmd;
         }
-        String mn = getResourceString(cmd + mneSuffix);
+        String mn = getResourceString(cmd + MNE_SUFFIX);
         //System.out.println(mn);
         if(mn!=null) {
             String tmp = mn.toUpperCase(Locale.ENGLISH).trim();

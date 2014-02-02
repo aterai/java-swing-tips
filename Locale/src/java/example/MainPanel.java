@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final Locale[] array = {
+    private static final Locale[] LOCALE_ARRAY = {
         Locale.ENGLISH,
         Locale.FRENCH,
         Locale.GERMAN,
@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
         Locale.CANADA,
         Locale.CANADA_FRENCH,
     };
-    private final JComboBox<Locale> combo = new JComboBox<Locale>(array);
+    private final JComboBox<Locale> combo = new JComboBox<>(LOCALE_ARRAY);
     private final JPanel panel = new JPanel(new BorderLayout(5, 5));
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {

@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final Color evenBGColor = new Color(225,255,225);
-    private static final Color oddBGColor  = new Color(255,255,255);
+    private static final Color EVEN_BGCOLOR = new Color(225,255,225);
+    private static final Color ODD_BGCOLOR  = new Color(255,255,255);
     private final JComboBox<String> combo01 = makeComboBox();
     private final JComboBox<String> combo02 = makeComboBox();
 
@@ -32,11 +32,11 @@ public class MainPanel extends JPanel {
 //             }
 //         });
         combo01.setSelectedIndex(0);
-        combo01.setBackground(evenBGColor);
+        combo01.setBackground(EVEN_BGCOLOR);
 
         JTextField field = (JTextField) combo02.getEditor().getEditorComponent();
         field.setOpaque(true);
-        field.setBackground(evenBGColor);
+        field.setBackground(EVEN_BGCOLOR);
         combo02.setEditable(true);
         combo02.setSelectedIndex(0);
 
@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
         return p;
     }
     private static Color getAlternateRowColor(int index) {
-        return (index%2==0)?evenBGColor:oddBGColor;
+        return (index%2==0) ? EVEN_BGCOLOR : ODD_BGCOLOR;
     }
     private static class AlternateRowColorListCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

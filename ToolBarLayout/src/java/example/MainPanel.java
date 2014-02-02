@@ -7,7 +7,7 @@ import java.net.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final String path = "/toolbarButtonGraphics/general/";
+    private static final String PATH = "/toolbarButtonGraphics/general/";
     private final JToolBar toolbar1 = new JToolBar("ToolBarButton");
     private final JToolBar toolbar2 = new JToolBar("JButton");
     public MainPanel() {
@@ -15,9 +15,9 @@ public class MainPanel extends JPanel {
         //toolbar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
         //toolbar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
 
-        URL url1 = getClass().getResource(path+"Copy24.gif");
-        URL url2 = getClass().getResource(path+"Cut24.gif");
-        URL url3 = getClass().getResource(path+"Help24.gif");
+        URL url1 = getClass().getResource(PATH+"Copy24.gif");
+        URL url2 = getClass().getResource(PATH+"Cut24.gif");
+        URL url3 = getClass().getResource(PATH+"Help24.gif");
 
         toolbar1.add(new JButton(new ImageIcon(url1)));
         toolbar1.add(new JButton(new ImageIcon(url2)));

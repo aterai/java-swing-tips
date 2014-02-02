@@ -96,7 +96,7 @@ class MainPanel extends JPanel {
 }
 
 // class ComponentTitledBorder implements Border, MouseListener, MouseMotionListener, SwingConstants {
-//     private static final int offset = 5;
+//     private static final int OFFSET = 5;
 //     private final Component comp;
 //     private final JComponent container;
 //     private final Border border;
@@ -122,7 +122,7 @@ class MainPanel extends JPanel {
 //         int temp = (insets.top-borderInsets.top)/2;
 //         border.paintBorder(c, g, x, y+temp, width, height-temp);
 //         Dimension size = comp.getPreferredSize();
-//         Rectangle rect = new Rectangle(offset, 0, size.width, size.height);
+//         Rectangle rect = new Rectangle(OFFSET, 0, size.width, size.height);
 //         SwingUtilities.paintComponent(g, comp, (Container)c, rect);
 //         comp.setBounds(rect);
 //     }

@@ -14,7 +14,7 @@ import javax.swing.border.*;
 
 class MainPanel extends JPanel {
     private static int openFrameCount;
-    private static final TexturePaint texture = makeTexturePaint();
+    private static final TexturePaint TEXTURE = makeTexturePaint();
     private final JDesktopPane desktop = new JDesktopPane();
 
     public MainPanel() {
@@ -34,7 +34,7 @@ class MainPanel extends JPanel {
         JPanel p3 = new JPanel() {
             @Override public void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
-                g2.setPaint(texture);
+                g2.setPaint(TEXTURE);
                 g2.fillRect(0,0,getWidth(),getHeight());
             }
         };

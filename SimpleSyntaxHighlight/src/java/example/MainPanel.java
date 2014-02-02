@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
-    private static final String operands = ".,";
+    private static final String OPERANDS = ".,";
     public SimpleSyntaxDocument() {
         super();
         Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
@@ -108,6 +108,6 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         return endOfToken + 1;
     }
     protected boolean isDelimiter(String character) {
-        return Character.isWhitespace(character.charAt(0)) || operands.indexOf(character)!=-1;
+        return Character.isWhitespace(character.charAt(0)) || OPERANDS.indexOf(character)!=-1;
     }
 }

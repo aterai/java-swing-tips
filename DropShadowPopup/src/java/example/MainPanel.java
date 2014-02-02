@@ -80,7 +80,7 @@ class MainPanel extends JPanel {
 }
 //*
 class DropShadowPopupMenu extends JPopupMenu {
-    private static final int off = 4;
+    private static final int OFFSET = 4;
     private BufferedImage shadow;
     private Border inner;
     @Override public boolean isOpaque() {
@@ -97,7 +97,7 @@ class DropShadowPopupMenu extends JPopupMenu {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.drawImage(shadow, 0, 0, this);
         g2.setPaint(getBackground()); //??? 1.7.0_03
-        g2.fillRect(0,0,getWidth()-off,getHeight()-off);
+        g2.fillRect(0,0,getWidth()-OFFSET,getHeight()-OFFSET);
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
@@ -113,8 +113,8 @@ class DropShadowPopupMenu extends JPopupMenu {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
             g2.setPaint(Color.BLACK);
-            for(int i=0;i<off;i++) {
-                g2.fillRoundRect(off, off, w-off-off+i, h-off-off+i, 4, 4);
+            for(int i=0;i<OFFSET;i++) {
+                g2.fillRoundRect(OFFSET, OFFSET, w-OFFSET-OFFSET+i, h-OFFSET-OFFSET+i, 4, 4);
             }
             g2.dispose();
         }
@@ -127,10 +127,10 @@ class DropShadowPopupMenu extends JPopupMenu {
         //System.out.println(r+" : "+p);
         //pointed out by sawshun
         Border outer;
-        if(r.contains(p.x, p.y, d.width+off, d.height+off)) {
-            outer = BorderFactory.createEmptyBorder(0,0,off,off);
+        if(r.contains(p.x, p.y, d.width+OFFSET, d.height+OFFSET)) {
+            outer = BorderFactory.createEmptyBorder(0,0,OFFSET,OFFSET);
         }else{
-            outer = new ShadowBorder(off,off,this,p);
+            outer = new ShadowBorder(OFFSET,OFFSET,this,p);
         }
         return BorderFactory.createCompoundBorder(outer, inner);
     }
@@ -185,7 +185,7 @@ class ShadowBorder extends AbstractBorder {
 /*/
 //JDK 1.7.0: JPopupMenu#setBackground(new Color(0,true));
 class DropShadowPopupMenu extends JPopupMenu {
-    private static final int off = 4;
+    private static final int OFFSET = 4;
     private BufferedImage shadow = null;
     private Border border = null;
     @Override public boolean isOpaque() {
@@ -201,13 +201,13 @@ class DropShadowPopupMenu extends JPopupMenu {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.drawImage(shadow, 0, 0, this);
         g2.setPaint(getBackground()); //??? 1.7.0_03
-        g2.fillRect(0,0,getWidth()-off,getHeight()-off);
+        g2.fillRect(0,0,getWidth()-OFFSET,getHeight()-OFFSET);
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
         if(border==null) {
             Border inner = getBorder();
-            Border outer = BorderFactory.createEmptyBorder(0, 0, off, off);
+            Border outer = BorderFactory.createEmptyBorder(0, 0, OFFSET, OFFSET);
             border = BorderFactory.createCompoundBorder(outer, inner);
         }
         setBorder(border);
@@ -219,8 +219,8 @@ class DropShadowPopupMenu extends JPopupMenu {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
             g2.setPaint(Color.BLACK);
-            for(int i=0;i<off;i++) {
-                g2.fillRoundRect(off, off, w-off-off+i, h-off-off+i, 4, 4);
+            for(int i=0;i<OFFSET;i++) {
+                g2.fillRoundRect(OFFSET, OFFSET, w-OFFSET-OFFSET+i, h-OFFSET-OFFSET+i, 4, 4);
             }
             g2.dispose();
         }

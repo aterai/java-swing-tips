@@ -8,12 +8,13 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private static final String dummy = "Hello";
+    private static final String DUMMY = "Hello";
     private final JTextArea textArea = new JTextArea();
-    private final JTextField textField1 = new JTextField(dummy);
-    private final JTextField textField2 = new JTextField(dummy);
-    private final JTextField textField3 = new JTextField(dummy);
-    private final JTextField textField4 = new JTextField(dummy);
+    private final JTextField textField1 = new JTextField(DUMMY);
+    private final JTextField textField2 = new JTextField(DUMMY);
+    private final JTextField textField3 = new JTextField(DUMMY);
+    private final JTextField textField4 = new JTextField(DUMMY);
+
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         textField3.addHierarchyListener(new HierarchyListener() {
@@ -23,7 +24,6 @@ public class MainPanel extends JPanel {
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
                             c.requestFocusInWindow();
-                            //or textField3.requestFocusInWindow();
                         }
                     });
                 }
@@ -33,7 +33,6 @@ public class MainPanel extends JPanel {
         textField4.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 e.getComponent().requestFocusInWindow();
-                //or textField4.requestFocusInWindow();
             }
             @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
@@ -47,7 +46,7 @@ public class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makePanel(String title, final JFrame frame, final JTextField textField) {
         JPanel p = new JPanel(new BorderLayout());
@@ -55,7 +54,9 @@ public class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("show") {
             @Override public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showConfirmDialog(frame, textField, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION) { textArea.setText(textField.getText()); }
+                if(result==JOptionPane.OK_OPTION) {
+                    textArea.setText(textField.getText());
+                }
             }
         }));
         return p;
@@ -78,7 +79,9 @@ public class MainPanel extends JPanel {
                 if(selectedValue instanceof Integer) {
                     result = ((Integer)selectedValue).intValue();
                 }
-                if(result==JOptionPane.OK_OPTION) { textArea.setText(textField.getText()); }
+                if(result==JOptionPane.OK_OPTION) {
+                    textArea.setText(textField.getText());
+                }
             }
         }));
         return p;

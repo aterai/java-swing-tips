@@ -9,9 +9,39 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
-    private MainPanel() {
+    private final TestModel model = new TestModel();
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if(isRowSelected(row)) {
+                c.setForeground(getSelectionForeground());
+                c.setBackground(getSelectionBackground());
+            }else{
+                c.setForeground(getForeground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+            }
+            return c;
+        }
+    };
+    private final JCheckBox cbox = new JCheckBox("setEnabledAt(2, false)");
+
+    public MainPanel() {
         super(new BorderLayout());
-        TestModel model = new TestModel();
+        JTableHeader header = table.getTableHeader();
+
+        final SortButtonRenderer hrenderer = new SortButtonRenderer(header);
+        hrenderer.setEnabledAt(0, false);
+
+        header.setDefaultRenderer(hrenderer);
+        header.addMouseListener(new HeaderMouseListener());
+        table.setRowSelectionAllowed(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        table.getTableHeader().setReorderingAllowed(false);
+
+        TableColumn col = table.getColumnModel().getColumn(0);
+        col.setMinWidth(80);
+        col.setMaxWidth(80);
+
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
         model.addTest(new Test("Name d", "ee"));
@@ -20,31 +50,6 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("Name a", "ff"));
         model.addTest(new Test("Name 0", "Test aa"));
 
-        JTable table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
-                }
-                return c;
-            }
-        };
-        table.setRowSelectionAllowed(true);
-        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        table.getTableHeader().setReorderingAllowed(false);
-
-        final SortButtonRenderer hrenderer = new SortButtonRenderer(table.getTableHeader());
-        hrenderer.setEnabledAt(0, false);
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(80);
-        col.setMaxWidth(80);
-
-        JCheckBox cbox = new JCheckBox("setEnabledAt(2, false)");
         cbox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent ie) {
                 JCheckBox box = (JCheckBox)ie.getSource();
@@ -81,12 +86,12 @@ public class MainPanel extends JPanel {
 }
 
 class TestModel extends SortableTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
     };
-    private int number; // = 0;
+    private int number;
     public void addTest(Test t) {
         Object[] obj = {number, t.getName(), t.getComment()};
         super.addRow(obj);

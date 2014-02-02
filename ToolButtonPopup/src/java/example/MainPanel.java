@@ -77,8 +77,9 @@ class MenuArrowIcon implements Icon {
     @Override public int getIconWidth()  { return 9; }
     @Override public int getIconHeight() { return 9; }
 }
+
 class MenuToggleButton extends JToggleButton {
-    private static final Icon i = new MenuArrowIcon();
+    private static final Icon ARROW_ICON = new MenuArrowIcon();
     protected JPopupMenu pop;
 
     public MenuToggleButton() {
@@ -95,13 +96,15 @@ class MenuToggleButton extends JToggleButton {
         Action a = new AbstractAction(text) {
             @Override public void actionPerformed(ActionEvent ae) {
                 MenuToggleButton b = (MenuToggleButton)ae.getSource();
-                if(pop!=null) { pop.show(b, 0, b.getHeight()); }
+                if(pop!=null) {
+                    pop.show(b, 0, b.getHeight());
+                }
             }
         };
         a.putValue(Action.SMALL_ICON, icon);
         setAction(a);
         setFocusable(false);
-        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+i.getIconWidth()));
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+ARROW_ICON.getIconWidth()));
     }
     public void setPopupMenu(final JPopupMenu pop) {
         this.pop = pop;
@@ -118,7 +121,7 @@ class MenuToggleButton extends JToggleButton {
         Dimension dim = getSize();
         Insets ins = getInsets();
         int x = dim.width-ins.right;
-        int y = ins.top+(dim.height-ins.top-ins.bottom-i.getIconHeight())/2;
-        i.paintIcon(this, g, x, y);
+        int y = ins.top+(dim.height-ins.top-ins.bottom-ARROW_ICON.getIconHeight())/2;
+        ARROW_ICON.paintIcon(this, g, x, y);
     }
 }

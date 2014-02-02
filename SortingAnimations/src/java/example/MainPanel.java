@@ -74,22 +74,22 @@ public class MainPanel extends JPanel {
     private final JPanel panel = new JPanel() {
         @Override public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            //g.setColor(drawColor);
+            //g.setColor(DRAW_COLOR);
             for(int i = 0; i < number; i++) {
                 int px = (int) (MINX + factorx*i);
                 int py = MAXY - (int)(factory*array.get(i));
-                g.setColor((i%5==0)?Color.RED:drawColor);
+                g.setColor((i%5==0)?Color.RED:DRAW_COLOR);
                 g.drawOval(px, py, 4, 4);
             }
         }
     };
 
-    private static final Color drawColor = Color.BLACK;
-    private static final Color backColor = Color.WHITE;
+    private static final Color DRAW_COLOR = Color.BLACK;
+    private static final Color BACK_COLOR = Color.WHITE;
     private static final int MINX = 5,  MAXX = 315;
     private static final int MINY = 5,  MAXY = 175;
     private static final int MINN = 50, MAXN = 500;;
-    private static final List<Double> array = new ArrayList<>(MAXN);
+    private final List<Double> array = new ArrayList<>(MAXN);
     private int number = 150;
     private double factorx, factory;
 
@@ -108,7 +108,7 @@ public class MainPanel extends JPanel {
         };
         distributionsChoices.addItemListener(il);
         algorithmsChoices.addItemListener(il);
-        panel.setBackground(backColor);
+        panel.setBackground(BACK_COLOR);
         Box box1 = Box.createHorizontalBox();
         box1.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         box1.add(new JLabel(" Number:"));    box1.add(spinner);

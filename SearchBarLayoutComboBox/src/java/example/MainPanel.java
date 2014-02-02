@@ -6,19 +6,14 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(4,1,5,5));
         setBorder(BorderFactory.createEmptyBorder(5,20,5,20));
         p.add(new JLabel("Default JComboBox"));
         p.add(new JComboBox<String>(new String[] {"Google", "Yahoo!", "Bing"}));
         p.add(new JLabel("SearchBar JComboBox"));
-        p.add(makeSearchBar());
-        //p.add(new SearchBarComboBox(makeModel()));
-        add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
-    }
-    private JComboBox<SearchEngine> makeSearchBar() {
+
         DefaultComboBoxModel<SearchEngine> model = new DefaultComboBoxModel<SearchEngine>() {
             @Override public void setSelectedItem(Object anObject) {
                 //System.out.println("model: "+anObject);
@@ -44,7 +39,11 @@ public class MainPanel extends JPanel {
 //                 combo.getEditor().setItem("java swing");
 //             }
 //         });
-        return combo;
+
+        p.add(combo);
+        //p.add(new SearchBarComboBox(makeModel()));
+        add(p, BorderLayout.NORTH);
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -86,9 +85,9 @@ class SearchEngine {
 }
 
 class JSearchBar extends JComboBox<SearchEngine> {
-    private static final String uiClassID = "SearchBarComboBoxUI";
+    private static final String UI_CLASS_ID = "SearchBarComboBoxUI";
     @Override public String getUIClassID() {
-        return uiClassID;
+        return UI_CLASS_ID;
     }
     @Override public SearchBarComboBoxUI getUI() {
         return (SearchBarComboBoxUI)ui;

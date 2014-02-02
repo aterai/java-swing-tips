@@ -132,7 +132,7 @@ class DnDTree extends JTree {
             //Object draggingObject;
             //if(!isWebStart()) {
             //    try{
-            //        draggingObject = dtde.getTransferable().getTransferData(localObjectFlavor);
+            //        draggingObject = dtde.getTransferable().getTransferData(LOCAL_OBJECT_FLAVOR);
             //    }catch(Exception ex) {
             //        rejectDrag(dtde);
             //        return;
@@ -161,7 +161,7 @@ class DnDTree extends JTree {
             //System.out.println("drop");
             //if(!isWebStart()) {
             //    try{
-            //        draggingObject = dtde.getTransferable().getTransferData(localObjectFlavor);
+            //        draggingObject = dtde.getTransferable().getTransferData(LOCAL_OBJECT_FLAVOR);
             //    }catch(Exception ex) {
             //        rejectDrag(dtde);
             //        return;
@@ -230,8 +230,8 @@ class DnDTree extends JTree {
 
 class RJLTransferable implements Transferable {
     public static final String NAME = "TREE-TEST";
-    private static final DataFlavor localObjectFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-    //private static final DataFlavor[] supportedFlavors = { localObjectFlavor };
+    private static final DataFlavor LOCAL_OBJECT_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+    //private static final DataFlavor[] supportedFlavors = { LOCAL_OBJECT_FLAVOR };
     private final Object object;
     public RJLTransferable(Object o) {
         object = o;
@@ -245,9 +245,9 @@ class RJLTransferable implements Transferable {
      }
     @Override public boolean isDataFlavorSupported(DataFlavor df) {
         return df.getHumanPresentableName().equals(NAME);
-        //return (df.equals(localObjectFlavor));
+        //return (df.equals(LOCAL_OBJECT_FLAVOR));
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] { localObjectFlavor };
+        return new DataFlavor[] { LOCAL_OBJECT_FLAVOR };
     }
 }

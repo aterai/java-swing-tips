@@ -7,16 +7,11 @@ import javax.swing.*;
 import javax.swing.text.Position;
 
 public final class MainPanel extends JPanel {
-    private static final JCheckBox check = new JCheckBox("<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select");
-    private MainPanel() {
+    private static final String TXT = "<html>The alphanumeric keys are pressed:<br />&nbsp;&nbsp;&nbsp;&nbsp;Nothing to select";
+    private final JCheckBox check = new JCheckBox(TXT);
+    public MainPanel() {
         super(new BorderLayout(5, 5));
 
-        add(new JScrollPane(makeList()));
-        add(check, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private static JList<String> makeList() {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addElement("aaaaaaaaaaaa");
         model.addElement("abbbbbbbbbbbbbbbbbb");
@@ -29,10 +24,14 @@ public final class MainPanel extends JPanel {
 
         JList<String> list = new JList<String>(model) {
             @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
-                return check.isSelected()?-1:super.getNextMatch(prefix, startIndex, bias);
+                return check.isSelected() ? -1 : super.getNextMatch(prefix, startIndex, bias);
             }
         };
-        return list;
+
+        add(new JScrollPane(list));
+        add(check, BorderLayout.NORTH);
+        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

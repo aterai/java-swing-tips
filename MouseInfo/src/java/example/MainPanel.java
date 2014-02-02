@@ -7,11 +7,12 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel implements ActionListener, HierarchyListener {
-    private static final Dimension panelDim = new Dimension(320, 240);
-    private final Racket racket = new Racket(panelDim);
+    private final Dimension panelDim = new Dimension(320, 240);
+    private final Racket racket   = new Racket(panelDim);
     private final JLabel absolute = new JLabel("absolute:");
     private final JLabel relative = new JLabel("relative:");
     private final Timer timer;
+
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();

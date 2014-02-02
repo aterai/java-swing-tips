@@ -13,7 +13,6 @@ import javax.swing.plaf.metal.MetalScrollBarUI;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public class MainPanel extends JPanel {
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private static final String PATTERN = "Swing";
     private static final String INITTXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
@@ -30,6 +29,7 @@ public class MainPanel extends JPanel {
       " so you can test yourself on what you've learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea   = new JTextArea();
     private final JScrollPane scroll   = new JScrollPane(textArea);
     private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);

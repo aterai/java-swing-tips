@@ -10,21 +10,22 @@ import javax.swing.table.*;
 import javax.swing.text.Position;
 
 public class MainPanel extends JPanel {
-    private static final Dimension preferredSize = new Dimension(320, 240);
+    private final Dimension preferredSize = new Dimension(320, 240);
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"aaa", 15, true}, {"bbb", 6, false},
+        {"abc", 92, true}, {"Bbb", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"aaa", 15, true}, {"bbb", 6, false},
-            {"abc", 92, true}, {"Bbb", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        JTable table = new JTable(model);
         table.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
         table.setAutoCreateRowSorter(true);
         table.addKeyListener(new TableNextMatchKeyHandler());

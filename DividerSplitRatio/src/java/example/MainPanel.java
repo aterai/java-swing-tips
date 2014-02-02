@@ -45,10 +45,10 @@ public class MainPanel extends JPanel {
 }
 
 class SplitPaneWrapper extends JPanel {
-    private final JSplitPane sp;
+    private final JSplitPane splitPane;
+    private final JTextArea log = new JTextArea();
     private boolean flag = true;
-    private int prev_state = Frame.NORMAL;
-    private static final JTextArea log = new JTextArea();
+    private int prevState = Frame.NORMAL;
 //     private final JSplitPane splitPane = new JSplitPane() {
 //         @Override public void setDividerLocation(double proportionalLocation) {
 //             if(proportionalLocation < 0.0 || proportionalLocation > 1.0) {
@@ -73,15 +73,22 @@ class SplitPaneWrapper extends JPanel {
 // //         }
 //     };
     public SplitPaneWrapper() {
-        this(new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(log), new JScrollPane(new JTree())));
-    }
-    public SplitPaneWrapper(JSplitPane splitPane) {
         super(new BorderLayout());
-        this.sp = splitPane;
+        this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(log), new JScrollPane(new JTree()));
+        add(splitPane);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                splitPane.setDividerLocation(0.5);
+            }
+        });
+    }
+    public SplitPaneWrapper(JSplitPane sp) {
+        super(new BorderLayout());
+        this.splitPane = sp;
         add(sp);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                sp.setDividerLocation(0.5);
+                splitPane.setDividerLocation(0.5);
             }
         });
     }
@@ -95,20 +102,20 @@ class SplitPaneWrapper extends JPanel {
     }
     @Override public void doLayout() {
         if(flag) {
-            int size = getOrientedSize(sp);
-            final double proportionalLocation = sp.getDividerLocation()/(double)size;
+            int size = getOrientedSize(splitPane);
+            final double proportionalLocation = splitPane.getDividerLocation()/(double)size;
             super.doLayout();
-            int state = ((Frame)SwingUtilities.getWindowAncestor(sp)).getExtendedState();
-            if(sp.isShowing() && state!=prev_state) {
+            int state = ((Frame)SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
+            if(splitPane.isShowing() && state!=prevState) {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        int s = getOrientedSize(sp);
+                        int s = getOrientedSize(splitPane);
                         int iv = (int)Math.round(s * proportionalLocation);
                         log.append(String.format("DividerLocation: %d%n", iv));
-                        sp.setDividerLocation(iv);
+                        splitPane.setDividerLocation(iv);
                     }
                 });
-                prev_state = state;
+                prevState = state;
             }
         }else{
             super.doLayout();

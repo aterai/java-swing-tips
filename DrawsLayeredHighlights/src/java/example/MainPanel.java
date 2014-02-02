@@ -10,6 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
+    private static final Color WARNING_COLOR = new Color(255, 200, 200);
     private static final String INITTXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
@@ -25,8 +26,7 @@ public class MainPanel extends JPanel {
       " so you can test yourself on what you've learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private static final Color warningColor = new Color(255, 200, 200);
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JCheckBox check    = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);
     private final JTextField field   = new JTextField("Swing");
     private final JTextArea textArea = new JTextArea(INITTXT);
@@ -105,7 +105,7 @@ public class MainPanel extends JPanel {
             }
         }catch(BadLocationException e) {
             //e.printStackTrace();
-            field.setBackground(warningColor);
+            field.setBackground(WARNING_COLOR);
         }
         repaint();
     }

@@ -75,12 +75,6 @@ public final class MainPanel extends JPanel {
 //         setTabComponentAt(getTabCount()-1, tab);
 //     }
 //     private static class CloseTabIcon implements Icon {
-//         private int width;
-//         private int height;
-//         public CloseTabIcon() {
-//             width  = 16;
-//             height = 16;
-//         }
 //         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //             g.translate(x, y);
 //             g.setColor(Color.BLACK);
@@ -93,13 +87,10 @@ public final class MainPanel extends JPanel {
 //             g.translate(-x, -y);
 //         }
 //         @Override public int getIconWidth() {
-//             return width;
+//             return 16;
 //         }
 //         @Override public int getIconHeight() {
-//             return height;
+//             return 16;
 //         }
-// //         @Override public Rectangle getBounds() {
-// //             return new Rectangle(0, 0, width, height);
-// //         }
 //     }
 // }

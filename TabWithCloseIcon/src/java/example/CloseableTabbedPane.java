@@ -7,8 +7,12 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
+//import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
+
+//Copid from
+//JTabbedPane with close Icons | Oracle Forums
+//https://community.oracle.com/thread/1356993
 
 /**
  * A JTabbedPane which has a close ('X') icon on each tab.
@@ -73,9 +77,10 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        if(getUI() instanceof MetalTabbedPaneUI) {
-            setUI(new CloseableMetalTabbedPaneUI(horizontalTextPosition));
-        }else if(getUI() instanceof WindowsTabbedPaneUI) {
+//         if(getUI() instanceof MetalTabbedPaneUI) {
+//             setUI(new CloseableMetalTabbedPaneUI(horizontalTextPosition));
+//         }else
+        if(getUI() instanceof WindowsTabbedPaneUI) {
             setUI(new CloseableWindowsTabbedPaneUI(horizontalTextPosition));
         }else{
             setUI(new CloseableTabbedPaneUI(horizontalTextPosition));
@@ -315,16 +320,16 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      * accepts an icon which is extra to the 'X' icon, so you can have tabs
      * like in JBuilder. This value is null if no extra icon is required.
      */
-    class CloseTabIcon implements Icon {
+    private class CloseTabIcon implements Icon {
         /**
          * the x position of the icon
          */
-        private int x_pos;
+        private int xpos;
 
         /**
          * the y position of the icon
          */
-        private int y_pos;
+        private int ypos;
 
         /**
          * the width the icon
@@ -344,12 +349,12 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
         /**
          * true whether the mouse is over this icon, false otherwise
          */
-        private boolean mouseover;
+        public boolean mouseover;
 
         /**
          * true whether the mouse is pressed on this icon, false otherwise
          */
-        private boolean mousepressed;
+        public boolean mousepressed;
 
         /**
          * Creates a new instance of <code>CloseTabIcon</code>
@@ -357,8 +362,8 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          */
         public CloseTabIcon(Icon fileIcon) {
             this.fileIcon = fileIcon;
-            width  = 16;
-            height = 16;
+            this.width = 16;
+            this.height = 16;
         }
 
         /**
@@ -372,57 +377,57 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          */
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             boolean doPaintCloseIcon = true;
-//             try{
-                // JComponent.putClientProperty("isClosable", new Boolean(false));
-                JTabbedPane tabbedpane = (JTabbedPane) c;
-                int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
-                JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
-                Object prop = curPanel.getClientProperty("isClosable");
-                if(prop != null) {
-                    doPaintCloseIcon = ((Boolean)prop).booleanValue();
-                }
-//             }catch(Exception ignored) {
-//                 /*Could probably be a ClassCastException*/
-//                 ignored.printStackTrace();
-//             }
+            // try{
+            //     JComponent.putClientProperty("isClosable", new Boolean(false));
+            JTabbedPane tabbedpane = (JTabbedPane) c;
+            int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
+            JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
+            Object prop = curPanel.getClientProperty("isClosable");
+            if(prop != null) {
+                doPaintCloseIcon = ((Boolean)prop).booleanValue();
+            }
+            //}catch(Exception ignored) {
+            //    /*Could probably be a ClassCastException*/
+            //    ignored.printStackTrace();
+            //}
             if(doPaintCloseIcon) {
-                x_pos = x;
-                y_pos = y;
-                int y_p = y + 1;
+                xpos = x;
+                ypos = y;
+                int yp = y + 1;
 
                 if(normalCloseIcon != null && !mouseover) {
-                    normalCloseIcon.paintIcon(c, g, x, y_p);
+                    normalCloseIcon.paintIcon(c, g, x, yp);
                 }else if(hooverCloseIcon != null && mouseover && !mousepressed) {
-                    hooverCloseIcon.paintIcon(c, g, x, y_p);
+                    hooverCloseIcon.paintIcon(c, g, x, yp);
                 }else if(pressedCloseIcon != null && mousepressed) {
-                    pressedCloseIcon.paintIcon(c, g, x, y_p);
+                    pressedCloseIcon.paintIcon(c, g, x, yp);
                 }else{
-                    y_p++;
+                    yp++;
 
                     Color col = g.getColor();
 
                     if(mousepressed && mouseover) {
                         g.setColor(Color.WHITE);
-                        g.fillRect(x+1, y_p, 12, 13);
+                        g.fillRect(x+1, yp, 12, 13);
                     }
 
                     g.setColor(Color.BLACK);
-                    g.drawLine(x+1, y_p, x+12, y_p);
-                    g.drawLine(x+1, y_p+13, x+12, y_p+13);
-                    g.drawLine(x, y_p+1, x, y_p+12);
-                    g.drawLine(x+13, y_p+1, x+13, y_p+12);
-                    g.drawLine(x+3, y_p+3, x+10, y_p+10);
+                    g.drawLine(x+1,  yp,    x+12, yp);
+                    g.drawLine(x+1,  yp+13, x+12, yp+13);
+                    g.drawLine(x,    yp+1,  x,    yp+12);
+                    g.drawLine(x+13, yp+1,  x+13, yp+12);
+                    g.drawLine(x+3,  yp+3,  x+10, yp+10);
                     if(mouseover) {
                         g.setColor(Color.GRAY);
                     }
-                    g.drawLine(x+3, y_p+4, x+9, y_p+10);
-                    g.drawLine(x+4, y_p+3, x+10, y_p+9);
-                    g.drawLine(x+10, y_p+3, x+3, y_p+10);
-                    g.drawLine(x+10, y_p+4, x+4, y_p+10);
-                    g.drawLine(x+9, y_p+3, x+3, y_p+9);
+                    g.drawLine(x+3,  yp+4, x+9,  yp+10);
+                    g.drawLine(x+4,  yp+3, x+10, yp+9);
+                    g.drawLine(x+10, yp+3, x+3,  yp+10);
+                    g.drawLine(x+10, yp+4, x+4,  yp+10);
+                    g.drawLine(x+9,  yp+3, x+3,  yp+9);
                     g.setColor(col);
                     if(fileIcon != null) {
-                        fileIcon.paintIcon(c, g, x+width, y_p);
+                        fileIcon.paintIcon(c, g, x+width, yp);
                     }
                 }
             }
@@ -451,236 +456,15 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
          * @return a rectangle indicating this icon's bounds
          */
         public Rectangle getBounds() {
-            return new Rectangle(x_pos, y_pos, width, height);
+            return new Rectangle(xpos, ypos, width, height);
         }
-    }
-
-    static class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
-        /**
-         * the horizontal position of the text
-         */
-        private int horizontalTextPosition = SwingUtilities.LEFT;
-
-        /**
-         * Creates a new instance of <code>CloseableTabbedPaneUI</code>
-         */
-        public CloseableWindowsTabbedPaneUI() {
-            super();
-        }
-
-        /**
-         * Creates a new instance of <code>CloseableTabbedPaneUI</code>
-         * @param horizontalTextPosition the horizontal position of the text (e.g.
-         * SwingUtilities.TRAILING or SwingUtilities.LEFT)
-         */
-        public CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
-            super();
-            this.horizontalTextPosition = horizontalTextPosition;
-        }
-
-        /**
-         * Layouts the label
-         * @param tabPlacement the placement of the tabs
-         * @param metrics the font metrics
-         * @param tabIndex the index of the tab
-         * @param title the title of the tab
-         * @param icon the icon of the tab
-         * @param tabRect the tab boundaries
-         * @param iconRect the icon boundaries
-         * @param textRect the text boundaries
-         * @param isSelected true whether the tab is selected, false otherwise
-         */
-        protected void layoutLabel(int tabPlacement, FontMetrics metrics,
-                                   int tabIndex, String title, Icon icon,
-                                   Rectangle tabRect, Rectangle iconRect,
-                                   Rectangle textRect, boolean isSelected) {
-
-            textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
-
-            javax.swing.text.View v = getTextViewForTab(tabIndex);
-            if(v != null) {
-                putHtmlClientProperty(tabPane, v);
-            }
-
-            SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                                               metrics, title, icon,
-                                               SwingUtilities.CENTER,
-                                               SwingUtilities.CENTER,
-                                               SwingUtilities.CENTER,
-                                               //SwingUtilities.TRAILING,
-                                               horizontalTextPosition,
-                                               tabRect,
-                                               iconRect,
-                                               textRect,
-                                               textIconGap + 2);
-
-            putHtmlClientProperty(tabPane, null);
-
-            int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-            int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-            iconRect.x += xNudge;
-            iconRect.y += yNudge;
-            textRect.x += xNudge;
-            textRect.y += yNudge;
-        }
-    }
-    /**
-     * A specific <code>BasicTabbedPaneUI</code>.
-     */
-    static class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
-
-        /**
-         * the horizontal position of the text
-         */
-        private int horizontalTextPosition = SwingUtilities.LEFT;
-
-        /**
-         * Creates a new instance of <code>CloseableTabbedPaneUI</code>
-         */
-        public CloseableTabbedPaneUI() {
-            super();
-        }
-
-        /**
-         * Creates a new instance of <code>CloseableTabbedPaneUI</code>
-         * @param horizontalTextPosition the horizontal position of the text (e.g.
-         * SwingUtilities.TRAILING or SwingUtilities.LEFT)
-         */
-        public CloseableTabbedPaneUI(int horizontalTextPosition) {
-            super();
-            this.horizontalTextPosition = horizontalTextPosition;
-        }
-
-        /**
-         * Layouts the label
-         * @param tabPlacement the placement of the tabs
-         * @param metrics the font metrics
-         * @param tabIndex the index of the tab
-         * @param title the title of the tab
-         * @param icon the icon of the tab
-         * @param tabRect the tab boundaries
-         * @param iconRect the icon boundaries
-         * @param textRect the text boundaries
-         * @param isSelected true whether the tab is selected, false otherwise
-         */
-        protected void layoutLabel(int tabPlacement, FontMetrics metrics,
-                                   int tabIndex, String title, Icon icon,
-                                   Rectangle tabRect, Rectangle iconRect,
-                                   Rectangle textRect, boolean isSelected) {
-
-            textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
-
-            javax.swing.text.View v = getTextViewForTab(tabIndex);
-            if(v != null) {
-                putHtmlClientProperty(tabPane, v);
-            }
-
-            SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                                               metrics, title, icon,
-                                               SwingUtilities.CENTER,
-                                               SwingUtilities.CENTER,
-                                               SwingUtilities.CENTER,
-                                               //SwingUtilities.TRAILING,
-                                               horizontalTextPosition,
-                                               tabRect,
-                                               iconRect,
-                                               textRect,
-                                               textIconGap + 2);
-
-            putHtmlClientProperty(tabPane, null);
-
-            int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-            int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-            iconRect.x += xNudge;
-            iconRect.y += yNudge;
-            textRect.x += xNudge;
-            textRect.y += yNudge;
-        }
-    }
-
-    /**
-     * A specific <code>MetalTabbedPaneUI</code>.
-     */
-    static class CloseableMetalTabbedPaneUI extends MetalTabbedPaneUI {
-
-        /**
-         * the horizontal position of the text
-         */
-        private int horizontalTextPosition = SwingUtilities.LEFT;
-
-        /**
-         * Creates a new instance of <code>CloseableMetalTabbedPaneUI</code>
-         */
-        public CloseableMetalTabbedPaneUI() {
-            super();
-        }
-
-        /**
-         * Creates a new instance of <code>CloseableMetalTabbedPaneUI</code>
-         * @param horizontalTextPosition the horizontal position of the text (e.g.
-         * SwingUtilities.TRAILING or SwingUtilities.LEFT)
-         */
-        public CloseableMetalTabbedPaneUI(int horizontalTextPosition) {
-            super();
-            this.horizontalTextPosition = horizontalTextPosition;
-        }
-
-        /**
-         * Layouts the label
-         * @param tabPlacement the placement of the tabs
-         * @param metrics the font metrics
-         * @param tabIndex the index of the tab
-         * @param title the title of the tab
-         * @param icon the icon of the tab
-         * @param tabRect the tab boundaries
-         * @param iconRect the icon boundaries
-         * @param textRect the text boundaries
-         * @param isSelected true whether the tab is selected, false otherwise
-         */
-        protected void layoutLabel(int tabPlacement, FontMetrics metrics,
-                                   int tabIndex, String title, Icon icon,
-                                   Rectangle tabRect, Rectangle iconRect,
-                                   Rectangle textRect, boolean isSelected) {
-
-            textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
-
-            javax.swing.text.View v = getTextViewForTab(tabIndex);
-            if(v != null) {
-                putHtmlClientProperty(tabPane, v);
-            }
-
-            SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
-                                               metrics, title, icon,
-                                               SwingUtilities.CENTER,
-                                               SwingUtilities.CENTER,
-                                               SwingUtilities.CENTER,
-                                               //SwingUtilities.TRAILING,
-                                               horizontalTextPosition,
-                                               tabRect,
-                                               iconRect,
-                                               textRect,
-                                               textIconGap + 2);
-
-            putHtmlClientProperty(tabPane, null);
-
-            int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
-            int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
-            iconRect.x += xNudge;
-            iconRect.y += yNudge;
-            textRect.x += xNudge;
-            textRect.y += yNudge;
-        }
-    }
-    /**
-     * The listener that's notified when an tab should be closed in the
-     * <code>CloseableTabbedPane</code>.
-     */
-
-    private static void putHtmlClientProperty(JTabbedPane t, javax.swing.text.View v) {
-        t.putClientProperty("html", v);
     }
 }
 
+/**
+ * The listener that's notified when an tab should be closed in the
+ * <code>CloseableTabbedPane</code>.
+ */
 interface CloseableTabbedPaneListener extends EventListener {
     /**
      * Informs all <code>CloseableTabbedPaneListener</code>s when a tab should be
@@ -689,4 +473,154 @@ interface CloseableTabbedPaneListener extends EventListener {
      * @return true if the tab can be closed, false otherwise
      */
     boolean closeTab(int tabIndexToClose);
+}
+
+/**
+ * A specific <code>WindowsTabbedPaneUI</code>.
+ */
+class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
+    private static final String HTML = "html";
+
+    /**
+     * the horizontal position of the text
+     */
+    private int horizontalTextPosition = SwingUtilities.LEFT;
+
+    /**
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     */
+    public CloseableWindowsTabbedPaneUI() {
+        super();
+    }
+
+    /**
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     * @param horizontalTextPosition the horizontal position of the text (e.g.
+     * SwingUtilities.TRAILING or SwingUtilities.LEFT)
+     */
+    public CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
+        super();
+        this.horizontalTextPosition = horizontalTextPosition;
+    }
+
+    /**
+     * Layouts the label
+     * @param tabPlacement the placement of the tabs
+     * @param metrics the font metrics
+     * @param tabIndex the index of the tab
+     * @param title the title of the tab
+     * @param icon the icon of the tab
+     * @param tabRect the tab boundaries
+     * @param iconRect the icon boundaries
+     * @param textRect the text boundaries
+     * @param isSelected true whether the tab is selected, false otherwise
+     */
+    protected void layoutLabel(int tabPlacement, FontMetrics metrics,
+                               int tabIndex, String title, Icon icon,
+                               Rectangle tabRect, Rectangle iconRect,
+                               Rectangle textRect, boolean isSelected) {
+
+        textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+
+        javax.swing.text.View v = getTextViewForTab(tabIndex);
+        if(v != null) {
+            tabPane.putClientProperty(HTML, v);
+        }
+
+        SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
+                                           metrics, title, icon,
+                                           SwingUtilities.CENTER,
+                                           SwingUtilities.CENTER,
+                                           SwingUtilities.CENTER,
+                                           //SwingUtilities.TRAILING,
+                                           horizontalTextPosition,
+                                           tabRect,
+                                           iconRect,
+                                           textRect,
+                                           textIconGap + 2);
+
+        tabPane.putClientProperty(HTML, null);
+
+        int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
+        int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
+        iconRect.x += xNudge;
+        iconRect.y += yNudge;
+        textRect.x += xNudge;
+        textRect.y += yNudge;
+    }
+}
+
+/**
+ * A specific <code>BasicTabbedPaneUI</code>.
+ */
+class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
+    private static final String HTML = "html";
+
+    /**
+     * the horizontal position of the text
+     */
+    private int horizontalTextPosition = SwingUtilities.LEFT;
+
+    /**
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     */
+    public CloseableTabbedPaneUI() {
+        super();
+    }
+
+    /**
+     * Creates a new instance of <code>CloseableTabbedPaneUI</code>
+     * @param horizontalTextPosition the horizontal position of the text (e.g.
+     * SwingUtilities.TRAILING or SwingUtilities.LEFT)
+     */
+    public CloseableTabbedPaneUI(int horizontalTextPosition) {
+        super();
+        this.horizontalTextPosition = horizontalTextPosition;
+    }
+
+    /**
+     * Layouts the label
+     * @param tabPlacement the placement of the tabs
+     * @param metrics the font metrics
+     * @param tabIndex the index of the tab
+     * @param title the title of the tab
+     * @param icon the icon of the tab
+     * @param tabRect the tab boundaries
+     * @param iconRect the icon boundaries
+     * @param textRect the text boundaries
+     * @param isSelected true whether the tab is selected, false otherwise
+     */
+    protected void layoutLabel(int tabPlacement, FontMetrics metrics,
+                               int tabIndex, String title, Icon icon,
+                               Rectangle tabRect, Rectangle iconRect,
+                               Rectangle textRect, boolean isSelected) {
+
+        textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+
+        javax.swing.text.View v = getTextViewForTab(tabIndex);
+        if(v != null) {
+            tabPane.putClientProperty(HTML, v);
+        }
+
+        SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
+                                           metrics, title, icon,
+                                           SwingUtilities.CENTER,
+                                           SwingUtilities.CENTER,
+                                           SwingUtilities.CENTER,
+                                           //SwingUtilities.TRAILING,
+                                           horizontalTextPosition,
+                                           tabRect,
+                                           iconRect,
+                                           textRect,
+                                           textIconGap + 2);
+
+        tabPane.putClientProperty(HTML, null);
+
+        int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
+        int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
+        iconRect.x += xNudge;
+        iconRect.y += yNudge;
+        textRect.x += xNudge;
+        textRect.y += yNudge;
+    }
 }

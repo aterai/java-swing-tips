@@ -12,13 +12,13 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(240, 255, 250);
-    private static final LinkViewRadioButtonUI ui = new LinkViewRadioButtonUI();
+    private static final LinkViewRadioButtonUI LINKVIEW_RADIOBUTTON_UI = new LinkViewRadioButtonUI();
     private static final int LR_PAGE_SIZE = 5;
     private final Box box = Box.createHorizontalBox();
     private final String[] columnNames = {"Year", "String", "Comment"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return (column==0)?Integer.class:Object.class;
+            return (column==0) ? Integer.class : Object.class;
         }
     };
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
@@ -118,7 +118,7 @@ public class MainPanel extends JPanel {
             }
         };
         radio.setForeground(Color.BLUE);
-        radio.setUI(ui);
+        radio.setUI(LINKVIEW_RADIOBUTTON_UI);
         if(target==current) {
             radio.setSelected(true);
         }
@@ -132,7 +132,7 @@ public class MainPanel extends JPanel {
     private JRadioButton makePrevNextRadioButton(final int itemsPerPage, final int target, String title, boolean flag) {
         JRadioButton radio = new JRadioButton(title);
         radio.setForeground(Color.BLUE);
-        radio.setUI(ui);
+        radio.setUI(LINKVIEW_RADIOBUTTON_UI);
         radio.setEnabled(flag);
         radio.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {

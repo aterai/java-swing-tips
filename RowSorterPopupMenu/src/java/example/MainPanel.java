@@ -11,12 +11,12 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final String[] columnNames = {"String", "Integer", "Boolean"};
-    private static final Object[][] data = {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private static final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
         });
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private class TablePopupMenu extends JPopupMenu {
         private final List<SortAction> actions = Arrays.asList(

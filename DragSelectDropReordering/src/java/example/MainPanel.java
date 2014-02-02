@@ -68,13 +68,13 @@ public class MainPanel extends JPanel {
 }
 
 class ListItem {
-    private static final ImageFilter filter = new SelectedImageFilter();
     public final ImageIcon nicon;
     public final ImageIcon sicon;
     public final String title;
     public ListItem(String title, String iconfile) {
         URL url = getClass().getResource(iconfile);
         this.nicon = new ImageIcon(url);
+        ImageFilter filter = new SelectedImageFilter();
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), filter);
         this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
         this.title = title;

@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final ColorItem[] model = new ColorItem[] {
+    private final ColorItem[] model = new ColorItem[] {
         new ColorItem(Color.RED,     "Red"),
         new ColorItem(Color.GREEN,   "Green"),
         new ColorItem(Color.BLUE,    "Blue"),

@@ -90,14 +90,14 @@ public class MainPanel extends JPanel {
 }
 
 class MyGlassPane extends JPanel {
-    private static final Color bgc = new Color(200,100,100,100);
+    private static final Color BACKGROUND_COLOR = new Color(200, 100, 100, 100);
     public MyGlassPane() {
         super(new BorderLayout());
         setOpaque(false);
     }
     @Override public void paintComponent(Graphics g) {
-        g.setColor(bgc);
-        g.fillRect(0,0,getWidth(),getHeight());
+        g.setColor(BACKGROUND_COLOR);
+        g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
     }
 }

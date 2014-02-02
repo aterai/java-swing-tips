@@ -50,6 +50,7 @@ public class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
+
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
             super(label,icon);
@@ -123,7 +124,7 @@ public class MainPanel extends JPanel {
 }
 
 class TestModel extends SortableTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)

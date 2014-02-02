@@ -10,7 +10,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final String path = "/toolbarButtonGraphics/general/";
+    private static final String PATH = "/toolbarButtonGraphics/general/";
     private final JToolBar toolbar = new JToolBar("ToolBarButton");
     public MainPanel() {
         super(new BorderLayout());
@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         for(String str: Arrays.asList("Copy24.gif", "Cut24.gif", "Paste24.gif",
                                       "Delete24.gif", "Undo24.gif", "Redo24.gif",
                                       "Help24.gif", "Open24.gif", "Save24.gif")) {
-            URL url = getClass().getResource(path+str);
+            URL url = getClass().getResource(PATH+str);
             toolbar.add(createToolbarButton(url));
         }
         add(toolbar, BorderLayout.NORTH);

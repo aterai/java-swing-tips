@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         });
         add(check, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
 }
 
 class LineCursorTextArea extends JTextArea {
-    private static final Color cfc = Color.BLUE;
+    private static final Color LINE_COLOR = Color.BLUE;
     private final DefaultCaret caret;
     public LineCursorTextArea() {
         super();
@@ -74,7 +74,7 @@ class LineCursorTextArea extends JTextArea {
         Insets i = getInsets();
         //int y = g2.getFontMetrics().getHeight()*getLineAtCaret(this)+i.top;
         int y = caret.y+caret.height-1;
-        g2.setPaint(cfc);
+        g2.setPaint(LINE_COLOR);
         g2.drawLine(i.left, y, getSize().width-i.left-i.right, y);
     }
 //     public static int getLineAtCaret(JTextComponent component) {

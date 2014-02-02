@@ -87,28 +87,28 @@ public class MainPanel extends JPanel {
 //@see SwingSet2.java
 class LookAndFeelUtil {
     // Possible Look & Feels
-    private static final String mac     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String metal   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String motif   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-    private static final String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String gtk     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String nimbus  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+    private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
+    private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
 
     // The current Look & Feel
-    private static String currentLookAndFeel = metal;
+    private static String currentLookAndFeel = METAL;
 
     private LookAndFeelUtil() { /* Singleton */ }
 
     public static JMenu createLookAndFeelMenu() {
         ButtonGroup lafMenuGroup = new ButtonGroup();
         JMenu lafMenu = new JMenu("Look&Feel");
-        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", metal);
+        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
         mi.setSelected(true); //this is the default l&f
-        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     mac);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   motif);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", windows);
-        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     gtk);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  nimbus);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     MAC);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
+        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     GTK);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
         return lafMenu;
     }
     private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {

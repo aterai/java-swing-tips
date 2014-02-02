@@ -75,7 +75,7 @@ public class MainPanel extends JPanel {
 
 class JustifiedLabel extends JLabel {
     private GlyphVector gvtext;
-    private int prev_width = -1;
+    private int prevWidth = -1;
     public JustifiedLabel() {
         this(null);
     }
@@ -100,9 +100,9 @@ class JustifiedLabel extends JLabel {
         Graphics2D g2 = (Graphics2D)g;
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
-        if(w!=prev_width) {
+        if(w!=prevWidth) {
             gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
-            prev_width = w;
+            prevWidth = w;
         }
         if(gvtext==null) {
             super.paintComponent(g);

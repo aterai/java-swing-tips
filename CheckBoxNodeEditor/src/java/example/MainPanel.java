@@ -91,10 +91,10 @@ class TriStateCheckBox extends JCheckBox {
 }
 
 class IndeterminateIcon implements Icon {
-    private final Color FOREGROUND = new Color(50,20,255,200); //TEST: UIManager.getColor("CheckBox.foreground");
+    private static final Color FOREGROUND = new Color(50,20,255,200); //TEST: UIManager.getColor("CheckBox.foreground");
+    private static final int SIDE_MARGIN = 4;
+    private static final int HEIGHT = 2;
     private final Icon icon = UIManager.getIcon("CheckBox.icon");
-    private static final int a = 4;
-    private static final int b = 2;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         icon.paintIcon(c, g, x, y);
         int w = getIconWidth();
@@ -102,7 +102,7 @@ class IndeterminateIcon implements Icon {
         Graphics2D g2 = (Graphics2D)g;
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
-        g2.fillRect(a, (h-b)/2, w-a-a, b);
+        g2.fillRect(SIDE_MARGIN, (h-HEIGHT)/2, w-SIDE_MARGIN-SIDE_MARGIN, HEIGHT);
         g2.translate(-x, -y);
     }
     @Override public int getIconWidth()  {

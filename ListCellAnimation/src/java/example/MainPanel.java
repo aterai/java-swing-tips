@@ -65,7 +65,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private final Timer animator;
     private final JList list;
     private boolean isRunning;
-    private int animate_index = -1;
+    private int animateIndex = -1;
 
     public AnimeListCellRenderer(final JList l) {
         super(new BorderLayout());
@@ -99,11 +99,11 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     @Override public Component getListCellRendererComponent(JList list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         setBackground(isSelected ? SELECTEDCOLOR : list.getBackground());
         label.setText(Objects.toString(value, ""));
-        animate_index = index;
+        animateIndex = index;
         return this;
     }
     private boolean isAnimatingCell() {
-        return isRunning && animate_index==list.getSelectedIndex();
+        return isRunning && animateIndex==list.getSelectedIndex();
     }
     private class MarqueeLabel extends JLabel {
         private float xx;
@@ -128,24 +128,25 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         }
     }
     private class AnimeIcon extends JComponent {
-        private static final double r  = 2.0d;
-        private static final double sx = 1.0d;
-        private static final double sy = 1.0d;
-        private final List<Shape> icons = new ArrayList<Shape>(Arrays.asList(
-            new Ellipse2D.Double(sx+3*r, sy+0*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+5*r, sy+1*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+6*r, sy+3*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+5*r, sy+5*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+3*r, sy+6*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+1*r, sy+5*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+0*r, sy+3*r, 2*r, 2*r),
-            new Ellipse2D.Double(sx+1*r, sy+1*r, 2*r, 2*r)));
+        private static final double R  = 2d;
+        private static final double SX = 1d;
+        private static final double SY = 1d;
+        private static final int WIDTH  = (int)(R*8+SX*2);
+        private static final int HEIGHT = (int)(R*8+SY*2);
+        private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
+            new Ellipse2D.Double(SX+3*R, SY+0*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+5*R, SY+1*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+6*R, SY+3*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+5*R, SY+5*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+3*R, SY+6*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+1*R, SY+5*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+0*R, SY+3*R, 2*R, 2*R),
+            new Ellipse2D.Double(SX+1*R, SY+1*R, 2*R, 2*R)));
+
         public AnimeIcon() {
             super();
-            int iw = (int)(r*8+sx*2);
-            int ih = (int)(r*8+sy*2);
-            setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
-            setPreferredSize(new Dimension(iw+2, ih));
+            setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
+            setPreferredSize(new Dimension(WIDTH+2, HEIGHT));
             setOpaque(false);
         }
         @Override public void paintComponent(Graphics g) {
@@ -154,16 +155,16 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             //g2d.fillRect(0, 0, getWidth(), getHeight());
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if(isAnimatingCell()) {
-                float alpha = 0.1f;
-                for(Shape s: icons) {
-                    g2d.setPaint(new Color(0.5f,0.5f,0.5f,alpha));
+                float alpha = .1f;
+                for(Shape s: list) {
+                    g2d.setPaint(new Color(.5f, .5f, .5f, alpha));
                     g2d.fill(s);
-                    alpha = alpha+0.1f;
+                    alpha += .1f;
                 }
-                icons.add(icons.remove(0));
+                list.add(list.remove(0));
             }else{
-                g2d.setPaint(new Color(0.6f,0.6f,0.6f));
-                for(Shape s: icons) {
+                g2d.setPaint(new Color(.6f, .6f, .6f));
+                for(Shape s: list) {
                     g2d.fill(s);
                 }
             }

@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
         add(check, BorderLayout.NORTH);
         add(scroll);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 }
 
 class HighlightCursorTextArea extends JTextArea {
-    private static final Color linecolor = new Color(250,250,220);
+    private static final Color LINE_COLOR = new Color(250,250,220);
     private final DefaultCaret caret;
     public HighlightCursorTextArea() {
         super();
@@ -77,7 +77,7 @@ class HighlightCursorTextArea extends JTextArea {
         Insets i = getInsets();
         int h = caret.height;
         int y = caret.y;
-        g2.setPaint(linecolor);
+        g2.setPaint(LINE_COLOR);
         g2.fillRect(i.left, y, getSize().width-i.left-i.right, h);
         super.paintComponent(g);
     }

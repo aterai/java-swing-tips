@@ -18,13 +18,13 @@ class MainPanel extends JPanel {
         add(new RoundedCornerButton("Rounded Corner Button"));
         add(new RoundButton(new ImageIcon(getClass().getResource("16x16.png"))) {
             @Override public Dimension getPreferredSize() {
-                int r = 16 + ( focusstroke + 4 ) * 2; //test margin = 4
+                int r = 16 + (FOCUS_STROKE + 4) * 2; //test margin = 4
                 return new Dimension(r, r);
             }
         });
-        add(new ShapeButton(makeStar(25,30,20)));
+        add(new ShapeButton(makeStar(25, 30, 20)));
         add(new RoundButton("Round Button"));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private Path2D.Double makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
@@ -66,9 +66,9 @@ class MainPanel extends JPanel {
 }
 
 class RoundedCornerButton extends JButton {
-    private static final float arcwidth  = 16.0f;
-    private static final float archeight = 16.0f;
-    protected static final int focusstroke = 2;
+    private static final float ARC_WIDTH  = 16.0f;
+    private static final float ARC_HEIGHT = 16.0f;
+    protected static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100,150,255,200);
     protected final Color ac = new Color(230,230,230);
     protected final Color rc = Color.ORANGE;
@@ -106,11 +106,11 @@ class RoundedCornerButton extends JButton {
     protected void initShape() {
         if(!getBounds().equals(base)) {
             base = getBounds();
-            shape = new RoundRectangle2D.Float(0, 0, getWidth()-1, getHeight()-1, arcwidth, archeight);
-            border = new RoundRectangle2D.Float(focusstroke, focusstroke,
-                                                getWidth()-1-focusstroke*2,
-                                                getHeight()-1-focusstroke*2,
-                                                arcwidth, archeight);
+            shape = new RoundRectangle2D.Float(0, 0, getWidth()-1, getHeight()-1, ARC_WIDTH, ARC_HEIGHT);
+            border = new RoundRectangle2D.Float(FOCUS_STROKE, FOCUS_STROKE,
+                                                getWidth()-1-FOCUS_STROKE*2,
+                                                getHeight()-1-FOCUS_STROKE*2,
+                                                ARC_WIDTH, ARC_HEIGHT);
         }
     }
     private void paintFocusAndRollover(Graphics2D g2, Color color) {
@@ -181,17 +181,17 @@ class RoundButton extends RoundedCornerButton {
         if(!getBounds().equals(base)) {
             base = getBounds();
             shape = new Ellipse2D.Float(0, 0, getWidth()-1, getHeight()-1);
-            border = new Ellipse2D.Float(focusstroke, focusstroke,
-                                         getWidth()-1-focusstroke*2,
-                                         getHeight()-1-focusstroke*2);
+            border = new Ellipse2D.Float(FOCUS_STROKE, FOCUS_STROKE,
+                                         getWidth()-1-FOCUS_STROKE*2,
+                                         getHeight()-1-FOCUS_STROKE*2);
         }
     }
 }
 
 class RoundedCornerButtonUI extends BasicButtonUI{
-    private static final float arcwidth  = 16.0f;
-    private static final float archeight = 16.0f;
-    protected static final int focusstroke = 2;
+    private static final float ARC_WIDTH  = 16.0f;
+    private static final float ARC_HEIGHT = 16.0f;
+    protected static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100,150,255);
     protected final Color ac = new Color(220,225,230);
     protected final Color rc = Color.ORANGE;
@@ -270,11 +270,11 @@ class RoundedCornerButtonUI extends BasicButtonUI{
     private void initShape(JComponent c) {
         if(!c.getBounds().equals(base)) {
             base = c.getBounds();
-            shape = new RoundRectangle2D.Float(0, 0, c.getWidth()-1, c.getHeight()-1, arcwidth, archeight);
-            border = new RoundRectangle2D.Float(focusstroke, focusstroke,
-                                                c.getWidth()-1-focusstroke*2,
-                                                c.getHeight()-1-focusstroke*2,
-                                                arcwidth, archeight);
+            shape = new RoundRectangle2D.Float(0, 0, c.getWidth()-1, c.getHeight()-1, ARC_WIDTH, ARC_HEIGHT);
+            border = new RoundRectangle2D.Float(FOCUS_STROKE, FOCUS_STROKE,
+                                                c.getWidth()-1-FOCUS_STROKE*2,
+                                                c.getHeight()-1-FOCUS_STROKE*2,
+                                                ARC_WIDTH, ARC_HEIGHT);
         }
     }
     private void paintFocusAndRollover(Graphics2D g2, JComponent c, Color color) {

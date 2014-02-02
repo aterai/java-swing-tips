@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     private final JTextField editor = new JTextField();
     private final JTabbedPane tabbedPane;
-    private int editing_idx = -1;
+    private int editingIdx = -1;
     private int len = -1;
     private Dimension dim;
     private Component tabComponent;
@@ -98,11 +98,11 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
         }
     }
     private void startEditing() {
-        editing_idx = tabbedPane.getSelectedIndex();
-        tabComponent = tabbedPane.getTabComponentAt(editing_idx);
-        tabbedPane.setTabComponentAt(editing_idx, editor);
+        editingIdx = tabbedPane.getSelectedIndex();
+        tabComponent = tabbedPane.getTabComponentAt(editingIdx);
+        tabbedPane.setTabComponentAt(editingIdx, editor);
         editor.setVisible(true);
-        editor.setText(tabbedPane.getTitleAt(editing_idx));
+        editor.setText(tabbedPane.getTitleAt(editingIdx));
         editor.selectAll();
         editor.requestFocusInWindow();
         len = editor.getText().length();
@@ -110,10 +110,10 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
         editor.setMinimumSize(dim);
     }
     private void cancelEditing() {
-        if(editing_idx>=0) {
-            tabbedPane.setTabComponentAt(editing_idx, tabComponent);
+        if(editingIdx>=0) {
+            tabbedPane.setTabComponentAt(editingIdx, tabComponent);
             editor.setVisible(false);
-            editing_idx = -1;
+            editingIdx = -1;
             len = -1;
             tabComponent = null;
             editor.setPreferredSize(null);
@@ -122,8 +122,8 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     }
     private void renameTabTitle() {
         String title = editor.getText().trim();
-        if(editing_idx>=0 && !title.isEmpty()) {
-            tabbedPane.setTitleAt(editing_idx, title);
+        if(editingIdx>=0 && !title.isEmpty()) {
+            tabbedPane.setTitleAt(editingIdx, title);
         }
         cancelEditing();
     }

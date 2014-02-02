@@ -190,8 +190,8 @@ public class MainPanel extends JPanel {
 
 class Task extends SwingWorker<Integer, Integer> {
     private final int sleepDummy = new Random().nextInt(100) + 1;
-    private static final int lengthOfTask = 120;
     @Override protected Integer doInBackground() {
+        int lengthOfTask = 120;
         int current = 0;
         while(current<lengthOfTask && !isCancelled()) {
             current++;
@@ -207,7 +207,7 @@ class Task extends SwingWorker<Integer, Integer> {
 }
 
 class WorkerModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",      Integer.class, false),
         new ColumnContext("Name",     String.class, false),
         new ColumnContext("Progress", Integer.class, false)

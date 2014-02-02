@@ -12,15 +12,14 @@ public class MainPanel extends JPanel {
     //<blockquote cite="FixedColumnExample.java">
     //@auther Nobuo Tamemasa
     private static final String ES = "";
-    private static final Object[][] data = new Object[][] {
+    private final Object[][] data = new Object[][] {
         {1,11,"A", ES, ES, ES, ES, ES},
         {2,22, ES,"B", ES, ES, ES, ES},
         {3,33, ES, ES,"C", ES, ES, ES},
         {4, 1, ES, ES, ES,"D", ES, ES},
         {5,55, ES, ES, ES, ES,"E", ES},
         {6,66, ES, ES, ES, ES, ES,"F"}};
-    private static final Object[] columnNames = new Object[] {
-        "fixed 1","fixed 2","a","b","c","d","e","f"};
+    private final Object[] columnNames = {"fixed 1","fixed 2","a","b","c","d","e","f"};
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int modelIndex) {

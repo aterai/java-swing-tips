@@ -16,11 +16,12 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 
 class MainPanel extends JPanel {
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));
     private static final String PATTERN = "[Ff]rame";
     private static final Color SELECTION_COLOR = new Color(0xC86464FF,true);
-    //private final JTextArea area = new JTextArea();
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));
     private final JEditorPane area = new JEditorPane();
+    //private final JTextArea area = new JTextArea();
+
     private final JCheckBox check = new JCheckBox(new AbstractAction("setSelectionColor(#C86464FF)") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox)e.getSource();
@@ -108,7 +109,7 @@ class MainPanel extends JPanel {
     }
 
     //http://terai.xrea.jp/Swing/Highlighter.html
-    private static void setHighlight(JTextComponent jtc, String pattern) {
+    private void setHighlight(JTextComponent jtc, String pattern) {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
         Document doc = jtc.getDocument();

@@ -114,13 +114,13 @@ class URLRenderer1 extends DefaultTableCellRenderer implements MouseListener, Mo
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
-        int prev_row = row;
-        int prev_col = col;
-        boolean prev_ro = isRollover;
+        int prevRow = row;
+        int prevCol = col;
+        boolean prevRollover = isRollover;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         isRollover = isURLColumn(table, col); // && pointInsidePrefSize(table, pt);
-        if(row==prev_row && col==prev_col && isRollover==prev_ro || !isRollover && !prev_ro) {
+        if(row==prevRow && col==prevCol && isRollover==prevRollover || !isRollover && !prevRollover) {
             return;
         }
 
@@ -129,9 +129,9 @@ class URLRenderer1 extends DefaultTableCellRenderer implements MouseListener, Mo
         Rectangle repaintRect;
         if(isRollover) {
             Rectangle r = table.getCellRect(row, col, false);
-            repaintRect = prev_ro ? r.union(table.getCellRect(prev_row, prev_col, false)) : r;
-        }else{ //if(prev_ro) {
-            repaintRect = table.getCellRect(prev_row, prev_col, false);
+            repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
+        }else{ //if(prevRollover) {
+            repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
 // <<<<
@@ -237,13 +237,13 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     @Override public void mouseMoved(MouseEvent e) {
         JTable table = (JTable)e.getSource();
         Point pt = e.getPoint();
-        int prev_row = row;
-        int prev_col = col;
-        boolean prev_ro = isRollover;
+        int prevRow = row;
+        int prevCol = col;
+        boolean prevRollover = isRollover;
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         isRollover = isURLColumn(table, col); // && pointInsidePrefSize(table, pt);
-        if(row==prev_row && col==prev_col && isRollover==prev_ro || !isRollover && !prev_ro) {
+        if(row==prevRow && col==prevCol && isRollover==prevRollover || !isRollover && !prevRollover) {
             return;
         }
 
@@ -252,9 +252,9 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         Rectangle repaintRect;
         if(isRollover) {
             Rectangle r = table.getCellRect(row, col, false);
-            repaintRect = prev_ro ? r.union(table.getCellRect(prev_row, prev_col, false)) : r;
-        }else{ //if(prev_ro) {
-            repaintRect = table.getCellRect(prev_row, prev_col, false);
+            repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
+        }else{ //if(prevRollover) {
+            repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
         table.repaint(repaintRect);
 // <<<<
@@ -296,7 +296,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 }
 
 class TestModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",  Integer.class, false),
         new ColumnContext("Name", String.class, false),
         new ColumnContext("URL",  URL.class, false)

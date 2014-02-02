@@ -12,10 +12,10 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private static final int IMAGE_ID = 0;
     private final FileModel model = new FileModel();
     private final JTable table = new JTable(model);
     private MediaTracker tracker;
-    private static final int id = 0;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -80,13 +80,13 @@ public class MainPanel extends JPanel {
         if(tracker==null) {
             tracker = new MediaTracker((Container)this);
         }
-        tracker.addImage(img, id);
+        tracker.addImage(img, IMAGE_ID);
         try{
-            tracker.waitForID(id);
+            tracker.waitForID(IMAGE_ID);
         }catch(InterruptedException e) {
             e.printStackTrace();
         }finally{
-            if(!tracker.isErrorID(id)) {
+            if(!tracker.isErrorID(IMAGE_ID)) {
                 model.addTest(new Test(file.getName(), path,
                                        img.getWidth(this), img.getHeight(this)));
             }
@@ -141,7 +141,7 @@ public class MainPanel extends JPanel {
 }
 
 class FileModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",       Integer.class, false),
         new ColumnContext("Name",      String.class,  false),
         new ColumnContext("Full Path", String.class,  false),

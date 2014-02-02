@@ -8,10 +8,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-//    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(SystemColor.textHighlight);
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private static final String pattern = "Swing";
-    private static final String initTxt =
+    private static final String PATTERN = "Swing";
+    private static final String INIT_TXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
       "This lesson explains the concepts you need to use Swing components in building a user interface." +
@@ -21,17 +19,21 @@ public class MainPanel extends JPanel {
       " The handling of events is also discussed, as are layout management and accessibility." +
       " This lesson ends with a set of questions and exercises so you can test yourself on what you?ve learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+
+    //    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(SystemColor.textHighlight);
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+
     public MainPanel() {
         super(new BorderLayout());
         final JTextArea jta  = new JTextArea();
         jta.setLineWrap(true);
-        jta.setText(initTxt);
+        jta.setText(INIT_TXT);
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-        box.add(new JButton(new AbstractAction("highlight") {
+        box.add(new JButton(new AbstractAction("highlight: "+PATTERN) {
             @Override public void actionPerformed(ActionEvent e) {
                 jta.setEditable(false);
-                setHighlight(jta, pattern);
+                setHighlight(jta, PATTERN);
             }
         }));
         box.add(new JButton(new AbstractAction("clear") {

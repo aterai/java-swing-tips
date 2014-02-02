@@ -10,20 +10,21 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
-
-        String[] columnNames = {"JTextField", "JTextArea"};
-        Object[][] data = {
+    private final String[] columnNames = {"JTextField", "JTextArea"};
+    private final Object[][] data = {
             {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
             {"bbb", "ggg"}, {"ccccDDD", "hhh\njjj\nkkk"}
         };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }
         };
-        JTable table = new JTable(model);
+    private final JTable table = new JTable(model);
+
+    public MainPanel() {
+        super(new BorderLayout());
+
         table.setAutoCreateRowSorter(true);
         table.setSurrendersFocusOnKeystroke(true);
         table.getColumn(table.getColumnName(1)).setCellEditor(new TextAreaCellEditor());
@@ -58,6 +59,7 @@ public class MainPanel extends JPanel {
 }
 
 class TextAreaCellEditor extends JTextArea implements TableCellEditor {
+    private static final String KEY = "Stop-Cell-Editing";
     transient protected ChangeEvent changeEvent;
     private final JScrollPane scroll;
 
@@ -70,7 +72,6 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
 
-        String KEY = "Stop-Cell-Editing";
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_MASK);
         getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
         getActionMap().put(KEY, new AbstractAction() {
