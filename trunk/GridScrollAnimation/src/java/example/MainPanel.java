@@ -80,7 +80,7 @@ class GridPanel extends JPanel implements Scrollable {
 }
 
 class ScrollAction extends AbstractAction {
-    private static double SIZE = 100d;
+    private static final double SIZE = 100d;
     private final Point vec;
     private final JScrollPane scrollPane;
     private Timer scroller;

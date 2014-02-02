@@ -52,20 +52,20 @@ public class MainPanel extends JPanel {
 }
 
 class DragHereIcon implements Icon {
-    private static int ICON_SIZE = 100;
-    private static float BORDER_WIDTH = 8f;
-    private static float SLIT_WIDTH = 8f;
-    private static int ARC_SIZE = 16;
-    private static int SLIT_NUM = 3;
-    private static Shape BORDER = new RoundRectangle2D.Float(
+    private static final int ICON_SIZE = 100;
+    private static final float BORDER_WIDTH = 8f;
+    private static final float SLIT_WIDTH = 8f;
+    private static final int ARC_SIZE = 16;
+    private static final int SLIT_NUM = 3;
+    private static final Shape BORDER = new RoundRectangle2D.Float(
         BORDER_WIDTH,BORDER_WIDTH,
         ICON_SIZE-2*BORDER_WIDTH-1,ICON_SIZE-2*BORDER_WIDTH-1,
         ARC_SIZE,ARC_SIZE);
-    private static Font font = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
-    private static FontRenderContext frc = new FontRenderContext(null, true, true);
-    private static Shape ARROW = new TextLayout("\u21E9", font, frc).getOutline(null); //DOWNWARDS WHITE ARROW
-    //private static Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); //DOWNWARDS BLACK ARROW
-    private static Color LINE_COLOR = Color.GRAY;
+    private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
+    private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
+    private static final Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null); //DOWNWARDS WHITE ARROW
+    //private static final Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); //DOWNWARDS BLACK ARROW
+    private static final Color LINE_COLOR = Color.GRAY;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static int SIZE = 6;
+    private static final int SIZE = 6;
     private MainPanel() {
         super(new BorderLayout());
 

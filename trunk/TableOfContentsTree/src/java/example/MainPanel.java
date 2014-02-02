@@ -85,7 +85,7 @@ class TableOfContents {
 }
 
 class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
-    private static BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] { 1f }, 0f);
+    private static final BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] { 1f }, 0f);
     private String pn;
     private final Point pnPt = new Point();
     private int rxs, rxe;
@@ -154,7 +154,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
-    private static String READER = "... ";
+    private static final String READER = "... ";
     private String pn;
     private int pnx = -1, pny = -1;
     private boolean isSynth;

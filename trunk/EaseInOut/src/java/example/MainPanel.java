@@ -106,7 +106,7 @@ class ImageCaptionLabel extends JLabel {
 }
 
 class LabelHandler extends MouseAdapter implements HierarchyListener {
-    private static int DELAY = 4;
+    private static final int DELAY = 4;
     private Timer animator;
     private final JComponent textArea;
     private int txah;

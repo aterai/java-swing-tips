@@ -124,9 +124,9 @@ public class MainPanel extends JPanel {
 
 //http://terai.xrea.jp/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
+    private static final int W = 10;
+    private static final int H = 21;
     public Shape area;
-    private static int W = 10;
-    private static int H = 21;
     public Shape getShape(Container parent, Component c, int x, int y) {
         int w = c.getWidth()  - 1;
         int h = c.getHeight() - 1;
