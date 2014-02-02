@@ -15,13 +15,13 @@ class MainPanel extends JPanel {
         orgImage = new ImageIcon(getClass().getResource("i03-10.gif"));
 
         JPanel p1 = new JPanel(new GridLayout(1,2));
-        p1.add(makeLabel(makeGrayImageIcon_1(orgImage.getImage()), "ColorConvertOp"));
-        p1.add(makeLabel(makeGrayImageIcon_2(orgImage.getImage()), "TYPE_BYTE_GRAY"));
+        p1.add(makeLabel(makeGrayImageIcon1(orgImage.getImage()), "ColorConvertOp"));
+        p1.add(makeLabel(makeGrayImageIcon2(orgImage.getImage()), "TYPE_BYTE_GRAY"));
         add(p1);
-        add(makeLabel(makeGrayImageIcon_3(orgImage.getImage()), "GrayFilter.createDisabledImage"));
+        add(makeLabel(makeGrayImageIcon3(orgImage.getImage()), "GrayFilter.createDisabledImage"));
         JPanel p3 = new JPanel(new GridLayout(1,2));
-        p3.add(makeLabel(makeGrayImageIcon_4(orgImage.getImage()), "GrayFilter(true,50)"));
-        p3.add(makeLabel(makeGrayImageIcon_5(orgImage.getImage()), "GrayImageFilter"));
+        p3.add(makeLabel(makeGrayImageIcon4(orgImage.getImage()), "GrayFilter(true,50)"));
+        p3.add(makeLabel(makeGrayImageIcon5(orgImage.getImage()), "GrayImageFilter"));
         add(p3);
 
         p1.setBackground(Color.WHITE);
@@ -43,7 +43,7 @@ class MainPanel extends JPanel {
         return label;
     }
 
-    private ImageIcon makeGrayImageIcon_1(Image img) {
+    private ImageIcon makeGrayImageIcon1(Image img) {
         BufferedImage source = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_INT_ARGB);
         Graphics g = source.createGraphics();
         g.drawImage(img, 0, 0, this);
@@ -53,7 +53,7 @@ class MainPanel extends JPanel {
         return new ImageIcon(destination);
     }
 
-    private ImageIcon makeGrayImageIcon_2(Image img) {
+    private ImageIcon makeGrayImageIcon2(Image img) {
         int w = img.getWidth(this);
         int h = img.getHeight(this);
         BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
@@ -66,18 +66,18 @@ class MainPanel extends JPanel {
         return new ImageIcon(destination);
     }
 
-    private ImageIcon makeGrayImageIcon_3(Image img) {
+    private ImageIcon makeGrayImageIcon3(Image img) {
         //GrayFilter1
         return new ImageIcon(GrayFilter.createDisabledImage(img));
     }
 
-    private ImageIcon makeGrayImageIcon_4(Image img) {
+    private ImageIcon makeGrayImageIcon4(Image img) {
         //GrayFilter2
         ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true,50));
         return new ImageIcon(createImage(ip));
     }
 
-    private ImageIcon makeGrayImageIcon_5(Image img) {
+    private ImageIcon makeGrayImageIcon5(Image img) {
         //RGBImageFilter
         ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayImageFilter());
         return new ImageIcon(createImage(ip));

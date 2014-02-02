@@ -13,7 +13,7 @@ public class MainPanel extends JPanel {
     private final Box northBox  = Box.createVerticalBox();
     private final Box centerBox = Box.createVerticalBox();
     private final Box southBox  = Box.createVerticalBox();
-    private final List<ExpansionPanel> panelList = makeList();
+    private final List<AbstractExpansionPanel> panelList = makeList();
     private final transient ExpansionListener rl = new ExpansionListener() {
         @Override public void expansionStateChanged(ExpansionEvent e) {
             initComps(panelList, (JComponent)e.getSource());
@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JPanel panel = new JPanel(new BorderLayout());
-        for(ExpansionPanel exp: panelList) {
+        for(AbstractExpansionPanel exp: panelList) {
             northBox.add(exp);
             exp.addExpansionListener(rl);
         }
@@ -38,13 +38,13 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    public void initComps(List<ExpansionPanel> list, JComponent source) {
+    public void initComps(List<AbstractExpansionPanel> list, JComponent source) {
         setVisible(false);
         centerBox.removeAll();
         northBox.removeAll();
         southBox.removeAll();
         boolean insertSouth = false;
-        for(ExpansionPanel exp: list) {
+        for(AbstractExpansionPanel exp: list) {
             if(source.equals(exp) && exp.isSelected()) {
                 centerBox.add(exp);
                 insertSouth = true;
@@ -60,9 +60,9 @@ public class MainPanel extends JPanel {
         setVisible(true);
     }
 
-    private List<ExpansionPanel> makeList() {
-        return Arrays.<ExpansionPanel>asList(
-            new ExpansionPanel("Panel1") {
+    private List<AbstractExpansionPanel> makeList() {
+        return Arrays.<AbstractExpansionPanel>asList(
+            new AbstractExpansionPanel("Panel1") {
                 public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
                     return p;
                 }
             },
-            new ExpansionPanel("Panel2") {
+            new AbstractExpansionPanel("Panel2") {
                 public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
@@ -81,7 +81,7 @@ public class MainPanel extends JPanel {
                     return p;
                 }
             },
-            new ExpansionPanel("Panel3") {
+            new AbstractExpansionPanel("Panel3") {
                 public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
@@ -118,13 +118,13 @@ public class MainPanel extends JPanel {
     }
 }
 
-abstract class ExpansionPanel extends JPanel {
+abstract class AbstractExpansionPanel extends JPanel {
     private final EventListenerList listenerList = new EventListenerList();
     private ExpansionEvent expansionEvent;
     private final JScrollPane scroll;
     private boolean openFlag;
 
-    public ExpansionPanel(String title) {
+    public AbstractExpansionPanel(String title) {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction(title) {
             @Override public void actionPerformed(ActionEvent e) {

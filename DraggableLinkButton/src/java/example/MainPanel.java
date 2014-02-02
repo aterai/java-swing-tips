@@ -120,9 +120,9 @@ public class MainPanel extends JPanel {
 }
 
 class LinkViewButtonUI extends BasicButtonUI {
-    private static final LinkViewButtonUI linkViewButtonUI = new LinkViewButtonUI();
-    //private static final DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
-    private static final DataFlavor uriflavor = DataFlavor.stringFlavor;
+    private static final LinkViewButtonUI LINK_VIEW_BUTTON_UI = new LinkViewButtonUI();
+    //private static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
+    private static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
     private static Dimension size = new Dimension();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle iconRect = new Rectangle();
@@ -134,7 +134,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setTransferHandler(new TransferHandler("text") {
             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-                return flavors.length>0 && flavors[0].equals(uriflavor);
+                return flavors.length>0 && flavors[0].equals(URI_FLAVOR);
             }
             public Transferable createTransferable(JComponent c) {
                 return new Transferable() {
@@ -143,11 +143,11 @@ class LinkViewButtonUI extends BasicButtonUI {
                         return href;
                     }
                     @Override public DataFlavor[] getTransferDataFlavors() {
-                        return new DataFlavor[] { uriflavor };
+                        return new DataFlavor[] { URI_FLAVOR };
                     }
                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
                         //System.out.println(flavor.getMimeType());
-                        return flavor.equals(uriflavor);
+                        return flavor.equals(URI_FLAVOR);
                     }
                 };
             }
@@ -159,7 +159,7 @@ class LinkViewButtonUI extends BasicButtonUI {
                 handler.exportAsDrag(button, e, TransferHandler.COPY);
             }
         });
-        return linkViewButtonUI;
+        return LINK_VIEW_BUTTON_UI;
     }
     private LinkViewButtonUI() {
         super();

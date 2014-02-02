@@ -96,9 +96,9 @@ public class MainPanel extends JPanel {
                     }
                     for(Message c: chunks) {
                         if(c.append) {
-                            appendLine(c.message);
+                            appendLine(c.text);
                         }else{
-                            textArea.setText(c.message+"\n");
+                            textArea.setText(c.text+"\n");
                         }
                     }
                 }
@@ -309,10 +309,10 @@ class ProgressListener implements PropertyChangeListener {
 }
 
 class Message {
-    public final String message;
+    public final String text;
     public final boolean append;
-    public Message(String message, boolean append) {
-        this.message = message;
+    public Message(String text, boolean append) {
+        this.text = text;
         this.append  = append;
     }
 }

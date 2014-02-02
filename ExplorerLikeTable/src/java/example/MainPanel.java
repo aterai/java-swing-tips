@@ -212,6 +212,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         }
     }
 }
+
 // class DotLabel extends JLabel {
 //     private final Border dotBorder;
 //     private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
@@ -246,6 +247,7 @@ class TestRenderer extends Box implements TableCellRenderer {
 //         }
 //     }
 // }
+
 class TestModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
@@ -281,6 +283,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     public Test(String name, String comment) {

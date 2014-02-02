@@ -115,6 +115,7 @@ class DeleteButton extends JButton {
         setText("X");
     }
 }
+
 class DeleteButtonRenderer extends DeleteButton implements TableCellRenderer {
     public DeleteButtonRenderer() {
         super();
@@ -124,6 +125,7 @@ class DeleteButtonRenderer extends DeleteButton implements TableCellRenderer {
         return this;
     }
 }
+
 class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
     public DeleteButtonEditor(final JTable table) {
         super();
@@ -195,6 +197,7 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
         }
     }
 }
+
 class TestModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
@@ -231,6 +234,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     public Test(String name, String comment) {

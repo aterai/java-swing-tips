@@ -159,6 +159,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TestModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
@@ -197,6 +198,7 @@ class TestModel extends DefaultTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     public Test(String name, String comment) {

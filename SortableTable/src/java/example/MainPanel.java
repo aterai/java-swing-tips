@@ -121,6 +121,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TestModel extends SortableTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
@@ -156,6 +157,7 @@ class TestModel extends SortableTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     public Test(String name, String comment) {

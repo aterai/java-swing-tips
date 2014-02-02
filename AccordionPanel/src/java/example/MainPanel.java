@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
         accordion.setOpaque(true);
         accordion.setBackground(new Color(180, 180, 255));
         accordion.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        for(ExpansionPanel p: makeList()) {
+        for(AbstractExpansionPanel p: makeList()) {
             accordion.add(p);
             accordion.add(Box.createVerticalStrut(5));
         }
@@ -47,9 +47,9 @@ public class MainPanel extends JPanel {
 //         box.revalidate();
 //     }
 
-    private List<ExpansionPanel> makeList() {
+    private List<AbstractExpansionPanel> makeList() {
         return Arrays.asList(
-            new ExpansionPanel("System Tasks") {
+            new AbstractExpansionPanel("System Tasks") {
                 @Override public JPanel makePanel() {
                     JPanel pnl = new JPanel(new GridLayout(0,1));
                     JCheckBox c1 = new JCheckBox("aaaa");
@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
                     return pnl;
                 }
             },
-            new ExpansionPanel("Other Places") {
+            new AbstractExpansionPanel("Other Places") {
                 @Override public JPanel makePanel() {
                     JPanel pnl = new JPanel(new GridLayout(0,1));
                     pnl.add(new JLabel("Desktop"));
@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
                     return pnl;
                 }
             },
-            new ExpansionPanel("Details") {
+            new AbstractExpansionPanel("Details") {
                 @Override public JPanel makePanel() {
                     JPanel pnl = new JPanel(new GridLayout(0,1));
                     ButtonGroup bg = new ButtonGroup();
@@ -112,14 +112,14 @@ public class MainPanel extends JPanel {
     }
 }
 
-abstract class ExpansionPanel extends JPanel {
+abstract class AbstractExpansionPanel extends JPanel {
     private final String title;
     private final JLabel label;
     private final JPanel panel;
 
     abstract public JPanel makePanel();
 
-    public ExpansionPanel(String title_) {
+    public AbstractExpansionPanel(String title_) {
         super(new BorderLayout());
         title = title_;
         label = new JLabel("\u25BC "+title) {

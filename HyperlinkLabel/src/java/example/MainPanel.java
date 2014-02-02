@@ -14,7 +14,7 @@ import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     private static final String MYSITE = "http://terai.xrea.jp/";
-    private static final Action a = new AbstractAction(MYSITE) {
+    private final Action browseAction = new AbstractAction(MYSITE) {
         @Override public void actionPerformed(ActionEvent e) {
             Toolkit.getDefaultToolkit().beep();
             try{
@@ -60,8 +60,8 @@ public class MainPanel extends JPanel {
         c.weightx = 1.0;
         c.anchor  = GridBagConstraints.WEST;
         c.gridy   = 0; add(new URILabel(MYSITE), c);
-        c.gridy   = 1; add(new JButton(a), c);
-        c.gridy   = 2; add(new HyperlinkButton(a), c);
+        c.gridy   = 1; add(new JButton(browseAction), c);
+        c.gridy   = 2; add(new HyperlinkButton(browseAction), c);
         c.gridy   = 3; add(editor, c);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -141,7 +141,7 @@ class HyperlinkButton extends JButton {
     }
 }
 
-abstract class LinkViewButtonUI extends BasicButtonUI {}
+class LinkViewButtonUI extends BasicButtonUI {}
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
     private static final LinkViewButtonUI linkViewButtonUI = new BasicLinkViewButtonUI();
