@@ -9,11 +9,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final String TXT = "JMenu: hover(show popup automatically) on cursor";
     private final JCheckBox check = new JCheckBox(TXT, true);
-    private final transient ActionListener al = new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            Toolkit.getDefaultToolkit().beep();
-        }
-    };
 
     private MainPanel() {
         super(new BorderLayout());
@@ -81,7 +76,11 @@ public final class MainPanel extends JPanel {
     }
     private static JMenuItem makeMenuItem(String str) {
         JMenuItem item = new JMenuItem(str);
-        item.addActionListener(al); //TEST
+        item.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                Toolkit.getDefaultToolkit().beep();
+            }
+        });
         return item;
     }
     public static void main(String[] args) {

@@ -114,16 +114,18 @@ class MenuItemUIHelper {
         if(lh.getIcon() != null) {
             Icon icon;
             ButtonModel model = lh.getMenuItem().getModel();
-            if(!model.isEnabled()) {
-                icon = lh.getMenuItem().getDisabledIcon();
-            }else if(model.isPressed() && model.isArmed()) {
-                icon = lh.getMenuItem().getPressedIcon();
-                if(icon == null) {
-                    // Use default icon
+            if(model.isEnabled()) {
+                if(model.isPressed() && model.isArmed()) {
+                    icon = lh.getMenuItem().getPressedIcon();
+                    if(icon == null) {
+                        // Use default icon
+                        icon = lh.getMenuItem().getIcon();
+                    }
+                }else{
                     icon = lh.getMenuItem().getIcon();
                 }
             }else{
-                icon = lh.getMenuItem().getIcon();
+                icon = lh.getMenuItem().getDisabledIcon();
             }
             if(icon != null) {
                 icon.paintIcon(lh.getMenuItem(), g, lr.getIconRect().x, lr.getIconRect().y);
@@ -151,18 +153,7 @@ class MenuItemUIHelper {
         if(!lh.getAccText().equals("")) {
             ButtonModel model = lh.getMenuItem().getModel();
             g.setFont(lh.getAccFontMetrics().getFont());
-            if(!model.isEnabled()) {
-                // *** paint the accText disabled
-                if(disabledForeground == null) {
-                    g.setColor(lh.getMenuItem().getBackground().brighter());
-                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
-                    g.setColor(lh.getMenuItem().getBackground().darker());
-                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x - 1, lr.getAccRect().y + lh.getFontMetrics().getAscent() - 1);
-                }else{
-                    g.setColor(disabledForeground);
-                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
-                }
-            }else{
+            if(model.isEnabled()) {
                 // *** paint the accText normally
                 if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                     g.setColor(acceleratorSelectionForeground);
@@ -173,6 +164,17 @@ class MenuItemUIHelper {
                     lh.getMenuItem(), g, lh.getAccText(),
                     lh.getViewRect().x + lh.getViewRect().width - lh.getMenuItem().getIconTextGap() - lr.getAccRect().width, lr.getAccRect().y +
                     lh.getAccFontMetrics().getAscent());
+            }else{
+                // *** paint the accText disabled
+                if(disabledForeground == null) {
+                    g.setColor(lh.getMenuItem().getBackground().brighter());
+                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
+                    g.setColor(lh.getMenuItem().getBackground().darker());
+                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x - 1, lr.getAccRect().y + lh.getFontMetrics().getAscent() - 1);
+                }else{
+                    g.setColor(disabledForeground);
+                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
+                }
             }
         }
     }
