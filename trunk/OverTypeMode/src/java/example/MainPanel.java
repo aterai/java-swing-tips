@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textArea.setText("Press the INSERT key to toggle the overwrite mode.\n\u3042\u3042\u3042\naaaaaaaaaaafasdfas");
         add(new JScrollPane(textArea));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
 // https://forums.oracle.com/thread/1385467 JTextPane edit mode (insert or overwrite)???
 class OvertypeTextArea extends JTextArea {
     //private static Toolkit toolkit = Toolkit.getDefaultToolkit();
-    private boolean isOvertypeMode;
+    private boolean overtypeMode;
     private final Caret defaultCaret;
     private final Caret overtypeCaret;
     public OvertypeTextArea() {
@@ -56,14 +56,14 @@ class OvertypeTextArea extends JTextArea {
         setOvertypeMode(true);
     }
     public boolean isOvertypeMode() {
-        return isOvertypeMode;
+        return overtypeMode;
     }
 
     /*
      *Set the caret to use depending on overtype/insert mode
      */
-    public void setOvertypeMode(boolean isOvertypeMode) {
-        this.isOvertypeMode = isOvertypeMode;
+    public void setOvertypeMode(boolean overtypeMode) {
+        this.overtypeMode = overtypeMode;
         int pos = getCaretPosition();
         if(isOvertypeMode()) {
             setCaret(overtypeCaret);

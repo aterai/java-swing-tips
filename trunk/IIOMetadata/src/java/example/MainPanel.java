@@ -105,7 +105,7 @@ class MainPanel extends JPanel {
 class XMLTreeNode implements TreeNode {
     private Node xmlNode;
     private XMLTreeNode parent;
-    private List<XMLTreeNode> children;
+    private List<XMLTreeNode> list;
     private Boolean showAttributes;
     public XMLTreeNode(Node xmlNode) {
         this.xmlNode = xmlNode;
@@ -115,12 +115,12 @@ class XMLTreeNode implements TreeNode {
         this(xmlNode);
         this.parent = parent;
     }
-    public boolean getShowAttributes() {
+    public boolean isShowAttributes() {
         if(showAttributes != null) {
             return showAttributes.booleanValue();
         }
         if(parent != null) {
-            return parent.getShowAttributes();
+            return parent.isShowAttributes();
         }
         return false;
     }
@@ -128,7 +128,7 @@ class XMLTreeNode implements TreeNode {
         showAttributes = set;
     }
     private String getXMLTag() {
-        boolean includeAttributes = getShowAttributes();
+        boolean includeAttributes = isShowAttributes();
         if(xmlNode instanceof Element && includeAttributes) {
             Element e = (Element)xmlNode;
             StringBuilder buf = new StringBuilder();
@@ -154,28 +154,28 @@ class XMLTreeNode implements TreeNode {
         return xmlNode.getNodeName();
     }
 //     private List<XMLTreeNode> getChildren() {
-//         if(children==null) {
+//         if(list==null) {
 //             loadChildren();
 //         }
-//         return new ArrayList<XMLTreeNode>(children);
+//         return new ArrayList<XMLTreeNode>(list);
 //     }
     private void loadChildren() {
         NodeList cn = xmlNode.getChildNodes();
         int count = cn.getLength();
-        children = new ArrayList<XMLTreeNode>(count);
+        list = new ArrayList<XMLTreeNode>(count);
         for(int i=0;i<count;i++) {
             Node c = cn.item(i);
             if(c instanceof Text && c.getNodeValue().trim().length()==0) {
                 continue;
             }
-            children.add(new XMLTreeNode(cn.item(i), this));
+            list.add(new XMLTreeNode(cn.item(i), this));
         }
     }
     @Override public Enumeration children() {
-        if(children==null) {
+        if(list==null) {
             loadChildren();
         }
-        final Iterator<XMLTreeNode> iter = children.iterator();
+        final Iterator<XMLTreeNode> iter = list.iterator();
         return new Enumeration() {
             @Override public boolean hasMoreElements() { return iter.hasNext(); }
             @Override public Object nextElement() { return iter.next(); }
@@ -185,23 +185,23 @@ class XMLTreeNode implements TreeNode {
         return true;
     }
     @Override public TreeNode getChildAt(int childIndex) {
-        if(children==null) {
+        if(list==null) {
             loadChildren();
         }
-        return children.get(childIndex);
+        return list.get(childIndex);
     }
     @Override public int getChildCount() {
-        if(children==null) {
+        if(list==null) {
             loadChildren();
         }
-        return children.size();
+        return list.size();
     }
     @Override public int getIndex(TreeNode node) {
-        if(children==null) {
+        if(list==null) {
             loadChildren();
         }
         int i=0;
-        for(XMLTreeNode c : children) {
+        for(XMLTreeNode c : list) {
             if(xmlNode==c.xmlNode) {
                 return i;
             }
@@ -216,10 +216,10 @@ class XMLTreeNode implements TreeNode {
         if(xmlNode instanceof Element) {
             return false;
         }
-        if(children==null) {
+        if(list==null) {
             loadChildren();
         }
-        return children.isEmpty();
+        return list.isEmpty();
     }
     @Override public String toString() {
         return getXMLTag();

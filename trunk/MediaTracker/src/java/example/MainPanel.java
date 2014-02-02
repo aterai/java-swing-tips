@@ -139,6 +139,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class FileModel extends DefaultTableModel {
     private static final ColumnContext[] columnArray = {
         new ColumnContext("No.",       Integer.class, false),
@@ -179,6 +180,7 @@ class FileModel extends DefaultTableModel {
         }
     }
 }
+
 class Test {
     private String name, comment;
     private int width, height;

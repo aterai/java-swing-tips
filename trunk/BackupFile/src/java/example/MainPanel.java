@@ -108,7 +108,7 @@ public class MainPanel extends JPanel {
     private void append(Message m) {
         StyledDocument doc = jtp.getStyledDocument();
         try{
-            doc.insertString(doc.getLength(), m.message+"\n", doc.getStyle(m.type.toString()));
+            doc.insertString(doc.getLength(), m.text+"\n", doc.getStyle(m.type.toString()));
         }catch(BadLocationException e) {
             e.printStackTrace();
         }
@@ -143,10 +143,10 @@ enum MessageType {
 }
 
 class Message {
-    public final String message;
+    public final String text;
     public final MessageType type;
-    public Message(String message, MessageType type) {
-        this.message = message;
+    public Message(String text, MessageType type) {
+        this.text = text;
         this.type = type;
     }
 }
