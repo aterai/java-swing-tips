@@ -105,16 +105,18 @@ class ColorRadioButton extends JRadioButton {
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
-        if(!model.isEnabled()) {
-            setForeground(Color.GRAY);
-        }else if(model.isPressed() && model.isArmed()) {
-            setForeground(PRESSED_COLOR);
-        }else if(model.isSelected()) {
-            setForeground(SELECTED_COLOR);
-        }else if(isRolloverEnabled() && model.isRollover()) {
-            setForeground(ROLLOVER_COLOR);
+        if(model.isEnabled()) {
+            if(model.isPressed() && model.isArmed()) {
+                setForeground(PRESSED_COLOR);
+            }else if(model.isSelected()) {
+                setForeground(SELECTED_COLOR);
+            }else if(isRolloverEnabled() && model.isRollover()) {
+                setForeground(ROLLOVER_COLOR);
+            }else{
+                setForeground(DEFAULT_COLOR);
+            }
         }else{
-            setForeground(DEFAULT_COLOR);
+            setForeground(Color.GRAY);
         }
         super.fireStateChanged();
     };

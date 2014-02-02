@@ -45,29 +45,35 @@ public class MainPanel extends JPanel {
                 }catch(UnavailableServiceException t) {
                     bs = null;
                 }
-                if(bs!=null) {
+                if(bs==null) {
+                    browseCacheFile(url);
+                }else{
                     bs.showDocument(url);
-                }else if(Desktop.isDesktopSupported()) {
-                    try{
-                        File tmp = File.createTempFile("_tmp", ".html");
-                        tmp.deleteOnExit();
-                        try(InputStream in = new BufferedInputStream(url.openStream()); OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
-                            byte buf[] = new byte[256];
-                            int len;
-                            while((len = in.read(buf)) != -1) {
-                                out.write(buf, 0, len);
-                            }
-                            out.flush();
-                            Desktop.getDesktop().browse(tmp.toURI());
-                        }
-                    }catch(IOException ex) {
-                        ex.printStackTrace();
-                    }
                 }
             }
         }), BorderLayout.SOUTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static void browseCacheFile(URL url) {
+        if(Desktop.isDesktopSupported()) {
+            try{
+                File tmp = File.createTempFile("_tmp", ".html");
+                tmp.deleteOnExit();
+                try(InputStream in = new BufferedInputStream(url.openStream());
+                    OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
+                    byte buf[] = new byte[256];
+                    int len;
+                    while((len = in.read(buf)) != -1) {
+                        out.write(buf, 0, len);
+                    }
+                    out.flush();
+                    Desktop.getDesktop().browse(tmp.toURI());
+                }
+            }catch(IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     public JComponent makeTitledPane(JComponent c, String title) {
         JScrollPane scroll = new JScrollPane(c);

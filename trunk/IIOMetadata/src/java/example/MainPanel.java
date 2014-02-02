@@ -181,7 +181,7 @@ class XMLTreeNode implements TreeNode {
             @Override public Object nextElement() { return iter.next(); }
         };
     }
-    @Override public boolean getAllowsChildren() {
+    @Override public boolean getAllowsChildren() { //NOPMD
         return true;
     }
     @Override public TreeNode getChildAt(int childIndex) {

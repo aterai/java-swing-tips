@@ -105,14 +105,16 @@ public class MainPanel extends JPanel {
         JRadioButton radio = new JRadioButton(String.valueOf(target)) {
             @Override protected void fireStateChanged() {
                 ButtonModel model = getModel();
-                if(!model.isEnabled()) {
+                if(model.isEnabled()) {
+                    if(model.isPressed() && model.isArmed()) {
+                        setForeground(Color.GREEN);
+                    }else if(model.isSelected()) {
+                        setForeground(Color.RED);
+                    //}else if(isRolloverEnabled() && model.isRollover()) {
+                    //    setForeground(Color.BLUE);
+                    }
+                }else{
                     setForeground(Color.GRAY);
-                }else if(model.isPressed() && model.isArmed()) {
-                    setForeground(Color.GREEN);
-                }else if(model.isSelected()) {
-                    setForeground(Color.RED);
-                //}else if(isRolloverEnabled() && model.isRollover()) {
-                //    setForeground(Color.BLUE);
                 }
                 super.fireStateChanged();
             }

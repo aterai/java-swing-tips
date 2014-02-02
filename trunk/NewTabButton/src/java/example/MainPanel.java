@@ -206,16 +206,18 @@ class TabButton extends JRadioButton {
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
-        if(!model.isEnabled()) {
-            setForeground(Color.GRAY);
-        }else if(model.isPressed() && model.isArmed()) {
-            setForeground(getPressedTextColor());
-        }else if(model.isSelected()) {
-            setForeground(getSelectedTextColor());
-        }else if(isRolloverEnabled() && model.isRollover()) {
-            setForeground(getRolloverTextColor());
+        if(model.isEnabled()) {
+            if(model.isPressed() && model.isArmed()) {
+                setForeground(getPressedTextColor());
+            }else if(model.isSelected()) {
+                setForeground(getSelectedTextColor());
+            }else if(isRolloverEnabled() && model.isRollover()) {
+                setForeground(getRolloverTextColor());
+            }else{
+                setForeground(getTextColor());
+            }
         }else{
-            setForeground(getTextColor());
+            setForeground(Color.GRAY);
         }
         super.fireStateChanged();
     }
