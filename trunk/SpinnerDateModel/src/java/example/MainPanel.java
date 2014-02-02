@@ -8,13 +8,13 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final String dateFormatPattern = "yyyy/MM/dd";
+    private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
     public MainPanel() {
         super(new GridLayout(3,1));
 
         Date date = new Date();
         JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
-        spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormatPattern));
+        spinner1.setEditor(new JSpinner.DateEditor(spinner1, DATE_FORMAT_PATTERN));
 
         Calendar today = Calendar.getInstance();
         today.clear(Calendar.MILLISECOND);
@@ -27,16 +27,16 @@ public class MainPanel extends JPanel {
         System.out.println(start);
 
         JSpinner spinner2 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
-        spinner2.setEditor(new JSpinner.DateEditor(spinner2, dateFormatPattern));
+        spinner2.setEditor(new JSpinner.DateEditor(spinner2, DATE_FORMAT_PATTERN));
 
         JSpinner spinner3 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
-        final JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner3, dateFormatPattern);
+        final JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner3, DATE_FORMAT_PATTERN);
         spinner3.setEditor(editor);
         editor.getTextField().addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        int i = dateFormatPattern.lastIndexOf("dd");
+                        int i = DATE_FORMAT_PATTERN.lastIndexOf("dd");
                         editor.getTextField().select(i, i+2);
                     }
                 });

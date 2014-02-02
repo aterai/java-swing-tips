@@ -10,16 +10,16 @@ import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
     // Possible Look & Feels
-    private static final String mac     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String metal   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String motif   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-    private static final String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String gtk     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String nimbus  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+    private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
+    private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
 
     // The current Look & Feel
-    private static String currentLookAndFeel = metal;
-    private static final ButtonGroup lafMenuGroup = new ButtonGroup();
+    private static String currentLookAndFeel = METAL;
+
     private static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
     private static JCheckBox check = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
         @Override public void actionPerformed(ActionEvent e) {
@@ -76,20 +76,20 @@ public class MainPanel extends JPanel {
     }
 
     //<blockquote cite="SwingSet2.java">
-    protected static JMenu createLookAndFeelMenu() {
+    public static JMenu createLookAndFeelMenu() {
+        ButtonGroup lafMenuGroup = new ButtonGroup();
         JMenu lafMenu = new JMenu("Look&Feel");
-        JMenuItem mi = createLafMenuItem(lafMenu, "Metal", metal);
+        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
         mi.setSelected(true); //this is the default l&f
-        createLafMenuItem(lafMenu, "Mac", mac);
-        createLafMenuItem(lafMenu, "Motif", motif);
-        createLafMenuItem(lafMenu, "Windows", windows);
-        createLafMenuItem(lafMenu, "GTK", gtk);
-        createLafMenuItem(lafMenu, "Nimbus", nimbus);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     MAC);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
+        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     GTK);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
         return lafMenu;
     }
-
-    public static JMenuItem createLafMenuItem(JMenu menu, String label, String laf) {
-        JMenuItem mi = (JRadioButtonMenuItem) menu.add(new JRadioButtonMenuItem(label));
+    private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
+        JMenuItem mi = (JRadioButtonMenuItem)menu.add(new JRadioButtonMenuItem(label));
         lafMenuGroup.add(mi);
         mi.addActionListener(new ChangeLookAndFeelAction(laf));
         mi.setEnabled(isAvailableLookAndFeel(laf));

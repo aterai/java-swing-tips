@@ -119,9 +119,9 @@ abstract class AbstractExpansionPanel extends JPanel {
 
     abstract public JPanel makePanel();
 
-    public AbstractExpansionPanel(String title_) {
+    public AbstractExpansionPanel(String title) {
         super(new BorderLayout());
-        title = title_;
+        this.title = title;
         label = new JLabel("\u25BC "+title) {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D)g;
@@ -132,7 +132,7 @@ abstract class AbstractExpansionPanel extends JPanel {
             }
         };
         label.addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent evt) {
+            @Override public void mousePressed(MouseEvent e) {
                 initPanel();
             }
         });

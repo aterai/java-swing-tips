@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class MainPanel extends JPanel {
-    private static final TexturePaint texture = ImageUtil.makeCheckerTexture();
+    private static final TexturePaint TEXTURE = ImageUtil.makeCheckerTexture();
     private final JDesktopPane desktop = new JDesktopPane() {
         @Override public void updateUI() {
             super.updateUI();
@@ -28,7 +28,7 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JPanel p = new TranslucentTexturePanel(texture);
+        JPanel p = new TranslucentTexturePanel(TEXTURE);
         p.add(new JButton("button"));
         JInternalFrame iframe = new JInternalFrame("InternalFrame", true, true, true, true);
         iframe.setContentPane(p);
@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
                     @Override protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
                         Graphics2D g2 = (Graphics2D)g.create();
-                        g2.setPaint(texture);
+                        g2.setPaint(TEXTURE);
                         g2.fillRect(0, 0, getWidth(), getHeight());
                         g2.dispose();
                     }

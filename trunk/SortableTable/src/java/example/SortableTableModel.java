@@ -34,16 +34,17 @@ class ColumnComparator implements Comparator, Serializable {
         if(one instanceof Vector && two instanceof Vector) {
             Object oOne = ((Vector)one).elementAt(index);
             Object oTwo = ((Vector)two).elementAt(index);
+            int dir = ascending ? -1 :  1;
             if(oOne==null && oTwo==null) {
                 return 0;
             }else if(oOne==null) {
-                return ascending ? -1 :  1;
+                return 1 * dir;
             }else if(oTwo==null) {
-                return ascending ?  1 : -1;
+                return -1 * dir;
             }else if(oOne instanceof Comparable && oTwo instanceof Comparable) {
                 Comparable cOne = (Comparable)oOne;
                 Comparable cTwo = (Comparable)oTwo;
-                return ascending ? cOne.compareTo(cTwo) : cTwo.compareTo(cOne);
+                return cOne.compareTo(cTwo) * dir;
             }
         }
         return 1;
@@ -65,38 +66,30 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     public static final int NONE = 0;
     public static final int DOWN = 1;
     public static final int UP   = 2;
-    private static final Icon ASCENDING_SORT_ICON  = UIManager.getIcon("Table.ascendingSortIcon");
-    private static final Icon DESCENDING_SORT_ICON = UIManager.getIcon("Table.descendingSortIcon");
-    private static final Icon NONE_SORT_ICON = new Icon() {
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
-        @Override public int getIconWidth() {
-            return ASCENDING_SORT_ICON.getIconWidth();
-        }
-        @Override public int getIconHeight() {
-            return ASCENDING_SORT_ICON.getIconHeight();
-        }
-    };
+    private transient Icon ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
+    private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+    private transient Icon noneSortIcon       = new EmptyIcon(ascendingSortIcon);
     private int pushedColumn = -1;
     private final ConcurrentMap<Integer, Integer> state = new ConcurrentHashMap<>();
 
     public SortButtonRenderer() {
         super();
         setHorizontalTextPosition(JButton.LEFT);
-        setIcon(NONE_SORT_ICON);
+        setIcon(noneSortIcon);
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setText(Objects.toString(value, ""));
-        setIcon(NONE_SORT_ICON);
+        setIcon(noneSortIcon);
         int modelColumn = table.convertColumnIndexToModel(column);
         Integer ivalue = state.get(modelColumn);
         if(ivalue != null) {
             if(ivalue == DOWN) {
-                setIcon(ASCENDING_SORT_ICON);
+                setIcon(ascendingSortIcon);
                 //setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
             }else if(ivalue == UP) {
-                setIcon(DESCENDING_SORT_ICON);
+                setIcon(descendingSortIcon);
                 //setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
             }
@@ -108,8 +101,9 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        ASCENDING_SORT_ICON  = UIManager.getIcon("Table.ascendingSortIcon");
-        DESCENDING_SORT_ICON = UIManager.getIcon("Table.descendingSortIcon");
+        ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
+        descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+        noneSortIcon       = new EmptyIcon(ascendingSortIcon);
     }
     public void setPressedColumn(int col) {
         pushedColumn = col;
@@ -130,6 +124,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         return (i == null) ? NONE : i;
     }
 }
+
 class HeaderMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         JTableHeader h = (JTableHeader) e.getSource();
@@ -155,5 +150,19 @@ class HeaderMouseListener extends MouseAdapter {
     }
     @Override public void mouseReleased(MouseEvent e) {
         ((JTableHeader)e.getSource()).repaint();
+    }
+}
+
+class EmptyIcon implements Icon {
+    private final Icon icon;
+    public EmptyIcon(Icon icon) {
+        this.icon = icon;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+    @Override public int getIconWidth() {
+        return icon.getIconWidth();
+    }
+    @Override public int getIconHeight() {
+        return icon.getIconHeight();
     }
 }

@@ -11,7 +11,7 @@ import javax.swing.text.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final Color warningColor = new Color(255, 200, 200);
+    private static final Color WARNING_COLOR = new Color(255, 200, 200);
     private final JTextField field = new JTextField("ab+");
     private final HighlightTableCellRenderer renderer = new HighlightTableCellRenderer();
 
@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
             try{
                 sorter.setRowFilter(RowFilter.regexFilter(pattern));
             }catch(PatternSyntaxException ex) {
-                field.setBackground(warningColor);
+                field.setBackground(WARNING_COLOR);
             }
         }
     }
@@ -99,8 +99,8 @@ public class MainPanel extends JPanel {
 }
 
 class HighlightTableCellRenderer extends JTextField implements TableCellRenderer {
-    private static final Color backgroundSelectionColor = new Color(220, 240, 255);
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private static final Color BACKGROUND_SELECTION_COLOR = new Color(220, 240, 255);
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private String pattern = "";
     private String prev;
 
@@ -126,7 +126,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
         Highlighter highlighter = getHighlighter();
         highlighter.removeAllHighlights();
         setText(txt);
-        setBackground(isSelected ? backgroundSelectionColor : Color.WHITE);
+        setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
         if(pattern!=null && !pattern.isEmpty() && !pattern.equals(prev)) {
             Matcher matcher = Pattern.compile(pattern).matcher(txt);
             if(matcher.find()) {

@@ -7,12 +7,12 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final String str = "Can only edit last line, version 0.0\n";
+    private static final String MESSAGE = "Can only edit last line, version 0.0\n";
     private MainPanel() {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea();
         textArea.setMargin(new Insets(2,5,2,2));
-        textArea.setText(str + NonEditableLineDocumentFilter.PROMPT);
+        textArea.setText(MESSAGE + NonEditableLineDocumentFilter.PROMPT);
         ((AbstractDocument)textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
 
         add(new JScrollPane(textArea));

@@ -10,20 +10,21 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private final JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
     private final JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
 
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"CCC", 92, true}, {"DDD", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
-        final JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
 
 //         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {

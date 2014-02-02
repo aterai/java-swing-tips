@@ -113,7 +113,7 @@ public class MainPanel extends JPanel {
 }
 
 class GradientPalletSliderUI extends MetalSliderUI {
-    private static final int[] pallet = makeGradientPallet();
+    private static final int[] GRADIENT_PALLET = makeGradientPallet();
     @Override public void paintTrack(Graphics g) {
         //Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
         boolean leftToRight     = true; //MetalUtils.isLeftToRight(slider);
@@ -201,7 +201,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
             g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
             float x = (fillRight - fillLeft) / (float)(trackRight - trackLeft);
-            g.setColor(getColorFromPallet(pallet, x));
+            g.setColor(getColorFromPallet(GRADIENT_PALLET, x));
             g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
         }else{
             g.setColor(controlShadow);

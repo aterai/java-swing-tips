@@ -7,15 +7,11 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(3,1));
+        super(new GridLayout(3, 1));
 
         JTabbedPaneWithCloseButton tab1 = new JTabbedPaneWithCloseButton();
         JTabbedPaneWithCloseIcons  tab2 = new JTabbedPaneWithCloseIcons();
         CloseableTabbedPane        tab3 = new CloseableTabbedPane();
-
-        tab1.setPreferredSize(new Dimension(320, 80));
-        tab2.setPreferredSize(new Dimension(320, 80));
-        tab3.setPreferredSize(new Dimension(320, 80));
 
         tab1.addTab("aaa", new JLabel("aaaaaaaa"));
         tab1.addTab("bbb", new JLabel("bbbbbbbbb"));
@@ -27,6 +23,7 @@ public final class MainPanel extends JPanel {
         add(tab1);
         add(tab2);
         add(tab3);
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

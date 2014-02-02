@@ -46,9 +46,9 @@ public class MainPanel extends JPanel {
         map.put(Permissions.WRITE,   1<<1);
         map.put(Permissions.EXECUTE, 1<<0);
         add(new JButton(new AbstractAction("ls -l (chmod)") {
+            private static final String M = "-";
             @Override public void actionPerformed(ActionEvent e) {
                 StringBuilder buf = new StringBuilder(9);
-                String M = "-";
                 for(int i=0; i<model.getRowCount(); i++) {
                     @SuppressWarnings("unchecked")
                     EnumSet<Permissions> v = (EnumSet<Permissions>)model.getValueAt(i, 1);

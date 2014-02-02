@@ -163,8 +163,8 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
 }
 
 class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
-    private final Color selectionBackground = new Color(0,0,100,50);
-    private final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+    private static final Color SELECTION_BACKGROUND = new Color(0, 0, 100, 50);
+    private static final Border NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
     public TranslucentBooleanRenderer() {
         super();
         setHorizontalAlignment(JLabel.CENTER);
@@ -176,7 +176,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
             setOpaque(false);
             setForeground(table.getSelectionForeground());
             //super.setBackground(table.getSelectionBackground());
-            super.setBackground(selectionBackground);
+            super.setBackground(SELECTION_BACKGROUND);
         }else{
             setOpaque(false);
             setForeground(table.getForeground());
@@ -186,7 +186,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         if(hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
         }else{
-            setBorder(noFocusBorder);
+            setBorder(NO_FOCUS_BORDER);
         }
         return this;
     }

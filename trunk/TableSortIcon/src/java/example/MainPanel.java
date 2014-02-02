@@ -23,11 +23,7 @@ class MainPanel extends JPanel {
     private final JTable table = new JTable(model);
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
 
-    private static final Icon emptyIcon = new Icon() {
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
-        @Override public int getIconWidth()  { return 0; }
-        @Override public int getIconHeight() { return 0; }
-    };
+    private static final Icon EMPTY_ICON = new EmptyIcon();
     private final Icon defaultAscendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
     private final Icon defaultDescendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
     private final Icon customAscendingSortIcon   = new ImageIcon(getClass().getResource("ascending.png"));
@@ -46,8 +42,8 @@ class MainPanel extends JPanel {
                     ascending  = defaultAscendingSortIcon;
                     descending = defaultDescendingSortIcon;
                 }else if(r.equals(r1)) {
-                    ascending  = new IconUIResource(emptyIcon);
-                    descending = new IconUIResource(emptyIcon);
+                    ascending  = new IconUIResource(EMPTY_ICON);
+                    descending = new IconUIResource(EMPTY_ICON);
                 }else{
                     ascending  = new IconUIResource(customAscendingSortIcon);
                     descending = new IconUIResource(customDescendingSortIcon);
@@ -82,7 +78,7 @@ class MainPanel extends JPanel {
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -106,4 +102,10 @@ class MainPanel extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+}
+
+class EmptyIcon implements Icon {
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+    @Override public int getIconWidth()  { return 0; }
+    @Override public int getIconHeight() { return 0; }
 }

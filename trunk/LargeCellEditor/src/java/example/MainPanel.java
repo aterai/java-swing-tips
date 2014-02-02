@@ -200,20 +200,20 @@ class MyIconTable extends JTable {
 }
 
 class EditorFromList extends JList<MyIcon> {
-    private static final int ins = 2;
+    private static final int INS = 2;
     private int rollOverRowIndex = -1;
 
     public EditorFromList(DefaultListModel<MyIcon> list) {
         super(list);
         ImageIcon icon = ((MyIcon)list.elementAt(0)).small;
-        int iw = ins+icon.getIconWidth();
-        int ih = ins+icon.getIconHeight();
+        int iw = INS+icon.getIconWidth();
+        int ih = INS+icon.getIconHeight();
         setLayoutOrientation(JList.HORIZONTAL_WRAP);
         setVisibleRowCount(0);
         setFixedCellWidth(iw);
         setFixedCellHeight(ih);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        setPreferredSize(new Dimension(iw*3+ins, ih*3+ins));
+        setPreferredSize(new Dimension(iw*3+INS, ih*3+INS));
         setCellRenderer(new ListCellRenderer<MyIcon>() {
             private final JLabel label = new JLabel();
             private final Color selctedColor = new Color(200, 200, 255);

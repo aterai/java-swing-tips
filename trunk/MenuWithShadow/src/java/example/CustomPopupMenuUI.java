@@ -13,7 +13,6 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
     private static final int OFF = 4;
     private static final int ARC = 2;
     private static final float ALPHA = 0.12f;
-    private static final Insets insets = new Insets(0, 0, OFF, OFF);
 
     public static ComponentUI createUI(JComponent c) {
         return new CustomPopupMenuUI();
@@ -85,7 +84,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
 
     static class ShadowBorderInPanel extends AbstractBorder {
         @Override public Insets getBorderInsets(Component c) {
-            return insets;
+            return new Insets(0, 0, OFF, OFF);
         }
         @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
             Graphics2D g2 = (Graphics2D) g;
@@ -108,7 +107,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
             screenShot = bi;
         }
         @Override public Insets getBorderInsets(Component c) {
-            return insets;
+            return new Insets(0, 0, OFF, OFF);
         }
         @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
             if(screenShot==null) {

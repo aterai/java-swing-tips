@@ -150,7 +150,7 @@ public class MainPanel extends JPanel {
 }
 
 class TestRenderer extends Box implements TableCellRenderer {
-    private static final Border noFocusBorder = BorderFactory.createEmptyBorder(1,1,1,1);
+    private static final Border NO_FOCUS_BORDER = BorderFactory.createEmptyBorder(1,1,1,1);
     private final ImageIcon nicon;
     private final ImageIcon sicon;
     //private final DotLabel textLabel;
@@ -161,7 +161,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         //textLabel = new DotLabel(new Color(~table.getSelectionBackground().getRGB()));
         textLabel = new JLabel("dummy");
         textLabel.setOpaque(true);
-        textLabel.setBorder(noFocusBorder);
+        textLabel.setBorder(NO_FOCUS_BORDER);
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
@@ -190,7 +190,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         if(hasFocus) {
             textLabel.setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
         }else{
-            textLabel.setBorder(noFocusBorder);
+            textLabel.setBorder(NO_FOCUS_BORDER);
         }
         //textLabel.setFocusedBorder(hasFocus);
         textLabel.setFont(table.getFont());
@@ -249,7 +249,7 @@ class TestRenderer extends Box implements TableCellRenderer {
 // }
 
 class TestModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  false),
         new ColumnContext("Comment", String.class,  false)

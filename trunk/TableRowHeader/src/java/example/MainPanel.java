@@ -231,7 +231,7 @@ class RowHeaderList<E> extends JList<E> {
 }
 
 class TestModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         //new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  false),
         new ColumnContext("Comment", String.class,  false)

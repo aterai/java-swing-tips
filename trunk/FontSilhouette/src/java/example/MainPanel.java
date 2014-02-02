@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private static final int SIZE = 50;
-    private static final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
+    private static final Font FONT = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
     private MainPanel() {
         super(new GridLayout(4,6,0,0));
         // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
@@ -23,12 +23,12 @@ public class MainPanel extends JPanel {
             add(initLabel(new JLabel(pieces[i], SwingConstants.CENTER), i));
         }
         for(int i=0;i<pieces.length;i++) {
-            add(initLabel(new JLabel(new SilhouetteIcon(font, pieces[i], SIZE)), i));
+            add(initLabel(new JLabel(new SilhouetteIcon(FONT, pieces[i], SIZE)), i));
         }
         setPreferredSize(new Dimension(320, 240));
     }
     private static JLabel initLabel(JLabel l, int i) {
-        l.setFont(font);
+        l.setFont(FONT);
         l.setOpaque(true);
         boolean f = i%2==0;
         if(i<6 ? !f : f) {

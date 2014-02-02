@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
 //How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 //http://download.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-    private static final MouseListener buttonMouseListener = new MouseAdapter() {
+    private final transient MouseListener buttonMouseListener = new MouseAdapter() {
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if(component instanceof AbstractButton) {

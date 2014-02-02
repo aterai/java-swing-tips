@@ -9,9 +9,7 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private static final int BOOLEAN_COLUMN = 2;
-    private static String[] columnNames = {
-        "String", "Number", "Boolean"
-    };
+    private static String[] columnNames = {"String", "Number", "Boolean"};
     private static Object[][] data = {
         { "aaa",1,false}, { "bbb",20,false},
         { "ccc",2,false}, { "ddd",3, false},

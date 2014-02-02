@@ -107,13 +107,14 @@ public class MainPanel extends JPanel {
 }
 
 class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
-    private static final int lengthOfTask = 120;
+    private final int lengthOfTask;
     private final int sleepDummy = new Random().nextInt(100) + 1;
     private final JTree tree;
     private final DefaultTreeModel model;
     private final DefaultMutableTreeNode treeNode;
     public NodeProgressWorker(JTree tree, DefaultMutableTreeNode treeNode) {
         super();
+        this.lengthOfTask = 120;
         this.tree = tree;
         this.model = (DefaultTreeModel)tree.getModel();
         this.treeNode = treeNode;

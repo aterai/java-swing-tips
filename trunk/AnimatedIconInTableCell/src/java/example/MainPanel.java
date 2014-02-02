@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 class MainPanel extends JPanel {
-    private final Object[] columnNames = new Object[] {"String", "ImageIcon"};
+    private final String[] columnNames = {"String", "ImageIcon"};
     private final JTable table = new JTable();
     public MainPanel() {
         super(new BorderLayout());

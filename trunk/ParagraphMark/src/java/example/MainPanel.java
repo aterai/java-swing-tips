@@ -65,7 +65,7 @@ class MyViewFactory implements ViewFactory {
 }
 
 class MyParagraphView extends ParagraphView {
-    private static final Color pc = new Color(120, 130, 110);
+    private static final Color MARK_COLOR = new Color(120, 130, 110);
     public MyParagraphView(Element elem) {
         super(elem);
     }
@@ -81,7 +81,7 @@ class MyParagraphView extends ParagraphView {
             int y = r.y;
             int h = r.height;
             Color old = g.getColor();
-            g.setColor(pc);
+            g.setColor(MARK_COLOR);
             g.drawLine(x+1, y+h/2, x+1, y+h-4);
             g.drawLine(x+2, y+h/2, x+2, y+h-5);
             g.drawLine(x+3, y+h-6, x+3, y+h-6);

@@ -125,7 +125,6 @@ class ScalingButton extends JButton {
 
 class NineSliceScalingButton extends JButton {
     private final BufferedImage image;
-    private static final int a = 37, b = 36, c = 36, d = 36;
     public NineSliceScalingButton(String title, BufferedImage image) {
         super();
         this.image = image;
@@ -148,6 +147,11 @@ class NineSliceScalingButton extends JButton {
         int ih = image.getHeight(this);
         int bw = getWidth();
         int bh = getHeight();
+
+        int a = 37;
+        int b = 36;
+        int c = 36;
+        int d = 36;
 
         g2.drawImage(image.getSubimage(a, c, iw - a - b, ih - c - d), a, c, bw - a - b, bh - c - d, this);
 

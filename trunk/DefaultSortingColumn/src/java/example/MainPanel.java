@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
-    private static final String[] columnNames = {"String", "Integer", "Boolean"};
-    private static final Object[][] data = {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
@@ -28,7 +28,7 @@ public class MainPanel extends JPanel {
         table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, SortOrder.DESCENDING)));
 
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

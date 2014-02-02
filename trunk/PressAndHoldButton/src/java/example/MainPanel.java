@@ -55,7 +55,7 @@ class MainPanel extends JPanel {
 }
 
 class PressAndHoldButton extends JToggleButton {
-    private static final Icon i = new MenuArrowIcon();
+    private static final Icon ARROW_ICON = new MenuArrowIcon();
     private final ButtonGroup bg = new ButtonGroup();
     private final JPopupMenu pop = new JPopupMenu();
 //     public PressAndHoldButton() {
@@ -99,15 +99,15 @@ class PressAndHoldButton extends JToggleButton {
         setAction(handler);
         addMouseListener(handler);
         setFocusable(false);
-        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+i.getIconWidth()));
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+ARROW_ICON.getIconWidth()));
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension dim = getSize();
         Insets ins = getInsets();
         int x = dim.width-ins.right;
-        int y = ins.top+(dim.height-ins.top-ins.bottom-i.getIconHeight())/2;
-        i.paintIcon(this, g, x, y);
+        int y = ins.top+(dim.height-ins.top-ins.bottom-ARROW_ICON.getIconHeight())/2;
+        ARROW_ICON.paintIcon(this, g, x, y);
     }
 }
 

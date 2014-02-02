@@ -138,7 +138,7 @@ class StripeTableRenderer extends DefaultTableCellRenderer {
 }
 
 class TestModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)

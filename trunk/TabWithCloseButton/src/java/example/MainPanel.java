@@ -65,13 +65,13 @@ public class MainPanel extends JPanel {
 }
 
 class MyJTabbedPane extends JTabbedPane {
-    private static final Icon icon = new CloseTabIcon();
+    private static final Icon CLOSE_ICON = new CloseTabIcon();
     @Override public void addTab(String title, final Component content) {
         JPanel tab = new JPanel(new BorderLayout());
         tab.setOpaque(false);
         JLabel label = new JLabel(title);
         label.setBorder(BorderFactory.createEmptyBorder(0,0,0,4));
-        JButton button = new JButton(icon);
+        JButton button = new JButton(CLOSE_ICON);
         //button.setBorderPainted(false);
         //button.setFocusPainted(false);
         //button.setContentAreaFilled(false);
@@ -87,26 +87,24 @@ class MyJTabbedPane extends JTabbedPane {
         super.addTab(title, content);
         setTabComponentAt(getTabCount()-1, tab);
     }
-    private static class CloseTabIcon implements Icon {
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.translate(x, y);
-            g.setColor(Color.BLACK);
-            g.drawLine(4,  4, 11, 11);
-            g.drawLine(4,  5, 10, 11);
-            g.drawLine(5,  4, 11, 10);
-            g.drawLine(11, 4,  4, 11);
-            g.drawLine(11, 5,  5, 11);
-            g.drawLine(10, 4,  4, 10);
-            g.translate(-x, -y);
-        }
-        @Override public int getIconWidth() {
-            return 16;
-        }
-        @Override public int getIconHeight() {
-            return 16;
-        }
-//         public Rectangle getBounds() {
-//             return new Rectangle(0, 0, width, height);
-//         }
+}
+
+class CloseTabIcon implements Icon {
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        g.translate(x, y);
+        g.setColor(Color.BLACK);
+        g.drawLine(4,  4, 11, 11);
+        g.drawLine(4,  5, 10, 11);
+        g.drawLine(5,  4, 11, 10);
+        g.drawLine(11, 4,  4, 11);
+        g.drawLine(11, 5,  5, 11);
+        g.drawLine(10, 4,  4, 10);
+        g.translate(-x, -y);
+    }
+    @Override public int getIconWidth() {
+        return 16;
+    }
+    @Override public int getIconHeight() {
+        return 16;
     }
 }

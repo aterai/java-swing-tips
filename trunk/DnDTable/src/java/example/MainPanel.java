@@ -115,9 +115,9 @@ public class MainPanel extends JPanel {
 }
 
 class DnDTable extends JTable implements DragGestureListener, DragSourceListener, Transferable {
-    private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private static final String NAME = "test";
-    private static final Color lineColor = new Color(255,100,100);
+    private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+    private static final Color LINE_COLOR = new Color(255, 100, 100);
     private final Rectangle2D targetLine = new Rectangle2D.Float();
     private int draggedIndex = -1;
     private int targetIndex  = -1;
@@ -132,7 +132,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
         super.paintComponent(g);
         if(targetIndex>=0) {
             Graphics2D g2 = (Graphics2D)g;
-            g2.setPaint(lineColor);
+            g2.setPaint(LINE_COLOR);
             g2.fill(targetLine);
         }
     }

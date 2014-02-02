@@ -7,17 +7,18 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
+    private static final int STEP   = 5;
+    private static final int EXTENT = 20;
+    private static final int MIN    = 0;
+    private static final int MAX    = EXTENT*10; //200
+    private static final int VALUE  = 50;
     private final JSpinner spinner;
     private final JScrollBar scrollbar;
-    private static final int step   = 5;
-    private static final int extent = 20;
-    private static final int min    = 0;
-    private static final int max    = extent*10; //200
-    private static final int value  = 50;
+
     public MainPanel() {
         super(new GridLayout(2,1));
-        scrollbar = new JScrollBar(JScrollBar.HORIZONTAL, value, extent, min, max+extent);
-        scrollbar.setUnitIncrement(step);
+        scrollbar = new JScrollBar(JScrollBar.HORIZONTAL, VALUE, EXTENT, MIN, MAX+EXTENT);
+        scrollbar.setUnitIncrement(STEP);
         scrollbar.getModel().addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
                 BoundedRangeModel m = (BoundedRangeModel)e.getSource();
@@ -25,7 +26,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        spinner = new JSpinner(new SpinnerNumberModel(value, min, max, step));
+        spinner = new JSpinner(new SpinnerNumberModel(VALUE, MIN, MAX, STEP));
         spinner.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
                 JSpinner source = (JSpinner)e.getSource();
@@ -37,7 +38,7 @@ public class MainPanel extends JPanel {
         add(makeTitlePanel(spinner, "JSpinner"));
         add(makeTitlePanel(scrollbar, "JScrollBar"));
         setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());

@@ -109,16 +109,16 @@ public class MainPanel extends JPanel {
 // }
 
 class HyperlinkButton extends JButton {
-    private static final String uiClassID = "LinkViewButtonUI";
+    private static final String UI_CLASS_ID = "LinkViewButtonUI";
 //     @Override public String getUIClassID() {
-//         return uiClassID;
+//         return UI_CLASS_ID;
 //     }
 //     @Override public void setUI(LinkViewButtonUI ui) {
 //         super.setUI(ui);
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if(UIManager.get(uiClassID)==null) {
+        if(UIManager.get(UI_CLASS_ID)==null) {
             setUI(BasicLinkViewButtonUI.createUI(this));
         }else{
             setUI((LinkViewButtonUI)UIManager.getUI(this));
@@ -151,7 +151,7 @@ class HyperlinkButton extends JButton {
 class LinkViewButtonUI extends BasicButtonUI {}
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
-    private static final LinkViewButtonUI linkViewButtonUI = new BasicLinkViewButtonUI();
+    private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();
     private static Dimension size = new Dimension();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle iconRect = new Rectangle();
@@ -161,7 +161,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
 //         b.setForeground(Color.BLUE);
 //         b.setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
 //         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        return linkViewButtonUI;
+        return LINKVIEW_BUTTON_UI;
     }
     private BasicLinkViewButtonUI() {
         super();

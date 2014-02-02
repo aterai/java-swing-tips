@@ -11,6 +11,17 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private static final String PLACEHOLDER = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
     private final JEditorPane editor = new JEditorPane("text/html", PLACEHOLDER);
+    private final String[] columnNames = {"Integer", "String", "Boolean"};
+    private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            switch(column) {
+              case 0:  return Integer.class;
+              case 2:  return Boolean.class;
+              default: return String.class;
+            }
+        }
+    };
+    private final JTable table = new JTable(model);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -25,16 +36,6 @@ public class MainPanel extends JPanel {
             }
         });
 
-        String[] columnNames = {"Integer", "String", "Boolean"};
-        DefaultTableModel model = new DefaultTableModel(null, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                switch(column) {
-                  case 0:  return Integer.class;
-                  case 2:  return Boolean.class;
-                  default: return String.class;
-                }
-            }
-        };
         model.addTableModelListener(new TableModelListener() {
             @Override public void tableChanged(TableModelEvent e) {
                 DefaultTableModel model = (DefaultTableModel)e.getSource();
@@ -42,7 +43,6 @@ public class MainPanel extends JPanel {
             }
         });
 
-        JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());

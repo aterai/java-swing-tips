@@ -213,7 +213,7 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
 
 // http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
 class ButtonTabComponent extends JPanel {
-    private static final MouseListener buttonMouseListener = new MouseAdapter() {
+    private final transient MouseListener buttonMouseListener = new MouseAdapter() {
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if(component instanceof AbstractButton) {

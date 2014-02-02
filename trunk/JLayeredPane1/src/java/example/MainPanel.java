@@ -14,8 +14,7 @@ class MainPanel extends JPanel {
     private static final int BACKLAYER = 1;
     //private static final int FORELAYER = 2;
     private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    private static final int[] colors = {
-        0xdddddd, 0xaaaaff, 0xffaaaa, 0xaaffaa, 0xffffaa, 0xffaaff, 0xaaffff };
+    private static final int[] COLORS = {0xDDDDDD, 0xAAAAFF, 0xFFAAAA, 0xAAFFAA, 0xFFFFAA, 0xFFAAFF, 0xAAFFFF};
     private final JLayeredPane layerPane;
 
     public MainPanel() {
@@ -44,7 +43,7 @@ class MainPanel extends JPanel {
         label.setFont(FONT);
         label.setOpaque(true);
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setBackground(getColor(colors[i], 0.85f));
+        label.setBackground(getColor(COLORS[i], 0.85f));
         Border border1 = BorderFactory.createEmptyBorder(4, 4, 4, 4);
         label.setBorder(border1);
 
@@ -55,9 +54,9 @@ class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         p.setOpaque(true);
-        p.setBackground(new Color(colors[i]));
+        p.setBackground(new Color(COLORS[i]));
 
-        Color col = getColor(colors[i], 0.5f);
+        Color col = getColor(COLORS[i], 0.5f);
         Border border = BorderFactory.createLineBorder(col, 1);
         p.setBorder(border);
 

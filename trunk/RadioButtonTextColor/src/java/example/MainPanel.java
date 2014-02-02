@@ -47,7 +47,7 @@ public class MainPanel extends JPanel {
         add(box1);
         add(box2);
         setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -73,15 +73,15 @@ public class MainPanel extends JPanel {
 }
 
 class ColorRadioButton extends JRadioButton {
-    private static final Color defaultColor  = Color.BLACK;
-    private static final Color pressedColor  = Color.GREEN;
-    private static final Color selectedColor = Color.RED;
-    private static final Color rolloverColor = Color.BLUE;
-    private static final int iconSize = 16;
+    private static final Color DEFAULT_COLOR  = Color.BLACK;
+    private static final Color PRESSED_COLOR  = Color.GREEN;
+    private static final Color SELECTED_COLOR = Color.RED;
+    private static final Color ROLLOVER_COLOR = Color.BLUE;
+    private static final int ICON_SIZE = 16;
 
     public ColorRadioButton(String text) {
         super(text);
-        setForeground(defaultColor);
+        setForeground(DEFAULT_COLOR);
         setIcon(new DefaultIcon());
         setPressedIcon(new PressedIcon());
         setSelectedIcon(new SelectedIcon());
@@ -92,13 +92,13 @@ class ColorRadioButton extends JRadioButton {
 //                 if(!model.isEnabled()) {
 //                     setForeground(Color.GRAY);
 //                 }else if(model.isPressed() && model.isArmed()) {
-//                     setForeground(pressedColor);
+//                     setForeground(PRESSED_COLOR);
 //                 }else if(model.isSelected()) {
-//                     setForeground(selectedColor);
+//                     setForeground(SELECTED_COLOR);
 //                 }else if(isRolloverEnabled() && model.isRollover()) {
-//                     setForeground(rolloverColor);
+//                     setForeground(ROLLOVER_COLOR);
 //                 }else{
-//                     setForeground(defaultColor);
+//                     setForeground(DEFAULT_COLOR);
 //                 }
 //             }
 //         });
@@ -108,26 +108,26 @@ class ColorRadioButton extends JRadioButton {
         if(!model.isEnabled()) {
             setForeground(Color.GRAY);
         }else if(model.isPressed() && model.isArmed()) {
-            setForeground(pressedColor);
+            setForeground(PRESSED_COLOR);
         }else if(model.isSelected()) {
-            setForeground(selectedColor);
+            setForeground(SELECTED_COLOR);
         }else if(isRolloverEnabled() && model.isRollover()) {
-            setForeground(rolloverColor);
+            setForeground(ROLLOVER_COLOR);
         }else{
-            setForeground(defaultColor);
+            setForeground(DEFAULT_COLOR);
         }
         super.fireStateChanged();
     };
     private static class DefaultIcon implements Icon {
         @Override public int getIconWidth() {
-            return iconSize*2;
+            return ICON_SIZE*2;
         }
         @Override public int getIconHeight() {
-            return iconSize;
+            return ICON_SIZE;
         }
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
-            g.setColor(defaultColor);
+            g.setColor(DEFAULT_COLOR);
             g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
             g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
             g.translate(-x, -y);
@@ -136,11 +136,11 @@ class ColorRadioButton extends JRadioButton {
     private static class PressedIcon extends DefaultIcon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
-            g.setColor(pressedColor);
+            g.setColor(PRESSED_COLOR);
             g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
             g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
 
-            g.setColor(selectedColor);
+            g.setColor(SELECTED_COLOR);
             g.fillRect(4, 4, getIconWidth()-8, getIconHeight()-8);
             g.translate(-x, -y);
         }
@@ -148,11 +148,11 @@ class ColorRadioButton extends JRadioButton {
     private static class SelectedIcon extends DefaultIcon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
-            g.setColor(selectedColor);
+            g.setColor(SELECTED_COLOR);
             g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
             g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
 
-            g.setColor(pressedColor);
+            g.setColor(PRESSED_COLOR);
             g.fillRect(6, 6, getIconWidth()-12, getIconHeight()-12);
             g.translate(-x, -y);
         }
@@ -160,7 +160,7 @@ class ColorRadioButton extends JRadioButton {
     private static class RolloverIcon extends DefaultIcon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
-            g.setColor(rolloverColor);
+            g.setColor(ROLLOVER_COLOR);
             g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
             g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
             g.translate(-x, -y);

@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         titleTab.setButtonVisible(true);
 
         add(tab);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
@@ -96,26 +96,31 @@ class MyJTabbedPane extends JTabbedPane {
 }
 
 class TabPanel extends JPanel {
-    private static final Icon icon = new CloseTabIcon();
-    private static final Dimension buttonSize = new Dimension(icon.getIconWidth(), icon.getIconHeight());
-    private final JButton button = new JButton(icon);
-    private final JLabel label = new JLabel();
-    private final Dimension ldim;
+    private final JButton button = new JButton(new CloseTabIcon()) {
+        @Override public void updateUI() {
+            super.updateUI();
+            setBorder(BorderFactory.createEmptyBorder());
+            setBorderPainted(false);
+            setFocusPainted(false);
+            setContentAreaFilled(false);
+            setFocusable(false);
+            setVisible(false);
+        }
+    };
+    private final JLabel label = new JLabel() {
+        @Override public Dimension getPreferredSize() {
+            Dimension dim = super.getPreferredSize();
+            int w = button.isVisible() ? 80 - button.getPreferredSize().width : 80;
+            return new Dimension(w, dim.height);
+        }
+    };
     public TabPanel(final JTabbedPane pane, String title, final Component content) {
-        super(new BorderLayout());
+        super(new BorderLayout(0, 0));
         setOpaque(false);
 
         label.setText(title);
-        label.setBorder(BorderFactory.createEmptyBorder(0,0,0,1));
-        ldim = new Dimension(80, label.getPreferredSize().height);
-        label.setPreferredSize(ldim);
+        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 1));
 
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setFocusable(false);
-        button.setVisible(false);
-        button.setPreferredSize(buttonSize);
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 int idx = pane.indexOfComponent(content);
@@ -131,17 +136,10 @@ class TabPanel extends JPanel {
         add(button, BorderLayout.EAST);
     }
     public void setButtonVisible(boolean flag) {
-        Dimension dim = getPreferredSize();
         button.setVisible(flag);
-        if(flag) {
-            int lwidth = dim.width-button.getPreferredSize().width;
-            label.setPreferredSize(new Dimension(lwidth,ldim.height));
-        }else{
-            label.setPreferredSize(ldim);
-        }
-        setPreferredSize(dim);
     }
 }
+
 class CloseTabIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.translate(x, y);
@@ -160,7 +158,4 @@ class CloseTabIcon implements Icon {
     @Override public int getIconHeight() {
         return 12;
     }
-//     public Rectangle getBounds() {
-//         return new Rectangle(0, 0, width, height);
-//     }
 }

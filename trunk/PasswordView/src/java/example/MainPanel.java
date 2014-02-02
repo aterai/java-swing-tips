@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
 }
 
 class MyPasswordFieldUI extends BasicPasswordFieldUI {
-    private static final StarIcon icon = new StarIcon();
+    private static final StarIcon ICON = new StarIcon();
     public static MyPasswordFieldUI createUI(JPasswordField c) {
         c.setEchoChar('\u25A0'); //As wide as a CJK character cell (fullwidth)
         return new MyPasswordFieldUI();
@@ -86,8 +86,8 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
 //             return x + fm.charWidth(c);
 
             FontMetrics fm = g2d.getFontMetrics();
-            icon.paintIcon(null, g, x, y-fm.getAscent());
-            return x + icon.getIconWidth(); //fm.charWidth(c);
+            ICON.paintIcon(null, g, x, y-fm.getAscent());
+            return x + ICON.getIconWidth(); //fm.charWidth(c);
         }
         public MyPasswordView(Element element) {
             super(element);

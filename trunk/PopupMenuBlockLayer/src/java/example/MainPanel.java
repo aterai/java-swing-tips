@@ -138,7 +138,7 @@ public class MainPanel extends JPanel {
     }
 }
 class DisableInputLayerUI extends LayerUI<JComponent> {
-    private static final MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
+    private final transient MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
     @Override public void installUI(JComponent c) {
         super.installUI(c);

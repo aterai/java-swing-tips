@@ -14,8 +14,8 @@ public class MainPanel extends JPanel {
     private final DefaultMutableTreeNode root = makeTreeRoot();
     private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot()));
     private final TreeNodeComparator tnc = new TreeNodeComparator();
-    private int compare_count;
-    private int swap_count;
+    private int compareCount;
+    private int swapCount;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -23,10 +23,10 @@ public class MainPanel extends JPanel {
         box.add(new JCheckBox(new AbstractAction("0: bubble sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
-                    compare_count = swap_count = 0;
+                    compareCount = swapCount = 0;
                     DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree0(r);
-                    System.out.format("0: bubble sort          - compare: %3d, swap: %3d%n", compare_count, swap_count);
+                    System.out.format("0: bubble sort          - compare: %3d, swap: %3d%n", compareCount, swapCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
@@ -37,10 +37,10 @@ public class MainPanel extends JPanel {
         box.add(new JCheckBox(new AbstractAction("1: bubble sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
-                    compare_count = swap_count = 0;
+                    compareCount = swapCount = 0;
                     DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree1(r);
-                    System.out.format("1: bubble sort          - compare: %3d, swap: %3d%n", compare_count, swap_count);
+                    System.out.format("1: bubble sort          - compare: %3d, swap: %3d%n", compareCount, swapCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
@@ -51,10 +51,10 @@ public class MainPanel extends JPanel {
         box.add(new JCheckBox(new AbstractAction("2: selection sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
-                    compare_count = swap_count = 0;
+                    compareCount = swapCount = 0;
                     DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree2(r);
-                    System.out.format("2: selection sort       - compare: %3d, swap: %3d%n", compare_count, swap_count);
+                    System.out.format("2: selection sort       - compare: %3d, swap: %3d%n", compareCount, swapCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
@@ -65,10 +65,10 @@ public class MainPanel extends JPanel {
         box.add(new JCheckBox(new AbstractAction("3: iterative merge sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
-                    compare_count = swap_count = 0;
+                    compareCount = swapCount = 0;
                     DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree3(r);
-                    System.out.format("3: iterative merge sort - compare: %3d, swap: ---%n", compare_count);
+                    System.out.format("3: iterative merge sort - compare: %3d, swap: ---%n", compareCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
@@ -109,11 +109,11 @@ public class MainPanel extends JPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
             for(int j=0; j<i; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-                compare_count++;
+                compareCount++;
                 if(tnc.compare(node, prevNode)<0) {
                     root.insert(node, j);
                     root.insert(prevNode, i);
-                    swap_count++;
+                    swapCount++;
                     if(DEBUG) {
                         i--;
                         break;
@@ -132,7 +132,7 @@ public class MainPanel extends JPanel {
             for(int j=i+1; j<n; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
                 if(tnc.compare(node, prevNode)>0) {
-                    swap_count++;
+                    swapCount++;
                     root.insert(node, j);
                     root.insert(prevNode, i);
                     i--;
@@ -154,14 +154,14 @@ public class MainPanel extends JPanel {
                 }
             }
             if(i!=min) {
-                swap_count++;
+                swapCount++;
                 MutableTreeNode a = (MutableTreeNode)parent.getChildAt(i);
                 MutableTreeNode b = (MutableTreeNode)parent.getChildAt(min);
                 parent.insert(b, i);
                 parent.insert(a, min);
                 //MutableTreeNode node = (MutableTreeNode)parent.getChildAt(min);
                 //parent.insert(node, i);
-                //compare_count++;
+                //compareCount++;
             }
         }
     }
@@ -213,7 +213,7 @@ public class MainPanel extends JPanel {
 
     private class TreeNodeComparator implements Comparator<DefaultMutableTreeNode> { //, Serializable {
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-            compare_count++;
+            compareCount++;
             if(a.isLeaf() && !b.isLeaf()) {
                 return 1;
             }else if(!a.isLeaf() && b.isLeaf()) {

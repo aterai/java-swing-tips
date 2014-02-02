@@ -284,15 +284,15 @@ class SelectedImageFilter extends RGBImageFilter {
     //public SelectedImageFilter() {
     //    canFilterIndexColorModel = false;
     //}
-    private static final float scale = 1.2f;
+    private static final float SCALE = 1.2f;
     @Override public int filterRGB(int x, int y, int argb) {
         //int a = (argb >> 24) & 0xff;
         int r = (argb >> 16) & 0xff;
         int g = (argb >> 8)  & 0xff;
         int b = (argb)       & 0xff;
-        r = (int)(r*scale);
-        g = (int)(g*scale);
-        b = (int)(b*scale);
+        r = (int)(r*SCALE);
+        g = (int)(g*SCALE);
+        b = (int)(b*SCALE);
         if(r > 255) { r = 255; }
         if(g > 255) { g = 255; }
         if(b > 255) { b = 255; }

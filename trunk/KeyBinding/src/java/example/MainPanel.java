@@ -156,7 +156,7 @@ enum JComponentType {
 }
 
 class BindingMapModel extends DefaultTableModel {
-    private static final ColumnContext[] columnArray = {
+    private final ColumnContext[] columnArray = {
         new ColumnContext("Focus", String.class, false),
         new ColumnContext("ActionName", String.class, false),
         new ColumnContext("KeyDescription", String.class, false)

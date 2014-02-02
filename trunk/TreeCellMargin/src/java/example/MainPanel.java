@@ -66,9 +66,9 @@ public class MainPanel extends JPanel {
 class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final int MARGIN = 2; // < 3
     private boolean drawsFocusBorderAroundIcon;
-    private static final boolean drawDashedFocusIndicator = true;
+    private final boolean drawDashedFocusIndicator;
     //private boolean isDropCell;
-    private static final boolean fillBackground = true;
+    private final boolean fillBackground;
     private Color treeBGColor;
     private Color focusBGColor;
     //protected boolean selected;
@@ -76,6 +76,8 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 
     public MyTreeCellRenderer() {
         super();
+        drawDashedFocusIndicator = true;
+        fillBackground = true;
 //         Border outside = getBorder();
 //         Border inside  = BorderFactory.createEmptyBorder(0,20,0,2);
 //         border = BorderFactory.createCompoundBorder(outside, inside);

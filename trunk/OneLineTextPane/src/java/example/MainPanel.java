@@ -49,11 +49,11 @@ public class MainPanel extends JPanel {
         }catch(BadLocationException ex) {
             ex.printStackTrace();
         }
-        String KEY = "Do-Nothing";
+        String key = "Do-Nothing";
         InputMap im = textPane.getInputMap(JComponent.WHEN_FOCUSED);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), KEY);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), KEY);
-        textPane.getActionMap().put(KEY, new AbstractAction() {
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), key);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), key);
+        textPane.getActionMap().put(key, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 // Do nothing
             }
@@ -109,7 +109,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
     //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
-    private static final String operands = ".,";
+    private static final String OPERANDS = ".,";
     public SimpleSyntaxDocument() {
         super();
         Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
@@ -191,7 +191,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         return endOfToken + 1;
     }
     protected boolean isDelimiter(String character) {
-        return Character.isWhitespace(character.charAt(0)) || operands.indexOf(character)!=-1;
+        return Character.isWhitespace(character.charAt(0)) || OPERANDS.indexOf(character)!=-1;
     }
 }
 

@@ -12,7 +12,7 @@ import javax.swing.text.html.*;
 import javax.swing.text.html.parser.ParserDelegator;
 
 public class MainPanel extends JPanel {
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea = new JTextArea();
     private final JEditorPane editorPane = new JEditorPane();
     private final JTextField field = new JTextField("3");

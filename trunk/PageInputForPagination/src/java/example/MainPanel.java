@@ -37,12 +37,16 @@ public class MainPanel extends JPanel {
     private final JTextField field = new JTextField(2);
     private final JLabel label = new JLabel("/ 1");
 
-    private static final int itemsPerPage = 100;
+    private final int itemsPerPage;
     private int maxPageIndex;
-    private int currentPageIndex = 1;
+    private int currentPageIndex;
 
     public MainPanel() {
         super(new BorderLayout());
+
+        itemsPerPage = 180;
+        currentPageIndex = 1;
+
         table.setFillsViewportHeight(true);
         table.setRowSorter(sorter);
         table.setEnabled(false);

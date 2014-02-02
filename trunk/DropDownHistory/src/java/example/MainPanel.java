@@ -8,10 +8,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private final JTextArea textArea = new JTextArea();
-    private final JComboBox<String> combo = new JComboBox<>();
-    private static final String initTxt =
+    private static final String INIT_TXT =
       "Trail: Creating a GUI with JFC/Swing\n" +
       "Lesson: Learning Swing by Example\n" +
       "This lesson explains the concepts you need to use Swing components in building a user interface." +
@@ -21,10 +18,15 @@ public class MainPanel extends JPanel {
       " The handling of events is also discussed, as are layout management and accessibility." +
       " This lesson ends with a set of questions and exercises so you can test yourself on what you?ve learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+
+    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private final JTextArea textArea = new JTextArea();
+    private final JComboBox<String> combo = new JComboBox<>();
+
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        textArea.setText(initTxt);
+        textArea.setText(INIT_TXT);
         textArea.setLineWrap(true);
         textArea.setEditable(false);
 

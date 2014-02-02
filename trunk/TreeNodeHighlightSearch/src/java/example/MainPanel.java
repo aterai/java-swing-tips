@@ -92,7 +92,7 @@ public class MainPanel extends JPanel {
 }
 //*
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
-    private static final Color rollOverRowColor = new Color(220, 240, 255);
+    private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
     public String q;
     private boolean rollOver;
 
@@ -104,7 +104,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         super.updateUI();
     }
     @Override public Color getBackgroundNonSelectionColor() {
-        return rollOver ? rollOverRowColor : super.getBackgroundNonSelectionColor();
+        return rollOver ? ROLLOVER_ROW_COLOR : super.getBackgroundNonSelectionColor();
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
@@ -120,7 +120,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 /*/
 class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
-    private static final Color rollOverRowColor = new Color(220, 240, 255);
+    private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
     public String q;
     @Override public void updateUI() {
         setTextSelectionColor(null);
@@ -140,7 +140,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
             c.setOpaque(true);
             if(q!=null && !q.isEmpty() && value.toString().startsWith(q)) {
                 c.setForeground(getTextNonSelectionColor());
-                c.setBackground(rollOverRowColor);
+                c.setBackground(ROLLOVER_ROW_COLOR);
             }else{
                 c.setForeground(getTextNonSelectionColor());
                 c.setBackground(getBackgroundNonSelectionColor());

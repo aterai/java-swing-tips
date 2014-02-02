@@ -49,12 +49,13 @@ public class MainPanel extends JPanel {
 }
 
 class DraggableImageMouseListener extends MouseAdapter {
-    private static final Color color = new Color(100,255,200,100);
-    private static final int ir = 40, or = ir*3;
-    private static final BasicStroke borderStroke = new BasicStroke(4.0f);
+    private static final Color HOVER_COLOR = new Color(100, 255, 200, 100);
+    private static final int IR = 40;
+    private static final int OR = IR*3;
+    private static final BasicStroke BORDER_STROKE = new BasicStroke(4.0f);
     private final RoundRectangle2D.Double border;
-    private final Ellipse2D.Double inner = new Ellipse2D.Double(0,0,ir,ir);
-    private final Ellipse2D.Double outer = new Ellipse2D.Double(0,0,or,or);
+    private final Ellipse2D.Double INNER = new Ellipse2D.Double(0,0,IR,IR);
+    private final Ellipse2D.Double OUTER = new Ellipse2D.Double(0,0,OR,OR);
     public final Image image;
     public final int width;
     public final int height;
@@ -70,10 +71,10 @@ class DraggableImageMouseListener extends MouseAdapter {
         height  = ii.getIconHeight();
         centerX = width/2.0;
         centerY = height/2.0;
-        inner.x = x+centerX-ir/2;
-        inner.y = y+centerY-ir/2;
-        outer.x = x+centerX-or/2;
-        outer.y = y+centerY-or/2;
+        INNER.x = x+centerX-IR/2;
+        INNER.y = y+centerY-IR/2;
+        OUTER.x = x+centerX-OR/2;
+        OUTER.y = y+centerY-OR/2;
         border  = new RoundRectangle2D.Double(0, 0, width, height, 10.0, 10.0);
     }
     public void paint(Graphics g, ImageObserver ior) {
@@ -84,29 +85,29 @@ class DraggableImageMouseListener extends MouseAdapter {
         at.rotate(radian, centerX, centerY);
 
         g2d.setPaint(Color.WHITE);
-        g2d.setStroke(borderStroke);
+        g2d.setStroke(BORDER_STROKE);
         Shape s = new Rectangle2D.Double(border.x-2,border.y-2,border.width+4,border.height+20);
         g2d.fill(at.createTransformedShape(s));
         g2d.draw(at.createTransformedShape(s));
 
         g2d.drawImage(image, at, ior);
         if(rotatorHover) {
-            Area donut = new Area(outer);
-            donut.subtract(new Area(inner));
-            g2d.setPaint(color);
+            Area donut = new Area(OUTER);
+            donut.subtract(new Area(INNER));
+            g2d.setPaint(HOVER_COLOR);
             g2d.fill(donut);
         }else if(moverHover) {
-            g2d.setPaint(color);
-            g2d.fill(inner);
+            g2d.setPaint(HOVER_COLOR);
+            g2d.fill(INNER);
         }
-        g2d.setStroke(borderStroke);
+        g2d.setStroke(BORDER_STROKE);
         g2d.setPaint(Color.WHITE);
         g2d.draw(at.createTransformedShape(border));
     }
     @Override public void mouseMoved(MouseEvent e) {
-        if(outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
+        if(OUTER.contains(e.getX(), e.getY()) && !INNER.contains(e.getX(), e.getY())) {
             moverHover = false; rotatorHover = true;
-        }else if(inner.contains(e.getX(), e.getY())) {
+        }else if(INNER.contains(e.getX(), e.getY())) {
             moverHover = true;  rotatorHover = false;
         }else{
             moverHover = rotatorHover =false;
@@ -118,11 +119,11 @@ class DraggableImageMouseListener extends MouseAdapter {
         ((JComponent)e.getSource()).repaint();
     }
     @Override public void mousePressed(MouseEvent e) {
-        if(outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
+        if(OUTER.contains(e.getX(), e.getY()) && !INNER.contains(e.getX(), e.getY())) {
             rotatorHover = true;
             startA = radian - Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
             ((JComponent)e.getSource()).repaint();
-        }else if(inner.contains(e.getX(), e.getY())) {
+        }else if(INNER.contains(e.getX(), e.getY())) {
             moverHover = true;
             startX = e.getX();
             startY = e.getY();
@@ -136,10 +137,10 @@ class DraggableImageMouseListener extends MouseAdapter {
         }else if(moverHover) {
             x += e.getX() - startX;
             y += e.getY() - startY;
-            inner.x = x+centerX-ir/2;
-            inner.y = y+centerY-ir/2;
-            outer.x = x+centerX-or/2;
-            outer.y = y+centerY-or/2;
+            INNER.x = x+centerX-IR/2;
+            INNER.y = y+centerY-IR/2;
+            OUTER.x = x+centerX-OR/2;
+            OUTER.y = y+centerY-OR/2;
             startX = e.getX();
             startY = e.getY();
             ((JComponent)e.getSource()).repaint();

@@ -91,7 +91,7 @@ class MyViewFactory implements ViewFactory {
 }
 
 class MyParagraphView extends ParagraphView {
-    private static final Color pc = new Color(120, 130, 110);
+    private static final Color MARK_COLOR = new Color(120, 130, 110);
     public MyParagraphView(Element elem) {
         super(elem);
     }
@@ -107,7 +107,7 @@ class MyParagraphView extends ParagraphView {
             int y = r.y;
             int h = r.height;
             Color old = g.getColor();
-            g.setColor(pc);
+            g.setColor(MARK_COLOR);
             g.drawLine(x+1, y+h/2, x+1, y+h-4);
             g.drawLine(x+2, y+h/2, x+2, y+h-5);
             g.drawLine(x+3, y+h-6, x+3, y+h-6);
@@ -119,9 +119,9 @@ class MyParagraphView extends ParagraphView {
 }
 
 class WhitespaceLabelView extends LabelView {
-    private static final String IdeographicSpace = "\u3000";
-    private static final Color pc = new Color(130, 140, 120);
-    private static final BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] {1.0f}, 0.0f);
+    private static final String IDEOGRAPHIC_SPACE = "\u3000";
+    private static final Color MARK_COLOR = new Color(130, 140, 120);
+    private static final BasicStroke DASHED = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] {1.0f}, 0.0f);
     public WhitespaceLabelView(Element elem) {
         super(elem);
     }
@@ -131,7 +131,7 @@ class WhitespaceLabelView extends LabelView {
         Stroke stroke = g2.getStroke();
         Rectangle alloc = a instanceof Rectangle ? (Rectangle)a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
-        int spaceWidth = fontMetrics.stringWidth(IdeographicSpace);
+        int spaceWidth = fontMetrics.stringWidth(IDEOGRAPHIC_SPACE);
         int sumOfTabs  = 0;
         String text = getText(getStartOffset(),getEndOffset()).toString();
         for(int i=0;i<text.length();i++) {
@@ -139,18 +139,18 @@ class WhitespaceLabelView extends LabelView {
             int previousStringWidth = fontMetrics.stringWidth(text.substring(0,i)) + sumOfTabs;
             int sx = alloc.x+previousStringWidth;
             int sy = alloc.y+alloc.height-fontMetrics.getDescent();
-            if(IdeographicSpace.equals(s)) {
-                g2.setStroke(dashed);
-                g2.setPaint(pc);
+            if(IDEOGRAPHIC_SPACE.equals(s)) {
+                g2.setStroke(DASHED);
+                g2.setPaint(MARK_COLOR);
                 g2.drawLine(sx+1, sy-1, sx+spaceWidth-2, sy-1);
                 g2.drawLine(sx+2,   sy, sx+spaceWidth-2, sy);
             }else if("\t".equals(s)) {
                 int tabWidth = (int)getTabExpander().nextTabStop((float)sx, i)-sx;
-                g2.setColor(pc);
+                g2.setColor(MARK_COLOR);
                 g2.drawLine(sx+2, sy-0, sx+2+2, sy-0);
                 g2.drawLine(sx+2, sy-1, sx+2+1, sy-1);
                 g2.drawLine(sx+2, sy-2, sx+2+0, sy-2);
-                g2.setStroke(dashed);
+                g2.setStroke(DASHED);
                 g2.drawLine(sx+2, sy, sx+tabWidth-2, sy);
                 sumOfTabs+=tabWidth;
             }
