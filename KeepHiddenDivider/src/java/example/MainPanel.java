@@ -24,6 +24,30 @@ public class MainPanel extends JPanel {
     private final JScrollPane s2 = new JScrollPane(new JTree());
     private final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
 
+    private final Action minAction = new AbstractAction("Min:Action") {
+        @Override public void actionPerformed(final ActionEvent e) {
+            splitPane.requestFocusInWindow();
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    Action selectMinAction = splitPane.getActionMap().get("selectMin");
+                    selectMinAction.actionPerformed(new ActionEvent(splitPane, 1001, null));
+                }
+            });
+        }
+    };
+    private final Action maxAction = new AbstractAction("Max:Action") {
+        @Override public void actionPerformed(final ActionEvent e) {
+            splitPane.requestFocusInWindow();
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    Action selectMaxAction = splitPane.getActionMap().get("selectMax");
+                    e.setSource(splitPane);
+                    selectMaxAction.actionPerformed(e);
+                }
+            });
+        }
+    };
+
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
@@ -32,13 +56,6 @@ public class MainPanel extends JPanel {
         s2.setMinimumSize(new Dimension(0, 100));
 
         Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
-        JPanel north = makeButtonPanel(divider);
-
-        add(north, BorderLayout.NORTH);
-        add(splitPane);
-        setPreferredSize(new Dimension(320, 240));
-    }
-    private JPanel makeButtonPanel(final Container divider) {
         JPanel north = new JPanel(new GridLayout(0,2,5,5));
         north.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
@@ -78,30 +95,20 @@ public class MainPanel extends JPanel {
             }
         }));
 
-        north.add(new JButton(new AbstractAction("Min:Action") {
-            @Override public void actionPerformed(final ActionEvent e) {
-                splitPane.requestFocusInWindow();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        Action selectMinAction = splitPane.getActionMap().get("selectMin");
-                        selectMinAction.actionPerformed(new ActionEvent(splitPane, 1001, null));
-                    }
-                });
-            }
-        }));
-        north.add(new JButton(new AbstractAction("Max:Action") {
-            @Override public void actionPerformed(final ActionEvent e) {
-                splitPane.requestFocusInWindow();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        Action selectMaxAction = splitPane.getActionMap().get("selectMax");
-                        e.setSource(splitPane);
-                        selectMaxAction.actionPerformed(e);
-                    }
-                });
-            }
-        }));
+        north.add(new JButton(minAction));
+        north.add(new JButton(maxAction));
 
+        JButton smin = new JButton("Min:keepHidden");
+        JButton smax = new JButton("Max:keepHidden");
+        initDividerButtonModel(divider, smin, smax);
+        north.add(smin);
+        north.add(smax);
+
+        add(north, BorderLayout.NORTH);
+        add(splitPane);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private static void initDividerButtonModel(Container divider, JButton smin, JButton smax) {
         ButtonModel selectMinModel = null;
         ButtonModel selectMaxModel = null;
         for(Component c: divider.getComponents()) {
@@ -114,15 +121,8 @@ public class MainPanel extends JPanel {
                 }
             }
         }
-        JButton smin = new JButton("Min:keepHidden");
         smin.setModel(selectMinModel);
-        JButton smax = new JButton("Max:keepHidden");
         smax.setModel(selectMaxModel);
-
-        north.add(smin);
-        north.add(smax);
-
-        return north;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
