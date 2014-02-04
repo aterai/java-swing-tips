@@ -8,6 +8,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import javax.activation.*;
 import javax.swing.*;
 
@@ -117,46 +118,12 @@ class LabelTransferHandler extends TransferHandler {
         System.out.println("createTransferable"+localObjectFlavor.getMimeType());
         DragPanel p = (DragPanel)c;
         JLabel l = p.draggingLabel;
-        final DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
+        DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
         String text = l.getText();
-        if(text==null) { return dh; }
-        final StringSelection ss = new StringSelection(text+"\n");
-        return new Transferable() {
-            @Override public DataFlavor[] getTransferDataFlavors() {
-                ArrayList<DataFlavor> list = new ArrayList<DataFlavor>();
-                for(DataFlavor f:ss.getTransferDataFlavors()) {
-                    list.add(f);
-                }
-                for(DataFlavor f:dh.getTransferDataFlavors()) {
-                    list.add(f);
-                }
-                return list.toArray(dh.getTransferDataFlavors());
-            }
-            @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-                for(DataFlavor f: getTransferDataFlavors()) {
-                    if(flavor.equals(f)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                 if(flavor.equals(localObjectFlavor)) {
-                     return dh.getTransferData(flavor);
-                 }else{
-                     return ss.getTransferData(flavor);
-                 }
-//                 if(flavor.equals(DataFlavor.stringFlavor)) {
-//                     return ss.getTransferData(flavor);
-//                 }else if(flavor.equals(DataFlavor.plainTextFlavor)) {
-//                     return ss.getTransferData(flavor);
-//                 }else if(flavor.equals(localObjectFlavor)) {
-//                     return dh.getTransferData(flavor);
-//                 }else{
-//                     throw new UnsupportedFlavorException(flavor);
-//                 }
-            }
-        };
+        if(text==null) {
+            return dh;
+        }
+        return new LabelTransferable(dh, localObjectFlavor, text);
     }
     @Override public boolean canImport(TransferSupport support) {
         if(!support.isDrop()) {
@@ -179,7 +146,9 @@ class LabelTransferHandler extends TransferHandler {
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
-        if(!canImport(support)) { return false; }
+        if(!canImport(support)) {
+            return false;
+        }
         DragPanel target = (DragPanel)support.getComponent();
         try{
             DragPanel src = (DragPanel)support.getTransferable().getTransferData(localObjectFlavor);
@@ -189,10 +158,8 @@ class LabelTransferHandler extends TransferHandler {
             target.add(l);
             target.revalidate();
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }
@@ -210,4 +177,50 @@ class LabelTransferHandler extends TransferHandler {
         //window.setLocation(new Point(-100, -100));
         //window.setLocation(new Point(0, 0));
     }
+}
+
+class LabelTransferable implements Transferable {
+    private final DataHandler dh;
+    private final DataFlavor localObjectFlavor;
+    private final StringSelection ss;
+
+    public LabelTransferable(DataHandler dh, DataFlavor localObjectFlavor, String text) {
+        this.dh = dh;
+        this.localObjectFlavor = localObjectFlavor;
+        this.ss = new StringSelection(text+"\n");
+    }
+    @Override public DataFlavor[] getTransferDataFlavors() {
+        List<DataFlavor> list = new ArrayList<>();
+        for(DataFlavor f:ss.getTransferDataFlavors()) {
+            list.add(f);
+        }
+        for(DataFlavor f:dh.getTransferDataFlavors()) {
+            list.add(f);
+        }
+        return list.toArray(dh.getTransferDataFlavors());
+    }
+    @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+        for(DataFlavor f: getTransferDataFlavors()) {
+            if(flavor.equals(f)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+         if(flavor.equals(localObjectFlavor)) {
+             return dh.getTransferData(flavor);
+         }else{
+             return ss.getTransferData(flavor);
+         }
+//                 if(flavor.equals(DataFlavor.stringFlavor)) {
+//                     return ss.getTransferData(flavor);
+//                 }else if(flavor.equals(DataFlavor.plainTextFlavor)) {
+//                     return ss.getTransferData(flavor);
+//                 }else if(flavor.equals(localObjectFlavor)) {
+//                     return dh.getTransferData(flavor);
+//                 }else{
+//                     throw new UnsupportedFlavorException(flavor);
+//                 }
+     }
 }

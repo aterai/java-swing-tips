@@ -15,43 +15,39 @@ public class MainPanel extends JPanel {
     private static final int IMAGE_ID = 0;
     private final FileModel model = new FileModel();
     private final JTable table = new JTable(model);
+    private final DropTargetListener dtl = new DropTargetAdapter() {
+        @Override public void dragOver(DropTargetDragEvent dtde) {
+            if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                dtde.acceptDrag(DnDConstants.ACTION_COPY);
+                return;
+            }
+            dtde.rejectDrag();
+        }
+        @Override public void drop(DropTargetDropEvent dtde) {
+            try{
+                if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    dtde.acceptDrop(DnDConstants.ACTION_COPY);
+                    Transferable transferable = dtde.getTransferable();
+                    List list = (List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                    for(Object o: list) {
+                        if(o instanceof File) {
+                            addImageFile((File)o);
+                        }
+                    }
+                    dtde.dropComplete(true);
+                    return;
+                }
+            }catch(UnsupportedFlavorException | IOException ex) {
+                ex.printStackTrace();
+            }
+            dtde.rejectDrop();
+        }
+    };
     private MediaTracker tracker;
 
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-
-        DropTargetListener dtl = new DropTargetAdapter() {
-            @Override public void dragOver(DropTargetDragEvent dtde) {
-                if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    dtde.acceptDrag(DnDConstants.ACTION_COPY);
-                    return;
-                }
-                dtde.rejectDrag();
-            }
-            @Override public void drop(DropTargetDropEvent dtde) {
-                try{
-                    if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                        dtde.acceptDrop(DnDConstants.ACTION_COPY);
-                        Transferable transferable = dtde.getTransferable();
-                        List list = (List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
-                        for(Object o: list) {
-                            if(o instanceof File) {
-                                File file = (File)o;
-                                addImageFile(file);
-                            }
-                        }
-                        dtde.dropComplete(true);
-                        return;
-                    }
-                }catch(UnsupportedFlavorException ufe) {
-                    ufe.printStackTrace();
-                }catch(IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                dtde.rejectDrop();
-            }
-        };
 
         JScrollPane scroll = new JScrollPane(table);
         scroll.setComponentPopupMenu(new TablePopupMenu());
@@ -91,29 +87,6 @@ public class MainPanel extends JPanel {
                                        img.getWidth(this), img.getHeight(this)));
             }
             tracker.removeImage(img);
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new AbstractAction("Remove from list") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int[] selection = table.getSelectedRows();
-                if(selection.length == 0) {
-                    return;
-                }
-                for(int i=selection.length-1;i>=0;i--) {
-                    model.removeRow(table.convertRowIndexToModel(selection[i]));
-                }
-            }
-        };
-        public TablePopupMenu() {
-            super();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l.length > 0);
-            super.show(c, x, y);
         }
     }
 
@@ -213,5 +186,31 @@ class Test {
     }
     public int getHeight() {
         return this.height;
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action deleteAction = new AbstractAction("Remove from list") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable)getInvoker();
+            int[] selection = table.getSelectedRows();
+            if(selection.length == 0) {
+                return;
+            }
+            DefaultTableModel model = (DefaultTableModel)table.getModel();
+            for(int i=selection.length-1;i>=0;i--) {
+                model.removeRow(table.convertRowIndexToModel(selection[i]));
+            }
+        }
+    };
+    public TablePopupMenu() {
+        super();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        JTable table = (JTable)getInvoker();
+        int[] l = table.getSelectedRows();
+        deleteAction.setEnabled(l.length > 0);
+        super.show(c, x, y);
     }
 }
