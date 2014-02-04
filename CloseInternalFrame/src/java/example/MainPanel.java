@@ -9,68 +9,64 @@ import javax.swing.event.*;
 
 class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
-    private final Action closeSelectedFrameAction1;
-    private final Action closeSelectedFrameAction2;
-    private final Action closeSelectedFrameAction3;
-    private final Action disposeSelectedFrameAction;
-    private final Action createNewFrameAction;
+    private final Action closeSelectedFrameAction1 = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            JInternalFrame f = desktop.getSelectedFrame();
+            if(f!=null) {
+                desktop.getDesktopManager().closeFrame(f);
+            }
+        }
+    };
+    private final Action closeSelectedFrameAction2 = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            JInternalFrame f = desktop.getSelectedFrame();
+            if(f!=null) {
+                f.doDefaultCloseAction();
+            }
+        }
+    };
+    private final Action closeSelectedFrameAction3 = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            try{
+                JInternalFrame f = desktop.getSelectedFrame();
+                if(f!=null) {
+                    f.setClosed(true);
+                }
+            }catch(java.beans.PropertyVetoException ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
+    private final Action disposeSelectedFrameAction = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            JInternalFrame f = desktop.getSelectedFrame();
+            if(f!=null) {
+                f.dispose();
+            }
+        }
+    };
+    private final Action createNewFrameAction = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            MyInternalFrame frame = new MyInternalFrame();
+            //frame.setVisible(true);
+            desktop.add(frame);
+            try{
+                frame.setSelected(true);
+                if(openFrameCount%2==0) {
+                    frame.setIcon(true);
+                }
+            }catch(java.beans.PropertyVetoException ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
     private int openFrameCount;
     private int row;
     private int col;
 
     public MainPanel() {
         super(new BorderLayout());
-        closeSelectedFrameAction1 = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame f = desktop.getSelectedFrame();
-                if(f!=null) {
-                    desktop.getDesktopManager().closeFrame(f);
-                }
-            }
-        };
-        closeSelectedFrameAction2 = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame f = desktop.getSelectedFrame();
-                if(f!=null) {
-                    f.doDefaultCloseAction();
-                }
-            }
-        };
-        closeSelectedFrameAction3 = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                try{
-                    JInternalFrame f = desktop.getSelectedFrame();
-                    if(f!=null) {
-                        f.setClosed(true);
-                    }
-                }catch(java.beans.PropertyVetoException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        };
-        disposeSelectedFrameAction = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame f = desktop.getSelectedFrame();
-                if(f!=null) {
-                    f.dispose();
-                }
-            }
-        };
-        createNewFrameAction = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                MyInternalFrame frame = new MyInternalFrame();
-                //frame.setVisible(true);
-                desktop.add(frame);
-                try{
-                    frame.setSelected(true);
-                    if(openFrameCount%2==0) {
-                        frame.setIcon(true);
-                    }
-                }catch(java.beans.PropertyVetoException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        };
+
         KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
         desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, "escape");
         desktop.getActionMap().put("escape", closeSelectedFrameAction1);
@@ -107,7 +103,7 @@ class MainPanel extends JPanel {
         return toolbar;
     }
 
-    class MyInternalFrame extends JInternalFrame implements InternalFrameListener {
+    class MyInternalFrame extends JInternalFrame {
         public MyInternalFrame() {
             super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
             row += 1;
@@ -124,7 +120,7 @@ class MainPanel extends JPanel {
                     }
                 }
             });
-            addInternalFrameListener(this);
+            addInternalFrameListener(new MyInternalFrameListener());
             //JComponent c = (JComponent)frame.getContentPane();
             //ActionMap am = frame.getActionMap();
             //Action a = new AbstractAction() {
@@ -139,27 +135,6 @@ class MainPanel extends JPanel {
             //am.put("myTest", a);
             //InputMap im  = frame.getInputMap();
             //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "myTest");
-        }
-        @Override public void internalFrameClosing(InternalFrameEvent e) {
-            System.out.println("internalFrameClosing: " + getTitle());
-        }
-        @Override public void internalFrameClosed(InternalFrameEvent e) {
-            System.out.println("internalFrameClosed: " + getTitle());
-        }
-        @Override public void internalFrameOpened(InternalFrameEvent e) {
-            System.out.println("internalFrameOpened: " + getTitle());
-        }
-        @Override public void internalFrameIconified(InternalFrameEvent e) {
-            System.out.println("internalFrameIconified: " + getTitle());
-        }
-        @Override public void internalFrameDeiconified(InternalFrameEvent e) {
-            System.out.println("internalFrameDeiconified: " + getTitle());
-        }
-        @Override public void internalFrameActivated(InternalFrameEvent e) {
-            //System.out.println("internalFrameActivated: " + getTitle());
-        }
-        @Override public void internalFrameDeactivated(InternalFrameEvent e) {
-            System.out.println("internalFrameDeactivated: " + getTitle());
         }
     }
 
@@ -183,6 +158,30 @@ class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class MyInternalFrameListener implements InternalFrameListener {
+    @Override public void internalFrameClosing(InternalFrameEvent e) {
+        System.out.println("internalFrameClosing: " + e.getInternalFrame().getTitle());
+    }
+    @Override public void internalFrameClosed(InternalFrameEvent e) {
+        System.out.println("internalFrameClosed: " + e.getInternalFrame().getTitle());
+    }
+    @Override public void internalFrameOpened(InternalFrameEvent e) {
+        System.out.println("internalFrameOpened: " + e.getInternalFrame().getTitle());
+    }
+    @Override public void internalFrameIconified(InternalFrameEvent e) {
+        System.out.println("internalFrameIconified: " + e.getInternalFrame().getTitle());
+    }
+    @Override public void internalFrameDeiconified(InternalFrameEvent e) {
+        System.out.println("internalFrameDeiconified: " + e.getInternalFrame().getTitle());
+    }
+    @Override public void internalFrameActivated(InternalFrameEvent e) {
+        //System.out.println("internalFrameActivated: " + e.getInternalFrame().getTitle());
+    }
+    @Override public void internalFrameDeactivated(InternalFrameEvent e) {
+        System.out.println("internalFrameDeactivated: " + e.getInternalFrame().getTitle());
     }
 }
 

@@ -52,42 +52,37 @@ public class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             initStatusPanel(true);
-            worker = new Task() {
-                @Override protected void process(List<Progress> chunks) {
-                    if(!isDisplayable()) {
-                        cancel(true);
-                        return;
-                    }
-                    for(Progress s: chunks) {
-                        switch(s.component) {
-                          case TOTAL: bar1.setValue((Integer)s.value); break;
-                          case FILE:  bar2.setValue((Integer)s.value); break;
-                          case LOG:   area.append((String)s.value);    break;
-                          default:    throw new AssertionError("Unknown Progress");
-                        }
-                    }
-                }
-                @Override public void done() {
-                    if(!isDisplayable()) {
-                        cancel(true);
-                        return;
-                    }
-                    initStatusPanel(false);
-                    String text = null;
-                    if(isCancelled()) {
-                        text = "Cancelled";
-                    }else{
-                        try{
-                            text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
-                        }
-                    }
-                    appendLine(text);
-                }
-            };
+            worker = new ProgressTask();
             worker.execute();
+        }
+    }
+    class ProgressTask extends Task {
+        @Override protected void process(List<Progress> chunks) {
+            if(!isDisplayable()) {
+                cancel(true);
+                return;
+            }
+            for(Progress s: chunks) {
+                switch(s.component) {
+                  case TOTAL: bar1.setValue((Integer)s.value); break;
+                  case FILE:  bar2.setValue((Integer)s.value); break;
+                  case LOG:   area.append((String)s.value);    break;
+                  default:    throw new AssertionError("Unknown Progress");
+                }
+            }
+        }
+        @Override public void done() {
+            if(!isDisplayable()) {
+                cancel(true);
+                return;
+            }
+            initStatusPanel(false);
+            try{
+                appendLine(isCancelled() ? "\nCancelled\n" : get()+"\n");
+            }catch(InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
+                appendLine("\nException\n");
+            }
         }
     }
     class CancelAction extends AbstractAction {

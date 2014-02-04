@@ -15,22 +15,22 @@ public class MainPanel extends JPanel {
     private final TestModel model = new TestModel();
     private final TableRowSorter<TestModel> sorter = new TableRowSorter<TestModel>(model);
     private final Set<RowFilter<TestModel,Integer>> filters = new HashSet<RowFilter<TestModel,Integer>>(2);
-    private final JTable table;
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if(isRowSelected(row)) {
+                c.setForeground(getSelectionForeground());
+                c.setBackground(getSelectionBackground());
+            }else{
+                c.setForeground(getForeground());
+                c.setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
+            }
+            return c;
+        }
+    };
+
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
-                }
-                return c;
-            }
-        };
         table.setRowSorter(sorter);
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
@@ -92,38 +92,15 @@ public class MainPanel extends JPanel {
         }));
         add(box, BorderLayout.NORTH);
         add(scrollPane);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
-
-    class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addTest(new Test("example", ""));
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label,icon);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
-                return;
-            }
-            for(int i=selection.length-1;i>=0;i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
     private class TablePopupMenu extends JPopupMenu {
-        private final Action addAction = new TestCreateAction("add", null);
-        private final Action deleteAction = new DeleteAction("delete", null);
+        private final Action addAction;
+        private final Action deleteAction;
         public TablePopupMenu() {
             super();
+            addAction = new TestCreateAction("add", table);
+            deleteAction = new DeleteAction("delete", table);
             add(addAction);
             //add(new ClearAction("clearSelection", null));
             addSeparator();
@@ -216,5 +193,35 @@ class Test {
     }
     public String getComment() {
         return comment;
+    }
+}
+
+class TestCreateAction extends AbstractAction {
+    private final JTable table;
+    public TestCreateAction(String label, JTable table) {
+        super(label);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        TestModel model = (TestModel)table.getModel();
+        model.addTest(new Test("example", ""));
+    }
+}
+
+class DeleteAction extends AbstractAction {
+    private final JTable table;
+    public DeleteAction(String label, JTable table) {
+        super(label);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        int[] selection = table.getSelectedRows();
+        if(selection.length == 0) {
+            return;
+        }
+        for(int i=selection.length-1;i>=0;i--) {
+            TestModel model = (TestModel)table.getModel();
+            model.removeRow(table.convertRowIndexToModel(selection[i]));
+        }
     }
 }
