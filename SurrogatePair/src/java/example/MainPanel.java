@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.nio.file.*;
 import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
@@ -57,22 +58,30 @@ public class MainPanel extends JPanel {
     }
     private static void browseCacheFile(URL url) {
         if(Desktop.isDesktopSupported()) {
-            try{
-                File tmp = File.createTempFile("_tmp", ".html");
-                tmp.deleteOnExit();
-                try(InputStream in = new BufferedInputStream(url.openStream());
-                    OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
-                    byte buf[] = new byte[256];
-                    int len;
-                    while((len = in.read(buf)) != -1) {
-                        out.write(buf, 0, len);
-                    }
-                    out.flush();
-                    Desktop.getDesktop().browse(tmp.toURI());
-                }
+            try(InputStream in = new BufferedInputStream(url.openStream())) {
+                Path path = Files.createTempFile("_tmp", ".html");
+                path.toFile().deleteOnExit();
+                Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
+                Desktop.getDesktop().browse(path.toUri());
             }catch(IOException ex) {
                 ex.printStackTrace();
             }
+//             try{
+//                 File tmp = File.createTempFile("_tmp", ".html");
+//                 tmp.deleteOnExit();
+//                 try(InputStream in = new BufferedInputStream(url.openStream());
+//                     OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
+//                     byte buf[] = new byte[256];
+//                     int len;
+//                     while((len = in.read(buf)) != -1) {
+//                         out.write(buf, 0, len);
+//                     }
+//                     out.flush();
+//                     Desktop.getDesktop().browse(tmp.toURI());
+//                 }
+//             }catch(IOException ex) {
+//                 ex.printStackTrace();
+//             }
         }
     }
     public JComponent makeTitledPane(JComponent c, String title) {

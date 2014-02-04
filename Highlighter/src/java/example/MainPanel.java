@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -50,15 +51,21 @@ public class MainPanel extends JPanel {
     public void setHighlight(JTextComponent jtc, String pattern) {
         jtc.getHighlighter().removeAllHighlights();
         try{
-            //Highlighter hilite = jtc.getHighlighter();
+            Highlighter highlighter = jtc.getHighlighter();
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
-            int pos = text.indexOf(pattern);
-            while(pos >= 0) {
-                int nextp = pos + pattern.length();
-                jtc.getHighlighter().addHighlight(pos, nextp, highlightPainter);
-                pos = text.indexOf(pattern, nextp);
+            Matcher matcher = Pattern.compile(pattern).matcher(text);
+            int pos = 0;
+            while(matcher.find(pos)) {
+                pos = matcher.end();
+                highlighter.addHighlight(matcher.start(), pos, highlightPainter);
             }
+//             int pos = text.indexOf(pattern);
+//             while(pos >= 0) {
+//                 int nextp = pos + pattern.length();
+//                 jtc.getHighlighter().addHighlight(pos, nextp, highlightPainter);
+//                 pos = text.indexOf(pattern, nextp);
+//             }
         }catch(BadLocationException e) {
             e.printStackTrace();
         }

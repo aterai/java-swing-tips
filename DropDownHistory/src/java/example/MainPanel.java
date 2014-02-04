@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -97,11 +98,16 @@ public class MainPanel extends JPanel {
         try{
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
+            Matcher matcher = Pattern.compile(pattern).matcher(text);
             int pos = 0;
-            while((pos = text.indexOf(pattern, pos)) >= 0) {
-                highlighter.addHighlight(pos, pos+pattern.length(), highlightPainter);
-                pos += pattern.length();
+            while(matcher.find(pos)) {
+                pos = matcher.end();
+                highlighter.addHighlight(matcher.start(), pos, highlightPainter);
             }
+//             while((pos = text.indexOf(pattern, pos)) >= 0) {
+//                 highlighter.addHighlight(pos, pos+pattern.length(), highlightPainter);
+//                 pos += pattern.length();
+//             }
         }catch(BadLocationException e) {
             e.printStackTrace();
         }
