@@ -12,13 +12,22 @@ class MainPanel extends JPanel {
     private final JTextPane textpane = new JTextPane();
     public MainPanel() {
         super(new BorderLayout());
+
         Font font    = makeFont(getClass().getResource("mona.ttf"));
-        Document doc = makeDocument(getClass().getResource("bar.utf8.txt"), "UTF-8");
+        //Document doc = makeDocument(getClass().getResource("bar.utf8.txt"), "UTF-8");
         if(font!=null) {
             System.out.println(font.toString());
             textpane.setFont(font.deriveFont(10.0f));
-            textpane.setDocument(doc);
+            //textpane.setDocument(doc);
         }
+
+        URL url = getClass().getResource("bar.utf8.txt");
+        try(Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+            textpane.read(reader, "text");
+        }catch(IOException ex) {
+            ex.printStackTrace();
+        }
+
         add(new JScrollPane(textpane));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -33,30 +42,29 @@ class MainPanel extends JPanel {
     //         doc.setLogicalStyle(0, style);
     //         textpane.setDocument(doc);
 
-/*
-    private static Font makeFont(URL url) {
-        Font font = null;
-        InputStream is = null;
-        try{
-            is = url.openStream();
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
-            is.close();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-        }catch(FontFormatException ffe) {
-            ffe.printStackTrace();
-        }finally{
-            if(is!=null) {
-                try{
-                    is.close();
-                }catch(IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return font;
-    }
-/*/ // JDK 1.7.0
+//     private static Font makeFont(URL url) {
+//         Font font = null;
+//         InputStream is = null;
+//         try{
+//             is = url.openStream();
+//             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+//             is.close();
+//         }catch(IOException ioe) {
+//             ioe.printStackTrace();
+//         }catch(FontFormatException ffe) {
+//             ffe.printStackTrace();
+//         }finally{
+//             if(is!=null) {
+//                 try{
+//                     is.close();
+//                 }catch(IOException ex) {
+//                     ex.printStackTrace();
+//                 }
+//             }
+//         }
+//         return font;
+//     }
+
     private static Font makeFont(URL url) {
         Font font = null;
         try(InputStream is = url.openStream()) {
@@ -66,22 +74,25 @@ class MainPanel extends JPanel {
         }
         return font;
     }
-//*/
 
-    private static Document makeDocument(URL url, String encoding) {
-        DefaultStyledDocument doc = new DefaultStyledDocument();
-        try(Reader reader = new InputStreamReader(url.openStream(), encoding)) {
-            char[] buff = new char[4096];
-            int nch;
-            while((nch = reader.read(buff, 0, buff.length)) != -1) {
-                doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
-            }
-            //reader.close();
-        }catch(IOException | BadLocationException ex) {
-            ex.printStackTrace();
-        }
-        return doc;
-    }
+//     private static Document makeDocument(URL url, String encoding) {
+//         DefaultStyledDocument doc = new DefaultStyledDocument();
+//         try(Reader reader = new InputStreamReader(url.openStream(), encoding);
+//             Scanner scanner = new Scanner(reader)) {
+//             while(scanner.hasNextLine()) {
+//                 doc.insertString(doc.getLength(), String.format("%s%n", scanner.nextLine()), null);
+//             }
+// //             char[] buff = new char[4096];
+// //             int nch;
+// //             while((nch = reader.read(buff, 0, buff.length)) != -1) {
+// //                 doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
+// //             }
+//             //reader.close();
+//         }catch(IOException | BadLocationException ex) {
+//             ex.printStackTrace();
+//         }
+//         return doc;
+//     }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

@@ -19,9 +19,7 @@ public class MainPanel extends JPanel {
             Element root = doc.getDefaultRootElement();
             for(int i=0;i<2;i++) { //root.getElementCount();i++) {
                 Element elem = root.getElement(i);
-                hilite.addHighlight(elem.getStartOffset(),
-                                    elem.getEndOffset()-1,
-                                    highlightPainter);
+                hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset()-1, highlightPainter);
             }
         }catch(BadLocationException ble) {
             ble.printStackTrace();

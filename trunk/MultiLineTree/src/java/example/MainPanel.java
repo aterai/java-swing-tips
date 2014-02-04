@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.io.*;
-import java.util.EventObject;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
@@ -196,22 +196,35 @@ class CellTextArea extends JTextArea {
     @Override public void setText(String str) {
         FontMetrics fm = getFontMetrics(getFont());
         int maxWidth = 0;
-        int lines = 0;
-        try(BufferedReader br = new BufferedReader(new StringReader(str))) {
-            String line;
-            while((line = br.readLine()) != null) {
-                int width = SwingUtilities.computeStringWidth(fm, line);
-                if(maxWidth < width) {
-                    maxWidth = width;
-                }
-                lines++;
-                line = br.readLine();
+        int lineCounter = 0;
+        try(BufferedReader br = new BufferedReader(new StringReader(str));
+            Scanner sc = new Scanner(br)) {
+            while(sc.hasNextLine()) {
+                int w = SwingUtilities.computeStringWidth(fm, sc.nextLine());
+                maxWidth = Math.max(maxWidth, w);
+                lineCounter++;
             }
         }catch(IOException ex) {
             ex.printStackTrace();
         }
-        lines = lines < 1 ? 1 : lines;
-        int height = fm.getHeight() * lines;
+        lineCounter = Math.max(lineCounter, 1);
+        int height = fm.getHeight() * lineCounter;
+//         int lines = 0;
+//         try(BufferedReader br = new BufferedReader(new StringReader(str))) {
+//             String line;
+//             while((line = br.readLine()) != null) {
+//                 int width = SwingUtilities.computeStringWidth(fm, line);
+//                 if(maxWidth < width) {
+//                     maxWidth = width;
+//                 }
+//                 lines++;
+//                 line = br.readLine();
+//             }
+//         }catch(IOException ex) {
+//             ex.printStackTrace();
+//         }
+//         lines = lines < 1 ? 1 : lines;
+//         int height = fm.getHeight() * lines;
         Insets i = getInsets();
         setPreferredSize(new Dimension(maxWidth + i.left+i.right, height+i.top+i.bottom));
         super.setText(str);
