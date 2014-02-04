@@ -47,24 +47,23 @@ public class MainPanel extends JPanel {
     }
 }
 
+//Copied from javax.swing.plaf.basic.BasicScrollBarUI
 class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
-    //Copied from javax.swing.plaf.basic.BasicScrollBarUI
     @Override protected void layoutVScrollbar(JScrollBar sb) {
         Dimension sbSize = sb.getSize();
         Insets sbInsets = sb.getInsets();
 
-        /*
-         * Width and left edge of the buttons and thumb.
-         */
+        /* Width and left edge of the buttons and thumb. */
         int itemW = sbSize.width - sbInsets.left - sbInsets.right;
         int itemX = sbInsets.left;
 
         /* Nominal locations of the buttons, assuming their preferred
-         * size will fit.
-         */
-        boolean squareButtons = false; //DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
-        int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
-        int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
+         * size will fit. */
+//         boolean squareButtons = DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
+//         int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
+//         int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
+        int decrButtonH = decrButton.getPreferredSize().height;
+        int incrButtonH = incrButton.getPreferredSize().height;
 
         //int decrButtonY = sbInsets.top;
         int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
@@ -72,17 +71,16 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 
         /* The thumb must fit within the height left over after we
          * subtract the preferredSize of the buttons and the insets
-         * and the gaps
-         */
+         * and the gaps */
         int sbInsetsH = sbInsets.top + sbInsets.bottom;
         int sbButtonsH = decrButtonH + incrButtonH;
 
-        //need before 1.7.0 ---->
-        int decrGap = 0;
-        int incrGap = 0;
-        //incrGap = UIManager.getInt("ScrollBar.incrementButtonGap");
-        //decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
-        //<----
+//         //need before 1.7.0 ---->
+//         int decrGap = 0;
+//         int incrGap = 0;
+//         //incrGap = UIManager.getInt("ScrollBar.incrementButtonGap");
+//         //decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
+//         //<----
 
         int gaps = decrGap + incrGap;
         float trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
@@ -91,8 +89,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
          * where the thumb is at the bottom edge is handled specially
          * to avoid numerical problems in computing thumbY.  Enforce
          * the thumbs min/max dimensions.  If the thumb doesn't
-         * fit in the track (trackH) we'll hide it later.
-         */
+         * fit in the track (trackH) we'll hide it later. */
         float min = sb.getMinimum();
         float extent = sb.getVisibleAmount();
         float range = sb.getMaximum() - min;
@@ -111,8 +108,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
         }
 
         /* If the buttons don't fit, allocate half of the available
-         * space to each and move the lower one (incrButton) down.
-         */
+         * space to each and move the lower one (incrButton) down. */
         int sbAvailButtonH = sbSize.height - sbInsetsH;
         if(sbAvailButtonH < sbButtonsH) {
             incrButtonH = decrButtonH = sbAvailButtonH / 2;
@@ -121,8 +117,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
         decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
         incrButton.setBounds(itemX, incrButtonY, itemW, incrButtonH);
 
-        /* Update the trackRect field.
-         */
+        /* Update the trackRect field. */
         //int itrackY = decrButtonY + decrButtonH + decrGap;
         //int itrackH = incrButtonY - incrGap - itrackY;
         int itrackY = 0;
@@ -131,8 +126,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 
         /* If the thumb isn't going to fit, zero it's bounds.  Otherwise
          * make sure it fits between the buttons.  Note that setting the
-         * thumbs bounds will cause a repaint.
-         */
+         * thumbs bounds will cause a repaint. */
         if(thumbH >= (int)trackH) {
             setThumbBounds(0, 0, 0, 0);
         }else{
@@ -154,23 +148,21 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 }
 
 class MetalCustomScrollBarUI extends MetalScrollBarUI {
-    //Copied from javax.swing.plaf.basic.BasicScrollBarUI
     @Override protected void layoutVScrollbar(JScrollBar sb) {
         Dimension sbSize = sb.getSize();
         Insets sbInsets = sb.getInsets();
 
-        /*
-         * Width and left edge of the buttons and thumb.
-         */
+        /* Width and left edge of the buttons and thumb. */
         int itemW = sbSize.width - sbInsets.left - sbInsets.right;
         int itemX = sbInsets.left;
 
         /* Nominal locations of the buttons, assuming their preferred
-         * size will fit.
-         */
-        boolean squareButtons = false; //DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
-        int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
-        int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
+         * size will fit. */
+//         boolean squareButtons = DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
+//         int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
+//         int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
+        int decrButtonH = decrButton.getPreferredSize().height;
+        int incrButtonH = incrButton.getPreferredSize().height;
 
         //int decrButtonY = sbInsets.top;
         int decrButtonY = sbSize.height - sbInsets.bottom - incrButtonH - decrButtonH;
@@ -178,17 +170,16 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
 
         /* The thumb must fit within the height left over after we
          * subtract the preferredSize of the buttons and the insets
-         * and the gaps
-         */
+         * and the gaps */
         int sbInsetsH = sbInsets.top + sbInsets.bottom;
         int sbButtonsH = decrButtonH + incrButtonH;
 
-        //need before 1.7.0 ---->
-        int decrGap = 0;
-        int incrGap = 0;
-        //incrGap = UIManager.getInt("ScrollBar.incrementButtonGap");
-        //decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
-        //<----
+//         //need before 1.7.0 ---->
+//         int decrGap = 0;
+//         int incrGap = 0;
+//         //incrGap = UIManager.getInt("ScrollBar.incrementButtonGap");
+//         //decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
+//         //<----
 
         int gaps = decrGap + incrGap;
         float trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
@@ -197,8 +188,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
          * where the thumb is at the bottom edge is handled specially
          * to avoid numerical problems in computing thumbY.  Enforce
          * the thumbs min/max dimensions.  If the thumb doesn't
-         * fit in the track (trackH) we'll hide it later.
-         */
+         * fit in the track (trackH) we'll hide it later. */
         float min = sb.getMinimum();
         float extent = sb.getVisibleAmount();
         float range = sb.getMaximum() - min;
@@ -217,8 +207,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
         }
 
         /* If the buttons don't fit, allocate half of the available
-         * space to each and move the lower one (incrButton) down.
-         */
+         * space to each and move the lower one (incrButton) down. */
         int sbAvailButtonH = sbSize.height - sbInsetsH;
         if(sbAvailButtonH < sbButtonsH) {
             incrButtonH = decrButtonH = sbAvailButtonH / 2;
@@ -227,8 +216,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
         decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
         incrButton.setBounds(itemX, incrButtonY, itemW, incrButtonH);
 
-        /* Update the trackRect field.
-         */
+        /* Update the trackRect field. */
         //int itrackY = decrButtonY + decrButtonH + decrGap;
         //int itrackH = incrButtonY - incrGap - itrackY;
         int itrackY = 0;
@@ -237,8 +225,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
 
         /* If the thumb isn't going to fit, zero it's bounds.  Otherwise
          * make sure it fits between the buttons.  Note that setting the
-         * thumbs bounds will cause a repaint.
-         */
+         * thumbs bounds will cause a repaint. */
         if(thumbH >= (int)trackH) {
             setThumbBounds(0, 0, 0, 0);
         }else{
