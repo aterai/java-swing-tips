@@ -4,9 +4,8 @@
   <target name="all">
     <subant target="${all}">
       <fileset dir="." casesensitive="yes">
-        <filename name=".svn/*" negate="true"/>
-        <filename name=".hg/*"  negate="true"/>
-        <filename name="*~/*"   negate="true"/>
+        <filename name=".*/*" negate="true"/>
+        <filename name="*~/*" negate="true"/>
         <filename name="*/build.xml"/>
       </fileset>
     </subant>
