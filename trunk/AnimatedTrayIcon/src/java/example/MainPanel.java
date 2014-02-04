@@ -40,7 +40,7 @@ class MainPanel extends JPanel {
             private int idx;
             @Override public void actionPerformed(ActionEvent e) {
                 icon.setImage(imglist[idx]);
-                idx = (idx + 1 + imglist.length) % imglist.length;
+                idx = (idx + 1) % imglist.length;
             }
         });
         initTrayPopupMenu(popup);
