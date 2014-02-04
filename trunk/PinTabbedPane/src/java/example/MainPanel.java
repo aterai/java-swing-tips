@@ -98,7 +98,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             if(check.isSelected()) {
                 for(i=0;i<idx;i++) {
                     String s = t.getTitleAt(i);
-                    if(s==null || s.length()==0) {
+                    if(s==null || s.isEmpty()) {
                         continue;
                     }else{
                         break;
@@ -107,18 +107,20 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             }else{
                 for(i=t.getTabCount()-1;i>idx;i--) {
                     String s = t.getTitleAt(i);
-                    if(s!=null && s.length()>0) {
-                        continue;
-                    }else{
+                    if(s==null || s.isEmpty()) {
                         break;
+                    }else{
+                        continue;
                     }
                 }
             }
             t.remove(idx);
-            t.insertTab(check.isSelected()?"":tip, icon, cmp, tip, i);
+            t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
             t.setTabComponentAt(i, tab);
             t.setEnabledAt(i, flg);
-            if(flg) { t.setSelectedIndex(i); }
+            if(flg) {
+                t.setSelectedIndex(i);
+            }
 
             //JComponent c = (JComponent)t.getTabComponentAt(idx);
             //c.revalidate();

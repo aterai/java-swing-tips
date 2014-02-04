@@ -28,43 +28,7 @@ public final class BarFactory {
     public BarFactory(String restr) {
         ResourceBundle res;
         try{
-            res = ResourceBundle.getBundle(restr, new ResourceBundle.Control() {
-                //http://docs.oracle.com/javase/jp/7/api/java/util/ResourceBundle.Control.html
-                @Override public List<String> getFormats(String baseName) {
-                    Objects.requireNonNull(baseName, "baseName must not be null");
-                    return Arrays.asList("properties");
-                }
-                @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-                    ResourceBundle bundle = null;
-                    if("properties".equals(format)) {
-                        String bundleName = toBundleName(
-                            Objects.requireNonNull(baseName, "baseName must not be null"),
-                            Objects.requireNonNull(locale,   "locale must not be null"));
-                        String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
-                        InputStream stream = null;
-                        ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
-                        if(reload) {
-                            URL url = cloader.getResource(resourceName);
-                            if(url != null) {
-                                URLConnection connection = url.openConnection();
-                                if(connection != null) {
-                                    connection.setUseCaches(false);
-                                    stream = connection.getInputStream();
-                                }
-                            }
-                        }else{
-                            stream = cloader.getResourceAsStream(resourceName);
-                        }
-                        if(stream != null) {
-                            //BufferedInputStream bis = new BufferedInputStream(stream);
-                            Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-                            bundle = new PropertyResourceBundle(r);
-                            r.close();
-                        }
-                    }
-                    return bundle;
-                }
-            });
+            res = ResourceBundle.getBundle(restr, new UTF8ResourceBundleControl());
         }catch(MissingResourceException mre) {
             mre.printStackTrace();
             System.err.println("resources/"+restr+" not found");
@@ -288,4 +252,42 @@ public final class BarFactory {
 //    protected JMenuBar getMenubar() {
 //        return menubar;
 //    }
+}
+
+//http://docs.oracle.com/javase/jp/7/api/java/util/ResourceBundle.Control.html
+class UTF8ResourceBundleControl extends ResourceBundle.Control {
+    @Override public List<String> getFormats(String baseName) {
+        Objects.requireNonNull(baseName, "baseName must not be null");
+        return Arrays.asList("properties");
+    }
+    @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+         ResourceBundle bundle = null;
+         if("properties".equals(format)) {
+             String bundleName = toBundleName(
+                 Objects.requireNonNull(baseName, "baseName must not be null"),
+                 Objects.requireNonNull(locale,   "locale must not be null"));
+             String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
+             InputStream stream = null;
+             ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
+             if(reload) {
+                 URL url = cloader.getResource(resourceName);
+                 if(url != null) {
+                     URLConnection connection = url.openConnection();
+                     if(connection != null) {
+                         connection.setUseCaches(false);
+                         stream = connection.getInputStream();
+                     }
+                 }
+             }else{
+                 stream = cloader.getResourceAsStream(resourceName);
+             }
+             if(stream != null) {
+                 //BufferedInputStream bis = new BufferedInputStream(stream);
+                 Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+                 bundle = new PropertyResourceBundle(r);
+                 r.close();
+             }
+         }
+         return bundle;
+     }
 }
