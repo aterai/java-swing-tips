@@ -11,7 +11,6 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public class MainPanel extends JPanel {
-    private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
     private final JTabbedPane tabbedPane = new JTabbedPane() {
         @Override public String getToolTipTextAt(int index) {
             return getTitleAt(index);
@@ -19,73 +18,17 @@ public class MainPanel extends JPanel {
         @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
             super.insertTab(title, icon, component, title, index);
         }
+        @Override public void updateUI() {
+            super.updateUI();
+            if(getUI() instanceof WindowsTabbedPaneUI) {
+                setUI(new WindowsClippedTitleTabbedPaneUI());
+            }else{
+                setUI(new BasicClippedTitleTabbedPaneUI());
+            }
+        }
     };
     public MainPanel() {
         super(new BorderLayout());
-        if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-            tabbedPane.setUI(new WindowsTabbedPaneUI() {
-                @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                    Insets insets = tabPane.getInsets();
-                    Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-                    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-                    switch(tabPlacement) {
-                      case LEFT: case RIGHT:
-                        return (int)(width/4);
-                      case BOTTOM: case TOP: default:
-                        return (int)(width/tabPane.getTabCount());
-                    }
-                }
-                @Override protected void paintText(Graphics g, int tabPlacement,
-                                         Font font, FontMetrics metrics, int tabIndex,
-                                         String title, Rectangle textRect,
-                                         boolean isSelected) {
-                    Rectangle tabRect = rects[tabIndex];
-                    Rectangle rect = new Rectangle(textRect.x+tabInsets.left, textRect.y, tabRect.width-tabInsets.left-tabInsets.right, textRect.height);
-                    String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
-                                                                            SwingUtilities.CENTER, SwingUtilities.CENTER,
-                                                                            SwingUtilities.CENTER, SwingUtilities.TRAILING,
-                                                                            rect, new Rectangle(), rect, 0);
-                    if(title.equals(clippedText)) {
-                        super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
-                    }else{
-                        rect = new Rectangle(textRect.x+tabInsets.left, textRect.y, tabRect.width-tabInsets.left-tabInsets.right, textRect.height);
-                        super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
-                    }
-                }
-            });
-        }else{
-            tabbedPane.setUI(new BasicTabbedPaneUI() {
-                @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                    Insets insets = tabPane.getInsets();
-                    Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-                    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-                    switch(tabPlacement) {
-                      case LEFT: case RIGHT:
-                        return (int)(width/4);
-                      case BOTTOM: case TOP: default:
-                        return (int)(width/tabPane.getTabCount());
-                    }
-                }
-                @Override protected void paintText(Graphics g, int tabPlacement,
-                                         Font font, FontMetrics metrics, int tabIndex,
-                                         String title, Rectangle textRect,
-                                         boolean isSelected) {
-                    int fw = (int) font.getSize();
-                    Rectangle tabRect = rects[tabIndex];
-                    Rectangle rect = new Rectangle(textRect.x+fw/2, textRect.y, tabRect.width-fw, textRect.height);
-                    String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
-                                                                            SwingUtilities.CENTER, SwingUtilities.CENTER,
-                                                                            SwingUtilities.CENTER, SwingUtilities.TRAILING,
-                                                                            rect, new Rectangle(), rect, 0);
-                    if(title.equals(clippedText)) {
-                        super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
-                    }else{
-                        rect = new Rectangle(textRect.x+fw/2, textRect.y, tabRect.width-fw, textRect.height);
-                        super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
-                    }
-                }
-            });
-        }
         final List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTab(new JTabbedPane()),
             makeTestTab(tabbedPane));
@@ -133,5 +76,76 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
+    //protected Insets tabInsets;
+    //protected Insets selectedTabPadInsets;
+    //protected Insets tabAreaInsets;
+    //protected Insets contentBorderInsets;
+    @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+        Insets insets = tabPane.getInsets();
+        //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+        int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
+        switch(tabPlacement) {
+          case LEFT: case RIGHT:
+            return (int)(width/4);
+          case BOTTOM: case TOP: default:
+            return (int)(width/tabPane.getTabCount());
+        }
+    }
+    @Override protected void paintText(Graphics g, int tabPlacement,
+                                       Font font, FontMetrics metrics, int tabIndex,
+                                       String title, Rectangle textRect,
+                                       boolean isSelected) {
+        int fw = (int) font.getSize();
+        Rectangle tabRect = rects[tabIndex];
+        Rectangle rect = new Rectangle(textRect.x+fw/2, textRect.y, tabRect.width-fw, textRect.height);
+        String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
+                                                                SwingUtilities.CENTER, SwingUtilities.CENTER,
+                                                                SwingUtilities.CENTER, SwingUtilities.TRAILING,
+                                                                rect, new Rectangle(), rect, 0);
+        if(title.equals(clippedText)) {
+            super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
+        }else{
+            rect = new Rectangle(textRect.x+fw/2, textRect.y, tabRect.width-fw, textRect.height);
+            super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
+        }
+    }
+}
+
+class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
+    //protected Insets tabInsets;
+    //protected Insets selectedTabPadInsets;
+    //protected Insets tabAreaInsets;
+    //protected Insets contentBorderInsets;
+    @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+        Insets insets = tabPane.getInsets();
+        //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+        int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
+        switch(tabPlacement) {
+          case LEFT: case RIGHT:
+            return (int)(width/4);
+          case BOTTOM: case TOP: default:
+            return (int)(width/tabPane.getTabCount());
+        }
+    }
+    @Override protected void paintText(Graphics g, int tabPlacement,
+                                       Font font, FontMetrics metrics, int tabIndex,
+                                       String title, Rectangle textRect,
+                                       boolean isSelected) {
+        Rectangle tabRect = rects[tabIndex];
+        Rectangle rect = new Rectangle(textRect.x+tabInsets.left, textRect.y, tabRect.width-tabInsets.left-tabInsets.right, textRect.height);
+        String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
+                                                                SwingUtilities.CENTER, SwingUtilities.CENTER,
+                                                                SwingUtilities.CENTER, SwingUtilities.TRAILING,
+                                                                rect, new Rectangle(), rect, 0);
+        if(title.equals(clippedText)) {
+            super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
+        }else{
+            rect = new Rectangle(textRect.x+tabInsets.left, textRect.y, tabRect.width-tabInsets.left-tabInsets.right, textRect.height);
+            super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
+        }
     }
 }

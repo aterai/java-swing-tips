@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
 
         table.setFillsViewportHeight(true);
-        table.setComponentPopupMenu(new TablePopupMenu());
+        table.setComponentPopupMenu(new TablePopupMenu(table));
         add(new JScrollPane(table));
         add(makeToolBar(), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -43,10 +43,10 @@ public class MainPanel extends JPanel {
     private JToolBar makeToolBar() {
         JToolBar tb = new JToolBar("Sort by my order");
         tb.setFloatable(true);
-        tb.add(initButton(new UpAction("\u25B2")));
-        tb.add(initButton(new DownAction("\u25BC")));
+        tb.add(initButton(new UpAction("\u25B2", table)));
+        tb.add(initButton(new DownAction("\u25BC", table)));
         tb.add(Box.createHorizontalGlue());
-        tb.add(initButton(new InitAction("OK")));
+        tb.add(initButton(new InitAction("OK", table)));
         return tb;
     }
 
@@ -54,171 +54,6 @@ public class MainPanel extends JPanel {
         JButton b = new JButton(action);
         b.setFocusable(false);
         return b;
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action createAction = new TestCreateAction("add", null);
-        private final Action deleteAction = new DeleteAction("delete", null);
-        private final Action upAction     = new UpAction("up");
-        private final Action downAction   = new DownAction("down");
-        public TablePopupMenu() {
-            super();
-            add(createAction);
-            addSeparator();
-            add(deleteAction);
-            addSeparator();
-            add(upAction);
-            add(downAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            int row     = table.rowAtPoint(new Point(x, y));
-            int count   = table.getSelectedRowCount();
-            int[] l     = table.getSelectedRows();
-            boolean flg = true;
-            for(int i=0;i<l.length;i++) {
-                if(l[i]==row) {
-                    flg = false;
-                    break;
-                }
-            }
-            if(row>0 && flg) { table.setRowSelectionInterval(row, row); }
-
-            createAction.setEnabled(count<=1);
-            deleteAction.setEnabled(row>=0);
-            upAction.setEnabled(count>0);
-            downAction.setEnabled(count>0);
-
-            super.show(c, x, y);
-        }
-    }
-
-    class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if(table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            model.addTest(new Test("New row", ""));
-            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
-            table.scrollRectToVisible(r);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label,icon);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if(table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
-                return;
-            }
-            for(int i=selection.length-1;i>=0;i--) {
-                //Test ixsc = model.getTest(selection[i]);
-                model.removeRow(selection[i]);
-            }
-        }
-    }
-
-    class UpAction extends AbstractAction {
-        public UpAction(String str) {
-            super(str);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            if(table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            upActionPerformed(evt);
-        }
-    }
-    private void upActionPerformed(ActionEvent e) {
-        int[] pos = table.getSelectedRows();
-        if(pos.length == 0) {
-            return;
-        }
-        DefaultTableModel mdl = (DefaultTableModel) table.getModel();
-        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
-            if(pos[0]==0) {
-                return;
-            }
-            mdl.moveRow(pos[0], pos[pos.length-1], pos[0]-1);
-            table.setRowSelectionInterval(pos[0]-1, pos[pos.length-1]-1);
-        }else{
-            mdl.moveRow(pos[0], pos[pos.length-1], 0);
-            table.setRowSelectionInterval(0, pos.length-1);
-        }
-        scrollSelectedRow();
-    }
-    class DownAction extends AbstractAction {
-        public DownAction(String str) {
-            super(str);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            if(table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            downActionPerformed(evt);
-        }
-    }
-    private void downActionPerformed(ActionEvent e) {
-        int[] pos = table.getSelectedRows();
-        if(pos.length == 0) {
-            return;
-        }
-        DefaultTableModel mdl = (DefaultTableModel) table.getModel();
-        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
-            if(pos[pos.length-1]==mdl.getRowCount()-1) {
-                return;
-            }
-            mdl.moveRow(pos[0], pos[pos.length-1], pos[0]+1);
-            table.setRowSelectionInterval(pos[0]+1, pos[pos.length-1]+1);
-        }else{
-            mdl.moveRow(pos[0], pos[pos.length-1], mdl.getRowCount()-pos.length);
-            table.setRowSelectionInterval(mdl.getRowCount()-pos.length, mdl.getRowCount()-1);
-        }
-        scrollSelectedRow();
-    }
-    private void scrollSelectedRow() {
-        Rectangle rect = table.getCellRect(table.getSelectedRow(), 0, false);
-        if(rect!=null) {
-            table.scrollRectToVisible(rect);
-        }
-    }
-    class InitAction extends AbstractAction {
-        public InitAction(String str) {
-            super(str);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if(table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            int row = table.getRowCount();
-            if(row<=0) { return; }
-            TestModel model = (TestModel)table.getModel();
-            TestModel nmodel = new TestModel();
-            Vector dv = model.getDataVector();
-            for(int i=0;i<row;i++) {
-                //Test test = model.getTest(i);
-                Vector v = (Vector)dv.elementAt(i);
-                //new Test((String)v.elementAt(1), (String)v.elementAt(2));
-                nmodel.addTest(new Test((String)v.elementAt(1), (String)v.elementAt(2)));
-            }
-            JTableHeader h = table.getTableHeader();
-            TableCellRenderer tcr = h.getDefaultRenderer();
-            if(tcr instanceof SortButtonRenderer) {
-                SortButtonRenderer sbr = (SortButtonRenderer)tcr;
-                sbr.setPressedColumn(-1);
-                sbr.setSelectedColumn(-1);
-            }
-            table.setAutoCreateColumnsFromModel(false);
-            table.setModel(nmodel);
-            table.clearSelection();
-        }
     }
 
     public static void main(String[] args) {
@@ -241,6 +76,187 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action createAction;
+    private final Action deleteAction;
+    private final Action upAction;
+    private final Action downAction;
+    private final JTable table;
+    public TablePopupMenu(JTable table) {
+        super();
+        this.table = table;
+
+        createAction = new TestCreateAction("add", table);
+        deleteAction = new DeleteAction("delete", table);
+        upAction     = new UpAction("up", table);
+        downAction   = new DownAction("down", table);
+
+        add(createAction);
+        addSeparator();
+        add(deleteAction);
+        addSeparator();
+        add(upAction);
+        add(downAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        int row     = table.rowAtPoint(new Point(x, y));
+        int count   = table.getSelectedRowCount();
+        int[] l     = table.getSelectedRows();
+        boolean flg = true;
+        for(int i=0;i<l.length;i++) {
+            if(l[i]==row) {
+                flg = false;
+                break;
+            }
+        }
+        if(row>0 && flg) {
+            table.setRowSelectionInterval(row, row);
+        }
+
+        createAction.setEnabled(count<=1);
+        deleteAction.setEnabled(row>=0);
+        upAction.setEnabled(count>0);
+        downAction.setEnabled(count>0);
+
+        super.show(c, x, y);
+    }
+}
+
+class TestCreateAction extends AbstractAction {
+    private final JTable table;
+    public TestCreateAction(String str, JTable table) {
+        super(str);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        if(table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+        TestModel model = (TestModel)table.getModel();
+        model.addTest(new Test("New row", ""));
+        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+        table.scrollRectToVisible(r);
+    }
+}
+
+class DeleteAction extends AbstractAction {
+    private final JTable table;
+    public DeleteAction(String str, JTable table) {
+        super(str);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        if(table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+        int[] selection = table.getSelectedRows();
+        if(selection.length == 0) {
+            return;
+        }
+        TestModel model = (TestModel)table.getModel();
+        for(int i=selection.length-1;i>=0;i--) {
+            //Test ixsc = model.getTest(selection[i]);
+            model.removeRow(selection[i]);
+        }
+    }
+}
+
+class UpAction extends AbstractAction {
+    private final JTable table;
+    public UpAction(String str, JTable table) {
+        super(str);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        if(table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+        int[] pos = table.getSelectedRows();
+        if(pos.length == 0) {
+            return;
+        }
+        TestModel model = (TestModel)table.getModel();
+        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+            if(pos[0]==0) {
+                return;
+            }
+            model.moveRow(pos[0], pos[pos.length-1], pos[0]-1);
+            table.setRowSelectionInterval(pos[0]-1, pos[pos.length-1]-1);
+        }else{
+            model.moveRow(pos[0], pos[pos.length-1], 0);
+            table.setRowSelectionInterval(0, pos.length-1);
+        }
+        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+        table.scrollRectToVisible(r);
+    }
+}
+
+class DownAction extends AbstractAction {
+    private final JTable table;
+    public DownAction(String str, JTable table) {
+        super(str);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        if(table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+        int[] pos = table.getSelectedRows();
+        if(pos.length == 0) {
+            return;
+        }
+        TestModel model = (TestModel)table.getModel();
+        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+            if(pos[pos.length-1]==model.getRowCount()-1) {
+                return;
+            }
+            model.moveRow(pos[0], pos[pos.length-1], pos[0]+1);
+            table.setRowSelectionInterval(pos[0]+1, pos[pos.length-1]+1);
+        }else{
+            model.moveRow(pos[0], pos[pos.length-1], model.getRowCount()-pos.length);
+            table.setRowSelectionInterval(model.getRowCount()-pos.length, model.getRowCount()-1);
+        }
+        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+        table.scrollRectToVisible(r);
+    }
+}
+
+class InitAction extends AbstractAction {
+    private final JTable table;
+    public InitAction(String str, JTable table) {
+        super(str);
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        if(table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+        int row = table.getRowCount();
+        if(row<=0) {
+            return;
+        }
+        TestModel model = (TestModel)table.getModel();
+        TestModel nmodel = new TestModel();
+        Vector dv = model.getDataVector();
+        for(int i=0;i<row;i++) {
+            //Test test = model.getTest(i);
+            Vector v = (Vector)dv.elementAt(i);
+            //new Test((String)v.elementAt(1), (String)v.elementAt(2));
+            nmodel.addTest(new Test((String)v.elementAt(1), (String)v.elementAt(2)));
+        }
+        JTableHeader h = table.getTableHeader();
+        TableCellRenderer tcr = h.getDefaultRenderer();
+        if(tcr instanceof SortButtonRenderer) {
+            SortButtonRenderer sbr = (SortButtonRenderer)tcr;
+            sbr.setPressedColumn(-1);
+            sbr.setSelectedColumn(-1);
+        }
+        table.setAutoCreateColumnsFromModel(false);
+        table.setModel(nmodel);
+        table.clearSelection();
     }
 }
 

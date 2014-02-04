@@ -30,8 +30,33 @@ public class MainPanel extends JPanel {
             return;
         }
 
-        int width  = image.getWidth(p);
-        int height = image.getHeight(p);
+        MemoryImageSource producer = makeRoundedMemoryImageSource(image);
+        BufferedImage bi = new BufferedImage(image.getWidth(p), image.getHeight(p), BufferedImage.TYPE_INT_ARGB);
+        Image img = p.createImage(producer);
+        Graphics g = bi.createGraphics();
+        g.drawImage(img, 0, 0, null);
+        g.dispose();
+
+//         try{
+//             javax.imageio.ImageIO.write(
+//                 bi, "png", java.io.File.createTempFile("screenshot", ".png"));
+//         }catch(java.io.IOException ioe) {
+//             ioe.printStackTrace();
+//         }
+
+        p.add(new JLabel(new ImageIcon(image)), "original");
+        p.add(new JLabel(new ImageIcon(bi)), "rounded");
+        add(new JCheckBox(new AbstractAction("transparency at the rounded windows corners") {
+            @Override public void actionPerformed(ActionEvent e) {
+                cardLayout.show(p, ((JCheckBox)e.getSource()).isSelected()?"rounded":"original");
+            }
+        }), BorderLayout.NORTH);
+        add(p);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private static MemoryImageSource makeRoundedMemoryImageSource(BufferedImage image) {
+        int width  = image.getWidth(null);
+        int height = image.getHeight(null);
 
 //         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 //         Graphics2D g2d = bi.createGraphics();
@@ -90,30 +115,10 @@ public class MainPanel extends JPanel {
 //                 else if(y==4 && (x<1 || x>=width-1)) { pix[n] = 0x0; }
 //             }
 //         }
-        MemoryImageSource producer = new MemoryImageSource(width, height, pix, 0, width);
-        Image img = p.createImage(producer);
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = bi.createGraphics();
-        g.drawImage(img, 0, 0, null);
-        g.dispose();
 
-//         try{
-//             javax.imageio.ImageIO.write(
-//                 bi, "png", java.io.File.createTempFile("screenshot", ".png"));
-//         }catch(java.io.IOException ioe) {
-//             ioe.printStackTrace();
-//         }
-
-        p.add(new JLabel(new ImageIcon(image)), "original");
-        p.add(new JLabel(new ImageIcon(bi)), "rounded");
-        add(new JCheckBox(new AbstractAction("transparency at the rounded windows corners") {
-            @Override public void actionPerformed(ActionEvent e) {
-                cardLayout.show(p, ((JCheckBox)e.getSource()).isSelected()?"rounded":"original");
-            }
-        }), BorderLayout.NORTH);
-        add(p);
-        setPreferredSize(new Dimension(320, 240));
+        return new MemoryImageSource(width, height, pix, 0, width);
     }
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

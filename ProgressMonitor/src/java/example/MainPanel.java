@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         box.add(runButton);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     class RunAction extends AbstractAction {
@@ -35,23 +35,7 @@ public class MainPanel extends JPanel {
             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             monitor.setProgress(0);
-            worker = new SwingWorker<String, String>() {
-                @Override public String doInBackground() {
-                    //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-                    int current = 0;
-                    int lengthOfTask = 120; //list.size();
-                    while(current<lengthOfTask && !isCancelled()) {
-                        try{
-                            Thread.sleep(50);
-                        }catch(InterruptedException ie) {
-                            return "Interrupted";
-                        }
-                        setProgress(100 * current / lengthOfTask);
-                        publish(current + "/" + lengthOfTask);
-                        current++;
-                    }
-                    return "Done";
-                }
+            worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     for(String message : chunks) {
@@ -62,21 +46,17 @@ public class MainPanel extends JPanel {
                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
                     runButton.setEnabled(true);
                     monitor.close();
-                    String text = null;
-                    if(isCancelled()) {
-                        text = "Cancelled";
-                    }else{
-                        try{
-                            text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
+                    try{
+                        if(isCancelled()) {
+                            area.append("Cancelled\n");
+                        }else{
+                            area.append(get() + "\n");
                         }
+                    }catch(InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
+                        area.append("Exception\n");
                     }
-                    //System.out.println(text);
-                    area.append(text+"\n");
                     area.setCaretPosition(area.getDocument().getLength());
-                    //appendLine(text);
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(monitor));
@@ -106,6 +86,26 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class Task extends SwingWorker<String, String> {
+    @Override public String doInBackground() {
+        //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+        int current = 0;
+        int lengthOfTask = 120; //list.size();
+        while(current<lengthOfTask && !isCancelled()) {
+            try{
+                Thread.sleep(50);
+            }catch(InterruptedException ie) {
+                return "Interrupted";
+            }
+            setProgress(100 * current / lengthOfTask);
+            publish(current + "/" + lengthOfTask);
+            current++;
+        }
+        return "Done";
+    }
+}
+
 class ProgressListener implements PropertyChangeListener {
     private final ProgressMonitor monitor;
     public ProgressListener(ProgressMonitor monitor) {

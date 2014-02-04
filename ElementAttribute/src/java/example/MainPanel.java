@@ -55,20 +55,28 @@ public class MainPanel extends JPanel {
                     }
                     if(pos >= 0 && editor.getDocument() instanceof HTMLDocument) {
                         HTMLDocument hdoc = (HTMLDocument)editor.getDocument();
-                        Element elem = hdoc.getCharacterElement(pos);
-                        //if(!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
-                        //    elem = null;
-                        //}
-                        if(elem != null) {
-                            AttributeSet a = elem.getAttributes();
-                            AttributeSet span = (AttributeSet)a.getAttribute(HTML.Tag.SPAN);
-                            if(span != null) {
-                                title = (String)span.getAttribute(HTML.Attribute.TITLE);
-                            }
+                        String str = getSpanTitleAttribute(hdoc, pos);
+                        if(str!=null) {
+                            title = str;
                         }
                     }
                 }
                 return title;
+            }
+            private String getSpanTitleAttribute(HTMLDocument hdoc, int pos) {
+                //HTMLDocument hdoc = (HTMLDocument)editor.getDocument();
+                Element elem = hdoc.getCharacterElement(pos);
+                //if(!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
+                //    elem = null;
+                //}
+                if(elem != null) {
+                    AttributeSet a = elem.getAttributes();
+                    AttributeSet span = (AttributeSet)a.getAttribute(HTML.Tag.SPAN);
+                    if(span != null) {
+                        return (String)span.getAttribute(HTML.Attribute.TITLE);
+                    }
+                }
+                return null;
             }
         };
         editor1.setEditorKit(new HTMLEditorKit());

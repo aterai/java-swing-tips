@@ -14,67 +14,9 @@ public final class MainPanel extends JPanel {
         l.setPreferredSize(new Dimension(1000, 1000));
         JScrollPane scrollPane = new JScrollPane(l);
         if(scrollPane.getVerticalScrollBar().getUI() instanceof WindowsScrollBarUI) {
-            scrollPane.getVerticalScrollBar().setUI(new WindowsScrollBarUI() {
-                @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-                    super.paintThumb(g,c,thumbBounds);
-                    Graphics2D g2 = (Graphics2D)g;
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                         RenderingHints.VALUE_ANTIALIAS_ON);
-                    Color oc = null;
-                    Color ic = null;
-                    JScrollBar sb = (JScrollBar)c;
-                    if(!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
-                        return;
-                    }else if(isDragging) {
-                        oc = SystemColor.activeCaption.darker();
-                        ic = SystemColor.inactiveCaptionText.darker();
-                    }else if(isThumbRollover()) {
-                        oc = SystemColor.activeCaption.brighter();
-                        ic = SystemColor.inactiveCaptionText.brighter();
-                    }else{
-                        oc = SystemColor.activeCaption;
-                        ic = SystemColor.inactiveCaptionText;
-                    }
-                    paintCircle(g2,thumbBounds,6,oc);
-                    paintCircle(g2,thumbBounds,10,ic);
-                }
-                private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
-                    g2.setPaint(color);
-                    int ww = thumbBounds.width-w;
-                    g2.fillOval(thumbBounds.x+w/2,thumbBounds.y+(thumbBounds.height-ww)/2,ww,ww);
-                }
-            });
+            scrollPane.getVerticalScrollBar().setUI(new BasicIconScrollBarUI());
         }else{
-            scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-                @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-                    super.paintThumb(g,c,thumbBounds);
-                    Graphics2D g2 = (Graphics2D)g;
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                         RenderingHints.VALUE_ANTIALIAS_ON);
-                    Color oc = null;
-                    Color ic = null;
-                    JScrollBar sb = (JScrollBar)c;
-                    if(!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
-                        return;
-                    }else if(isDragging) {
-                        oc = SystemColor.activeCaption.darker();
-                        ic = SystemColor.inactiveCaptionText.darker();
-                    }else if(isThumbRollover()) {
-                        oc = SystemColor.activeCaption.brighter();
-                        ic = SystemColor.inactiveCaptionText.brighter();
-                    }else{
-                        oc = SystemColor.activeCaption;
-                        ic = SystemColor.inactiveCaptionText;
-                    }
-                    paintCircle(g2,thumbBounds,6,oc);
-                    paintCircle(g2,thumbBounds,10,ic);
-                }
-                private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
-                    g2.setPaint(color);
-                    int ww = thumbBounds.width-w;
-                    g2.fillOval(thumbBounds.x+w/2,thumbBounds.y+(thumbBounds.height-ww)/2,ww,ww);
-                }
-            });
+            scrollPane.getVerticalScrollBar().setUI(new WindowsIconScrollBarUI());
         }
         add(scrollPane);
         setPreferredSize(new Dimension(320, 200));
@@ -99,5 +41,67 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class WindowsIconScrollBarUI extends WindowsScrollBarUI {
+    @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+        super.paintThumb(g,c,thumbBounds);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        Color oc = null;
+        Color ic = null;
+        JScrollBar sb = (JScrollBar)c;
+        if(!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
+            return;
+        }else if(isDragging) {
+            oc = SystemColor.activeCaption.darker();
+            ic = SystemColor.inactiveCaptionText.darker();
+        }else if(isThumbRollover()) {
+            oc = SystemColor.activeCaption.brighter();
+            ic = SystemColor.inactiveCaptionText.brighter();
+        }else{
+            oc = SystemColor.activeCaption;
+            ic = SystemColor.inactiveCaptionText;
+        }
+        paintCircle(g2,thumbBounds,6,oc);
+        paintCircle(g2,thumbBounds,10,ic);
+    }
+    private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
+        g2.setPaint(color);
+        int ww = thumbBounds.width-w;
+        g2.fillOval(thumbBounds.x+w/2,thumbBounds.y+(thumbBounds.height-ww)/2,ww,ww);
+    }
+}
+
+class BasicIconScrollBarUI extends BasicScrollBarUI {
+    @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+        super.paintThumb(g,c,thumbBounds);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        Color oc = null;
+        Color ic = null;
+        JScrollBar sb = (JScrollBar)c;
+        if(!sb.isEnabled() || thumbBounds.width>thumbBounds.height) {
+            return;
+        }else if(isDragging) {
+            oc = SystemColor.activeCaption.darker();
+            ic = SystemColor.inactiveCaptionText.darker();
+        }else if(isThumbRollover()) {
+            oc = SystemColor.activeCaption.brighter();
+            ic = SystemColor.inactiveCaptionText.brighter();
+        }else{
+            oc = SystemColor.activeCaption;
+            ic = SystemColor.inactiveCaptionText;
+        }
+        paintCircle(g2,thumbBounds,6,oc);
+        paintCircle(g2,thumbBounds,10,ic);
+    }
+    private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
+        g2.setPaint(color);
+        int ww = thumbBounds.width-w;
+        g2.fillOval(thumbBounds.x+w/2,thumbBounds.y+(thumbBounds.height-ww)/2,ww,ww);
     }
 }

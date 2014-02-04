@@ -41,7 +41,7 @@ public class MainPanel extends JPanel {
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Point startPoint = new Point(-1,-1);
     private final BufferedImage backImage;
-    private final TexturePaint texture = makeTexturePaint();
+    private final TexturePaint texture = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
     private final int[] pixels = new int[320 * 240];
     private final MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
     private int penc;
@@ -53,33 +53,8 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         backImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = backImage.createGraphics();
         g2.setPaint(texture);
-        g2.fillRect(0,0,320,240);
+        g2.fillRect(0, 0, 320, 240);
         g2.dispose();
-    }
-    private static BufferedImage makeBGImage(int cs) {
-        Color color = new Color(200,150,100,50);
-        //int cs = 6;
-        int sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = img.createGraphics();
-        g2.setPaint(color);
-        g2.fillRect(0,0,sz,sz);
-        for(int i=0; i*cs<sz; i++) {
-            for(int j=0; j*cs<sz; j++) {
-                if((i+j)%2==0) {
-                    g2.fillRect(i*cs, j*cs, cs, cs);
-                }
-            }
-        }
-        g2.dispose();
-        return img;
-    }
-    private static TexturePaint makeTexturePaint() {
-        BufferedImage img = makeBGImage(6);
-        int w = img.getWidth();
-        int h = img.getHeight();
-        Rectangle2D r2d = new Rectangle2D.Float(0,0,w,h);
-        return new TexturePaint(img, r2d);
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -102,22 +77,29 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         double yStart = startPoint.y;
         for(int i=0; i<delta; i++) {
             Point p = new Point((int)xStart, (int)yStart);
-            if(p.x<0 || p.y<0 || p.x>=320 || p.y>=240) { break; }
-            pixels[p.x + p.y * 320] = penc;
-            for(int n=-1;n<=1;n++) {
-                for(int m=-1;m<=1;m++) {
-                    int t = p.x + n + (p.y + m) * 320;
-                    if(t>=0 && t<320*240) {
-                        pixels[t] = penc;
-                    }
-                }
+            if(p.x<0 || p.y<0 || p.x>=320 || p.y>=240) {
+                break;
             }
+            paintStamp(pixels, p, penc);
             //source.newPixels(p.x-2, p.y-2, 4, 4);
-            repaint(p.x-2, p.y-2, 4, 4);
             xStart += xIncrement;
             yStart += yIncrement;
         }
         startPoint = pt;
+    }
+    private void paintStamp(int[] pixels, Point p, int penc) {
+        //1x1:
+        //pixels[p.x + p.y * 320] = penc;
+        //3x3 square:
+        for(int n=-1;n<=1;n++) {
+            for(int m=-1;m<=1;m++) {
+                int t = p.x + n + (p.y + m) * 320;
+                if(t>=0 && t<320*240) {
+                    pixels[t] = penc;
+                }
+            }
+        }
+        repaint(p.x-2, p.y-2, 4, 4);
     }
     @Override public void mousePressed(MouseEvent e) {
         startPoint = e.getPoint();
@@ -128,6 +110,30 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
     @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
     @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
+}
+
+class TextureFactory {
+    private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
+    private TextureFactory() { /* Singleton */ }
+    public static TexturePaint createCheckerTexture(int cs, Color color) {
+        int size = cs*cs;
+        BufferedImage img = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = img.createGraphics();
+        g2.setPaint(color);
+        g2.fillRect(0, 0, size, size);
+        for(int i=0; i*cs < size; i++) {
+            for(int j=0; j*cs < size; j++) {
+                if((i+j)%2 == 0) {
+                    g2.fillRect(i*cs, j*cs, cs, cs);
+                }
+            }
+        }
+        g2.dispose();
+        return new TexturePaint(img, new Rectangle(0,0,size,size));
+    }
+    public static TexturePaint createCheckerTexture(int cs) {
+        return createCheckerTexture(cs, DEFAULT_COLOR);
+    }
 }
 
 // class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
