@@ -8,11 +8,12 @@ import java.beans.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
     private final JComboBox combo = makeComboBox();
     private final JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
     public MainPanel() {
         super(new BorderLayout());
+        final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
+
         UIManager.put("ComboBox.font", combo.getFont());
         UIManager.addPropertyChangeListener(new PropertyChangeListener() {
             @Override public void propertyChange(PropertyChangeEvent e) {

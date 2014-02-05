@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
       " This lesson ends with a set of questions and exercises so you can test yourself on what you?ve learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea = new JTextArea();
     private final JComboBox<String> combo = new JComboBox<>();
 

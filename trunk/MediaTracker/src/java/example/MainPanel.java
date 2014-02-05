@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
     private static final int IMAGE_ID = 0;
     private final FileModel model = new FileModel();
     private final JTable table = new JTable(model);
-    private final DropTargetListener dtl = new DropTargetAdapter() {
+    private final transient DropTargetListener dtl = new DropTargetAdapter() {
         @Override public void dragOver(DropTargetDragEvent dtde) {
             if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY);

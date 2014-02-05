@@ -88,9 +88,10 @@ public class MainPanel extends JPanel {
 
 class DisableInputLayerUI extends LayerUI<JComponent> {
     private static final boolean DEBUG_POPUP_BLOCK = false;
-    private final MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
-    private final KeyAdapter dummyKeyListener = new KeyAdapter() { /* Dummy listener */ };
+    private final transient MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
+    private final transient KeyAdapter dummyKeyListener = new KeyAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
+
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         JLayer jlayer = (JLayer)c;
