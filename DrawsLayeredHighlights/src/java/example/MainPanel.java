@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
       " so you can test yourself on what you've learned.\n" +
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
-    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JCheckBox check    = new JCheckBox("DefaultHighlighter#setDrawsLayeredHighlights", true);
     private final JTextField field   = new JTextField("Swing");
     private final JTextArea textArea = new JTextArea(INITTXT);

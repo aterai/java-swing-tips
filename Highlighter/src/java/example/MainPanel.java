@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
       "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
 
     //    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(SystemColor.textHighlight);
-    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
 
     public MainPanel() {
         super(new BorderLayout());

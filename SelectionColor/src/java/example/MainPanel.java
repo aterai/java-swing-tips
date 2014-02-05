@@ -18,7 +18,7 @@ import javax.swing.text.html.*;
 class MainPanel extends JPanel {
     private static final String PATTERN = "[Ff]rame";
     private static final Color SELECTION_COLOR = new Color(0xC86464FF,true);
-    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));
     private final JEditorPane area = new JEditorPane();
     //private final JTextArea area = new JTextArea();
 
