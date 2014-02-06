@@ -83,25 +83,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        combo02.addMouseListener(new MouseAdapter() {
-            private ButtonModel getButtonModel(MouseEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
-                JButton b = (JButton)cb.getComponent(0);
-                return b.getModel();
-            }
-            @Override public void mouseEntered(MouseEvent e) {
-                getButtonModel(e).setRollover(true);
-            }
-            @Override public void mouseExited(MouseEvent e) {
-                getButtonModel(e).setRollover(false);
-            }
-            @Override public void mousePressed(MouseEvent e) {
-                getButtonModel(e).setPressed(true);
-            }
-            @Override public void mouseReleased(MouseEvent e) {
-                getButtonModel(e).setPressed(false);
-            }
-        });
+        combo02.addMouseListener(new ComboRolloverHandler());
 
         Object o = combo00.getAccessibleContext().getAccessibleChild(0);
         ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,FOREGROUND));
@@ -184,6 +166,26 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class ComboRolloverHandler extends MouseAdapter {
+    private static ButtonModel getButtonModel(MouseEvent e) {
+        JComboBox cb = (JComboBox)e.getSource();
+        JButton b = (JButton)cb.getComponent(0);
+        return b.getModel();
+    }
+    @Override public void mouseEntered(MouseEvent e) {
+        getButtonModel(e).setRollover(true);
+    }
+    @Override public void mouseExited(MouseEvent e) {
+        getButtonModel(e).setRollover(false);
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        getButtonModel(e).setPressed(true);
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        getButtonModel(e).setPressed(false);
     }
 }
 

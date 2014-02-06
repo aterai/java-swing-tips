@@ -61,6 +61,8 @@ class MainPanel extends JPanel {
                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
     public JComponent makeTranslucentScrollBar(JScrollPane scrollPane) {
+        scrollPane.getVerticalScrollBar().setUI(new TranslucentScrollBarUI());
+
         scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
         scrollPane.setComponentZOrder(scrollPane.getViewport(), 1);
         scrollPane.getVerticalScrollBar().setOpaque(false);
@@ -95,57 +97,6 @@ class MainPanel extends JPanel {
                 }
             }
         });
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-            private final Dimension d = new Dimension();
-            @Override protected JButton createDecreaseButton(int orientation) {
-                return new JButton() {
-                    @Override public Dimension getPreferredSize() {
-                        return d;
-                    }
-                };
-            }
-            @Override protected JButton createIncreaseButton(int orientation) {
-                return new JButton() {
-                    @Override public Dimension getPreferredSize() {
-                        return d;
-                    }
-                };
-            }
-            @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-//                 Graphics2D g2 = (Graphics2D)g.create();
-//                 g2.setPaint(new Color(100,100,100,100));
-//                 g2.fillRect(r.x,r.y,r.width-1,r.height-1);
-//                 g2.dispose();
-            }
-            private final Color defaultColor  = new Color(220,100,100,100);
-            private final Color draggingColor = new Color(200,100,100,100);
-            private final Color rolloverColor = new Color(255,120,100,100);
-            @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
-                Graphics2D g2 = (Graphics2D)g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                Color color = null;
-                JScrollBar sb = (JScrollBar)c;
-                if(!sb.isEnabled() || r.width>r.height) {
-                    return;
-                }else if(isDragging) {
-                    color = draggingColor;
-                }else if(isThumbRollover()) {
-                    color = rolloverColor;
-                }else{
-                    color = defaultColor;
-                }
-                g2.setPaint(color);
-                g2.fillRect(r.x,r.y,r.width-1,r.height-1);
-                g2.setPaint(Color.WHITE);
-                g2.drawRect(r.x,r.y,r.width-1,r.height-1);
-                g2.dispose();
-            }
-            @Override protected void setThumbBounds(int x, int y, int width, int height) {
-                super.setThumbBounds(x, y, width, height);
-                //scrollbar.repaint(x, 0, width, scrollbar.getHeight());
-                scrollbar.repaint();
-            }
-        });
         return scrollPane;
     }
     public static void main(String[] args) {
@@ -170,6 +121,59 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class TranslucentScrollBarUI extends BasicScrollBarUI {
+    private static final Color DEFAULT_COLOR  = new Color(220, 100, 100, 100);
+    private static final Color DRAGGING_COLOR = new Color(200, 100, 100, 100);
+    private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
+    private static final Dimension ZERO_SIZE = new Dimension();
+    @Override protected JButton createDecreaseButton(int orientation) {
+        return new JButton() {
+            @Override public Dimension getPreferredSize() {
+                return ZERO_SIZE;
+            }
+        };
+    }
+    @Override protected JButton createIncreaseButton(int orientation) {
+        return new JButton() {
+            @Override public Dimension getPreferredSize() {
+                return ZERO_SIZE;
+            }
+        };
+    }
+    @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
+        //Graphics2D g2 = (Graphics2D)g.create();
+        //g2.setPaint(new Color(100,100,100,100));
+        //g2.fillRect(r.x,r.y,r.width-1,r.height-1);
+        //g2.dispose();
+    }
+    @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        Color color = null;
+        JScrollBar sb = (JScrollBar)c;
+        if(!sb.isEnabled() || r.width>r.height) {
+            return;
+        }else if(isDragging) {
+            color = DRAGGING_COLOR;
+        }else if(isThumbRollover()) {
+            color = ROLLOVER_COLOR;
+        }else{
+            color = DEFAULT_COLOR;
+        }
+        g2.setPaint(color);
+        g2.fillRect(r.x,r.y,r.width-1,r.height-1);
+        g2.setPaint(Color.WHITE);
+        g2.drawRect(r.x,r.y,r.width-1,r.height-1);
+        g2.dispose();
+    }
+    @Override protected void setThumbBounds(int x, int y, int width, int height) {
+        super.setThumbBounds(x, y, width, height);
+        //scrollbar.repaint(x, 0, width, scrollbar.getHeight());
+        scrollbar.repaint();
+    }
+}
+
 // class DragScrollListener extends MouseAdapter {
 //     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 //     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);

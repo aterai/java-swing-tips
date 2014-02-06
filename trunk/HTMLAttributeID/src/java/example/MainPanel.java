@@ -16,6 +16,56 @@ public class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JEditorPane editorPane = new JEditorPane();
     private final JTextField field = new JTextField("3");
+    private final Action elementIDAction = new AbstractAction("Element#getElement(id)") {
+        @Override public void actionPerformed(ActionEvent e) {
+            textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
+            final String id = field.getText().trim();
+            HTMLDocument doc = (HTMLDocument)editorPane.getDocument();
+            Element element = doc.getElement(id);
+            if(element!=null) {
+                textArea.append(String.format("found: %s%n", element));
+                editorPane.requestFocusInWindow();
+                editorPane.select(element.getStartOffset(), element.getEndOffset());
+            }
+        }
+    };
+    private final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
+        @Override public void actionPerformed(ActionEvent e) {
+            textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
+            JToggleButton b = (JToggleButton)e.getSource();
+            if(b.isSelected()) {
+                for(Element root: editorPane.getDocument().getRootElements()) {
+                    traverseElementById(root);
+                }
+            }else{
+                Highlighter highlighter = editorPane.getHighlighter();
+                highlighter.removeAllHighlights();
+            }
+        }
+    };
+    private final Action parserAction = new AbstractAction("ParserDelegator") {
+        @Override public void actionPerformed(ActionEvent e) {
+            textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
+            final String id = field.getText().trim();
+            final String text = editorPane.getText();
+            ParserDelegator delegator = new ParserDelegator();
+            try{
+                delegator.parse(new StringReader(text), new HTMLEditorKit.ParserCallback() {
+                    @Override public void handleStartTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
+                        Object attrid = a.getAttribute(HTML.Attribute.ID);
+                        textArea.append(String.format("%s@id=%s%n", tag, attrid));
+                        if(id.equals(attrid)) {
+                            textArea.append(String.format("found: pos=%d%n", pos));
+                            int endoffs = text.indexOf('>', pos);
+                            textArea.append(String.format("%s%n", text.substring(pos, endoffs+1)));
+                        }
+                    }
+                }, Boolean.TRUE);
+            }catch(IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
 
     public MainPanel() {
         super(new BorderLayout());
@@ -31,56 +81,9 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2,2,5,5));
         p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         p.add(field);
-        p.add(new JButton(new AbstractAction("Element#getElement(id)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
-                final String id = field.getText().trim();
-                HTMLDocument doc = (HTMLDocument)editorPane.getDocument();
-                Element element = doc.getElement(id);
-                if(element!=null) {
-                    textArea.append(String.format("found: %s%n", element));
-                    editorPane.requestFocusInWindow();
-                    editorPane.select(element.getStartOffset(), element.getEndOffset());
-                }
-            }
-        }));
-        p.add(new JToggleButton(new AbstractAction("Highlight Element[@id]") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
-                JToggleButton b = (JToggleButton)e.getSource();
-                if(b.isSelected()) {
-                    for(Element root: editorPane.getDocument().getRootElements()) {
-                        traverseElementById(root);
-                    }
-                }else{
-                    Highlighter highlighter = editorPane.getHighlighter();
-                    highlighter.removeAllHighlights();
-                }
-            }
-        }));
-        p.add(new JButton(new AbstractAction("ParserDelegator") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
-                final String id = field.getText().trim();
-                final String text = editorPane.getText();
-                ParserDelegator delegator = new ParserDelegator();
-                try{
-                    delegator.parse(new StringReader(text), new HTMLEditorKit.ParserCallback() {
-                        @Override public void handleStartTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
-                            Object attrid = a.getAttribute(HTML.Attribute.ID);
-                            textArea.append(String.format("%s@id=%s%n", tag, attrid));
-                            if(id.equals(attrid)) {
-                                textArea.append(String.format("found: pos=%d%n", pos));
-                                int endoffs = text.indexOf('>', pos);
-                                textArea.append(String.format("%s%n", text.substring(pos, endoffs+1)));
-                            }
-                        }
-                    }, Boolean.TRUE);
-                }catch(IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }));
+        p.add(new JButton(elementIDAction));
+        p.add(new JToggleButton(highlightAction));
+        p.add(new JButton(parserAction));
         add(sp);
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));

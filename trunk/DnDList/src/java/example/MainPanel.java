@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(makeList()));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JList<String> makeList() {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
+class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     private static final Color LINE_COLOR = new Color(100,100,255);
     private static final String NAME = "test";
     private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
@@ -117,22 +117,11 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
             return;
         }
         try{
-            e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, (DragSourceListener)this);
+            e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, new ListDragSourceListener());
         }catch(InvalidDnDOperationException idoe) {
             idoe.printStackTrace();
         }
     }
-
-    // Interface: DragSourceListener
-    @Override public void dragEnter(DragSourceDragEvent e) {
-        e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-    }
-    @Override public void dragExit(DragSourceEvent e) {
-        e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-    }
-    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
-    @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
-    @Override public void dragDropEnd(DragSourceDropEvent e)       { /* not needed */ }
 
     // Interface: Transferable
     @Override public Object getTransferData(DataFlavor flavor) {
@@ -217,4 +206,16 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
             return isDataFlavorSupported(f[0]);
         }
     }
+}
+
+class ListDragSourceListener implements DragSourceListener {
+    @Override public void dragEnter(DragSourceDragEvent e) {
+        e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+    }
+    @Override public void dragExit(DragSourceEvent e) {
+        e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+    }
+    @Override public void dragOver(DragSourceDragEvent e)          { /* not needed */ }
+    @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
+    @Override public void dragDropEnd(DragSourceDropEvent e)       { /* not needed */ }
 }

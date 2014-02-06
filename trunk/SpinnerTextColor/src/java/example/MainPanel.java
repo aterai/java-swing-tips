@@ -39,40 +39,20 @@ public final class MainPanel extends JPanel {
     }
     private static JPanel makeColorSpinner(String[] items) {
         UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-        final JComboBox<String> comboBox = new JComboBox<>(items);
-        final ListCellRenderer<? super String> r = comboBox.getRenderer();
-        comboBox.setRenderer(new ListCellRenderer<String>() {
-            @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-                JComponent c = (JComponent)r.getListCellRendererComponent(list, value, index, false, false);
-                c.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
-                return c;
-            }
-        });
-        comboBox.setUI(new BasicComboBoxUI() {
-            @Override protected JButton createArrowButton() {
-                JButton button = new JButton(); //.createArrowButton();
-                button.setBorder(BorderFactory.createEmptyBorder());
-                button.setVisible(false);
-                return button;
-            }
-            @Override public void setPopupVisible( JComboBox c, boolean v ) {
-                System.out.println("setPopupVisible: "+v);
-                if(v) {
-                    popup.show();
-                }else{
-                    popup.hide();
-                }
-            }
-            @Override protected ComboPopup createPopup() {
-                return new BasicComboPopup(comboBox) {
-                    @Override public void show() {
-                        System.out.println("togglePopup");
-                        //super.show();
+        final JComboBox<String> comboBox = new JComboBox<String>(items) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setUI(new NoPopupComboBoxUI());
+                final ListCellRenderer<? super String> r = getRenderer();
+                setRenderer(new ListCellRenderer<String>() {
+                    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JComponent c = (JComponent)r.getListCellRendererComponent(list, value, index, false, false);
+                        c.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
+                        return c;
                     }
-                };
+                });
             }
-        });
-
+        };
         JButton nb = createArrowButton(SwingConstants.NORTH);
         nb.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -102,17 +82,20 @@ public final class MainPanel extends JPanel {
         return p;
     }
     private static JButton createArrowButton(int direction) {
-        JButton b = new BasicArrowButton(direction);
-        Border buttonBorder = UIManager.getBorder("Spinner.arrowButtonBorder");
-        if(buttonBorder instanceof UIResource) {
-            // Wrap the border to avoid having the UIResource be replaced by
-            // the ButtonUI. This is the opposite of using BorderUIResource.
-            b.setBorder(new CompoundBorder(buttonBorder, null));
-        }else{
-            b.setBorder(buttonBorder);
-        }
-        b.setInheritsPopupMenu(true);
-        return b;
+        return new BasicArrowButton(direction) {
+            @Override public void updateUI() {
+                super.updateUI();
+                Border buttonBorder = UIManager.getBorder("Spinner.arrowButtonBorder");
+                if(buttonBorder instanceof UIResource) {
+                    // Wrap the border to avoid having the UIResource be replaced by
+                    // the ButtonUI. This is the opposite of using BorderUIResource.
+                    setBorder(new CompoundBorder(buttonBorder, null));
+                }else{
+                    setBorder(buttonBorder);
+                }
+                setInheritsPopupMenu(true);
+            }
+        };
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -134,5 +117,30 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class NoPopupComboBoxUI extends BasicComboBoxUI {
+    @Override protected JButton createArrowButton() {
+        JButton button = new JButton(); //.createArrowButton();
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setVisible(false);
+        return button;
+    }
+    @Override public void setPopupVisible( JComboBox c, boolean v ) {
+        System.out.println("setPopupVisible: "+v);
+        if(v) {
+            popup.show();
+        }else{
+            popup.hide();
+        }
+    }
+    @Override protected ComboPopup createPopup() {
+        return new BasicComboPopup(comboBox) {
+            @Override public void show() {
+                System.out.println("togglePopup");
+                //super.show();
+            }
+        };
     }
 }

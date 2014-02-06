@@ -17,6 +17,8 @@ public class MainPanel extends JPanel {
     private final JButton runButton   = new JButton(new RunAction());
     private final JButton canButton   = new JButton(new CancelAction());
     private final JButton pauseButton = new JButton(new PauseAction());
+    private final JProgressBar bar1   = new JProgressBar();
+    private final JProgressBar bar2   = new JProgressBar();
     private Task worker;
 
     public MainPanel() {
@@ -39,86 +41,77 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         setPreferredSize(new Dimension(320, 240));
     }
-    class RunAction extends AbstractAction {
+    private class RunAction extends AbstractAction {
         public RunAction() {
             super("run");
         }
         @Override public void actionPerformed(ActionEvent evt) {
             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-            final JProgressBar bar1 = new JProgressBar(0, 100);
-            final JProgressBar bar2 = new JProgressBar(0, 100);
             runButton.setEnabled(false);
             canButton.setEnabled(true);
             pauseButton.setEnabled(true);
-            statusPanel.removeAll();
             statusPanel.add(bar1, BorderLayout.NORTH);
             statusPanel.add(bar2, BorderLayout.SOUTH);
             statusPanel.revalidate();
             //bar1.setIndeterminate(true);
 
-            worker = new Task() {
-                @Override protected void process(List<Progress> chunks) {
-                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-                    if(!isDisplayable()) {
-                        System.out.println("process: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    for(Progress s: chunks) {
-                        switch(s.component) {
-                          case TOTAL: bar1.setValue((Integer)s.value); break;
-                          case FILE:  bar2.setValue((Integer)s.value); break;
-                          case LOG:   area.append((String)s.value); break;
-                          case PAUSE: {
-                              if((Boolean)s.value) {
-                                  area.append("*");
-                              }else{
-                                  try{
-                                      Document doc = area.getDocument();
-                                      doc.remove(area.getDocument().getLength()-1, 1);
-                                  }catch(BadLocationException ex) {
-                                      ex.printStackTrace();
-                                  }
-                              }
-                              break;
-                          }
-                          default: throw new AssertionError("Unknown Progress");
-                        }
-                    }
-                }
-                @Override public void done() {
-                    if(!isDisplayable()) {
-                        System.out.println("done: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-                    runButton.requestFocusInWindow();
-                    runButton.setEnabled(true);
-                    canButton.setEnabled(false);
-                    pauseButton.setEnabled(false);
-                    statusPanel.remove(bar1);
-                    statusPanel.remove(bar2);
-                    statusPanel.revalidate();
-                    String text = null;
-                    if(isCancelled()) {
-                        text = "Cancelled";
-                    }else{
-                        try{
-                            text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
-                        }
-                    }
-                    area.append("\n"+text+"\n");
-                    area.setCaretPosition(area.getDocument().getLength());
-                }
-            };
+            worker = new ProgressTask();
             worker.execute();
         }
     }
-    class CancelAction extends AbstractAction {
+    private class ProgressTask extends Task {
+        @Override protected void process(List<Progress> chunks) {
+            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            if(!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            for(Progress s: chunks) {
+                switch(s.component) {
+                  case TOTAL: bar1.setValue((Integer)s.value); break;
+                  case FILE:  bar2.setValue((Integer)s.value); break;
+                  case LOG:   area.append((String)s.value);    break;
+                  case PAUSE: {
+                      if((Boolean)s.value) {
+                          area.append("*");
+                      }else{
+                          try{
+                              Document doc = area.getDocument();
+                              doc.remove(area.getDocument().getLength()-1, 1);
+                          }catch(BadLocationException ex) {
+                              ex.printStackTrace();
+                          }
+                      }
+                      break;
+                  }
+                  default: throw new AssertionError("Unknown Progress");
+                }
+            }
+        }
+        @Override public void done() {
+            if(!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+            runButton.requestFocusInWindow();
+            runButton.setEnabled(true);
+            canButton.setEnabled(false);
+            pauseButton.setEnabled(false);
+            statusPanel.removeAll();
+            statusPanel.revalidate();
+            try{
+                area.append(String.format("%n%s%n", isCancelled() ? "Cancelled" : get()));
+            }catch(InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
+                area.append(String.format("%n%s%n", "Exception"));
+            }
+            area.setCaretPosition(area.getDocument().getLength());
+        }
+    }
+    private class CancelAction extends AbstractAction {
         public CancelAction() {
             super("cancel");
         }
@@ -131,7 +124,7 @@ public class MainPanel extends JPanel {
             pauseButton.setEnabled(false);
         }
     }
-    class PauseAction extends AbstractAction {
+    private class PauseAction extends AbstractAction {
         public PauseAction() {
             super("pause");
         }

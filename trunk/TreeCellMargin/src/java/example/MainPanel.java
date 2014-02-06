@@ -65,23 +65,20 @@ public class MainPanel extends JPanel {
 
 class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final int MARGIN = 2; // < 3
-    private boolean drawsFocusBorderAroundIcon;
-    private final boolean drawDashedFocusIndicator;
-    //private boolean isDropCell;
-    private final boolean fillBackground;
-    private Color treeBGColor;
-    private Color focusBGColor;
+    protected final boolean drawsFocusBorderAroundIcon;
+    protected final boolean drawDashedFocusIndicator;
+    protected final boolean fillBackground;
+    protected Color treeBGColor;
+    protected Color focusBGColor;
     //protected boolean selected;
     //protected boolean hasFocus;
 
     public MyTreeCellRenderer() {
         super();
-        drawDashedFocusIndicator = true;
-        fillBackground = true;
-//         Border outside = getBorder();
-//         Border inside  = BorderFactory.createEmptyBorder(0,20,0,2);
-//         border = BorderFactory.createCompoundBorder(outside, inside);
-        setOpaque(false);
+        drawsFocusBorderAroundIcon = UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon");
+        drawDashedFocusIndicator   = UIManager.getBoolean("Tree.drawDashedFocusIndicator");
+        fillBackground             = UIManager.getBoolean("Tree.rendererFillBackground");
+        setOpaque(fillBackground);
     }
 
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -111,12 +108,7 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
         if(bColor != null && fillBackground) {
             imageOffset = getLabelStart();
             g.setColor(bColor);
-            if(getComponentOrientation().isLeftToRight()) {
-                g.fillRect(imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight());
-//             }else{
-//                 //XXX
-//                 g.fillRect(0, 0, getWidth() - imageOffset, getHeight());
-            }
+            g.fillRect(imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight());
         }
 
         //g.translate(MARGIN, 0);
@@ -132,14 +124,9 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
             }else if(imageOffset == -1) {
                 imageOffset = getLabelStart();
             }
-            if(getComponentOrientation().isLeftToRight()) {
-                g.setColor(bColor);
-                g.fillRect(imageOffset - MARGIN, 0, MARGIN + 1, getHeight());
-                paintFocus(g, imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight(), bColor);
-//             }else{
-//                 //XXX
-//                 paintFocus(g, 0, 0, getWidth() - imageOffset, getHeight(), bColor);
-            }
+            g.setColor(bColor);
+            g.fillRect(imageOffset - MARGIN, 0, MARGIN + 1, getHeight());
+            paintFocus(g, imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight(), bColor);
         }
     }
     private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor) {
@@ -173,13 +160,27 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     private final JLabel text = new JLabel();
     private final Border innerBorder = BorderFactory.createEmptyBorder(1,2,1,2);
     private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1,1,1,1), innerBorder);
-    private final Border hasFocusBorder;
+    private final Border compoundFocusBorder;
+    private final boolean isSynth;
 
     public CompoundTreeCellRenderer() {
         super();
-        Color bsColor = getBorderSelectionColor();
-        Color focusBGColor = new Color(~getBackgroundSelectionColor().getRGB());
-        hasFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBGColor, bsColor), innerBorder);
+
+        isSynth = getUI().getClass().getName().contains("Synth");
+        if(isSynth) {
+            compoundFocusBorder = emptyBorder;
+        }else{
+            Color bsColor = getBorderSelectionColor();
+
+            boolean drawDashedFocusIndicator = UIManager.getBoolean("Tree.drawDashedFocusIndicator");
+            Border b;
+            if(drawDashedFocusIndicator) {
+                b = new DotBorder(new Color(~getBackgroundSelectionColor().getRGB()), bsColor);
+            }else{
+                b = BorderFactory.createLineBorder(bsColor);
+            }
+            compoundFocusBorder = BorderFactory.createCompoundBorder(b, innerBorder);
+        }
 
         icon.setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
         text.setBorder(emptyBorder);
@@ -195,6 +196,11 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         if(selected) {
             bColor = getBackgroundSelectionColor();
             fColor = getTextSelectionColor();
+            if(isSynth) {
+                text.setOpaque(false);
+            }else{
+                text.setOpaque(true);
+            }
         }else{
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
@@ -204,10 +210,11 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
             if(fColor == null) {
                 fColor = getForeground();
             }
+            text.setOpaque(false);
         }
         text.setForeground(fColor);
         text.setBackground(bColor);
-        text.setBorder(hasFocus?hasFocusBorder:emptyBorder);
+        text.setBorder(hasFocus ? compoundFocusBorder : emptyBorder);
         text.setText(l.getText());
         icon.setIcon(l.getIcon());
 

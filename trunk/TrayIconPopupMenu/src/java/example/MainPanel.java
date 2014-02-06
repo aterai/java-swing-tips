@@ -4,6 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -15,12 +17,23 @@ class MainPanel extends JPanel {
     //private final JWindow dummy    = new JWindow(); //Ubuntu?
     private final JDialog dummy    = new JDialog();
     private final JFrame frame;
+
     public MainPanel(JFrame f) {
         super(new BorderLayout());
         this.frame = f;
         add(new JLabel("SystemTray.isSupported(): "+SystemTray.isSupported()), BorderLayout.NORTH);
-        add(createBox(popup));
-        setPreferredSize(new Dimension(320, 200));
+
+        ButtonGroup group = new ButtonGroup();
+        Box box = Box.createVerticalBox();
+        for(LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
+            JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.<JComponent>asList(popup)));
+            group.add(rb); box.add(rb);
+        }
+        box.add(Box.createVerticalGlue());
+        box.setBorder(BorderFactory.createEmptyBorder(5,25,5,25));
+
+        add(box);
+        setPreferredSize(new Dimension(320, 240));
         if(!SystemTray.isSupported()) {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;
@@ -33,23 +46,7 @@ class MainPanel extends JPanel {
         dummy.setUndecorated(true);
         //dummy.setAlwaysOnTop(true);
 
-        icon.addMouseListener(new MouseAdapter() {
-            private void showJPopupMenu(MouseEvent e) {
-                if(e.isPopupTrigger()) {
-                    Point p = adjustPopupLocation(popup, e.getX(), e.getY());
-                    dummy.setLocation(p);
-                    dummy.setVisible(true);
-                    //dummy.toFront();
-                    popup.show(dummy, 0, 0);
-                }
-            }
-            @Override public void mouseReleased(MouseEvent e) {
-                showJPopupMenu(e);
-            }
-            @Override public void mousePressed(MouseEvent e) {
-                showJPopupMenu(e);
-            }
-        });
+        icon.addMouseListener(new TrayIconPopupMenuHandler(popup, dummy));
 
         initPopupMenu();
         try{
@@ -91,6 +88,37 @@ class MainPanel extends JPanel {
         });
     }
 
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//             for(UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
+//               if("Nimbus".equals(laf.getName()))
+//                 UIManager.setLookAndFeel(laf.getClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel(frame));
+        frame.setResizable(false);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class TrayIconPopupMenuUtil {
+    private TrayIconPopupMenuUtil() { /* Singlton */ }
+
     // Try to find GraphicsConfiguration, that includes mouse pointer position
     private static GraphicsConfiguration getGraphicsConfiguration(Point p) {
         GraphicsConfiguration gc = null;
@@ -107,7 +135,7 @@ class MainPanel extends JPanel {
     }
 
     //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
-    private static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
+    public static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
         Point p = new Point(xposition, yposition);
         if(GraphicsEnvironment.isHeadless()) {
             return p;
@@ -151,46 +179,32 @@ class MainPanel extends JPanel {
         if(p.y < screenBounds.y) {
             p.y = screenBounds.y;
         }
-
         return p;
     }
-    public static Box createBox(JComponent... list) {
-        ButtonGroup group = new ButtonGroup();
-        Box box = Box.createVerticalBox();
-        for(LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
-            JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, list));
-            group.add(rb); box.add(rb);
-        }
-        box.add(Box.createVerticalGlue());
-        box.setBorder(BorderFactory.createEmptyBorder(5,25,5,25));
-        return box;
-    }
+}
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
+class TrayIconPopupMenuHandler extends MouseAdapter {
+    private final JPopupMenu popup;
+    private final Window dummy;
+    public TrayIconPopupMenuHandler(JPopupMenu popup, Window dummy) {
+        super();
+        this.popup = popup;
+        this.dummy = dummy;
     }
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//             for(UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
-//               if("Nimbus".equals(laf.getName()))
-//                 UIManager.setLookAndFeel(laf.getClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
+    private void showJPopupMenu(MouseEvent e) {
+        if(e.isPopupTrigger()) {
+            Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getX(), e.getY());
+            dummy.setLocation(p);
+            dummy.setVisible(true);
+            //dummy.toFront();
+            popup.show(dummy, 0, 0);
         }
-        JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
-        frame.setResizable(false);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        showJPopupMenu(e);
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        showJPopupMenu(e);
     }
 }
 
@@ -212,8 +226,8 @@ enum LookAndFeelEnum {
 
 class ChangeLookAndFeelAction extends AbstractAction {
     private final String lnf;
-    private final JComponent[] list;
-    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, JComponent... list) {
+    private final List<JComponent> list;
+    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<JComponent> list) {
         super(lnfe.toString());
         this.list = list;
         this.lnf = lnfe.getClassName();

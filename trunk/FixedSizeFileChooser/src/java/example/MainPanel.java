@@ -7,72 +7,18 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JPanel p1 = new JPanel();
-    private final JPanel p2 = new JPanel();
-    private final Action defaultFileChooserAction = new AbstractAction("Default") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            int retvalue = fileChooser.showOpenDialog(p1);
-            System.out.println(retvalue);
-        }
-    };
-    private final Action fixedSizeFileChooserAction = new AbstractAction("Resizable(false)") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser() {
-                @Override protected JDialog createDialog(Component parent) throws HeadlessException {
-                     JDialog dialog = super.createDialog(parent);
-                     dialog.setResizable(false);
-                     return dialog;
-                 }
-            };
-            int retvalue = fileChooser.showOpenDialog(p1);
-            System.out.println(retvalue);
-        }
-    };
-    private final Action minimumSizeFileChooserAction = new AbstractAction("MinimumSize(640,480)(JDK 6)") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser() {
-                @Override protected JDialog createDialog(Component parent) throws HeadlessException {
-                     JDialog dialog = super.createDialog(parent);
-                     dialog.setMinimumSize(new Dimension(640,480));
-                     return dialog;
-                 }
-            };
-            int retvalue = fileChooser.showOpenDialog(p2);
-            System.out.println(retvalue);
-        }
-    };
-    private final Action customSizeFileChooserAction = new AbstractAction("MinimumSize(640,480)") {
-        @Override public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser() {
-                @Override protected JDialog createDialog(Component parent) throws HeadlessException {
-                     final JDialog dialog = super.createDialog(parent);
-                     dialog.addComponentListener(new ComponentAdapter() {
-                         @Override public void componentResized(ComponentEvent e) {
-                             int mw = 640;
-                             int mh = 480;
-                             int fw = dialog.getSize().width;
-                             int fh = dialog.getSize().height;
-                             dialog.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
-                         }
-                     });
-                     return dialog;
-                 }
-            };
-            int retvalue = fileChooser.showOpenDialog(p2);
-            System.out.println(retvalue);
-        }
-    };
 
-    public MainPanel() {
+    private MainPanel() {
         super(new GridLayout(2,1));
+        JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("JFileChooser setResizable"));
-        p1.add(new JButton(defaultFileChooserAction));
-        p1.add(new JButton(fixedSizeFileChooserAction));
+        p1.add(new JButton(new DefaultFileChooserAction()));
+        p1.add(new JButton(new FixedSizeFileChooserAction()));
 
+        JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("JFileChooser setMinimumSize"));
-        p2.add(new JButton(minimumSizeFileChooserAction));
-        p2.add(new JButton(customSizeFileChooserAction));
+        p2.add(new JButton(new MinimumSizeFileChooserAction()));
+        //p2.add(new JButton(new CustomSizeFileChooserAction()));
         add(p1);
         add(p2);
         setPreferredSize(new Dimension(320, 240));
@@ -100,3 +46,77 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class DefaultFileChooserAction extends AbstractAction {
+    public DefaultFileChooserAction() {
+        super("Default");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        JFileChooser fileChooser = new JFileChooser();
+        JComponent c = (JComponent)e.getSource();
+        int retvalue = fileChooser.showOpenDialog(c.getRootPane());
+        System.out.println(retvalue);
+    }
+}
+
+class FixedSizeFileChooserAction extends AbstractAction {
+    public FixedSizeFileChooserAction() {
+        super("Resizable(false)");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        JFileChooser fileChooser = new JFileChooser() {
+            @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+                 JDialog dialog = super.createDialog(parent);
+                 dialog.setResizable(false);
+                 return dialog;
+             }
+        };
+        JComponent c = (JComponent)e.getSource();
+        int retvalue = fileChooser.showOpenDialog(c.getRootPane());
+        System.out.println(retvalue);
+    }
+}
+
+class MinimumSizeFileChooserAction extends AbstractAction {
+    public MinimumSizeFileChooserAction() {
+        super("MinimumSize(640, 480)");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        JFileChooser fileChooser = new JFileChooser() {
+            @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+                 JDialog dialog = super.createDialog(parent);
+                 dialog.setMinimumSize(new Dimension(640, 480));
+                 return dialog;
+             }
+        };
+        JComponent c = (JComponent)e.getSource();
+        int retvalue = fileChooser.showOpenDialog(c.getRootPane());
+        System.out.println(retvalue);
+    }
+}
+
+// class CustomSizeFileChooserAction extends AbstractAction {
+//     public CustomSizeFileChooserAction() {
+//         super("MinimumSize(640, 480)");
+//     }
+//     @Override public void actionPerformed(ActionEvent e) {
+//         JFileChooser fileChooser = new JFileChooser() {
+//             @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+//                  final JDialog dialog = super.createDialog(parent);
+//                  dialog.addComponentListener(new ComponentAdapter() {
+//                      @Override public void componentResized(ComponentEvent e) {
+//                          int mw = 640;
+//                          int mh = 480;
+//                          int fw = dialog.getSize().width;
+//                          int fh = dialog.getSize().height;
+//                          dialog.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
+//                      }
+//                  });
+//                  return dialog;
+//              }
+//         };
+//         JComponent c = (JComponent)e.getSource();
+//         int retvalue = fileChooser.showOpenDialog(c.getRootPane());
+//         System.out.println(retvalue);
+//     }
+// }
