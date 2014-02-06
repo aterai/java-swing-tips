@@ -16,44 +16,12 @@ public class MainPanel extends JPanel {
         //((AbstractDocument)tf.getDocument()).setDocumentFilter(new DocumentSizeFilter(5));
 
         ActionMap am = tf.getActionMap();
-        //Keymap keymap = tf.getKeymap();
-        //keymap.removeKeyStrokeBinding(bs);
 
-        String key = "delete-previous";
-        final Action deletePreviousAction = am.get(key);
-        am.put(key, new TextAction(DefaultEditorKit.deletePrevCharAction) {
-            //@see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
-            @Override public void actionPerformed(ActionEvent e) {
-                JTextComponent target = getTextComponent(e);
-                if(target != null && target.isEditable()) {
-                    Caret caret = target.getCaret();
-                    int dot = caret.getDot();
-                    int mark = caret.getMark();
-                    if(dot==0 && mark==0) {
-                        return;
-                    }
-                }
-                deletePreviousAction.actionPerformed(e);
-            }
-        });
-        key = "delete-next";
-        final Action deleteNextAction = am.get(key);
-        am.put(key, new TextAction(DefaultEditorKit.deleteNextCharAction) {
-            //@see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
-            @Override public void actionPerformed(ActionEvent e) {
-                JTextComponent target = getTextComponent(e);
-                if(target != null && target.isEditable()) {
-                    Document doc = target.getDocument();
-                    Caret caret = target.getCaret();
-                    int dot = caret.getDot();
-                    int mark = caret.getMark();
-                    if(dot==mark && doc.getLength()==dot) {
-                        return;
-                    }
-                }
-                deleteNextAction.actionPerformed(e);
-            }
-        });
+        String key = DefaultEditorKit.deletePrevCharAction; //"delete-previous";
+        am.put(key, new SilentDeleteTextAction(key, am.get(key)));
+
+        key = DefaultEditorKit.deleteNextCharAction; //"delete-next";
+        am.put(key, new SilentDeleteTextAction(key, am.get(key)));
 
         add(makeTitlePanel(new JTextField(), "Defalut"));
         add(makeTitlePanel(tf, "Override delete-previous, delete-next beep"));
@@ -90,6 +58,35 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class SilentDeleteTextAction extends TextAction {
+    private final Action deleteAction;
+    public SilentDeleteTextAction(String name, Action deleteAction) {
+        super(name);
+        this.deleteAction = deleteAction;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        JTextComponent target = getTextComponent(e);
+        if(target != null && target.isEditable()) {
+            Caret caret = target.getCaret();
+            int dot  = caret.getDot();
+            int mark = caret.getMark();
+            if(DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
+                //@see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
+                if(dot==0 && mark==0) {
+                    return;
+                }
+            }else{
+                //@see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
+                Document doc = target.getDocument();
+                if(dot==mark && doc.getLength()==dot) {
+                    return;
+                }
+            }
+        }
+        deleteAction.actionPerformed(e);
     }
 }
 

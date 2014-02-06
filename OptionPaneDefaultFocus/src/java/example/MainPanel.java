@@ -17,26 +17,8 @@ public class MainPanel extends JPanel {
 
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
-        textField3.addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                final JComponent c = (JComponent)e.getComponent();
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && c.isShowing()) {
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override public void run() {
-                            c.requestFocusInWindow();
-                        }
-                    });
-                }
-            }
-        });
-        // https://forums.oracle.com/thread/1354218 Input focus
-        textField4.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(AncestorEvent e) {
-                e.getComponent().requestFocusInWindow();
-            }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
-            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
-        });
+        textField3.addHierarchyListener(new FocusHierarchyListener());
+        textField4.addAncestorListener(new FocusAncestorListener());
 
         JPanel p = new JPanel(new GridLayout(2,2,5,5));
         p.add(makePanel("Default",           frame, textField1));
@@ -107,4 +89,26 @@ public class MainPanel extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+}
+
+class FocusHierarchyListener implements HierarchyListener {
+    @Override public void hierarchyChanged(HierarchyEvent e) {
+        final JComponent c = (JComponent)e.getComponent();
+        if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && c.isShowing()) {
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    c.requestFocusInWindow();
+                }
+            });
+        }
+    }
+}
+
+// https://forums.oracle.com/thread/1354218 Input focus
+class FocusAncestorListener implements AncestorListener {
+    @Override public void ancestorAdded(AncestorEvent e) {
+        e.getComponent().requestFocusInWindow();
+    }
+    @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+    @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
 }

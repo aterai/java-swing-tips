@@ -98,13 +98,13 @@ public class MainPanel extends JPanel {
 }
 
 class GradientPalletSliderUI extends MetalSliderUI {
-    private static final int[] GRADIENT_PALLET = makeGradientPallet();
+    private static final int[] GRADIENT_PALLET = GradientPalletFactory.makeGradientPallet();
     protected Color controlDarkShadow = new Color(100, 100, 100); //MetalLookAndFeel.getControlDarkShadow();
     protected Color controlHighlight  = new Color(200, 255, 200); //MetalLookAndFeel.getControlHighlight();
     protected Color controlShadow     = new Color(0, 100, 0); //MetalLookAndFeel.getControlShadow();
     @Override public void paintTrack(Graphics g) {
         //Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
-        boolean leftToRight     = true; //MetalUtils.isLeftToRight(slider);
+        //boolean leftToRight = MetalUtils.isLeftToRight(slider);
 
         g.translate(trackRect.x, trackRect.y);
 
@@ -117,13 +117,13 @@ class GradientPalletSliderUI extends MetalSliderUI {
             trackTop = trackBottom - getTrackWidth() + 1;
             trackRight = trackRect.width - 1;
         }else{
-            if(leftToRight) {
+            //if(leftToRight) {
                 trackLeft = trackRect.width - getThumbOverhang() - getTrackWidth();
                 trackRight = trackRect.width - getThumbOverhang() - 1;
-            }else{
-                trackLeft = getThumbOverhang();
-                trackRight = getThumbOverhang() + getTrackWidth() - 1;
-            }
+            //}else{
+            //    trackLeft = getThumbOverhang();
+            //    trackRight = getThumbOverhang() + getTrackWidth() - 1;
+            //}
             trackBottom = trackRect.height - 1;
         }
 
@@ -167,38 +167,54 @@ class GradientPalletSliderUI extends MetalSliderUI {
         if(slider.getOrientation() == JSlider.HORIZONTAL) {
             middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-            fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
-            fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
-
-            if(drawInverted()) {
-                fillLeft = middleOfThumb;
-                fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-            }else{
-                fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
-                fillRight = middleOfThumb;
-            }
+            fillTop    = trackTop + 1;
+            fillBottom = trackBottom - 2;
+            fillLeft   = trackLeft + 1;
+            fillRight  = middleOfThumb - 2;
         }else{
             middleOfThumb = thumbRect.y + thumbRect.height / 2;
             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-            fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
-            fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-
-            if(drawInverted()) {
-                fillTop = slider.isEnabled() ? trackTop  + 1 : trackTop;
-                fillBottom = middleOfThumb;
-            }else{
-                fillTop = middleOfThumb;
-                fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
-            }
+            fillLeft   = trackLeft;
+            fillRight  = trackRight - 1;
+            fillTop    = middleOfThumb;
+            fillBottom = trackBottom - 1;
         }
 
+//         if(slider.getOrientation() == JSlider.HORIZONTAL) {
+//             middleOfThumb = thumbRect.x + thumbRect.width / 2;
+//             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
+//             fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
+//             fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
+//
+//             if(drawInverted()) {
+//                 fillLeft = middleOfThumb;
+//                 fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+//             }else{
+//                 fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
+//                 fillRight = middleOfThumb;
+//             }
+//         }else{
+//             middleOfThumb = thumbRect.y + thumbRect.height / 2;
+//             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
+//             fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
+//             fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+//
+//             if(drawInverted()) {
+//                 fillTop = slider.isEnabled() ? trackTop  + 1 : trackTop;
+//                 fillBottom = middleOfThumb;
+//             }else{
+//                 fillTop = middleOfThumb;
+//                 fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
+//             }
+//         }
+
         if(slider.isEnabled()) {
-            g.setColor(slider.getBackground());
-            g.drawLine(fillLeft, fillTop, fillRight, fillTop);
-            g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
+//             g.setColor(slider.getBackground());
+//             g.drawLine(fillLeft, fillTop, fillRight, fillTop);
+//             g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
             float x = (fillRight - fillLeft) / (float)(trackRight - trackLeft);
-            g.setColor(getColorFromPallet(GRADIENT_PALLET, x));
+            g.setColor(GradientPalletFactory.getColorFromPallet(GRADIENT_PALLET, x));
             g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
         }else{
             g.setColor(controlShadow);
@@ -214,8 +230,11 @@ class GradientPalletSliderUI extends MetalSliderUI {
             yy--;
         }
     }
+}
 
-    private static int[] makeGradientPallet() {
+class GradientPalletFactory {
+    private GradientPalletFactory() { /* Singleton */ }
+    public static int[] makeGradientPallet() {
         BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2  = image.createGraphics();
         Point2D start  = new Point2D.Float(0f, 0f);
@@ -236,7 +255,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
         }
         return pallet;
     }
-    private static Color getColorFromPallet(int[] pallet, float x) {
+    public static Color getColorFromPallet(int[] pallet, float x) {
 //         if(x < 0.0 || x > 1.0) {
 //             throw new IllegalArgumentException("Parameter outside of expected range");
 //         }

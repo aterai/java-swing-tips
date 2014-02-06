@@ -98,11 +98,6 @@ public class MainPanel extends JPanel {
             }
             Collections.sort(l);
             //Collections.<ComparableTab>sort(l);
-//             Collections.sort(l, new Comparator<ComparableTab>() {
-//                 @Override public int compare(ComparableTab o1, ComparableTab o2) {
-//                     return o1.compareTo(o2);
-//                 }
-//             });
             return l;
         }
         private void setSortedTab(JTabbedPane tabbedPane, List<ComparableTab> list) {
@@ -112,27 +107,6 @@ public class MainPanel extends JPanel {
                 tabbedPane.addTab(c.title, c.comp);
             }
             tabbedPane.setVisible(true);
-        }
-    }
-    static class ComparableTab implements Comparable<ComparableTab> {
-        private final String title;
-        private final Component comp;
-        public ComparableTab(String title, Component comp) {
-            this.title = title;
-            this.comp  = comp;
-        }
-        @Override public int compareTo(ComparableTab o) {
-            return title.compareTo(o.title);
-        }
-        @Override public boolean equals(Object o) {
-            if(o instanceof ComparableTab) {
-                return compareTo((ComparableTab)o)==0;
-            }else{
-                return false;
-            }
-        }
-        @Override public int hashCode() {
-            return title.hashCode()+comp.hashCode();
         }
     }
 
@@ -156,6 +130,28 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class ComparableTab implements Comparable<ComparableTab> {
+    public final String title;
+    public final Component comp;
+    public ComparableTab(String title, Component comp) {
+        this.title = title;
+        this.comp  = comp;
+    }
+    @Override public int compareTo(ComparableTab o) {
+        return title.compareTo(o.title);
+    }
+    @Override public boolean equals(Object o) {
+        if(o instanceof ComparableTab) {
+            return compareTo((ComparableTab)o)==0;
+        }else{
+            return false;
+        }
+    }
+    @Override public int hashCode() {
+        return title.hashCode()+comp.hashCode();
     }
 }
 

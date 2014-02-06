@@ -147,34 +147,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
         sicon = new ImageIcon(createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
         textLabel = new MyLabel(new Color(~table.getSelectionBackground().getRGB()));
-        iconLabel = new JLabel(nicon) {
-            //Overridden for performance reasons. ---->
-            @Override public boolean isOpaque() {
-                //Color back = getBackground();
-                //Component p = getParent();
-                //if(p != null) {
-                //    p = p.getParent();
-                //} // p should now be the JTable.
-                //boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
-                return false; //!colorMatch && super.isOpaque();
-            }
-            @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-                //String literal pool
-                //if(propertyName == "labelFor" || ((propertyName=="icon" || propertyName == "foreground") && oldValue != newValue)) {
-                if("labelFor".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
-                    //System.out.println(propertyName);
-                    super.firePropertyChange(propertyName, oldValue, newValue);
-                }
-            }
-            @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-            @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-            @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-            @Override public void repaint()    { /* Overridden for performance reasons. */ }
-            @Override public void invalidate() { /* Overridden for performance reasons. */ }
-            @Override public void validate()   { /* Overridden for performance reasons. */ }
-            @Override public void revalidate() { /* Overridden for performance reasons. */ }
-            //<---- Overridden for performance reasons.
-        };
+        iconLabel = new TestRendererLabel(nicon);
         iconLabel.setBorder(BorderFactory.createEmptyBorder());
         table.setRowHeight(textLabel.getPreferredSize().height);
         removeAll();
@@ -219,6 +192,38 @@ class TestRenderer extends JPanel implements TableCellRenderer {
     @Override public void revalidate() { /* Overridden for performance reasons. */ }
     //@Override public void invalidate() { /* Overridden for performance reasons. */ }
     //@Override public void validate()   { /* Overridden for performance reasons. */ }
+    //<---- Overridden for performance reasons.
+}
+
+class TestRendererLabel extends JLabel {
+    public TestRendererLabel(Icon icon) {
+        super(icon);
+    }
+    //Overridden for performance reasons. ---->
+    @Override public boolean isOpaque() {
+        //Color back = getBackground();
+        //Component p = getParent();
+        //if(p != null) {
+        //    p = p.getParent();
+        //} // p should now be the JTable.
+        //boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        return false; //!colorMatch && super.isOpaque();
+    }
+    @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        //String literal pool
+        //if(propertyName == "labelFor" || ((propertyName=="icon" || propertyName == "foreground") && oldValue != newValue)) {
+        if("labelFor".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
+            //System.out.println(propertyName);
+            super.firePropertyChange(propertyName, oldValue, newValue);
+        }
+    }
+    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+    @Override public void repaint()    { /* Overridden for performance reasons. */ }
+    @Override public void invalidate() { /* Overridden for performance reasons. */ }
+    @Override public void validate()   { /* Overridden for performance reasons. */ }
+    @Override public void revalidate() { /* Overridden for performance reasons. */ }
     //<---- Overridden for performance reasons.
 }
 

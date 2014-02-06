@@ -11,8 +11,8 @@ import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
     private static final boolean DEBUG = true;
-    private final DefaultMutableTreeNode root = makeTreeRoot();
-    private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot()));
+    private final DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
+    private final JTree tree = new JTree(new DefaultTreeModel(TreeUtil.makeTreeRoot()));
     private final TreeNodeComparator tnc = new TreeNodeComparator();
     private int compareCount;
     private int swapCount;
@@ -24,76 +24,63 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
                     compareCount = swapCount = 0;
-                    DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
+                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree0(r);
                     System.out.format("0: bubble sort          - compare: %3d, swap: %3d%n", compareCount, swapCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
                 }
-                expandAll(tree);
+                TreeUtil.expandAll(tree);
             }
         }));
         box.add(new JCheckBox(new AbstractAction("1: bubble sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
                     compareCount = swapCount = 0;
-                    DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
+                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree1(r);
                     System.out.format("1: bubble sort          - compare: %3d, swap: %3d%n", compareCount, swapCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
                 }
-                expandAll(tree);
+                TreeUtil.expandAll(tree);
             }
         }));
         box.add(new JCheckBox(new AbstractAction("2: selection sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
                     compareCount = swapCount = 0;
-                    DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
+                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree2(r);
                     System.out.format("2: selection sort       - compare: %3d, swap: %3d%n", compareCount, swapCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
                 }
-                expandAll(tree);
+                TreeUtil.expandAll(tree);
             }
         }));
         box.add(new JCheckBox(new AbstractAction("3: iterative merge sort") {
             @Override public void actionPerformed(ActionEvent e) {
                 if(((JCheckBox)e.getSource()).isSelected()) {
                     compareCount = swapCount = 0;
-                    DefaultMutableTreeNode r = deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
+                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                     sortTree3(r);
                     System.out.format("3: iterative merge sort - compare: %3d, swap: ---%n", compareCount);
                     tree.setModel(new DefaultTreeModel(r));
                 }else{
                     tree.setModel(new DefaultTreeModel(root));
                 }
-                expandAll(tree);
+                TreeUtil.expandAll(tree);
             }
         }));
 
         add(box, BorderLayout.SOUTH);
         add(makeTitledPanel("Sort JTree", tree));
-        expandAll(tree);
+        TreeUtil.expandAll(tree);
         setPreferredSize(new Dimension(320, 240));
-    }
-
-    private static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
-        for(int i=0; i<src.getChildCount(); i++) {
-            DefaultMutableTreeNode node  = (DefaultMutableTreeNode)src.getChildAt(i);
-            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-            //DefaultMutableTreeNode clone = (DefaultMutableTreeNode)node.clone();
-            tgt.add(clone);
-            if(!node.isLeaf()) {
-                deepCopyTree(node, clone);
-            }
-        }
-        return tgt;
     }
 
     private JComponent makeTitledPanel(String title, JTree tree) {
@@ -226,7 +213,45 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private static DefaultMutableTreeNode makeTreeRoot() {
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class TreeUtil {
+    private TreeUtil() { /* Singlton */ }
+    public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
+        for(int i=0; i<src.getChildCount(); i++) {
+            DefaultMutableTreeNode node  = (DefaultMutableTreeNode)src.getChildAt(i);
+            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+            //DefaultMutableTreeNode clone = (DefaultMutableTreeNode)node.clone();
+            tgt.add(clone);
+            if(!node.isLeaf()) {
+                deepCopyTree(node, clone);
+            }
+        }
+        return tgt;
+    }
+
+    public static DefaultMutableTreeNode makeTreeRoot() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 001");
         DefaultMutableTreeNode set2 = new DefaultMutableTreeNode("Set 002");
@@ -259,32 +284,12 @@ public class MainPanel extends JPanel {
         root.add(new DefaultMutableTreeNode("bbbbbbbbbbbb"));
         return root;
     }
-    private void expandAll(JTree tree) {
+
+    public static void expandAll(JTree tree) {
         int row = 0;
         while(row<tree.getRowCount()) {
             tree.expandRow(row);
             row++;
         }
-    }
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }

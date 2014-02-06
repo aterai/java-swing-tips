@@ -7,17 +7,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final String COPYRIGHT = "Copyright(C) 2006";
-    private static final String APP_NAME  = "@title@";
-    private static final String VERSION   = "0.0";
-    private static final int    RELEASE   = 1;
-
     private final BarFactory barFactory;
-    private final JFrame frame;
 
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        this.frame = frame;
         barFactory = new BarFactory("resources.Main");
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
@@ -62,47 +55,6 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private static class SaveAsAction extends AbstractAction {
-        public SaveAsAction() {
-            super("saveAs");
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            // dummy
-        }
-    }
-
-    private class ExitAction extends AbstractAction {
-        public ExitAction() {
-            super("exit");
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            //exitActionPerformed();
-            //saveLocation(prefs);
-            frame.dispose();
-            //System.exit(0);
-        }
-    }
-
-    protected static class HelpAction extends AbstractAction {
-        public HelpAction() {
-            super("help");
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            // dummy
-        }
-    }
-
-    protected class VersionAction extends AbstractAction {
-        public VersionAction() {
-            super("version");
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
-            JOptionPane.showMessageDialog(MainPanel.this, obj, APP_NAME,
-                                          JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -119,9 +71,57 @@ public class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class SaveAsAction extends AbstractAction {
+    public SaveAsAction() {
+        super("saveAs");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        // dummy
+    }
+}
+
+class ExitAction extends AbstractAction {
+    public ExitAction() {
+        super("exit");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        //exitActionPerformed();
+        //saveLocation(prefs);
+        Window w = SwingUtilities.getWindowAncestor((Component)e.getSource());
+        if(w!=null) {
+            w.dispose();
+        }
+        //System.exit(0);
+    }
+}
+
+class HelpAction extends AbstractAction {
+    public HelpAction() {
+        super("help");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        // dummy
+    }
+}
+
+class VersionAction extends AbstractAction {
+    public static final String APP_NAME  = "@title@";
+    private static final String COPYRIGHT = "Copyright(C) 2006";
+    private static final String VERSION   = "0.0";
+    private static final int    RELEASE   = 1;
+    public VersionAction() {
+        super("version");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        JComponent c = (JComponent)e.getSource();
+        Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
+        JOptionPane.showMessageDialog(c.getRootPane(), obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
     }
 }

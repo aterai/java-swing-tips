@@ -10,23 +10,45 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private static final String PREFIX = "xxx_";
     private final Preferences prefs;
-    private final Dimension dim = new Dimension(320, 200);
+    private final Dimension dim = new Dimension(320, 240);
     private final Point pos = new Point();
-    private final JButton exitButton = new JButton();
-    private final JButton clearButton = new JButton();
+    private final JButton exitButton = new JButton(new AbstractAction("exit") {
+        @Override public void actionPerformed(ActionEvent e) {
+            saveLocation();
+            Window window = SwingUtilities.getWindowAncestor((Component)e.getSource());
+            if(window!=null) {
+                window.dispose();
+            }
+        }
+    });
+    private final JButton clearButton = new JButton(new AbstractAction("Preferences#clear() and JFrame#dispose()") {
+        @Override public void actionPerformed(ActionEvent e) {
+            try{
+                prefs.clear();
+                prefs.flush();
+            }catch(BackingStoreException ex) {
+                ex.printStackTrace();
+            }
+            Window window = SwingUtilities.getWindowAncestor((Component)e.getSource());
+            if(window!=null) {
+                window.dispose();
+            }
+        }
+    });
 
-    public MainPanel(final JFrame frame) {
+    public MainPanel(JFrame frame) {
         super(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         this.prefs = Preferences.userNodeForPackage(getClass());
         frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
                 saveLocation();
-                frame.dispose();
+                e.getWindow().dispose();
             }
         });
         frame.addComponentListener(new ComponentAdapter() {
             @Override public void componentMoved(ComponentEvent e) {
+                JFrame frame = (JFrame)e.getComponent();
                 if(frame.getExtendedState()==JFrame.NORMAL) {
                     Point pt = frame.getLocationOnScreen();
                     if(pt.x<0 || pt.y<0) { return; }
@@ -38,26 +60,10 @@ public class MainPanel extends JPanel {
                 }
             }
             @Override public void componentResized(ComponentEvent e) {
+                JFrame frame = (JFrame)e.getComponent();
                 if(frame.getExtendedState()==JFrame.NORMAL) {
                     dim.setSize(getSize());
                 }
-            }
-        });
-        exitButton.setAction(new AbstractAction("exit") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                saveLocation();
-                frame.dispose();
-            }
-        });
-        clearButton.setAction(new AbstractAction("Preferences#clear() and JFrame#dispose()") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                try{
-                    prefs.clear();
-                    prefs.flush();
-                }catch(BackingStoreException e) {
-                    e.printStackTrace();
-                }
-                frame.dispose();
             }
         });
 

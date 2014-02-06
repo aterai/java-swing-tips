@@ -8,13 +8,35 @@ import java.util.Date;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JCheckBox vcheck = new JCheckBox("setVisible", true);
-    private final JCheckBox echeck = new JCheckBox("setEnabled", true);
-    private final JCheckBox tcheck = new JCheckBox("start", true);
-    private final JButton button   = new JButton("JButton JButton");
     private final Timer timer;
+    private final JButton button   = new JButton("JButton JButton");
+    private final JCheckBox vcheck = new JCheckBox(new AbstractAction("setVisible") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JCheckBox c = (JCheckBox)e.getSource();
+            button.setVisible(c.isSelected());
+        }
+    });
+    private final JCheckBox echeck = new JCheckBox(new AbstractAction("setEnabled") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JCheckBox c = (JCheckBox)e.getSource();
+            button.setEnabled(c.isSelected());
+        }
+    });
+    private final JCheckBox tcheck = new JCheckBox(new AbstractAction("start") {
+        @Override public void actionPerformed(ActionEvent e) {
+            if(tcheck.isSelected()) {
+                timer.start();
+            }else{
+                timer.stop();
+            }
+        }
+    });
     public MainPanel() {
         super(new BorderLayout());
+        vcheck.setSelected(true);
+        echeck.setSelected(true);
+        tcheck.setSelected(true);
+
         JTabbedPane tab = new JTabbedPane();
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         button.addHierarchyListener(new HierarchyListener() {
@@ -35,26 +57,6 @@ public class MainPanel extends JPanel {
         tab.addTab("Main",   new JScrollPane(panel));
         tab.addTab("JTree",  new JScrollPane(new JTree()));
         tab.addTab("JLabel", new JLabel("Test"));
-
-        vcheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                button.setVisible(vcheck.isSelected());
-            }
-        });
-        echeck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                button.setEnabled(echeck.isSelected());
-            }
-        });
-        tcheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if(tcheck.isSelected()) {
-                    timer.start();
-                }else{
-                    timer.stop();
-                }
-            }
-        });
 
         JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p1.add(new JLabel("JButton:")); p1.add(vcheck); p1.add(echeck);

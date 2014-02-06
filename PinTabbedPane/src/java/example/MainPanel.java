@@ -94,8 +94,21 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             String tip    = t.getToolTipTextAt(idx);
             boolean flg   = t.isEnabledAt(idx);
 
+            int i = searchNewSelectedIndex(t, idx, check.isSelected());
+            t.remove(idx);
+            t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
+            t.setTabComponentAt(i, tab);
+            t.setEnabledAt(i, flg);
+            if(flg) {
+                t.setSelectedIndex(i);
+            }
+
+            //JComponent c = (JComponent)t.getTabComponentAt(idx);
+            //c.revalidate();
+        }
+        private int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
             int i;
-            if(check.isSelected()) {
+            if(dir) {
                 for(i=0;i<idx;i++) {
                     String s = t.getTitleAt(i);
                     if(s==null || s.isEmpty()) {
@@ -114,16 +127,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
                     }
                 }
             }
-            t.remove(idx);
-            t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
-            t.setTabComponentAt(i, tab);
-            t.setEnabledAt(i, flg);
-            if(flg) {
-                t.setSelectedIndex(i);
-            }
-
-            //JComponent c = (JComponent)t.getTabComponentAt(idx);
-            //c.revalidate();
+            return i;
         }
     });
 //     private final Action newTabAction = new AbstractAction("new tab") {
@@ -169,4 +173,4 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         pinTabMenuItem.setSelected(isPinTab(t,x,y));
         super.show(c, x, y);
     }
-};
+}

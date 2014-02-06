@@ -159,13 +159,59 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     private static final int SPEED = 4;
     private static final int DELAY = 10;
     private static final double D = 0.8;
-    private final Cursor dc;
-    private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Timer inside;
-    private final Timer outside;
     private final JComponent label;
     private final Point startPt = new Point();
     private final Point delta   = new Point();
+    private final Cursor dc;
+    private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    private final Timer inside = new Timer(DELAY, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            JViewport vport = (JViewport)label.getParent();
+            Point vp = vport.getViewPosition();
+            //System.out.format("s: %s, %s%n", delta, vp);
+            vp.translate(-delta.x, -delta.y);
+            vport.setViewPosition(vp);
+            if(Math.abs(delta.x)>0 || Math.abs(delta.y)>0) {
+                delta.setLocation((int)(delta.x*D), (int)(delta.y*D));
+                //Outside
+                if(vp.x<0 || vp.x+vport.getWidth()-label.getWidth()>0  ) {
+                    delta.x = (int)(delta.x*D);
+                }
+                if(vp.y<0 || vp.y+vport.getHeight()-label.getHeight()>0) {
+                    delta.y = (int)(delta.y*D);
+                }
+            }else{
+                inside.stop();
+                if(!isInside(vport, label)) {
+                    outside.start();
+                }
+            }
+        }
+    });
+    private final Timer outside = new Timer(DELAY, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            JViewport vport = (JViewport)label.getParent();
+            Point vp = vport.getViewPosition();
+            //System.out.format("r: %s%n", vp);
+            if(vp.x<0) {
+                vp.x = (int)(vp.x*D);
+            }
+            if(vp.y<0) {
+                vp.y = (int)(vp.y*D);
+            }
+            if(vp.x+vport.getWidth()-label.getWidth()>0) {
+                vp.x = (int) (vp.x - (vp.x+vport.getWidth()-label.getWidth())*(1.0-D));
+            }
+            if(vp.y+vport.getHeight()>label.getHeight()) {
+                vp.y = (int) (vp.y - (vp.y+vport.getHeight()-label.getHeight())*(1.0-D));
+            }
+            vport.setViewPosition(vp);
+            if(isInside(vport, label)) {
+                outside.stop();
+            }
+        }
+    });
+
     private static boolean isInside(JViewport vport, JComponent comp) {
         Point vp = vport.getViewPosition();
         return vp.x>=0 && vp.x+vport.getWidth() -comp.getWidth() <=0 &&
@@ -175,42 +221,6 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
         super();
         this.label = comp;
         this.dc = comp.getCursor();
-        this.inside = new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JViewport vport = (JViewport)label.getParent();
-                Point vp = vport.getViewPosition();
-                //System.out.format("s: %s, %s%n", delta, vp);
-                vp.translate(-delta.x, -delta.y);
-                vport.setViewPosition(vp);
-
-                if(Math.abs(delta.x)>0 || Math.abs(delta.y)>0) {
-                    delta.setLocation((int)(delta.x*D), (int)(delta.y*D));
-                    //Outside
-                    if(vp.x<0 || vp.x+vport.getWidth()-label.getWidth()>0  ) { delta.x = (int)(delta.x*D); }
-                    if(vp.y<0 || vp.y+vport.getHeight()-label.getHeight()>0) { delta.y = (int)(delta.y*D); }
-                }else{
-                    inside.stop();
-                    if(!isInside(vport, label)) { outside.start(); }
-                }
-            }
-        });
-        this.outside = new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JViewport vport = (JViewport)label.getParent();
-                Point vp = vport.getViewPosition();
-                //System.out.format("r: %s%n", vp);
-                if(vp.x<0) { vp.x = (int)(vp.x*D); }
-                if(vp.y<0) { vp.y = (int)(vp.y*D); }
-                if(vp.x+vport.getWidth()-label.getWidth()>0) {
-                    vp.x = (int) (vp.x - (vp.x+vport.getWidth()-label.getWidth())*(1.0-D));
-                }
-                if(vp.y+vport.getHeight()>label.getHeight()) {
-                    vp.y = (int) (vp.y - (vp.y+vport.getHeight()-label.getHeight())*(1.0-D));
-                }
-                vport.setViewPosition(vp);
-                if(isInside(vport, label)) { outside.stop(); }
-            }
-        });
     }
     @Override public void mousePressed(MouseEvent e) {
         ((JComponent)e.getSource()).setCursor(hc);
