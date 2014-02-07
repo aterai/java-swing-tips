@@ -19,6 +19,9 @@
     <exclude name="AtLeastOneConstructor" />
     <exclude name="AvoidUsingShortType" />
   </rule>
+  <rule ref="rulesets/java/coupling.xml">
+    <exclude name="LawOfDemeter" />
+  </rule>
   <rule ref="rulesets/java/design.xml">
     <exclude name="AvoidSynchronizedAtMethodLevel" />
     <exclude name="AvoidDeeplyNestedIfStmts" />
@@ -53,7 +56,6 @@
 
 <!-- 
   <rule ref="rulesets/java/comments.xml" />
-  <rule ref="rulesets/java/coupling.xml" />
   <rule ref="rulesets/java/j2ee.xml" />
   <rule ref="rulesets/java/javabeans.xml" />
   <rule ref="rulesets/java/junit.xml" />
