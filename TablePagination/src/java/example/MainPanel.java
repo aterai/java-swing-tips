@@ -11,7 +11,6 @@ import javax.swing.table.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private static final Color EVEN_COLOR = new Color(240, 255, 250);
     private static final LinkViewRadioButtonUI LINKVIEW_RADIOBUTTON_UI = new LinkViewRadioButtonUI();
     private static final int LR_PAGE_SIZE = 5;
     private final Box box = Box.createHorizontalBox();
@@ -22,19 +21,8 @@ public class MainPanel extends JPanel {
         }
     };
     private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-    private final JTable table = new JTable(model) {
-        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-            Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
-                c.setForeground(getSelectionForeground());
-                c.setBackground(getSelectionBackground());
-            }else{
-                c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
-            }
-            return c;
-        }
-    };
+    private final JTable table = new JTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
         table.setFillsViewportHeight(true);
