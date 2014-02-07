@@ -24,6 +24,7 @@ public class MainPanel extends JPanel implements PropertyChangeListener {
     });
     private final JFrame frame;
     private final String title;
+
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         this.frame = frame;

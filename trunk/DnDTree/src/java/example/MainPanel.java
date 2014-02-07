@@ -77,22 +77,6 @@ class DnDTree extends JTree {
         new DropTarget(this, new NodeDropTargetListener());
     }
 
-    private class NodeDragSourceListener implements DragSourceListener {
-        @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-            dropTargetNode = null;
-            draggedNode = null;
-            repaint();
-        }
-        @Override public void dragEnter(DragSourceDragEvent dsde) {
-            dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-        }
-        @Override public void dragExit(DragSourceEvent dse) {
-            dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-        }
-        @Override public void dragOver(DragSourceDragEvent dsde)          { /* not needed */ }
-        @Override public void dropActionChanged(DragSourceDragEvent dsde) { /* not needed */ }
-    }
-
     private class NodeDragGestureListener implements DragGestureListener {
         @Override public void dragGestureRecognized(DragGestureEvent dge) {
             //System.out.println("dragGestureRecognized");
@@ -196,6 +180,10 @@ class DnDTree extends JTree {
                 model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
             }
             dtde.dropComplete(true);
+
+            dropTargetNode = null;
+            draggedNode = null;
+            repaint();
         }
         private void rejectDrag(DropTargetDragEvent dtde) {
             dtde.rejectDrag();
@@ -250,4 +238,20 @@ class RJLTransferable implements Transferable {
     @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] { LOCAL_OBJECT_FLAVOR };
     }
+}
+
+class NodeDragSourceListener implements DragSourceListener {
+    @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+        //dropTargetNode = null;
+        //draggedNode = null;
+        //repaint();
+    }
+    @Override public void dragEnter(DragSourceDragEvent dsde) {
+        dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+    }
+    @Override public void dragExit(DragSourceEvent dse) {
+        dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+    }
+    @Override public void dragOver(DragSourceDragEvent dsde)          { /* not needed */ }
+    @Override public void dropActionChanged(DragSourceDragEvent dsde) { /* not needed */ }
 }
