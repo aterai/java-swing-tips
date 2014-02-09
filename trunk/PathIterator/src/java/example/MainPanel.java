@@ -11,35 +11,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private MainPanel() {
-        super(new BorderLayout());
-        add(new StarburstSVGMaker().makeUI());
-        setPreferredSize(new Dimension(320, 240));
-    }
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-}
-
-class StarburstSVGMaker {
     private final SpinnerNumberModel outer   = new SpinnerNumberModel(40, 10, 1000, 1);
     private final SpinnerNumberModel inner   = new SpinnerNumberModel(30, 10, 1000, 1);
     private final SpinnerNumberModel vcModel = new SpinnerNumberModel(20, 3,  100,  1);
@@ -49,41 +20,11 @@ class StarburstSVGMaker {
     private final JTextField styleField      = new JTextField("stroke:none; fill:pink");
     private final JCheckBox check            = new JCheckBox("Antialias", true);
     private final JLabel label               = new JLabel();
+    private final JTextArea textArea         = new ClipboardServiceTextArea();
 
-    private ClipboardService cs;
-    private final JTextArea textArea = new JTextArea() {
-        @Override public void copy() {
-            if(cs == null) {
-                super.copy();
-            }else{
-                cs.setContents(new StringSelection(getSelectedText()));
-            }
-        }
-        @Override public void cut() {
-            if(cs == null) {
-                super.cut();
-            }else{
-                cs.setContents(new StringSelection(getSelectedText()));
-            }
-        }
-        @Override public void paste() {
-            if(cs == null) {
-                super.paste();
-            }else{
-                Transferable tr = cs.getContents();
-                if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    getTransferHandler().importData(this, tr);
-                }
-            }
-        }
-    };
+    public MainPanel() {
+        super(new BorderLayout());
 
-    public JComponent makeUI() {
-        try{
-            cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(UnavailableServiceException t) {
-            cs = null;
-        }
         initStar();
         ChangeListener cl = new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
@@ -107,8 +48,9 @@ class StarburstSVGMaker {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(makePreferencesPanel(), BorderLayout.NORTH);
         panel.add(tab);
-        //panel.setPreferredSize(new Dimension(320, 320));
-        return panel;
+
+        add(panel);
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makePreviewPanel() {
         JPanel p = new JPanel(new BorderLayout());
@@ -164,10 +106,10 @@ class StarburstSVGMaker {
         int vc = vcModel.getNumber().intValue();
         boolean antialias = check.isSelected();
         //outer.setMinimum(r2+1);
-        Path2D.Double star = makeStar(r1, r2, vc);
+        Path2D.Double star = StarburstSVGMaker.makeStar(r1, r2, vc);
         label.setIcon(new StarIcon(star, antialias));
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1,r2), Math.min(r1,r2), vc);
-        StringBuilder sb = makeStarburstSvg(star.getPathIterator(null), Math.max(r1,r2)*2, styleField.getText().trim(), desc);
+        StringBuilder sb = StarburstSVGMaker.makeStarburstSvg(star.getPathIterator(null), Math.max(r1,r2)*2, styleField.getText().trim(), desc);
 
 //         Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
 //         FontRenderContext frc = new FontRenderContext(null, true, true);
@@ -178,7 +120,32 @@ class StarburstSVGMaker {
 
         textArea.setText(sb.toString());
     }
-    private static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class StarburstSVGMaker {
+    private StarburstSVGMaker() { /* Singleton */ }
+    public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
         StringBuilder sb = new StringBuilder(200);
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
         sb.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz));
@@ -206,7 +173,7 @@ class StarburstSVGMaker {
         sb.append(String.format("\" style=\"%s\" />%n</svg>%n", style));
         return sb;
     }
-    private static Path2D.Double makeStar(int r1, int r2, int vc) {
+    public static Path2D.Double makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
         double agl = 0.0;
@@ -310,3 +277,39 @@ class StarIcon implements Icon {
 //         }
 //     }
 // }
+
+class ClipboardServiceTextArea extends JTextArea {
+    private ClipboardService cs;
+    public ClipboardServiceTextArea() {
+        super();
+        try{
+            cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
+        }catch(UnavailableServiceException t) {
+            cs = null;
+        }
+    }
+    @Override public void copy() {
+        if(cs == null) {
+            super.copy();
+        }else{
+            cs.setContents(new StringSelection(getSelectedText()));
+        }
+    }
+    @Override public void cut() {
+        if(cs == null) {
+            super.cut();
+        }else{
+            cs.setContents(new StringSelection(getSelectedText()));
+        }
+    }
+    @Override public void paste() {
+        if(cs == null) {
+            super.paste();
+        }else{
+            Transferable tr = cs.getContents();
+            if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                getTransferHandler().importData(this, tr);
+            }
+        }
+    }
+}

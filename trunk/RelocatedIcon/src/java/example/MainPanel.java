@@ -16,7 +16,9 @@ public class MainPanel extends JPanel {
         desktop.setDesktopManager(new ReIconifyDesktopManager());
         desktop.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                if(!check.isSelected()) { return; }
+                if(!check.isSelected()) {
+                    return;
+                }
                 doReIconify((JDesktopPane)e.getComponent());
             }
         });
@@ -34,10 +36,18 @@ public class MainPanel extends JPanel {
                 n++;
             }
         });
+        JToolBar toolbar = new JToolBar("toolbar");
+        toolbar.setFloatable(false);
+        toolbar.add(addButton);
+        toolbar.addSeparator();
+        toolbar.add(button);
+        toolbar.addSeparator();
+        toolbar.add(check);
+
         addIconifiedFrame(createFrame("Frame", 30, 10));
         addIconifiedFrame(createFrame("Frame", 50, 30));
         add(desktop);
-        add(makeToolBar(), BorderLayout.NORTH);
+        add(toolbar, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static class ReIconifyDesktopManager extends DefaultDesktopManager {
@@ -72,16 +82,6 @@ public class MainPanel extends JPanel {
         }catch(java.beans.PropertyVetoException e) {
             e.printStackTrace();
         }
-    }
-    private JToolBar makeToolBar() {
-        JToolBar tb = new JToolBar("toolbar");
-        tb.setFloatable(false);
-        tb.add(addButton);
-        tb.addSeparator();
-        tb.add(button);
-        tb.addSeparator();
-        tb.add(check);
-        return tb;
     }
 
     public static void main(String[] args) {
