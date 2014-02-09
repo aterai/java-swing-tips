@@ -73,37 +73,49 @@ class SilhouetteIcon implements Icon, Serializable {
         this.str = str;
         this.size = size;
     }
-    public static Area getOuterShape(Shape shape) {
+    private static Area getOuterShape(Shape shape) {
         Area area = new Area();
         double[] coords = new double[6];
         PathIterator pi = shape.getPathIterator(null);
-        Path2D.Double path = null;
+        Path2D.Double path = new Path2D.Double();
         while(!pi.isDone()) {
             int pathSegmentType = pi.currentSegment(coords);
             if(pathSegmentType == PathIterator.SEG_MOVETO) {
                 if(area.isEmpty() || !area.contains(coords[0], coords[1])) {
-                    path = new Path2D.Double();
                     path.moveTo(coords[0], coords[1]);
                 }
-            }else if(path==null) {
+            }else if(path.getCurrentPoint()==null) {
                 pi.next();
                 continue;
-            }else if(pathSegmentType == PathIterator.SEG_LINETO) {
-                path.lineTo(coords[0], coords[1]);
-            }else if(pathSegmentType == PathIterator.SEG_QUADTO) {
-                path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-            }else if(pathSegmentType == PathIterator.SEG_CUBICTO) {
-                path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-            }else if(pathSegmentType == PathIterator.SEG_CLOSE) {
-                path.closePath();
-                area.add(new Area(path));
-                path = null;
             }else{
-                System.err.println("Unexpected value! " + pathSegmentType);
+                addPathSegment2Area(pathSegmentType, area, coords, path);
             }
             pi.next();
         }
         return area;
+    }
+    private static void addPathSegment2Area(int pathSegmentType, Area area, double[] coords, Path2D.Double path) {
+        switch(pathSegmentType) {
+          case PathIterator.SEG_MOVETO:
+            path.moveTo(coords[0], coords[1]);
+            break;
+          case PathIterator.SEG_LINETO:
+            path.lineTo(coords[0], coords[1]);
+            break;
+          case PathIterator.SEG_QUADTO:
+            path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+            break;
+          case PathIterator.SEG_CUBICTO:
+            path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+            break;
+          case PathIterator.SEG_CLOSE:
+            path.closePath();
+            area.add(new Area(path));
+            path.reset();
+            break;
+          default:
+            System.err.println("Unexpected value! " + pathSegmentType);
+        }
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D)g.create();

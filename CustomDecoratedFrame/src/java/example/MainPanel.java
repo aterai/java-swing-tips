@@ -210,46 +210,48 @@ class ResizeWindowListener extends MouseAdapter {
         if(rect==null) {
             return;
         }
-        int dx = e.getX();
-        int dy = e.getY();
-        switch(((SideLabel)e.getComponent()).side) {
+        Side side = ((SideLabel)e.getSource()).side;
+        frame.setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
+    }
+    private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
+        switch(side) {
           case NW:
-            rect.y      += dy;
-            rect.height -= dy;
-            rect.x      += dx;
-            rect.width  -= dx;
+            r.y      += dy;
+            r.height -= dy;
+            r.x      += dx;
+            r.width  -= dx;
             break;
           case N:
-            rect.y      += dy;
-            rect.height -= dy;
+            r.y      += dy;
+            r.height -= dy;
             break;
           case NE:
-            rect.y      += dy;
-            rect.height -= dy;
-            rect.width  += dx;
+            r.y      += dy;
+            r.height -= dy;
+            r.width  += dx;
             break;
           case W:
-            rect.x      += dx;
-            rect.width  -= dx;
+            r.x      += dx;
+            r.width  -= dx;
             break;
           case E:
-            rect.width  += dx;
+            r.width  += dx;
             break;
           case SW:
-            rect.height += dy;
-            rect.x      += dx;
-            rect.width  -= dx;
+            r.height += dy;
+            r.x      += dx;
+            r.width  -= dx;
             break;
           case S:
-            rect.height += dy;
+            r.height += dy;
             break;
           case SE:
-            rect.height += dy;
-            rect.width  += dx;
+            r.height += dy;
+            r.width  += dx;
             break;
           default: throw new AssertionError("Unknown SideLabel");
         }
-        frame.setBounds(rect);
+        return r;
     }
 }
 
