@@ -10,17 +10,33 @@ import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private static String text;
-    private final JPanel panel = new JPanel(new GridLayout(2,1));
     //private final JTextPane   textPane;
-    private final JEditorPane editorPane;
-    private final JTextArea   textArea;
-    //private final ExecutorService threadPool;
+    private final JEditorPane editorPane = new JEditorPane();
+    private final JTextArea   textArea   = new JTextArea();
+    private final ExecutorService threadPool;
 
-    public MainPanel(final ExecutorService threadPool) {
+    private final JButton editorPaneButton = new JButton("JEditorPane");
+    private final JButton textAreaButton   = new JButton("JTextArea");
+    private final ActionListener longTextListener = new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            final JComponent c = (JComponent)e.getSource();
+            threadPool.execute(new Runnable() {
+                @Override public void run() {
+                    if(text!=null) {
+                        if(c.equals(editorPaneButton)) {
+                            editorPane.setText(text);
+                        }else{
+                            textArea.setText(text);
+                        }
+                    }
+                }
+            });
+        }
+    };
+
+    public MainPanel(ExecutorService threadPool) {
         super(new BorderLayout());
-        //this.threadPool = threadPool;
-        editorPane = new JEditorPane();
-        textArea = new JTextArea();
+        this.threadPool = threadPool;
 /*
         textPane = new JTextPane() {
             //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
@@ -36,58 +52,33 @@ public class MainPanel extends JPanel {
 /*/
         editorPane.setEditorKit(new NoWrapEditorKit2());
 //*/
+
+        editorPaneButton.addActionListener(longTextListener);
+        textAreaButton.addActionListener(longTextListener);
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
-//         box.add(new JButton(new AbstractAction("JTextPane") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 textPane.setText(text);
-//             }
-//         }));
-        box.add(new JButton(new AbstractAction("JEditorPane") {
-            @Override public void actionPerformed(ActionEvent e) {
-                threadPool.execute(new Runnable() {
-                    @Override public void run() {
-                        if(text!=null) {
-                            editorPane.setText(text);
-                        }
-                    }
-                });
-            }
-        }));
-        box.add(new JButton(new AbstractAction("JTextArea") {
-            @Override public void actionPerformed(ActionEvent e) {
-                threadPool.execute(new Runnable() {
-                    @Override public void run() {
-                        if(text!=null) {
-                            textArea.setText(text);
-                        }
-                    }
-                });
-            }
-        }));
+        box.add(editorPaneButton);
+        box.add(textAreaButton);
         box.add(new JButton(new AbstractAction("clear all") {
             @Override public void actionPerformed(ActionEvent e) {
                 editorPane.setText("");
                 textArea.setText("");
             }
         }));
-/*
-        addEditor(textPane, "NoWrapTextPane(JTextPane)");
-        //System.out.println(textPane.getDocument().toString());
-        textPane.setText(text);
-/*/
-        addEditor(editorPane, "NoWrapEditorKit(JEditorPane)");
-//*/
-        addEditor(textArea, "JTextArea");
+
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        p.add(makeTitledPanel(editorPane, "NoWrapEditorKit(JEditorPane)"));
+        p.add(makeTitledPanel(textArea,   "JTextArea"));
 
         add(box, BorderLayout.NORTH);
-        add(panel);
+        add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void addEditor(JComponent c, String title) {
+    private static JComponent makeTitledPanel(JComponent c, String title) {
         JScrollPane sp = new JScrollPane(c);
         sp.setBorder(BorderFactory.createTitledBorder(title));
-        panel.add(sp);
+        return sp;
     }
     private static void initLongLineStringInBackground(ExecutorService threadPool, final int length) {
         threadPool.execute(new Runnable() {
