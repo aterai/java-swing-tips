@@ -31,21 +31,6 @@ public class MainPanel extends JPanel {
         add(dummyBar, BorderLayout.NORTH);
         dummyBar.setVisible(false);
 
-        frame.setJMenuBar(createMenuBar());
-        //add(createMenuBar(), BorderLayout.NORTH);
-        add(desktop);
-
-        JButton b = new JButton(new AbstractAction("dummy button") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-        });
-        b.setMnemonic(KeyEvent.VK_B);
-        add(b, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 240));
-    }
-
-    private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Frame");
         menu.setMnemonic(KeyEvent.VK_F);
@@ -73,7 +58,18 @@ public class MainPanel extends JPanel {
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
         menu.add(menuItem);
 
-        return menuBar;
+        frame.setJMenuBar(menuBar);
+        //add(createMenuBar(), BorderLayout.NORTH);
+        add(desktop);
+
+        JButton b = new JButton(new AbstractAction("dummy button") {
+            @Override public void actionPerformed(ActionEvent e) {
+                Toolkit.getDefaultToolkit().beep();
+            }
+        });
+        b.setMnemonic(KeyEvent.VK_B);
+        add(b, BorderLayout.SOUTH);
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class OpenFrameAction extends AbstractAction {

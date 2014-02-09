@@ -176,6 +176,7 @@ class NoWrapParagraphView extends ParagraphView {
         return Integer.MAX_VALUE;
     }
 }
+
 class NoWrapViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
@@ -195,6 +196,7 @@ class NoWrapViewFactory implements ViewFactory {
         return new LabelView(elem);
     }
 }
+
 class NoWrapEditorKit2 extends StyledEditorKit {
     @Override public ViewFactory getViewFactory() {
         return new NoWrapViewFactory();
