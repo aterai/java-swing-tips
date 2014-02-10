@@ -10,22 +10,22 @@ import javax.swing.table.*;
 public class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final TestModel model = new TestModel();
-    private final JTable table;
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if(isRowSelected(row)) {
+                c.setForeground(getSelectionForeground());
+                c.setBackground(getSelectionBackground());
+            }else{
+                c.setForeground(getForeground());
+                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+            }
+            return c;
+        }
+    };
+
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model) {
-            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-                Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
-                    c.setForeground(getSelectionForeground());
-                    c.setBackground(getSelectionBackground());
-                }else{
-                    c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
-                }
-                return c;
-            }
-        };
 
         TableColumn col = table.getColumnModel().getColumn(0);
         col.setMinWidth(60);

@@ -7,6 +7,7 @@ import java.awt.event.*;
 //import java.io.Serializable;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -17,12 +18,12 @@ public class MainPanel extends JPanel {
     private final JCheckBox sort1 = new JCheckBox("1: bubble sort");
     private final JCheckBox sort2 = new JCheckBox("2: selection sort");
     private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort");
-    private final ActionListener sortActionListener = new ActionListener() {
+    private final transient ActionListener sortActionListener = new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox check = (JCheckBox)e.getSource();
             if(check.isSelected()) {
-                TreeUtil.compareCount = 0;
-                TreeUtil.swapCount    = 0;
+                TreeUtil.compareCount.set(0);
+                TreeUtil.swapCount.set(0);
                 DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
                 if(check.equals(sort0)) {
                     TreeUtil.sortTree0(r);
@@ -61,12 +62,12 @@ public class MainPanel extends JPanel {
     }
 
     private static void log(String title) {
-        if(TreeUtil.swapCount==0) {
-            System.out.format("%-24s - compare: %3d, swap: ---\n",
-                              title, TreeUtil.compareCount);
+        if(TreeUtil.swapCount.get()==0) {
+            System.out.format("%-24s - compare: %3d, swap: ---%n",
+                              title, TreeUtil.compareCount.get());
         }else{
             System.out.format("%-24s - compare: %3d, swap: %3d%n",
-                              title, TreeUtil.compareCount, TreeUtil.swapCount);
+                              title, TreeUtil.compareCount.get(), TreeUtil.swapCount.get());
         }
     }
 
@@ -95,8 +96,8 @@ public class MainPanel extends JPanel {
 
 class TreeUtil {
     private static final boolean DEBUG = true;
-    public static int compareCount;
-    public static int swapCount;
+    public static AtomicInteger compareCount = new AtomicInteger();
+    public static AtomicInteger swapCount = new AtomicInteger();
     private static TreeNodeComparator tnc = new TreeNodeComparator();
 
     private TreeUtil() { /* Singlton */ }
@@ -107,11 +108,11 @@ class TreeUtil {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
             for(int j=0; j<i; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-                compareCount++;
+                compareCount.getAndIncrement();
                 if(tnc.compare(node, prevNode)<0) {
                     root.insert(node, j);
                     root.insert(prevNode, i);
-                    swapCount++;
+                    swapCount.getAndIncrement();
                     if(DEBUG) {
                         i--;
                         break;
@@ -132,7 +133,7 @@ class TreeUtil {
             for(int j=i+1; j<n; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
                 if(tnc.compare(node, prevNode)>0) {
-                    swapCount++;
+                    swapCount.getAndIncrement();
                     root.insert(node, j);
                     root.insert(prevNode, i);
                     i--;
@@ -156,7 +157,7 @@ class TreeUtil {
                 }
             }
             if(i!=min) {
-                swapCount++;
+                swapCount.getAndIncrement();
                 MutableTreeNode a = (MutableTreeNode)parent.getChildAt(i);
                 MutableTreeNode b = (MutableTreeNode)parent.getChildAt(min);
                 parent.insert(b, i);
@@ -206,7 +207,7 @@ class TreeUtil {
 
     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode> { //, Serializable {
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-            compareCount++;
+            compareCount.getAndIncrement();
             if(a.isLeaf() && !b.isLeaf()) {
                 return 1;
             }else if(!a.isLeaf() && b.isLeaf()) {

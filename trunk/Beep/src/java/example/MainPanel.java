@@ -7,16 +7,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final JButton button = new JButton("showMessageDialog");
+    private final JButton button = new JButton(new AbstractAction("showMessageDialog") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JButton b = (JButton)e.getSource();
+            JOptionPane.showMessageDialog(b, "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
+            Toolkit.getDefaultToolkit().beep();
+        }
+    });
     public MainPanel() {
         super(new BorderLayout());
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton)e.getSource();
-                JOptionPane.showMessageDialog(b, "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
-                Toolkit.getDefaultToolkit().beep();
-            }
-        });
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder("Toolkit.getDefaultToolkit().beep()"));
         p.add(button);

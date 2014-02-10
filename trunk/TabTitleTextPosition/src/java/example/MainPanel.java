@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static void addTab(JTabbedPane tabbedPane, String title, Icon icon, Component c) {
         tabbedPane.addTab(title, c);
         JLabel label = new JLabel(title, icon, SwingConstants.CENTER);

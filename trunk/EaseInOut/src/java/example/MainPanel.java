@@ -9,7 +9,7 @@ import java.awt.event.*;
 //import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
         String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SEREIAL NO: 00000000";
@@ -42,7 +42,6 @@ public class MainPanel extends JPanel {
 }
 
 class ImageCaptionLabel extends JLabel {
-    private final LabelHandler handler;
     private final JTextArea textArea = new JTextArea() {
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
@@ -54,6 +53,7 @@ class ImageCaptionLabel extends JLabel {
         //    return false;
         //}
     };
+    private final transient LabelHandler handler = new LabelHandler(textArea);
     private void dispatchMouseEvent(MouseEvent e) {
         Component src = e.getComponent();
         //this: target Component;
@@ -99,7 +99,6 @@ class ImageCaptionLabel extends JLabel {
             }
         });
         add(textArea);
-        handler = new LabelHandler(textArea);
         addMouseListener(handler);
         addHierarchyListener(handler);
     }

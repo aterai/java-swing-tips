@@ -229,7 +229,7 @@ class ComboBoxLayout implements LayoutManager {
         int buttonHeight = height - insets.top - insets.bottom;
         int buttonWidth  = buttonHeight;
         int labelWidth   = buttonHeight;
-        int loupeWidth   = buttonHeight;
+        int loupeWidth; //   = buttonHeight;
 
         JButton arrowButton = (JButton)cb.getComponent(0);
         if(arrowButton != null) {

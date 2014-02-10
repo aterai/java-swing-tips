@@ -126,7 +126,7 @@ class ListItemTransferHandler extends TransferHandler {
                 listModel.add(idx, values[i]);
                 target.addSelectionInterval(idx, idx);
             }
-            addCount = source.equals(target) ? values.length : 0;
+            addCount = target.equals(source) ? values.length : 0;
             return true;
         }catch(UnsupportedFlavorException ufe) {
             ufe.printStackTrace();

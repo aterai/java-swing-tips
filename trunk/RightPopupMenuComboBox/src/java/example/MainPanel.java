@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<String> combo00 = new JComboBox<>(makeModel());
     private final JComboBox<String> combo01 = new JComboBox<>(makeModel());
     private final ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));

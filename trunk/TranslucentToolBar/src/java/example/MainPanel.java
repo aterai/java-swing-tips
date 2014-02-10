@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
         add(new LabelWithToolBox(new ImageIcon(getClass().getResource("test.png"))));
