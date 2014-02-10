@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(4,1,5,5));

@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(2, 1));
         add(new JScrollPane(makeEditorPane(true)));

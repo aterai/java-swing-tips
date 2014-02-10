@@ -24,7 +24,7 @@ class MainPanel {
                     Thread.sleep(6000);
                     EventQueue.invokeAndWait(new Runnable() {
                         @Override public void run() {
-                            showFrame();
+                            showFrame(frame);
                             //hideSplash();
                             splashScreen.setVisible(false);
                             splashScreen.dispose();
@@ -74,7 +74,7 @@ class MainPanel {
         window.setLocationRelativeTo(null);
         return window;
     }
-    private void showFrame() {
+    private void showFrame(JFrame frame) {
         frame.getContentPane().add(makeUI());
         frame.setMinimumSize(new Dimension(100, 100));
         frame.setSize(320, 240);
@@ -138,7 +138,7 @@ class MainPanel {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private transient MouseEvent start;
+    private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
         if(window==null) {
@@ -149,13 +149,13 @@ class DragWindowListener extends MouseAdapter {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
-        start = me;
+        startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
         if(window!=null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - start.getX(),
-                               eventLocationOnScreen.y - start.getY());
+            window.setLocation(eventLocationOnScreen.x - startPt.x,
+                               eventLocationOnScreen.y - startPt.y);
         }
     }
 }

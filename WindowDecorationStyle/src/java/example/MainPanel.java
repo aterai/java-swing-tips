@@ -129,7 +129,7 @@ public class MainPanel extends JPanel {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private MouseEvent start;
+    private final transient Point startPt = new Point();
     private Window window;
     @Override public void mousePressed(MouseEvent me) {
         if(window==null) {
@@ -140,14 +140,14 @@ class DragWindowListener extends MouseAdapter {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
-        start = me;
+        startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
         if(window!=null) {
             Point pt = new Point();
             pt = window.getLocation(pt);
-            int x = pt.x - start.getX() + me.getX();
-            int y = pt.y - start.getY() + me.getY();
+            int x = pt.x - startPt.x + me.getX();
+            int y = pt.y - startPt.y + me.getY();
             window.setLocation(x, y);
         }
     }

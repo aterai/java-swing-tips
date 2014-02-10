@@ -256,8 +256,8 @@ class ResizeWindowListener extends MouseAdapter {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private MouseEvent start;
-    private Window window;
+    private final transient Point startPt = new Point();
+    private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
         if(window==null) {
             Object o = me.getSource();
@@ -267,13 +267,13 @@ class DragWindowListener extends MouseAdapter {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
-        start = me;
+        startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
         if(window!=null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - start.getX(),
-                               eventLocationOnScreen.y - start.getY());
+            window.setLocation(eventLocationOnScreen.x - startPt.x,
+                               eventLocationOnScreen.y - startPt.y);
         }
     }
 }

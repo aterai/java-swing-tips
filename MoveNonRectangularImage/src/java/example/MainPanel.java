@@ -22,15 +22,15 @@ class MainPanel extends JPanel {
         g.dispose();
         final JLabel icon = new JLabel(i) {
             @Override public boolean contains(int x, int y) {
-                return super.contains(x, y) && ((image.getRGB(x, y) >> 24) & 0xff) > 0;
+                return super.contains(x, y) && ((image.getRGB(x, y) >> 24) & 0xff) != 0;
             }
         };
         icon.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
         MouseAdapter l = new MouseAdapter() {
-            private Point start;
+            private final transient Point start = new Point();
             private Point loc;
             @Override public void mousePressed(MouseEvent me) {
-                start = me.getPoint();
+                start.setLocation(me.getPoint());
             }
             @Override public void mouseDragged(MouseEvent me) {
                 loc = icon.getLocation(loc);

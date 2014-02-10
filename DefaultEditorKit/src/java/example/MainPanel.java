@@ -5,15 +5,16 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
     private final JTextField pf1 = new JTextField(30);
     private final JTextField pf2 = new JTextField(30);
+
     public MainPanel() {
         super(new BorderLayout());
-        pf1.setComponentPopupMenu(new TextFieldPopupMenu(pf1));
-        pf2.setComponentPopupMenu(new TextFieldPopupMenu(pf2));
+        pf1.setComponentPopupMenu(new TextFieldPopupMenu());
+        pf2.setComponentPopupMenu(new TextFieldPopupMenu());
 
         Box panel = Box.createVerticalBox();
         panel.setBorder(BorderFactory.createTitledBorder("E-mail Address"));
@@ -25,51 +26,7 @@ public class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         add(panel, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("Dummy")));
-        setPreferredSize(new Dimension(320, 200));
-
-//         Box panel = Box.createVerticalBox();
-//         panel.setBorder(BorderFactory.createTitledBorder("E-mail Address"));
-//         panel.add(pf1);
-//         panel.add(Box.createVerticalStrut(5));
-//         panel.add(new JLabel("Please enter your email adress twice for confirmation"));
-//         panel.add(pf2);
-//         add(panel);
-    }
-
-    private class TextFieldPopupMenu extends JPopupMenu {
-        private final Action cutAction = new DefaultEditorKit.CutAction();
-        private final Action copyAction = new DefaultEditorKit.CopyAction();
-        private final Action pasteAction = new DefaultEditorKit.PasteAction();
-        private final Action deleteAction;
-        private final Action cut2Action;
-        //private final JTextField field;
-        public TextFieldPopupMenu(final JTextField field) {
-            super();
-            //this.field = field;
-            add(cutAction);
-            add(copyAction);
-            add(pasteAction);
-            add(deleteAction = new AbstractAction("delete") {
-                @Override public void actionPerformed(ActionEvent evt) {
-                    field.replaceSelection(null);
-                }
-            });
-            addSeparator();
-            add(cut2Action = new AbstractAction("cut2") {
-                @Override public void actionPerformed(ActionEvent evt) {
-                    field.cut();
-                }
-            });
-        }
-        @Override public void show(Component c, int x, int y) {
-            JTextField field = (JTextField)c;
-            boolean flg = field.getSelectedText()!=null;
-            cutAction.setEnabled(flg);
-            copyAction.setEnabled(flg);
-            deleteAction.setEnabled(flg);
-            cut2Action.setEnabled(flg);
-            super.show(c, x, y);
-        }
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -93,5 +50,50 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TextFieldPopupMenu extends JPopupMenu {
+    private final Action cutAction = new DefaultEditorKit.CutAction();
+    private final Action copyAction = new DefaultEditorKit.CopyAction();
+    private final Action pasteAction = new DefaultEditorKit.PasteAction();
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            Component c = getInvoker();
+            if(c instanceof JTextComponent) {
+                ((JTextComponent)c).replaceSelection(null);
+            }
+        }
+    };
+    private final Action cut2Action = new AbstractAction("cut2") {
+        @Override public void actionPerformed(ActionEvent e) {
+            Component c = getInvoker();
+            if(c instanceof JTextComponent) {
+                ((JTextComponent)c).cut();
+            }
+        }
+    };
+    public TextFieldPopupMenu() {
+        super();
+        add(cutAction);
+        add(copyAction);
+        add(pasteAction);
+        add(deleteAction);
+        addSeparator();
+        add(cut2Action);
+    }
+    @Override public void show(Component c, int x, int y) {
+        boolean flg;
+        if(c instanceof JTextComponent) {
+            JTextComponent field = (JTextComponent)c;
+            flg = field.getSelectedText()!=null;
+        }else{
+            flg = false;
+        }
+        cutAction.setEnabled(flg);
+        copyAction.setEnabled(flg);
+        deleteAction.setEnabled(flg);
+        cut2Action.setEnabled(flg);
+        super.show(c, x, y);
     }
 }

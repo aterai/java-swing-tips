@@ -6,7 +6,7 @@ import java.awt.*;
 import java.net.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String PATH = "/toolbarButtonGraphics/general/";
     private final JToolBar toolbar1 = new JToolBar("ToolBarButton");
     private final JToolBar toolbar2 = new JToolBar("JButton");

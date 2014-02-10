@@ -8,7 +8,7 @@ import java.awt.image.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final DraggableImageMouseListener di;
     public MainPanel() {
         super();
