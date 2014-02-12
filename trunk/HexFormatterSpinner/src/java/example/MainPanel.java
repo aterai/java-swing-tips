@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -118,7 +118,7 @@ public class MainPanel extends JPanel {
             }
             private static final String MASK = "000000";
             @Override public String valueToString(Object value) throws ParseException {
-                String str = MASK + Integer.toHexString((Integer)value).toUpperCase();
+                String str = MASK + Integer.toHexString((Integer)value).toUpperCase(Locale.ENGLISH);
                 int i = str.length() - MASK.length();
                 return str.substring(i);
             }
