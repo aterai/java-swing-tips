@@ -7,6 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -15,7 +16,9 @@ public final class MainPanel extends JPanel {
     private static final int IMAGE_ID = 0;
     private final FileModel model = new FileModel();
     private final JTable table = new JTable(model);
-    private final transient DropTargetListener dtl = new DropTargetAdapter() {
+    private transient MediaTracker tracker;
+
+    private class ImageDropTargetListener extends DropTargetAdapter {
         @Override public void dragOver(DropTargetDragEvent dtde) {
             if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY);
@@ -42,8 +45,7 @@ public final class MainPanel extends JPanel {
             }
             dtde.rejectDrop();
         }
-    };
-    private MediaTracker tracker;
+    }
 
     public MainPanel() {
         super(new BorderLayout());
@@ -53,6 +55,7 @@ public final class MainPanel extends JPanel {
         scroll.setComponentPopupMenu(new TablePopupMenu());
         table.setInheritsPopupMenu(true);
 
+        DropTargetListener dtl = new ImageDropTargetListener();
         new DropTarget(table, DnDConstants.ACTION_COPY, dtl, true);
         new DropTarget(scroll.getViewport(), DnDConstants.ACTION_COPY, dtl, true);
 
@@ -114,13 +117,13 @@ public final class MainPanel extends JPanel {
 }
 
 class FileModel extends DefaultTableModel {
-    private final ColumnContext[] columnArray = {
+    private static final List<ColumnContext> COLUMN_LIST = Arrays.asList(
         new ColumnContext("No.",       Integer.class, false),
         new ColumnContext("Name",      String.class,  false),
         new ColumnContext("Full Path", String.class,  false),
         new ColumnContext("Width",     Integer.class, false),
         new ColumnContext("Height",    Integer.class, false)
-    };
+    );
     private int number;
     public void addTest(Test t) {
         Object[] obj = {
@@ -131,16 +134,16 @@ class FileModel extends DefaultTableModel {
         number++;
     }
     @Override public boolean isCellEditable(int row, int col) {
-        return columnArray[col].isEditable;
+        return COLUMN_LIST.get(col).isEditable;
     }
     @Override public Class<?> getColumnClass(int modelIndex) {
-        return columnArray[modelIndex].columnClass;
+        return COLUMN_LIST.get(modelIndex).columnClass;
     }
     @Override public int getColumnCount() {
-        return columnArray.length;
+        return COLUMN_LIST.size();
     }
     @Override public String getColumnName(int modelIndex) {
-        return columnArray[modelIndex].columnName;
+        return COLUMN_LIST.get(modelIndex).columnName;
     }
     private static class ColumnContext {
         public final String  columnName;

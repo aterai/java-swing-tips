@@ -23,6 +23,7 @@ public class SortableTableModel extends DefaultTableModel {
 }
 
 class ColumnComparator implements Comparator, Serializable {
+    private static final long serialVersionUID = 1L;
     protected final int index;
     protected final boolean ascending;
     public ColumnComparator(int index, boolean ascending) {
@@ -67,30 +68,33 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     public static final int NONE = 0;
     public static final int DOWN = 1;
     public static final int UP   = 2;
-    private transient Icon ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
-    private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-    private transient Icon noneSortIcon       = new EmptyIcon(ascendingSortIcon);
+    //private transient Icon ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
+    //private transient Icon descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+    //private transient Icon noneSortIcon       = new EmptyIcon(ascendingSortIcon);
+    private Dimension iconSize;
     private int pushedColumn = -1;
     private final ConcurrentMap<Integer, Integer> state = new ConcurrentHashMap<>();
 
     public SortButtonRenderer() {
         super();
         setHorizontalTextPosition(JButton.LEFT);
-        setIcon(noneSortIcon);
+        Icon i = UIManager.getIcon("Table.ascendingSortIcon");
+        iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
+        setIcon(new EmptyIcon(iconSize));
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setText(Objects.toString(value, ""));
-        setIcon(noneSortIcon);
+        setIcon(new EmptyIcon(iconSize));
         int modelColumn = table.convertColumnIndexToModel(column);
         Integer ivalue = state.get(modelColumn);
         if(ivalue != null) {
             if(ivalue == DOWN) {
-                setIcon(ascendingSortIcon);
+                setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
                 //setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
             }else if(ivalue == UP) {
-                setIcon(descendingSortIcon);
+                setIcon(UIManager.getIcon("Table.descendingSortIcon"));
                 //setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
             }
@@ -102,9 +106,11 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
-        descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-        noneSortIcon       = new EmptyIcon(ascendingSortIcon);
+        //ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
+        //descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+        //noneSortIcon       = new EmptyIcon(ascendingSortIcon);
+        Icon i = UIManager.getIcon("Table.ascendingSortIcon");
+        iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
     }
     public void setPressedColumn(int col) {
         pushedColumn = col;
@@ -155,15 +161,15 @@ class HeaderMouseListener extends MouseAdapter {
 }
 
 class EmptyIcon implements Icon {
-    private final Icon icon;
-    public EmptyIcon(Icon icon) {
-        this.icon = icon;
+    private final Dimension size;
+    public EmptyIcon(Dimension size) {
+        this.size = size;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
     @Override public int getIconWidth() {
-        return icon.getIconWidth();
+        return size.width;
     }
     @Override public int getIconHeight() {
-        return icon.getIconHeight();
+        return size.height;
     }
 }

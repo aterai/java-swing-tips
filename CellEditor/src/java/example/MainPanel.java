@@ -18,17 +18,6 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    private transient final ActionListener al = new ActionListener() {
-        private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
-        @Override public void actionPerformed(ActionEvent e) {
-            table.clearSelection();
-            if(table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            table.setDefaultEditor(Object.class, objectCheck.isSelected() ? null : dce);
-            table.setEnabled(!editableCheck.isSelected());
-        }
-    };
 
     public MainPanel() {
         super(new BorderLayout());
@@ -46,6 +35,17 @@ public class MainPanel extends JPanel {
         col.setMaxWidth(50);
         col.setResizable(false);
 
+        final ActionListener al = new ActionListener() {
+            private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
+            @Override public void actionPerformed(ActionEvent e) {
+                table.clearSelection();
+                if(table.isEditing()) {
+                    table.getCellEditor().stopCellEditing();
+                }
+                table.setDefaultEditor(Object.class, objectCheck.isSelected() ? null : dce);
+                table.setEnabled(!editableCheck.isSelected());
+            }
+        };
         JPanel p = new JPanel(new GridLayout(3,1));
         for(JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {
             cb.addActionListener(al);
@@ -80,7 +80,7 @@ public class MainPanel extends JPanel {
 }
 
 class TestModel extends DefaultTableModel {
-    private final ColumnContext[] columnArray = {
+    private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
@@ -92,16 +92,16 @@ class TestModel extends DefaultTableModel {
         number++;
     }
     @Override public boolean isCellEditable(int row, int col) {
-        return columnArray[col].isEditable;
+        return COLUMN_ARRAY[col].isEditable;
     }
     @Override public Class<?> getColumnClass(int modelIndex) {
-        return columnArray[modelIndex].columnClass;
+        return COLUMN_ARRAY[modelIndex].columnClass;
     }
     @Override public int getColumnCount() {
-        return columnArray.length;
+        return COLUMN_ARRAY.length;
     }
     @Override public String getColumnName(int modelIndex) {
-        return columnArray[modelIndex].columnName;
+        return COLUMN_ARRAY[modelIndex].columnName;
     }
     private static class ColumnContext {
         public final String  columnName;
