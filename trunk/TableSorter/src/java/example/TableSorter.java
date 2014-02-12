@@ -120,7 +120,7 @@ public class TableSorter extends AbstractTableModel {
         }
     };
     private transient final List<Row> viewToModel = new ArrayList<>();
-    private transient final List<Integer> modelToView = new ArrayList<>();
+    private final List<Integer> modelToView = new ArrayList<>();
 
     private JTableHeader tableHeader;
     private transient final ConcurrentMap<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
@@ -463,6 +463,7 @@ public class TableSorter extends AbstractTableModel {
 }
 
 class ComparableComparator implements Comparator, Serializable {
+    private static final long serialVersionUID = 1L;
     @SuppressWarnings("unchecked")
     public int compare(Object o1, Object o2) {
         return ((Comparable)o1).compareTo(o2);

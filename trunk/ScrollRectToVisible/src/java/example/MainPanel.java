@@ -27,7 +27,7 @@ public class MainPanel extends JPanel {
 
     private final JTree tree = new JTree();
 
-    private final transient Timer timer;
+    private final Timer timer;
     private transient HierarchyListener hierarchyListener;
 
     public MainPanel() {
@@ -77,7 +77,9 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void updateUI() {
-        if(hierarchyListener!=null) { removeHierarchyListener(hierarchyListener); }
+        if(hierarchyListener!=null) {
+            removeHierarchyListener(hierarchyListener);
+        }
         super.updateUI();
         addHierarchyListener(hierarchyListener = new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {

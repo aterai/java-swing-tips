@@ -231,7 +231,7 @@ class RowHeaderList<E> extends JList<E> {
 }
 
 class TestModel extends DefaultTableModel {
-    private final ColumnContext[] columnArray = {
+    private static final ColumnContext[] COLUMN_ARRAY = {
         //new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  false),
         new ColumnContext("Comment", String.class,  false)
@@ -253,16 +253,16 @@ class TestModel extends DefaultTableModel {
         rowListModel.remove(index);
     }
     @Override public boolean isCellEditable(int row, int col) {
-        return columnArray[col].isEditable;
+        return COLUMN_ARRAY[col].isEditable;
     }
     @Override public Class<?> getColumnClass(int modelIndex) {
-        return columnArray[modelIndex].columnClass;
+        return COLUMN_ARRAY[modelIndex].columnClass;
     }
     @Override public int getColumnCount() {
-        return columnArray.length;
+        return COLUMN_ARRAY.length;
     }
     @Override public String getColumnName(int modelIndex) {
-        return columnArray[modelIndex].columnName;
+        return COLUMN_ARRAY[modelIndex].columnName;
     }
     private static class ColumnContext {
         public final String  columnName;

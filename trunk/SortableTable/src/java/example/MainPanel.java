@@ -26,6 +26,7 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
+
         JTableHeader header = table.getTableHeader();
         header.setDefaultRenderer(new SortButtonRenderer());
         header.addMouseListener(new HeaderMouseListener());
@@ -124,7 +125,7 @@ public class MainPanel extends JPanel {
 }
 
 class TestModel extends SortableTableModel {
-    private final ColumnContext[] columnArray = {
+    private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",     Integer.class, false),
         new ColumnContext("Name",    String.class,  true),
         new ColumnContext("Comment", String.class,  true)
@@ -136,16 +137,16 @@ class TestModel extends SortableTableModel {
         number++;
     }
     @Override public boolean isCellEditable(int row, int col) {
-        return columnArray[col].isEditable;
+        return COLUMN_ARRAY[col].isEditable;
     }
     @Override public Class<?> getColumnClass(int modelIndex) {
-        return columnArray[modelIndex].columnClass;
+        return COLUMN_ARRAY[modelIndex].columnClass;
     }
     @Override public int getColumnCount() {
-        return columnArray.length;
+        return COLUMN_ARRAY.length;
     }
     @Override public String getColumnName(int modelIndex) {
-        return columnArray[modelIndex].columnName;
+        return COLUMN_ARRAY[modelIndex].columnName;
     }
     private static class ColumnContext {
         public final String  columnName;
