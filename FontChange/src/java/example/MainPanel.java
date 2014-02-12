@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -46,7 +47,7 @@ public class MainPanel extends JPanel {
     private void updateFont(Font font) {
         FontUIResource fontUIResource = new FontUIResource(font);
         for(Object o: UIManager.getLookAndFeelDefaults().keySet()) {
-            if(o.toString().toLowerCase().endsWith("font")) {
+            if(o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
                 UIManager.put(o, fontUIResource);
             }
         }

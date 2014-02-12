@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -67,7 +68,7 @@ class PngFileFilter extends FileFilter {
         if(file.isDirectory()) {
             return true;
         }
-        if(file.getName().toLowerCase().endsWith(".png")) {
+        if(file.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
             return true;
         }
         return false;
@@ -82,7 +83,7 @@ class JpgFileFilter extends FileFilter {
         if(file.isDirectory()) {
             return true;
         }
-        if(file.getName().toLowerCase().endsWith(".jpg")) {
+        if(file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jpg")) {
             return true;
         }
         return false;

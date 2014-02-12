@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Locale;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
 
     private static JPanel makeSystemColorPanel(Color color, String text) {
         JPanel p = new JPanel(new BorderLayout());
-        JTextField jtext = new JTextField(text+": 0x"+Integer.toHexString(color.getRGB()).toUpperCase());
+        JTextField jtext = new JTextField(text+": 0x"+Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH));
         jtext.setEditable(false);
         p.add(jtext);
         JLabel l = new JLabel();
