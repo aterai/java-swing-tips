@@ -182,6 +182,7 @@ abstract class AbstractExpansionPanel extends JPanel {
 }
 
 class ExpansionEvent extends EventObject {
+    private static final long serialVersionUID = 1L;
     public ExpansionEvent(Object source) {
         super(source);
     }

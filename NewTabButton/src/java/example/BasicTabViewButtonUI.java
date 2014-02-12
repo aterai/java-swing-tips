@@ -61,7 +61,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
             0); //b.getText() == null ? 0 : b.getIconTextGap());
 
         g.setColor(b.getBackground());
-        g.fillRect(0,0, size.width, size.height);
+        g.fillRect(0, 0, size.width, size.height);
         if(text==null) {
             return;
         }

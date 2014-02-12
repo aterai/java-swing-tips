@@ -119,14 +119,14 @@ public class TableSorter extends AbstractTableModel {
             return o1.toString().compareTo(o2.toString());
         }
     };
-    private transient final List<Row> viewToModel = new ArrayList<>();
+    private final transient List<Row> viewToModel = new ArrayList<>();
     private final List<Integer> modelToView = new ArrayList<>();
 
     private JTableHeader tableHeader;
-    private transient final ConcurrentMap<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
-    private transient final List<Directive> sortingColumns = new ArrayList<>();
-    private transient MouseListener mouseListener;
-    private transient TableModelListener tableModelListener;
+    private final transient ConcurrentMap<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
+    private final List<Directive> sortingColumns = new ArrayList<>();
+    private final transient MouseListener mouseListener;
+    private final transient TableModelListener tableModelListener;
 
 //     public void readObject() {
 //         this.mouseListener = new MouseHandler();
@@ -470,7 +470,8 @@ class ComparableComparator implements Comparator, Serializable {
     }
 }
 
-class Arrow implements Icon {
+class Arrow implements Icon, Serializable {
+    private static final long serialVersionUID = 1L;
     private final boolean descending;
     private final int size;
     private final int priority;
@@ -533,7 +534,8 @@ class Arrow implements Icon {
     }
 }
 
-class Directive {
+class Directive implements Serializable {
+    private static final long serialVersionUID = 1L;
     public final int column;
     public final int direction;
     public Directive(int column, int direction) {

@@ -112,7 +112,7 @@ class LookAndFeelUtil {
         return lafMenu;
     }
     private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
-        JMenuItem mi = (JRadioButtonMenuItem)menu.add(new JRadioButtonMenuItem(label));
+        JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
         lafMenuGroup.add(mi);
         mi.addActionListener(new ChangeLookAndFeelAction(laf));
         mi.setEnabled(isAvailableLookAndFeel(laf));

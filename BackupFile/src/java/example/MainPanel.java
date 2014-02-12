@@ -12,13 +12,14 @@ import javax.swing.text.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
+    private static final String FILE_NAME = "example.txt";
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 6, 1));
     private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(2, 0, 6, 1));
     private final JLabel label      = new JLabel("2", SwingConstants.RIGHT);
     private final JTextPane jtp     = new JTextPane();
-    private final JButton ok        = new JButton(new AbstractAction("backup-testファイルを生成") {
+    private final JButton ok        = new JButton(new AbstractAction("Create new "+FILE_NAME) {
         @Override public void actionPerformed(ActionEvent e) {
-            File file = new File(System.getProperty("java.io.tmpdir"), "backup-test");
+            File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
             int i1 = ((Integer)spinner1.getValue()).intValue();
             int i2 = ((Integer)spinner2.getValue()).intValue();
             new Task(file, i1, i2) {
@@ -32,13 +33,15 @@ public class MainPanel extends JPanel {
                         File nf = get();
                         if(nf==null) {
                             append(new Message("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
-                        }else if(!nf.createNewFile()) {
-                            append(new Message(nf.getName()+"の生成に失敗しました。", MessageType.REGULAR));
+                        }else if(nf.createNewFile()) {
+                            append(new Message(nf.getName()+"を生成しました。", MessageType.REGULAR));
+                        }else{
+                            append(new Message(nf.getName()+"の生成に失敗しました。", MessageType.ERROR));
                         }
                     }catch(InterruptedException | ExecutionException | IOException ex) {
                         append(new Message(ex.getMessage(), MessageType.ERROR));
-                        append(new Message("----------------------------------", MessageType.REGULAR));
                     }
+                    append(new Message("----------------------------------", MessageType.REGULAR));
                 }
             }.execute();
         }
@@ -162,80 +165,89 @@ class Task extends SwingWorker<File, Message> {
         this.intnew = intnew;
     }
     @Override public File doInBackground() throws IOException {
-        if(!file.exists()) {
-            if(file.createNewFile()) {
-                //file.deleteOnExit();
-                publish(new Message(file.getName()+"を生成しました。", MessageType.REGULAR));
-                return file;
-            }else{
-                publish(new Message(file.getName()+"の生成に失敗しました。", MessageType.ERROR));
-                return null;
-            }
-        }
+         if(!file.exists()) {
+             return file;
+         }
 
-        String newfilename = file.getAbsolutePath();
-        if(intold==0 && intnew==0) {
-            if(file.delete()) {
-                return new File(newfilename);
-            }else{
-                publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
-                return null;
-            }
-        }
+         String newfilename = file.getAbsolutePath();
 
-        boolean testFileFlag = false;
+         if(intold==0 && intnew==0) { //= backup off
+             if(file.delete()) {
+                 return new File(newfilename);
+             }else{
+                 publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
+                 return null;
+             }
+         }
+
+         File tmpFile = renameAndBackup(file, newfilename);
+         if(tmpFile!=null) {
+             return tmpFile;
+         }
+
+         if(renameAndShiftBackup(file)) {
+             return new File(newfilename);
+         }else{
+             return null;
+         }
+     }
+    private File renameAndBackup(File file, String newfilename) throws IOException {
+        boolean simpleRename = false;
         File testFile = null;
         for(int i=1;i<=intold;i++) {
             testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
             if(!testFile.exists()) {
-                testFileFlag = true;
+                simpleRename = true;
                 break;
             }
         }
-        if(!testFileFlag) {
+        if(!simpleRename) {
             for(int i=intold+1;i<=intold+intnew;i++) {
                 testFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
                 if(!testFile.exists()) {
-                    testFileFlag = true;
+                    simpleRename = true;
                     break;
                 }
             }
         }
-        if(testFileFlag) {
+        if(simpleRename) {
             if(file.renameTo(testFile)) {
                 publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
                 publish(new Message("    "+file.getName()+" -> "+testFile.getName(), MessageType.BLUE));
+                return new File(newfilename);
             }else{
                 publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
-                return null;
-            }
-        }else{
-            File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+1));
-            publish(new Message("古いバックアップファイルを削除", MessageType.REGULAR));
-            publish(new Message("    del:"+tmpFile3.getAbsolutePath(), MessageType.BLUE));
-            if(!tmpFile3.delete()) {
-                publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
-                return null;
-            }
-            for(int i=intold+2;i<=intold+intnew;i++) {
-                File tmpFile1 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
-                File tmpFile2 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i-1));
-                if(!tmpFile1.renameTo(tmpFile2)) {
-                    publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
-                    return null;
-                }
-                publish(new Message("古いバックアップファイルの番号を更新", MessageType.REGULAR));
-                publish(new Message("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), MessageType.BLUE));
-            }
-            File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+intnew));
-            publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
-            publish(new Message("    "+file.getName()+" -> "+tmpFile.getName(), MessageType.BLUE));
-            if(!file.renameTo(tmpFile)) {
-                publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
-                return null;
+                throw new IOException();
             }
         }
-        return new File(newfilename);
+        return null;
+    }
+    private boolean renameAndShiftBackup(File file) {
+        File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+1));
+        publish(new Message("古いバックアップファイルを削除", MessageType.REGULAR));
+        publish(new Message("    del:"+tmpFile3.getAbsolutePath(), MessageType.BLUE));
+        if(!tmpFile3.delete()) {
+            publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
+            return false;
+        }
+        for(int i=intold+2;i<=intold+intnew;i++) {
+            File tmpFile1 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i));
+            File tmpFile2 = new File(file.getParentFile(), makeBackupFileName(file.getName(), i-1));
+            if(!tmpFile1.renameTo(tmpFile2)) {
+                publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
+                return false;
+            }
+            publish(new Message("古いバックアップファイルの番号を更新", MessageType.REGULAR));
+            publish(new Message("    "+tmpFile1.getName()+" -> "+tmpFile2.getName(), MessageType.BLUE));
+        }
+        File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), intold+intnew));
+        publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
+        publish(new Message("    "+file.getName()+" -> "+tmpFile.getName(), MessageType.BLUE));
+        if(!file.renameTo(tmpFile)) {
+            publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));
+            return false;
+        }
+        return true;
     }
     private static String makeBackupFileName(String name, int num) {
         return String.format("%s.%d~", name, num);

@@ -106,13 +106,14 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(renderer.polygon!=null) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setPaint(getSelectionBackground());
-            g2d.draw(renderer.polygon);
-            g2d.setComposite(ALPHA);
-            g2d.setPaint(polygonColor);
-            g2d.fill(renderer.polygon);
+        if(renderer!= null && renderer.polygon!=null) {
+            Graphics2D g2 = (Graphics2D)g.create();
+            g2.setPaint(getSelectionBackground());
+            g2.draw(renderer.polygon);
+            g2.setComposite(ALPHA);
+            g2.setPaint(polygonColor);
+            g2.fill(renderer.polygon);
+            g2.dispose();
         }
     }
 }
@@ -139,14 +140,15 @@ class DotBorder extends EmptyBorder {
     }
     @Override public boolean isBorderOpaque() { return true; }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(x,y);
         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
         //new Color(200,150,150));
         //g2.setStroke(dashed);
         //g2.drawRect(0, 0, w-1, h-1);
         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-        g2.translate(-x,-y);
+        //g2.translate(-x,-y);
+        g2.dispose();
     }
     //@Override public Insets getBorderInsets(Component c)
     //@Override public Insets getBorderInsets(Component c, Insets insets)

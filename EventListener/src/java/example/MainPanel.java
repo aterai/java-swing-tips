@@ -132,6 +132,7 @@ interface FontChangeListener extends EventListener {
 }
 
 class FontChangeEvent extends EventObject {
+    private static final long serialVersionUID = 1L;
     private final String command;
     private final Font font;
     public String getCommand() {

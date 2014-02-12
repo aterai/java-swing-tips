@@ -154,10 +154,12 @@ class JResizer extends JComponent { // implements Serializable {
         @Override public void mousePressed(MouseEvent e) {
             ResizableBorder border = (ResizableBorder)getBorder();
             cursor = border.getResizeCursor(e);
-            startPos = SwingUtilities.convertPoint((Component)e.getSource(), e.getX(), e.getY(), null);
+            Component c = e.getComponent();
+            startPos = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
             startingBounds = getBounds();
-            if(getParent() instanceof JLayeredPane) {
-                ((JLayeredPane)getParent()).moveToFront((Component)e.getSource());
+            Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
+            if(parent != null) {
+                ((JLayeredPane)parent).moveToFront(c);
             }
         }
         // %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
