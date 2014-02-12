@@ -89,7 +89,7 @@ public class MainPanel extends JPanel {
         return lafMenu;
     }
     private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
-        JMenuItem mi = (JRadioButtonMenuItem)menu.add(new JRadioButtonMenuItem(label));
+        JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
         lafMenuGroup.add(mi);
         mi.addActionListener(new ChangeLookAndFeelAction(laf));
         mi.setEnabled(isAvailableLookAndFeel(laf));
@@ -182,7 +182,7 @@ class ExitAction extends AbstractAction {
                 window = SwingUtilities.getWindowAncestor(toolbar);
             }
         }else{
-            JComponent invoker = (JComponent)c.getParent();
+            Component invoker = c.getParent();
             window = SwingUtilities.getWindowAncestor(invoker);
         }
         if(window!=null) {

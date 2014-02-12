@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -82,11 +83,11 @@ public class MainPanel extends JPanel {
 class MyInternalFrame extends JInternalFrame {
     private static final int XOFFSET = 30;
     private static final int YOFFSET = 30;
-    private static int openFrameCount;
+    private static AtomicInteger openFrameCount = new AtomicInteger();
     public MyInternalFrame() {
         //title, resizable, closable, maximizable, iconifiable
-        super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
+        super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
         setSize(180, 100);
-        setLocation(XOFFSET*openFrameCount, YOFFSET*openFrameCount);
+        setLocation(XOFFSET*openFrameCount.intValue(), YOFFSET*openFrameCount.intValue());
     }
 }

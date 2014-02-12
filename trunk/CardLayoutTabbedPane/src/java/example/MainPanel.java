@@ -191,7 +191,7 @@ class TabButton extends JRadioButton {
             setForeground(Color.GRAY);
         }
         super.fireStateChanged();
-    };
+    }
     public Color getTextColor() {
         return textColor;
     }
@@ -221,6 +221,30 @@ class TabButton extends JRadioButton {
     }
     public void setSelectedTextColor(Color color) {
         selectedTextColor = color;
+    }
+}
+
+class CloseTabIcon implements Icon {
+    private final Color color;
+    public CloseTabIcon(Color color) {
+        this.color = color;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        //g.translate(x, y);
+        g.setColor(color);
+        g.drawLine(2, 2, 9, 9);
+        g.drawLine(2, 3, 8, 9);
+        g.drawLine(3, 2, 9, 8);
+        g.drawLine(9, 2, 2, 9);
+        g.drawLine(9, 3, 3, 9);
+        g.drawLine(8, 2, 2, 8);
+        //g.translate(-x, -y);
+    }
+    @Override public int getIconWidth() {
+        return 12;
+    }
+    @Override public int getIconHeight() {
+        return 12;
     }
 }
 
@@ -314,29 +338,5 @@ class TableHeaderTabbedPane extends JPanel {
                 }
             }
         }
-    }
-}
-
-class CloseTabIcon implements Icon {
-    private final Color color;
-    public CloseTabIcon(Color color) {
-        this.color = color;
-    }
-    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        //g.translate(x, y);
-        g.setColor(color);
-        g.drawLine(2, 2, 9, 9);
-        g.drawLine(2, 3, 8, 9);
-        g.drawLine(3, 2, 9, 8);
-        g.drawLine(9, 2, 2, 9);
-        g.drawLine(9, 3, 3, 9);
-        g.drawLine(8, 2, 2, 8);
-        //g.translate(-x, -y);
-    }
-    @Override public int getIconWidth() {
-        return 12;
-    }
-    @Override public int getIconHeight() {
-        return 12;
     }
 }

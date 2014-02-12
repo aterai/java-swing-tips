@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -252,6 +253,7 @@ class TabButton extends JRadioButton {
         selectedTextColor = color;
     }
 }
+
 class CloseTabIcon implements Icon {
     private final Color color;
     public CloseTabIcon(Color color) {
@@ -276,7 +278,8 @@ class CloseTabIcon implements Icon {
     }
 }
 
-class TabLayout implements LayoutManager, java.io.Serializable {
+class TabLayout implements LayoutManager, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
     @Override public void removeLayoutComponent(Component comp)           { /* not needed */ }
     @Override public Dimension preferredLayoutSize(Container parent) {
@@ -342,7 +345,7 @@ class TabLayout implements LayoutManager, java.io.Serializable {
 class DummyIcon implements Icon {
     private static Rectangle viewRect = new Rectangle();
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(x,y);
 
         Insets i = ((JComponent)c).getInsets();
@@ -363,7 +366,8 @@ class DummyIcon implements Icon {
         g2.drawLine(a-1, b, a-1, w-b);
         g2.drawLine(b, a,   w-b, a);
         g2.drawLine(b, a-1, w-b, a-1);
-        g2.translate(-x,-y);
+        //g2.translate(-x,-y);
+        g2.dispose();
     }
     @Override public int getIconWidth()  {
         return 24;

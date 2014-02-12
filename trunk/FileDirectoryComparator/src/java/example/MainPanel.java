@@ -32,28 +32,29 @@ public class MainPanel extends JPanel {
     private final JTable table = new JTable(model);
     private final ButtonGroup bg = new ButtonGroup();
     private final JPanel p = new JPanel();
-    private final transient ActionListener al = new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            TableRowSorter<?> sorter = (TableRowSorter<?>)table.getRowSorter();
-            Object source = e.getSource();
-            if(source.equals(check2)) {
-                sorter.setComparator(0, new FileComparator(0));
-                sorter.setComparator(1, new FileComparator(1));
-                sorter.setComparator(2, new FileComparator(2));
-            }else if(source.equals(check3)) {
-                sorter.setComparator(0, new FileGroupComparator(table, 0));
-                sorter.setComparator(1, new FileGroupComparator(table, 1));
-                sorter.setComparator(2, new FileGroupComparator(table, 2));
-            }else{
-                sorter.setComparator(0, new DefaultFileComparator(0));
-                sorter.setComparator(1, new DefaultFileComparator(1));
-                sorter.setComparator(2, new DefaultFileComparator(2));
-            }
-        }
-    };
 
     public MainPanel() {
         super(new BorderLayout());
+
+        final ActionListener al = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                TableRowSorter<?> sorter = (TableRowSorter<?>)table.getRowSorter();
+                Object source = e.getSource();
+                if(source.equals(check2)) {
+                    sorter.setComparator(0, new FileComparator(0));
+                    sorter.setComparator(1, new FileComparator(1));
+                    sorter.setComparator(2, new FileComparator(2));
+                }else if(source.equals(check3)) {
+                    sorter.setComparator(0, new FileGroupComparator(table, 0));
+                    sorter.setComparator(1, new FileGroupComparator(table, 1));
+                    sorter.setComparator(2, new FileGroupComparator(table, 2));
+                }else{
+                    sorter.setComparator(0, new DefaultFileComparator(0));
+                    sorter.setComparator(1, new DefaultFileComparator(1));
+                    sorter.setComparator(2, new DefaultFileComparator(2));
+                }
+            }
+        };
         for(JRadioButton rb: Arrays.asList(check1,check2,check3)) {
             rb.addActionListener(al);
             bg.add(rb);
@@ -224,6 +225,7 @@ class FileTransferHandler extends TransferHandler {
 }
 
 class DefaultFileComparator implements Comparator<File>, Serializable {
+    private static final long serialVersionUID = 1L;
     protected final int column;
     public DefaultFileComparator(int column) {
         this.column = column;
@@ -238,6 +240,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
 }
 
 class FileComparator extends DefaultFileComparator {
+    private static final long serialVersionUID = 1L;
     public FileComparator(int column) {
         super(column);
     }
@@ -255,6 +258,7 @@ class FileComparator extends DefaultFileComparator {
 // > dir /O:GN
 // > ls --group-directories-first
 class FileGroupComparator extends DefaultFileComparator {
+    private static final long serialVersionUID = 1L;
     private final JTable table;
     public FileGroupComparator(JTable table, int column) {
         super(column);

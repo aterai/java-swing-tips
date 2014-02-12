@@ -149,7 +149,7 @@ class RoundedCornerButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        return shape.contains(x, y);
+        return shape==null ? false : shape.contains(x, y);
     }
 }
 
@@ -288,7 +288,7 @@ class ShapeButton extends JButton {
     protected final Color fc = new Color(100,150,255,200);
     protected final Color ac = new Color(230,230,230);
     protected final Color rc = Color.ORANGE;
-    protected Shape shape;
+    protected final Shape shape;
     public ShapeButton(Shape s) {
         super();
         shape = s;

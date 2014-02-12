@@ -11,11 +11,12 @@ import javax.swing.plaf.basic.*;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
     //private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
-    protected TabButton tabViewButton;
     private static Dimension size = new Dimension();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle iconRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
+
+    protected TabButton tabViewButton;
 
     public static ComponentUI createUI(JComponent c) {
         return new BasicTabViewButtonUI();

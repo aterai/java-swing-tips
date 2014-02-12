@@ -9,12 +9,13 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
+    //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
     private static Dimension size = new Dimension();
     private static Rectangle viewRect = new Rectangle();
     private static Rectangle iconRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
     private static final int CLOSEICON_WIDTH = 12;
-    //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
+
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }
@@ -22,15 +23,16 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         super.installUI(c);
         c.setBorder(BorderFactory.createEmptyBorder());
         c.setForeground(Color.WHITE);
-
-        tabViewButton.setTextColor(new Color(230, 245, 255));
-        tabViewButton.setPressedTextColor(Color.WHITE);
-        tabViewButton.setRolloverTextColor(Color.WHITE);
-        tabViewButton.setRolloverSelectedTextColor(Color.WHITE);
-        tabViewButton.setSelectedTextColor(Color.WHITE);
+        if(tabViewButton != null) {
+            tabViewButton.setTextColor(new Color(230, 245, 255));
+            tabViewButton.setPressedTextColor(Color.WHITE);
+            tabViewButton.setRolloverTextColor(Color.WHITE);
+            tabViewButton.setRolloverSelectedTextColor(Color.WHITE);
+            tabViewButton.setSelectedTextColor(Color.WHITE);
+        }
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
@@ -59,6 +61,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             viewRect, iconRect, textRect,
             b.getText() == null ? 0 : b.getIconTextGap());
         if(text==null) {
+            g2.dispose();
             return;
         }
 
@@ -79,6 +82,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             g2.fillRect(0,0,size.width,size.height);
             //g2.fill(viewRect);
         }
+        g2.dispose();
     }
 
     public static void tabPainter(Graphics2D g2, Rectangle r) {

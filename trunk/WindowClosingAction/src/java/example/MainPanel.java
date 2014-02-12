@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
                     window = SwingUtilities.getWindowAncestor(toolbar);
                 }
             }else{
-                JComponent invoker = (JComponent)c.getParent();
+                Component invoker = c.getParent();
                 window = SwingUtilities.getWindowAncestor(invoker);
             }
             if(window!=null) {

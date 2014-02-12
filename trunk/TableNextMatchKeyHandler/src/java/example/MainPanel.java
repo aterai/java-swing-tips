@@ -100,7 +100,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         int startIndex = src.getSelectedRow();
         if(time - lastTime < timeFactor) {
             typedString += c;
-            if(prefix.length() == 1 && c == prefix.charAt(0)) {
+            if(prefix != null && prefix.length() == 1 && c == prefix.charAt(0)) {
                 // Subsequent same key presses move the keyboard focus to the next
                 // object that starts with the same letter.
                 startIndex += increment;

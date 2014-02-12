@@ -61,6 +61,7 @@ public class MainPanel extends JPanel {
 
 //com.sun.java.swing.plaf.windows.WindowsIconFactory.java
 class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
@@ -76,6 +77,7 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
 }
 
 class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
