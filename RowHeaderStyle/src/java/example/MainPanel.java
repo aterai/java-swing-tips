@@ -73,7 +73,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
         TableCellRenderer tcr = tbl.getTableHeader().getDefaultRenderer();
         boolean f = row==rollOverRowIndex;
         JLabel l = (JLabel)tcr.getTableCellRendererComponent(tbl, val, isS, f?f:hasF, -1, -1);
-        if(tcr.getClass().getName().indexOf("XPDefaultRenderer")>0) {
+        if(tcr.getClass().getName().indexOf("XPDefaultRenderer")>=0) {
             l.setOpaque(!f);
             this.setIcon(new ComponentIcon(l));
             return this;

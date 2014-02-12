@@ -10,71 +10,26 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static int count;
-    //private final Executor executor = Executors.newCachedThreadPool();
-    private final JTabbedPane tab = new JTabbedPane() {
-        @Override public void addTab(String title, final Component content) {
-            super.addTab(title, new JLabel("Loading..."));
-            final JProgressBar bar = new JProgressBar();
-            final int currentIndex = getTabCount()-1;
-            final JLabel label = new JLabel(title);
-            Dimension dim = label.getPreferredSize();
-            int w = Math.max(80, dim.width);
-            label.setPreferredSize(new Dimension(w, dim.height));
-            Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
-            bar.setPreferredSize(new Dimension(w, dim.height-tabInsets.top-1));
-            //bar.setString(title);
-            //bar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
-            setTabComponentAt(currentIndex, bar);
-            SwingWorker<String, Integer> worker = new Task() {
-                @Override protected void process(List<Integer> dummy) {
-                    if(!isDisplayable()) {
-                        System.out.println("process: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                }
-                @Override public void done() {
-                    if(!isDisplayable()) {
-                        System.out.println("done: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    setTabComponentAt(currentIndex, label);
-                    setComponentAt(currentIndex, content);
-                    String txt = null;
-                    try{
-                        txt = get();
-                    }catch(InterruptedException | ExecutionException ex) {
-                        txt = "Exception";
-                    }
-                    System.out.println(txt);
-                }
-            };
-            worker.addPropertyChangeListener(new ProgressListener(bar));
-            //executor.execute(worker);
-            worker.execute();
-        }
-    };
+    private final JTabbedPane tab = new ProgressJTabbedPane();
+
     public MainPanel() {
         super(new BorderLayout());
-        tab.setComponentPopupMenu(new TabPopupMenu());
+
+        JPopupMenu popup = new JPopupMenu();
+        popup.add(new NewTabAction("Add"));
+        popup.addSeparator();
+        popup.add(new CloseAllAction("Close All"));
+        tab.setComponentPopupMenu(popup);
+
         tab.addTab("PopupMenu+addTab", new JScrollPane(new JTree()));
         add(tab);
-        add(new JButton(new NewTabAction("Add", null)), BorderLayout.SOUTH);
+        add(new JButton(new NewTabAction("Add")), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private class TabPopupMenu extends JPopupMenu {
-        public TabPopupMenu() {
-            super();
-            add(new NewTabAction("Add", null));
-            addSeparator();
-            add(new CloseAllAction("Close All", null));
-        }
-    }
     class NewTabAction extends AbstractAction {
-        public NewTabAction(String label, Icon icon) {
-            super(label,icon);
+        private int count;
+        public NewTabAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             JComponent c = (count%2==0)?new JTree():new JLabel("Tab"+count);
@@ -84,8 +39,8 @@ public class MainPanel extends JPanel {
         }
     }
     class CloseAllAction extends AbstractAction {
-        public CloseAllAction(String label, Icon icon) {
-            super(label,icon);
+        public CloseAllAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.removeAll();
@@ -113,6 +68,52 @@ public class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class ProgressJTabbedPane extends JTabbedPane {
+    //private final Executor executor = Executors.newCachedThreadPool();
+    @Override public void addTab(String title, final Component content) {
+        super.addTab(title, new JLabel("Loading..."));
+        final JProgressBar bar = new JProgressBar();
+        final int currentIndex = getTabCount()-1;
+        final JLabel label = new JLabel(title);
+        Dimension dim = label.getPreferredSize();
+        int w = Math.max(80, dim.width);
+        label.setPreferredSize(new Dimension(w, dim.height));
+        Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
+        bar.setPreferredSize(new Dimension(w, dim.height-tabInsets.top-1));
+        //bar.setString(title);
+        //bar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
+        setTabComponentAt(currentIndex, bar);
+        SwingWorker<String, Integer> worker = new Task() {
+            @Override protected void process(List<Integer> dummy) {
+                if(!isDisplayable()) {
+                    System.out.println("process: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
+            }
+            @Override public void done() {
+                if(!isDisplayable()) {
+                    System.out.println("done: DISPOSE_ON_CLOSE");
+                    cancel(true);
+                    return;
+                }
+                setTabComponentAt(currentIndex, label);
+                setComponentAt(currentIndex, content);
+                String txt = null;
+                try{
+                    txt = get();
+                }catch(InterruptedException | ExecutionException ex) {
+                    txt = "Exception";
+                }
+                System.out.println(txt);
+            }
+        };
+        worker.addPropertyChangeListener(new ProgressListener(bar));
+        //executor.execute(worker);
+        worker.execute();
     }
 }
 

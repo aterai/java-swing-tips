@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
             @Override public void propertyChange(PropertyChangeEvent e) {
                 String prop = e.getPropertyName();
                 JButton b = (JButton)e.getSource();
-                if(prop == AbstractButton.MNEMONIC_CHANGED_PROPERTY) {
+                if(AbstractButton.MNEMONIC_CHANGED_PROPERTY.equals(prop)) {
                     String str = "Alt+"+KeyEvent.getKeyText(b.getMnemonic());
                     b.setToolTipText("tooltip ("+str+")");
                 }
@@ -60,7 +60,7 @@ public class MainPanel extends JPanel {
 
         add(box);
         setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

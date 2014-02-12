@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.lang.reflect.*;
+import java.security.*;
 import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
@@ -41,16 +42,21 @@ public class MainPanel extends JPanel {
         s2.setMinimumSize(new Dimension(0, 100));
         if(bs == null) {
             if(splitPane.getUI() instanceof BasicSplitPaneUI) {
-                try{
-                    //splitPane.setDividerLocation(1);
-                    splitPane.setDividerLocation(0);
-                    Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
-                        "setKeepHidden", new Class<?>[] { Boolean.TYPE }); //boolean.class });
-                    setKeepHidden.setAccessible(true);
-                    setKeepHidden.invoke(splitPane.getUI(), new Object[] { Boolean.TRUE });
-                }catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                    @Override public Void run() {
+                        try{
+                            //splitPane.setDividerLocation(1);
+                            splitPane.setDividerLocation(0);
+                            Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
+                                "setKeepHidden", new Class<?>[] { Boolean.TYPE }); //boolean.class });
+                            setKeepHidden.setAccessible(true);
+                            setKeepHidden.invoke(splitPane.getUI(), new Object[] { Boolean.TRUE });
+                        }catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                });
             }
         }else{
 //             s1.setMinimumSize(new Dimension(0, 0));

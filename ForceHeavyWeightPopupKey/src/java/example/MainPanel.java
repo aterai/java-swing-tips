@@ -4,31 +4,37 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.lang.reflect.*;
+import java.security.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12); 
     private final JComponent glass = new MyGlassPane();
-    private final JLabel label1 = makeLabel("11111111111111111111");
-    private final JLabel label2 = makeLabel("22222222222222222222");
+    private final JLabel label1 = makeLabel("Default: setToolTipText");
+    private final JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP");
     public MainPanel(final JFrame frame) {
         super();
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-
-        try{
-            Field field;
-            if(System.getProperty("java.version").startsWith("1.6.0")) {
-                // https://forums.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
-                Class clazz = Class.forName("javax.swing.PopupFactory");
-                field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-            }else{ //JDK 1.7.0, 1.8.0
-                Class clazz = Class.forName("javax.swing.ClientPropertyKey");
-                field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            @Override public Void run() {
+                try{
+                    Field field;
+                    if(System.getProperty("java.version").startsWith("1.6.0")) {
+                        // https://forums.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
+                        Class clazz = Class.forName("javax.swing.PopupFactory");
+                        field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+                    }else{ //JDK 1.7.0, 1.8.0
+                        Class clazz = Class.forName("javax.swing.ClientPropertyKey");
+                        field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+                    }
+                    field.setAccessible(true);
+                    label2.putClientProperty(field.get(null), Boolean.TRUE);
+                }catch(ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
+                    ex.printStackTrace();
+                }
+                return null;
             }
-            field.setAccessible(true);
-            label2.putClientProperty(field.get(null), Boolean.TRUE);
-        }catch(ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
-            ex.printStackTrace();
-        }
+        });
         glass.add(label1, BorderLayout.WEST);
         glass.add(label2, BorderLayout.EAST);
         glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
@@ -60,6 +66,7 @@ public class MainPanel extends JPanel {
     }
     private static JLabel makeLabel(String title) {
         JLabel label = new JLabel(title);
+        label.setFont(FONT);
         label.setOpaque(true);
         label.setBackground(Color.ORANGE);
         label.setToolTipText("1234567890");

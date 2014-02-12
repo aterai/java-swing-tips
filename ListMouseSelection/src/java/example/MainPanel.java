@@ -148,7 +148,7 @@ class ClearSelectionListener extends MouseAdapter {
 }
 
 class SingleClickSelectList<E> extends JList<E> {
-    private ClearSelectionListener listener;
+    private transient ClearSelectionListener listener;
     public SingleClickSelectList(ListModel<E> model) {
         super(model);
     }
@@ -167,7 +167,7 @@ class SingleClickSelectList<E> extends JList<E> {
         addMouseMotionListener(listener);
     }
     @Override public void setSelectionInterval(int anchor, int lead) {
-        if(anchor==lead && lead>=0 && anchor>=0) {
+        if(anchor==lead && lead>=0 && anchor>=0 && listener!=null) {
             if(listener.isDragging) {
                 addSelectionInterval(anchor, anchor);
             }else if(!listener.isCellInsideDragging) {

@@ -12,43 +12,44 @@ import javax.swing.border.*;
 class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("Paint Shadow", true);
     private final JLabel label = new JLabel();
-    private JPopupMenu popup0;
-    private DropShadowPopupMenu popup1;
+
     public MainPanel() {
         super(new BorderLayout());
+
+        final JPopupMenu popup0 = new JPopupMenu();
+        initPopupMenu(popup0);
+
+        final DropShadowPopupMenu popup1 = new DropShadowPopupMenu();
+        initPopupMenu(popup1);
+
         label.setIcon(new ImageIcon(getClass().getResource("test.png")));
         label.setComponentPopupMenu(popup1);
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox)e.getSource();
-                label.setComponentPopupMenu(c.isSelected()?popup1:popup0);
+                label.setComponentPopupMenu(c.isSelected() ? popup1 : popup0);
             }
         });
         add(check, BorderLayout.NORTH);
         add(label);
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void updateUI() {
-        super.updateUI();
-        popup0 = new JPopupMenu();
-        popup1 = new DropShadowPopupMenu();
-        initPopupMenu(popup0);
-        initPopupMenu(popup1);
-    }
     private static void initPopupMenu(JPopupMenu p) {
-        for(JComponent c:Arrays.<JComponent>asList(new JMenuItem("Open(dummy)"),
-                                                   new JMenuItem("Save(dummy)"),
-                                                   new JMenuItem("Close(dummy)"),
-                                                   new JSeparator(),
-                                                   new JMenuItem(new AbstractAction("Exit") {
-                                                       @Override public void actionPerformed(ActionEvent e) {
-                                                           JMenuItem m = (JMenuItem)e.getSource();
-                                                           JPopupMenu popup = (JPopupMenu)m.getParent();
-                                                           JComponent invoker = (JComponent)popup.getInvoker();
-                                                           Window f = SwingUtilities.getWindowAncestor(invoker);
-                                                           if(f!=null) { f.dispose(); }
-                                                       }
-                                                   }))) {
+        for(JComponent c: Arrays.<JComponent>asList(
+            new JMenuItem("Open(dummy)"),
+            new JMenuItem("Save(dummy)"),
+            new JMenuItem("Close(dummy)"),
+            new JSeparator(),
+            new JMenuItem(new AbstractAction("Exit") {
+                @Override public void actionPerformed(ActionEvent e) {
+                    JMenuItem m = (JMenuItem)e.getSource();
+                    JPopupMenu pop = (JPopupMenu)SwingUtilities.getUnwrappedParent(m);
+                    Window w = SwingUtilities.getWindowAncestor(pop.getInvoker());
+                    if(w != null) {
+                        w.dispose();
+                    }
+                }
+            }))) {
             c.setOpaque(true);
             p.add(c);
         }
@@ -81,8 +82,8 @@ class MainPanel extends JPanel {
 //*
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
-    private BufferedImage shadow;
-    private Border inner;
+    private transient BufferedImage shadow;
+    private transient Border inner;
     @Override public boolean isOpaque() {
         return false;
     }
@@ -101,7 +102,9 @@ class DropShadowPopupMenu extends JPopupMenu {
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
-        if(inner==null) { inner = getBorder(); }
+        if(inner==null) {
+            inner = getBorder();
+        }
         setBorder(makeShadowBorder(c, new Point(x, y)));
 
         Dimension d = getPreferredSize();
@@ -138,15 +141,13 @@ class DropShadowPopupMenu extends JPopupMenu {
 
 class ShadowBorder extends AbstractBorder {
     private final int xoff, yoff;
-    private final Insets insets;
-    private final BufferedImage screen;
-    private BufferedImage shadow;
+    private transient final BufferedImage screen;
+    private transient BufferedImage shadow;
 
     public ShadowBorder(int x, int y, JComponent c, Point p) {
         super();
         this.xoff = x;
         this.yoff = y;
-        this.insets = new Insets(0,0,xoff,yoff);
         BufferedImage bi = null;
         try{
             Robot robot = new Robot();
@@ -158,7 +159,7 @@ class ShadowBorder extends AbstractBorder {
         screen = bi;
     }
     @Override public Insets getBorderInsets(Component c) {
-        return insets;
+        return new Insets(0, 0, xoff, yoff);
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         if(screen==null) {
@@ -175,19 +176,20 @@ class ShadowBorder extends AbstractBorder {
             }
             g2.dispose();
         }
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.drawImage(screen, 0, 0, c);
         g2d.drawImage(shadow, 0, 0, c);
         g2d.setPaint(c.getBackground()); //??? 1.7.0_03
         g2d.fillRect(x,y,w-xoff,h-yoff);
+        g2d.dispose();
     }
 }
 /*/
 //JDK 1.7.0: JPopupMenu#setBackground(new Color(0,true));
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
-    private BufferedImage shadow = null;
-    private Border border = null;
+    private transient BufferedImage shadow;
+    private Border border;
     @Override public boolean isOpaque() {
         return false;
     }
@@ -212,7 +214,8 @@ class DropShadowPopupMenu extends JPopupMenu {
         }
         setBorder(border);
         Dimension d = getPreferredSize();
-        int w = d.width, h = d.height;
+        int w = d.width;
+        int h = d.height;
         if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();

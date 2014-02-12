@@ -14,14 +14,7 @@ public final class MainPanel extends JPanel {
         p.add(new JComboBox<String>(new String[] {"Google", "Yahoo!", "Bing"}));
         p.add(new JLabel("SearchBar JComboBox"));
 
-        DefaultComboBoxModel<SearchEngine> model = new DefaultComboBoxModel<SearchEngine>() {
-            @Override public void setSelectedItem(Object anObject) {
-                //System.out.println("model: "+anObject);
-            }
-            //@Override public DefaultComboBoxModel getSelectedItem() {
-            //    return null;
-            //}
-        };
+        DefaultComboBoxModel<SearchEngine> model = new SearchEngineComboBoxModel<>();
         model.addElement(new SearchEngine("Google", "http://www.google.com/", new ImageIcon(getClass().getResource("google.png"))));
         model.addElement(new SearchEngine("Yahoo!", "http://www.yahoo.com/",  new ImageIcon(getClass().getResource("yahoo.png"))));
         model.addElement(new SearchEngine("Bing",   "http://www.bing.com/",   new ImageIcon(getClass().getResource("bing.png"))));
@@ -81,6 +74,12 @@ class SearchEngine {
     }
     @Override public String toString() {
         return name;
+    }
+}
+
+class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxModel<E> {
+    @Override public void setSelectedItem(Object anObject) {
+        //System.out.println("model: "+anObject);
     }
 }
 
