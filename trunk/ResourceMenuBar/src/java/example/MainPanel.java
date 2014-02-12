@@ -7,18 +7,17 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private final BarFactory barFactory;
+    private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
     public MainPanel() {
         super(new BorderLayout());
-        barFactory = new BarFactory("resources.Main");
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
-        JMenuBar menuBar = barFactory.createMenubar();
-        if(menuBar!=null) {
-            menupanel.add(menuBar, BorderLayout.NORTH);
-        }
-        JToolBar toolBar = barFactory.createToolbar();
+        JMenuBar menuBar = BAR_FACTORY.createMenubar();
+        //if(menuBar!=null)
+        menupanel.add(menuBar, BorderLayout.NORTH);
+
+        JToolBar toolBar = BAR_FACTORY.createToolbar();
         if(toolBar!=null) {
             menupanel.add(toolBar, BorderLayout.SOUTH);
         }
@@ -28,7 +27,7 @@ public class MainPanel extends JPanel {
     }
 
     protected void initActions(Action[] actlist) {
-        barFactory.initActions(actlist);
+        BAR_FACTORY.initActions(actlist);
     }
     private Action[] getActions() {
         return new Action[] {
@@ -50,7 +49,7 @@ public class MainPanel extends JPanel {
         public NewAction() {
             super("new");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             // dummy
         }
     }

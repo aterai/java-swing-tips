@@ -114,14 +114,11 @@ public final class BarFactory {
         URL url = getResource(key + IMAGE_SUFFIX);
         JButton b;
         if(url==null) {
-            b = new JButton(getResourceString(key + LABEL_SUFFIX)) {
-                @Override public float getAlignmentY() { return 0.5f; }
-            };
+            b = new JButton(getResourceString(key + LABEL_SUFFIX));
         }else{
-            b = new JButton(new ImageIcon(url)) {
-                @Override public float getAlignmentY() { return 0.5f; }
-            };
+            b = new JButton(new ImageIcon(url));
         }
+        b.setAlignmentY(0.5f);
         b.setFocusPainted(false);
         b.setFocusable(false);
         b.setRequestFocusEnabled(false);
@@ -161,9 +158,8 @@ public final class BarFactory {
         String[] menuKeys = tokenize(getResourceString("menubar"));
         for(int i=0;i<menuKeys.length;i++) {
             JMenu m = createMenu(menuKeys[i]);
-            if(m != null) {
-                mb.add(m);
-            }
+            //if(m != null)
+            mb.add(m);
         }
         return mb;
     }
@@ -283,9 +279,9 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control {
              }
              if(stream != null) {
                  //BufferedInputStream bis = new BufferedInputStream(stream);
-                 Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-                 bundle = new PropertyResourceBundle(r);
-                 r.close();
+                 try(Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+                     bundle = new PropertyResourceBundle(r);
+                 }
              }
          }
          return bundle;

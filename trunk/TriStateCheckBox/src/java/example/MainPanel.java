@@ -109,7 +109,7 @@ class TriStateActionListener implements ActionListener {
 }
 
 class TriStateCheckBox extends JCheckBox {
-    protected TriStateActionListener listener;
+    protected transient TriStateActionListener listener;
     public TriStateCheckBox(String title) {
         super(title);
     }
@@ -137,7 +137,7 @@ class TriStateCheckBox extends JCheckBox {
 class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     private final JLabel label = new JLabel("Check All");
     private final int targetColumnIndex;
-    private Icon icon;
+    private transient Icon icon;
     public HeaderRenderer(JTableHeader header, int index) {
         super((String)null);
         this.targetColumnIndex = index;
@@ -220,11 +220,12 @@ class IndeterminateIcon implements Icon {
         icon.paintIcon(c, g, x, y);
         int w = getIconWidth();
         int h = getIconHeight();
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
         g2.fillRect(SIDE_MARGIN, (h-HEIGHT)/2, w-SIDE_MARGIN-SIDE_MARGIN, HEIGHT);
         g2.translate(-x, -y);
+        g2.dispose();
     }
     @Override public int getIconWidth()  {
         return icon.getIconWidth();

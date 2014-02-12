@@ -11,32 +11,13 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel {
     private static String text;
     //private final JTextPane   textPane;
-    private final JEditorPane editorPane = new JEditorPane();
-    private final JTextArea   textArea   = new JTextArea();
-    private final ExecutorService threadPool;
-
+    private final JEditorPane editorPane   = new JEditorPane();
+    private final JTextArea   textArea     = new JTextArea();
     private final JButton editorPaneButton = new JButton("JEditorPane");
     private final JButton textAreaButton   = new JButton("JTextArea");
-    private final ActionListener longTextListener = new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            final JComponent c = (JComponent)e.getSource();
-            threadPool.execute(new Runnable() {
-                @Override public void run() {
-                    if(text!=null) {
-                        if(c.equals(editorPaneButton)) {
-                            editorPane.setText(text);
-                        }else{
-                            textArea.setText(text);
-                        }
-                    }
-                }
-            });
-        }
-    };
 
-    public MainPanel(ExecutorService threadPool) {
+    public MainPanel(final ExecutorService threadPool) {
         super(new BorderLayout());
-        this.threadPool = threadPool;
 /*
         textPane = new JTextPane() {
             //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
@@ -53,6 +34,22 @@ public class MainPanel extends JPanel {
         editorPane.setEditorKit(new NoWrapEditorKit2());
 //*/
 
+        ActionListener longTextListener = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                final JComponent c = (JComponent)e.getSource();
+                threadPool.execute(new Runnable() {
+                    @Override public void run() {
+                        if(text!=null) {
+                            if(c.equals(editorPaneButton)) {
+                                editorPane.setText(text);
+                            }else{
+                                textArea.setText(text);
+                            }
+                        }
+                    }
+                });
+            }
+        };
         editorPaneButton.addActionListener(longTextListener);
         textAreaButton.addActionListener(longTextListener);
 

@@ -42,11 +42,12 @@ public final class MainPanel extends JPanel {
             socket = null;
         }
         if(socket==null) {
-            String stag = "<html><center><br /><br /><br /><br /><br />";
-            String etag = "<br /><br /><br /><br /><br /><br /></center>";
-            JOptionPane.showMessageDialog(null, stag+"An instance of the application is already running..."+etag);
-            System.exit(0);
-            //return;
+            //String stag = "<html><center><br /><br /><br /><br /><br />";
+            //String etag = "<br /><br /><br /><br /><br /><br /></center>";
+            //JOptionPane.showMessageDialog(null, stag+"An instance of the application is already running..."+etag);
+            //System.exit(0);
+            JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
+            return;
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

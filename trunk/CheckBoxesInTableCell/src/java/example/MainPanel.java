@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Serializable;
 import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -56,7 +55,7 @@ public class MainPanel extends JPanel {
         table.getColumnModel().getColumn(1).setCellEditor(new CheckBoxesEditor());
 
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -117,7 +116,7 @@ class CheckBoxesPanel extends JPanel {
     }
 }
 
-class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, Serializable {
+class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
     public CheckBoxesRenderer() {
         super();
         setName("Table.cellRenderer");
@@ -129,7 +128,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, S
     //public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
 }
 
-class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, Serializable {
+class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     transient protected ChangeEvent changeEvent;
 
 //     private final ActionListener al = new ActionListener() {

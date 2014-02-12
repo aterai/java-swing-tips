@@ -10,13 +10,17 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private static final String DEVICE_NAME = "con.txt";
     public MainPanel() {
-        super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(3,1,5,5));
+        super(new BorderLayout(10, 10));
+        JPanel p = new JPanel(new GridLayout(3,1,10,10));
         p.add(makePanel("IOException", new JButton(new AbstractAction("c:/con.txt") {
             @Override public void actionPerformed(ActionEvent ae) {
                 File file = new File(DEVICE_NAME);
                 try{
-                    file.createNewFile();
+                    if(file.createNewFile()) {
+                        System.out.println("the named file does not exist and was successfully created.");
+                    }else{
+                        System.out.println("the named file already exists.");
+                    }
                 }catch(IOException ioe) {
                     ioe.printStackTrace();
                     Object[] obj = { ioe.getMessage() };
@@ -55,7 +59,8 @@ public class MainPanel extends JPanel {
             }
         })));
         add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 160));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setPreferredSize(new Dimension(320, 240));
     }
     private boolean isCanonicalPath(File file) {
         if(file==null) { return false; }

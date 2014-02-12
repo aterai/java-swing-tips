@@ -35,9 +35,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     @Override protected void installListeners() {
         super.installListeners();
         popupMenuListener = createPopupMenuListener();
-        if(popupMenuListener != null) {
-            comboBox.addPopupMenuListener(popupMenuListener);
-        }
+        //if(popupMenuListener != null)
+        comboBox.addPopupMenuListener(popupMenuListener);
     }
     @Override protected void uninstallListeners() {
         super.installListeners();
@@ -58,7 +57,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                     if(o instanceof SearchEngine) {
                         SearchEngine se = (SearchEngine) o;
                         arrowButton.setIcon(se.favicon);
-                        arrowButton.setRolloverIcon(makeRolloverIcon(se.favicon));
+                        arrowButton.setRolloverIcon(IconUtil.makeRolloverIcon(se.favicon));
                     }
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
@@ -72,9 +71,10 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         return popupMenuListener;
     }
     //NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
+    private static class DummyKeyAdapter extends KeyAdapter {}
     @Override protected KeyListener createKeyListener() {
         if(keyListener==null) {
-            keyListener = new KeyAdapter() {};
+            keyListener = new DummyKeyAdapter();
         }
         return keyListener;
     }
@@ -121,14 +121,14 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         //super.installComponents();
         arrowButton = createArrowButton();
         comboBox.add(arrowButton);
-        if(arrowButton != null) {
-            configureArrowButton();
-        }
+        //if(arrowButton != null)
+        configureArrowButton();
+
         loupeButton = createLoupeButton();
         comboBox.add(loupeButton);
-        if(loupeButton != null) {
-            configureLoupeButton();
-        }
+        //if(loupeButton != null)
+        configureLoupeButton();
+
         //if(comboBox.isEditable())
         addEditor();
         comboBox.add(currentValuePane);
@@ -142,9 +142,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     }
     protected JButton createLoupeButton() {
         JButton button = new JButton(loupeAction);
-        ImageIcon loupe = new ImageIcon(getClass().getResource("loupe.png"));
+        ImageIcon loupe = new ImageIcon(BasicSearchBarComboBoxUI.class.getResource("loupe.png"));
         button.setIcon(loupe);
-        button.setRolloverIcon(makeRolloverIcon(loupe));
+        button.setRolloverIcon(IconUtil.makeRolloverIcon(loupe));
         return button;
     }
     public void configureLoupeButton() {
@@ -172,21 +172,16 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         }
     }
     @Override protected ListCellRenderer createRenderer() {
-        return new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel l = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if(value instanceof SearchEngine) {
-                    SearchEngine se = (SearchEngine)value;
-                    l.setIcon(se.favicon);
-                }
-                return l;
-            }
-        };
+        return new SearchEngineListCellRenderer();
     }
     @Override protected LayoutManager createLayoutManager() {
         return new SearchBarLayout();
     }
-    private static Icon makeRolloverIcon(Icon srcIcon) {
+}
+
+class IconUtil {
+    private IconUtil() { /* Singlton */ }
+    public static Icon makeRolloverIcon(Icon srcIcon) {
         RescaleOp op = new RescaleOp(
             new float[] { 1.2f,1.2f,1.2f,1.0f },
             new float[] { 0f,0f,0f,0f }, null);
@@ -196,6 +191,18 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         srcIcon.paintIcon(null, g, 0, 0);
         g.dispose();
         return new ImageIcon(op.filter(img, null));
+    }
+}
+
+class SearchEngineListCellRenderer extends DefaultListCellRenderer {
+    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel l = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        if(value instanceof SearchEngine) {
+            SearchEngine se = (SearchEngine)value;
+            l.setIcon(se.favicon);
+            l.setToolTipText(se.url);
+        }
+        return l;
     }
 }
 
@@ -251,20 +258,21 @@ class SearchBarLayout implements LayoutManager {
 
 class TriangleIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(Color.GRAY);
         g2.translate(x,y);
         g2.drawLine( 2, 3, 6, 3 );
         g2.drawLine( 3, 4, 5, 4 );
         g2.drawLine( 4, 5, 4, 5 );
         g2.translate(-x,-y);
+        g2.dispose();
     }
     @Override public int getIconWidth()  { return 9; }
     @Override public int getIconHeight() { return 9; }
 }
 
 class TriangleArrowButton extends JButton {
-    private final transient Icon triangleIcon = new TriangleIcon();
+    private static Icon triangleIcon = new TriangleIcon();
 //     @Override public void setIcon(Icon favicon) {
 //         super.setIcon(favicon);
 //         if(favicon!=null) {

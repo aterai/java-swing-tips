@@ -606,10 +606,43 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 }
 
 // a closeable tab test
-// http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
+// How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// http://download.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
-    private final transient MouseListener buttonMouseListener = new MouseAdapter() {
+
+    public ButtonTabComponent(final JTabbedPane pane) {
+        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        if(pane == null) {
+            throw new IllegalArgumentException("TabbedPane cannot be null");
+        }
+        this.pane = pane;
+        setOpaque(false);
+        JLabel label = new JLabel() {
+            @Override public String getText() {
+                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                if(i != -1) {
+                    return pane.getTitleAt(i);
+                }
+                return null;
+            }
+        };
+        add(label);
+        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        JButton button = new TabButton();
+        TabButtonHandler handler = new TabButtonHandler();
+        button.addActionListener(handler);
+        button.addMouseListener(handler);
+        add(button);
+        setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+    }
+    private class TabButtonHandler extends MouseAdapter implements ActionListener {
+        @Override public void actionPerformed(ActionEvent e) {
+            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            if(i != -1) {
+                pane.remove(i);
+            }
+        }
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if(component instanceof AbstractButton) {
@@ -624,87 +657,42 @@ class ButtonTabComponent extends JPanel {
                 button.setBorderPainted(false);
             }
         }
-    };
-    public ButtonTabComponent(final JTabbedPane pane) {
-        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if(pane == null) {
-            throw new IllegalArgumentException("TabbedPane cannot be null");
-        }
-        this.pane = pane;
-        setOpaque(false);
-        add(new JLabel() {
-            @Override public String getText() {
-                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-                if(i != -1) {
-                    return pane.getTitleAt(i);
-                }
-                return null;
-            }
-            @Override public void setToolTipText(String text) {
-                //MUST use JTabbedPane#setToolTipTextAt(int, String) instead of this method.
-            }
-            @Override public String getToolTipText() {
-                return null;
-            }
-            @Override public void updateUI() {
-                super.updateUI();
-                setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-            }
-        });
+    }
+}
 
-        ////Pointed out by ron190jSQL
-        //label.setToolTipText("label tooltip test");
-        //label.setOpaque(false);
-        //setToolTipText("panel tooltip test");
-        JButton button = new TabButton();
-        add(button);
-        setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+class TabButton extends JButton {
+    private static final int SIZE  = 17;
+    private static final int DELTA = 6;
+
+    public TabButton() {
+        super();
+        setUI(new BasicButtonUI());
+        setToolTipText("close this tab");
+        setContentAreaFilled(false);
+        setFocusable(false);
+        setBorder(BorderFactory.createEtchedBorder());
+        setBorderPainted(false);
+        setRolloverEnabled(true);
     }
-    @Override public void setToolTipText(String text) {
-        //MUST use JTabbedPane#setToolTipTextAt(int, String) instead of this method.
+    @Override public Dimension getPreferredSize() {
+        return new Dimension(SIZE, SIZE);
     }
-    @Override public String getToolTipText() {
-        return null;
+    @Override public void updateUI() {
+        //we don't want to update UI for this button
     }
-    private class TabButton extends JButton implements ActionListener {
-        public TabButton() {
-            super();
-            int size = 17;
-            setPreferredSize(new Dimension(size, size));
-            setToolTipText("close this tab");
-            setUI(new BasicButtonUI());
-            setContentAreaFilled(false);
-            setFocusable(false);
-            setBorder(BorderFactory.createEtchedBorder());
-            setBorderPainted(false);
-            addMouseListener(buttonMouseListener);
-            setRolloverEnabled(true);
-            addActionListener(this);
+    @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.BLACK);
+        if(getModel().isRollover()) {
+            g2.setColor(Color.ORANGE);
         }
-        @Override public void actionPerformed(ActionEvent e) {
-            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            if(i != -1) {
-                pane.remove(i);
-            }
+        if(getModel().isPressed()) {
+            g2.setColor(Color.BLUE);
         }
-        @Override public void updateUI() {
-            //we don't want to update UI for this button
-        }
-        @Override protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.BLACK);
-            if(getModel().isRollover()) {
-                g2.setColor(Color.ORANGE);
-            }
-            if(getModel().isPressed()) {
-                g2.setColor(Color.BLUE);
-            }
-            int delta = 6;
-            g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-            g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
-            g2.dispose();
-        }
+        g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
+        g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);
+        g2.dispose();
     }
 }

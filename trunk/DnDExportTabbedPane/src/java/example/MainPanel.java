@@ -621,10 +621,12 @@ class GhostGlassPane extends JPanel {
 }
 //*/
 
-//// a closeable tab test
-//// http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#TabComponentsDemo
+// a closeable tab test
+// How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// http://download.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 // class ButtonTabComponent extends JPanel {
 //     private final JTabbedPane pane;
+//
 //     public ButtonTabComponent(final JTabbedPane pane) {
 //         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //         if(pane == null) {
@@ -644,46 +646,19 @@ class GhostGlassPane extends JPanel {
 //         add(label);
 //         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 //         JButton button = new TabButton();
+//         TabButtonHandler handler = new TabButtonHandler();
+//         button.addActionListener(handler);
+//         button.addMouseListener(handler);
 //         add(button);
 //         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
 //     }
-//     private class TabButton extends JButton implements ActionListener {
-//         public TabButton() {
-//             int size = 17;
-//             setPreferredSize(new Dimension(size, size));
-//             setToolTipText("close this tab");
-//             setUI(new javax.swing.plaf.basic.BasicButtonUI());
-//             setContentAreaFilled(false);
-//             setFocusable(false);
-//             setBorder(BorderFactory.createEtchedBorder());
-//             setBorderPainted(false);
-//             addMouseListener(buttonMouseListener);
-//             setRolloverEnabled(true);
-//             addActionListener(this);
-//         }
+//     private class TabButtonHandler extends MouseAdapter implements ActionListener {
 //         @Override public void actionPerformed(ActionEvent e) {
 //             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-//             if(i != -1) { pane.remove(i); }
-//         }
-//         @Override public void updateUI() {}
-//         @Override protected void paintComponent(Graphics g) {
-//             super.paintComponent(g);
-//             Graphics2D g2 = (Graphics2D) g.create();
-//             g2.setStroke(new BasicStroke(2));
-//             g2.setColor(Color.BLACK);
-//             if(getModel().isRollover()) {
-//                 g2.setColor(Color.ORANGE);
+//             if(i != -1) {
+//                 pane.remove(i);
 //             }
-//             if(getModel().isPressed()) {
-//                 g2.setColor(Color.BLUE);
-//             }
-//             int delta = 6;
-//             g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-//             g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
-//             g2.dispose();
 //         }
-//     }
-//     private static final MouseListener buttonMouseListener = new MouseAdapter() {
 //         @Override public void mouseEntered(MouseEvent e) {
 //             Component component = e.getComponent();
 //             if(component instanceof AbstractButton) {
@@ -698,5 +673,42 @@ class GhostGlassPane extends JPanel {
 //                 button.setBorderPainted(false);
 //             }
 //         }
-//     };
+//     }
+// }
+//
+// class TabButton extends JButton {
+//     private static final int SIZE  = 17;
+//     private static final int DELTA = 6;
+//
+//     public TabButton() {
+//         super();
+//         setUI(new BasicButtonUI());
+//         setToolTipText("close this tab");
+//         setContentAreaFilled(false);
+//         setFocusable(false);
+//         setBorder(BorderFactory.createEtchedBorder());
+//         setBorderPainted(false);
+//         setRolloverEnabled(true);
+//     }
+//     @Override public Dimension getPreferredSize() {
+//         return new Dimension(SIZE, SIZE);
+//     }
+//     @Override public void updateUI() {
+//         //we don't want to update UI for this button
+//     }
+//     @Override protected void paintComponent(Graphics g) {
+//         super.paintComponent(g);
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.setStroke(new BasicStroke(2));
+//         g2.setColor(Color.BLACK);
+//         if(getModel().isRollover()) {
+//             g2.setColor(Color.ORANGE);
+//         }
+//         if(getModel().isPressed()) {
+//             g2.setColor(Color.BLUE);
+//         }
+//         g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
+//         g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);
+//         g2.dispose();
+//     }
 // }

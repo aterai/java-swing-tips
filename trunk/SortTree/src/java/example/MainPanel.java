@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.io.Serializable;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,35 +18,34 @@ public class MainPanel extends JPanel {
     private final JCheckBox sort1 = new JCheckBox("1: bubble sort");
     private final JCheckBox sort2 = new JCheckBox("2: selection sort");
     private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort");
-    private final transient ActionListener sortActionListener = new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox check = (JCheckBox)e.getSource();
-            if(check.isSelected()) {
-                TreeUtil.compareCount.set(0);
-                TreeUtil.swapCount.set(0);
-                DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
-                if(check.equals(sort0)) {
-                    TreeUtil.sortTree0(r);
-                }else if(check.equals(sort1)) {
-                    TreeUtil.sortTree1(r);
-                }else if(check.equals(sort2)) {
-                    TreeUtil.sortTree2(r);
-                }else{
-                    TreeUtil.sortTree3(r);
-                }
-                log(check.getText());
-                tree.setModel(new DefaultTreeModel(r));
-            }else{
-                tree.setModel(new DefaultTreeModel(root));
-            }
-            TreeUtil.expandAll(tree);
-        }
-    };
 
     public MainPanel() {
         super(new BorderLayout());
         JPanel box = new JPanel(new GridLayout(2,2));
-
+        ActionListener sortActionListener = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                JCheckBox check = (JCheckBox)e.getSource();
+                if(check.isSelected()) {
+                    TreeUtil.compareCount.set(0);
+                    TreeUtil.swapCount.set(0);
+                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
+                    if(check.equals(sort0)) {
+                        TreeUtil.sortTree0(r);
+                    }else if(check.equals(sort1)) {
+                        TreeUtil.sortTree1(r);
+                    }else if(check.equals(sort2)) {
+                        TreeUtil.sortTree2(r);
+                    }else{
+                        TreeUtil.sortTree3(r);
+                    }
+                    log(check.getText());
+                    tree.setModel(new DefaultTreeModel(r));
+                }else{
+                    tree.setModel(new DefaultTreeModel(root));
+                }
+                TreeUtil.expandAll(tree);
+            }
+        };
         for(JCheckBox check: Arrays.asList(sort0, sort1, sort2, sort3)) {
             box.add(check);
             check.addActionListener(sortActionListener);
@@ -205,7 +204,8 @@ class TreeUtil {
         }
     }
 
-    private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode> { //, Serializable {
+    private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
+        private static final long serialVersionUID = 1L;
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
             compareCount.getAndIncrement();
             if(a.isLeaf() && !b.isLeaf()) {

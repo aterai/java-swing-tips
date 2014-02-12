@@ -141,7 +141,7 @@ class CheckBoxesPanel extends JPanel {
     }
 }
 
-class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, java.io.Serializable {
+class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
     public CheckBoxesRenderer() {
         super();
         setName("Table.cellRenderer");
@@ -153,7 +153,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer, j
     //public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
 }
 
-class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor, java.io.Serializable {
+class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     transient protected ChangeEvent changeEvent;
 
     public CheckBoxesEditor() {

@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private static final int MAXHISTORY = 3;
-    private final BarFactory barFactory;
+    private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
     private final List<String> fh = new ArrayList<>();
     private final JMenuItem noFile = new JMenuItem("なし");
@@ -19,15 +19,14 @@ public class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        barFactory = new BarFactory("resources.Main");
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
-        JMenuBar menuBar = barFactory.createMenubar();
-        if(menuBar!=null) {
-            menupanel.add(menuBar, BorderLayout.NORTH);
-            initHistory(barFactory);
-        }
-        JToolBar toolBar = barFactory.createToolbar();
+        JMenuBar menuBar = BAR_FACTORY.createMenubar();
+        //if(menuBar!=null)
+        menupanel.add(menuBar, BorderLayout.NORTH);
+        initHistory();
+
+        JToolBar toolBar = BAR_FACTORY.createToolbar();
         if(toolBar!=null) {
             menupanel.add(toolBar, BorderLayout.SOUTH);
         }
@@ -36,12 +35,12 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void initHistory(BarFactory barFactory) {
-        JMenu fm = barFactory.getMenu("file");
+    private void initHistory() {
+        JMenu fm = BAR_FACTORY.getMenu("file");
         if(fileHistory==null) {
             fileHistory = new JMenu("最近使ったファイル(F)");
             fileHistory.setMnemonic('F');
-            JMenuItem exit = barFactory.getMenuItem("exit");
+            JMenuItem exit = BAR_FACTORY.getMenuItem("exit");
             fm.remove(exit);
             fm.add(fileHistory);
             fm.addSeparator();
@@ -105,7 +104,7 @@ public class MainPanel extends JPanel {
     }
 
     protected void initActions(Action[] actlist) {
-        barFactory.initActions(actlist);
+        BAR_FACTORY.initActions(actlist);
     }
     private Action[] getActions() {
         return new Action[] {
