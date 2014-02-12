@@ -38,7 +38,7 @@ class MainPanel extends JPanel {
             //root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
 
             NodeList com = root.getElementsByTagName("com");
-            if(com!=null && com.getLength()>0) {
+            if(com.getLength()>0) {
                 String comment = ((IIOMetadataNode)com.item(0)).getAttribute("comment");
                 buf.append(String.format("Comment: %s%n", comment));
             }

@@ -26,9 +26,8 @@ public class MainPanel extends JPanel {
         String[] menuKeys = {"File", "Edit", "Help"};
         for(String key: menuKeys) {
             JMenu m = createMenu(key);
-            if(m != null) {
-                mb.add(m);
-            }
+            //if(m != null)
+            mb.add(m);
         }
         return mb;
     }

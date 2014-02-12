@@ -208,8 +208,8 @@ class RoundedCornerButtonUI extends BasicButtonUI{
         b.setBorder(BorderFactory.createEmptyBorder(4,12,4,12));
         initShape(b);
     }
-    @Override protected void installListeners(AbstractButton b) {
-        BasicButtonListener listener = new BasicButtonListener(b) {
+    @Override protected void installListeners(AbstractButton button) {
+        BasicButtonListener listener = new BasicButtonListener(button) {
             @Override public void mousePressed(MouseEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 initShape(b);
@@ -230,13 +230,12 @@ class RoundedCornerButtonUI extends BasicButtonUI{
                 }
             }
         };
-        if(listener != null) {
-            b.addMouseListener(listener);
-            b.addMouseMotionListener(listener);
-            b.addFocusListener(listener);
-            b.addPropertyChangeListener(listener);
-            b.addChangeListener(listener);
-        }
+        //if(listener != null)
+        button.addMouseListener(listener);
+        button.addMouseMotionListener(listener);
+        button.addFocusListener(listener);
+        button.addPropertyChangeListener(listener);
+        button.addChangeListener(listener);
     }
     @Override public void paint(Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
