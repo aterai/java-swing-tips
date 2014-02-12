@@ -171,7 +171,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         FontMetrics fm = c.getFontMetrics(f);
 
         Insets i = c.getInsets();
-        size = b.getSize(size);
+        b.getSize(size);
         viewRect.x = i.left;
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
