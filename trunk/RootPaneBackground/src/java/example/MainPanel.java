@@ -109,9 +109,8 @@ class ImageUtil {
         mb.setOpaque(false);
         for(String key: new String[] {"File", "Edit", "Help"}) {
             JMenu m = createMenu(key);
-            if(m != null) {
-                mb.add(m);
-            }
+            //if(m != null)
+            mb.add(m);
         }
         return mb;
     }

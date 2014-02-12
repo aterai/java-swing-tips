@@ -158,13 +158,13 @@ class CustomTooltipEditorPane extends JEditorPane {
         //if(!doesElementContainLocation(editor, elem, pos, e.getX(), e.getY())) {
         //    elem = null;
         //}
-        if(elem != null) {
-            AttributeSet a = elem.getAttributes();
-            AttributeSet span = (AttributeSet)a.getAttribute(HTML.Tag.SPAN);
-            if(span != null) {
-                return (String)span.getAttribute(HTML.Attribute.TITLE);
-            }
+        //if(elem != null) {
+        AttributeSet a = elem.getAttributes();
+        AttributeSet span = (AttributeSet)a.getAttribute(HTML.Tag.SPAN);
+        if(span != null) {
+            return (String)span.getAttribute(HTML.Attribute.TITLE);
         }
+        //}
         return null;
     }
 }
