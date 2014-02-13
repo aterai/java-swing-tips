@@ -175,8 +175,9 @@ class MyIconTable extends JTable {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
     public void startEditing() {
-        JFrame f = (JFrame)getTopLevelAncestor();
-        f.setGlassPane(panel);
+        //JFrame f = (JFrame)getTopLevelAncestor();
+        //f.setGlassPane(panel);
+        getRootPane().setGlassPane(panel);
         Dimension dim = editor.getPreferredSize();
         rect = getCellRect(getSelectedRow(), getSelectedColumn(), true);
         int iv = (dim.width-rect.width)/2;

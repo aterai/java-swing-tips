@@ -105,47 +105,67 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
     }
 }
 
+class ViewAction extends AbstractAction {
+    private final JTable table;
+    public ViewAction(JTable table) {
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        System.out.println("view");
+        JOptionPane.showMessageDialog(table, "Viewing");
+    }
+}
+
+class EditAction extends AbstractAction {
+    private final JTable table;
+    public EditAction(JTable table) {
+        super("edit");
+        this.table = table;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        //Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
+        int row = table.convertRowIndexToModel(table.getEditingRow());
+        Object o = table.getModel().getValueAt(row, 0);
+        JOptionPane.showMessageDialog(table, "Editing: "+o);
+    }
+}
+
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
     transient protected ChangeEvent changeEvent;
-
-    public ButtonsEditor(final JTable table) {
-        super();
-        //---->
-        //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
-        MouseListener ml = new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
+    private final JTable table;
+    private class EditingStopHandler extends MouseAdapter implements ActionListener {
+        @Override public void mousePressed(MouseEvent e) {
+            Object o = e.getSource();
+            if(o instanceof TableCellEditor) {
+                actionPerformed(null);
+            }else if(o instanceof JButton) {
+                //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
                 ButtonModel m = ((JButton)e.getSource()).getModel();
                 if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
                     setBackground(table.getBackground());
                 }
             }
-        };
-        buttons.get(0).addMouseListener(ml);
-        buttons.get(1).addMouseListener(ml);
-        //<----
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    fireEditingStopped();
+                }
+            });
+        }
+    }
+    public ButtonsEditor(JTable table) {
+        super();
+        this.table = table;
+        buttons.get(0).setAction(new ViewAction(table));
+        buttons.get(1).setAction(new EditAction(table));
 
-        buttons.get(0).addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-                JOptionPane.showMessageDialog(table, "Viewing");
-            }
-        });
-
-        buttons.get(1).addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
-                int row = table.convertRowIndexToModel(table.getEditingRow());
-                Object o = table.getModel().getValueAt(row, 0);
-                fireEditingStopped();
-                JOptionPane.showMessageDialog(table, "Editing: "+o);
-            }
-        });
-
-        addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                fireEditingStopped();
-            }
-        });
+        EditingStopHandler handler = new EditingStopHandler();
+        for(JButton b: buttons) {
+            b.addMouseListener(handler);
+            b.addActionListener(handler);
+        }
+        addMouseListener(handler);
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         this.setBackground(table.getSelectionBackground());
