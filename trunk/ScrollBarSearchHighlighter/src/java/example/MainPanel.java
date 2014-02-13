@@ -32,7 +32,13 @@ public class MainPanel extends JPanel {
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea   = new JTextArea();
     private final JScrollPane scroll   = new JScrollPane(textArea);
-    private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
+    private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL) {
+        @Override public Dimension getPreferredSize() {
+            Dimension d = super.getPreferredSize();
+            d.width += 4; //getInsets().left;
+            return d;
+        }
+    };
     private final JCheckBox check      = new JCheckBox(new AbstractAction("LineWrap") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox)e.getSource();

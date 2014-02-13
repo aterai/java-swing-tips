@@ -175,7 +175,7 @@ class JResizer extends JComponent { // implements Serializable {
             int newW = getWidth();
             int newH = getHeight();
 
-            JComponent parent = (JComponent)getParent();
+            Container parent = SwingUtilities.getUnwrappedParent(JResizer.this);
             Rectangle parentBounds = parent.getBounds();
             Dimension min = new Dimension(50,50);
             Dimension max = new Dimension(500,500);

@@ -9,29 +9,11 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class MainPanel extends JPanel {
-    // Possible Look & Feels
-    private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-    private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
-
-    // The current Look & Feel
-    private static String currentLookAndFeel = METAL;
-
-    private static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
-    private static JCheckBox check = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
-        @Override public void actionPerformed(ActionEvent e) {
-            Boolean b = ((JCheckBox)e.getSource()).isSelected();
-            UIManager.put(DISABLED_ARE_NAVIGABLE, b);
-        }
-    });
-
     private MainPanel() {
         super();
-        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+        Boolean b = UIManager.getBoolean(LookAndFeelUtil.DISABLED_ARE_NAVIGABLE);
         System.out.println(b);
+        JCheckBox check = LookAndFeelUtil.disabledAreNavigableCheck;
         check.setSelected(b);
         add(check);
         JPopupMenu popup = new JPopupMenu();
@@ -46,7 +28,7 @@ public class MainPanel extends JPanel {
         mb.add(m);
         m = createMenu("Edit");
         mb.add(m);
-        m = createLookAndFeelMenu();
+        m = LookAndFeelUtil.createLookAndFeelMenu();
         mb.add(m);
         mb.add(Box.createGlue());
         m = new JMenu("Help");
@@ -74,70 +56,6 @@ public class MainPanel extends JPanel {
         p.add(new JSeparator());
         p.add(new JMenuItem(new ExitAction()));
     }
-
-    //<blockquote cite="SwingSet2.java">
-    public static JMenu createLookAndFeelMenu() {
-        ButtonGroup lafMenuGroup = new ButtonGroup();
-        JMenu lafMenu = new JMenu("Look&Feel");
-        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
-        mi.setSelected(true); //this is the default l&f
-        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     MAC);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
-        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     GTK);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
-        return lafMenu;
-    }
-    private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
-        JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
-        lafMenuGroup.add(mi);
-        mi.addActionListener(new ChangeLookAndFeelAction(laf));
-        mi.setEnabled(isAvailableLookAndFeel(laf));
-        return mi;
-    }
-    private static boolean isAvailableLookAndFeel(String laf) {
-        try{
-            Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
-            return newLAF.isSupportedLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            return false;
-        }
-    }
-    private static class ChangeLookAndFeelAction extends AbstractAction {
-        private final String laf;
-        protected ChangeLookAndFeelAction(String laf) {
-            super("ChangeTheme");
-            this.laf = laf;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            setLookAndFeel(laf);
-        }
-    }
-    private static void setLookAndFeel(String laf) {
-        if(currentLookAndFeel.equals(laf)) {
-            return;
-        }
-        currentLookAndFeel = laf;
-        try{
-            UIManager.setLookAndFeel(currentLookAndFeel);
-            updateLookAndFeel();
-
-            Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
-            System.out.format("%s %s: %s%n", laf, DISABLED_ARE_NAVIGABLE, b);
-            check.setSelected(b);
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-            System.out.println("Failed loading L&F: " + currentLookAndFeel);
-        }
-    }
-    private static void updateLookAndFeel() {
-        for(Window window : Frame.getWindows()) {
-            SwingUtilities.updateComponentTreeUI(window);
-        }
-    }
-    //</blockquote>
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -188,6 +106,94 @@ class ExitAction extends AbstractAction {
         if(window!=null) {
             //window.dispose();
             window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+        }
+    }
+}
+
+//@see SwingSet2.java
+class LookAndFeelUtil {
+    // Possible Look & Feels
+    private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
+    private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+
+    // The current Look & Feel
+    private static String currentLookAndFeel = METAL;
+
+    // Test: disabledAreNavigable
+    public static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
+    public static JCheckBox disabledAreNavigableCheck = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
+        @Override public void actionPerformed(ActionEvent e) {
+            Boolean b = ((JCheckBox)e.getSource()).isSelected();
+            UIManager.put(DISABLED_ARE_NAVIGABLE, b);
+        }
+    });
+
+    private LookAndFeelUtil() { /* Singleton */ }
+
+    public static JMenu createLookAndFeelMenu() {
+        ButtonGroup lafMenuGroup = new ButtonGroup();
+        JMenu lafMenu = new JMenu("Look&Feel");
+        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
+        mi.setSelected(true); //this is the default l&f
+        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     MAC);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
+        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     GTK);
+        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
+        return lafMenu;
+    }
+    private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
+        JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
+        lafMenuGroup.add(mi);
+        mi.addActionListener(new ChangeLookAndFeelAction(laf));
+        mi.setEnabled(isAvailableLookAndFeel(laf));
+        return mi;
+    }
+    private static boolean isAvailableLookAndFeel(String laf) {
+        try{
+            Class lnfClass = Class.forName(laf);
+            LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
+            return newLAF.isSupportedLookAndFeel();
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            return false;
+        }
+    }
+    private static class ChangeLookAndFeelAction extends AbstractAction {
+        private final String laf;
+        protected ChangeLookAndFeelAction(String laf) {
+            super("ChangeTheme");
+            this.laf = laf;
+        }
+        @Override public void actionPerformed(ActionEvent e) {
+            setLookAndFeel(laf);
+        }
+    }
+    private static void setLookAndFeel(String laf) {
+        if(currentLookAndFeel.equals(laf)) {
+            return;
+        }
+        currentLookAndFeel = laf;
+        try{
+            UIManager.setLookAndFeel(currentLookAndFeel);
+            updateLookAndFeel();
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+            System.out.println("Failed loading L&F: " + currentLookAndFeel);
+        }
+
+        // Test: disabledAreNavigable
+        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+        System.out.format("%s %s: %s%n", laf, DISABLED_ARE_NAVIGABLE, b);
+        disabledAreNavigableCheck.setSelected(b);
+    }
+    private static void updateLookAndFeel() {
+        for(Window window : Frame.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(window);
         }
     }
 }
