@@ -55,12 +55,13 @@ class HighlightCursorTextArea extends JTextArea {
         addMouseListener(rol);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         Insets i = getInsets();
         int h = g2.getFontMetrics().getHeight();
         int y = rollOverRowIndex*h+i.top;
         g2.setPaint(LINE_COLOR);
         g2.fillRect(i.left, y, getSize().width-i.left-i.right, h);
+        g2.dispose();
         super.paintComponent(g);
     }
     private class RollOverListener extends MouseInputAdapter {

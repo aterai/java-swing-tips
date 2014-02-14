@@ -10,7 +10,7 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private final JTextField field = new JTextField("1.0f, 1.0f, 5.0f, 1.0f");
     private final JLabel label;
-    private BasicStroke dashedStroke;
+    private transient BasicStroke dashedStroke;
 
     private float[] getDashArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
@@ -40,16 +40,17 @@ public class MainPanel extends JPanel {
         });
         label = new JLabel() {
             @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
+                Graphics2D g2 = (Graphics2D)g.create();
                 super.paintComponent(g2);
                 if(dashedStroke==null) {
                     dashedStroke = new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f);
                 }
                 g2.setStroke(dashedStroke);
                 g2.drawLine(5, label.getHeight()/2, label.getWidth()-10, label.getHeight()/2);
+                g2.dispose();
             }
         };
-        label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JPanel p = new JPanel(new BorderLayout(2,2));
         p.add(field); p.add(button, BorderLayout.EAST);
@@ -57,7 +58,7 @@ public class MainPanel extends JPanel {
 
         add(p, BorderLayout.NORTH);
         add(label);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

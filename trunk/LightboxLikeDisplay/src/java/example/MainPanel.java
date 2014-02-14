@@ -5,20 +5,24 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    public MainPanel(final JFrame frame) {
-        super(new GridLayout(1,2));
-        frame.setGlassPane(new LightboxGlassPane());
-        frame.getGlassPane().setVisible(false);
-
+    public MainPanel() {
+        super(new GridLayout(1, 2));
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setGlassPane(new LightboxGlassPane());
+                getRootPane().getGlassPane().setVisible(false);
+            }
+        });
         JButton button = new JButton(new AbstractAction("Open") {
             @Override public void actionPerformed(ActionEvent e) {
-                frame.getGlassPane().setVisible(true);
+                getRootPane().getGlassPane().setVisible(true);
             }
         });
         add(makeDummyPanel());
@@ -54,7 +58,7 @@ public class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@");
         //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -113,7 +117,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
             rootPane.getLayeredPane().print(g);
         }
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D)g.create();
 
         if(h<image.getIconHeight()+5+5) {
             h += image.getIconHeight()/16;
@@ -148,6 +152,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
                                    screen.x + screen.width/2  - animatedIcon.getIconWidth()/2,
                                    screen.y + screen.height/2 - animatedIcon.getIconHeight()/2);
         }
+        g2d.dispose();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {
@@ -156,7 +161,8 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
     }
 }
 
-class AnimeIcon implements Icon {
+class AnimeIcon implements Icon, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Color ELLIPSE_COLOR = new Color(0.5f,0.5f,0.5f);
     private static final double R  = 2.0d;
     private static final double SX = 0d;
@@ -181,7 +187,7 @@ class AnimeIcon implements Icon {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setPaint(new Color(0, true));
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -193,7 +199,8 @@ class AnimeIcon implements Icon {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.fill(list.get(i));
         }
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
     @Override public int getIconWidth() {
         return WIDTH;

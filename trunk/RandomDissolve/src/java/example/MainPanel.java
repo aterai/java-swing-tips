@@ -63,9 +63,9 @@ class MainPanel extends JPanel {
 class RandomDissolve extends JComponent implements ActionListener {
     private static final int STAGES = 16;
     private final Timer animator;
-    private final BufferedImage image1;
-    private final BufferedImage image2;
-    private BufferedImage srcimg;
+    private final transient BufferedImage image1;
+    private final transient BufferedImage image2;
+    private transient BufferedImage srcimg;
     private boolean mode = true;
     private int currentStage;
     private int[] src, dst, step;
@@ -120,10 +120,11 @@ class RandomDissolve extends JComponent implements ActionListener {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setPaint(getBackground());
         g2d.fillRect(0, 0, getWidth(), getHeight());
         g2d.drawImage(srcimg, 0, 0, srcimg.getWidth(), srcimg.getHeight(), this);
+        g2d.dispose();
     }
     @Override public void actionPerformed(ActionEvent e) {
         if(nextStage()) {

@@ -27,9 +27,10 @@ class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 180));
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(texture);
         g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
         super.paintComponent(g);
     }
     public static void main(String[] args) {

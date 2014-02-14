@@ -108,10 +108,11 @@ class StringBorder implements Border {
         return false;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         float tx = x + width - rect.width;
         float ty = y - rect.y + (height - rect.height)/2;
         //g2.setPaint(Color.RED);
         g2.drawString(str, tx, ty);
+        g2.dispose();
     }
 }

@@ -127,7 +127,7 @@ class WhitespaceLabelView extends LabelView {
     }
     @Override public void paint(Graphics g, Shape a) {
         super.paint(g,a);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         Stroke stroke = g2.getStroke();
         Rectangle alloc = a instanceof Rectangle ? (Rectangle)a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
@@ -155,6 +155,7 @@ class WhitespaceLabelView extends LabelView {
                 sumOfTabs+=tabWidth;
             }
             g2.setStroke(stroke);
+            g2.dispose();
         }
     }
 }

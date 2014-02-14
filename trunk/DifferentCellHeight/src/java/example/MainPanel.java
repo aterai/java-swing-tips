@@ -86,13 +86,16 @@ class DotBorder extends LineBorder {
     public DotBorder(Color color, int thickness) {
         super(color, thickness);
     }
-    @Override public boolean isBorderOpaque() { return true; }
+    @Override public boolean isBorderOpaque() {
+        return true;
+    }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(x,y);
         g2.setPaint(getLineColor());
         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-        g2.translate(-x,-y);
+        //g2.translate(-x,-y);
+        g2.dispose();
     }
 }
 
@@ -108,12 +111,13 @@ class DotBorder extends LineBorder {
 //     }
 //     @Override public boolean isBorderOpaque() { return true; }
 //     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-//         Graphics2D g2 = (Graphics2D)g;
+//         Graphics2D g2 = (Graphics2D)g.create();
 //         g2.setPaint(c.getForeground());
 //         g2.setStroke(dashed);
 //         g2.translate(x,y);
 //         g2.drawRect(0, 0, w-1, h-1);
-//         g2.translate(-x,-y);
+//         //g2.translate(-x,-y);
+//         g2.dispose();
 //     }
 //     //@Override public Insets getBorderInsets()
 //     //@Override public Insets getBorderInsets(Component c)

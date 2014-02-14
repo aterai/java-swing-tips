@@ -252,13 +252,14 @@ class MyLabel extends JLabel {
         }
         @Override public boolean isBorderOpaque() { return true; }
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.translate(x,y);
             if(isFocusedBorder()) {
                 g2.setPaint(getLineColor());
                 BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
             }
-            g2.translate(-x,-y);
+            //g2.translate(-x,-y);
+            g2.dispose();
         }
     }
     //Overridden for performance reasons. ---->
@@ -292,9 +293,9 @@ class MyLabel extends JLabel {
 }
 
 class MyTable extends JTable {
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Color rcolor;
     private final Color pcolor;
-    private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Path2D polygon = new Path2D.Double();
     private Point srcPoint;
     public MyTable(TableModel model) {
@@ -374,13 +375,16 @@ class MyTable extends JTable {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(srcPoint==null) { return; }
-        Graphics2D g2d = (Graphics2D) g;
+        if(srcPoint==null) {
+            return;
+        }
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setPaint(rcolor);
         g2d.draw(polygon);
-        g2d.setComposite(alcomp);
+        g2d.setComposite(ALPHA);
         g2d.setPaint(pcolor);
         g2d.fill(polygon);
+        g2d.dispose();
     }
     private int[] getIntersectedIndices(Path2D path) {
         TableModel model = getModel();

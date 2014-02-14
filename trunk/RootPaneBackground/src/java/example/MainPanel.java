@@ -20,9 +20,10 @@ public class MainPanel extends JPanel {
         }
 //         @Override protected void paintComponent(Graphics g) {
 //             super.paintComponent(g);
-//             Graphics2D g2 = (Graphics2D)g;
+//             Graphics2D g2 = (Graphics2D)g.create();
 //             g2.setPaint(new Color(100, 100, 100, 100));
 //             g2.fillRect(0, 0, getWidth(), getHeight());
+//             g2.dispose();
 //         }
     };
     public MainPanel() {
@@ -74,7 +75,10 @@ public class MainPanel extends JPanel {
         //frame.getRootPane().setBackground(Color.BLUE);
         //frame.getLayeredPane().setBackground(Color.GREEN);
         //frame.getContentPane().setBackground(Color.RED);
-        ((JComponent)frame.getContentPane()).setOpaque(false);
+        Container contentPane = frame.getContentPane();
+        if(contentPane instanceof JComponent) {
+            ((JComponent)contentPane).setOpaque(false);
+        }
         frame.setJMenuBar(ImageUtil.createMenubar());
         frame.getContentPane().add(new MainPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -101,9 +105,10 @@ class ImageUtil {
         JMenuBar mb = new JMenuBar() {
             @Override protected void paintComponent(Graphics g) {
                 //super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D)g;
+                Graphics2D g2 = (Graphics2D)g.create();
                 g2.setPaint(new Color(100, 100, 100, 100));
                 g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.dispose();
             }
         };
         mb.setOpaque(false);
@@ -162,16 +167,17 @@ class ImageUtil {
 }
 
 class TranslucentTexturePanel extends JPanel {
-    private final TexturePaint texture;
+    private final transient TexturePaint texture;
     public TranslucentTexturePanel(TexturePaint texture) {
         super();
         this.texture = texture;
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(texture);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));
         g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
     }
 }
 
@@ -186,7 +192,9 @@ class CentredBackgroundBorder implements Border {
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         int cx = x + (width-image.getWidth())/2;
         int cy = y + (height-image.getHeight())/2;
-        ((Graphics2D)g).drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
+        g2.dispose();
     }
     @Override public Insets getBorderInsets(Component c) {
         return insets;

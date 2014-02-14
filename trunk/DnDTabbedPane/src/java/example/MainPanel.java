@@ -359,7 +359,7 @@ class DnDTabbedPane extends JTabbedPane {
             this.location = location;
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setComposite(composite);
             if(isPaintScrollArea && getTabLayoutPolicy()==SCROLL_TAB_LAYOUT) {
                 g2.setPaint(Color.RED);
@@ -375,6 +375,7 @@ class DnDTabbedPane extends JTabbedPane {
                 g2.setPaint(lineColor);
                 g2.fill(lineRect);
             }
+            g2.dispose();
         }
     }
 }

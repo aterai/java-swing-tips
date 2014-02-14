@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public class MainPanel extends JPanel {
-    private final TexturePaint texture = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
+    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
 
     public MainPanel() {
         super(new BorderLayout());
@@ -41,9 +41,10 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setPaint(texture);
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
         super.paintComponent(g);
     }
     private static JSlider makeSlider() {

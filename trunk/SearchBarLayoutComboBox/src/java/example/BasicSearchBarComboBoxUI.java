@@ -280,7 +280,7 @@ class TriangleArrowButton extends JButton {
 //         }
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if(getModel().isArmed()) {
             g2.setColor(new Color(220,220,220));
@@ -296,8 +296,9 @@ class TriangleArrowButton extends JButton {
         g2.fill(r);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.setColor(getBackground());
-        super.paintComponent(g);
+        g2.dispose();
 
+        super.paintComponent(g);
         Insets i = getInsets();
         int x = r.width-i.right-triangleIcon.getIconWidth()-2;
         int y = i.top+(r.height-i.top-i.bottom-triangleIcon.getIconHeight())/2;

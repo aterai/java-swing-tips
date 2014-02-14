@@ -348,12 +348,13 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
 //         if(srcPoint==null) { return; }
-//         Graphics2D g2d = (Graphics2D) g;
+//         Graphics2D g2d = (Graphics2D)g.create();
 //         g2d.setPaint(rcolor);
 //         g2d.drawPolygon(polygon);
 //         g2d.setComposite(alcomp);
 //         g2d.setPaint(pcolor);
 //         g2d.fillPolygon(polygon);
+//         g2d.dispose();
 //     }
 //     private Color makeColor(Color c) {
 //         int r = c.getRed();
@@ -462,12 +463,13 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
 //         if(srcPoint==null) { return; }
-//         Graphics2D g2d = (Graphics2D) g;
+//         Graphics2D g2d = (Graphics2D)g.create();
 //         g2d.setPaint(rcolor);
 //         g2d.draw(polygon);
 //         g2d.setComposite(alcomp);
 //         g2d.setPaint(pcolor);
 //         g2d.fill(polygon);
+//         g2d.dispose();
 //     }
 //     private Color makeColor(Color c) {
 //         int r = c.getRed();

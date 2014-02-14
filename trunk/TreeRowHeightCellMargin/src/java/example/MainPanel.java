@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.tree.*;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 public class MainPanel extends JPanel {
     public MainPanel() {
@@ -63,8 +64,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     private final JLabel icon = new JLabel();
     private final JLabel text = new JLabel();
     private final Border innerBorder = BorderFactory.createEmptyBorder(1,2,1,2);
-    private final Border emptyBorder = BorderFactory.createCompoundBorder(
-                                            BorderFactory.createEmptyBorder(1,1,1,1), innerBorder);
+    private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1,1,1,1), innerBorder);
     private final Border hasFocusBorder;
 
     public CompoundTreeCellRenderer() {
@@ -120,13 +120,14 @@ class DotBorder extends LineBorder {
     }
     @Override public boolean isBorderOpaque() { return true; }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         //g2.translate(x,y);
         g2.setPaint(borderSelectionColor);
         g2.drawRect(x, y, w-1, h-1);
         g2.setPaint(getLineColor());
-        javax.swing.plaf.basic.BasicGraphicsUtils.drawDashedRect(g2, x, y, w, h);
+        BasicGraphicsUtils.drawDashedRect(g2, x, y, w, h);
         //g2.translate(-x,-y);
+        g2.dispose();
     }
 }
 
@@ -139,6 +140,10 @@ class ColorIcon implements Icon {
         g.setColor(color);
         g.fillRoundRect(x+1, y+1, 22, 22, 10, 10);
     }
-    @Override public int getIconWidth()  { return 24; }
-    @Override public int getIconHeight() { return 24; }
+    @Override public int getIconWidth()  {
+        return 24;
+    }
+    @Override public int getIconHeight() {
+        return 24;
+    }
 }

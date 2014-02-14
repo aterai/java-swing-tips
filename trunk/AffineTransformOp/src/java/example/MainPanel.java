@@ -14,7 +14,7 @@ import javax.imageio.*;
 
 class MainPanel extends JPanel {
     private Flip mode = Flip.NONE;
-    private final BufferedImage bufferedImage;
+    private final transient BufferedImage bufferedImage;
     private final ButtonGroup bg = new ButtonGroup();
     private final JPanel p = new JPanel() {
         @Override public void paintComponent(Graphics g) {
@@ -27,7 +27,9 @@ class MainPanel extends JPanel {
             }else if(mode==Flip.VERTICAL) {
                 AffineTransform at = AffineTransform.getScaleInstance(1.0, -1.0);
                 at.translate(0, -h);
-                ((Graphics2D)g).drawImage(bufferedImage, at, this);
+                Graphics2D g2 = (Graphics2D)g.create();
+                g2.drawImage(bufferedImage, at, this);
+                g2.dispose();
             }else if(mode==Flip.HORIZONTAL) {
                 AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
                 at.translate(-w, 0);

@@ -46,9 +46,10 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class StarPanel1 extends JPanel {
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         int w = getWidth();
         int h = getHeight();
         //<blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
@@ -65,11 +66,13 @@ class StarPanel1 extends JPanel {
         g2.fill(p);
         g2.setColor(Color.BLACK);
         g2.draw(p);
+        g2.dispose();
     }
 }
+
 class StarPanel2 extends JPanel {
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         int w = getWidth();
         int h = getHeight();
         Polygon p = new Polygon();
@@ -83,8 +86,10 @@ class StarPanel2 extends JPanel {
         g2.fill(p);
         g2.setColor(Color.BLACK);
         g2.draw(p);
+        g2.dispose();
     }
 }
+
 class StarPanel3 extends JPanel {
     private static final int FONTSIZE = 80;
     private final Shape shape;
@@ -95,17 +100,19 @@ class StarPanel3 extends JPanel {
         shape = new TextLayout("\u2605", font, frc).getOutline(null);
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(0,FONTSIZE);
         g2.setColor(Color.YELLOW);
         g2.fill(shape);
         g2.setColor(Color.BLACK);
         g2.draw(shape);
+        g2.dispose();
     }
 }
+
 // class StarPanel4 extends JPanel {
 //     @Override public void paintComponent(Graphics g) {
-//         Graphics2D g2 = (Graphics2D)g;
+//         Graphics2D g2 = (Graphics2D)g.create();
 //         int w = getWidth();
 //         int h = getHeight();
 //         Path2D.Double p = new Path2D.Double();
@@ -121,8 +128,10 @@ class StarPanel3 extends JPanel {
 //         g2.fill(p);
 //         g2.setColor(Color.BLACK);
 //         g2.draw(p);
+//         g2.dispose();
 //     }
 // }
+
 class StarIcon0 implements Icon {
     private final GeneralPath path = new GeneralPath();
     public StarIcon0() {
@@ -147,15 +156,17 @@ class StarIcon0 implements Icon {
         return 80;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);
         g2d.fill(path);
         g2d.setPaint(Color.BLACK);
         g2d.draw(path);
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
 }
+
 class StarIcon1 implements Icon {
     private static final int R = 40;
     private final Shape star;
@@ -179,15 +190,17 @@ class StarIcon1 implements Icon {
         return 2*R;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);
         g2d.fill(star);
         g2d.setPaint(Color.BLACK);
         g2d.draw(star);
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
 }
+
 class StarIcon2 implements Icon {
     private static final int R2 = 40;
     private static final int R1 = 20;
@@ -218,13 +231,14 @@ class StarIcon2 implements Icon {
         return 2*R2;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);
         g2d.fill(star);
         g2d.setPaint(Color.BLACK);
         g2d.draw(star);
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
 }
 

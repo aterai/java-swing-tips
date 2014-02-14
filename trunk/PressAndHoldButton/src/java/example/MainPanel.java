@@ -181,13 +181,14 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
 
 class MenuArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(Color.BLACK);
-        g2.translate(x,y);
+        g2.translate(x, y);
         g2.drawLine( 2, 3, 6, 3 );
         g2.drawLine( 3, 4, 5, 4 );
         g2.drawLine( 4, 5, 4, 5 );
-        g2.translate(-x,-y);
+        //g2.translate(-x, -y);
+        g2.dispose();
     }
     @Override public int getIconWidth()  { return 9; }
     @Override public int getIconHeight() { return 9; }
@@ -199,11 +200,12 @@ class DummyIcon implements Icon {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(color);
-        g2.translate(x,y);
+        g2.translate(x, y);
         g2.fillOval( 4, 4, 16, 16 );
-        g2.translate(-x,-y);
+        //g2.translate(-x, -y);
+        g2.dispose();
     }
     @Override public int getIconWidth()  {
         return 24;
@@ -218,11 +220,12 @@ class DummyIcon2 extends DummyIcon {
         super(color);
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        super.paintIcon(c,g,x,y);
-        Graphics2D g2 = (Graphics2D)g;
+        super.paintIcon(c, g, x, y);
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(Color.BLACK);
-        g2.translate(x,y);
+        g2.translate(x, y);
         g2.drawOval( 4, 4, 16, 16 );
-        g2.translate(-x,-y);
+        //g2.translate(-x, -y);
+        g2.dispose();
     }
 }

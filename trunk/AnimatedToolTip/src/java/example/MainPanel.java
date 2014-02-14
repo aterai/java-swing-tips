@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +14,6 @@ import javax.swing.*;
 
 class MainPanel extends JPanel {
     private final URL url = getClass().getResource("anime.gif");
-    private final ImageIcon icon = new ImageIcon(url);
     private final JLabel l1 = new JLabel("Timer Animated ToolTip") {
         @Override public JToolTip createToolTip() {
             JToolTip tip = new AnimatedToolTip(new AnimatedLabel(""));
@@ -22,13 +22,15 @@ class MainPanel extends JPanel {
         }
     };
     private final JLabel l2 = new JLabel("Gif Animated ToolTip") {
+        //private final Icon icon = new ImageIcon(url);
         @Override public JToolTip createToolTip() {
-            JToolTip tip = new AnimatedToolTip(new JLabel("", icon, SwingConstants.LEFT));
+            JToolTip tip = new AnimatedToolTip(new JLabel("", new ImageIcon(url), SwingConstants.LEFT));
             tip.setComponent(this);
             return tip;
         }
     };
     private final JLabel l3 = new JLabel("Gif Animated ToolTip(html)");
+
     public MainPanel() {
         super(new BorderLayout());
         l1.setToolTipText("Test1");
@@ -141,7 +143,8 @@ class AnimatedLabel extends JLabel implements ActionListener {
     }
 }
 
-class AnimeIcon implements Icon {
+class AnimeIcon implements Icon, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Color ELLIPSE_COLOR = new Color(0.5f,0.5f,0.5f);
     private static final double R  = 2.0d;
     private static final double SX = 1.0d;
@@ -168,7 +171,7 @@ class AnimeIcon implements Icon {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -180,7 +183,8 @@ class AnimeIcon implements Icon {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.fill(list.get(i));
         }
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
     @Override public int getIconWidth() {
         return WIDTH;

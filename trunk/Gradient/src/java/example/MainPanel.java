@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
 
         add(p);
         add(box, BorderLayout.EAST);
-        setPreferredSize(new Dimension(320, 160));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static JPanel makeTestPanel(String title, JSeparator sp) {
@@ -137,18 +137,22 @@ class GradientSeparatorUI extends BasicSeparatorUI{
         updateColors(c);
     }
     @Override public void paint(Graphics g, JComponent c) {
-        Graphics2D g2 = (Graphics2D)g;
-        Dimension s = c.getSize();
-        if(((JSeparator)c).getOrientation()==JSeparator.VERTICAL) {
-            g2.setPaint(new GradientPaint(0, 0, ssc, 0, s.height, bgc, true));
-            g2.fillRect(0, 0, 1, s.height);
-            g2.setPaint(new GradientPaint(0, 0, shc, 0, s.height, bgc, true));
-            g2.fillRect(1, 0, 1, s.height);
-        }else{
-            g2.setPaint(new GradientPaint(0, 0, ssc, s.width, 0, bgc, true));
-            g2.fillRect(0, 0, s.width, 1);
-            g2.setPaint(new GradientPaint(0, 0, shc, s.width, 0, bgc, true));
-            g2.fillRect(0, 1, s.width, 1);
+        if(c instanceof JSeparator) {
+            Graphics2D g2 = (Graphics2D)g.create();
+            Dimension s = c.getSize();
+            JSeparator js = (JSeparator)c;
+            if(js.getOrientation()==JSeparator.VERTICAL) {
+                g2.setPaint(new GradientPaint(0, 0, ssc, 0, s.height, bgc, true));
+                g2.fillRect(0, 0, 1, s.height);
+                g2.setPaint(new GradientPaint(0, 0, shc, 0, s.height, bgc, true));
+                g2.fillRect(1, 0, 1, s.height);
+            }else{
+                g2.setPaint(new GradientPaint(0, 0, ssc, s.width, 0, bgc, true));
+                g2.fillRect(0, 0, s.width, 1);
+                g2.setPaint(new GradientPaint(0, 0, shc, s.width, 0, bgc, true));
+                g2.fillRect(0, 1, s.width, 1);
+            }
+            g2.dispose();
         }
     }
 }

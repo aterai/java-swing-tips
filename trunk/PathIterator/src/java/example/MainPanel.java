@@ -241,7 +241,7 @@ class StarIcon implements Icon {
         return star.getBounds().height;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.PINK);
         if(antialias) {
@@ -251,7 +251,8 @@ class StarIcon implements Icon {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         //g2d.setPaint(Color.BLACK);
         //g2d.draw(star);
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
 }
 

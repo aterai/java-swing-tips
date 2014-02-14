@@ -251,7 +251,7 @@ class DotBorder extends EmptyBorder {
         return true;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(x,y);
         g2.setPaint(DOT_COLOR);
         g2.setStroke(DASHED);
@@ -268,7 +268,8 @@ class DotBorder extends EmptyBorder {
             g2.drawLine(1,0,w,0);
             g2.drawLine(1,h-1,w,h-1);
         }
-        g2.translate(-x,-y);
+        //g2.translate(-x,-y);
+        g2.dispose();
     }
 }
 
@@ -354,7 +355,7 @@ class DotBorder extends EmptyBorder {
 //   }
 //   @Override public void paintBorder(
 //     Component c, Graphics g, int x, int y, int w, int h) {
-//     Graphics2D g2 = (Graphics2D)g;
+//     Graphics2D g2 = (Graphics2D)g.create();
 //     g2.translate(x,y);
 //     g2.setPaint(DOT_COLOR);
 //     g2.setStroke(dashed);
@@ -373,6 +374,7 @@ class DotBorder extends EmptyBorder {
 //         g2.drawLine(1,h-1,w,h-1);
 //       }
 //     }
-//     g2.translate(-x,-y);
+//     //g2.translate(-x,-y);
+//     g2.dispose();
 //   }
 // }

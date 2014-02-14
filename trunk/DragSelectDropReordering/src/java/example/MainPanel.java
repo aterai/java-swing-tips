@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
         model.addElement(new ListItem("test123",    "wi0124-32.png"));
         model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
 
-        ReorderbleList list = new ReorderbleList();
+        ReorderbleList<ListItem> list = new ReorderbleList<>();
         list.setModel(model);
         //list.putClientProperty("List.isFileList", Boolean.TRUE);
         list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -103,15 +103,17 @@ class DotBorder extends EmptyBorder {
     }
     @Override public boolean isBorderOpaque() { return true; }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(x,y);
         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-        g2.translate(-x,-y);
+        //g2.translate(-x,-y);
+        g2.dispose();
     }
 }
 
-class ReorderbleList extends JList<ListItem> {
+class ReorderbleList<E extends ListItem> extends JList<E> {
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon  = new JLabel((Icon)null, JLabel.CENTER);
     private final JLabel label = new JLabel("", JLabel.CENTER);
@@ -119,7 +121,6 @@ class ReorderbleList extends JList<ListItem> {
     private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
     private final Color rcolor;
     private final Color pcolor;
-    private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
     private final Polygon polygon = new Polygon();
     private Point srcPoint;
 
@@ -243,12 +244,13 @@ class ReorderbleList extends JList<ListItem> {
         if(srcPoint==null || getDragEnabled()) {
             return;
         }
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setPaint(rcolor);
         g2d.drawPolygon(polygon);
-        g2d.setComposite(alcomp);
+        g2d.setComposite(ALPHA);
         g2d.setPaint(pcolor);
         g2d.fillPolygon(polygon);
+        g2d.dispose();
     }
     private Color makeColor(Color c) {
         int r = c.getRed();

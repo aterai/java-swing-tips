@@ -44,9 +44,10 @@ public final class MainPanel extends JPanel {
 class ImageCaptionLabel extends JLabel {
     private final JTextArea textArea = new JTextArea() {
         @Override protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());
+            g2.dispose();
             super.paintComponent(g);
         }
         //@Override public boolean contains(int x, int y) {

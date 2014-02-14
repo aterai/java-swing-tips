@@ -210,9 +210,10 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 //             // because print() doesn't affect the frame's double buffer
 //             rootPane.getLayeredPane().print(g);
 //         }
-//         //     Graphics2D g2 = (Graphics2D) g;
+//         //     Graphics2D g2 = (Graphics2D)g.create();
 //         //     g2.setPaint(texture);
 //         //     g2.fillRect(0,0,getWidth(),getHeight());
+//         //     g2.dispose();
 //     }
 // }
 

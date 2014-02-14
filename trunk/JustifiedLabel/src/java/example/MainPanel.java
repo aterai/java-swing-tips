@@ -97,7 +97,7 @@ class JustifiedLabel extends JLabel {
 //         return 120;
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
         if(w!=prevWidth) {
@@ -109,6 +109,7 @@ class JustifiedLabel extends JLabel {
         }else{
             g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());
         }
+        g2.dispose();
     }
     private GlyphVector getJustifiedGlyphVector(String str, Font font, FontRenderContext frc) {
         GlyphVector gv = font.createGlyphVector(frc, str);

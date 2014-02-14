@@ -73,12 +73,13 @@ class HighlightCursorTextArea extends JTextArea {
         setCaret(caret);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         Insets i = getInsets();
         int h = caret.height;
         int y = caret.y;
         g2.setPaint(LINE_COLOR);
         g2.fillRect(i.left, y, getSize().width-i.left-i.right, h);
+        g2.dispose();
         super.paintComponent(g);
     }
 }

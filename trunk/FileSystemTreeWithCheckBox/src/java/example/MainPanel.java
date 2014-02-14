@@ -139,11 +139,12 @@ class IndeterminateIcon implements Icon {
         icon.paintIcon(c, g, x, y);
         int w = getIconWidth();
         int h = getIconHeight();
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
         g2.fillRect(SIDE_MARGIN, (h-HEIGHT)/2, w-SIDE_MARGIN-SIDE_MARGIN, HEIGHT);
-        g2.translate(-x, -y);
+        //g2.translate(-x, -y);
+        g2.dispose();
     }
     @Override public int getIconWidth()  {
         return icon.getIconWidth();

@@ -9,7 +9,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final DraggableImageMouseListener di;
+    private final transient DraggableImageMouseListener di;
     public MainPanel() {
         super();
         di = new DraggableImageMouseListener(new ImageIcon(getClass().getResource("test.png")));
@@ -19,10 +19,11 @@ public final class MainPanel extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.setPaint(new GradientPaint(50, 0, new Color(200,200,200),
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(new GradientPaint(50, 0, new Color(200,200,200),
                                        getWidth(), getHeight(), new Color(100,100,100), true));
-        g2d.fillRect(0,0,getWidth(),getHeight());
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
         di.paint(g, this);
     }
     public static void main(String[] args) {
@@ -78,7 +79,7 @@ class DraggableImageMouseListener extends MouseAdapter {
         border  = new RoundRectangle2D.Double(0, 0, width, height, 10.0, 10.0);
     }
     public void paint(Graphics g, ImageObserver ior) {
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         AffineTransform at = AffineTransform.getTranslateInstance(x, y);
@@ -103,6 +104,7 @@ class DraggableImageMouseListener extends MouseAdapter {
         g2d.setStroke(BORDER_STROKE);
         g2d.setPaint(Color.WHITE);
         g2d.draw(at.createTransformedShape(border));
+        g2d.dispose();
     }
     @Override public void mouseMoved(MouseEvent e) {
         if(OUTER.contains(e.getX(), e.getY()) && !INNER.contains(e.getX(), e.getY())) {

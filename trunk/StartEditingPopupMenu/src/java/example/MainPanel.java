@@ -111,18 +111,20 @@ class TreePopupMenu extends JPopupMenu {
         add(new JMenuItem("dummy"));
     }
     @Override public void show(Component c, int x, int y) {
-        JTree tree = (JTree)c;
-//         //Test:
-//         path = tree.getPathForLocation(x, y);
-//         if(tree.getSelectionModel().isPathSelected(path)) {
-//             super.show(c, x, y);
-//         }
-        TreePath[] tsp = tree.getSelectionPaths();
-        path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
-        boolean isEditable = tsp!=null && tsp.length==1 && tsp[0].equals(path);
-        //Test: if(path!=null && java.util.Arrays.asList(tsp).contains(path)) {
-        editAction.setEnabled(isEditable);
-        editDialogAction.setEnabled(isEditable);
-        super.show(c, x, y);
+        if(c instanceof JTree) {
+            JTree tree = (JTree)c;
+            ////Test:
+            //path = tree.getPathForLocation(x, y);
+            //if(tree.getSelectionModel().isPathSelected(path)) {
+            //    super.show(c, x, y);
+            //}
+            TreePath[] tsp = tree.getSelectionPaths();
+            path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
+            boolean isEditable = tsp!=null && tsp.length==1 && tsp[0].equals(path);
+            //Test: if(path!=null && java.util.Arrays.asList(tsp).contains(path)) {
+            editAction.setEnabled(isEditable);
+            editDialogAction.setEnabled(isEditable);
+            super.show(c, x, y);
+        }
     }
 }

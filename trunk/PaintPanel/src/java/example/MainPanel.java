@@ -48,10 +48,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setStroke(new BasicStroke(3.0F));
         g2d.setPaint(Color.BLACK);
         g2d.drawLine(startPoint.x, startPoint.y, p.x, p.y);
+        g2d.dispose();
         startPoint = p;
     }
     @Override public void mouseDragged(MouseEvent e) {
@@ -135,10 +136,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         repaint();
 //     }
 //     @Override public void paintComponent (Graphics g) {
-//         Graphics2D g2d = (Graphics2D)g;
+//         Graphics2D g2d = (Graphics2D)g.create();
 //         g2d.setPaint(Color.BLACK);
 //         g2d.setStroke(stroke);
 //         for(Shape s:list) g2d.draw(s);
+//         g2d.dispose();
 //     }
 //     @Override public void mouseMoved(MouseEvent e) {}
 //     @Override public void mouseExited(MouseEvent e) {}

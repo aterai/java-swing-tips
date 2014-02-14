@@ -13,7 +13,7 @@ import javax.swing.border.*;
 // import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
-    private final TexturePaint texture = makeCheckerTexture();
+    private final static TexturePaint TEXTURE = makeCheckerTexture();
 
     public MainPanel() {
         super();
@@ -134,9 +134,10 @@ public final class MainPanel extends JPanel {
         return new TexturePaint(img, new Rectangle(0,0,sz,sz));
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setPaint(texture);
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
         super.paintComponent(g);
     }
 }
@@ -238,7 +239,9 @@ class CentredBackgroundBorder implements Border {
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         int cx = x + (width-image.getWidth())/2;
         int cy = y + (height-image.getHeight())/2;
-        ((Graphics2D)g).drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
+        g2.dispose();
     }
     @Override public Insets getBorderInsets(Component c) {
         return insets;

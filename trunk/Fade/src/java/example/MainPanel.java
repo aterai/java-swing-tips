@@ -13,7 +13,7 @@ import javax.swing.*;
 class MainPanel extends JPanel {
     private boolean mode = true;
     private final Timer animator;
-    private BufferedImage icon;
+    private transient BufferedImage icon;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -52,7 +52,7 @@ class MainPanel extends JPanel {
             setBackground(Color.BLACK);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
+            Graphics2D g2d = (Graphics2D)g.create();
             g2d.setPaint(getBackground());
             g2d.fillRect(0, 0, getWidth(), getHeight());
             if(mode && alpha<10) {
@@ -64,6 +64,7 @@ class MainPanel extends JPanel {
             }
             g2d.setComposite(makeAlphaComposite(alpha*0.1f));
             g2d.drawImage(icon, null, 0, 0);
+            g2d.dispose();
         }
         @Override public void actionPerformed(ActionEvent e) {
             repaint();
