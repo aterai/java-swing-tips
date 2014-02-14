@@ -96,7 +96,6 @@ import javax.swing.table.*;
  * @author Parwinder Sekhon
  * @version 2.0 02/27/04
  */
-
 public class TableSorter extends AbstractTableModel {
     public static final int DESCENDING = -1;
     public static final int NOT_SORTED = 0;
@@ -104,21 +103,10 @@ public class TableSorter extends AbstractTableModel {
 
     private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
     public static final ComparableComparator COMPARABLE_COMAPRATOR = new ComparableComparator();
-    //{
-    //    @SuppressWarnings("unchecked")
-    //    public int compare(Comparable o1, Comparable o2) {
-    //        return o1.compareTo(o2);
-    //    }
-    //};
+    public static final ComparableComparator LEXICAL_COMPARATOR = new LexicalComparableComparator();
 
     protected TableModel tableModel;
 
-    public static final ComparableComparator LEXICAL_COMPARATOR = new ComparableComparator() {
-        @SuppressWarnings("unchecked")
-        public int compare(Object o1, Object o2) {
-            return o1.toString().compareTo(o2.toString());
-        }
-    };
     private final transient List<Row> viewToModel = new ArrayList<>();
     private final List<Integer> modelToView = new ArrayList<>();
 
@@ -160,9 +148,9 @@ public class TableSorter extends AbstractTableModel {
         modelToView.clear();
     }
 
-    public TableModel getTableModel() {
-        return tableModel;
-    }
+//     public TableModel getTableModel() {
+//         return tableModel;
+//     }
 
     public void setTableModel(TableModel tableModel) {
         if(this.tableModel != null) {
@@ -178,9 +166,9 @@ public class TableSorter extends AbstractTableModel {
         fireTableStructureChanged();
     }
 
-    public JTableHeader getTableHeader() {
-        return tableHeader;
-    }
+//     public JTableHeader getTableHeader() {
+//         return tableHeader;
+//     }
 
     public void setTableHeader(JTableHeader tableHeader) {
         if(this.tableHeader != null) {
@@ -233,7 +221,7 @@ public class TableSorter extends AbstractTableModel {
         sortingStatusChanged();
     }
 
-    protected Icon getHeaderRendererIcon(int column, int size) {
+    public Icon getHeaderRendererIcon(int column, int size) {
         Directive directive = getDirective(column);
         if(EMPTY_DIRECTIVE.equals(directive)) {
             return null;
@@ -297,7 +285,7 @@ public class TableSorter extends AbstractTableModel {
 
     // TableModel interface methods
 
-    public int getRowCount() {
+    @Override public int getRowCount() {
         return (tableModel == null) ? 0 : tableModel.getRowCount();
     }
 
@@ -331,17 +319,17 @@ public class TableSorter extends AbstractTableModel {
         public Row(int index) {
             this.modelIndex = index;
         }
-        public int hashCode() {
+        @Override public int hashCode() {
             return modelIndex; //*31;
         }
-        public boolean equals(Object o) {
+        @Override public boolean equals(Object o) {
             if(o instanceof Row) {
                 return compareTo((Row)o)==0;
             }else{
                 return false;
             }
         }
-        public int compareTo(Row o) {
+        @Override public int compareTo(Row o) {
             int row1 = modelIndex;
             int row2 = o.modelIndex;
             for(Directive directive: sortingColumns) {
@@ -418,24 +406,6 @@ public class TableSorter extends AbstractTableModel {
         }
     }
 
-    private class SortableHeaderRenderer implements TableCellRenderer {
-        protected final TableCellRenderer tableCellRenderer;
-        public SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
-            this.tableCellRenderer = tableCellRenderer;
-        }
-
-        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if(c instanceof JLabel) {
-                JLabel l = (JLabel)c;
-                l.setHorizontalTextPosition(JLabel.LEFT);
-                int modelColumn = table.convertColumnIndexToModel(column);
-                l.setIcon(getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
-            }
-            return c;
-        }
-    }
-
     private class MouseHandler extends MouseAdapter {
         @Override public void mouseClicked(MouseEvent e) {
             JTableHeader h = (JTableHeader) e.getSource();
@@ -462,11 +432,40 @@ public class TableSorter extends AbstractTableModel {
     }
 }
 
+class SortableHeaderRenderer implements TableCellRenderer {
+    protected final TableCellRenderer tableCellRenderer;
+    public SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
+        this.tableCellRenderer = tableCellRenderer;
+    }
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        Component c = tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        if(c instanceof JLabel) {
+            JLabel l = (JLabel)c;
+            l.setHorizontalTextPosition(JLabel.LEFT);
+            int modelColumn = table.convertColumnIndexToModel(column);
+            TableModel model = table.getModel();
+            if(model instanceof TableSorter) {
+                TableSorter ts = (TableSorter)model;
+                l.setIcon(ts.getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
+            }
+        }
+        return c;
+    }
+}
+
 class ComparableComparator implements Comparator, Serializable {
     private static final long serialVersionUID = 1L;
     @SuppressWarnings("unchecked")
     public int compare(Object o1, Object o2) {
         return ((Comparable)o1).compareTo(o2);
+    }
+}
+
+class LexicalComparableComparator extends ComparableComparator {
+    private static final long serialVersionUID = 1L;
+    @SuppressWarnings("unchecked")
+    @Override public int compare(Object o1, Object o2) {
+        return o1.toString().compareTo(o2.toString());
     }
 }
 

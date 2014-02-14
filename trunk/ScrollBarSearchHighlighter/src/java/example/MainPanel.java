@@ -32,13 +32,14 @@ public class MainPanel extends JPanel {
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea   = new JTextArea();
     private final JScrollPane scroll   = new JScrollPane(textArea);
-    private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL) {
-        @Override public Dimension getPreferredSize() {
-            Dimension d = super.getPreferredSize();
-            d.width += 4; //getInsets().left;
-            return d;
-        }
-    };
+    private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
+//     private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL) {
+//         @Override public Dimension getPreferredSize() {
+//             Dimension d = super.getPreferredSize();
+//             d.width += 4; //getInsets().left;
+//             return d;
+//         }
+//     };
     private final JCheckBox check      = new JCheckBox(new AbstractAction("LineWrap") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox)e.getSource();
@@ -59,7 +60,9 @@ public class MainPanel extends JPanel {
         }
 
         scroll.setVerticalScrollBar(scrollbar);
-        scroll.setRowHeaderView(new JLabel(new HighlightIcon(textArea, scrollbar)));
+        JLabel label = new JLabel(new HighlightIcon(textArea, scrollbar));
+        //label.setBorder(BorderFactory.createLineBorder(Color.RED));
+        scroll.setRowHeaderView(label);
 
         /*
         // Bug ID: JDK-6826074 JScrollPane does not revalidate the component hierarchy after scrolling
@@ -139,6 +142,7 @@ public class MainPanel extends JPanel {
 
 class HighlightIcon implements Icon {
     private static final Color THUMB_COLOR = new Color(0,0,255,50);
+    private final Rectangle thumbRect = new Rectangle();
     private final JTextComponent textArea;
     private final JScrollBar scrollbar;
     public HighlightIcon(JTextComponent textArea, JScrollBar scrollbar) {
@@ -146,10 +150,13 @@ class HighlightIcon implements Icon {
         this.scrollbar = scrollbar;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Rectangle rect   = textArea.getBounds();
-        Dimension sbSize = scrollbar.getSize();
-        Insets sbInsets  = scrollbar.getInsets();
-        double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
+        //Rectangle rect   = textArea.getBounds();
+        //Dimension sbSize = scrollbar.getSize();
+        //Insets sbInsets  = scrollbar.getInsets();
+        //double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
+        int itop = scrollbar.getInsets().top;
+        BoundedRangeModel range = scrollbar.getModel();
+        double sy = range.getExtent() / (double)(range.getMaximum() - range.getMinimum());
         AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
         Highlighter highlighter = textArea.getHighlighter();
 
@@ -160,25 +167,30 @@ class HighlightIcon implements Icon {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
                 int h = 2; //Math.max(2, s.height-2);
-                g.fillRect(x, y+sbInsets.top+s.y, getIconWidth(), h);
+                g.fillRect(x, y+itop+s.y, getIconWidth(), h);
             }
         }catch(BadLocationException e) {
             e.printStackTrace();
         }
 
         //paint Thumb
-        Rectangle crect = c.getBounds();
-        JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
-        crect.y = vport.getViewPosition().y;
-        g.setColor(THUMB_COLOR);
-        Rectangle rr = at.createTransformedShape(crect).getBounds();
-        g.fillRect(x, y+sbInsets.top+rr.y, getIconWidth(), rr.height);
+        if(scrollbar.isVisible()) {
+            //JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+            //Rectangle thumbRect = vport.getBounds();
+            thumbRect.height = range.getExtent();
+            thumbRect.y = range.getValue(); //vport.getViewPosition().y;
+            g.setColor(THUMB_COLOR);
+            Rectangle s = at.createTransformedShape(thumbRect).getBounds();
+            g.fillRect(x, y+itop+s.y, getIconWidth(), s.height);
+        }
     }
     @Override public int getIconWidth() {
         return 4;
     }
     @Override public int getIconHeight() {
-        return scrollbar.getHeight();
+        //return scrollbar.getHeight();
+        JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+        return vport.getHeight();
     }
 }
 
