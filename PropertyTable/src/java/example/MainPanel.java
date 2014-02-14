@@ -106,12 +106,12 @@ class DateEditor extends JSpinner implements TableCellEditor {
         setArrowButtonEnabled(false);
         editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
 
-        addFocusListener(new FocusAdapter() {
-            @Override public void focusGained(FocusEvent e) {
-                //System.out.println("spinner");
-                editor.getTextField().requestFocusInWindow();
-            }
-        });
+//         addFocusListener(new FocusAdapter() {
+//             @Override public void focusGained(FocusEvent e) {
+//                 //System.out.println("spinner");
+//                 editor.getTextField().requestFocusInWindow();
+//             }
+//         });
         editor.getTextField().addFocusListener(new FocusAdapter() {
             @Override public void focusLost(FocusEvent e) {
                 setArrowButtonEnabled(false);

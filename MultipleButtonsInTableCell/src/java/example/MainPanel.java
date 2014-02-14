@@ -108,10 +108,10 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
 class ViewAction extends AbstractAction {
     private final JTable table;
     public ViewAction(JTable table) {
+        super("vdit");
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        System.out.println("view");
         JOptionPane.showMessageDialog(table, "Viewing");
     }
 }
