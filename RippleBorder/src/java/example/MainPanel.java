@@ -80,7 +80,7 @@ class RippleBorder extends EmptyBorder {
             super.paintBorder(comp, g, x, y, w, h);
             return;
         }
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(Color.WHITE);
         float a = 1.0f/count;
         if( 0.12f-a>1.0e-2 ) { a = 0.0f; }
@@ -96,5 +96,6 @@ class RippleBorder extends EmptyBorder {
             count = 1.0f;
             animator.stop();
         }
+        g2.dispose();
     }
 }

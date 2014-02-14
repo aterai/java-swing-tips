@@ -42,9 +42,10 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
     private int yy;
     private final JToolBar toolBox = new JToolBar() {
         @Override protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());
+            g2.dispose();
             super.paintComponent(g);
         }
     };

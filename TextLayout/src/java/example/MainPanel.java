@@ -39,11 +39,9 @@ public class MainPanel extends JPanel {
 
 class TextLayoutPanel extends JComponent {
     private static final String TEXT = "abcdefthijklmnopqrstuvwxyz";
-    private final Font font = new Font(Font.SERIF, Font.ITALIC, 64);
-    private final FontRenderContext frc = new FontRenderContext(null,true,true);
-    private final TextLayout tl = new TextLayout(TEXT, font, frc);
+    private static final TextLayout TEXT_LAYOUT = new TextLayout(TEXT, new Font(Font.SERIF, Font.ITALIC, 64), new FontRenderContext(null, true, true));
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         int w = getWidth();
         float baseline = getHeight()/2f;
 
@@ -51,35 +49,36 @@ class TextLayoutPanel extends JComponent {
         g2.draw(new Line2D.Float(0, baseline, w, baseline));
 
         g2.setPaint(Color.GREEN);
-        float ascent = baseline - tl.getAscent();
+        float ascent = baseline - TEXT_LAYOUT.getAscent();
         g2.draw(new Line2D.Float(0, ascent, w, ascent));
 
         g2.setPaint(Color.BLUE);
-        float descent = baseline + tl.getDescent();
+        float descent = baseline + TEXT_LAYOUT.getDescent();
         g2.draw(new Line2D.Float(0, descent, w, descent));
 
         g2.setPaint(Color.ORANGE);
-        float leading = baseline + tl.getDescent() + tl.getLeading();
+        float leading = baseline + TEXT_LAYOUT.getDescent() + TEXT_LAYOUT.getLeading();
         g2.draw(new Line2D.Float(0, leading, w, leading));
 
         g2.setPaint(Color.CYAN);
-        float xheight = baseline - (float)tl.getBlackBoxBounds(23, 24).getBounds().getHeight();
+        float xheight = baseline - (float)TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
         g2.draw(new Line2D.Float(0, xheight, w, xheight));
 
         g2.setPaint(Color.BLACK);
-        tl.draw(g2, 0f, baseline);
+        TEXT_LAYOUT.draw(g2, 0f, baseline);
+        g2.dispose();
     }
 }
 
 class GlyphVectorPanel extends JComponent {
     private static final String TEXT = "abcdefthijklmnopqrstuvwxyz";
+    private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
     private final Font font = new Font(Font.SERIF, Font.ITALIC, 64);
-    private final FontRenderContext frc = new FontRenderContext(null,true,true);
-    private final GlyphVector gv = font.createGlyphVector(frc, TEXT);
-    private final LineMetrics lm = font.getLineMetrics(TEXT, frc);
+    private final GlyphVector gv = font.createGlyphVector(FRC, TEXT);
+    private final LineMetrics lm = font.getLineMetrics(TEXT, FRC);
 
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         int w = getWidth();
         float baseline = getHeight()/2f;
 
@@ -104,5 +103,6 @@ class GlyphVectorPanel extends JComponent {
 
         g2.setPaint(Color.BLACK);
         g2.drawGlyphVector(gv, 0f, baseline);
+        g2.dispose();
     }
 }

@@ -39,11 +39,11 @@ class MainPanel extends JPanel {
     }
 
     static class ZoomImage extends JComponent implements MouseWheelListener {
-        private final ImageIcon icon;
+        private final transient ImageIcon icon;
         private final int iw;
         private final int ih;
         private double scale = 1.0d;
-        public ZoomImage(final ImageIcon icon) {
+        public ZoomImage(ImageIcon icon) {
             super();
             this.icon = icon;
             iw = icon.getIconWidth();
@@ -51,9 +51,10 @@ class MainPanel extends JPanel {
             addMouseWheelListener(this);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.scale(scale, scale);
             g2.drawImage(icon.getImage(), 0, 0, iw, ih, this);
+            g2.dispose();
         }
         @Override public void mouseWheelMoved(MouseWheelEvent e) {
             changeScale(e.getWheelRotation());

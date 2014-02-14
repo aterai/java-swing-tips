@@ -33,9 +33,10 @@ class MainPanel extends JPanel {
 
         JPanel p3 = new JPanel() {
             @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g;
+                Graphics2D g2 = (Graphics2D)g.create();
                 g2.setPaint(TEXTURE);
                 g2.fillRect(0,0,getWidth(),getHeight());
+                g2.dispose();
             }
         };
 
@@ -155,9 +156,11 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Graphics2D g2 = (Graphics2D)g.create();
         int cx = x + (width-image.getWidth())/2;
         int cy = y + (height-image.getHeight())/2;
-        ((Graphics2D)g).drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
+        g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
+        g2.dispose();
     }
     @Override public Insets getBorderInsets(Component c) {
         return insets;

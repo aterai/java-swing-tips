@@ -240,7 +240,7 @@ class EditableTabbedPane extends JTabbedPane {
     }
 
 //     @Override public void paintComponent(Graphics g) {
-//         Graphics2D g2 = (Graphics2D)g;
+//         Graphics2D g2 = (Graphics2D)g.create();
 //         g2.setPaint(this.getBackground());
 //         g2.fillRect(0,0,500,50);
 //         super.paintComponent(g2);
@@ -248,6 +248,7 @@ class EditableTabbedPane extends JTabbedPane {
 //             g2.setPaint(lineColor);
 //             g2.fill(lineRect);
 //         }
+//         g2.dispose();
 //     }
 //
 //     private int getTargetTabIndex(Point pt) {

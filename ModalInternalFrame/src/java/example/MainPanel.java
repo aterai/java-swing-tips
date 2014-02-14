@@ -225,7 +225,7 @@ public class MainPanel extends JPanel {
 }
 
 class MyGlassPane extends JPanel {
-    private final TexturePaint texture = TextureFactory.createCheckerTexture(6);
+    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6);
     public MyGlassPane() {
         super((LayoutManager)null);
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
@@ -233,14 +233,15 @@ class MyGlassPane extends JPanel {
         });
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setPaint(texture);
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(TEXTURE);
         g2.fillRect(0,0,getWidth(),getHeight());
+        g2.dispose();
     }
 }
 
 class PrintGlassPane extends JPanel {
-    private final TexturePaint texture = TextureFactory.createCheckerTexture(4);
+    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(4);
     public PrintGlassPane() {
         super((LayoutManager)null);
     }
@@ -260,9 +261,10 @@ class PrintGlassPane extends JPanel {
             // because print() doesn't affect the frame's double buffer
             rootPane.getLayeredPane().print(g);
         }
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setPaint(texture);
+        Graphics2D g2 = (Graphics2D)g.create();
+        g2.setPaint(TEXTURE);
         g2.fillRect(0,0,getWidth(),getHeight());
+        g2.dispose();
     }
 }
 

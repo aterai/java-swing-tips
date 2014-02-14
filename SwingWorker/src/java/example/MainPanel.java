@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.beans.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -210,7 +211,8 @@ class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener 
     }
 }
 
-class AnimeIcon implements Icon {
+class AnimeIcon implements Icon, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Color ELLIPSE_COLOR = new Color(0.5f,0.5f,0.5f);
     private static final double R  = 2.0d;
     private static final double SX = 1.0d;
@@ -237,7 +239,7 @@ class AnimeIcon implements Icon {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g.create();
         g2d.setPaint(c==null ? Color.WHITE : c.getBackground());
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -249,7 +251,8 @@ class AnimeIcon implements Icon {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.fill(list.get(i));
         }
-        g2d.translate(-x, -y);
+        //g2d.translate(-x, -y);
+        g2d.dispose();
     }
     @Override public int getIconWidth() {
         return WIDTH;

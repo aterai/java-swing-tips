@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
         check.setIcon(new CheckIcon());
         add(check, BorderLayout.SOUTH);
         add(new JTextArea());
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -55,17 +55,24 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class CheckIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.translate(x,y);
-        ButtonModel m = ((AbstractButton)c).getModel();
-        g2.setPaint(m.isSelected()?Color.ORANGE:Color.GRAY);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.fillOval( 0, 2, 10, 10 );
-        g2.translate(-x,-y);
+        if(c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton)c).getModel();
+            Graphics2D g2 = (Graphics2D)g.create();
+            g2.translate(x,y);
+            g2.setPaint(m.isSelected() ? Color.ORANGE : Color.GRAY);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.fillOval( 0, 2, 10, 10 );
+            //g2.translate(-x,-y);
+            g2.dispose();
+        }
     }
-    @Override public int getIconWidth()  { return 14; }
-    @Override public int getIconHeight() { return 14; }
+    @Override public int getIconWidth()  {
+        return 14;
+    }
+    @Override public int getIconHeight() {
+        return 14;
+    }
 }

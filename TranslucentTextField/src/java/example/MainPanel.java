@@ -12,9 +12,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 class MainPanel extends JPanel {
-    private static final Color BG_COLOR = new Color(1f,.8f,.8f,.2f);
+    private static final Color BG_COLOR = new Color(1f, .8f, .8f, .2f);
     private final JTextField field0,field1,field2;
-    private TexturePaint texture;
+    private transient TexturePaint texture;
 
     public MainPanel() {
         super();
@@ -27,9 +27,10 @@ class MainPanel extends JPanel {
 
         field2 = new JTextField("cccccccccccccccccccccc") {
             @Override protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
+                Graphics2D g2 = (Graphics2D)g.create();
                 g2.setPaint(getBackground());
                 g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.dispose();
                 super.paintComponent(g);
             }
         };
@@ -37,7 +38,7 @@ class MainPanel extends JPanel {
         field2.setBackground(BG_COLOR);
 
         initComponents();
-        setPreferredSize(new Dimension(320,180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private void initComponents() {
         setLayout(new GridBagLayout());
@@ -48,7 +49,7 @@ class MainPanel extends JPanel {
         c.gridheight = 1;
 
         c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
+        c.insets  = new Insets(15, 15, 15, 0);
         c.anchor  = GridBagConstraints.WEST;
         c.gridy   = 0; add(new JLabel("0. setOpaque(true)"), c);
         c.gridy   = 1; add(new JLabel("1. setOpaque(false)"), c);
@@ -74,15 +75,17 @@ class MainPanel extends JPanel {
         }
         int w = bfimage.getWidth();
         int h = bfimage.getHeight();
-        Rectangle2D r2d = new Rectangle2D.Float(0,0,w,h);
-        return new TexturePaint(bfimage, r2d);
+        return new TexturePaint(bfimage, new Rectangle2D.Float(0, 0, w, h));
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(texture==null) { texture = makeTexturePaint(); }
-        Graphics2D g2 = (Graphics2D)g;
+        if(texture==null) {
+            texture = makeTexturePaint();
+        }
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(texture);
         g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
     }
 
     public static void main(String[] args) {

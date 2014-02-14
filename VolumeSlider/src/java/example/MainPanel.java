@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         add(box);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitledPanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -73,10 +73,11 @@ public class MainPanel extends JPanel {
 
 class TriSliderUI extends MetalSliderUI {
     @Override public void paintThumb(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Rectangle thumb = thumbRect;
         g2.fillOval(thumbRect.x,thumbRect.y,thumbRect.width,thumbRect.height);
+        g2.dispose();
     }
     @Override public void paintTrack(Graphics g) {
         int cy;
@@ -84,7 +85,7 @@ class TriSliderUI extends MetalSliderUI {
         //int pad;
         Rectangle trackBounds = trackRect;
         if(slider.getOrientation() == JSlider.HORIZONTAL ) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             //pad = trackBuffer;
             //cx = pad;
             cy = -2 + trackBounds.height / 2;
@@ -141,6 +142,7 @@ class TriSliderUI extends MetalSliderUI {
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g2.translate(-trackBounds.x, -(trackBounds.y + cy));
+            g2.dispose();
         }else{
             super.paintTrack(g);
         }

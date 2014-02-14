@@ -516,7 +516,7 @@ class TabTransferHandler extends TransferHandler {
         if(src.dragTabIndex<0) {
             return NONE;
         }
-//*
+/*
         glassPane.setImage(makeDragTabImage(src));
 /*/ //java 1.7.0
         setDragImage(makeDragTabImage(src));
@@ -557,10 +557,11 @@ class TabTransferHandler extends TransferHandler {
         //source = null;
     }
 }
-//*
+
+/*
 class GhostGlassPane extends JPanel {
     private DnDTabbedPane tabbedPane;
-    private BufferedImage draggingGhost;
+    private translate BufferedImage draggingGhost;
     public GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
@@ -580,7 +581,7 @@ class GhostGlassPane extends JPanel {
         DnDTabbedPane.DropLocation dl = tabbedPane.getDropLocation();
         Point p = getMousePosition(true); //dl.getDropPoint();
         if(draggingGhost != null && dl != null && p != null) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             Rectangle rect = tabbedPane.getDropLineRect();
             if(rect!=null && dl.isDropable()) {
@@ -593,13 +594,15 @@ class GhostGlassPane extends JPanel {
             double xx = p.getX() - draggingGhost.getWidth(this) /2d;
             double yy = p.getY() - draggingGhost.getHeight(this)/2d;
             g2.drawImage(draggingGhost, (int)xx, (int)yy , this);
+            g2.dispose();
         }
     }
 }
 /*/ //java 1.7.0
-class GhostGlassPane extends JPanel {
+class GhostGlassPane extends JComponent {
     private DnDTabbedPane tabbedPane;
     public GhostGlassPane(DnDTabbedPane tabbedPane) {
+        super();
         this.tabbedPane = tabbedPane;
         setOpaque(false);
     }
@@ -607,7 +610,7 @@ class GhostGlassPane extends JPanel {
         tabbedPane = tab;
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D)g.create();
         //tabbedPane.paintDropLine(g2);
         Rectangle rect = tabbedPane.getDropLineRect();
         if(rect!=null) {
@@ -617,6 +620,7 @@ class GhostGlassPane extends JPanel {
             g2.fill(r);
             //tabbedPane.paintDropLine(g2);
         }
+        g2.dispose();
     }
 }
 //*/

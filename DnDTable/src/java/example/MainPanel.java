@@ -132,9 +132,10 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(targetIndex>=0) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setPaint(LINE_COLOR);
             g2.fill(targetLine);
+            g2.dispose();
         }
     }
     private void initTargetLine(Point p) {

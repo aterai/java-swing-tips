@@ -112,7 +112,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             setOpaque(false);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
+            Graphics2D g2d = (Graphics2D)g.create();
             Rectangle r = list.getVisibleRect();
             int cw = r.width-icon.getPreferredSize().width;
             FontRenderContext frc = g2d.getFontRenderContext();
@@ -125,6 +125,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             }else{
                 super.paintComponent(g2d);
             }
+            g2d.dispose();
         }
     }
     private class AnimeIcon extends JComponent {
@@ -150,7 +151,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             setOpaque(false);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
+            Graphics2D g2d = (Graphics2D)g.create();
             //g2d.setPaint(getBackground());
             //g2d.fillRect(0, 0, getWidth(), getHeight());
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -168,6 +169,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
                     g2d.fill(s);
                 }
             }
+            g2d.dispose();
         }
     }
 }

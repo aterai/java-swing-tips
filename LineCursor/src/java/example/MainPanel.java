@@ -70,12 +70,13 @@ class LineCursorTextArea extends JTextArea {
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         Insets i = getInsets();
         //int y = g2.getFontMetrics().getHeight()*getLineAtCaret(this)+i.top;
         int y = caret.y+caret.height-1;
         g2.setPaint(LINE_COLOR);
         g2.drawLine(i.left, y, getSize().width-i.left-i.right, y);
+        g2.dispose();
     }
 //     public static int getLineAtCaret(JTextComponent component) {
 //         int caretPosition = component.getCaretPosition();

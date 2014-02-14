@@ -122,7 +122,7 @@ class RoundedCornerButton extends JButton {
 
     @Override protected void paintComponent(Graphics g) {
         initShape();
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if(getModel().isArmed()) {
             g2.setColor(ac);
@@ -138,14 +138,16 @@ class RoundedCornerButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.setColor(getBackground());
         super.paintComponent(g2);
+        g2.dispose();
     }
     @Override protected void paintBorder(Graphics g) {
         initShape();
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getForeground());
         g2.draw(shape);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2.dispose();
     }
     @Override public boolean contains(int x, int y) {
         initShape();
@@ -238,25 +240,28 @@ class RoundedCornerButtonUI extends BasicButtonUI{
         button.addChangeListener(listener);
     }
     @Override public void paint(Graphics g, JComponent c) {
-        AbstractButton b = (AbstractButton) c;
-        ButtonModel model = b.getModel();
-        initShape(b);
+        initShape(c);
 
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         //ContentArea
-        if(model.isArmed()) {
-            g2.setColor(ac);
-            g2.fill(shape);
-        }else if(b.isRolloverEnabled() && model.isRollover()) {
-            paintFocusAndRollover(g2, c, rc);
-        }else if(b.hasFocus()) {
-            paintFocusAndRollover(g2, c, fc);
-        }else{
-            g2.setColor(c.getBackground());
-            g2.fill(shape);
+        if(c instanceof AbstractButton) {
+            AbstractButton b = (AbstractButton)c;
+            ButtonModel model = b.getModel();
+            if(model.isArmed()) {
+                g2.setColor(ac);
+                g2.fill(shape);
+            }else if(b.isRolloverEnabled() && model.isRollover()) {
+                paintFocusAndRollover(g2, c, rc);
+            }else if(b.hasFocus()) {
+                paintFocusAndRollover(g2, c, fc);
+            }else{
+                g2.setColor(c.getBackground());
+                g2.fill(shape);
+            }
         }
+
         //Border
         g2.setPaint(c.getForeground());
         g2.draw(shape);
@@ -308,7 +313,7 @@ class ShapeButton extends JButton {
         g2.fill(shape);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if(getModel().isArmed()) {
             g2.setColor(ac);
@@ -324,13 +329,15 @@ class ShapeButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.setColor(getBackground());
         super.paintComponent(g2);
+        g2.dispose();
     }
     @Override protected void paintBorder(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getForeground());
         g2.draw(shape);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2.dispose();
     }
     @Override public boolean contains(int x, int y) {
         return shape.contains(x, y);

@@ -124,10 +124,11 @@ abstract class AbstractExpansionPanel extends JPanel {
         this.title = title;
         label = new JLabel("\u25BC "+title) {
             @Override protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
+                Graphics2D g2 = (Graphics2D)g.create();
                 //Insets ins = getInsets();
                 g2.setPaint(new GradientPaint(50, 0, Color.WHITE, getWidth(), getHeight(), new Color(200, 200, 255)));
                 g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.dispose();
                 super.paintComponent(g);
             }
         };

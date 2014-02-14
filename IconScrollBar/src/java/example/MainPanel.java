@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
             scrollPane.getVerticalScrollBar().setUI(new WindowsIconScrollBarUI());
         }
         add(scrollPane);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 class WindowsIconScrollBarUI extends WindowsScrollBarUI {
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
         super.paintThumb(g,c,thumbBounds);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
         Color oc = null;
@@ -65,8 +65,9 @@ class WindowsIconScrollBarUI extends WindowsScrollBarUI {
             oc = SystemColor.activeCaption;
             ic = SystemColor.inactiveCaptionText;
         }
-        paintCircle(g2,thumbBounds,6,oc);
-        paintCircle(g2,thumbBounds,10,ic);
+        paintCircle(g2, thumbBounds,  6, oc);
+        paintCircle(g2, thumbBounds, 10, ic);
+        g2.dispose();
     }
     private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
         g2.setPaint(color);
@@ -77,8 +78,8 @@ class WindowsIconScrollBarUI extends WindowsScrollBarUI {
 
 class BasicIconScrollBarUI extends BasicScrollBarUI {
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-        super.paintThumb(g,c,thumbBounds);
-        Graphics2D g2 = (Graphics2D)g;
+        super.paintThumb(g, c, thumbBounds);
+        Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
         Color oc = null;
@@ -96,8 +97,9 @@ class BasicIconScrollBarUI extends BasicScrollBarUI {
             oc = SystemColor.activeCaption;
             ic = SystemColor.inactiveCaptionText;
         }
-        paintCircle(g2,thumbBounds,6,oc);
-        paintCircle(g2,thumbBounds,10,ic);
+        paintCircle(g2, thumbBounds,  6, oc);
+        paintCircle(g2, thumbBounds, 10, ic);
+        g2.dispose();
     }
     private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
         g2.setPaint(color);

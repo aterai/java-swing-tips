@@ -36,7 +36,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
 //*
     @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
         Popup pp = super.getPopup(popup,x,y);
-        JPanel panel = (JPanel)popup.getParent();
+        JPanel panel = (JPanel)SwingUtilities.getUnwrappedParent(popup);
         if(isHeavyWeightContainer(panel)) {
             System.out.println("outer");
             Point p = new Point(x,y);
@@ -87,12 +87,13 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
             return new Insets(0, 0, OFF, OFF);
         }
         @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.drawImage(makeShadowImage(x, y, w, h), x, y, null);
+            g2.dispose();
         }
     }
     static class ShadowBorder extends AbstractBorder {
-        private final BufferedImage screenShot;
+        private final transient BufferedImage screenShot;
         public ShadowBorder(JComponent c, Point p) {
             super();
             BufferedImage bi = null;
@@ -113,9 +114,10 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
             if(screenShot==null) {
                 return;
             }
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.drawImage(screenShot, x, y, comp);
             g2.drawImage(makeShadowImage(x, y, w, h), x, y, comp);
+            g2.dispose();
         }
     }
 }

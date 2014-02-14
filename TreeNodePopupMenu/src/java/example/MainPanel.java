@@ -57,10 +57,12 @@ class TreePopupMenu extends JPopupMenu {
         add(new JMenuItem("dummy"));
     }
     @Override public void show(Component c, int x, int y) {
-        JTree tree = (JTree)c;
-        tsp = tree.getSelectionPaths();
-        if(tsp != null && tsp.length > 0) {
-            super.show(c, x, y);
+        if(c instanceof JTree) {
+            JTree tree = (JTree)c;
+            tsp = tree.getSelectionPaths();
+            if(tsp != null && tsp.length > 0) {
+                super.show(c, x, y);
+            }
         }
     }
 }

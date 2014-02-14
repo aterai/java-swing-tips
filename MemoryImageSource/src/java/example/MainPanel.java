@@ -40,10 +40,10 @@ public class MainPanel extends JPanel {
 
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Point startPoint = new Point(-1,-1);
-    private final BufferedImage backImage;
-    private final TexturePaint texture = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
+    private final transient BufferedImage backImage;
+    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
     private final int[] pixels = new int[320 * 240];
-    private final MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
+    private final transient MemoryImageSource source = new MemoryImageSource(320, 240, pixels, 0, 320);
     private int penc;
 
     public PaintPanel() {
@@ -52,14 +52,16 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         addMouseListener(this);
         backImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = backImage.createGraphics();
-        g2.setPaint(texture);
+        g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, 320, 240);
         g2.dispose();
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(backImage!=null) {
-            ((Graphics2D)g).drawImage(backImage, 0, 0, this);
+            Graphics2D g2 = (Graphics2D)g.create();
+            g2.drawImage(backImage, 0, 0, this);
+            g2.dispose();
         }
         if(source!=null) {
             g.drawImage(createImage(source), 0, 0, null);

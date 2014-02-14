@@ -66,14 +66,19 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
         if(model.isSelected()) {
-            Graphics2D g2 = (Graphics2D)g;
+            Graphics2D g2 = (Graphics2D)g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.fillRoundRect(x+3,y+3, getIconWidth()-6, getIconHeight()-6, 4, 4);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            g2.dispose();
         }
     }
-    @Override public int getIconWidth()  { return 12; }
-    @Override public int getIconHeight() { return 12; }
+    @Override public int getIconWidth()  {
+        return 12;
+    }
+    @Override public int getIconHeight() {
+        return 12;
+    }
 }
 
 class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {

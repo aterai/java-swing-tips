@@ -41,7 +41,7 @@ class MainPanel extends JPanel {
             animator.start();
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D)g;
+            Graphics2D g2d = (Graphics2D)g.create();
             g2d.setPaint(getBackground());
             g2d.fillRect(0, 0, getWidth(), getHeight());
             if(mode && alpha<10) {
@@ -57,6 +57,7 @@ class MainPanel extends JPanel {
             g2d.drawImage(icon1.getImage(), 0, 0, (int)icon1.getIconWidth(), (int)icon1.getIconHeight(), this);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha*0.1f));
             g2d.drawImage(icon2.getImage(), 0, 0, (int)icon2.getIconWidth(), (int)icon2.getIconHeight(), this);
+            g2d.dispose();
         }
         @Override public void actionPerformed(ActionEvent e) {
             repaint();
