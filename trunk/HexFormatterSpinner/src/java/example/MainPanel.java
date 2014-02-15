@@ -13,7 +13,6 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
-    private final FontRenderContext frc = new FontRenderContext(null, true, true);
     private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
     private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
 
@@ -78,6 +77,7 @@ public class MainPanel extends JPanel {
 //                     str = new String(ca, 0, 2);
 //                 }
 
+            FontRenderContext frc = g2.getFontRenderContext();
             Shape exShape = new TextLayout(str, ipaEx, frc).getOutline(null);
             Shape mjShape = new TextLayout(str, ipaMj, frc).getOutline(null);
 

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -141,8 +142,11 @@ class TestModel extends DefaultTableModel {
     }
 }
 
-class Test {
-    private String name, comment;
+class Test implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private String comment;
+
     public Test(String name, String comment) {
         this.name = name;
         this.comment = comment;

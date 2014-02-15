@@ -103,7 +103,7 @@ public class MainPanel extends JPanel {
 }
 
 class BasicComboPopup2 extends BasicComboPopup {
-    private Handler2 handler2;
+    private transient Handler2 handler2;
     @Override public void uninstallingUI() {
         super.uninstallingUI();
         handler2 = null;

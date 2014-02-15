@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
             return (column==0) ? Integer.class : Object.class;
         }
     };
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model);
 
     public MainPanel() {
@@ -180,13 +180,13 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
         return null;
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        AbstractButton b = (AbstractButton) c;
+        //AbstractButton b = (AbstractButton)c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
 
         Insets i = c.getInsets();
-        b.getSize(size);
+        c.getSize(size);
         viewRect.x = i.left;
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
@@ -194,18 +194,26 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
         iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
         textRect.x = textRect.y = textRect.width = textRect.height = 0;
 
-        String text = SwingUtilities.layoutCompoundLabel(
-            c, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
-            b.getVerticalAlignment(), b.getHorizontalAlignment(),
-            b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
-            viewRect, iconRect, textRect,
-            0); //b.getText() == null ? 0 : b.getIconTextGap());
 
         if(c.isOpaque()) {
-            g.setColor(b.getBackground());
-            g.fillRect(0,0, size.width, size.height);
+            g.setColor(c.getBackground());
+            g.fillRect(0, 0, size.width, size.height);
         }
-        if(text==null) { return; }
+
+        String text;
+        AbstractButton b;
+        if(c instanceof AbstractButton) {
+            b = (AbstractButton)c;
+            text = SwingUtilities.layoutCompoundLabel(
+                b, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
+                b.getVerticalAlignment(),    b.getHorizontalAlignment(),
+                b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
+                viewRect, iconRect, textRect,
+                0); //b.getText() == null ? 0 : b.getIconTextGap());
+        }else{
+            return;
+        }
+
 //         // Changing Component State During Painting (an infinite repaint loop)
 //         // pointed out by Peter
 //         // -note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
@@ -217,14 +225,14 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //         }else if(b.isRolloverEnabled() && model.isRollover()) {
 
         ButtonModel model = b.getModel();
-        g.setColor(b.getForeground());
+        g.setColor(c.getForeground());
         if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
                        viewRect.x+viewRect.width, viewRect.y+viewRect.height);
         }
-        View v = (View) c.getClientProperty(BasicHTML.propertyKey);
+        View v = (View)c.getClientProperty(BasicHTML.propertyKey);
         if(v==null) {
-            paintText(g, b, textRect, text);
+            paintText(g, c, textRect, text);
         }else{
             v.paint(g, textRect);
         }

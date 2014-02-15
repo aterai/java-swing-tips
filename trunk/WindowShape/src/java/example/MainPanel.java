@@ -9,9 +9,9 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
+    private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
+    private static final Font FONT = new Font(Font.SERIF, Font.PLAIN, 300);
     private final JTextField textField = new JTextField("\u2605", 20);
-    private final FontRenderContext frc = new FontRenderContext(null,true,true);
-    private final Font font = new Font(Font.SERIF, Font.PLAIN, 300);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
     private final JToggleButton button = new JToggleButton(new AbstractAction("show") {
         private JFrame frame;
@@ -30,7 +30,7 @@ public class MainPanel extends JPanel {
             if(button.isSelected()) {
                 String str = textField.getText().trim();
                 //label.setText(str);
-                TextLayout tl = new TextLayout(str, font, frc);
+                TextLayout tl = new TextLayout(str, FONT, FRC);
                 Rectangle2D b = tl.getBounds();
                 Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(),-b.getY()));
 

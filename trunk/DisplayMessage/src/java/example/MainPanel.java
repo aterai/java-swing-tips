@@ -7,10 +7,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private final SystemTray tray = SystemTray.getSystemTray();
     private final PopupMenu popup = new PopupMenu();
-    private final Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
-    private final TrayIcon icon   = new TrayIcon(image, "TRAY", popup);
+    private final transient SystemTray tray = SystemTray.getSystemTray();
+    private final transient Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
+    private final transient TrayIcon icon   = new TrayIcon(image, "TRAY", popup);
     private final JTextArea log   = new JTextArea();
     private final JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values()); //ERROR, WARNING, INFO, NONE
     public MainPanel(final JFrame frame) {
@@ -52,7 +52,7 @@ class MainPanel extends JPanel {
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
         if(!SystemTray.isSupported()) {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;

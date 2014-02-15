@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         }
     };
     private final JTable table = new SortingColumnColorTable(model);
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
 
     private MainPanel() {
         super(new BorderLayout());

@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.io.Serializable;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
@@ -62,7 +63,8 @@ public class MainPanel extends JPanel {
     }
 }
 
-class ColorItem {
+class ColorItem implements Serializable {
+    private static final long serialVersionUID = 1L;
     public final Color color;
     public final String description;
     public ColorItem(Color color, String description) {

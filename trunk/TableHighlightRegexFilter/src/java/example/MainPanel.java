@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
             return String.class;
         }
     };
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model);
 
     public MainPanel() {

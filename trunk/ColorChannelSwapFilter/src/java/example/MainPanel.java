@@ -20,6 +20,7 @@ class MainPanel extends JPanel implements HierarchyListener {
     private final BlockedColorLayerUI layerUI = new BlockedColorLayerUI();
     private final JPanel p = new JPanel(new GridLayout(2,1));
     private SwingWorker<String, Void> worker;
+
     public MainPanel() {
         super(new BorderLayout());
         progress01.setStringPainted(true);
@@ -107,11 +108,12 @@ class MainPanel extends JPanel implements HierarchyListener {
 
 class BlockedColorLayerUI extends LayerUI<JProgressBar>{
     public boolean isPreventing;
-    private BufferedImage bi;
+    private transient BufferedImage bi;
     private int prevw = -1;
     private int prevh = -1;
+
     @Override public void paint(Graphics g, JComponent c) {
-        if(isPreventing) {
+        if(isPreventing && c instanceof JLayer) {
             JLayer jlayer = (JLayer)c;
             JProgressBar progress = (JProgressBar)jlayer.getView();
             int w = progress.getSize().width;

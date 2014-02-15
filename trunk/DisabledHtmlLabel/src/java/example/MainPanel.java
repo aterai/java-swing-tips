@@ -92,7 +92,8 @@ public class MainPanel extends JPanel {
 }
 
 class DisabledHtmlLabel extends JLabel {
-    private BufferedImage shadow;
+    private static final ColorConvertOp COLOR_CONVERT = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+    private transient BufferedImage shadow;
 
     public DisabledHtmlLabel(String text) {
         super(text);
@@ -103,13 +104,12 @@ class DisabledHtmlLabel extends JLabel {
         if(!b) {
             BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = source.createGraphics();
-            g2.setPaint(new Color(0,0,0,0));
-            g2.fillRect(0,0,getWidth(),getHeight());
+            g2.setPaint(new Color(0, true));
+            g2.fillRect(0, 0, getWidth(), getHeight());
             //print(g2);
             paint(g2);
             g2.dispose();
-            ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-            shadow = colorConvert.filter(source, null);
+            shadow = COLOR_CONVERT.filter(source, null);
         }
         super.setEnabled(b);
     }

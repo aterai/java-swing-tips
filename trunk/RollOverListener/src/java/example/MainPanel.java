@@ -50,8 +50,8 @@ public class MainPanel extends JPanel {
 
 class RollOverList<E> extends JList<E> {
     private static final Color ROLLOVERBACKGROUND = new Color(220,240,255);
-    private int rollOverRowIndex = -1;
-    private RollOverListener rollOverListener;
+    private transient RollOverListener rollOverListener;
+
     public RollOverList(ListModel<E> model) {
         super(model);
     }
@@ -74,9 +74,11 @@ class RollOverList<E> extends JList<E> {
     private class RollOverCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if(index == rollOverRowIndex) {
+            if(rollOverListener != null && index == rollOverListener.rollOverRowIndex) {
                 c.setBackground(ROLLOVERBACKGROUND);
-                if(isSelected) { c.setForeground(Color.BLACK); }
+                if(isSelected) {
+                    c.setForeground(Color.BLACK);
+                }
                 //c.setForeground(getSelectionForeground());
                 //c.setBackground(getSelectionBackground());
             }
@@ -84,6 +86,7 @@ class RollOverList<E> extends JList<E> {
         }
     }
     private class RollOverListener extends MouseAdapter {
+        private int rollOverRowIndex = -1;
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             repaint();
@@ -91,9 +94,9 @@ class RollOverList<E> extends JList<E> {
         @Override public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
             if(row != rollOverRowIndex) {
-                Rectangle rect = getCellBounds(row,row);
+                Rectangle rect = getCellBounds(row, row);
                 if(rollOverRowIndex>=0) {
-                    rect.add(getCellBounds(rollOverRowIndex,rollOverRowIndex));
+                    rect.add(getCellBounds(rollOverRowIndex, rollOverRowIndex));
                 }
                 rollOverRowIndex = row;
                 repaint(rect);

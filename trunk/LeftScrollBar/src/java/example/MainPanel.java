@@ -11,11 +11,12 @@ class MainPanel extends JPanel {
     private final JLabel label       = new JLabel();
     private final JScrollPane scroll = new JScrollPane(label);
     private final JViewport vport    = scroll.getViewport();
-    private final HandScrollListener hsl = new HandScrollListener();
 
     public MainPanel() {
         super(new BorderLayout());
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+
+        HandScrollListener hsl = new HandScrollListener();
         vport.addMouseMotionListener(hsl);
         vport.addMouseListener(hsl);
 

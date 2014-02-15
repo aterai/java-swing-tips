@@ -23,10 +23,11 @@ public class MainPanel extends JPanel {
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int modelIndex) {
-            return modelIndex<2?Integer.class:Object.class;
+            return modelIndex<2 ? Integer.class : Object.class;
         }
     };
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+
     public MainPanel() {
         super(new BorderLayout());
         JTable fixedTable = new JTable(model);

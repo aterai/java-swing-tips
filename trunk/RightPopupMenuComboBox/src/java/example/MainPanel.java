@@ -13,7 +13,7 @@ import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 public final class MainPanel extends JPanel {
     private final JComboBox<String> combo00 = new JComboBox<>(makeModel());
     private final JComboBox<String> combo01 = new JComboBox<>(makeModel());
-    private final ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
+
     public MainPanel() {
         super(new BorderLayout());
         initComboBox(combo01);
@@ -27,41 +27,11 @@ public final class MainPanel extends JPanel {
     }
     private void initComboBox(JComboBox combo) {
         if(combo.getUI() instanceof WindowsComboBoxUI) {
-            combo.setUI(new WindowsComboBoxUI() {
-                @Override protected JButton createArrowButton() {
-                    JButton button = new JButton(icon) {
-                        @Override public Dimension getPreferredSize() {
-                            return new Dimension(14, 14);
-                        }
-                    };
-                    button.setRolloverIcon(makeRolloverIcon(icon));
-                    button.setFocusPainted(false);
-                    button.setContentAreaFilled(false);
-                    return button;
-                }
-            });
+            combo.setUI(new RightPopupWindowsComboBoxUI());
         }else{
-            combo.setUI(new BasicComboBoxUI() {
-                @Override protected JButton createArrowButton() {
-                    JButton button = super.createArrowButton();
-                    ((BasicArrowButton)button).setDirection(SwingConstants.EAST);
-                    return button;
-                }
-            });
+            combo.setUI(new RightPopupBasicComboBoxUI());
         }
         combo.addPopupMenuListener(new RightPopupMenuListener());
-    }
-    private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
-        RescaleOp op = new RescaleOp(
-            new float[] { 1.2f,1.2f,1.2f,1.0f },
-            new float[] { 0f,0f,0f,0f }, null);
-        BufferedImage img = new BufferedImage(
-            srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = img.getGraphics();
-        //g.drawImage(srcIcon.getImage(), 0, 0, null);
-        srcIcon.paintIcon(null, g, 0, 0);
-        g.dispose();
-        return new ImageIcon(op.filter(img, null));
     }
     private static ComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -95,6 +65,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class RightPopupMenuListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
         EventQueue.invokeLater(new Runnable() {
@@ -113,4 +84,40 @@ class RightPopupMenuListener implements PopupMenuListener {
     }
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
     @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
+}
+
+class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
+    @Override protected JButton createArrowButton() {
+        ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
+        JButton button = new JButton(icon) {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(14, 14);
+            }
+        };
+        button.setRolloverIcon(makeRolloverIcon(icon));
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false);
+        return button;
+    }
+    private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
+        RescaleOp op = new RescaleOp(
+            new float[] { 1.2f,1.2f,1.2f,1.0f },
+            new float[] { 0f,0f,0f,0f }, null);
+        BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        //g.drawImage(srcIcon.getImage(), 0, 0, null);
+        srcIcon.paintIcon(null, g, 0, 0);
+        g.dispose();
+        return new ImageIcon(op.filter(img, null));
+    }
+}
+
+class RightPopupBasicComboBoxUI extends BasicComboBoxUI {
+    @Override protected JButton createArrowButton() {
+        JButton button = super.createArrowButton();
+        if(button instanceof BasicArrowButton) {
+            ((BasicArrowButton)button).setDirection(SwingConstants.EAST);
+        }
+        return button;
+    }
 }

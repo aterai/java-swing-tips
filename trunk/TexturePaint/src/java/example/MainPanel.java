@@ -9,7 +9,7 @@ import javax.imageio.*;
 import javax.swing.*;
 
 class MainPanel extends JPanel {
-    private final TexturePaint texture;
+    private final transient TexturePaint texture;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -24,7 +24,7 @@ class MainPanel extends JPanel {
 
         add(new JLabel("@title@"));
         setOpaque(false);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g.create();

@@ -13,8 +13,7 @@ public class MainPanel extends JPanel {
     private final JCheckBox check1;
     private final JCheckBox check2;
     private final TestModel model = new TestModel();
-    private final TableRowSorter<TestModel> sorter = new TableRowSorter<TestModel>(model);
-    private final Set<RowFilter<TestModel,Integer>> filters = new HashSet<RowFilter<TestModel,Integer>>(2);
+    private final transient TableRowSorter<? extends TestModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
@@ -52,14 +51,15 @@ public class MainPanel extends JPanel {
         //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        final RowFilter<TestModel,Integer> filter1 = new RowFilter<TestModel,Integer>() {
+        final Set<RowFilter<? super TestModel, ? super Integer>> filters = new HashSet<>(2);
+        final RowFilter<TestModel, Integer> filter1 = new RowFilter<TestModel, Integer>() {
             @Override public boolean include(Entry<? extends TestModel, ? extends Integer> entry) {
                 TestModel model = entry.getModel();
                 Test t = model.getTest(entry.getIdentifier());
                 return !t.getComment().trim().isEmpty();
             }
         };
-        final RowFilter<TestModel,Integer> filter2 = new RowFilter<TestModel,Integer>() {
+        final RowFilter<TestModel, Integer> filter2 = new RowFilter<TestModel, Integer>() {
             @Override public boolean include(Entry<? extends TestModel, ? extends Integer> entry) {
                 return entry.getIdentifier() % 2 == 0;
             }

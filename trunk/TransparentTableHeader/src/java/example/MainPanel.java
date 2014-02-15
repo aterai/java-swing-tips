@@ -14,7 +14,7 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final TexturePaint texture = makeImageTexture(getClass().getResource("unkaku_w.png"));
+    private static final TexturePaint TEXTURE = makeImageTexture(MainPanel.class.getResource("unkaku_w.png"));
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -48,14 +48,14 @@ public final class MainPanel extends JPanel {
         //table.setShowHorizontalLines(false);
         table.setFocusable(false);
         //table.setCellSelectionEnabled(false);
-        table.setIntercellSpacing(new Dimension(0,1));
+        table.setIntercellSpacing(new Dimension(0, 1));
         table.setRowHeight(24);
         table.setSelectionForeground(table.getForeground());
-        table.setSelectionBackground(new Color(0,0,100,50));
+        table.setSelectionBackground(new Color(0, 0, 100, 50));
 
         JCheckBox checkBox = new JCheckBox() {
             @Override public void paintComponent(Graphics g) {
-                g.setColor(new Color(0,0,100,50));
+                g.setColor(new Color(0, 0, 100, 50));
                 g.fillRect(0,0,getWidth(),getHeight());
                 super.paintComponent(g);
             }
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         DefaultTableCellRenderer l = new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JComponent c = (JComponent)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+                c.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
                 return c;
             }
         };
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
 
         JScrollPane scroll = new JScrollPane(table) {
             @Override public void paintComponent(Graphics g) {
-                if(texture!=null) {
+                if(TEXTURE!=null) {
                     Graphics2D g2 = (Graphics2D)g.create();
-                    g2.setPaint(texture);
-                    g2.fillRect(0,0,getWidth(),getHeight());
+                    g2.setPaint(TEXTURE);
+                    g2.fillRect(0, 0, getWidth(), getHeight());
                     g2.dispose();
                 }
                 super.paintComponent(g);
@@ -102,16 +102,16 @@ public final class MainPanel extends JPanel {
         scroll.getColumnHeader().setOpaque(false);
         scroll.getColumnHeader().setBackground(alphaZero);
 
-        scroll.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(scroll);
-        add(new JCheckBox(new AbstractAction("setBackground(new Color(255,0,0,50))") {
-            private final Color color = new Color(255,0,0,50);
+        add(new JCheckBox(new AbstractAction("setBackground(new Color(255, 0, 0, 50))") {
+            private final Color color = new Color(255, 0, 0, 50);
             @Override public void actionPerformed(ActionEvent e) {
-                table.setBackground(((JCheckBox)e.getSource()).isSelected()?color:alphaZero);
+                table.setBackground(((JCheckBox)e.getSource()).isSelected() ? color : alphaZero);
             }
         }), BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static TexturePaint makeImageTexture(URL url) {
@@ -149,8 +149,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TransparentHeader extends JLabel implements TableCellRenderer {
-    private final Border b = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK),
-                                                                BorderFactory.createEmptyBorder(2,2,1,2));
+    private final Border b = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
+                                                                BorderFactory.createEmptyBorder(2, 2, 1, 2));
     private final Color alphaZero = new Color(0, true);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setText(Objects.toString(value, ""));

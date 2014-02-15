@@ -95,7 +95,7 @@ class StarPanel3 extends JPanel {
     private final Shape shape;
     public StarPanel3() {
         super();
-        FontRenderContext frc = new FontRenderContext(null,true,true);
+        FontRenderContext frc = new FontRenderContext(null, true, true);
         Font font = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
         shape = new TextLayout("\u2605", font, frc).getOutline(null);
     }

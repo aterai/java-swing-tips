@@ -53,7 +53,7 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
 }
 
 class BasicComboPopup2 extends BasicComboPopup {
-    private Handler2 handler2;
+    private transient Handler2 handler2;
     public BasicComboPopup2(JComboBox combo) {
         super(combo);
     }

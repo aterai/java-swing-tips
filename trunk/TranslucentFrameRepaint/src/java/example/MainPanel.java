@@ -121,7 +121,7 @@ class MainPanel extends JPanel {
 }
 
 class TexturePanel extends JPanel {
-    protected TexturePaint texture;
+    protected transient TexturePaint texture;
     public TexturePanel() {
         super();
     }
