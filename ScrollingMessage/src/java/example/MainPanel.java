@@ -59,7 +59,7 @@ class MarqueePanel extends JComponent implements ActionListener {
 
         String text = "abcdefthijklmnopqrstuvwxyz";
         Font font = new Font(Font.SERIF, Font.PLAIN, 100);
-        FontRenderContext frc = new FontRenderContext(null,true,true);
+        FontRenderContext frc = new FontRenderContext(null, true, true);
 
         gv = font.createGlyphVector(frc, text);
         lm = font.getLineMetrics(text, frc);

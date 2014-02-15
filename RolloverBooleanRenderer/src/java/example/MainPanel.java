@@ -128,7 +128,7 @@ class HighlightListener extends MouseAdapter {
 
 class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
     private static final Color HIGHLIGHT = new Color(255, 150, 50);
-    private final HighlightListener highlighter;
+    private final transient HighlightListener highlighter;
     public RolloverDefaultTableCellRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;
@@ -157,7 +157,8 @@ class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
 
 class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
     private static final Border NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-    private final HighlightListener highlighter;
+    private final transient HighlightListener highlighter;
+
     public RolloverBooleanRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;

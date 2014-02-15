@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
     private final JButton pauseButton = new JButton(new PauseAction());
     private final JProgressBar bar1   = new JProgressBar();
     private final JProgressBar bar2   = new JProgressBar();
-    private Task worker;
+    private transient Task worker;
 
     public MainPanel() {
         super(new BorderLayout(5,5));

@@ -12,8 +12,8 @@ import javax.swing.*;
 public class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
     private final JButton runButton  = new JButton(new RunAction());
-    private SwingWorker<String, String> worker;
-    private final ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
+    private transient SwingWorker<String, String> worker;
+    private transient final ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
 
     public MainPanel() {
         super(new BorderLayout(5,5));

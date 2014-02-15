@@ -89,7 +89,8 @@ class HighlightListener extends MouseAdapter {
 }
 
 class HighlightRenderer extends DefaultTableCellRenderer {
-    private final HighlightListener highlighter;
+    private final transient HighlightListener highlighter;
+
     public HighlightRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;

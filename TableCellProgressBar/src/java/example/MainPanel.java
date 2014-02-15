@@ -12,13 +12,12 @@ import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
     private final WorkerModel model = new WorkerModel();
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-    private final JTable table;
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final JTable table = new JTable(model);
+    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    private final transient ExecutorService executor = Executors.newCachedThreadPool();
     //TEST: private final Executor executor = Executors.newFixedThreadPool(2);
     public MainPanel() {
         super(new BorderLayout());
-        table = new JTable(model);
         table.setRowSorter(sorter);
         model.addProgressValue(new ProgressValue("Name 1", 100), null);
 

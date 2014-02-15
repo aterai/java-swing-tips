@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
@@ -50,7 +51,8 @@ public class MainPanel extends JPanel {
     }
 }
 
-class FishEyeRowContext {
+class FishEyeRowContext implements Serializable {
+    private static final long serialVersionUID = 1L;
     public final int height;
     public final Font font;
     public final Color color;
@@ -64,9 +66,7 @@ class FishEyeRowContext {
 class FishEyeTable extends JTable {
     private final List<FishEyeRowContext> fishEyeRowList;
     private final Font minFont;
-    private int prevRow = -1;
-    private int prevHeight;
-    private FishEyeTableHandler handler;
+    private transient FishEyeTableHandler handler;
 
     public FishEyeTable(TableModel m) {
         super(m);
@@ -111,6 +111,8 @@ class FishEyeTable extends JTable {
     }
 
     private class FishEyeTableHandler extends MouseAdapter implements ListSelectionListener {
+        protected int prevRow = -1;
+        protected int prevHeight;
         @Override public void mouseMoved(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
             if(prevRow==row) {
@@ -131,7 +133,9 @@ class FishEyeTable extends JTable {
             repaint();
         }
         @Override public void valueChanged(ListSelectionEvent e) {
-            if(e.getValueIsAdjusting()) { return; }
+            if(e.getValueIsAdjusting()) {
+                return;
+            }
             int row = getSelectedRow();
             if(prevRow==row) {
                 return;
@@ -148,11 +152,11 @@ class FishEyeTable extends JTable {
             return;
         }
         int h = ((JViewport)p).getExtentSize().height;
-        if(h==prevHeight) {
+        if(h==handler.prevHeight) {
             return;
         }
         initRowHeigth(h, getSelectedRow());
-        prevHeight = h;
+        handler.prevHeight = h;
     }
 
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -160,7 +164,7 @@ class FishEyeTable extends JTable {
         int rowCount = getModel().getRowCount();
         Color color = Color.WHITE;
         Font font   = minFont;
-        int ccRow   = prevRow;
+        int ccRow   = handler.prevRow;
         int index   = 0;
         int rd2     = (fishEyeRowList.size()-1)/2;
         for(int i=-rd2;i<rowCount;i++) {

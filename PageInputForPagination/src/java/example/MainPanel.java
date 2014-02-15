@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
             return (column==0)?Integer.class:Object.class;
         }
     };
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     private final JTable table = new JTable(model);
 
     private final JButton first = new JButton("|<");

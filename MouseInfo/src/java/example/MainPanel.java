@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 import javax.swing.*;
 
 public class MainPanel extends JPanel implements ActionListener, HierarchyListener {
@@ -73,11 +74,13 @@ public class MainPanel extends JPanel implements ActionListener, HierarchyListen
 }
 
 //http://d.hatena.ne.jp/aidiary/20070601/1251545490
-class Racket {
+class Racket implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final int WIDTH  = 80;
     private static final int HEIGHT = 5;
     private int centerPos;
     private final Dimension parentSize;
+
     public Racket(Dimension parentSize) {
         this.parentSize = parentSize;
         centerPos = parentSize.width/2;

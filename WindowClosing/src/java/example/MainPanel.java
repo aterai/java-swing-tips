@@ -5,66 +5,111 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel implements PropertyChangeListener {
-    private static final String ASTERISK_TITLEBAR = "unsaved";
+public class MainPanel extends JPanel {
     private final JTextArea textarea = new JTextArea("JFrame Conditional Close Test");
-    private final JButton exitButton = new JButton(new AbstractAction("exit") {
-        @Override public void actionPerformed(ActionEvent e) {
-            maybeExit();
-        }
-    });
-    private final JButton saveButton = new JButton(new AbstractAction("save") {
-        @Override public void actionPerformed(ActionEvent e) {
-            //System.out.println("Save(dummy)");
-            fireUnsavedFlagChangeEvent(false);
-        }
-    });
-    private final JFrame frame;
-    private final String title;
+    private final JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
+    private final JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
 
-    public MainPanel(final JFrame frame) {
+    public MainPanel(JFrame frame) {
         super(new BorderLayout());
-        this.frame = frame;
-        this.title = frame.getTitle();
-        addPropertyChangeListener(this);
-        frame.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosing(WindowEvent e) {
-                System.out.println("windowClosing");
-                maybeExit();
-            }
-            @Override public void windowClosed(WindowEvent e) {
-                System.out.println("windowClosed");
-                System.exit(0); //webstart
-            }
-        });
-        textarea.getDocument().addDocumentListener(new DocumentListener() {
-            @Override public void insertUpdate(DocumentEvent e) {
-                fireUnsavedFlagChangeEvent(true);
-            }
-            @Override public void removeUpdate(DocumentEvent e) {
-                fireUnsavedFlagChangeEvent(true);
-            }
-            @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
-        });
+
+        SaveHandler handler = new SaveHandler(frame);
+        handler.addEnabledFlagComponent(saveButton);
         saveButton.setEnabled(false);
-        add(new JScrollPane(textarea));
+
+        frame.addWindowListener(handler);
+        textarea.getDocument().addDocumentListener(handler);
+        exitButton.setActionCommand(SaveHandler.CMD_EXIT);
+        exitButton.addActionListener(handler);
+        saveButton.setActionCommand(SaveHandler.CMD_SAVE);
+        saveButton.addActionListener(handler);
+
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(exitButton);
         box.add(Box.createHorizontalStrut(5));
         box.add(saveButton);
+
         add(box, BorderLayout.SOUTH);
+        add(new JScrollPane(textarea));
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void propertyChange(PropertyChangeEvent e) {
-        if(ASTERISK_TITLEBAR.equals(e.getPropertyName())) {
-            Boolean unsaved = (Boolean)e.getNewValue();
-            frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel(frame));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class SaveHandler extends WindowAdapter implements DocumentListener, ActionListener {
+    //public static final String ASTERISK_TITLEBAR = "unsaved";
+    public static final String CMD_SAVE = "save";
+    public static final String CMD_EXIT = "exit";
+    private final JFrame frame;
+    private final String title;
+    private final List<JComponent> list = new ArrayList<>();
+
+    public SaveHandler(JFrame frame) {
+        super();
+        this.frame = frame;
+        this.title = frame.getTitle();
+    }
+
+    //WindowAdapter
+    @Override public void windowClosing(WindowEvent e) {
+        System.out.println("windowClosing");
+        maybeExit();
+    }
+    @Override public void windowClosed(WindowEvent e) {
+        System.out.println("windowClosed");
+        System.exit(0); //webstart
+    }
+
+    //ActionListener
+    @Override public void actionPerformed(ActionEvent e) {
+        String cmd = e.getActionCommand();
+        if(CMD_EXIT.equals(cmd)) {
+            maybeExit();
+        }else if(CMD_SAVE.equals(cmd)) {
+            fireUnsavedFlagChangeEvent(false);
         }
     }
+
+    //DocumentListener
+    @Override public void insertUpdate(DocumentEvent e) {
+        fireUnsavedFlagChangeEvent(true);
+    }
+    @Override public void removeUpdate(DocumentEvent e) {
+        fireUnsavedFlagChangeEvent(true);
+    }
+    @Override public void changedUpdate(DocumentEvent e) {
+        /* not needed */
+    }
+
     private void maybeExit() {
         if(title.equals(frame.getTitle())) {
             System.out.println("The document has already been saved, exit without doing anything.");
@@ -94,37 +139,19 @@ public class MainPanel extends JPanel implements PropertyChangeListener {
             System.out.println("Cancel exit");
         }
     }
+
+    public void addEnabledFlagComponent(JComponent c) {
+        list.add(c);
+    }
+
+    public void removeEnabledFlagComponent(JComponent c) {
+        list.remove(c);
+    }
+
     private void fireUnsavedFlagChangeEvent(boolean unsaved) {
-        if(unsaved) {
-            saveButton.setEnabled(true);
-            firePropertyChange(ASTERISK_TITLEBAR, Boolean.FALSE, Boolean.TRUE);
-        }else{
-            saveButton.setEnabled(false);
-            firePropertyChange(ASTERISK_TITLEBAR, Boolean.TRUE, Boolean.FALSE);
+        frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
+        for(JComponent c: list) {
+            c.setEnabled(unsaved);
         }
-    }
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-    public static void createAndShowGUI() {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        JFrame frame = new JFrame("@title@");
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }

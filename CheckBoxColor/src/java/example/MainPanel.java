@@ -80,21 +80,23 @@ class MyCheckBoxIcon2 implements Icon {
     private final Icon orgIcon = UIManager.getIcon("CheckBox.icon");
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         orgIcon.paintIcon(c, g, x, y);
-        AbstractButton b = (AbstractButton)c;
-        ButtonModel model = b.getModel();
-        g.setColor(new Color(255, 155, 155, 100));
-        g.fillRect(x+2,y+2,getIconWidth()-4,getIconHeight()-4);
-        if(model.isSelected()) {
-            g.setColor(Color.RED);
-            g.drawLine(x+9, y+3, x+9, y+3);
-            g.drawLine(x+8, y+4, x+9, y+4);
-            g.drawLine(x+7, y+5, x+9, y+5);
-            g.drawLine(x+6, y+6, x+8, y+6);
-            g.drawLine(x+3, y+7, x+7, y+7);
-            g.drawLine(x+4, y+8, x+6, y+8);
-            g.drawLine(x+5, y+9, x+5, y+9);
-            g.drawLine(x+3, y+5, x+3, y+5);
-            g.drawLine(x+3, y+6, x+4, y+6);
+        if(c instanceof AbstractButton) {
+            AbstractButton b = (AbstractButton)c;
+            ButtonModel model = b.getModel();
+            g.setColor(new Color(255, 155, 155, 100));
+            g.fillRect(x+2,y+2,getIconWidth()-4,getIconHeight()-4);
+            if(model.isSelected()) {
+                g.setColor(Color.RED);
+                g.drawLine(x+9, y+3, x+9, y+3);
+                g.drawLine(x+8, y+4, x+9, y+4);
+                g.drawLine(x+7, y+5, x+9, y+5);
+                g.drawLine(x+6, y+6, x+8, y+6);
+                g.drawLine(x+3, y+7, x+7, y+7);
+                g.drawLine(x+4, y+8, x+6, y+8);
+                g.drawLine(x+5, y+9, x+5, y+9);
+                g.drawLine(x+3, y+5, x+3, y+5);
+                g.drawLine(x+3, y+6, x+4, y+6);
+            }
         }
     }
     @Override public int getIconWidth() {

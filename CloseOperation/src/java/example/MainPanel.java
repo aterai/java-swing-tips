@@ -16,8 +16,10 @@ public final class MainPanel extends JPanel {
             @Override public void windowClosing(WindowEvent e) {
                 number--;
                 if(number==0) {
-                    JFrame f = (JFrame)e.getWindow();
-                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    Window w = e.getWindow();
+                    if(w instanceof JFrame) {
+                        ((JFrame)w).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    }
                 }
             }
         });

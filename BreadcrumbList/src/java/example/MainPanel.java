@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -123,7 +124,8 @@ public class MainPanel extends JPanel {
 }
 
 //http://terai.xrea.jp/Swing/ToggleButtonBar.html
-class ToggleButtonBarCellIcon implements Icon {
+class ToggleButtonBarCellIcon implements Icon, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final int W = 10;
     private static final int H = 21;
     public Shape area;
@@ -191,10 +193,14 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
     }
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        ((JLayer)c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+        if(c instanceof JLayer) {
+            ((JLayer)c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+        }
     }
     @Override public void uninstallUI(JComponent c) {
-        ((JLayer)c).setLayerEventMask(0);
+        if(c instanceof JLayer) {
+            ((JLayer)c).setLayerEventMask(0);
+        }
         super.uninstallUI(c);
     }
     private void update(MouseEvent e, JLayer<? extends JPanel> l) {

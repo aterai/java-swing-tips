@@ -100,14 +100,14 @@ public class MainPanel extends JPanel {
 //9. Blur Disabled Components
 //http://code.google.com/p/filthy-rich-clients/source/browse/trunk/swing-hacks-examples-20060109/Ch01-JComponents/09/swinghacks/ch01/JComponents/hack09/BlurJButton.java?r=11
 class BlurJButton extends JButton {
-    private final ConvolveOp op = new ConvolveOp(new Kernel(3, 3, new float[] {
+    private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
         .05f, .05f, .05f,
         .05f, .60f, .05f,
         .05f, .05f, .05f
     }));
     private int iw = -1;
     private int ih = -1;
-    private BufferedImage buf;
+    private transient BufferedImage buf;
     public BlurJButton(String label) {
         super(label);
         //System.out.println(op.getEdgeCondition());
@@ -124,20 +124,20 @@ class BlurJButton extends JButton {
             Graphics2D g2 = (Graphics2D)buf.getGraphics();
             super.paintComponent(g2);
             g2.dispose();
-            g.drawImage(op.filter(buf, null), 0, 0, null);
+            g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
         }
     }
 }
 
 class BlurButton extends JButton {
-    private final ConvolveOp op = new ConvolveOp(new Kernel(3, 3, new float[] {
+    private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
         .05f, .05f, .05f,
         .05f, .60f, .05f,
         .05f, .05f, .05f
     }), ConvolveOp.EDGE_NO_OP, null);
     private int iw = -1;
     private int ih = -1;
-    private BufferedImage buf;
+    private transient BufferedImage buf;
     public BlurButton(String label) {
         super(label);
         //System.out.println(op.getEdgeCondition());
@@ -154,7 +154,7 @@ class BlurButton extends JButton {
             Graphics2D g2 = (Graphics2D)buf.getGraphics();
             super.paintComponent(g2);
             g2.dispose();
-            g.drawImage(op.filter(buf, null), 0, 0, null);
+            g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
         }
     }
 //     @Override public Dimension getPreferredSize() {

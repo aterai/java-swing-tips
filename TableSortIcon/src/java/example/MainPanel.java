@@ -21,13 +21,11 @@ class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
 
     private static final Icon EMPTY_ICON = new EmptyIcon();
-    private final Icon defaultAscendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
-    private final Icon defaultDescendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-    private final Icon customAscendingSortIcon   = new ImageIcon(getClass().getResource("ascending.png"));
-    private final Icon customDescendingSortIcon  = new ImageIcon(getClass().getResource("descending.png"));
+    private final Icon customAscendingSortIcon  = new ImageIcon(getClass().getResource("ascending.png"));
+    private final Icon customDescendingSortIcon = new ImageIcon(getClass().getResource("descending.png"));
 
     private Box makeRadioPane() {
         final JRadioButton r0 = new JRadioButton("Default");
@@ -39,8 +37,8 @@ class MainPanel extends JPanel {
                 Icon ascending  = null;
                 Icon descending = null;
                 if(r.equals(r0)) {
-                    ascending  = defaultAscendingSortIcon;
-                    descending = defaultDescendingSortIcon;
+                    ascending  = UIManager.getIcon("Table.ascendingSortIcon");
+                    descending = UIManager.getIcon("Table.descendingSortIcon");
                 }else if(r.equals(r1)) {
                     ascending  = new IconUIResource(EMPTY_ICON);
                     descending = new IconUIResource(EMPTY_ICON);

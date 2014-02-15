@@ -8,12 +8,12 @@ import javax.swing.*;
 
 class MainPanel extends JPanel {
     private final JDialog dialog = new JDialog();
-    private final Image[] imglist = new Image[4];
     private final PopupMenu popup = new PopupMenu();
     private final JFrame frame;
-    private final SystemTray tray;
-    private final TrayIcon icon;
     private final Timer animator;
+    private final transient Image[] imglist = new Image[4];
+    private final transient SystemTray tray;
+    private final transient TrayIcon icon;
 
     public MainPanel(JFrame frame) {
         super();

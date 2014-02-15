@@ -24,11 +24,6 @@ public final class MainPanel extends JPanel {
 
         JButton b1 = new ScalingButton("Scaling", bi);
         JButton b2 = new NineSliceScalingButton("9-Slice Scaling", bi);
-        b2.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("aaa");
-            }
-        });
 
         JPanel p1 = new JPanel(new GridLayout(1, 2, 5, 5));
         p1.add(b1);
@@ -97,7 +92,8 @@ public final class MainPanel extends JPanel {
 }
 
 class ScalingButton extends JButton {
-    private final BufferedImage image;
+    private final transient BufferedImage image;
+
     public ScalingButton(String title, BufferedImage image) {
         super();
         this.image = image;
@@ -124,7 +120,8 @@ class ScalingButton extends JButton {
 }
 
 class NineSliceScalingButton extends JButton {
-    private final BufferedImage image;
+    private final transient BufferedImage image;
+
     public NineSliceScalingButton(String title, BufferedImage image) {
         super();
         this.image = image;
@@ -190,7 +187,13 @@ class NineSliceScalingIcon implements Icon {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Insets i = ((JComponent)cmp).getBorder().getBorderInsets(cmp);
+        Insets i;
+        if(cmp instanceof JComponent) {
+            i = ((JComponent)cmp).getBorder().getBorderInsets(cmp);
+        }else{
+            i = new Insets(0, 0, 0, 0);
+        }
+
         //g2.translate(x, y); //1.8.0: work fine?
 
         int iw = image.getWidth(cmp);

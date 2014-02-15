@@ -44,7 +44,10 @@ public class MainPanel extends JPanel {
                 return new TransparentRootPane();
             }
         };
-        ((JComponent)frame.getContentPane()).setOpaque(false);
+        Container contentPane = frame.getContentPane();
+        if(contentPane instanceof JComponent) {
+            ((JComponent)contentPane).setOpaque(false);
+        }
         frame.getContentPane().add(new MainPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
@@ -97,33 +100,35 @@ class TransparentTree extends JTree {
 
 //http://terai.xrea.jp/Swing/RootPaneBackground.html
 class TransparentRootPane extends JRootPane {
+    private static final TexturePaint TEXTURE = makeCheckerTexture();
+    private static TexturePaint makeCheckerTexture() {
+        int cs = 6;
+        int sz = cs*cs;
+        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = img.createGraphics();
+        g2.setPaint(new Color(220, 220, 220));
+        g2.fillRect(0, 0, sz, sz);
+        g2.setPaint(new Color(200, 200, 200, 200));
+        for(int i=0;i*cs<sz;i++) {
+            for(int j=0;j*cs<sz;j++) {
+                if((i+j)%2==0) {
+                    g2.fillRect(i*cs, j*cs, cs, cs);
+                }
+            }
+        }
+        g2.dispose();
+        return new TexturePaint(img, new Rectangle(0,0,sz,sz));
+    }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g.create();
-        g2.setPaint(texture);
+        g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
     }
     @Override public void updateUI() {
         super.updateUI();
         setOpaque(false);
-    }
-    private final TexturePaint texture = makeCheckerTexture();
-    private static TexturePaint makeCheckerTexture() {
-        int cs = 6;
-        int sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = img.createGraphics();
-        g2.setPaint(new Color(220,220,220));
-        g2.fillRect(0,0,sz,sz);
-        g2.setPaint(new Color(200,200,200,200));
-        for(int i=0;i*cs<sz;i++) {
-            for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
-            }
-        }
-        g2.dispose();
-        return new TexturePaint(img, new Rectangle(0,0,sz,sz));
     }
 }
 

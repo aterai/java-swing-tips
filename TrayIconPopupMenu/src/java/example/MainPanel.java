@@ -10,10 +10,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 class MainPanel extends JPanel {
-    private final SystemTray tray  = SystemTray.getSystemTray();
-    private final Image image      = new ImageIcon(getClass().getResource("16x16.png")).getImage();
-    private final TrayIcon icon    = new TrayIcon(image, "TRAY", null);
     private final JPopupMenu popup = new JPopupMenu();
+    private final transient SystemTray tray = SystemTray.getSystemTray();
+    private final transient Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
+    private final transient TrayIcon icon   = new TrayIcon(image, "TRAY", null);
     //private final JWindow dummy    = new JWindow(); //Ubuntu?
     private final JDialog dummy    = new JDialog();
     private final JFrame frame;
