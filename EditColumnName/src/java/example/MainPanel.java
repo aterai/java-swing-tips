@@ -116,13 +116,15 @@ class TablePopupMenu extends JPopupMenu {
     }
     
     @Override public void show(Component c, int x, int y) {
-        JTableHeader header = (JTableHeader)c;
-        header.setDraggedColumn(null); // bookmark_1
-        //if(header.getDraggedColumn()!=null) remain dirty area >>>
-        header.repaint();
-        header.getTable().repaint();
-        //<<<
-        index = header.columnAtPoint(new Point(x, y));
-        super.show(c, x, y);
+        if(c instanceof JTableHeader) {
+            JTableHeader header = (JTableHeader)c;
+            header.setDraggedColumn(null); // bookmark_1
+            //if(header.getDraggedColumn()!=null) remain dirty area >>>
+            header.repaint();
+            header.getTable().repaint();
+            //<<<
+            index = header.columnAtPoint(new Point(x, y));
+            super.show(c, x, y);
+        }
     }
 }

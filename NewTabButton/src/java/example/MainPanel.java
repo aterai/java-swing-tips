@@ -348,7 +348,12 @@ class DummyIcon implements Icon {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.translate(x,y);
 
-        Insets i = ((JComponent)c).getInsets();
+        Insets i;
+        if(c instanceof JComponent) {
+            i = ((JComponent)c).getInsets();
+        }else{
+            i = new Insets(0, 0, 0, 0);
+        }
         Dimension size = c.getSize();
 
         viewRect.x      = i.left;

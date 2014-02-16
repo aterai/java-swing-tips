@@ -5,6 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.datatransfer.*;
+import java.io.IOException;
+import java.net.*;
 import javax.swing.*;
 // import javax.swing.border.*;
 // import javax.swing.event.*;
@@ -18,16 +20,14 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JButton label = new JButton(new AbstractAction(MYSITE) {
-            @Override public void actionPerformed(ActionEvent ae) {
-                Toolkit.getDefaultToolkit().beep();
-                //if(!Desktop.isDesktopSupported()) { return; }
-                //try{
-                //    Desktop.getDesktop().browse(new URI(MYSITE));
-                //}catch(IOException ioe) {
-                //    ioe.printStackTrace();
-                //}catch(URISyntaxException use) {
-                //    use.printStackTrace();
-                //}
+            @Override public void actionPerformed(ActionEvent e) {
+                if(Desktop.isDesktopSupported()) {
+                    try{
+                        Desktop.getDesktop().browse(new URI(MYSITE));
+                    }catch(IOException | URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
         });
         label.setUI(LinkViewButtonUI.createUI(label, MYSITE));
@@ -165,7 +165,10 @@ class LinkViewButtonUI extends BasicButtonUI {
         super();
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        AbstractButton b = (AbstractButton) c;
+        if(!(c instanceof AbstractButton)) {
+            return;
+        }
+        AbstractButton b = (AbstractButton)c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -189,9 +192,6 @@ class LinkViewButtonUI extends BasicButtonUI {
         if(c.isOpaque()) {
             g.setColor(b.getBackground());
             g.fillRect(0,0, size.width, size.height);
-        }
-        if(text==null) {
-            return;
         }
 
         ButtonModel model = b.getModel();

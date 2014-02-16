@@ -189,9 +189,11 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         add(closeAllAction);
     }
     @Override public void show(Component c, int x, int y) {
-        JTabbedPane t = (JTabbedPane)c;
-        renameAction.setEnabled(t.indexAtLocation(x, y)>=0);
-        super.show(c, x, y);
+        if(c instanceof JTabbedPane) {
+            JTabbedPane t = (JTabbedPane)c;
+            renameAction.setEnabled(t.indexAtLocation(x, y)>=0);
+            super.show(c, x, y);
+        }
     }
 };
 

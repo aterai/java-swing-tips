@@ -89,13 +89,15 @@ public class MainPanel extends JPanel {
 class IntegerInputVerifier extends InputVerifier {
     @Override public boolean verify(JComponent c) {
         boolean verified = false;
-        JTextField textField = (JTextField)c;
-        try{
-            Integer.parseInt(textField.getText());
-            verified = true;
-        }catch(NumberFormatException e) {
-            UIManager.getLookAndFeel().provideErrorFeedback(c);
-            //Toolkit.getDefaultToolkit().beep();
+        if(c instanceof JTextComponent) {
+            JTextComponent textField = (JTextComponent)c;
+            try{
+                Integer.parseInt(textField.getText());
+                verified = true;
+            }catch(NumberFormatException e) {
+                UIManager.getLookAndFeel().provideErrorFeedback(c);
+                //Toolkit.getDefaultToolkit().beep();
+            }
         }
         return verified;
     }

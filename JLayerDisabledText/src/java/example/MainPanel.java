@@ -94,22 +94,26 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        JLayer jlayer = (JLayer)c;
-        if(DEBUG_POPUP_BLOCK) {
-            jlayer.getGlassPane().addMouseListener(dummyMouseListener);
-            jlayer.getGlassPane().addKeyListener(dummyKeyListener);
+        if(c instanceof JLayer) {
+            JLayer jlayer = (JLayer)c;
+            if(DEBUG_POPUP_BLOCK) {
+                jlayer.getGlassPane().addMouseListener(dummyMouseListener);
+                jlayer.getGlassPane().addKeyListener(dummyKeyListener);
+            }
+            jlayer.setLayerEventMask(
+                AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK |
+                AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK |
+                AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
         }
-        jlayer.setLayerEventMask(
-            AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK |
-            AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK |
-            AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
     }
     @Override public void uninstallUI(JComponent c) {
-        JLayer jlayer = (JLayer)c;
-        jlayer.setLayerEventMask(0);
-        if(DEBUG_POPUP_BLOCK) {
-            jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
-            jlayer.getGlassPane().removeKeyListener(dummyKeyListener);
+        if(c instanceof JLayer) {
+            JLayer jlayer = (JLayer)c;
+            jlayer.setLayerEventMask(0);
+            if(DEBUG_POPUP_BLOCK) {
+                jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
+                jlayer.getGlassPane().removeKeyListener(dummyKeyListener);
+            }
         }
         super.uninstallUI(c);
     }

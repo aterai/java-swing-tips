@@ -142,16 +142,20 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
     private boolean isBlocking;
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        JLayer jlayer = (JLayer)c;
-        jlayer.getGlassPane().addMouseListener(dummyMouseListener);
-        jlayer.setLayerEventMask(
-            AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK |
-            AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
+        if(c instanceof JLayer) {
+            JLayer jlayer = (JLayer)c;
+            jlayer.getGlassPane().addMouseListener(dummyMouseListener);
+            jlayer.setLayerEventMask(
+                AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK |
+                AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
+        }
     }
     @Override public void uninstallUI(JComponent c) {
-        JLayer jlayer = (JLayer)c;
-        jlayer.setLayerEventMask(0);
-        jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
+        if(c instanceof JLayer) {
+            JLayer jlayer = (JLayer)c;
+            jlayer.setLayerEventMask(0);
+            jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
+        }
         super.uninstallUI(c);
     }
     @Override public void eventDispatched(AWTEvent e, JLayer l) {
