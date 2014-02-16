@@ -509,20 +509,23 @@ class TabTransferHandler extends TransferHandler {
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
-        DnDTabbedPane src = (DnDTabbedPane)c;
-        if(glassPane==null) {
-            c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
-        }
-        if(src.dragTabIndex<0) {
-            return NONE;
-        }
+        if(c instanceof DnDTabbedPane) {
+            DnDTabbedPane src = (DnDTabbedPane)c;
+            if(glassPane==null) {
+                c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
+            }
+            if(src.dragTabIndex<0) {
+                return NONE;
+            }
 /*
-        glassPane.setImage(makeDragTabImage(src));
-/*/ //java 1.7.0
-        setDragImage(makeDragTabImage(src));
+            glassPane.setImage(makeDragTabImage(src));
+/*/
+            setDragImage(makeDragTabImage(src)); //java 1.7.0
 //*/
-        c.getRootPane().getGlassPane().setVisible(true);
-        return MOVE;
+            c.getRootPane().getGlassPane().setVisible(true);
+            return MOVE;
+        }
+        return NONE;
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");

@@ -110,9 +110,20 @@ class MyCheckBoxIcon2 implements Icon {
 class MyCheckBoxIcon implements Icon {
     //com/sun/java/swing/plaf/windows/WindowsIconFactory.java
     private static final int CSIZE = 13;
+    private static JCheckBox getCheckBox(Component c) {
+        if(c instanceof JCheckBox) {
+            return (JCheckBox)c;
+        }else{
+            return null;
+        }
+    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        JCheckBox cb = (JCheckBox) c;
+        JCheckBox cb = getCheckBox(c);
+        if(cb == null) {
+            return;
+        }
         ButtonModel model = cb.getModel();
+
         // outer bevel
         if(cb.isBorderPaintedFlat()) {
             g.setColor(UIManager.getColor("CheckBox.shadow"));
@@ -157,11 +168,11 @@ class MyCheckBoxIcon implements Icon {
             g.fillRect(x+2, y+2, CSIZE-4, CSIZE-4);
         }
 
-        if(model.isEnabled()) {
-            g.setColor(UIManager.getColor("CheckBox.foreground"));
-        }else{
-            g.setColor(UIManager.getColor("CheckBox.shadow"));
-        }
+//         if(model.isEnabled()) {
+//             g.setColor(UIManager.getColor("CheckBox.foreground"));
+//         }else{
+//             g.setColor(UIManager.getColor("CheckBox.shadow"));
+//         }
 
         // paint check
         if(model.isSelected()) {

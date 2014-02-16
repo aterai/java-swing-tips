@@ -63,7 +63,10 @@ public class MainPanel extends JPanel {
 class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
     private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        AbstractButton b = (AbstractButton) c;
+        if(!(c instanceof AbstractButton)) {
+            return;
+        }
+        AbstractButton b = (AbstractButton)c;
         ButtonModel model = b.getModel();
         if(model.isSelected()) {
             Graphics2D g2 = (Graphics2D)g.create();
@@ -84,7 +87,10 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
 class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {
     private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        AbstractButton b = (AbstractButton) c;
+        if(!(c instanceof AbstractButton)) {
+            return;
+        }
+        AbstractButton b = (AbstractButton)c;
         ButtonModel model = b.getModel();
         if(model.isSelected()) {
             //g.fillRoundRect(x+3,y+3, getIconWidth()-6, getIconHeight()-6, 4, 4);

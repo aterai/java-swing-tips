@@ -286,7 +286,7 @@ class ComponentIcon implements Icon {
         return cmp.getPreferredSize().height;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        SwingUtilities.paintComponent(g, cmp, (Container)c, x, y, getIconWidth(), getIconHeight());
+        SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
     }
 }
 

@@ -106,12 +106,14 @@ class TextComponentPopupMenu extends JPopupMenu {
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK), "redo");
     }
     @Override public void show(Component c, int x, int y) {
-        JTextComponent textComponent = (JTextComponent)c;
-        boolean flg = textComponent.getSelectedText()!=null;
-        cutAction.setEnabled(flg);
-        copyAction.setEnabled(flg);
-        deleteAction.setEnabled(flg);
-        super.show(c, x, y);
+        if(c instanceof JTextComponent) {
+            JTextComponent textComponent = (JTextComponent)c;
+            boolean flg = textComponent.getSelectedText()!=null;
+            cutAction.setEnabled(flg);
+            copyAction.setEnabled(flg);
+            deleteAction.setEnabled(flg);
+            super.show(c, x, y);
+        }
     }
 }
 class UndoAction extends AbstractAction {

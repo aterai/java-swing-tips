@@ -191,14 +191,17 @@ class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        Dimension d = label.getPreferredSize();
-        int x = (c.getWidth()  - d.width)  / 2;
-        int y = (c.getHeight() - d.height) / 2;
-        JLayer jlayer = (JLayer)c;
-        JProgressBar progress = (JProgressBar)jlayer.getView();
-        int iv = (int)(100 * progress.getPercentComplete());
-        label.setText(String.format("%03d/100", iv));
-        //label.setText(progress.getString());
-        SwingUtilities.paintComponent(g, label, rubberStamp, x, y, d.width, d.height);
+        if(c instanceof JLayer) {
+            JLayer jlayer = (JLayer)c;
+            JProgressBar progress = (JProgressBar)jlayer.getView();
+            int iv = (int)(100 * progress.getPercentComplete());
+            label.setText(String.format("%03d/100", iv));
+
+            Dimension d = label.getPreferredSize();
+            int x = (c.getWidth()  - d.width)  / 2;
+            int y = (c.getHeight() - d.height) / 2;
+            //label.setText(progress.getString());
+            SwingUtilities.paintComponent(g, label, rubberStamp, x, y, d.width, d.height);
+        }
     }
 }

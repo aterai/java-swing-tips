@@ -23,8 +23,10 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     }
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        this.tabViewButton = (TabButton)c;
-        tabViewButton.setRolloverEnabled(true);
+        if(c instanceof TabButton) {
+            this.tabViewButton = (TabButton)c;
+            tabViewButton.setRolloverEnabled(true);
+        }
         c.setPreferredSize(new Dimension(0, 24));
         c.setOpaque(true);
         Border out = BorderFactory.createMatteBorder(2,0,0,0,c.getBackground());
@@ -39,7 +41,10 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 //     @Override public void installDefaults() {}
 
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        AbstractButton b = (AbstractButton) c;
+        if(!(c instanceof AbstractButton)) {
+            return;
+        }
+        AbstractButton b = (AbstractButton)c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -62,9 +67,6 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 
         g.setColor(b.getBackground());
         g.fillRect(0, 0, size.width, size.height);
-        if(text==null) {
-            return;
-        }
 
         ButtonModel model = b.getModel();
         if(model.isSelected() || model.isArmed()) {

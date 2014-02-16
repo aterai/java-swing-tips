@@ -133,15 +133,17 @@ class LabelTransferHandler extends TransferHandler {
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
-        DragPanel p = (DragPanel)c;
-        JLabel l = p.draggingLabel;
-        label.setIcon(l.getIcon());
-        label.setText(l.getText());
-        window.pack();
-        Point pt = l.getLocation();
-        SwingUtilities.convertPointToScreen(pt, p);
-        window.setLocation(pt);
-        window.setVisible(true);
+        if(c instanceof DragPanel) {
+            DragPanel p = (DragPanel)c;
+            JLabel l = p.draggingLabel;
+            label.setIcon(l.getIcon());
+            label.setText(l.getText());
+            window.pack();
+            Point pt = l.getLocation();
+            SwingUtilities.convertPointToScreen(pt, p);
+            window.setLocation(pt);
+            window.setVisible(true);
+        }
         return MOVE;
     }
     @Override public boolean importData(TransferSupport support) {

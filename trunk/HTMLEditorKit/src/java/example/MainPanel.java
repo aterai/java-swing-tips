@@ -119,13 +119,15 @@ class HTMLColorPopupMenu extends JPopupMenu {
         });
     }
     @Override public void show(Component c, int x, int y) {
-        JTextPane t = (JTextPane)c;
-        int start = t.getSelectionStart();
-        int end   = t.getSelectionEnd();
-        boolean flag = end - start > 0;
-        for(MenuElement me: getSubElements()) {
-            me.getComponent().setEnabled(flag);
+        if(c instanceof JTextPane) {
+            JTextPane t = (JTextPane)c;
+            int start = t.getSelectionStart();
+            int end   = t.getSelectionEnd();
+            boolean flag = end - start > 0;
+            for(MenuElement me: getSubElements()) {
+                me.getComponent().setEnabled(flag);
+            }
+            super.show(c, x, y);
         }
-        super.show(c, x, y);
     }
 }

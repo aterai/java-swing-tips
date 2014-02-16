@@ -211,9 +211,11 @@ class TablePopupMenu extends JPopupMenu {
         add(deleteAction);
     }
     @Override public void show(Component c, int x, int y) {
-        JTable table = (JTable)getInvoker();
-        int[] l = table.getSelectedRows();
-        deleteAction.setEnabled(l.length > 0);
-        super.show(c, x, y);
+        if(c instanceof JTable) {
+            JTable table = (JTable)c;
+            int[] l = table.getSelectedRows();
+            deleteAction.setEnabled(l.length > 0);
+            super.show(c, x, y);
+        }
     }
 }

@@ -160,7 +160,10 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         super();
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        AbstractButton b = (AbstractButton) c;
+        if(!(c instanceof AbstractButton)) {
+            return;
+        }
+        AbstractButton b = (AbstractButton)c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -184,9 +187,6 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         if(c.isOpaque()) {
             g.setColor(b.getBackground());
             g.fillRect(0,0, size.width, size.height);
-        }
-        if(text==null) {
-            return;
         }
 
         ButtonModel model = b.getModel();

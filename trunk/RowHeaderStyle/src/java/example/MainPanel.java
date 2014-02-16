@@ -144,6 +144,6 @@ class ComponentIcon implements Icon {
         return cmp.getPreferredSize().height + 4; //XXX: +4 for Windows 7
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        SwingUtilities.paintComponent(g, cmp, (Container)c, x, y, getIconWidth(), getIconHeight());
+        SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
     }
 }

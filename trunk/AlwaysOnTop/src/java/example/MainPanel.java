@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
         p.add(checkbox);
         p.setBorder(BorderFactory.createTitledBorder("JFrame#setAlwaysOnTop(boolean)"));
         add(p, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 180));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

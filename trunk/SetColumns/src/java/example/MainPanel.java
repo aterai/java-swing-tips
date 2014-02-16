@@ -21,8 +21,7 @@ public class MainPanel extends JPanel {
         ((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setColumns(20);
 
         combo1.setEditable(true);
-        Component c = combo1.getEditor().getEditorComponent();
-        if(c instanceof JTextField) { ((JTextField)c).setColumns(20); }
+        ((JTextField)combo1.getEditor().getEditorComponent()).setColumns(20);
 
         combo2.setEditable(true);
 

@@ -168,9 +168,11 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         return false;
     }
     @Override public void show(Component c, int x, int y) {
-        JTabbedPane t = (JTabbedPane)c;
-        pinTabMenuItem.setEnabled(t.indexAtLocation(x, y)>=0);
-        pinTabMenuItem.setSelected(isPinTab(t,x,y));
-        super.show(c, x, y);
+        if(c instanceof JTabbedPane) {
+            JTabbedPane t = (JTabbedPane)c;
+            pinTabMenuItem.setEnabled(t.indexAtLocation(x, y)>=0);
+            pinTabMenuItem.setSelected(isPinTab(t,x,y));
+            super.show(c, x, y);
+        }
     }
 }

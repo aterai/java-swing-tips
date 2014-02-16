@@ -103,11 +103,13 @@ class TextComponentPopupMenu extends JPopupMenu {
         });
     }
     @Override public void show(Component c, int x, int y) {
-        JTextComponent textArea = (JTextComponent)c;
-        boolean flg = textArea.getSelectedText()!=null;
-        cutAction.setEnabled(flg);
-        copyAction.setEnabled(flg);
-        deleteAction.setEnabled(flg);
-        super.show(c, x, y);
+        if(c instanceof JTextComponent) {
+            JTextComponent textArea = (JTextComponent)c;
+            boolean flg = textArea.getSelectedText()!=null;
+            cutAction.setEnabled(flg);
+            copyAction.setEnabled(flg);
+            deleteAction.setEnabled(flg);
+            super.show(c, x, y);
+        }
     }
 }

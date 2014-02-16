@@ -82,6 +82,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     private final JLabel label = new JLabel("Check All");
     private final int targetColumnIndex;
@@ -127,12 +128,8 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
             }
             label.setIcon(new ComponentIcon(this));
             l.setIcon(new ComponentIcon(label));
-            l.setText(null); //XXX: Nimbus???
-        //    l.setHorizontalAlignment(SwingConstants.CENTER);
-        //}else{
-        //    l.setHorizontalAlignment(SwingConstants.LEFT);
+            l.setText(null);
         }
-
 //         System.out.println("getHeaderRect: " + tbl.getTableHeader().getHeaderRect(col));
 //         System.out.println("getPreferredSize: " + l.getPreferredSize());
 //         System.out.println("getMaximunSize: " + l.getMaximumSize());
@@ -144,11 +141,12 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 //         }
         return l;
     }
-    @Override public void updateUI() {
-        setText(null); //XXX: Nimbus??? Header height bug???
-        super.updateUI();
-    }
+//     @Override public void updateUI() {
+//         setText(null); //XXX: Nimbus??? Header height bug???
+//         super.updateUI();
+//     }
 }
+
 class HeaderCheckBoxHandler implements TableModelListener {
     private final JTable table;
     private final int targetColumnIndex;
@@ -200,7 +198,7 @@ class ComponentIcon implements Icon {
         return cmp.getPreferredSize().height;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        SwingUtilities.paintComponent(g, cmp, (Container)c, x, y, getIconWidth(), getIconHeight());
+        SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
     }
 }
 

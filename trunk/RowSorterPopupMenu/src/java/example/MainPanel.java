@@ -64,13 +64,15 @@ public class MainPanel extends JPanel {
             }
         }
         @Override public void show(Component c, int x, int y) {
-            JTableHeader h = (JTableHeader)c;
-            int i = h.columnAtPoint(new Point(x, y));
-            i = h.getTable().convertColumnIndexToModel(i);
-            for(SortAction a:actions) {
-                a.setIndex(i);
+            if(c instanceof JTableHeader) {
+                JTableHeader h = (JTableHeader)c;
+                int i = h.columnAtPoint(new Point(x, y));
+                i = h.getTable().convertColumnIndexToModel(i);
+                for(SortAction a:actions) {
+                    a.setIndex(i);
+                }
+                super.show(c, x, y);
             }
-            super.show(c, x, y);
         }
     }
     private class SortAction extends AbstractAction {

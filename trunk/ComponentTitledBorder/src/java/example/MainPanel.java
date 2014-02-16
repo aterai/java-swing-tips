@@ -32,7 +32,7 @@ class MainPanel extends JPanel {
 
         add(l1); add(l2); add(l3);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -77,14 +77,16 @@ class ComponentTitledBorder implements Border, MouseListener, MouseMotionListene
     }
 
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        Insets borderInsets = border.getBorderInsets(c);
-        Insets insets = getBorderInsets(c);
-        int temp = (insets.top-borderInsets.top)/2;
-        border.paintBorder(c, g, x, y+temp, width, height-temp);
-        Dimension size = comp.getPreferredSize();
-        Rectangle rect = new Rectangle(OFFSET, 0, size.width, size.height);
-        SwingUtilities.paintComponent(g, comp, (Container)c, rect);
-        comp.setBounds(rect);
+        if(c instanceof Container) {
+            Insets borderInsets = border.getBorderInsets(c);
+            Insets insets = getBorderInsets(c);
+            int temp = (insets.top-borderInsets.top)/2;
+            border.paintBorder(c, g, x, y+temp, width, height-temp);
+            Dimension size = comp.getPreferredSize();
+            Rectangle rect = new Rectangle(OFFSET, 0, size.width, size.height);
+            SwingUtilities.paintComponent(g, comp, (Container)c, rect);
+            comp.setBounds(rect);
+        }
     }
 
     @Override public Insets getBorderInsets(Component c) {

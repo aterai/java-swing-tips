@@ -151,7 +151,7 @@ class ComboKeyHandler extends KeyAdapter {
     @Override public void keyTyped(final KeyEvent e) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                String text = ((JTextField)e.getSource()).getText();
+                String text = ((JTextField)e.getComponent()).getText();
                 ComboBoxModel<String> m;
                 if(text.isEmpty()) {
                     String[] array = list.toArray(new String[list.size()]);

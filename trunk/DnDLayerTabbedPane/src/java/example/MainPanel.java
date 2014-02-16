@@ -522,18 +522,21 @@ class TabTransferHandler extends TransferHandler {
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
-        DnDTabbedPane src = (DnDTabbedPane)c;
-        if(src.dragTabIndex<0) {
-            return NONE;
+        if(c instanceof DnDTabbedPane) {
+            DnDTabbedPane src = (DnDTabbedPane)c;
+            if(src.dragTabIndex<0) {
+                return NONE;
+            }
+            if(mode == DragImageMode.Heavyweight) {
+                label.setIcon(new ImageIcon(makeDragTabImage(src)));
+                dialog.pack();
+                dialog.setVisible(true);
+            }else{
+                setDragImage(makeDragTabImage(src));
+            }
+            return MOVE;
         }
-        if(mode == DragImageMode.Heavyweight) {
-            label.setIcon(new ImageIcon(makeDragTabImage(src)));
-            dialog.pack();
-            dialog.setVisible(true);
-        }else{
-            setDragImage(makeDragTabImage(src)); //java 1.7.0
-        }
-        return MOVE;
+        return NONE;
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
@@ -573,35 +576,38 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     private final Rectangle lineRect = new Rectangle();
     @Override public void paint(Graphics g, JComponent c) {
         super.paint (g, c);
-//         JLayer<DnDTabbedPane> layer = (JLayer<DnDTabbedPane>)c;
-//         DnDTabbedPane tabbedPane = layer.getView();
-        JLayer layer = (JLayer)c;
-        DnDTabbedPane tabbedPane = (DnDTabbedPane)layer.getView();
-        DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
-        if(loc != null && loc.isDropable() && loc.getIndex()>=0) {
-            int index = loc.getIndex();
-            boolean isZero = index==0;
-            Rectangle r = tabbedPane.getBoundsAt(isZero ? 0 : index-1);
-            Rectangle rect = new Rectangle();
-            int a = isZero ? 0 : 1;
-            if(tabbedPane.getTabPlacement()==JTabbedPane.TOP || tabbedPane.getTabPlacement()==JTabbedPane.BOTTOM) {
-                rect.x = r.x - LINEWIDTH/2 + r.width * a;
-                rect.y = r.y;
-                rect.width  = LINEWIDTH;
-                rect.height = r.height;
-            }else{
-                rect.x = r.x;
-                rect.y = r.y - LINEWIDTH/2 + r.height * a;
-                rect.width  = r.width;
-                rect.height = LINEWIDTH;
+        if(c instanceof JLayer) {
+            JLayer layer = (JLayer)c;
+            DnDTabbedPane tabbedPane = (DnDTabbedPane)layer.getView();
+            DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
+            if(loc != null && loc.isDropable() && loc.getIndex()>=0) {
+                Graphics2D g2 = (Graphics2D)g.create();
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+                g2.setColor(Color.RED);
+                initLineRect(tabbedPane, loc);
+                g2.fill(lineRect);
+                g2.dispose();
             }
-            lineRect.setRect(rect);
-            Graphics2D g2 = (Graphics2D)g.create();
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-            g2.setColor(Color.RED);
-            g2.fill(lineRect);
-            g2.dispose();
         }
+    }
+    private void initLineRect(DnDTabbedPane tabbedPane, DnDTabbedPane.DropLocation loc) {
+        int index = loc.getIndex();
+        boolean isZero = index==0;
+        Rectangle r = tabbedPane.getBoundsAt(isZero ? 0 : index-1);
+        Rectangle rect = new Rectangle();
+        int a = isZero ? 0 : 1;
+        if(tabbedPane.getTabPlacement()==JTabbedPane.TOP || tabbedPane.getTabPlacement()==JTabbedPane.BOTTOM) {
+            rect.x = r.x - LINEWIDTH/2 + r.width * a;
+            rect.y = r.y;
+            rect.width  = LINEWIDTH;
+            rect.height = r.height;
+        }else{
+            rect.x = r.x;
+            rect.y = r.y - LINEWIDTH/2 + r.height * a;
+            rect.width  = r.width;
+            rect.height = LINEWIDTH;
+        }
+        lineRect.setRect(rect);
     }
 }
 

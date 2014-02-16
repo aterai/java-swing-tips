@@ -32,15 +32,19 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         }
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
+        if(!(c instanceof AbstractButton)) {
+            return;
+        }
+        AbstractButton b = (AbstractButton)c;
+
         Graphics2D g2 = (Graphics2D)g.create();
-        AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
         Icon icon = b.getIcon();
 
         Insets i = c.getInsets();
-        b.getSize(size);
+        c.getSize(size);
         viewRect.x = i.left;
         viewRect.y = i.top;
         viewRect.width = size.width - i.right - viewRect.x;
@@ -60,10 +64,6 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
             b.getText() == null ? 0 : b.getIconTextGap());
-        if(text==null) {
-            g2.dispose();
-            return;
-        }
 
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
         if(v==null) {
