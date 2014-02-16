@@ -116,17 +116,20 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
      */
     public void addTab(String title, Component component, Icon extraIcon) {
         boolean doPaintCloseIcon = true;
-        Object prop = ((JComponent)component).getClientProperty("isClosable");
-        if(prop != null) {
-            doPaintCloseIcon = ((Boolean)prop).booleanValue();
+        if(component instanceof JComponent) {
+            Object prop = ((JComponent)component).getClientProperty("isClosable");
+            if(prop != null) {
+                doPaintCloseIcon = ((Boolean)prop).booleanValue();
+            }
         }
+
         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
 
         if(headerViewport == null) {
-            //             for(Component c : getComponents()) {
-            //                 if("TabbedPane.scrollableViewport".equals(c.getName()))
-            //                   headerViewport = (JViewport) c;
-            //             }
+            //for(Component c : getComponents()) {
+            //    if("TabbedPane.scrollableViewport".equals(c.getName()))
+            //      headerViewport = (JViewport) c;
+            //}
 
             Component[] list = getComponents();
             for(int i=0;i<list.length;i++) {
@@ -379,12 +382,14 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
             boolean doPaintCloseIcon = true;
             // try{
             //     JComponent.putClientProperty("isClosable", new Boolean(false));
-            JTabbedPane tabbedpane = (JTabbedPane) c;
-            int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
-            JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
-            Object prop = curPanel.getClientProperty("isClosable");
-            if(prop != null) {
-                doPaintCloseIcon = ((Boolean)prop).booleanValue();
+            if(c instanceof JTabbedPane) {
+                JTabbedPane tabbedpane = (JTabbedPane)c;
+                int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
+                JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
+                Object prop = curPanel.getClientProperty("isClosable");
+                if(prop != null) {
+                    doPaintCloseIcon = ((Boolean)prop).booleanValue();
+                }
             }
             //}catch(Exception ignored) {
             //    /*Could probably be a ClassCastException*/
