@@ -8,7 +8,8 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.plaf.metal.MetalFileChooserUI;
+import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
 public class MainPanel extends JPanel {
     private final JTextArea log = new JTextArea();
@@ -31,10 +32,10 @@ public class MainPanel extends JPanel {
                 UIManager.put("FileChooser.readOnly", Boolean.FALSE);
                 JFileChooser fileChooser = new JFileChooser(".") {
                     @Override protected void setUI(ComponentUI ui) {
-                        if(ui instanceof com.sun.java.swing.plaf.windows.WindowsFileChooserUI) {
+                        if(ui instanceof WindowsFileChooserUI) {
                             super.setUI(WindowsCanWriteFileChooserUI.createUI(this));
                         }else{
-                            super.setUI(CanWriteFileChooserUI.createUI(this));
+                            super.setUI(MetalCanWriteFileChooserUI.createUI(this));
                         }
                     }
                 };
@@ -60,7 +61,7 @@ public class MainPanel extends JPanel {
         }));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -85,14 +86,17 @@ public class MainPanel extends JPanel {
     }
 }
 
-class WindowsCanWriteFileChooserUI extends com.sun.java.swing.plaf.windows.WindowsFileChooserUI{
+class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI{
     private BasicDirectoryModel model2;
 
     protected WindowsCanWriteFileChooserUI(JFileChooser chooser) {
         super(chooser);
     }
     public static ComponentUI createUI(JComponent c) {
-        return new WindowsCanWriteFileChooserUI((JFileChooser)c);
+        if(c instanceof JFileChooser) {
+            return new WindowsCanWriteFileChooserUI((JFileChooser)c);
+        }
+        throw new InternalError();
     }
     @Override public void createModel() {
         if(model2!=null) {
@@ -109,14 +113,17 @@ class WindowsCanWriteFileChooserUI extends com.sun.java.swing.plaf.windows.Windo
     }
 }
 
-class CanWriteFileChooserUI extends MetalFileChooserUI{
+class MetalCanWriteFileChooserUI extends MetalFileChooserUI{
     private BasicDirectoryModel model2;
 
-    protected CanWriteFileChooserUI(JFileChooser chooser) {
+    protected MetalCanWriteFileChooserUI(JFileChooser chooser) {
         super(chooser);
     }
     public static ComponentUI createUI(JComponent c) {
-        return new CanWriteFileChooserUI((JFileChooser)c);
+        if(c instanceof JFileChooser) {
+            return new MetalCanWriteFileChooserUI((JFileChooser)c);
+        }
+        throw new InternalError();
     }
     @Override public void createModel() {
         if(model2!=null) {
