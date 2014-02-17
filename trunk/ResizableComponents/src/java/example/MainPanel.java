@@ -6,13 +6,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    //private final JPanel panel = new JPanel((LayoutManager)null);
-    private final JLayeredPane panel = new JLayeredPane();
+    private final JLayeredPane layeredPane = new JLayeredPane();
     private final JToolBar toolbar = new JToolBar("Resizable Components");
     private final Point pt = new Point();
+
     public MainPanel() {
         super(new BorderLayout());
         JPopupMenu popup = new JPopupMenu() {
@@ -31,9 +30,9 @@ public class MainPanel extends JPanel {
                 createTree();
             }
         });
-        panel.setComponentPopupMenu(popup);
-        panel.addMouseListener(new MouseAdapter() { /* Dummy listener */ });
-        add(panel);
+        layeredPane.setComponentPopupMenu(popup);
+        //layeredPane.addMouseListener(new MouseAdapter() { /* Dummy listener */ }); //??? for 1.5.0
+        add(layeredPane);
         toolbar.add(new AbstractAction("add table") {
             @Override public void actionPerformed(ActionEvent e) {
                 pt.setLocation(pt.x+20, pt.y+20);
@@ -52,37 +51,23 @@ public class MainPanel extends JPanel {
     }
     private void createTree() {
         JTree tree = new JTree();
-        Component comp = new JScrollPane(tree);
-        comp.setPreferredSize(new Dimension(160, 160));
-        Dimension bounds = comp.getPreferredSize();
-        JResizer resizer = new JResizer(comp);
-        resizer.setBounds(pt.x, pt.y, bounds.width, bounds.height);
-        panel.add(resizer);
-        //if(panel instanceof JLayeredPane) {
-            panel.moveToFront(resizer);
-        //}else{
-        //    panel.revalidate();
-        //    panel.repaint();
-        //}
+        tree.setVisibleRowCount(8);
+        Component c = new JScrollPane(tree);
+        Dimension r = c.getPreferredSize();
+        JResizer resizer = new JResizer(c);
+        resizer.setBounds(pt.x, pt.y, r.width, r.height);
+        layeredPane.add(resizer);
+        layeredPane.moveToFront(resizer);
     }
     private void createTable() {
-        JTable table = new JTable(new Object[][] {
-            {"[xxxxxxxxx]", "[yyyyyyyyyyy]", "[zzzzzzzzz]"},
-            {"[xxxxxxx]", "[yyyyyyy]", "[zzzzzzzzz]"},
-            {"[xxxxxxxxxx]", "[yyyyyyyyyy]", "[zzzzzzzzzz]"}
-        }, new String[] {"col1", "col2", "col3"});
+        JTable table = new JTable(12, 3);
         table.setPreferredScrollableViewportSize(new Dimension(160, 160));
-        Component comp = new JScrollPane(table);
-        Dimension bounds = comp.getPreferredSize();
-        JResizer resizer = new JResizer(comp);
-        resizer.setBounds(pt.x, pt.y, bounds.width, bounds.height);
-        panel.add(resizer);
-        //if(panel instanceof JLayeredPane) {
-            panel.moveToFront(resizer);
-        //}else{
-        //    panel.revalidate();
-        //    panel.repaint();
-        //}
+        Component c = new JScrollPane(table);
+        Dimension r = c.getPreferredSize();
+        JResizer resizer = new JResizer(c);
+        resizer.setBounds(pt.x, pt.y, r.width, r.height);
+        layeredPane.add(resizer);
+        layeredPane.moveToFront(resizer);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -107,18 +92,17 @@ public class MainPanel extends JPanel {
     }
 }
 
-class JResizer extends JComponent { // implements Serializable {
-    private transient MouseInputListener resizeListener;
+class JResizer extends JPanel { // implements Serializable {
+    private transient MouseAdapter resizeListener;
 
     public JResizer(Component comp) {
         this(comp, new DefaultResizableBorder(6));
     }
     public JResizer(Component comp, ResizableBorder border) {
-        super();
+        super(new BorderLayout());
         resizeListener = new ResizeMouseListener();
-        setLayout(new BorderLayout());
-        add(comp);
         setBorder(border);
+        add(comp);
     }
 //     private void writeObject(java.io.ObjectOutputStream out) throws IOException {}
 //     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {}
@@ -139,208 +123,182 @@ class JResizer extends JComponent { // implements Serializable {
         }
         super.setBorder(border);
     }
+}
 
-    private class ResizeMouseListener extends MouseInputAdapter {
-        private int cursor;
-        private Point startPos;
-        private Rectangle startingBounds;
-        @Override public void mouseMoved(MouseEvent e) {
-            ResizableBorder border = (ResizableBorder)getBorder();
-            setCursor(Cursor.getPredefinedCursor(border.getResizeCursor(e)));
+class ResizeMouseListener extends MouseAdapter {
+    private static final Dimension MIN = new Dimension(50, 50);
+    private static final Dimension MAX = new Dimension(500, 500);
+    private int cursor;
+    private Point startPos;
+    private Rectangle startingBounds;
+    @Override public void mouseMoved(MouseEvent e) {
+        JComponent c = (JComponent)e.getComponent();
+        ResizableBorder border = (ResizableBorder)c.getBorder();
+        c.setCursor(Cursor.getPredefinedCursor(border.getResizeCursor(e)));
+    }
+    @Override public void mouseExited(MouseEvent e) {
+        Component c = e.getComponent();
+        c.setCursor(Cursor.getDefaultCursor());
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        JComponent c = (JComponent)e.getComponent();
+        ResizableBorder border = (ResizableBorder)c.getBorder();
+        cursor = border.getResizeCursor(e);
+        startPos = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
+        startingBounds = c.getBounds();
+        Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
+        if(parent != null) {
+            ((JLayeredPane)parent).moveToFront(c);
         }
-        @Override public void mouseExited(MouseEvent e) {
-            setCursor(Cursor.getDefaultCursor());
+    }
+    private int getDeltaX(int dx) {
+        int deltaX = dx;
+        if(startingBounds.width + deltaX < MIN.width) {
+            deltaX = -(startingBounds.width - MIN.width);
+        }else if(startingBounds.width + deltaX > MAX.width) {
+            deltaX = MAX.width - startingBounds.width;
         }
-        @Override public void mousePressed(MouseEvent e) {
-            ResizableBorder border = (ResizableBorder)getBorder();
-            cursor = border.getResizeCursor(e);
-            Component c = e.getComponent();
-            startPos = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
-            startingBounds = getBounds();
-            Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
-            if(parent != null) {
-                ((JLayeredPane)parent).moveToFront(c);
-            }
+        if(startingBounds.x - deltaX < 0) {
+            deltaX = startingBounds.x;
         }
-        // %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
-        @Override public void mouseDragged(MouseEvent e) {
-            if(startPos==null || startingBounds==null) {
-                return;
-            }
-            Point p = SwingUtilities.convertPoint((Component)e.getSource(), e.getX(), e.getY(), null);
-            int deltaX = startPos.x - p.x;
-            int deltaY = startPos.y - p.y;
-            int newX = getX();
-            int newY = getY();
-            int newW = getWidth();
-            int newH = getHeight();
+        return deltaX;
+    }
+    private int getDeltaX(int dx, Rectangle parentBounds) {
+        int deltaX = dx;
+        if(startingBounds.width - deltaX < MIN.width) {
+            deltaX = startingBounds.width - MIN.width;
+        }else if(startingBounds.width - deltaX > MAX.width) {
+            deltaX = -(MAX.width - startingBounds.width);
+        }
+        if(startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
+            deltaX = startingBounds.x + startingBounds.width - parentBounds.width;
+        }
+        return deltaX;
+    }
+    private int getDeltaY(int dy) {
+        int deltaY = dy;
+        if(startingBounds.height + deltaY < MIN.height) {
+            deltaY = -(startingBounds.height - MIN.height);
+        }else if(startingBounds.height + deltaY > MAX.height) {
+            deltaY = MAX.height - startingBounds.height;
+        }
+        if(startingBounds.y - deltaY < 0) {
+            deltaY = startingBounds.y;
+        }
+        return deltaY;
+    }
+    private int getDeltaY(int dy, Rectangle parentBounds) {
+        int deltaY = dy;
+        if(startingBounds.height - deltaY < MIN.height) {
+            deltaY = startingBounds.height - MIN.height;
+        }else if(startingBounds.height - deltaY > MAX.height) {
+            deltaY = -(MAX.height - startingBounds.height);
+        }
+        if(startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
+            deltaY = startingBounds.y + startingBounds.height - parentBounds.height;
+        }
+        return deltaY;
+    }
+    //@see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
+    @Override public void mouseDragged(MouseEvent e) {
+        if(startPos==null || startingBounds==null) {
+            return;
+        }
+        Component c = e.getComponent();
+        Point p = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
+        int deltaX = startPos.x - p.x;
+        int deltaY = startPos.y - p.y;
 
-            Container parent = SwingUtilities.getUnwrappedParent(JResizer.this);
-            Rectangle parentBounds = parent.getBounds();
-            Dimension min = new Dimension(50,50);
-            Dimension max = new Dimension(500,500);
+        Container parent = SwingUtilities.getUnwrappedParent(c);
+        Rectangle parentBounds = parent.getBounds();
 
-            switch(cursor) {
-              case Cursor.N_RESIZE_CURSOR: {
-                  if(startingBounds.height + deltaY < min.height) {
-                      deltaY = -(startingBounds.height - min.height);
-                  }else if(startingBounds.height + deltaY > max.height) {
-                      deltaY = max.height - startingBounds.height;
-                  }
-                  if(startingBounds.y - deltaY < 0) {
-                      deltaY = startingBounds.y;
-                  }
-                  newX = startingBounds.x;
-                  newY = startingBounds.y - deltaY;
-                  newW = startingBounds.width;
-                  newH = startingBounds.height + deltaY;
-                  break;
-              }
-              case Cursor.NE_RESIZE_CURSOR: {
-                  if(startingBounds.height + deltaY < min.height) {
-                      deltaY = -(startingBounds.height - min.height);
-                  }else if(startingBounds.height + deltaY > max.height) {
-                      deltaY = max.height - startingBounds.height;
-                  }
-                  if(startingBounds.y - deltaY < 0) { deltaY = startingBounds.y; }
-                  if(startingBounds.width - deltaX < min.width) {
-                      deltaX = startingBounds.width - min.width;
-                  }else if(startingBounds.width - deltaX > max.width) {
-                      deltaX = -(max.width - startingBounds.width);
-                  }
-                  if(startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
-                      deltaX = startingBounds.x + startingBounds.width - parentBounds.width;
-                  }
-                  newX = startingBounds.x;
-                  newY = startingBounds.y - deltaY;
-                  newW = startingBounds.width - deltaX;
-                  newH = startingBounds.height + deltaY;
-                  break;
-              }
-              case Cursor.E_RESIZE_CURSOR: {
-                  if(startingBounds.width - deltaX < min.width) {
-                      deltaX = startingBounds.width - min.width;
-                  }else if(startingBounds.width - deltaX > max.width) {
-                      deltaX = -(max.width - startingBounds.width);
-                  }
-                  if(startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
-                      deltaX = startingBounds.x + startingBounds.width - parentBounds.width;
-                  }
-                  newW = startingBounds.width - deltaX;
-                  newH = startingBounds.height;
-                  break;
-              }
-              case Cursor.SE_RESIZE_CURSOR: {
-                  if(startingBounds.width - deltaX < min.width) {
-                      deltaX = startingBounds.width - min.width;
-                  }else if(startingBounds.width - deltaX > max.width) {
-                      deltaX = -(max.width - startingBounds.width);
-                  }
-                  if(startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
-                      deltaX = startingBounds.x + startingBounds.width - parentBounds.width;
-                  }
-                  if(startingBounds.height - deltaY < min.height) {
-                      deltaY = startingBounds.height - min.height;
-                  }else if(startingBounds.height - deltaY > max.height) {
-                      deltaY = -(max.height - startingBounds.height);
-                  }
-                  if(startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
-                      deltaY = startingBounds.y + startingBounds.height - parentBounds.height;
-                  }
-                  newW = startingBounds.width - deltaX;
-                  newH = startingBounds.height - deltaY;
-                  break;
-              }
-              case Cursor.S_RESIZE_CURSOR: {
-                  if(startingBounds.height - deltaY < min.height) {
-                      deltaY = startingBounds.height - min.height;
-                  }else if(startingBounds.height - deltaY > max.height) {
-                      deltaY = -(max.height - startingBounds.height);
-                  }
-                  if(startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
-                      deltaY = startingBounds.y + startingBounds.height - parentBounds.height;
-                  }
-                  newW = startingBounds.width;
-                  newH = startingBounds.height - deltaY;
-                  break;
-              }
-              case Cursor.SW_RESIZE_CURSOR: {
-                  if(startingBounds.height - deltaY < min.height) {
-                      deltaY = startingBounds.height - min.height;
-                  }else if(startingBounds.height - deltaY > max.height) {
-                      deltaY = -(max.height - startingBounds.height);
-                  }
-                  if(startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
-                      deltaY = startingBounds.y + startingBounds.height - parentBounds.height;
-                  }
-                  if(startingBounds.width + deltaX < min.width) {
-                      deltaX = -(startingBounds.width - min.width);
-                  }else if(startingBounds.width + deltaX > max.width) {
-                      deltaX = max.width - startingBounds.width;
-                  }
-                  if(startingBounds.x - deltaX < 0) {
-                      deltaX = startingBounds.x;
-                  }
-                  newX = startingBounds.x - deltaX;
-                  newY = startingBounds.y;
-                  newW = startingBounds.width + deltaX;
-                  newH = startingBounds.height - deltaY;
-                  break;
-              }
-              case Cursor.W_RESIZE_CURSOR: {
-                  if(startingBounds.width + deltaX < min.width) {
-                      deltaX = -(startingBounds.width - min.width);
-                  }else if(startingBounds.width + deltaX > max.width) {
-                      deltaX = max.width - startingBounds.width;
-                  }
-                  if(startingBounds.x - deltaX < 0) {
-                      deltaX = startingBounds.x;
-                  }
-                  newX = startingBounds.x - deltaX;
-                  newY = startingBounds.y;
-                  newW = startingBounds.width + deltaX;
-                  newH = startingBounds.height;
-                  break;
-              }
-              case Cursor.NW_RESIZE_CURSOR: {
-                  if(startingBounds.width + deltaX < min.width) {
-                      deltaX = -(startingBounds.width - min.width);
-                  }else if(startingBounds.width + deltaX > max.width) {
-                      deltaX = max.width - startingBounds.width;
-                  }
-                  if(startingBounds.x - deltaX < 0) {
-                      deltaX = startingBounds.x;
-                  }
-                  if(startingBounds.height + deltaY < min.height) {
-                      deltaY = -(startingBounds.height - min.height);
-                  }else if(startingBounds.height + deltaY > max.height) {
-                      deltaY = max.height - startingBounds.height;
-                  }
-                  if(startingBounds.y - deltaY < 0) {
-                      deltaY = startingBounds.y;
-                  }
-                  newX = startingBounds.x - deltaX;
-                  newY = startingBounds.y - deltaY;
-                  newW = startingBounds.width + deltaX;
-                  newH = startingBounds.height + deltaY;
-                  break;
-              }
-              case Cursor.MOVE_CURSOR: {
-                  newX = startingBounds.x - deltaX;
-                  newY = startingBounds.y - deltaY;
-                  break;
-              }
-              default:
-                return;
-            }
-            setBounds(newX, newY, newW, newH);
-            parent.revalidate();
-            //parent.repaint();
+        switch(cursor) {
+          case Cursor.NW_RESIZE_CURSOR: {
+              int dx = getDeltaX(deltaX);
+              int dy = getDeltaY(deltaY);
+              c.setBounds(
+                  startingBounds.x - dx,
+                  startingBounds.y - dy,
+                  startingBounds.width  + dx,
+                  startingBounds.height + dy);
+              break;
+          }
+          case Cursor.N_RESIZE_CURSOR: {
+              int dy = getDeltaY(deltaY);
+              c.setBounds(
+                  startingBounds.x,
+                  startingBounds.y - dy,
+                  startingBounds.width,
+                  startingBounds.height + dy);
+              break;
+          }
+          case Cursor.NE_RESIZE_CURSOR: {
+              int dx = getDeltaX(deltaX, parentBounds);
+              int dy = getDeltaY(deltaY);
+              c.setBounds(
+                  startingBounds.x,
+                  startingBounds.y - dy,
+                  startingBounds.width  - dx,
+                  startingBounds.height + dy);
+              break;
+          }
+          case Cursor.E_RESIZE_CURSOR: {
+              int dx = getDeltaX(deltaX, parentBounds);
+              c.setSize(
+                  startingBounds.width - dx,
+                  startingBounds.height);
+              break;
+          }
+          case Cursor.SE_RESIZE_CURSOR: {
+              int dx = getDeltaX(deltaX, parentBounds);
+              int dy = getDeltaY(deltaY, parentBounds);
+              c.setSize(
+                  startingBounds.width  - dx,
+                  startingBounds.height - dy);
+              break;
+          }
+          case Cursor.S_RESIZE_CURSOR: {
+              int dy = getDeltaY(deltaY, parentBounds);
+              c.setSize(
+                  startingBounds.width,
+                  startingBounds.height - dy);
+              break;
+          }
+          case Cursor.SW_RESIZE_CURSOR: {
+              int dx = getDeltaX(deltaX);
+              int dy = getDeltaY(deltaY, parentBounds);
+              c.setBounds(
+                  startingBounds.x - dx,
+                  startingBounds.y,
+                  startingBounds.width  + dx,
+                  startingBounds.height - dy);
+              break;
+          }
+          case Cursor.W_RESIZE_CURSOR: {
+              int dx = getDeltaX(deltaX);
+              c.setBounds(
+                  startingBounds.x - dx,
+                  startingBounds.y,
+                  startingBounds.width + dx,
+                  startingBounds.height);
+              break;
+          }
+          case Cursor.MOVE_CURSOR: {
+              c.setLocation(
+                  startingBounds.x - deltaX,
+                  startingBounds.y - deltaY);
+              break;
+          }
+          default:
+            return;
         }
-        @Override public void mouseReleased(MouseEvent e) {
-            startPos = null;
-            startingBounds = null;
-        }
+        //setBounds(newX, newY, newW, newH);
+        parent.revalidate();
+        //parent.repaint();
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        startPos = null;
+        startingBounds = null;
     }
 }
 
