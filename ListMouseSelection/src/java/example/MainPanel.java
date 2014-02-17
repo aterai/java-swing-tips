@@ -81,7 +81,7 @@ class SingleMouseClickSelectList<E> extends JList<E> {
     private MouseEvent convertMouseEvent(MouseEvent e) {
         // https://forums.oracle.com/thread/1351452 JList where mouse click acts like ctrl-mouse click
         return new MouseEvent(
-            (Component) e.getSource(),
+            e.getComponent(),
             e.getID(), e.getWhen(),
             //e.getModifiers() | InputEvent.CTRL_MASK,
             //select multiple objects in OS X: Command+click
@@ -116,7 +116,7 @@ class ClearSelectionListener extends MouseAdapter {
         return false;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JList list = (JList)e.getComponent();
         startOutside = contains(list, e.getPoint());
         startOutside ^= true;
         startIndex = list.locationToIndex(e.getPoint());
@@ -131,7 +131,7 @@ class ClearSelectionListener extends MouseAdapter {
         startIndex = -1;
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JList list = (JList)e.getComponent();
         if(!isDragging && startIndex == list.locationToIndex(e.getPoint())) {
             isCellInsideDragging = true;
         }else{

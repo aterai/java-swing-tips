@@ -34,25 +34,9 @@ class MainPanel extends JPanel {
             model.addElement(String.format("%d: %s", i, d.toString()));
         }
         JList<String> list = new JList<>(model);
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                JComponent c = (JComponent)e.getSource();
-                Container p = c.getParent().getParent();
-                p.repaint();
-            }
-        });
-        list.addFocusListener(new FocusAdapter() {
-            @Override public void focusLost(FocusEvent e) {
-                JComponent c = (JComponent)e.getSource();
-                Container p = c.getParent().getParent();
-                p.repaint();
-            }
-            @Override public void focusGained(FocusEvent e) {
-                JComponent c = (JComponent)e.getSource();
-                Container p = c.getParent().getParent();
-                p.repaint();
-            }
-        });
+        RepaintHandler handler = new RepaintHandler();
+        list.addListSelectionListener(handler);
+        list.addFocusListener(handler);
         return list;
     }
     private static JScrollPane makeScrollPane(JComponent c) {
@@ -122,24 +106,39 @@ class MainPanel extends JPanel {
     }
 }
 
+class RepaintHandler extends FocusAdapter implements ListSelectionListener {
+    private static void repaintEvent(Component c) {
+        Container p = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
+        if(p!=null) {
+            p.repaint();
+        }
+    }
+    @Override public void valueChanged(ListSelectionEvent e) {
+        repaintEvent((Component)e.getSource());
+    }
+    @Override public void focusLost(FocusEvent e) {
+        repaintEvent(e.getComponent());
+    }
+    @Override public void focusGained(FocusEvent e) {
+        repaintEvent(e.getComponent());
+    }
+}
+
 class TranslucentScrollBarUI extends BasicScrollBarUI {
     private static final Color DEFAULT_COLOR  = new Color(220, 100, 100, 100);
     private static final Color DRAGGING_COLOR = new Color(200, 100, 100, 100);
     private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
     private static final Dimension ZERO_SIZE = new Dimension();
+    private static class ZeroSizeButton extends JButton {
+        @Override public Dimension getPreferredSize() {
+            return ZERO_SIZE;
+        }
+    }
     @Override protected JButton createDecreaseButton(int orientation) {
-        return new JButton() {
-            @Override public Dimension getPreferredSize() {
-                return ZERO_SIZE;
-            }
-        };
+        return new ZeroSizeButton();
     }
     @Override protected JButton createIncreaseButton(int orientation) {
-        return new JButton() {
-            @Override public Dimension getPreferredSize() {
-                return ZERO_SIZE;
-            }
-        };
+        return new ZeroSizeButton();
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
         //Graphics2D g2 = (Graphics2D)g.create();
@@ -179,28 +178,28 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
 //     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 //     private final Point pp = new Point();
 //     @Override public void mouseDragged(MouseEvent e) {
-//         final JComponent jc = (JComponent)e.getSource();
-//         Container c = jc.getParent();
-//         if(c instanceof JViewport) {
-//             JViewport vport = (JViewport)c;
-//             Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+//         Component c = e.getComponent();
+//         Container p = SwingUtilities.getUnwrappedParent(c);
+//         if(p instanceof JViewport) {
+//             JViewport vport = (JViewport)p;
+//             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
 //             Point vp = vport.getViewPosition();
 //             vp.translate(pp.x-cp.x, pp.y-cp.y);
-//             jc.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+//             ((JComponent)c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
 //             pp.setLocation(cp);
 //         }
 //     }
 //     @Override public void mousePressed(MouseEvent e) {
-//         JComponent jc = (JComponent)e.getSource();
-//         Container c = jc.getParent();
-//         if(c instanceof JViewport) {
-//             jc.setCursor(hndCursor);
-//             JViewport vport = (JViewport)c;
-//             Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+//         Component c = e.getComponent();
+//         Container p = SwingUtilities.getUnwrappedParent(c);
+//         if(p instanceof JViewport) {
+//             c.setCursor(hndCursor);
+//             JViewport vport = (JViewport)p;
+//             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
 //             pp.setLocation(cp);
 //         }
 //     }
 //     @Override public void mouseReleased(MouseEvent e) {
-//         ((JComponent)e.getSource()).setCursor(defCursor);
+//         e.getComponent().setCursor(defCursor);
 //     }
 // }

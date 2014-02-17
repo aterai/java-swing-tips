@@ -175,7 +175,7 @@ class BasicComboPopup3 extends BasicComboPopup {
                 if(e.isControlDown())  {
                     // Fix for 4234053. Filter out the Control Key from the list.
                     // ie., don't allow CTRL key deselection.
-                    ev = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(),
+                    ev = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(),
                                         e.getModifiers() ^ InputEvent.CTRL_MASK,
                                         e.getX(), e.getY(),
                                         e.getXOnScreen(), e.getYOnScreen(),

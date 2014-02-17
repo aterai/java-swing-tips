@@ -134,7 +134,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
 
 class HeaderMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-        JTableHeader h = (JTableHeader) e.getSource();
+        JTableHeader h = (JTableHeader)e.getComponent();
         TableColumnModel columnModel = h.getColumnModel();
         int viewColumn = columnModel.getColumnIndexAtX(e.getX());
         if(viewColumn<0) {
@@ -156,7 +156,7 @@ class HeaderMouseListener extends MouseAdapter {
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        ((JTableHeader)e.getSource()).repaint();
+        e.getComponent().repaint();
     }
 }
 

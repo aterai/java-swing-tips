@@ -103,7 +103,7 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
         return this;
     }
     @Override public void mouseMoved(MouseEvent e) {
-        JTable table = (JTable)e.getSource();
+        JTable table = (JTable)e.getComponent();
         Point pt = e.getPoint();
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
@@ -111,9 +111,8 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
         table.repaint();
     }
     @Override public void mouseExited(MouseEvent e)  {
-        JComponent c = (JComponent)e.getSource();
         row =  col = -1;
-        c.repaint();
+        e.getComponent().repaint();
     }
     @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
     @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }

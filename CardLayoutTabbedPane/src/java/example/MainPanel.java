@@ -95,7 +95,7 @@ class CardLayoutTabbedPane extends JPanel {
         TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                ((AbstractButton)e.getSource()).setSelected(true);
+                ((AbstractButton)e.getComponent()).setSelected(true);
                 cardLayout.show(contentsPanel, title);
             }
         });
@@ -306,7 +306,7 @@ class TableHeaderTabbedPane extends JPanel {
     }
     private class MouseInputHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
-            JTableHeader header = (JTableHeader)e.getSource();
+            JTableHeader header = (JTableHeader)e.getComponent();
             int index = header.columnAtPoint(e.getPoint());
             if(index<0) { return; }
             Object title = model.getColumn(index).getHeaderValue();

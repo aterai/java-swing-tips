@@ -149,7 +149,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         return column>=0 && table.getColumnClass(column).equals(URL.class);
     }
     @Override public void mouseMoved(MouseEvent e) {
-        JTable table = (JTable)e.getSource();
+        JTable table = (JTable)e.getComponent();
         Point pt = e.getPoint();
         int prevRow = row;
         int prevCol = col;
@@ -175,7 +175,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         //table.repaint();
     }
     @Override public void mouseExited(MouseEvent e)  {
-        JTable table = (JTable)e.getSource();
+        JTable table = (JTable)e.getComponent();
         if(isURLColumn(table, col)) {
             table.repaint(table.getCellRect(row, col, false));
             row = -1;
@@ -184,7 +184,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         }
     }
     @Override public void mouseClicked(MouseEvent e) {
-        JTable table = (JTable)e.getSource();
+        JTable table = (JTable)e.getComponent();
         Point pt = e.getPoint();
         int ccol = table.columnAtPoint(pt);
         if(isURLColumn(table, ccol) && pointInsidePrefSize(table, pt)) {

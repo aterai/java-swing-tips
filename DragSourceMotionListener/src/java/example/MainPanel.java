@@ -81,7 +81,7 @@ class DragPanel extends JPanel {
 
 class Handler extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-        DragPanel p = (DragPanel)e.getSource();
+        DragPanel p = (DragPanel)e.getComponent();
         Component c = SwingUtilities.getDeepestComponentAt(p, e.getX(), e.getY());
         if(c instanceof JLabel) {
             p.draggingLabel = (JLabel)c;

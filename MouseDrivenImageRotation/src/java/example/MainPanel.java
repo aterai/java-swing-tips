@@ -114,28 +114,28 @@ class DraggableImageMouseListener extends MouseAdapter {
         }else{
             moverHover = rotatorHover =false;
         }
-        ((JComponent)e.getSource()).repaint();
+        e.getComponent().repaint();
     }
     @Override public void mouseReleased(MouseEvent e) {
         rotatorHover = moverHover = false;
-        ((JComponent)e.getSource()).repaint();
+        e.getComponent().repaint();
     }
     @Override public void mousePressed(MouseEvent e) {
         if(OUTER.contains(e.getX(), e.getY()) && !INNER.contains(e.getX(), e.getY())) {
             rotatorHover = true;
             startA = radian - Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
-            ((JComponent)e.getSource()).repaint();
+            e.getComponent().repaint();
         }else if(INNER.contains(e.getX(), e.getY())) {
             moverHover = true;
             startX = e.getX();
             startY = e.getY();
-            ((JComponent)e.getSource()).repaint();
+            e.getComponent().repaint();
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
         if(rotatorHover) {
             radian = startA + Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
-            ((JComponent)e.getSource()).repaint();
+            e.getComponent().repaint();
         }else if(moverHover) {
             x += e.getX() - startX;
             y += e.getY() - startY;
@@ -145,7 +145,7 @@ class DraggableImageMouseListener extends MouseAdapter {
             OUTER.y = y+centerY-OR/2;
             startX = e.getX();
             startY = e.getY();
-            ((JComponent)e.getSource()).repaint();
+            e.getComponent().repaint();
         }
     }
 }

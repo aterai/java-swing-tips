@@ -94,7 +94,7 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
     protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getSource();
+                JSlider slider = (JSlider)e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
@@ -119,7 +119,7 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
     protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getSource();
+                JSlider slider = (JSlider)e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));

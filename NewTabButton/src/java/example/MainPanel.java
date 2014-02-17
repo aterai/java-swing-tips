@@ -117,7 +117,7 @@ class CardLayoutTabbedPane extends JPanel {
         final TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                ((AbstractButton)e.getSource()).setSelected(true);
+                ((AbstractButton)e.getComponent()).setSelected(true);
                 cardLayout.show(contentsPanel, title);
             }
         });

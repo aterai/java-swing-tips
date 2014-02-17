@@ -44,7 +44,7 @@ class MainPanel extends JPanel {
         button.setPreferredSize(new Dimension(0, 100));
         button.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                JButton button = (JButton)e.getSource();
+                JButton button = (JButton)e.getComponent();
                 if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !button.isDisplayable()) {
                     animator.stop();
                 }
@@ -56,7 +56,7 @@ class MainPanel extends JPanel {
         p.add(button);
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

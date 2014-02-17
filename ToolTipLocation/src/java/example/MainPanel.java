@@ -14,16 +14,15 @@ public final class MainPanel extends JPanel {
             private JToolTip tip = new JToolTip();
             private PopupFactory factory = PopupFactory.getSharedInstance();
             private Popup popup;
-            private Point getToolTipLocation(MouseEvent me) {
-                JComponent c = (JComponent)me.getSource();
-                Point p = me.getPoint();
-                SwingUtilities.convertPointToScreen(p, c);
+            private Point getToolTipLocation(MouseEvent e) {
+                Point p = e.getPoint();
+                SwingUtilities.convertPointToScreen(p, e.getComponent());
                 p.translate(0, -16);
                 return p;
             }
-            @Override public void mousePressed(MouseEvent me) {
-                Point p = getToolTipLocation(me);
-                if(SwingUtilities.isLeftMouseButton(me)) {
+            @Override public void mousePressed(MouseEvent e) {
+                Point p = getToolTipLocation(e);
+                if(SwingUtilities.isLeftMouseButton(e)) {
                     tip.setTipText(String.format("Window(x,y)=(%4d,%4d)", p.x, p.y));
                     window.getContentPane().removeAll();
                     window.add(tip);
@@ -33,20 +32,21 @@ public final class MainPanel extends JPanel {
                     window.setVisible(true);
                 }
             }
-            @Override public void mouseDragged(MouseEvent me) {
-                JComponent c = (JComponent)me.getSource();
-                Point p = me.getPoint();
-                if(SwingUtilities.isLeftMouseButton(me)) {
+            @Override public void mouseDragged(MouseEvent e) {
+                Point p = e.getPoint();
+                if(SwingUtilities.isLeftMouseButton(e)) {
                     tip.setTipText(String.format("Window(x,y)=(%4d,%4d)", p.x, p.y));
                     //tip.revalidate();
                     tip.repaint();
                     //window.pack();
-                    window.setLocation(getToolTipLocation(me));
+                    window.setLocation(getToolTipLocation(e));
                 }else{
-                    if(popup!=null) { popup.hide(); }
+                    if(popup!=null) {
+                        popup.hide();
+                    }
                     tip.setTipText(String.format("Popup(x,y)=(%d,%d)", p.x, p.y));
-                    p = getToolTipLocation(me);
-                    popup = factory.getPopup(c, tip, p.x, p.y);
+                    p = getToolTipLocation(e);
+                    popup = factory.getPopup(e.getComponent(), tip, p.x, p.y);
                     popup.show();
                 }
             }

@@ -172,8 +172,8 @@ class EditableTabbedPane extends JTabbedPane {
         super();
         editor.setBorder(BorderFactory.createEmptyBorder(0,3,0,3));
         editor.addFocusListener(new FocusAdapter() {
-            @Override public void focusGained(final FocusEvent e) {
-                ((JTextField)e.getSource()).selectAll();
+            @Override public void focusGained(FocusEvent e) {
+                ((JTextField)e.getComponent()).selectAll();
             }
         });
         editor.addKeyListener(new KeyAdapter() {

@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
         });
         slider.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSlider s = (JSlider)e.getSource();
+                JSlider s = (JSlider)e.getComponent();
                 int intValue = s.getValue()-e.getWheelRotation()*s.getMajorTickSpacing();
                 BoundedRangeModel model = s.getModel();
                 if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {

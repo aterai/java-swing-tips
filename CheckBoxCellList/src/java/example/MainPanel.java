@@ -127,7 +127,7 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     }
     @Override protected void processMouseMotionEvent(MouseEvent e) {
         if(pointOutsidePrefSize(e.getPoint())) {
-            MouseEvent ev = new MouseEvent((Component)e.getSource(), MouseEvent.MOUSE_EXITED, e.getWhen(),
+            MouseEvent ev = new MouseEvent(e.getComponent(), MouseEvent.MOUSE_EXITED, e.getWhen(),
                                            e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
                                            e.getClickCount(), e.isPopupTrigger(), MouseEvent.NOBUTTON);
             super.processMouseEvent(ev);
@@ -155,7 +155,7 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends JCheckBox implements 
     }
     @Override public void mouseExited(MouseEvent e) {
         if(rollOverRowIndex>=0) {
-            JList l = (JList)e.getSource();
+            JList l = (JList)e.getComponent();
             l.repaint(l.getCellBounds(rollOverRowIndex, rollOverRowIndex));
             rollOverRowIndex = -1;
         }
@@ -175,7 +175,7 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends JCheckBox implements 
         }
     }
     @Override public void mouseMoved(MouseEvent e) {
-        JList l = (JList)e.getSource();
+        JList l = (JList)e.getComponent();
         int index = l.locationToIndex(e.getPoint());
         if(index != rollOverRowIndex) {
             rollOverRowIndex = index;

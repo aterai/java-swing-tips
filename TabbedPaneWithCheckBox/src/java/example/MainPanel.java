@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         cbox.setFocusPainted(false);
         cbox.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent me) {
-                JCheckBox cb = (JCheckBox)me.getSource();
+                JCheckBox cb = (JCheckBox)me.getComponent();
                 cb.setSelected(!cb.isSelected());
             }
         });

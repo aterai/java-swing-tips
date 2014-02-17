@@ -58,8 +58,7 @@ class MainPanel extends JPanel {
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
-                    JComboBox cbox = (JComboBox)e.getSource();
-                    TexturePaints t = (TexturePaints)cbox.getSelectedItem();
+                    TexturePaints t = (TexturePaints)e.getItem();
                     tp.setTexturePaint(t.getTexturePaint());
                     repaintWindowAncestor(tp);
                 }

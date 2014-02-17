@@ -95,7 +95,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
 //             table.repaint();
 //         }
         @Override public void mouseMoved(MouseEvent e) {
-            JTable table = (JTable)e.getSource();
+            JTable table = (JTable)e.getComponent();
             Point pt = e.getPoint();
             int col = table.columnAtPoint(pt);
             int column = table.convertColumnIndexToModel(col);
@@ -118,7 +118,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
             table.repaint(repaintRect);
         }
         @Override public void mouseExited(MouseEvent e) {
-            JTable table = (JTable)e.getSource();
+            JTable table = (JTable)e.getComponent();
             Point pt = e.getPoint();
             int col = table.columnAtPoint(pt);
             int column = table.convertColumnIndexToModel(col);

@@ -72,7 +72,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         timeFactor = 500L; //(l!=null) ? l.longValue() : 1000L;
     }
     private boolean isNavigationKey(KeyEvent event) {
-        JTable table = (JTable)event.getSource();
+        JTable table = (JTable)event.getComponent();
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         KeyStroke key = KeyStroke.getKeyStrokeForEvent(event);
         if(inputMap != null && inputMap.get(key) != null) {
@@ -87,7 +87,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         }
     }
     @Override public void keyTyped(KeyEvent e) {
-        JTable src = (JTable)e.getSource();
+        JTable src = (JTable)e.getComponent();
         int max = src.getRowCount();
         if(max == 0 || e.isAltDown() || isNavigationKey(e)) { //|| BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
             // Nothing to select

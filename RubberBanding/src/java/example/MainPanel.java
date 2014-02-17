@@ -187,7 +187,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
         return this;
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JList list = (JList)e.getComponent();
         list.setFocusable(true);
         if(polygon==null) {
             srcPoint.setLocation(e.getPoint());
@@ -207,13 +207,13 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
     @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
     @Override public void mouseExited(MouseEvent e)  { /* not needed */ }
     @Override public void mouseReleased(MouseEvent e) {
-        JList list = (JList)e.getSource();
-        list.setFocusable(true);
+        Component c = e.getComponent();
+        c.setFocusable(true);
         polygon = null;
-        list.repaint();
+        c.repaint();
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JList list = (JList)e.getComponent();
         int index = list.locationToIndex(e.getPoint());
         Rectangle rect = list.getCellBounds(index,index);
         if(rect.contains(e.getPoint())) {

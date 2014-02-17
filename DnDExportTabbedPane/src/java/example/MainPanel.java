@@ -346,7 +346,7 @@ class DnDTabbedPane extends JTabbedPane {
         }
         // MouseListener
         @Override public void mousePressed(MouseEvent e) {
-            DnDTabbedPane src = (DnDTabbedPane)e.getSource();
+            DnDTabbedPane src = (DnDTabbedPane)e.getComponent();
             if(src.getTabCount()<=1) {
                 startPt = null;
                 return;
@@ -361,7 +361,7 @@ class DnDTabbedPane extends JTabbedPane {
         @Override public void mouseDragged(MouseEvent e)  {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
             if(startPt!=null && Math.sqrt(Math.pow(tabPt.x-startPt.x, 2)+Math.pow(tabPt.y-startPt.y, 2))>gestureMotionThreshold) {
-                DnDTabbedPane src = (DnDTabbedPane)e.getSource();
+                DnDTabbedPane src = (DnDTabbedPane)e.getComponent();
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 th.exportAsDrag(src, e, TransferHandler.MOVE);

@@ -106,8 +106,7 @@ public class MainPanel extends JPanel {
         combobox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
-                    JComboBox cb = (JComboBox)e.getSource();
-                    table.setAutoResizeMode(((AutoResizeMode)cb.getSelectedItem()).mode);
+                    table.setAutoResizeMode(((AutoResizeMode)e.getItem()).mode);
                 }
             }
         });

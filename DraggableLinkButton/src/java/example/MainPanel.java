@@ -154,7 +154,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         });
         b.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                JButton button = (JButton)e.getSource();
+                JButton button = (JButton)e.getComponent();
                 TransferHandler handler = button.getTransferHandler();
                 handler.exportAsDrag(button, e, TransferHandler.COPY);
             }

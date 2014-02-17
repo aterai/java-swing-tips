@@ -120,33 +120,34 @@ class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class DragScrollListener extends MouseAdapter {
     private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Point pp = new Point();
     @Override public void mouseDragged(MouseEvent e) {
-        final JComponent jc = (JComponent)e.getSource();
-        Container c = jc.getParent();
-        if(c instanceof JViewport) {
-            JViewport vport = (JViewport)c;
-            Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+        Component c = e.getComponent();
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if(p instanceof JViewport) {
+            JViewport vport = (JViewport)p;
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             Point vp = vport.getViewPosition();
             vp.translate(pp.x-cp.x, pp.y-cp.y);
-            jc.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            ((JComponent)c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
             pp.setLocation(cp);
         }
     }
     @Override public void mousePressed(MouseEvent e) {
-        JComponent jc = (JComponent)e.getSource();
-        Container c = jc.getParent();
-        if(c instanceof JViewport) {
-            jc.setCursor(hndCursor);
-            JViewport vport = (JViewport)c;
-            Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+        Component c = e.getComponent();
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if(p instanceof JViewport) {
+            c.setCursor(hndCursor);
+            JViewport vport = (JViewport)p;
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             pp.setLocation(cp);
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        ((JComponent)e.getSource()).setCursor(defCursor);
+        e.getComponent().setCursor(defCursor);
     }
 }

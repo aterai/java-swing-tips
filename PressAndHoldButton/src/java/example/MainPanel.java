@@ -162,8 +162,9 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
     }
     @Override public void mousePressed(MouseEvent e) {
         System.out.println("mousePressed");
-        if(SwingUtilities.isLeftMouseButton(e) && e.getComponent().isEnabled()) {
-            arrowButton = (AbstractButton)e.getSource();
+        Component c = e.getComponent();
+        if(SwingUtilities.isLeftMouseButton(e) && c.isEnabled()) {
+            arrowButton = (AbstractButton)c;
             autoRepeatTimer.start();
         }
     }

@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
     class HighlightBarHandler extends MouseAdapter {
         private void processMouseEvent(MouseEvent e) {
             Point pt = e.getPoint();
-            Component c = (Component)e.getSource();
+            Component c = (Component)e.getComponent();
             BoundedRangeModel m = scrollbar.getModel();
             int iv = (int)(.5 - m.getExtent() * 0.5 + pt.y * (m.getMaximum()-m.getMinimum()) / (double)c.getHeight());
             m.setValue(iv);

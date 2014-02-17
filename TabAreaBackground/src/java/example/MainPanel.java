@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
         });
         tabs.addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane t = (JTabbedPane)e.getSource();
+                JTabbedPane t = (JTabbedPane)e.getComponent();
                 int si = t.getSelectedIndex();
                 int tgt = t.indexAtLocation(e.getX(), e.getY());
                 for(int i=0;i<t.getTabCount();i++) {
