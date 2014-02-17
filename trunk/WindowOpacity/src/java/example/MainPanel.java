@@ -32,8 +32,9 @@ class MainPanel extends JPanel {
             private final TexturePaint checkerTexture = makeCheckerTexture();
             @Override public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED) {
-                    JComboBox cbox = (JComboBox)e.getSource();
-                    Object o = cbox.getSelectedItem();
+                    //JComboBox cbox = (JComboBox)e.getSource();
+                    //Object o = cbox.getSelectedItem();
+                    Object o = e.getItem();
                     if("ImageTexturePaint".equals(o)) {
                         texture = imageTexture;
                         setOpaque(false);
@@ -44,14 +45,15 @@ class MainPanel extends JPanel {
                         texture = null;
                         setOpaque(true);
                     }
-                    Window w = SwingUtilities.getWindowAncestor(MainPanel.this);
-                    if(w instanceof JFrame) { //XXX: JDK 1.7.0 ???
-                        //((JFrame)w).getRootPane().repaint();
-                        ((JFrame)w).getContentPane().repaint();
-                    }else{
-                        revalidate();
-                        repaint();
-                    }
+                    getRootPane().getContentPane().repaint();
+//                     Window w = SwingUtilities.getWindowAncestor(MainPanel.this);
+//                     if(w instanceof JFrame) { //XXX: JDK 1.7.0 ???
+//                         //((JFrame)w).getRootPane().repaint();
+//                         ((JFrame)w).getContentPane().repaint();
+//                     }else{
+//                         revalidate();
+//                         repaint();
+//                     }
                 }
             }
         });

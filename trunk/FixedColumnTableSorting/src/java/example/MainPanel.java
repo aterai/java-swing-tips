@@ -69,7 +69,7 @@ public class MainPanel extends JPanel {
         //@auther Rob Camick
         scroll.getRowHeader().addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JViewport viewport = (JViewport) e.getSource();
+                JViewport viewport = (JViewport)e.getSource();
                 scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
             }
         });

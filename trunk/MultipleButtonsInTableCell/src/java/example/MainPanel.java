@@ -140,7 +140,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
                 actionPerformed(null);
             }else if(o instanceof JButton) {
                 //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
-                ButtonModel m = ((JButton)e.getSource()).getModel();
+                ButtonModel m = ((JButton)e.getComponent()).getModel();
                 if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
                     setBackground(table.getBackground());
                 }

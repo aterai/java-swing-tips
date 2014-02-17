@@ -78,7 +78,7 @@ class MyJTabbedPane extends JTabbedPane {
         addMouseMotionListener(new MouseMotionAdapter() {
             private int prev = -1;
             @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane source = (JTabbedPane)e.getSource();
+                JTabbedPane source = (JTabbedPane)e.getComponent();
                 int focussed = source.indexAtLocation(e.getX(), e.getY());
                 if(focussed==prev) { return; }
                 for(int i=0;i<source.getTabCount();i++) {

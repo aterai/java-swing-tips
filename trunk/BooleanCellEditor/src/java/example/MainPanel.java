@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
         checkBox.setOpaque(true);
         checkBox.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
+                JCheckBox cb = (JCheckBox)e.getComponent();
                 ButtonModel m = cb.getModel();
                 int editingRow = table.getEditingRow();
                 if(m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {

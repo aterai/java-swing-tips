@@ -48,7 +48,7 @@ class FontRotateAnimation extends JComponent implements ActionListener {
         animator = new Timer(10, this);
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                JComponent c = (JComponent)e.getSource();
+                Component c = e.getComponent();
                 if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !c.isDisplayable()) {
                     animator.stop();
                 }

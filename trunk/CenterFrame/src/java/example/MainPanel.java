@@ -17,14 +17,18 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridLayout(2,1,5,5));
         p.add(makePanel("in center of screen", new JButton(new AbstractAction("frame.setLocationRelativeTo(null)") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(frame.isVisible()) { return; }
+                if(frame.isVisible()) {
+                    return;
+                }
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
         })));
         p.add(makePanel("relative to this button", new JButton(new AbstractAction("frame.setLocationRelativeTo(button)") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(frame.isVisible()) { return; }
+                if(frame.isVisible()) {
+                    return;
+                }
                 frame.setLocationRelativeTo((Component)e.getSource());
                 frame.setVisible(true);
             }

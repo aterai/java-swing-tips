@@ -26,20 +26,6 @@ public class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
-    private static class BGFocusListener implements FocusListener {
-        private final Color dColor;
-        private final Color oColor;
-        public BGFocusListener(Color oColor, Color dColor) {
-            this.dColor = dColor;
-            this.oColor = oColor;
-        }
-        @Override public void focusGained(final FocusEvent e) {
-            ((JTextField)e.getSource()).setBackground(dColor);
-        }
-        @Override public void focusLost(final FocusEvent e) {
-            ((JTextField)e.getSource()).setBackground(oColor);
-        }
-    }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder(title));
@@ -67,5 +53,20 @@ public class MainPanel extends JPanel {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class BGFocusListener implements FocusListener {
+    private final Color dColor;
+    private final Color oColor;
+    public BGFocusListener(Color oColor, Color dColor) {
+        this.dColor = dColor;
+        this.oColor = oColor;
+    }
+    @Override public void focusGained(FocusEvent e) {
+        e.getComponent().setBackground(dColor);
+    }
+    @Override public void focusLost(FocusEvent e) {
+        e.getComponent().setBackground(oColor);
     }
 }

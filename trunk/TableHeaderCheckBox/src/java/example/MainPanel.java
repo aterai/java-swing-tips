@@ -93,7 +93,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
         setFont(header.getFont());
         header.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                JTableHeader header = (JTableHeader)e.getSource();
+                JTableHeader header = (JTableHeader)e.getComponent();
                 JTable table = header.getTable();
                 TableColumnModel columnModel = table.getColumnModel();
                 int vci = columnModel.getColumnIndexAtX(e.getX());

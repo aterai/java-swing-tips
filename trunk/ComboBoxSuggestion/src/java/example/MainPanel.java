@@ -171,7 +171,7 @@ class ComboKeyHandler extends KeyAdapter {
         });
     }
     @Override public void keyPressed(KeyEvent e) {
-        JTextField textField = (JTextField)e.getSource();
+        JTextField textField = (JTextField)e.getComponent();
         String text = textField.getText();
         shouldHide = false;
         switch(e.getKeyCode()) {

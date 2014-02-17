@@ -71,7 +71,7 @@ public class MainPanel extends JPanel {
         label.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 System.out.println(e);
-                JComponent c = (JComponent)e.getSource();
+                JComponent c = (JComponent)e.getComponent();
                 c.getTransferHandler().exportAsDrag(c, e, TransferHandler.COPY);
             }
         });

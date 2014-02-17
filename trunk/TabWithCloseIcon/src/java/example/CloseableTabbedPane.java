@@ -239,7 +239,7 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener, M
                             if(selIndex > 0) {
                                 // to prevent uncatchable null-pointers
                                 Rectangle rec = getUI().getTabBounds(this, selIndex - 1);
-                                MouseEvent event = new MouseEvent((Component) e.getSource(),
+                                MouseEvent event = new MouseEvent(e.getComponent(),
                                                                   e.getID() + 1,
                                                                   System.currentTimeMillis(),
                                                                   e.getModifiers(),

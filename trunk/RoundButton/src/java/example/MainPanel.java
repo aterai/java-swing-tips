@@ -213,7 +213,7 @@ class RoundedCornerButtonUI extends BasicButtonUI{
     @Override protected void installListeners(AbstractButton button) {
         BasicButtonListener listener = new BasicButtonListener(button) {
             @Override public void mousePressed(MouseEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
+                AbstractButton b = (AbstractButton)e.getComponent();
                 initShape(b);
                 if(shape.contains(e.getX(), e.getY())) {
                     super.mousePressed(e);

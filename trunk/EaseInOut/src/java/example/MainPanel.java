@@ -152,7 +152,7 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
         animator.start();
     }
     @Override public void mouseExited(MouseEvent e) {
-        JComponent parent = (JComponent)e.getSource();
+        JComponent parent = (JComponent)e.getComponent();
         if(animator!=null && animator.isRunning() || parent.contains(e.getPoint()) && txah==textArea.getPreferredSize().height) {
             return;
         }

@@ -84,7 +84,7 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getSource();
+                JSlider slider = (JSlider)e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
@@ -109,7 +109,7 @@ class MetalTooltipSliderUI extends MetalSliderUI {
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getSource();
+                JSlider slider = (JSlider)e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
@@ -145,13 +145,13 @@ class SliderPopupListener extends MouseAdapter {
         toolTip.setSize(size);
     }
     protected void updateToolTip(MouseEvent me) {
-        JSlider slider = (JSlider)me.getSource();
+        JSlider slider = (JSlider)me.getComponent();
         int intValue = (int)slider.getValue();
         if(prevValue!=intValue) {
             label.setText(String.format("%03d", slider.getValue()));
             Point pt = me.getPoint();
             pt.y = -size.height;
-            SwingUtilities.convertPointToScreen(pt, (Component)me.getSource());
+            SwingUtilities.convertPointToScreen(pt, me.getComponent());
             pt.translate(-size.width/2, 0);
             toolTip.setLocation(pt);
         }
@@ -171,7 +171,7 @@ class SliderPopupListener extends MouseAdapter {
 
 class SliderMouseWheelListener implements MouseWheelListener {
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
-        JSlider source = (JSlider)e.getSource();
+        JSlider source = (JSlider)e.getComponent();
         int intValue = (int)source.getValue()-e.getWheelRotation();
         BoundedRangeModel model = source.getModel();
         if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {

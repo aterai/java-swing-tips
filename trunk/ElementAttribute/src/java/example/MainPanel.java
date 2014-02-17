@@ -134,7 +134,7 @@ class CustomTooltipEditorPane extends JEditorPane {
     }
     @Override public String getToolTipText(MouseEvent e) {
         String title = super.getToolTipText(e);
-        JEditorPane editor = (JEditorPane) e.getSource();
+        JEditorPane editor = (JEditorPane)e.getComponent();
         //HTMLEditorKit kit = (HTMLEditorKit)editor.getEditorKit();
         if(!editor.isEditable()) {
             Point pt = new Point(e.getX(), e.getY());

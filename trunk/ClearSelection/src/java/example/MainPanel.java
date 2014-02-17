@@ -94,7 +94,7 @@ class ClearSelectionListener extends MouseAdapter {
         return false;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JList list = (JList)e.getComponent();
         startOutside = contains(list, e.getPoint());
         startOutside ^= true;
         if(startOutside) {
@@ -105,7 +105,7 @@ class ClearSelectionListener extends MouseAdapter {
         startOutside = false;
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JList list = (JList)e.getSource();
+        JList list = (JList)e.getComponent();
         if(contains(list, e.getPoint())) {
             startOutside = false;
         }else if(startOutside) {

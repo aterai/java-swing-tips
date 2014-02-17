@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         box.add(makePanel("Search", field2));
 
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -52,6 +52,7 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class PlaceholderFocusListener implements FocusListener {
     private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
     private final String hintMessage;
@@ -60,14 +61,14 @@ class PlaceholderFocusListener implements FocusListener {
         tf.setForeground(INACTIVE);
     }
     @Override public void focusGained(FocusEvent e) {
-        JTextComponent tf = (JTextComponent)e.getSource();
+        JTextComponent tf = (JTextComponent)e.getComponent();
         if(hintMessage.equals(tf.getText()) && INACTIVE.equals(tf.getForeground())) {
             tf.setForeground(UIManager.getColor("TextField.foreground"));
             tf.setText("");
         }
     }
     @Override public void focusLost(FocusEvent e) {
-        JTextComponent tf = (JTextComponent)e.getSource();
+        JTextComponent tf = (JTextComponent)e.getComponent();
         if("".equals(tf.getText().trim())) {
             tf.setForeground(INACTIVE);
             tf.setText(hintMessage);

@@ -170,7 +170,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     }
     class RubberBandingListener extends MouseAdapter {
         @Override public void mouseDragged(MouseEvent e) {
-            JList list = (JList)e.getSource();
+            JList list = (JList)e.getComponent();
             if(list.getDragEnabled()) {
                 return;
             }
@@ -189,7 +189,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         @Override public void mouseReleased(MouseEvent e) {
             setFocusable(true);
             if(srcPoint==null || !getDragEnabled()) {
-                JList list = (JList)e.getSource();
+                JList list = (JList)e.getComponent();
                 Component glassPane = list.getRootPane().getGlassPane();
                 //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 glassPane.setVisible(false);
@@ -210,7 +210,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
                     setSelectedIndex(index);
                 }
             }else{
-                JList list = (JList)e.getSource();
+                JList list = (JList)e.getComponent();
                 Component glassPane = list.getRootPane().getGlassPane();
                 //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 glassPane.setVisible(false);

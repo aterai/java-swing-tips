@@ -173,7 +173,7 @@ class LineFocusTable extends JTable {
         checkBox.setOpaque(true);
         checkBox.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
+                JCheckBox cb = (JCheckBox)e.getComponent();
                 ButtonModel m = cb.getModel();
                 if(m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
                     if(getEditingRow()%2==0) {

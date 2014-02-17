@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
 
         combo02.addMouseListener(new MouseAdapter() {
             private ButtonModel getButtonModel(MouseEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
+                JComboBox cb = (JComboBox)e.getComponent();
                 JButton b = (JButton)cb.getComponent(0);
                 return b.getModel();
             }

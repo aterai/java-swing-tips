@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
 
         jtp.addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane source = (JTabbedPane)e.getSource();
+                JTabbedPane source = (JTabbedPane)e.getComponent();
                 int num = source.indexAtLocation(e.getX(), e.getY());
                 for(int i=0;i<source.getTabCount();i++) {
                     source.setForegroundAt(i, i==num ? Color.GREEN

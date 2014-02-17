@@ -26,7 +26,7 @@ public class MainPanel extends JPanel {
         super(new BorderLayout());
         table.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                JTable t = (JTable)e.getSource();
+                JTable t = (JTable)e.getComponent();
                 if(e.getClickCount()==2) {
                     TableModel m = t.getModel();
                     Point pt = e.getPoint();

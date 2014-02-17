@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
         JComboBox<String> combo = makeComboBox();
         combo.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JComboBox source = (JComboBox) e.getSource();
+                JComboBox source = (JComboBox)e.getComponent();
                 if(!source.hasFocus()) {
                     return;
                 }

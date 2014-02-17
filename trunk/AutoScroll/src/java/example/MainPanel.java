@@ -83,13 +83,13 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent)e.getComponent();
         if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
             scroller.stop();
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JViewport vport = (JViewport)e.getSource();
+        JViewport vport = (JViewport)e.getComponent();
         Point pt = e.getPoint();
         int dx = startPt.x - pt.x;
         int dy = startPt.y - pt.y;
@@ -100,17 +100,17 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
         startPt.setLocation(pt);
     }
     @Override public void mousePressed(MouseEvent e) {
-        ((JComponent)e.getSource()).setCursor(hc); //label.setCursor(hc);
+        e.getComponent().setCursor(hc); //label.setCursor(hc);
         startPt.setLocation(e.getPoint());
         move.setLocation(0, 0);
         scroller.stop();
     }
     @Override public void mouseReleased(MouseEvent e) {
-        ((JComponent)e.getSource()).setCursor(dc); //label.setCursor(dc);
+        e.getComponent().setCursor(dc); //label.setCursor(dc);
         scroller.start();
     }
     @Override public void mouseExited(MouseEvent e) {
-        ((JComponent)e.getSource()).setCursor(dc); //label.setCursor(dc);
+        e.getComponent().setCursor(dc); //label.setCursor(dc);
         move.setLocation(0, 0);
         scroller.stop();
     }
@@ -143,7 +143,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent jc = (JComponent)e.getSource();
+        JComponent jc = (JComponent)e.getComponent();
         if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !jc.isDisplayable()) {
             scroller.stop();
         }
@@ -167,7 +167,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     @Override public void mousePressed(MouseEvent e) {
         scroller.stop();
         move.setLocation(0, 0);
-        JComponent jc = (JComponent)e.getSource();
+        JComponent jc = (JComponent)e.getComponent();
         jc.setCursor(hc);
         Container c = jc.getParent();
         if(c instanceof JViewport) {
@@ -177,11 +177,11 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        ((JComponent)e.getSource()).setCursor(dc);
+        e.getComponent().setCursor(dc);
         scroller.start();
     }
     @Override public void mouseExited(MouseEvent e) {
-        ((JComponent)e.getSource()).setCursor(dc);
+        e.getComponent().setCursor(dc);
         move.setLocation(0, 0);
         scroller.stop();
     }

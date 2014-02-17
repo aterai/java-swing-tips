@@ -398,7 +398,7 @@ public class TableSorter extends AbstractTableModel {
 
     private class MouseHandler extends MouseAdapter {
         @Override public void mouseClicked(MouseEvent e) {
-            JTableHeader h = (JTableHeader) e.getSource();
+            JTableHeader h = (JTableHeader)e.getComponent();
             TableColumnModel columnModel = h.getColumnModel();
             int viewColumn = columnModel.getColumnIndexAtX(e.getX());
             // ArrayIndexOutOfBoundsException: -1

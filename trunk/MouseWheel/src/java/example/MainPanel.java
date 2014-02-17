@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         });
         spinner.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSpinner source = (JSpinner)e.getSource();
+                JSpinner source = (JSpinner)e.getComponent();
                 SpinnerNumberModel model = (SpinnerNumberModel)source.getModel();
                 Integer oldValue = (Integer)source.getValue();
                 int intValue = oldValue.intValue()-e.getWheelRotation()*model.getStepSize().intValue();
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 
         slider.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSlider source = (JSlider)e.getSource();
+                JSlider source = (JSlider)e.getComponent();
                 int intValue = (int)source.getValue()-e.getWheelRotation();
                 BoundedRangeModel model = source.getModel();
                 if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {

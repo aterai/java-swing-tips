@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
         super.updateUI();
         addHierarchyListener(hierarchyListener = new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                JComponent c = (JComponent)e.getSource();
+                Component c = e.getComponent();
                 if(timer!=null && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
                     System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
                     timer.stop();

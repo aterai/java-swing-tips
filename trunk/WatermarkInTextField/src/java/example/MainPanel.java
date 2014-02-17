@@ -97,8 +97,8 @@ class GhostFocusListener implements FocusListener {
         ghostMessage = tf.getText();
         tf.setForeground(INACTIVE_COLOR);
     }
-    @Override public void focusGained(final FocusEvent e) {
-        JTextComponent textField = (JTextComponent)e.getSource();
+    @Override public void focusGained(FocusEvent e) {
+        JTextComponent textField = (JTextComponent)e.getComponent();
         String str = textField.getText();
         Color col  = textField.getForeground();
         if(ghostMessage.equals(str) && INACTIVE_COLOR.equals(col)) {
@@ -106,8 +106,8 @@ class GhostFocusListener implements FocusListener {
             textField.setText("");
         }
     }
-    @Override public void focusLost(final FocusEvent e) {
-        JTextComponent textField = (JTextComponent)e.getSource();
+    @Override public void focusLost(FocusEvent e) {
+        JTextComponent textField = (JTextComponent)e.getComponent();
         String str = textField.getText().trim();
         if("".equals(str)) {
             textField.setForeground(INACTIVE_COLOR);

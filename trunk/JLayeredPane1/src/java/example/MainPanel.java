@@ -104,7 +104,7 @@ class DragMouseListener extends MouseAdapter {
         this.parent = parent;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JComponent panel = (JComponent)e.getSource();
+        JComponent panel = (JComponent)e.getComponent();
         origin = e.getPoint();
         //選択された部品を上へ
         parent.moveToFront(panel);
@@ -113,7 +113,7 @@ class DragMouseListener extends MouseAdapter {
         if(origin == null) {
             return;
         }
-        JComponent panel = (JComponent)e.getSource();
+        JComponent panel = (JComponent)e.getComponent();
         //ずれた分だけ JPanel を移動させる
         int dx = e.getX() - origin.x;
         int dy = e.getY() - origin.y;
