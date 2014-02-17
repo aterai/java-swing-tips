@@ -108,8 +108,12 @@ class ListItemTransferHandler extends TransferHandler {
         if(!canImport(info)) {
             return false;
         }
+        TransferHandler.DropLocation tdl = info.getDropLocation();
+        if(!(tdl instanceof JList.DropLocation)) {
+            return false;
+        }
+        JList.DropLocation dl = (JList.DropLocation)tdl;
         JList target = (JList)info.getComponent();
-        JList.DropLocation dl = (JList.DropLocation)info.getDropLocation();
         DefaultListModel listModel = (DefaultListModel)target.getModel();
         int index = dl.getIndex();
         //boolean insert = dl.isInsert();
