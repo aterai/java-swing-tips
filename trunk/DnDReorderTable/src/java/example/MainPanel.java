@@ -113,8 +113,12 @@ class TableRowTransferHandler extends TransferHandler {
         if(!canImport(info)) {
             return false;
         }
+        TransferHandler.DropLocation tdl = info.getDropLocation();
+        if(!(tdl instanceof JTable.DropLocation)) {
+            return false;
+        }
+        JTable.DropLocation dl = (JTable.DropLocation)tdl;
         JTable target = (JTable)info.getComponent();
-        JTable.DropLocation dl = (JTable.DropLocation)info.getDropLocation();
         DefaultTableModel model = (DefaultTableModel)target.getModel();
         int index = dl.getRow();
         //boolean insert = dl.isInsert();
