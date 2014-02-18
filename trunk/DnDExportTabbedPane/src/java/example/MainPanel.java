@@ -285,7 +285,7 @@ class DnDTabbedPane extends JTabbedPane {
         DropLocation loc = getDropLocation();
         int index = getDropLocationIndex(loc);
         if(index < 0) {
-            lineRect.setRect(0,0,0,0);
+            lineRect.setRect(0, 0, 0, 0);
             return null;
         }
         boolean isZero = index==0;
