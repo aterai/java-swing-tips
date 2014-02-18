@@ -47,7 +47,7 @@ class MainPanel extends JPanel {
                     table.repaint(table.getCellRect(vr, vc, false));
                 }
                 return (infoflags & (ALLBITS|ABORT)) == 0;
-            };
+            }
         });
         return icon;
     }

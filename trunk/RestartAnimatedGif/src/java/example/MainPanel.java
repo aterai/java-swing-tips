@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                     animatedIcon.getImage().flush();
                 }
                 super.fireStateChanged();
-            };
+            }
         };
         button.setRolloverIcon(animatedIcon);
         button.setPressedIcon(new Icon() {
