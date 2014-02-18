@@ -403,7 +403,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 //     @Override public void dropActionChanged(DropTargetDragEvent dtde) {
 //         System.out.println("dropActionChanged");
 //     }
-};
+}
 
 class TabTransferHandler extends TransferHandler {
     private static GhostGlassPane glassPane;

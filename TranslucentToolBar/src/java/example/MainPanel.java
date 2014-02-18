@@ -188,7 +188,7 @@ class ParentDispatchMouseListener extends MouseAdapter {
             tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
         }
     }
-};
+}
 
 
 class AnimationUtil {

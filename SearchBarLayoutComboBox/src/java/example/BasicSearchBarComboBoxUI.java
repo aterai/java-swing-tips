@@ -55,7 +55,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
                 @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                     Object o = listBox.getSelectedValue();
                     if(o instanceof SearchEngine) {
-                        SearchEngine se = (SearchEngine) o;
+                        SearchEngine se = (SearchEngine)o;
                         arrowButton.setIcon(se.favicon);
                         arrowButton.setRolloverIcon(IconUtil.makeRolloverIcon(se.favicon));
                     }
@@ -96,7 +96,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         comboBox.configureEditor(comboBox.getEditor(),comboBox.getSelectedItem());
         editor.addPropertyChangeListener(propertyChangeListener);
 
-        ((JComponent)editor).setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
+        ((JComponent)editor).setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
         ((JComponent)editor).getActionMap().put("loupe", loupeAction);
         InputMap im = ((JComponent)editor).getInputMap(JComponent.WHEN_FOCUSED);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "loupe");
@@ -113,8 +113,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
             arrowButton.setFocusPainted(false);
             arrowButton.setContentAreaFilled(false);
             arrowButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0,0,0,1, new Color(127,157,185)),
-                BorderFactory.createEmptyBorder(1,1,1,1)));
+                BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(127, 157, 185)),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         }
     }
     @Override protected void installComponents() {
@@ -150,7 +150,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     public void configureLoupeButton() {
         if(loupeButton != null) {
             loupeButton.setName("ComboBox.loupeButton");
-            loupeButton.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+            loupeButton.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             loupeButton.setEnabled(comboBox.isEnabled());
             loupeButton.setFocusable(comboBox.isFocusable());
             loupeButton.setOpaque(false);
@@ -183,8 +183,8 @@ class IconUtil {
     private IconUtil() { /* Singlton */ }
     public static Icon makeRolloverIcon(Icon srcIcon) {
         RescaleOp op = new RescaleOp(
-            new float[] { 1.2f,1.2f,1.2f,1.0f },
-            new float[] { 0f,0f,0f,0f }, null);
+            new float[] { 1.2f, 1.2f, 1.2f, 1.0f },
+            new float[] { 0f, 0f, 0f, 0f }, null);
         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
         //g.drawImage(srcIcon.getImage(), 0, 0, null);
@@ -261,14 +261,18 @@ class TriangleIcon implements Icon {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(Color.GRAY);
         g2.translate(x,y);
-        g2.drawLine( 2, 3, 6, 3 );
-        g2.drawLine( 3, 4, 5, 4 );
-        g2.drawLine( 4, 5, 4, 5 );
+        g2.drawLine(2, 3, 6, 3);
+        g2.drawLine(3, 4, 5, 4);
+        g2.drawLine(4, 5, 4, 5);
         g2.translate(-x,-y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  { return 9; }
-    @Override public int getIconHeight() { return 9; }
+    @Override public int getIconWidth() {
+        return 9;
+    }
+    @Override public int getIconHeight() {
+        return 9;
+    }
 }
 
 class TriangleArrowButton extends JButton {
@@ -283,11 +287,11 @@ class TriangleArrowButton extends JButton {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if(getModel().isArmed()) {
-            g2.setColor(new Color(220,220,220));
+            g2.setColor(new Color(220, 220, 220));
         }else if(isRolloverEnabled() && getModel().isRollover()) {
-            g2.setColor(new Color(220,220,220));
+            g2.setColor(new Color(220, 220, 220));
         }else if(hasFocus()) {
-            g2.setColor(new Color(220,220,220));
+            g2.setColor(new Color(220, 220, 220));
         }else{
             g2.setColor(getBackground());
         }

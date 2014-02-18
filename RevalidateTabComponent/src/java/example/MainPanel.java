@@ -195,7 +195,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             super.show(c, x, y);
         }
     }
-};
+}
 
 // class TabTitleEditListener extends MouseAdapter implements ChangeListener {
 //     private final JTextField editor = new JTextField();

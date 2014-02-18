@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
                     }
                 }
                 return (infoflags & (ALLBITS|ABORT)) == 0;
-            };
+            }
         });
         return icon;
     }

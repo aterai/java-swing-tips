@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(new JTree()));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent createPanel(JComponent cmp) {
         JPanel panel = new JPanel(new BorderLayout());

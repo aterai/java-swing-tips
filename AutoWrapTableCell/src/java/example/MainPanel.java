@@ -23,7 +23,8 @@ public class MainPanel extends JPanel {
             {"ccccccccccccccccccc", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
         };
         TableModel model = new DefaultTableModel(data, columnNames);
-        final JTable table = new JTable(model) {
+        final JTable table = new JTable(model);
+//         final JTable table = new JTable(model) {
 //             private static final Color EVEN_COLOR = new Color(230, 240, 255);
 //             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                 Component c = super.prepareRenderer(tcr, row, column);
@@ -71,7 +72,7 @@ public class MainPanel extends JPanel {
 //                 int preferredHeight = (int)f;
 //                 return preferredHeight + insets.top + insets.bottom;
 //             }
-        };
+//         };
         table.setEnabled(false);
         table.setShowGrid(false);
         table.getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
