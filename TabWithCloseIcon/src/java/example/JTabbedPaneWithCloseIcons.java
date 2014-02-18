@@ -18,14 +18,14 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
         this.addTab(title, component, null);
     }
     public void addTab(String title, Component component, Icon extraIcon) {
-        super.addTab(title, new CloseTabIcon(extraIcon), component);
+        super.addTab(title, new SimpleCloseTabIcon(extraIcon), component);
     }
     private void tabClicked(MouseEvent e) {
         int index = getUI().tabForCoordinate(this, e.getX(), e.getY());
         if(index<0) {
             return;
         }
-        Rectangle rect = ((CloseTabIcon)getIconAt(index)).getBounds();
+        Rectangle rect = ((SimpleCloseTabIcon)getIconAt(index)).getBounds();
         if(rect.contains(e.getX(), e.getY())) {
             removeTabAt(index);
         }
@@ -40,13 +40,13 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
  * accepts an icon which is extra to the 'X' icon, so you can have tabs
  * like in JBuilder. This value is null if no extra icon is required.
  */
-class CloseTabIcon implements Icon {
+class SimpleCloseTabIcon implements Icon {
     private final Icon fileIcon;
     private final Dimension dim = new Dimension(16, 16);
     private final Point pos = new Point();
 
-    public CloseTabIcon(Icon fileIcon) {
-        this.fileIcon=fileIcon;
+    public SimpleCloseTabIcon(Icon fileIcon) {
+        this.fileIcon = fileIcon;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         pos.setLocation(x, y);
