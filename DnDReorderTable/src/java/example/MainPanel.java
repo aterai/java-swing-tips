@@ -137,10 +137,8 @@ class TableRowTransferHandler extends TransferHandler {
                 target.getSelectionModel().addSelectionInterval(idx, idx);
             }
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }
