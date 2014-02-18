@@ -133,10 +133,8 @@ class FileDropTargetAdapter extends DropTargetAdapter {
                 dtde.dropComplete(true);
                 return;
             }
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         dtde.rejectDrop();
     }

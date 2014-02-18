@@ -132,10 +132,8 @@ class ListItemTransferHandler extends TransferHandler {
             }
             addCount = target.equals(source) ? values.length : 0;
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException | IOException ex) {
+            ex.printStackTrace();
         }
         return false;
     }

@@ -60,10 +60,8 @@ public class MainPanel extends JPanel {
                         dtde.dropComplete(true);
                         return;
                     }
-                }catch(UnsupportedFlavorException ufe) {
-                    ufe.printStackTrace();
-                }catch(IOException ioe) {
-                    ioe.printStackTrace();
+                }catch(UnsupportedFlavorException | IOException ex) {
+                    ex.printStackTrace();
                 }
                 dtde.rejectDrop();
             }
