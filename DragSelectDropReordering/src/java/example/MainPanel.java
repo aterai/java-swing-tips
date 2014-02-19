@@ -272,51 +272,39 @@ class ListItemTransferHandler extends TransferHandler {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
-    @SuppressWarnings("deprecation")
     @Override protected Transferable createTransferable(JComponent c) {
-        //System.out.println("createTransferable");
-        JList list = (JList) c;
-        indices = list.getSelectedIndices();
-        Object[] transferedObjects = list.getSelectedValues();
+        JList source = (JList)c;
+        indices = source.getSelectedIndices();
+        @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferSupport support) {
-        //System.out.println("canImport");
-        if(!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
+    @Override public boolean canImport(TransferSupport info) {
+        if(info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
+            info.setShowDropLocation(true);
+            info.setDropAction(MOVE);
+            return true;
+        }else{
             return false;
         }
-        support.setShowDropLocation(true);
-        support.setDropAction(MOVE);
-        return true;
     }
-//     private BufferedImage makeIconImage(JList c) {
-//         BufferedImage srcimg = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//         c.paint(srcimg.getGraphics());
-//
-//         BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//         Graphics g = image.getGraphics();
-//         for(int idx:c.getSelectedIndices()) {
-//             Rectangle rect = c.getCellBounds(idx,idx);
-//             g.clipRect(rect.x,rect.y,rect.width,rect.height);
-//             g.drawImage(srcimg, rect.x, rect.y, null);
-//             //image = image.getSubimage(rect.x,rect.y,rect.width,rect.height);
-//         }
-//         return image;
-//     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
         Component glassPane = c.getRootPane().getGlassPane();
         glassPane.setCursor(DragSource.DefaultMoveDrop);
         glassPane.setVisible(true);
-        return MOVE;
+        return MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("unchecked")
-    @Override public boolean importData(TransferSupport support) {
-        if(!canImport(support)) {
+    @Override public boolean importData(TransferSupport info) {
+        if(!canImport(info)) {
             return false;
         }
-        JList target = (JList)support.getComponent();
-        JList.DropLocation dl = (JList.DropLocation)support.getDropLocation();
+        TransferHandler.DropLocation tdl = info.getDropLocation();
+        if(!(tdl instanceof JList.DropLocation)) {
+            return false;
+        }
+        JList.DropLocation dl = (JList.DropLocation)tdl;
+        JList target = (JList)info.getComponent();
         DefaultListModel listModel = (DefaultListModel)target.getModel();
         int index = dl.getIndex();
         //boolean insert = dl.isInsert();
@@ -326,13 +314,13 @@ class ListItemTransferHandler extends TransferHandler {
         }
         addIndex = index;
         try{
-            Object[] values = (Object[])support.getTransferable().getTransferData(localObjectFlavor);
-            addCount = values.length;
+            Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
             for(int i=0;i<values.length;i++) {
                 int idx = index++;
                 listModel.add(idx, values[i]);
                 target.addSelectionInterval(idx, idx);
             }
+            addCount = values.length;
             return true;
         }catch(UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
@@ -348,8 +336,9 @@ class ListItemTransferHandler extends TransferHandler {
     }
     private void cleanup(JComponent c, boolean remove) {
         if(remove && indices != null) {
-            JList source = (JList)c;
-            DefaultListModel model  = (DefaultListModel)source.getModel();
+            //If we are moving items around in the same list, we
+            //need to adjust the indices accordingly, since those
+            //after the insertion point have moved.
             if(addCount > 0) {
                 for(int i=0;i<indices.length;i++) {
                     if(indices[i]>=addIndex) {
@@ -357,6 +346,8 @@ class ListItemTransferHandler extends TransferHandler {
                     }
                 }
             }
+            JList source = (JList)c;
+            DefaultListModel model  = (DefaultListModel)source.getModel();
             for(int i=indices.length-1;i>=0;i--) {
                 model.remove(indices[i]);
             }
