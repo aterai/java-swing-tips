@@ -7,6 +7,7 @@ import java.awt.image.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.net.*;
 import java.util.*;
 import javax.activation.*;
