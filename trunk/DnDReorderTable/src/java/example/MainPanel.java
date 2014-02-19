@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
+    private final TransferHandler handler = new TableRowTransferHandler();
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
@@ -26,7 +27,20 @@ public class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
+            // ArrayIndexOutOfBoundsException:  0 >= 0
+            // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
+            // http://bugs.sun.com/view_bug.do?bug_id=6967479
+            //return getValueAt(0, column).getClass();
+            switch(column) {
+              case 0:
+                return String.class;
+              case 1:
+                return Number.class;
+              case 2:
+                return Boolean.class;
+              default:
+                return super.getColumnClass(column);
+            }
         }
     };
     private final JTable table = new JTable(model);
@@ -34,9 +48,11 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        table.setTransferHandler(new TableRowTransferHandler());
+        table.setTransferHandler(handler);
         table.setDropMode(DropMode.INSERT_ROWS);
         table.setDragEnabled(true);
+        table.setFillsViewportHeight(true);
+        //table.setAutoCreateRowSorter(true); //XXX
 
         //Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
@@ -103,6 +119,7 @@ class TableRowTransferHandler extends TransferHandler {
     @Override public boolean canImport(TransferSupport info) {
         JTable table = (JTable)info.getComponent();
         boolean isDropable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+        //XXX bug?
         table.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
         return isDropable;
     }
@@ -127,7 +144,7 @@ class TableRowTransferHandler extends TransferHandler {
             index = max;
         }
         addIndex = index;
-
+        target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         try{
             Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
             addCount = values.length;
@@ -147,9 +164,8 @@ class TableRowTransferHandler extends TransferHandler {
     }
     private void cleanup(JComponent c, boolean remove) {
         if(remove && indices != null) {
-            JTable source = (JTable)c;
-            source.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            DefaultTableModel model  = (DefaultTableModel)source.getModel();
+            c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            DefaultTableModel model = (DefaultTableModel)((JTable)c).getModel();
             if(addCount > 0) {
                 for(int i=0;i<indices.length;i++) {
                     if(indices[i]>=addIndex) {

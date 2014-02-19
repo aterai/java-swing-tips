@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
         {"GGG", 92, true}, {"ggg", 0, false}
     };
     private final JTable makeDnDTable() {
-        JTable t = new JTable(new DefaultTableModel(data, columnNames) {
+        JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 // ArrayIndexOutOfBoundsException:  0 >= 0
                 // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
@@ -43,22 +43,22 @@ public class MainPanel extends JPanel {
                 }
             }
         });
-        t.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        t.setTransferHandler(handler);
-        t.setDropMode(DropMode.INSERT_ROWS);
-        t.setDragEnabled(true);
-        t.setFillsViewportHeight(true);
-        t.setAutoCreateRowSorter(true);
+        table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        table.setTransferHandler(handler);
+        table.setDropMode(DropMode.INSERT_ROWS);
+        table.setDragEnabled(true);
+        table.setFillsViewportHeight(true);
+        //table.setAutoCreateRowSorter(true); //XXX
 
         //Disable row Cut, Copy, Paste
-        ActionMap map = t.getActionMap();
+        ActionMap map = table.getActionMap();
         AbstractAction dummy = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) { /* Dummy Action */ }
+            @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
         map.put(TransferHandler.getCopyAction().getValue(Action.NAME),  dummy);
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
-        return t;
+        return table;
     }
     public MainPanel() {
         super(new BorderLayout());
@@ -94,12 +94,14 @@ public class MainPanel extends JPanel {
     }
 }
 
+//Demo - BasicDnD (Drag and Drop and Data Transfer)>http://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class TableRowTransferHandler extends TransferHandler {
-    private int[] rows;
-    private int addIndex = -1;
-    private int addCount;
     private final DataFlavor localObjectFlavor;
+    private int[] indices;
+    private int addIndex = -1; //Location where items were added
+    private int addCount; //Number of items added.
     private JComponent source;
+
     public TableRowTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
@@ -109,28 +111,36 @@ class TableRowTransferHandler extends TransferHandler {
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         ArrayList<Object> list = new ArrayList<Object>();
-        rows = table.getSelectedRows();
-        for(int i: rows) {
+        indices = table.getSelectedRows();
+        for(int i: indices) {
             list.add(model.getDataVector().elementAt(i));
         }
         Object[] transferedObjects = list.toArray();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
-        JTable t = (JTable)info.getComponent();
-        boolean b = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+        JTable table = (JTable)info.getComponent();
+        boolean isDropable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
         //XXX bug?
-        t.setCursor(b?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
-        return b;
+        table.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
+        return isDropable;
     }
     @Override public int getSourceActions(JComponent c) {
-        return COPY_OR_MOVE;
+        return MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @Override public boolean importData(TransferSupport info) {
+        if(!canImport(info)) {
+            return false;
+        }
+        TransferHandler.DropLocation tdl = info.getDropLocation();
+        if(!(tdl instanceof JTable.DropLocation)) {
+            return false;
+        }
+        JTable.DropLocation dl = (JTable.DropLocation)tdl;
         JTable target = (JTable)info.getComponent();
-        JTable.DropLocation dl  = (JTable.DropLocation)info.getDropLocation();
         DefaultTableModel model = (DefaultTableModel)target.getModel();
         int index = dl.getRow();
+        //boolean insert = dl.isInsert();
         int max = model.getRowCount();
         if(index<0 || index>max) {
             index = max;
@@ -153,26 +163,25 @@ class TableRowTransferHandler extends TransferHandler {
         }
         return false;
     }
-    @Override protected void exportDone(JComponent c, Transferable t, int act) {
-        cleanup(c, act == MOVE);
+    @Override protected void exportDone(JComponent c, Transferable data, int action) {
+        cleanup(c, action == MOVE);
     }
-    private void cleanup(JComponent src, boolean remove) {
-        if(remove && rows != null) {
-            JTable table = (JTable)src;
-            src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            DefaultTableModel model = (DefaultTableModel)table.getModel();
+    private void cleanup(JComponent c, boolean remove) {
+        if(remove && indices != null) {
+            c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            DefaultTableModel model = (DefaultTableModel)((JTable)c).getModel();
             if(addCount > 0) {
-                for(int i=0;i<rows.length;i++) {
-                    if(rows[i]>=addIndex) {
-                        rows[i] += addCount;
+                for(int i=0;i<indices.length;i++) {
+                    if(indices[i]>=addIndex) {
+                        indices[i] += addCount;
                     }
                 }
             }
-            for(int i=rows.length-1;i>=0;i--) {
-                model.removeRow(rows[i]);
+            for(int i=indices.length-1;i>=0;i--) {
+                model.removeRow(indices[i]);
             }
         }
-        rows     = null;
+        indices  = null;
         addCount = 0;
         addIndex = -1;
     }

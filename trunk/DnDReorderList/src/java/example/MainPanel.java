@@ -96,18 +96,14 @@ class ListItemTransferHandler extends TransferHandler {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
-    @SuppressWarnings("deprecation")
     @Override protected Transferable createTransferable(JComponent c) {
-        JList list = (JList) c;
-        indices = list.getSelectedIndices();
-        Object[] transferedObjects = list.getSelectedValues();
+        JList source = (JList)c;
+        indices = source.getSelectedIndices();
+        @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
-        if(!info.isDrop() || !info.isDataFlavorSupported(localObjectFlavor)) {
-            return false;
-        }
-        return true;
+        return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
     }
     @Override public int getSourceActions(JComponent c) {
         return MOVE; //TransferHandler.COPY_OR_MOVE;
@@ -117,8 +113,12 @@ class ListItemTransferHandler extends TransferHandler {
         if(!canImport(info)) {
             return false;
         }
+        TransferHandler.DropLocation tdl = info.getDropLocation();
+        if(!(tdl instanceof JList.DropLocation)) {
+            return false;
+        }
+        JList.DropLocation dl = (JList.DropLocation)tdl;
         JList target = (JList)info.getComponent();
-        JList.DropLocation dl = (JList.DropLocation)info.getDropLocation();
         DefaultListModel listModel = (DefaultListModel)target.getModel();
         int index = dl.getIndex();
         //boolean insert = dl.isInsert();
@@ -136,12 +136,12 @@ class ListItemTransferHandler extends TransferHandler {
 
         try{
             Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
-            addCount = values.length;
             for(int i=0;i<values.length;i++) {
                 int idx = index++;
                 listModel.add(idx, values[i]);
                 target.addSelectionInterval(idx, idx);
             }
+            addCount = values.length;
             return true;
         }catch(UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
@@ -153,8 +153,6 @@ class ListItemTransferHandler extends TransferHandler {
     }
     private void cleanup(JComponent c, boolean remove) {
         if(remove && indices != null) {
-            JList source = (JList)c;
-            DefaultListModel model  = (DefaultListModel)source.getModel();
             //If we are moving items around in the same list, we
             //need to adjust the indices accordingly, since those
             //after the insertion point have moved.
@@ -165,6 +163,8 @@ class ListItemTransferHandler extends TransferHandler {
                     }
                 }
             }
+            JList source = (JList)c;
+            DefaultListModel model  = (DefaultListModel)source.getModel();
             for(int i=indices.length-1;i>=0;i--) {
                 model.remove(indices[i]);
             }
