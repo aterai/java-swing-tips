@@ -96,7 +96,7 @@ class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI{
         if(c instanceof JFileChooser) {
             return new WindowsCanWriteFileChooserUI((JFileChooser)c);
         }
-        throw new InternalError();
+        throw new InternalError("Should never happen");
     }
     @Override public void createModel() {
         if(model2!=null) {
@@ -123,7 +123,7 @@ class MetalCanWriteFileChooserUI extends MetalFileChooserUI{
         if(c instanceof JFileChooser) {
             return new MetalCanWriteFileChooserUI((JFileChooser)c);
         }
-        throw new InternalError();
+        throw new InternalError("Should never happen");
     }
     @Override public void createModel() {
         if(model2!=null) {
