@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.DefaultEditorKit;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(new JTextArea()));

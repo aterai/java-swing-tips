@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.io.Serializable;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int SIZE = 50;
     private static final Font FONT = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
     private MainPanel() {

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout(5,5));
         //System.out.println(UIManager.getInt("Button.textShiftOffset"));

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 //import javax.swing.event.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();

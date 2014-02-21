@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.plaf.metal.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String TAG = "<html><b>";
     private MainPanel() {
         super(new BorderLayout());

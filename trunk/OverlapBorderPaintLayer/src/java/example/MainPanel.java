@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         List<String> list = Arrays.asList("aaa", "bb", "c");

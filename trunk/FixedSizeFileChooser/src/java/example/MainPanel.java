@@ -7,7 +7,6 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-
     private MainPanel() {
         super(new GridLayout(2,1));
         JPanel p1 = new JPanel();

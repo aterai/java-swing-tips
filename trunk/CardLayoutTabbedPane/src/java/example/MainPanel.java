@@ -8,7 +8,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(3, 1));
         JTabbedPane tab1 = new JTabbedPane();

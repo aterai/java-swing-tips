@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 // import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int AUTOWRAP_COLUMN = 1;
     private MainPanel() {
         super(new BorderLayout());

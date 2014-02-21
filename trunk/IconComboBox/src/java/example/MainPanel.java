@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         final ImageIcon image = new ImageIcon(getClass().getResource("16x16.png"));

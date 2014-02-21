@@ -12,7 +12,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String MYSITE = "http://terai.xrea.jp/";
     private final Action browseAction = new AbstractAction(MYSITE) {
         @Override public void actionPerformed(ActionEvent e) {
