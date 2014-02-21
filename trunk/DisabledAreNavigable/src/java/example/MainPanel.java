@@ -111,7 +111,7 @@ class ExitAction extends AbstractAction {
 }
 
 //@see SwingSet2.java
-class LookAndFeelUtil {
+final class LookAndFeelUtil {
     // Possible Look & Feels
     private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
     private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";

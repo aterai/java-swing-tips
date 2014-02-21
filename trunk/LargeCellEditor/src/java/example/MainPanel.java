@@ -243,7 +243,7 @@ class EditorFromList extends JList<MyIcon> {
         }
         @Override public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
-            if( row != rollOverRowIndex ) {
+            if(row != rollOverRowIndex) {
                 rollOverRowIndex = row;
                 repaint();
             }

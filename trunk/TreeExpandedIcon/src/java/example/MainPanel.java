@@ -29,7 +29,8 @@ public class MainPanel extends JPanel {
                     ei = lnfdef.getIcon("Tree.expandedIcon");
                     ci = lnfdef.getIcon("Tree.collapsedIcon");
                 }else{
-                    ei = ci = emptyIcon;
+                    ei = emptyIcon;
+                    ci = emptyIcon;
                 }
                 UIManager.put("Tree.expandedIcon",  new IconUIResource(ei));
                 UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));

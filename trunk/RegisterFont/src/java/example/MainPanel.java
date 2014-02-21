@@ -53,9 +53,9 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static String makeTestHtml() {
-        return "<html><body>"+
-          "<div>3: StyleSheet,body{font-size:24pt; font-family:Burnstown Dam;}</div>"+
-          "</body></html>";
+        return "<html><body>"
+             + "<div>3: StyleSheet,body{font-size:24pt; font-family:Burnstown Dam;}</div>"
+             + "</body></html>";
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

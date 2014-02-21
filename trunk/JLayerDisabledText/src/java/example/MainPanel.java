@@ -100,10 +100,9 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
                 jlayer.getGlassPane().addMouseListener(dummyMouseListener);
                 jlayer.getGlassPane().addKeyListener(dummyKeyListener);
             }
-            jlayer.setLayerEventMask(
-                AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK |
-                AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK |
-                AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
+            jlayer.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
+                                   | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
+                                   | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
@@ -222,9 +221,9 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 // }
 
 //http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
-class LookAndFeelUtil {
+final class LookAndFeelUtil {
     private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-    private LookAndFeelUtil() {}
+    private LookAndFeelUtil() { /* Singleton */ }
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();

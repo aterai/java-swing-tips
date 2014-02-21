@@ -8,7 +8,7 @@ import java.security.*;
 import javax.swing.*;
 
 public class MainPanel extends JPanel {
-    private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12); 
+    private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
     private final JComponent glass = new MyGlassPane();
     private final JLabel label1 = makeLabel("Default: setToolTipText");
     private final JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP");

@@ -57,7 +57,7 @@ class MainPanel extends JPanel {
                     JScrollPane scrollPane = (JScrollPane)parent;
 
                     Rectangle availR = scrollPane.getBounds();
-                    availR.x = availR.y = 0;
+                    availR.setLocation(0, 0); //availR.x = availR.y = 0;
 
                     Insets insets = parent.getInsets();
                     availR.x = insets.left;

@@ -88,13 +88,14 @@ public class MainPanel extends JPanel {
         menu.add(makeJCheckBoxMenuItem("Test1", d));
         menu.add(makeJCheckBoxMenuItem("Test2", d));
         menu.add(makeJCheckBoxMenuItem("Test3", d));
-        JCheckBoxMenuItem cbmi;
-        menu.add(cbmi = makeJCheckBoxMenuItem("Test4", d));
-        cbmi.setSelected(true);
-        cbmi.setEnabled(false);
-        menu.add(cbmi = makeJCheckBoxMenuItem("Test5", d));
-        cbmi.setSelected(false);
-        cbmi.setEnabled(false);
+        JCheckBoxMenuItem cbmi1 = makeJCheckBoxMenuItem("Test4", d);
+        cbmi1.setSelected(true);
+        cbmi1.setEnabled(false);
+        menu.add(cbmi1);
+        JCheckBoxMenuItem cbmi2 = makeJCheckBoxMenuItem("Test5", d);
+        cbmi2.setSelected(false);
+        cbmi2.setEnabled(false);
+        menu.add(cbmi2);
         menuBar.add(menu);
         return menuBar;
     }
@@ -116,10 +117,10 @@ public class MainPanel extends JPanel {
                IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        MainPanel p;
+        MainPanel p = new MainPanel();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(p = new MainPanel());
+        frame.getContentPane().add(p);
         frame.setJMenuBar(p.createMenuBar());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -166,19 +167,19 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     }
     private void paintcheckIconEnabled(Graphics2D g) {
         g.setPaint(Color.GREEN);
-        g.drawOval( 0, 0, 10, 10 );
+        g.drawOval(0, 0, 10, 10);
     }
     private void paintcheckIconMouseOver(Graphics2D g) {
         g.setPaint(Color.PINK);
-        g.drawOval( 0, 0, 10, 10 );
+        g.drawOval(0, 0, 10, 10);
     }
     private void paintcheckIconEnabledAndSelected(Graphics2D g) {
         g.setPaint(Color.ORANGE);
-        g.fillOval( 0, 0, 10, 10 );
+        g.fillOval(0, 0, 10, 10);
     }
     private void paintcheckIconSelectedAndMouseOver(Graphics2D g) {
         g.setPaint(Color.CYAN);
-        g.fillOval( 0, 0, 10, 10 );
+        g.fillOval(0, 0, 10, 10);
     }
 }
 

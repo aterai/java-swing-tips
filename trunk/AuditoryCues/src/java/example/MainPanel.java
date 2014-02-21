@@ -130,12 +130,11 @@ class MainPanel extends JPanel {
 }
 
 //http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
-class LookAndFeelUtil {
+final class LookAndFeelUtil {
     private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-    private LookAndFeelUtil() {}
+    private LookAndFeelUtil() { /* Singleton */ }
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
-        
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
         for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));

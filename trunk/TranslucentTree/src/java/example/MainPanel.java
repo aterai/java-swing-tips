@@ -74,7 +74,7 @@ class TranslucentTree extends JTree {
 
 class TransparentTree extends JTree {
     //http://terai.xrea.jp/Swing/TreeRowSelection.html
-    private final Color SELC = new Color(100,100,255,100);
+    private static final Color SELC = new Color(100,100,255,100);
     @Override public void paintComponent(Graphics g) {
         if(getSelectionCount()>0) {
             for(int i: getSelectionRows()) {
@@ -134,12 +134,12 @@ class TransparentRootPane extends JRootPane {
 
 // http://terai.xrea.jp/Swing/TreeBackgroundSelectionColor.html
 class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
+    private static final Color ALPHA_OF_ZERO = new Color(0, true);
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         c.setOpaque(false);
         return c;
     }
-    private final Color ALPHA_OF_ZERO = new Color(0, true);
     @Override public Color getBackgroundNonSelectionColor() {
         return ALPHA_OF_ZERO;
     }

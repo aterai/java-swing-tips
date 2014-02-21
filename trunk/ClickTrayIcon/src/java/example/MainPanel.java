@@ -10,16 +10,16 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private static final String TEXT =
-      "icon.addMouseListener(new MouseAdapter() {\n"+
-      "  public void mouseClicked(MouseEvent e) {\n"+
-      "    if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {\n"+
-      "      frame.setVisible(true);\n"+
-      "    }else if(frame.isVisible()) {\n"+
-      "      frame.setExtendedState(JFrame.NORMAL);\n"+
-      "      frame.toFront();\n"+
-      "    }\n"+
-      "  }\n"+
-      "});\n";
+      "icon.addMouseListener(new MouseAdapter() {\n"
+    + "  public void mouseClicked(MouseEvent e) {\n"
+    + "    if(e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2) {\n"
+    + "      frame.setVisible(true);\n"
+    + "    }else if(frame.isVisible()) {\n"
+    + "      frame.setExtendedState(JFrame.NORMAL);\n"
+    + "      frame.toFront();\n"
+    + "    }\n"
+    + "  }\n"
+    + "});\n";
     private MainPanel() {
         super(new BorderLayout());
         add(new JScrollPane(new JTextArea(TEXT)));

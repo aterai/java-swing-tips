@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private final JTree tree = new JTree();
-    private transient final MouseListener ml = new MouseAdapter() {
+    private final transient MouseListener ml = new MouseAdapter() {
         @Override public void mousePressed(MouseEvent e) {
             JTree tree = (JTree)e.getComponent();
             if(tree.getRowForLocation(e.getX(), e.getY())<0) {

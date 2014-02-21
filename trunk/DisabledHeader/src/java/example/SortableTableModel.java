@@ -42,7 +42,7 @@ class ColumnComparator implements Comparator, Serializable {
                 return cOne.compareTo(cTwo) * dir;
             }else if(oOne==null && oTwo==null) {
                 return 0;
-            }if(oOne==null) {
+            }else if(oOne==null) {
                 return -1 * dir;
             }else{ // if(oTwo==null) {
                 return  1 * dir;

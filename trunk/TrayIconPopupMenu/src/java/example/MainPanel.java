@@ -116,8 +116,8 @@ class MainPanel extends JPanel {
     }
 }
 
-class TrayIconPopupMenuUtil {
-    private TrayIconPopupMenuUtil() { /* Singlton */ }
+final class TrayIconPopupMenuUtil {
+    private TrayIconPopupMenuUtil() { /* Singleton */ }
 
     // Try to find GraphicsConfiguration, that includes mouse pointer position
     private static GraphicsConfiguration getGraphicsConfiguration(Point p) {

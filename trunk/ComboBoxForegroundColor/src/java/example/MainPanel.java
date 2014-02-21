@@ -77,7 +77,7 @@ class ColorItem implements Serializable {
 }
 
 class ComboForegroundRenderer extends DefaultListCellRenderer {
-    private final Color SELECTION_BACKGROUND = new Color(240,245,250);
+    private static final Color SELECTION_BACKGROUND = new Color(240,245,250);
     private final JComboBox combo;
     public ComboForegroundRenderer(JComboBox combo) {
         super();

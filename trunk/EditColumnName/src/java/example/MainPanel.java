@@ -114,7 +114,6 @@ class TablePopupMenu extends JPopupMenu {
         add(editItem1);
         add(editItem2);
     }
-    
     @Override public void show(Component c, int x, int y) {
         if(c instanceof JTableHeader) {
             JTableHeader header = (JTableHeader)c;

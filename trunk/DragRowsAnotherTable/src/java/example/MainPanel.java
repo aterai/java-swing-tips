@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
         {"FFF", 19, true}, {"fff", 6, false},
         {"GGG", 92, true}, {"ggg", 0, false}
     };
-    private final JTable makeDnDTable() {
+    private JTable makeDnDTable() {
         JTable table = new JTable(new DefaultTableModel(data, columnNames) {
             @Override public Class<?> getColumnClass(int column) {
                 // ArrayIndexOutOfBoundsException:  0 >= 0

@@ -11,13 +11,13 @@ public class MainPanel extends JPanel {
     private final Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);
     private final JTextPane editor1 = new JTextPane();
     private final JTextPane editor2 = new JTextPane() {
-        float font_size;
+        private float fontSize;
         @Override public void doLayout() {
             Insets i = getInsets();
             float f = .08f * (getWidth() - i.left - i.right);
-            if(Math.abs(font_size-f) > 1.0e-1) {
+            if(Math.abs(fontSize - f) > 1.0e-1) {
                 setFont(font.deriveFont(f));
-                font_size = f;
+                fontSize = f;
             }
             super.doLayout();
         }

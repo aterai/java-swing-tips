@@ -65,7 +65,7 @@ class FixedSizeFileChooserAction extends AbstractAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser() {
-            @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+            @Override protected JDialog createDialog(Component parent) { //throws HeadlessException {
                  JDialog dialog = super.createDialog(parent);
                  dialog.setResizable(false);
                  return dialog;
@@ -83,7 +83,7 @@ class MinimumSizeFileChooserAction extends AbstractAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser() {
-            @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+            @Override protected JDialog createDialog(Component parent) { //throws HeadlessException {
                  JDialog dialog = super.createDialog(parent);
                  dialog.setMinimumSize(new Dimension(640, 480));
                  return dialog;
@@ -101,7 +101,7 @@ class MinimumSizeFileChooserAction extends AbstractAction {
 //     }
 //     @Override public void actionPerformed(ActionEvent e) {
 //         JFileChooser fileChooser = new JFileChooser() {
-//             @Override protected JDialog createDialog(Component parent) throws HeadlessException {
+//             @Override protected JDialog createDialog(Component parent) { //throws HeadlessException {
 //                  final JDialog dialog = super.createDialog(parent);
 //                  dialog.addComponentListener(new ComponentAdapter() {
 //                      @Override public void componentResized(ComponentEvent e) {

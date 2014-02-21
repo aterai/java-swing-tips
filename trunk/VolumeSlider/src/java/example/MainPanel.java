@@ -84,7 +84,7 @@ class TriSliderUI extends MetalSliderUI {
         int cw;
         //int pad;
         Rectangle trackBounds = trackRect;
-        if(slider.getOrientation() == JSlider.HORIZONTAL ) {
+        if(slider.getOrientation() == JSlider.HORIZONTAL) {
             Graphics2D g2 = (Graphics2D)g.create();
             //pad = trackBuffer;
             //cx = pad;
@@ -118,7 +118,7 @@ class TriSliderUI extends MetalSliderUI {
             //fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
             //fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
 
-            if( drawInverted() ) {
+            if(drawInverted()) {
                 fillLeft = middleOfThumb;
                 fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
             }else{
@@ -178,9 +178,9 @@ class TriSliderUI extends MetalSliderUI {
 // class TickIcon implements Icon {
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     g.setColor(Color.GREEN);
-//     g.drawLine( x+2, y-1, x+2, y+1 );
-//     g.drawLine( x+1, y+0, x+3, y+0 );
-//     g.drawLine( x+0, y+1, x+4, y+1 );
+//     g.drawLine(x+2, y-1, x+2, y+1);
+//     g.drawLine(x+1, y+0, x+3, y+0);
+//     g.drawLine(x+0, y+1, x+4, y+1);
 //   }
 //   @Override public int getIconWidth()  { return 5; }
 //   @Override public int getIconHeight() { return 3; }

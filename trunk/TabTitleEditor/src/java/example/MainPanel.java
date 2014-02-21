@@ -9,9 +9,9 @@ import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     private static final String INFO =
-        " Start editing: Double-Click, Enter-Key\n"+
-        " Commit rename: field-focusLost, Enter-Key\n"+
-        "Cancel editing: Esc-Key, title.isEmpty\n";
+        " Start editing: Double-Click, Enter-Key\n"
+      + " Commit rename: field-focusLost, Enter-Key\n"
+      + "Cancel editing: Esc-Key, title.isEmpty\n";
     private final JTabbedPane tabbedPane = new JTabbedPane();
     public MainPanel() {
         super(new BorderLayout());

@@ -104,7 +104,7 @@ class MainPanel extends JPanel {
     }
 }
 
-class ComboBoxUtil {
+final class ComboBoxUtil {
     private ComboBoxUtil() { /* Singleton */ }
     public static Border makeIconComboBorder(final JComponent comp, final ImageIcon icon) {
         Icon wrappedIcon = new ImageIcon() {

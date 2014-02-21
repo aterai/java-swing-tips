@@ -569,8 +569,8 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
                                int tabIndex, String title, Icon icon,
                                Rectangle tabRect, Rectangle iconRect,
                                Rectangle textRect, boolean isSelected) {
-
-        textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+        textRect.setLocation(0, 0);
+        iconRect.setLocation(0, 0);
 
         javax.swing.text.View v = getTextViewForTab(tabIndex);
         if(v != null) {
@@ -644,8 +644,9 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
                                int tabIndex, String title, Icon icon,
                                Rectangle tabRect, Rectangle iconRect,
                                Rectangle textRect, boolean isSelected) {
-
-        textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+        //textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+        textRect.setLocation(0, 0);
+        iconRect.setLocation(0, 0);
 
         javax.swing.text.View v = getTextViewForTab(tabIndex);
         if(v != null) {

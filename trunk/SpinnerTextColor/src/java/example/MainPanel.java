@@ -127,7 +127,7 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
         button.setVisible(false);
         return button;
     }
-    @Override public void setPopupVisible( JComboBox c, boolean v ) {
+    @Override public void setPopupVisible(JComboBox c, boolean v) {
         System.out.println("setPopupVisible: "+v);
         if(v) {
             popup.show();

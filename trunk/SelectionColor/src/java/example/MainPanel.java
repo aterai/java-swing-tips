@@ -42,22 +42,22 @@ class MainPanel extends JPanel {
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
         area.setEditorKit(htmlEditorKit);
-        area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE); 
+        area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         area.setOpaque(false);
         area.setForeground(new Color(200,200,200));
         area.setSelectedTextColor(Color.WHITE);
         area.setBackground(new Color(0, true)); //Nimbus
         area.setSelectionColor(SELECTION_COLOR);
-        area.setText("<html><pre>"+
-            "public static void createAndShowGUI() {<br />"+
-            "    <span class='highlight'>JFrame</span> frame = new JFrame();<br />"+
-            "    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);<br />"+
-            "    frame.getContentPane().add(new MainPanel());<br />"+
-            "    frame.pack();<br />"+
-            "    frame.setLocationRelativeTo(null);<br />"+
-            "    frame.setVisible(true);<br />"+
-            "}<br />"
+        area.setText("<html><pre>"
+          + "public static void createAndShowGUI() {<br />"
+          + "    <span class='highlight'>JFrame</span> frame = new JFrame();<br />"
+          + "    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);<br />"
+          + "    frame.getContentPane().add(new MainPanel());<br />"
+          + "    frame.pack();<br />"
+          + "    frame.setLocationRelativeTo(null);<br />"
+          + "    frame.setVisible(true);<br />"
+          + "}<br />"
         );
 
         //TEST: http://terai.xrea.jp/Swing/DrawsLayeredHighlights.html

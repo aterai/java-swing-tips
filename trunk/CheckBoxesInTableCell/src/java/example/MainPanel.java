@@ -129,7 +129,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 }
 
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
-    transient protected ChangeEvent changeEvent;
+    protected transient ChangeEvent changeEvent;
 
 //     private final ActionListener al = new ActionListener() {
 //         @Override public void actionPerformed(ActionEvent e) {
@@ -173,7 +173,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    //transient protected ChangeEvent changeEvent;
+    //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

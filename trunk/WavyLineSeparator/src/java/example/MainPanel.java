@@ -112,11 +112,11 @@ class WavyLineSeparator extends JSeparator {
             }else{
                 g2.translate(x,y);
             }
-            g2.drawLine( 0, 2, 0, 2 );
-            g2.drawLine( 1, 1, 1, 1 );
-            g2.drawLine( 2, 0, 3, 0 );
-            g2.drawLine( 4, 1, 4, 1 );
-            g2.drawLine( 5, 2, 5, 2 );
+            g2.drawLine(0, 2, 0, 2);
+            g2.drawLine(1, 1, 1, 1);
+            g2.drawLine(2, 0, 3, 0);
+            g2.drawLine(4, 1, 4, 1);
+            g2.drawLine(5, 2, 5, 2);
             g2.setTransform(oldTransform);
             g2.dispose();
         }

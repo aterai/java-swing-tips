@@ -115,6 +115,6 @@ public final class MainPanel extends JPanel {
 //     }
 //     @Override public int getInstanceCount() {
 //         int result = this.semaphore.tryAcquire();
-//         return ( result != 0 ) ? result : this.launchLimit + 1;
+//         return (result != 0) ? result : this.launchLimit + 1;
 //     }
 // }
