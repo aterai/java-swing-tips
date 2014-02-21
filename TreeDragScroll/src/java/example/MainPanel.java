@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridLayout(2, 1));
 

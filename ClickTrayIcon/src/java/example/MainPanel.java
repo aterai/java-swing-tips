@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String TEXT =
       "icon.addMouseListener(new MouseAdapter() {\n"
     + "  public void mouseClicked(MouseEvent e) {\n"

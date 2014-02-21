@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTextField field1 = new JTextField("Please enter your E-mail address");

@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.activation.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(1,2,10,0));

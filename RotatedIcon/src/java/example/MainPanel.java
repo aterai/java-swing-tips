@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
         Icon i = new ImageIcon(getClass().getResource("duke.gif"));

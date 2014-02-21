@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String MESSAGE = "Can only edit last line, version 0.0\n";
     private MainPanel() {
         super(new BorderLayout());

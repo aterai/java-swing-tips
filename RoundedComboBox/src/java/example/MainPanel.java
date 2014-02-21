@@ -13,7 +13,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color BACKGROUND = Color.BLACK; //RED;
     private static final Color FOREGROUND = Color.WHITE; //YELLOW;
     private static final Color SELECTIONFOREGROUND = Color.CYAN;

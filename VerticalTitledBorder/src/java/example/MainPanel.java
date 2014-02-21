@@ -6,9 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(1,3,5,5));
+        super(new GridLayout(1, 3, 5, 5));
 
         JPanel p1 = new JPanel(new BorderLayout());
         p1.add(new JScrollPane(new JTree()));
