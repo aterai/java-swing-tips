@@ -114,7 +114,7 @@ class GrayImageFilter extends RGBImageFilter {
         //int a = (argb >> 24) & 0xff;
         int r = (argb >> 16) & 0xff;
         int g = (argb >>  8) & 0xff;
-        int b = (argb      ) & 0xff;
+        int b = (argb)       & 0xff;
         int m = (2*r+4*g+b)/7; //NTSC Coefficients
         //return new Color(m,m,m,a).getRGB();
         return (argb & 0xff000000) | (m<<16) | (m<<8) | (m);

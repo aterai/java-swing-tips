@@ -120,7 +120,7 @@ public final class MainPanel extends JPanel {
 //             for(int x=0;x<5;x++) {
 //                 if(y==0 && x<5 || y==1 && x<3 ||
 //                    y==2 && x<2 || y==3 && x<1 ||
-//                    y==4 && x<1 ) {
+//                    y==4 && x<1) {
 //                     pix[y*width+x] = 0x0;
 //                 }
 //             }
@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
 //             for(int x=width-5;x<width;x++) {
 //                 if(y==0 && x>=width-5 || y==1 && x>=width-3 ||
 //                    y==2 && x>=width-2 || y==3 && x>=width-1 ||
-//                    y==4 && x>=width-1 ) {
+//                    y==4 && x>=width-1) {
 //                     pix[y*width+x] = 0x0;
 //                 }
 //             }
@@ -150,7 +150,7 @@ public final class MainPanel extends JPanel {
 
         return new MemoryImageSource(width, height, pix, 0, width);
     }
-    
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

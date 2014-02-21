@@ -26,11 +26,11 @@ public class MainPanel extends JPanel {
             makeButton("Copy",  new DefaultEditorKit.CopyAction()),
             makeButton("Paste", new DefaultEditorKit.PasteAction())));
 
-        menu.add("aaaaaaaaaa" );
+        menu.add("aaaaaaaaaa");
         menu.addSeparator();
         menu.add(makeEditMenuItem(edit));
         menu.addSeparator();
-        menu.add("bbbb" );
+        menu.add("bbbb");
         menu.add("cccccc");
         menu.add("ddddd");
 

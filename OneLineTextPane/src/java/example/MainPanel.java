@@ -176,7 +176,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     private int getOtherToken(String content, int startOffset, int endOffset) {
         int endOfToken = startOffset + 1;
         while(endOfToken <= endOffset) {
-            if(isDelimiter(content.substring(endOfToken, endOfToken + 1) ) ) {
+            if(isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
                 break;
             }
             endOfToken++;

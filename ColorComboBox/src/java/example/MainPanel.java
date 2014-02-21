@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
 //                             //arrowButton.setBackground(color);
 //                             listBox.setBackground(color);
 //                         }else{
-//                             super.propertyChange( e );
+//                             super.propertyChange(e);
 //                         }
 //                     }
 //                 };

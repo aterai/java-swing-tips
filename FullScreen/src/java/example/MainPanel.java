@@ -15,8 +15,8 @@ public class MainPanel extends JPanel {
         dialog.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
                 System.out.println("windowClosing:");
-                System.out.println("  triggered only when you click on the X\n"+
-                                   "  or on the close menu item in the window's system menu.'");
+                System.out.println("  triggered only when you click on the X");
+                System.out.println("  or on the close menu item in the window's system menu.'");
                 System.out.println("System.exit(0);");
                 System.exit(0); //WebStart
             }

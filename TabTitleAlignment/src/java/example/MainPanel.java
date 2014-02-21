@@ -147,8 +147,9 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
                                          FontMetrics metrics, int tabIndex,
                                          String title, Icon icon,
                                          Rectangle tabRect, Rectangle iconRect,
-                                         Rectangle textRect, boolean isSelected ) {
-        textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+                                         Rectangle textRect, boolean isSelected) {
+        textRect.setLocation(0, 0);
+        iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
         String html = "html";
         if(v != null) {
@@ -182,8 +183,9 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
                                          FontMetrics metrics, int tabIndex,
                                          String title, Icon icon,
                                          Rectangle tabRect, Rectangle iconRect,
-                                         Rectangle textRect, boolean isSelected ) {
-        textRect.x = textRect.y = iconRect.x = iconRect.y = 0;
+                                         Rectangle textRect, boolean isSelected) {
+        textRect.setLocation(0, 0);
+        iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
         if(v != null) {
             tabPane.putClientProperty("html", v);

@@ -273,8 +273,10 @@ class SortingTask extends SwingWorker<String, Rectangle> {
     private void shellsort(int n) throws InterruptedException {
         int i;
         int j;
-        int h;
-        for(h = 1; h < n; h = 3*h + 1) {}
+        int h = 1;
+        while(h < n) {
+            h = 3*h + 1;
+        }
         for(;;) {
             h /= 3;
             if(h < 1) {
@@ -343,8 +345,12 @@ class SortingTask extends SwingWorker<String, Rectangle> {
         int i = l;
         int j = u+1;
         for(;;) {
-            do i++; while(i <= u && array.get(i) < array.get(l));
-            do j--; while(array.get(j) > array.get(l));
+            do {
+                i++;
+            } while(i <= u && array.get(i) < array.get(l));
+            do {
+                j--;
+            } while(array.get(j) > array.get(l));
             if(i > j) {
                 break;
             }

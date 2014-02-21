@@ -277,8 +277,8 @@ class MyLabel extends JLabel {
 //      //String literal pool
 //      if(propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(BasicHTML.propertyKey) != null)) {
-        if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName) ||
-                !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
+        if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
+              || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

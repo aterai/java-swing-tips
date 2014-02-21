@@ -12,8 +12,8 @@ import java.util.List;
 import javax.activation.*;
 import javax.swing.*;
 
-public class MainPanel {
-    private MainPanel() { /* Singlton */ }
+public final class MainPanel {
+    private MainPanel() { /* Singleton */ }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

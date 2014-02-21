@@ -184,7 +184,7 @@ class RowHeaderList<E> extends JList<E> {
         }
         @Override public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
-            if( row != rollOverRowIndex ) {
+            if(row != rollOverRowIndex) {
                 rollOverRowIndex = row;
                 repaint();
             }

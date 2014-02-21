@@ -23,10 +23,10 @@ public class MainPanel extends JPanel {
         JPanel p = new JPanel();
         p.add(scrollPane);
         add(p);
-        add(new JButton(new ScrollAction("right",  scrollPane, new Point( 1,  0))), BorderLayout.EAST);
-        add(new JButton(new ScrollAction("left",   scrollPane, new Point(-1,  0))), BorderLayout.WEST);
-        add(new JButton(new ScrollAction("bottom", scrollPane, new Point( 0,  1))), BorderLayout.SOUTH);
-        add(new JButton(new ScrollAction("top",    scrollPane, new Point( 0, -1))), BorderLayout.NORTH);
+        add(new JButton(new ScrollAction("right",  scrollPane, new Point(1, 0))),  BorderLayout.EAST);
+        add(new JButton(new ScrollAction("left",   scrollPane, new Point(-1, 0))), BorderLayout.WEST);
+        add(new JButton(new ScrollAction("bottom", scrollPane, new Point(0, 1))),  BorderLayout.SOUTH);
+        add(new JButton(new ScrollAction("top",    scrollPane, new Point(0, -1))), BorderLayout.NORTH);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

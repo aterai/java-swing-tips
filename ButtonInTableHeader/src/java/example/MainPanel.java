@@ -77,7 +77,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final Color BUTTONBGC = new Color(200,200,200,100);
     private JPopupMenu pop;
     private int rolloverIndex = -1;
-    private transient final MouseAdapter ma = new MouseAdapter() {
+    private final transient MouseAdapter ma = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
             JTableHeader header = (JTableHeader)e.getComponent();
             JTable table = header.getTable();
@@ -180,9 +180,9 @@ class MenuArrowIcon implements Icon {
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setPaint(Color.BLACK);
         g2.translate(x, y);
-        g2.drawLine( 2, 3, 6, 3 );
-        g2.drawLine( 3, 4, 5, 4 );
-        g2.drawLine( 4, 5, 4, 5 );
+        g2.drawLine(2, 3, 6, 3);
+        g2.drawLine(3, 4, 5, 4);
+        g2.drawLine(4, 5, 4, 5);
         //g2.translate(-x, -y);
         g2.dispose();
     }

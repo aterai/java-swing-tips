@@ -82,7 +82,8 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     }
     @Override public void keyPressed(KeyEvent e) {
         if(isNavigationKey(e)) {
-            prefix = typedString = "";
+            prefix = "";
+            typedString = "";
             lastTime = 0L;
         }
     }

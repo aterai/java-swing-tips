@@ -131,7 +131,7 @@ class EditAction extends AbstractAction {
 }
 
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
-    transient protected ChangeEvent changeEvent;
+    protected transient ChangeEvent changeEvent;
     private final JTable table;
     private class EditingStopHandler extends MouseAdapter implements ActionListener {
         @Override public void mousePressed(MouseEvent e) {
@@ -177,7 +177,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
 
     //Copid from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
-    //transient protected ChangeEvent changeEvent;
+    //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

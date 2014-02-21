@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 //                 Action newFolder = am.get("New Folder");
-//                 newFolder.setEnabled( false );
+//                 newFolder.setEnabled(false);
 
                 int retvalue = fileChooser.showOpenDialog(p);
                 if(retvalue==JFileChooser.APPROVE_OPTION) {

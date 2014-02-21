@@ -20,16 +20,14 @@ class MainPanel extends JPanel {
         area.setBackground(new Color(0,0,0,0)); //Nimbus
         area.setLineWrap(true);
         area.setOpaque(false);
-        area.setText(
-            "  public static void createAndShowGUI() {\n"+
-            "    final JFrame frame = new JFrame();\n"+
-            "    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);\n"+
-            "    frame.getContentPane().add(new MainPanel());\n"+
-            "    frame.pack();\n"+
-            "    frame.setLocationRelativeTo(null);\n"+
-            "    frame.setVisible(true);\n"+
-            "}\n"
-            );
+        area.setText("  public static void createAndShowGUI() {\n"
+                   + "    final JFrame frame = new JFrame();\n"
+                   + "    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);\n"
+                   + "    frame.getContentPane().add(new MainPanel());\n"
+                   + "    frame.pack();\n"
+                   + "    frame.setLocationRelativeTo(null);\n"
+                   + "    frame.setVisible(true);\n"
+                   + "}\n");
         URL url = getClass().getResource("tokeidai.jpg");
         BufferedImage bi = getFilteredImage(url);
         JScrollPane scroll = new JScrollPane(area);

@@ -63,7 +63,7 @@ public class MainPanel extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @Override public void actionPerformed(ActionEvent e) {
+    @Override public final void actionPerformed(ActionEvent e) {
         repaint();
     }
 
@@ -83,9 +83,9 @@ public class MainPanel extends JPanel implements ActionListener {
             }else if(rightRadio.isSelected()) {
                 l.setHorizontalAlignment(JLabel.RIGHT);
             }else if(customRadio.isSelected()) {
-                l.setHorizontalAlignment(row%3==0 ? JLabel.LEFT:
-                                         row%3==1 ? JLabel.CENTER:
-                                                    JLabel.RIGHT);
+                l.setHorizontalAlignment(row%3==0 ? JLabel.LEFT
+                                       : row%3==1 ? JLabel.CENTER
+                                                  : JLabel.RIGHT);
             }
         }
     }
@@ -113,7 +113,7 @@ public class MainPanel extends JPanel implements ActionListener {
 }
 
 class HeaderRenderer implements TableCellRenderer {
-    private final Font FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14);
+    private static final Font FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel l = (JLabel)table.getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         l.setHorizontalAlignment(JLabel.CENTER);

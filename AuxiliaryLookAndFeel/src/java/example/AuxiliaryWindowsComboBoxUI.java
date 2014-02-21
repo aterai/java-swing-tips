@@ -20,10 +20,10 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
     }
 //     //???: Use the installUI method to perform all initialization, and the uninstallUI method to perform all cleanup.
 //     @Override public void installUI(JComponent c) {
-//         //super.installUI( c );
+//         //super.installUI(c);
 //     }
 //     @Override public void uninstallUI(JComponent c) {
-//         //super.uninstallUI( c );
+//         //super.uninstallUI(c);
 //     }
     //Override all UI-specific methods your UI classes inherit.
     @Override protected void configureEditor()   { /* Override all UI-specific methods your UI classes inherit. */ }

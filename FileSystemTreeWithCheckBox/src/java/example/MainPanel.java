@@ -192,7 +192,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         if(!parent.isDirectory()) {
             return;
         }
-        final Status parent_status = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
+        final Status parentStatus = check.status==Status.SELECTED?Status.SELECTED:Status.DESELECTED;
 
         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         Task worker = new Task(fileSystemView, parent) {
@@ -203,8 +203,8 @@ class FolderSelectionListener implements TreeSelectionListener {
                     return;
                 }
                 for(File file: chunks) {
-                    model.insertNodeInto(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)), node, node.getChildCount());
-                    //node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parent_status)));
+                    model.insertNodeInto(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)), node, node.getChildCount());
+                    //node.add(new DefaultMutableTreeNode(new CheckBoxNode(file, parentStatus)));
                 }
                 //model.reload(parent); //= model.nodeStructureChanged(parent);
             }
@@ -380,7 +380,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
 
     //Copid from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
-//     transient protected ChangeEvent changeEvent;
+//     protected transient ChangeEvent changeEvent;
 
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;

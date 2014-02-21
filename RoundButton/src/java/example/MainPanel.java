@@ -176,7 +176,8 @@ class RoundButton extends RoundedCornerButton {
     }
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.width = d.height = Math.max(d.width, d.height);
+        int s = Math.max(d.width, d.height);
+        d.setSize(s, s);
         return d;
     }
     @Override protected void initShape() {

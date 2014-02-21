@@ -13,7 +13,7 @@ import javax.swing.border.*;
 // import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
-    private final static TexturePaint TEXTURE = makeCheckerTexture();
+    private static final TexturePaint TEXTURE = makeCheckerTexture();
 
     public MainPanel() {
         super();

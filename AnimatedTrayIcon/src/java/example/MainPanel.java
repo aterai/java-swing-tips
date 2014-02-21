@@ -24,7 +24,8 @@ class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
         this.frame = frame;
 
-        imglist[0] = imglist[2] = new ImageIcon(getClass().getResource("16x16.png")).getImage();
+        imglist[0] = new ImageIcon(getClass().getResource("16x16.png")).getImage();
+        imglist[2] = imglist[0];
         imglist[1] = new ImageIcon(getClass().getResource("16x16l.png")).getImage();
         imglist[3] = new ImageIcon(getClass().getResource("16x16r.png")).getImage();
 

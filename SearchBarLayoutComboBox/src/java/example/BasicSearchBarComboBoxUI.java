@@ -157,8 +157,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
             loupeButton.setRequestFocusEnabled(false);
             loupeButton.setFocusPainted(false);
             loupeButton.setContentAreaFilled(false);
-            //loupeButton.addMouseListener( popup.getMouseListener() );
-            //loupeButton.addMouseMotionListener( popup.getMouseMotionListener() );
+            //loupeButton.addMouseListener(popup.getMouseListener());
+            //loupeButton.addMouseMotionListener(popup.getMouseMotionListener());
             loupeButton.resetKeyboardActions();
             //loupeButton.putClientProperty("doNotCancelPopup", HIDE_POPUP_KEY);
             loupeButton.setInheritsPopupMenu(true);
@@ -167,8 +167,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     public void unconfigureLoupeButton() {
         if(loupeButton != null) {
             loupeButton.setAction(null);
-            //loupeButton.removeMouseListener( popup.getMouseListener() );
-            //loupeButton.removeMouseMotionListener( popup.getMouseMotionListener() );
+            //loupeButton.removeMouseListener(popup.getMouseListener());
+            //loupeButton.removeMouseMotionListener(popup.getMouseMotionListener());
         }
     }
     @Override protected ListCellRenderer createRenderer() {
@@ -179,8 +179,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
     }
 }
 
-class IconUtil {
-    private IconUtil() { /* Singlton */ }
+final class IconUtil {
+    private IconUtil() { /* Singleton */ }
     public static Icon makeRolloverIcon(Icon srcIcon) {
         RescaleOp op = new RescaleOp(
             new float[] { 1.2f, 1.2f, 1.2f, 1.0f },

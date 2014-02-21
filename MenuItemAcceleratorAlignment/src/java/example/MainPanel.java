@@ -9,8 +9,8 @@ import javax.swing.*;
 // import javax.swing.plaf.basic.*;
 //import sun.swing.*;
 
-public class MainPanel {
-    private MainPanel() { /* Singlton */ }
+public final class MainPanel {
+    private MainPanel() { /* Singleton */ }
     private static JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu0 = new JMenu("Default");
@@ -162,8 +162,8 @@ class MenuItemUIHelper {
                 }
                 sun.swing.SwingUtilities2.drawString(
                     lh.getMenuItem(), g, lh.getAccText(),
-                    lh.getViewRect().x + lh.getViewRect().width - lh.getMenuItem().getIconTextGap() - lr.getAccRect().width, lr.getAccRect().y +
-                    lh.getAccFontMetrics().getAscent());
+                    lh.getViewRect().x + lh.getViewRect().width - lh.getMenuItem().getIconTextGap() - lr.getAccRect().width,
+                    lr.getAccRect().y  + lh.getAccFontMetrics().getAscent());
             }else{
                 // *** paint the accText disabled
                 if(disabledForeground == null) {

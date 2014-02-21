@@ -161,7 +161,7 @@ enum TexturePaints {
     }
 }
 
-class TextureUtil {
+final class TextureUtil {
     private TextureUtil() { /* Singleton */ }
     public static TexturePaint makeImageTexture() {
         BufferedImage bi = null;

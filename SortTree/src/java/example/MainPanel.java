@@ -93,13 +93,13 @@ public class MainPanel extends JPanel {
     }
 }
 
-class TreeUtil {
+final class TreeUtil {
     private static final boolean DEBUG = true;
     public static AtomicInteger compareCount = new AtomicInteger();
     public static AtomicInteger swapCount = new AtomicInteger();
     private static TreeNodeComparator tnc = new TreeNodeComparator();
 
-    private TreeUtil() { /* Singlton */ }
+    private TreeUtil() { /* Singleton */ }
 
     // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
     public static void sortTree0(DefaultMutableTreeNode root) {

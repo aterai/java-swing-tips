@@ -105,8 +105,8 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         lrect.y = i.top;
         lrect.width  = w - mw - i.right  - lrect.x;
         lrect.height = h - rh - i.bottom - lrect.y;
-        irect.x = irect.y = irect.width = irect.height = 0;
-        trect.x = trect.y = trect.width = trect.height = 0;
+        irect.setBounds(0, 0, 0, 0); //.x = irect.y = irect.width = irect.height = 0;
+        trect.setBounds(0, 0, 0, 0); //.x = trect.y = trect.width = trect.height = 0;
 
         String str = SwingUtilities.layoutCompoundLabel(
             this,

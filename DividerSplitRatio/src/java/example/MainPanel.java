@@ -60,8 +60,7 @@ class SplitPaneWrapper extends JPanel {
 // //         @Override public void setDividerLocation(double proportionalLocation) {
 // //             if(proportionalLocation < 0.0 ||
 // //                 proportionalLocation > 1.0) {
-// //                 throw new IllegalArgumentException("proportional location must " +
-// //                                                    "be between 0.0 and 1.0.");
+// //                 throw new IllegalArgumentException("proportional location must be between 0.0 and 1.0.");
 // //             }
 // //             if(getOrientation() == VERTICAL_SPLIT) {
 // //                 setDividerLocation((int)((double)(getHeight() - getDividerSize()) *

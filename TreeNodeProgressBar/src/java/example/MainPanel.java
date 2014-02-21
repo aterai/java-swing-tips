@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
                          Enumeration e = root.breadthFirstEnumeration();
                          while(e.hasMoreElements()) {
                              DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                             if(!root.equals(node ) && !model.isLeaf(node)) {
+                             if(!root.equals(node) && !model.isLeaf(node)) {
                                  executor.execute(new NodeProgressWorker(tree, node));
                              }
                          }

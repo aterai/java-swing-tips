@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    public void initComps(List<AbstractExpansionPanel> list, JComponent source) {
+    private void initComps(List<AbstractExpansionPanel> list, JComponent source) {
         setVisible(false);
         centerBox.removeAll();
         northBox.removeAll();
@@ -137,7 +137,7 @@ abstract class AbstractExpansionPanel extends JPanel {
         add(button, BorderLayout.NORTH);
     }
 
-    abstract public Container makePanel();
+    public abstract Container makePanel();
 
     public boolean isSelected() {
         return openFlag;

@@ -21,8 +21,8 @@ public class MainPanel extends JPanel {
         box.add(new JButton("333"));
         b.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent ae) {
-                String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"+
-                                "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
+                String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"
+                            + "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
                 int retValue = JOptionPane.showConfirmDialog(frame, info);
 //                 int retValue = showOptionDialog(frame, info, "Test Options",
 //                                                 JOptionPane.YES_NO_CANCEL_OPTION,
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
         textarea.setText("FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP");
         add(box, BorderLayout.SOUTH);
         add(new JScrollPane(textarea));
-        setPreferredSize(new Dimension(320, 160));
+        setPreferredSize(new Dimension(320, 240));
     }
 
 //     // %JAVA_HOME%/src_b23/javax/swing/JOptionPane.java

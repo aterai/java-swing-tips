@@ -123,9 +123,9 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             //create the cache
             try{
                 long size = ps.create(codebase, 64000);
-                System.out.println( "Cache created - size: " + size );
+                System.out.println("Cache created - size: " + size);
             }catch(IOException ioe) {
-                //System.err.println( "Application codebase is not a valid URL?!" );
+                //System.err.println("Application codebase is not a valid URL?!");
                 ioe.printStackTrace();
             }
         }

@@ -95,7 +95,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class ImageUtil {
+final class ImageUtil {
     private ImageUtil() { /* Singleton */ }
     public static JMenuBar createMenubar() {
         UIManager.put("Menu.background", new Color(200,0,0,0));
@@ -304,7 +304,7 @@ class TransparentMenu extends JMenu {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();
-        popupMenu.insert( new JPopupMenu.Separator(), index );
+        popupMenu.insert(new JPopupMenu.Separator(), index);
     }
     @Override public boolean isPopupMenuVisible() {
         ensurePopupMenuCreated();
@@ -318,9 +318,9 @@ Translucent and Shaped Swing Windows | Java.net
 </a>
 */
 class TranslucentPopupFactory extends PopupFactory {
-    @Override public Popup getPopup(Component owner, Component contents, int x, int y) throws IllegalArgumentException {
-         return new TranslucentPopup(owner, contents, x, y);
-     }
+    @Override public Popup getPopup(Component owner, Component contents, int x, int y) { //throws IllegalArgumentException {
+        return new TranslucentPopup(owner, contents, x, y);
+    }
 }
 
 class TranslucentPopup extends Popup {

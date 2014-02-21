@@ -45,10 +45,10 @@ public class MainPanel extends JPanel {
                IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        MainPanel p;
+        MainPanel p = new MainPanel();
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(p = new MainPanel());
+        frame.getContentPane().add(p);
         frame.setJMenuBar(p.createMenuBar());
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -61,10 +61,10 @@ class CheckIcon implements Icon {
         if(c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton)c).getModel();
             Graphics2D g2 = (Graphics2D)g.create();
-            g2.translate(x,y);
+            g2.translate(x, y);
             g2.setPaint(m.isSelected() ? Color.ORANGE : Color.GRAY);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.fillOval( 0, 2, 10, 10 );
+            g2.fillOval(0, 2, 10, 10);
             //g2.translate(-x,-y);
             g2.dispose();
         }

@@ -23,11 +23,11 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 180));
     }
     private static String makeTestHtml() {
-        return "<html><body>"+
-          "<div>0000000</div>"+
-          "<div class='highlight'>1111111111</div>"+
-          "<div>2222222222</div>"+
-          "</body></html>";
+        return "<html><body>"
+             + "<div>0000000</div>"
+             + "<div class='highlight'>1111111111</div>"
+             + "<div>2222222222</div>"
+             + "</body></html>";
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

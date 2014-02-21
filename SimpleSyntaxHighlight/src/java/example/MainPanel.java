@@ -61,19 +61,21 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     private void processChangedLines(int offset, int length) throws BadLocationException {
         Element root = getDefaultRootElement();
         String content = getText(0, getLength());
-        int startLine = root.getElementIndex( offset );
-        int endLine = root.getElementIndex( offset + length );
+        int startLine = root.getElementIndex(offset);
+        int endLine = root.getElementIndex(offset + length);
         for(int i = startLine; i <= endLine; i++) {
             applyHighlighting(content, i);
         }
     }
     private void applyHighlighting(String content, int line) throws BadLocationException {
         Element root = getDefaultRootElement();
-        int startOffset   = root.getElement( line ).getStartOffset();
-        int endOffset     = root.getElement( line ).getEndOffset() - 1;
+        int startOffset   = root.getElement(line).getStartOffset();
+        int endOffset     = root.getElement(line).getEndOffset() - 1;
         int lineLength    = endOffset - startOffset;
         int contentLength = content.length();
-        if(endOffset >= contentLength) { endOffset = contentLength - 1; }
+        if(endOffset >= contentLength) {
+            endOffset = contentLength - 1;
+        }
         setCharacterAttributes(startOffset, lineLength, normal, true);
         checkForTokens(content, startOffset, endOffset);
     }
@@ -93,7 +95,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     private int getOtherToken(String content, int startOffset, int endOffset) {
         int endOfToken = startOffset + 1;
         while(endOfToken <= endOffset) {
-            if(isDelimiter(content.substring(endOfToken, endOfToken + 1) ) ) {
+            if(isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
                 break;
             }
             endOfToken++;

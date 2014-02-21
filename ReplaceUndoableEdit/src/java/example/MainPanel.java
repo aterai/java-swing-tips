@@ -139,24 +139,24 @@ class CustomUndoPlainDocument extends PlainDocument {
             this.newValue = newValue;
             this.offset = offset;
         }
-        @Override public void undo() throws CannotUndoException {
-             try{
-                 replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
-             }catch(BadLocationException e) {
-                 CannotUndoException ex = new CannotUndoException();
-                 ex.initCause(e);
-                 throw ex;
-             }
-         }
-        @Override public void redo() throws CannotRedoException {
-             try{
-                 replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
-             }catch(final BadLocationException e) {
-                 CannotUndoException ex = new CannotUndoException();
-                 ex.initCause(e);
-                 throw ex;
-             }
-         }
+        @Override public void undo() { //throws CannotUndoException {
+            try{
+                replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
+            }catch(BadLocationException e) {
+                CannotUndoException ex = new CannotUndoException();
+                ex.initCause(e);
+                throw ex;
+            }
+        }
+        @Override public void redo() { //throws CannotRedoException {
+            try{
+                replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
+            }catch(final BadLocationException e) {
+                CannotUndoException ex = new CannotUndoException();
+                ex.initCause(e);
+                throw ex;
+            }
+        }
         @Override public boolean canUndo() {
             return true;
         }
