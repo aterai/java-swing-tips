@@ -147,10 +147,10 @@ class StarburstSVGMaker {
     private StarburstSVGMaker() { /* Singleton */ }
     public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
         StringBuilder sb = new StringBuilder(200);
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
-        sb.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz));
-        sb.append(String.format("  <desc>%s</desc>%n", desc));
-        sb.append("  <path d=\"");
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n")
+          .append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz))
+          .append(String.format("  <desc>%s</desc>%n", desc))
+          .append("  <path d=\"");
         double[] c = new double[6];
         while(!pi.isDone()) {
             switch(pi.currentSegment(c)) {

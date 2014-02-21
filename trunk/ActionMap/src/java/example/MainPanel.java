@@ -7,12 +7,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
-    private final JTextField pf1 = new JTextField(25);
-    private final JTextField pf2;
-    public MainPanel() {
+public final class MainPanel extends JPanel {
+    private MainPanel() {
         super(new BorderLayout());
 
+        JTextField pf1 = new JTextField(25);
         ActionMap am = pf1.getActionMap();
         Action beep = new DefaultEditorKit.BeepAction();
 
@@ -21,7 +20,7 @@ public class MainPanel extends JPanel {
         am.put(DefaultEditorKit.pasteAction, beep);
         pf1.setActionMap(am);
 
-        pf2 = new JTextField() {
+        JTextField pf2 = new JTextField() {
             @Override public void copy() {
                 //System.out.println("copy");
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
@@ -55,10 +54,10 @@ public class MainPanel extends JPanel {
         panel.add(new JLabel("Please enter your email adress twice for confirmation:"));
         panel.add(pf2);
         panel.add(Box.createVerticalStrut(5));
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(panel, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("Dummy")));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
