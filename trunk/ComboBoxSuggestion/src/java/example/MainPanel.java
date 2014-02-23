@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JComboBox<String> combo = makeComboBox(array);
         combo.setEditable(true);
         combo.setSelectedIndex(-1);
-        JTextField field = (JTextField)combo.getEditor().getEditorComponent();
+        JTextField field = (JTextField) combo.getEditor().getEditorComponent();
         field.setText("");
         field.addKeyListener(new ComboKeyHandler(combo));
 
@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 //         combo.getActionMap().put("enterPressed2", new AbstractAction() {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 String text = field.getText();
-//                 if(!model.contains(text)) {
+//                 if (!model.contains(text)) {
 //                     model.addElement(text);
 //                     Collections.sort(model);
 //                     setModel(getSuggestedModel(model, text), text);
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(5));
         box.add(p);
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox(String[] model) {
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 //                     @Override public void configureArrowButton() {}
 //                 });
 // //                 //Remove click on a JComboBox Border
-// //                 for(MouseListener ml:getMouseListeners()) {
+// //                 for (MouseListener ml:getMouseListeners()) {
 // //                     removeMouseListener(ml);
 // //                 }
 //             }
@@ -83,11 +83,11 @@ public final class MainPanel extends JPanel {
 //         };
     }
     private static JPanel makeHelpPanel() {
-        JPanel lp = new JPanel(new GridLayout(2,1,2,2));
+        JPanel lp = new JPanel(new GridLayout(2, 1, 2, 2));
         lp.add(new JLabel("Char: show Popup"));
         lp.add(new JLabel("ESC: hide Popup"));
 
-        JPanel rp = new JPanel(new GridLayout(2,1,2,2));
+        JPanel rp = new JPanel(new GridLayout(2, 1, 2, 2));
         rp.add(new JLabel("RIGHT: Completion"));
         rp.add(new JLabel("ENTER: Add/Selection"));
 
@@ -121,10 +121,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -144,25 +144,25 @@ class ComboKeyHandler extends KeyAdapter {
     public ComboKeyHandler(JComboBox<String> combo) {
         super();
         this.comboBox = combo;
-        for(int i=0;i<comboBox.getModel().getSize();i++) {
-            list.add((String)comboBox.getItemAt(i));
+        for (int i = 0; i < comboBox.getModel().getSize(); i++) {
+            list.add((String) comboBox.getItemAt(i));
         }
     }
     @Override public void keyTyped(final KeyEvent e) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                String text = ((JTextField)e.getComponent()).getText();
+                String text = ((JTextField) e.getComponent()).getText();
                 ComboBoxModel<String> m;
-                if(text.isEmpty()) {
+                if (text.isEmpty()) {
                     String[] array = list.toArray(new String[list.size()]);
                     m = new DefaultComboBoxModel<String>(array);
                     setSuggestionModel(comboBox, m, "");
                     comboBox.hidePopup();
-                }else{
+                } else {
                     m = getSuggestedModel(list, text);
-                    if(m.getSize()==0 || shouldHide) {
+                    if (m.getSize() == 0 || shouldHide) {
                         comboBox.hidePopup();
-                    }else{
+                    } else {
                         setSuggestionModel(comboBox, m, text);
                         comboBox.showPopup();
                     }
@@ -171,20 +171,20 @@ class ComboKeyHandler extends KeyAdapter {
         });
     }
     @Override public void keyPressed(KeyEvent e) {
-        JTextField textField = (JTextField)e.getComponent();
+        JTextField textField = (JTextField) e.getComponent();
         String text = textField.getText();
         shouldHide = false;
         switch(e.getKeyCode()) {
           case KeyEvent.VK_RIGHT:
-            for(String s: list) {
-                if(s.startsWith(text)) {
+            for (String s: list) {
+                if (s.startsWith(text)) {
                     textField.setText(s);
                     return;
                 }
             }
             break;
           case KeyEvent.VK_ENTER:
-            if(!list.contains(text)) {
+            if (!list.contains(text)) {
                 list.add(text);
                 Collections.sort(list);
                 //setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
@@ -202,12 +202,12 @@ class ComboKeyHandler extends KeyAdapter {
     private static void setSuggestionModel(JComboBox<String> comboBox, ComboBoxModel<String> mdl, String str) {
         comboBox.setModel(mdl);
         comboBox.setSelectedIndex(-1);
-        ((JTextField)comboBox.getEditor().getEditorComponent()).setText(str);
+        ((JTextField) comboBox.getEditor().getEditorComponent()).setText(str);
     }
     private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {
         DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
-        for(String s: list) {
-            if(s.startsWith(text)) {
+        for (String s: list) {
+            if (s.startsWith(text)) {
                 m.addElement(s);
             }
         }
@@ -223,20 +223,20 @@ class ComboKeyHandler extends KeyAdapter {
 //     private Vector<String> list = new Vector<String>();
 //     @Override protected void configureEditor() {
 //         super.configureEditor();
-//         JTextField textField = (JTextField)editor;
+//         JTextField textField = (JTextField) editor;
 //         comboBox.setSelectedIndex(-1);
-//         if(editorKeyListener == null) {
+//         if (editorKeyListener == null) {
 //             editorKeyListener = new ComboKeyHandler();
 //         }
 //         editor.addKeyListener(editorKeyListener);
-//         for(int i=0;i<comboBox.getModel().getSize();i++) {
-//             list.addElement((String)comboBox.getItemAt(i));
+//         for (int i = 0; i < comboBox.getModel().getSize(); i++) {
+//             list.addElement((String) comboBox.getItemAt(i));
 //         }
 //         textField.setText("");
 //     }
 //     @Override protected void unconfigureEditor() {
 //         super.unconfigureEditor();
-//         if(editorKeyListener != null) {
+//         if (editorKeyListener != null) {
 //             editor.removeKeyListener(editorKeyListener);
 //         }
 //     }
@@ -245,11 +245,11 @@ class ComboKeyHandler extends KeyAdapter {
 //         @Override public void keyTyped(final KeyEvent e) {
 //             EventQueue.invokeLater(new Runnable() {
 //                 @Override public void run() {
-//                     String text = ((JTextField)e.getSource()).getText();
+//                     String text = ((JTextField) e.getSource()).getText();
 //                     ComboBoxModel m = getSuggestedModel(list, text);
-//                     if(m.getSize()==0 || shouldHide) {
+//                     if (m.getSize() == 0 || shouldHide) {
 //                         comboBox.hidePopup();
-//                     }else{
+//                     } else {
 //                         setSuggestionModel(m, text);
 //                         comboBox.showPopup();
 //                     }
@@ -257,20 +257,20 @@ class ComboKeyHandler extends KeyAdapter {
 //             });
 //         }
 //         @Override public void keyPressed(KeyEvent e) {
-//             JTextField textField = (JTextField)e.getSource();
+//             JTextField textField = (JTextField) e.getSource();
 //             String t = textField.getText();
 //             shouldHide = false;
 //             switch(e.getKeyCode()) {
 //               case KeyEvent.VK_RIGHT:
-//                 for(String s: list) {
-//                     if(s.startsWith(t)) {
+//                 for (String s: list) {
+//                     if (s.startsWith(t)) {
 //                         textField.setText(s);
 //                         return;
 //                     }
 //                 }
 //                 break;
 //               case KeyEvent.VK_ENTER:
-//                 if(!list.contains(t)) {
+//                 if (!list.contains(t)) {
 //                     list.addElement(t);
 //                     Collections.sort(list);
 //                     setSuggestionModel(new DefaultComboBoxModel(list), t);
@@ -285,13 +285,13 @@ class ComboKeyHandler extends KeyAdapter {
 //         private void setSuggestionModel(ComboBoxModel mdl, String str) {
 //             comboBox.setModel(mdl);
 //             comboBox.setSelectedIndex(-1);
-//             ((JTextField)comboBox.getEditor().getEditorComponent()).setText(str);
+//             ((JTextField) comboBox.getEditor().getEditorComponent()).setText(str);
 //         }
 //         private ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
 //             DefaultComboBoxModel m = new DefaultComboBoxModel();
-//             if(text!=null && text.length()!=0) {
-//                 for(String s: list) {
-//                     if(s.startsWith(text)) { m.addElement(s); }
+//             if (text != null && text.length() != 0) {
+//                 for (String s: list) {
+//                     if (s.startsWith(text)) { m.addElement(s); }
 //                 }
 //             }
 //             return m;

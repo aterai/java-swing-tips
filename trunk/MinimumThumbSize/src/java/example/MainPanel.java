@@ -12,8 +12,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();
-        for(int i=0;i<1000;i++) {
-            buf.append(i+LF);
+        for (int i = 0; i < 1000; i++) {
+            buf.append(i + LF);
         }
 
         JSplitPane sp = new JSplitPane();
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

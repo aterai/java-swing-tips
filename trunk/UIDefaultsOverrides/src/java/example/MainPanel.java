@@ -107,14 +107,14 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
-            for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-                if("Nimbus".equals(laf.getName())) {
+        try {
+            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
                     UIManager.setLookAndFeel(laf.getClassName());
                 }
             }
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         MainPanel p = new MainPanel();
@@ -186,34 +186,34 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
 class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
     private final List<List<Integer>> rowColHeight = new ArrayList<List<Integer>>();
     private final Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
-    private final Border epb = BorderFactory.createEmptyBorder(2,5,2,5);
+    private final Border epb = BorderFactory.createEmptyBorder(2, 5, 2, 5);
     public MultiLineTableCellRenderer() {
         super();
 
         //System.out.println(UIManager.get("nimbusFocus"));
-        Border b = BorderFactory.createLineBorder(new Color(115,164,209));
-        fhb = BorderFactory.createCompoundBorder(b, BorderFactory.createEmptyBorder(1,4,1,4));
+        Border b = BorderFactory.createLineBorder(new Color(115, 164, 209));
+        fhb = BorderFactory.createCompoundBorder(b, BorderFactory.createEmptyBorder(1, 4, 1, 4));
 
         setLineWrap(true);
         setWrapStyleWord(true);
         setOpaque(true);
         setBorder(epb);
-        //setMargin(new Insets(0,0,0,0));
+        //setMargin(new Insets(0, 0, 0, 0));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setFont(table.getFont());
         setText(Objects.toString(value, ""));
         setBorder(hasFocus ? fhb : epb);
-        if(isSelected) {
+        if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
         setBounds(table.getCellRect(row, column, false));
         int maxH = getAdjustedRowHeight(row, column);
-        if(table.getRowHeight(row) != maxH) {
+        if (table.getRowHeight(row) != maxH) {
             table.setRowHeight(row, maxH);
         }
         return this;
@@ -234,17 +234,17 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
         //setSize(new Dimension(cWidth, 1000));
 
         int prefH = getPreferredSize().height;
-        while(rowColHeight.size() <= row) {
+        while (rowColHeight.size() <= row) {
             rowColHeight.add(new ArrayList<Integer>(column));
         }
         List<Integer> colHeights = rowColHeight.get(row);
-        while(colHeights.size() <= column) {
+        while (colHeights.size() <= column) {
             colHeights.add(0);
         }
         colHeights.set(column, prefH);
         int maxH = prefH;
-        for(Integer colHeight : colHeights) {
-            if(colHeight > maxH) {
+        for (Integer colHeight : colHeights) {
+            if (colHeight > maxH) {
                 maxH = colHeight;
             }
         }

@@ -16,13 +16,13 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("Window#setIconImage(Image)"));
         p.add(new JCheckBox(new AbstractAction("setIconImage") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
+                JCheckBox c = (JCheckBox) e.getSource();
                 Window w = SwingUtilities.getWindowAncestor(c);
-                w.setIconImage(c.isSelected()?icon:null);
+                w.setIconImage(c.isSelected() ? icon : null);
             }
         }));
         add(p, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 200));
     }
     public static void main(String[] args) {
@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

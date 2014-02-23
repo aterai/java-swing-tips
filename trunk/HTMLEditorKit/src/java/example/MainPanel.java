@@ -26,15 +26,15 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("JTextArea", new JScrollPane(textArea));
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane t = (JTabbedPane)e.getSource();
+                JTabbedPane t = (JTabbedPane) e.getSource();
                 int i = t.getSelectedIndex();
-                if(i==0) {
+                if (i == 0) {
                     textPane.setText(textArea.getText());
                     //textPane.setText("");
-                    //HTMLEditorKit hek = (HTMLEditorKit)textPane.getEditorKit();
-                    //HTMLDocument doc = (HTMLDocument)textPane.getStyledDocument();
+                    //HTMLEditorKit hek = (HTMLEditorKit) textPane.getEditorKit();
+                    //HTMLDocument doc = (HTMLDocument) textPane.getStyledDocument();
                     //hek.insertHTML(doc, 0, textArea.getText(), 0, 0, null);
-                }else{
+                } else {
                     String str = textPane.getText();
                     textArea.setText(str);
                     ////Removing HTML from a Java String - Stack Overflow
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -92,7 +92,7 @@ class HTMLColorPopupMenu extends JPopupMenu {
 
         add(new AbstractAction("Red") {
             @Override public void actionPerformed(ActionEvent e) {
-                JTextPane t = (JTextPane)getInvoker();
+                JTextPane t = (JTextPane) getInvoker();
                 StyledDocument doc = t.getStyledDocument();
                 int start = t.getSelectionStart();
                 int end   = t.getSelectionEnd();
@@ -101,7 +101,7 @@ class HTMLColorPopupMenu extends JPopupMenu {
         });
         add(new AbstractAction("Green") {
             @Override public void actionPerformed(ActionEvent e) {
-                JTextPane t = (JTextPane)getInvoker();
+                JTextPane t = (JTextPane) getInvoker();
                 StyledDocument doc = t.getStyledDocument();
                 int start = t.getSelectionStart();
                 int end   = t.getSelectionEnd();
@@ -110,7 +110,7 @@ class HTMLColorPopupMenu extends JPopupMenu {
         });
         add(new AbstractAction("Blue") {
             @Override public void actionPerformed(ActionEvent e) {
-                JTextPane t = (JTextPane)getInvoker();
+                JTextPane t = (JTextPane) getInvoker();
                 StyledDocument doc = t.getStyledDocument();
                 int start = t.getSelectionStart();
                 int end   = t.getSelectionEnd();
@@ -119,12 +119,12 @@ class HTMLColorPopupMenu extends JPopupMenu {
         });
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTextPane) {
-            JTextPane t = (JTextPane)c;
+        if (c instanceof JTextPane) {
+            JTextPane t = (JTextPane) c;
             int start = t.getSelectionStart();
             int end   = t.getSelectionEnd();
             boolean flag = end - start > 0;
-            for(MenuElement me: getSubElements()) {
+            for (MenuElement me: getSubElements()) {
                 me.getComponent().setEnabled(flag);
             }
             super.show(c, x, y);

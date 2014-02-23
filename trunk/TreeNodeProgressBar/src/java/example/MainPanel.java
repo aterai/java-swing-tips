@@ -26,16 +26,16 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("start") {
             @Override public void actionPerformed(ActionEvent ev) {
                 final ExecutorService executor = Executors.newCachedThreadPool();
-                final JButton b = (JButton)ev.getSource();
+                final JButton b = (JButton) ev.getSource();
                 b.setEnabled(false);
                 (new SwingWorker<Boolean, Void>() {
                     @Override protected Boolean doInBackground() throws InterruptedException {
-                         DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-                         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+                         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
                          Enumeration e = root.breadthFirstEnumeration();
-                         while(e.hasMoreElements()) {
-                             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                             if(!root.equals(node) && !model.isLeaf(node)) {
+                         while (e.hasMoreElements()) {
+                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                             if (!root.equals(node) && !model.isLeaf(node)) {
                                  executor.execute(new NodeProgressWorker(tree, node));
                              }
                          }
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -116,15 +116,15 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
         super();
         this.lengthOfTask = 120;
         this.tree = tree;
-        this.model = (DefaultTreeModel)tree.getModel();
+        this.model = (DefaultTreeModel) tree.getModel();
         this.treeNode = treeNode;
     }
     @Override protected TreeNode doInBackground() throws InterruptedException {
          int current = 0;
-         while(current <= lengthOfTask && !isCancelled()) {
-             try{
+         while (current <= lengthOfTask && !isCancelled()) {
+             try {
                  Thread.sleep(sleepDummy);
-             }catch(InterruptedException ie) {
+             } catch (InterruptedException ie) {
                  break;
              }
              publish(100 * current++ / lengthOfTask);
@@ -133,17 +133,17 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
      }
     @Override protected void process(List<Integer> c) {
         String title = treeNode.getUserObject().toString();
-        Integer i = (Integer)c.get(c.size() - 1);
+        Integer i = (Integer) c.get(c.size() - 1);
         ProgressObject o = new ProgressObject(title, i);
         treeNode.setUserObject(o);
         model.nodeChanged(treeNode);
         //valueForPathChanged(path, str);
     }
     @Override protected void done() {
-        try{
+        try {
             TreeNode n = get();
             tree.expandPath(new TreePath(model.getPathToRoot(n)));
-        }catch(InterruptedException | ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
         }
     }
@@ -174,10 +174,10 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
         b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        Object o = ((DefaultMutableTreeNode)value).getUserObject();
-        if(o instanceof ProgressObject) {
-            ProgressObject n = (ProgressObject)o;
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        Object o = ((DefaultMutableTreeNode) value).getUserObject();
+        if (o instanceof ProgressObject) {
+            ProgressObject n = (ProgressObject) o;
             int i = n.getValue();
             b.setValue(i);
 
@@ -187,7 +187,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 
             p.removeAll();
             p.add(c);
-            p.add(i<100 ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
+            p.add(i < 100 ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
             c = p;
         }
         return c;

@@ -23,12 +23,12 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -75,8 +75,8 @@ public final class MainPanel extends JPanel {
             }
         };
         //combo.setBorder(BorderFactory.createEmptyBorder());
-        //((JTextField)combo.getEditor().getEditorComponent()).setBorder(null);
-        //((JTextField)combo.getEditor().getEditorComponent()).setMargin(null);
+        //((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
+        //((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
         //combo.setBackground(Color.WHITE);
         //combo.setOpaque(true);
         //combo.setEditable(true);
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -132,14 +132,14 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
-        if(isSelected) {
+        if (isSelected) {
             editor.setForeground(table.getSelectionForeground());
             editor.setBackground(table.getSelectionBackground());
             button.setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             editor.setForeground(table.getForeground());
             //setBackground(table.getBackground());
-            Color bg = (row%2==0)?EVEN_COLOR:table.getBackground();
+            Color bg = (row % 2 == 0) ? EVEN_COLOR : table.getBackground();
             editor.setBackground(bg);
             button.setBackground(bg);
         }
@@ -150,7 +150,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -158,7 +158,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //         System.out.println(propertyName);
-//         if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+//         if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
 //             super.firePropertyChange(propertyName, oldValue, newValue);
 //         }
     }

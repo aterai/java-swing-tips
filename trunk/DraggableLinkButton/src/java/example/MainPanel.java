@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JButton label = new JButton(new AbstractAction(MYSITE) {
             @Override public void actionPerformed(ActionEvent e) {
-                if(Desktop.isDesktopSupported()) {
-                    try{
+                if (Desktop.isDesktopSupported()) {
+                    try {
                         Desktop.getDesktop().browse(new URI(MYSITE));
-                    }catch(IOException | URISyntaxException ex) {
+                    } catch (IOException | URISyntaxException ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
 //         final JLabel label = new JLabel(MYSITE);
 //         label.setTransferHandler(new TransferHandler("text") {
 //             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-//                 return (flavors.length>0 && flavors[0].equals(uriflavor));
+//                 return (flavors.length > 0 && flavors[0].equals(uriflavor));
 //             }
 //             @Override public Transferable createTransferable(JComponent c) {
 //                 return new Transferable() {
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 //         });
 //         label.addMouseListener(new MouseAdapter() {
 //             @Override public void mousePressed(MouseEvent e) {
-//                 JComponent l = (JComponent)e.getSource();
+//                 JComponent l = (JComponent) e.getSource();
 //                 TransferHandler handler = l.getTransferHandler();
 //                 handler.exportAsDrag(l, e, TransferHandler.COPY);
 //             }
@@ -104,10 +104,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -130,11 +130,11 @@ class LinkViewButtonUI extends BasicButtonUI {
 
     public static ButtonUI createUI(JButton b, final String href) {
         b.setForeground(Color.BLUE);
-        b.setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
+        b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setTransferHandler(new TransferHandler("text") {
             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-                return flavors.length>0 && flavors[0].equals(URI_FLAVOR);
+                return flavors.length > 0 && flavors[0].equals(URI_FLAVOR);
             }
             public Transferable createTransferable(JComponent c) {
                 return new Transferable() {
@@ -154,7 +154,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         });
         b.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                JButton button = (JButton)e.getComponent();
+                JButton button = (JButton) e.getComponent();
                 TransferHandler handler = button.getTransferHandler();
                 handler.exportAsDrag(button, e, TransferHandler.COPY);
             }
@@ -169,10 +169,10 @@ class LinkViewButtonUI extends BasicButtonUI {
         textRect = new Rectangle();
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        if(!(c instanceof AbstractButton)) {
+        if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -193,21 +193,21 @@ class LinkViewButtonUI extends BasicButtonUI {
             viewRect, iconRect, textRect,
             0); //b.getText() == null ? 0 : b.getIconTextGap());
 
-        if(c.isOpaque()) {
+        if (c.isOpaque()) {
             g.setColor(b.getBackground());
-            g.fillRect(0,0, size.width, size.height);
+            g.fillRect(0, 0, size.width, size.height);
         }
 
         ButtonModel model = b.getModel();
-        if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
+        if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
-            g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
-                       viewRect.x+viewRect.width, viewRect.y+viewRect.height);
+            g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+                       viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v==null) {
+        if (v == null) {
             paintText(g, b, textRect, text);
-        }else{
+        } else {
             v.paint(g, textRect);
         }
     }

@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             //XXX: Nimbus
             TableCellRenderer r = getDefaultRenderer(Boolean.class);
-            if(r instanceof JComponent) {
-                ((JComponent)r).updateUI();
+            if (r instanceof JComponent) {
+                ((JComponent) r).updateUI();
             }
         }
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
             Component c = super.prepareEditor(editor, row, column);
-            if(c instanceof JCheckBox) {
-                JCheckBox b = (JCheckBox)c;
+            if (c instanceof JCheckBox) {
+                JCheckBox b = (JCheckBox) c;
                 b.setBackground(getSelectionBackground());
                 b.setBorderPainted(true);
             }
@@ -57,10 +57,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -74,12 +74,12 @@ public final class MainPanel extends JPanel {
 
 class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final int BUTTON_WIDTH = 16;
-    private static final Color BUTTONBGC = new Color(200,200,200,100);
+    private static final Color BUTTONBGC = new Color(200, 200, 200, 100);
     private JPopupMenu pop;
     private int rolloverIndex = -1;
     private final transient MouseAdapter ma = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
-            JTableHeader header = (JTableHeader)e.getComponent();
+            JTableHeader header = (JTableHeader) e.getComponent();
             JTable table = header.getTable();
             TableColumnModel columnModel = table.getColumnModel();
             int vci = columnModel.getColumnIndexAtX(e.getX());
@@ -88,17 +88,17 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             //int w = column.getWidth(); //Nimbus???
             //int h = header.getHeight();
             Rectangle r = header.getHeaderRect(vci);
-            Container c = (Container)getTableCellRendererComponent(table, "", true, true, -1, vci);
-            //if(!isNimbus) {
+            Container c = (Container) getTableCellRendererComponent(table, "", true, true, -1, vci);
+            //if (!isNimbus) {
             //  Insets i = c.getInsets();
-            //  r.translate(r.width-i.right, 0);
-            //}else{
-            r.translate(r.width-BUTTON_WIDTH, 0);
+            //  r.translate(r.width - i.right, 0);
+            //} else {
+            r.translate(r.width - BUTTON_WIDTH, 0);
             r.setSize(BUTTON_WIDTH, r.height);
             Point pt = e.getPoint();
-            if(c.getComponentCount()>0 && r.contains(pt) && pop!=null) {
+            if (c.getComponentCount() > 0 && r.contains(pt) && pop != null) {
                 pop.show(header, r.x, r.height);
-                JButton b = (JButton)c.getComponent(0);
+                JButton b = (JButton) c.getComponent(0);
                 b.doClick();
                 e.consume();
             }
@@ -107,7 +107,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             rolloverIndex = -1;
         }
         @Override public void mouseMoved(MouseEvent e) {
-            JTableHeader header = (JTableHeader)e.getComponent();
+            JTableHeader header = (JTableHeader) e.getComponent();
             JTable table = header.getTable();
             TableColumnModel columnModel = table.getColumnModel();
             int vci = columnModel.getColumnIndexAtX(e.getX());
@@ -131,9 +131,9 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
     @Override public void updateUI() {
         super.updateUI();
-        if(pop==null) {
+        if (pop == null) {
             pop = new JPopupMenu();
-        }else{
+        } else {
             SwingUtilities.updateComponentTreeUI(pop);
         }
     }
@@ -145,29 +145,29 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 //     });
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+        JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
         setIcon(new MenuArrowIcon());
         l.removeAll();
         int mci = tbl.convertColumnIndexToModel(col);
 
-        if(rolloverIndex==mci) {
+        if (rolloverIndex == mci) {
             TableColumn column = tbl.getColumnModel().getColumn(mci);
             int w = column.getWidth();
             int h = tbl.getTableHeader().getHeight();
             //Icon icon = new MenuArrowIcon();
             Border outside = l.getBorder();
-            Border inside  = BorderFactory.createEmptyBorder(0,0,0,BUTTON_WIDTH);
+            Border inside  = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);
             Border b = BorderFactory.createCompoundBorder(outside, inside);
             l.setBorder(b);
             l.add(this);
             //Insets i = b.getBorderInsets(l);
-            //setBounds(w-i.right, 0, BUTTON_WIDTH, h-2);
-            setBounds(w-BUTTON_WIDTH, 0, BUTTON_WIDTH, h-2);
+            //setBounds(w - i.right, 0, BUTTON_WIDTH, h - 2);
+            setBounds(w - BUTTON_WIDTH, 0, BUTTON_WIDTH, h - 2);
             setBackground(BUTTONBGC);
             setOpaque(true);
-            setBorder(BorderFactory.createMatteBorder(0,1,0,0,Color.GRAY));
+            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
         }
-//         if(l.getPreferredSize().height>1000) { //XXX: Nimbus
+//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus
 //             System.out.println(l.getPreferredSize().height);
 //             l.setPreferredSize(new Dimension(0, h));
 //         }
@@ -177,7 +177,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
 class MenuArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.BLACK);
         g2.translate(x, y);
         g2.drawLine(2, 3, 6, 3);

@@ -77,23 +77,23 @@ public final class MainPanel extends JPanel {
                 return super.getPreferredSize();
             }
         };
-        for(AbstractButton b: list) {
+        for (AbstractButton b: list) {
             b.setIcon(new ToggleButtonBarCellIcon());
             p.add(b);
         }
         p.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         p.setOpaque(false);
 
-        return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size-1)));
+        return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size - 1)));
     }
     private static AbstractButton makeButton(String title, Action action) {
         JButton b = new JButton(action);
         b.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton)e.getSource();
+                JButton b = (JButton) e.getSource();
                 Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, b);
-                if(c != null) {
-                    ((JPopupMenu)c).setVisible(false);
+                if (c != null) {
+                    ((JPopupMenu) c).setVisible(false);
                 }
             }
         });
@@ -118,10 +118,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -138,18 +138,18 @@ public final class MainPanel extends JPanel {
 class ToggleButtonBarCellIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
-        if(parent==null) {
+        if (parent == null) {
             return;
         }
 
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = 4;
         int w = c.getWidth();
-        int h = c.getHeight()-1;
+        int h = c.getHeight() - 1;
         Path2D.Float p = new Path2D.Float();
 
-        if(c==parent.getComponent(0)) {
+        if (c == parent.getComponent(0)) {
             //:first-child
             p.moveTo(x, y + r);
             p.quadTo(x, y, x + r, y);
@@ -157,16 +157,16 @@ class ToggleButtonBarCellIcon implements Icon {
             p.lineTo(x + w, y + h);
             p.lineTo(x + r, y + h);
             p.quadTo(x, y + h, x, y + h - r);
-        }else if(c==parent.getComponent(parent.getComponentCount()-1)) {
+        } else if (c == parent.getComponent(parent.getComponentCount() - 1)) {
             //:last-child
             w--;
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);
             p.quadTo(x + w, y, x + w, y + r);
             p.lineTo(x + w, y + h - r);
-            p.quadTo(x + w, y + h, x + w -r, y + h);
+            p.quadTo(x + w, y + h, x + w - r, y + h);
             p.lineTo(x, y + h);
-        }else{
+        } else {
             p.moveTo(x, y);
             p.lineTo(x + w, y);
             p.lineTo(x + w, y + h);
@@ -176,11 +176,11 @@ class ToggleButtonBarCellIcon implements Icon {
         Area area = new Area(p);
         Color color = new Color(0, true);
         Color borderColor = Color.GRAY.brighter();
-        if(c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton)c).getModel();
-            if(m.isPressed()) {
-                color = new Color(200,200,255);
-            }else if(m.isSelected() || m.isRollover()) {
+        if (c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton) c).getModel();
+            if (m.isPressed()) {
+                color = new Color(200, 200, 255);
+            } else if (m.isSelected() || m.isRollover()) {
                 borderColor = Color.GRAY;
             }
         }
@@ -207,8 +207,8 @@ class EditMenuLayerUI extends LayerUI<JPanel> {
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if(shape!=null) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (shape != null) {
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(Color.GRAY);
             g2.draw(shape);
             g2.dispose();
@@ -216,27 +216,27 @@ class EditMenuLayerUI extends LayerUI<JPanel> {
     }
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        if(c instanceof JLayer) {
-            ((JLayer)c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+        if (c instanceof JLayer) {
+            ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
-        if(c instanceof JLayer) {
-            ((JLayer)c).setLayerEventMask(0);
+        if (c instanceof JLayer) {
+            ((JLayer) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }
     private void update(MouseEvent e, JLayer<? extends JPanel> l) {
         int id = e.getID();
         Shape s = null;
-        if(id==MouseEvent.MOUSE_ENTERED || id==MouseEvent.MOUSE_MOVED) {
+        if (id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED) {
             Component c = e.getComponent();
-            if(!Objects.equals(c, lastButton)) {
+            if (!Objects.equals(c, lastButton)) {
                 Rectangle r = c.getBounds();
-                s = new Line2D.Double(r.x+r.width, r.y, r.x+r.width, r.y+r.height-1);
+                s = new Line2D.Double(r.x + r.width, r.y, r.x + r.width, r.y + r.height - 1);
             }
         }
-        if(!Objects.equals(s, shape)) {
+        if (!Objects.equals(s, shape)) {
             shape = s;
             l.getView().repaint();
         }

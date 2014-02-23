@@ -21,21 +21,21 @@ public final class MainPanel extends JPanel {
     private final JPanel contentPanel   = new JPanel(new BorderLayout());
     private final JPanel resizePanel    = new JPanel(new BorderLayout()) {
         @Override protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             int w = getWidth();
             int h = getHeight();
             g2.setPaint(Color.ORANGE);
-            g2.fillRect(0,0,w,h);
+            g2.fillRect(0, 0, w, h);
             g2.setPaint(BORDER_COLOR);
-            g2.drawRect(0,0,w-1,h-1);
+            g2.drawRect(0, 0, w - 1, h - 1);
 
-            g2.drawLine(0,2,2,0);
-            g2.drawLine(w-3,0,w-1,2);
+            g2.drawLine(0, 2, 2, 0);
+            g2.drawLine(w - 3, 0, w - 1, 2);
 
-            g2.clearRect(0,0,2,1);
-            g2.clearRect(0,0,1,2);
-            g2.clearRect(w-2,0,2,1);
-            g2.clearRect(w-1,0,1,2);
+            g2.clearRect(0, 0, 2, 1);
+            g2.clearRect(0, 0, 1, 2);
+            g2.clearRect(w - 2, 0, 2, 1);
+            g2.clearRect(w - 1, 0, 1, 2);
 
             g2.dispose();
         }
@@ -54,9 +54,9 @@ public final class MainPanel extends JPanel {
         button.setBackground(Color.ORANGE);
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComponent b = (JComponent)e.getSource();
+                JComponent b = (JComponent) e.getSource();
                 Window w = SwingUtilities.getWindowAncestor(b);
-                if(w!=null) {
+                if (w != null) {
                     w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
                 }
             }
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
             }
         };
         frame.setUndecorated(true);
-        frame.setBackground(new Color(255,255,255,0));
+        frame.setBackground(new Color(255, 255, 255, 0));
 
         JPanel title = new JPanel(new BorderLayout());
         DragWindowListener dwl = new DragWindowListener();
@@ -93,23 +93,23 @@ public final class MainPanel extends JPanel {
         title.addMouseMotionListener(dwl);
         title.setOpaque(false);
         //title.setBackground(Color.ORANGE);
-        title.setBorder(BorderFactory.createEmptyBorder(W,W,W,W));
+        title.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
 
         title.add(new JLabel(str, JLabel.CENTER));
         title.add(makeCloseButton(), BorderLayout.EAST);
         //title.add(iconify, BorderLayout.WEST);
 
         ResizeWindowListener rwl = new ResizeWindowListener(frame);
-        for(SideLabel l:Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
+        for (SideLabel l:Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
             l.addMouseListener(rwl);
             l.addMouseMotionListener(rwl);
         }
 
-        JPanel titlePanel = new JPanel(new BorderLayout(0,0));
+        JPanel titlePanel = new JPanel(new BorderLayout(0, 0));
         titlePanel.add(top,           BorderLayout.NORTH);
         titlePanel.add(title,         BorderLayout.CENTER);
 
-        JPanel northPanel = new JPanel(new BorderLayout(0,0));
+        JPanel northPanel = new JPanel(new BorderLayout(0, 0));
         northPanel.add(topleft,       BorderLayout.WEST);
         northPanel.add(titlePanel,    BorderLayout.CENTER);
         northPanel.add(topright,      BorderLayout.EAST);
@@ -143,10 +143,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         MainPanel p = new MainPanel();
@@ -207,10 +207,10 @@ class ResizeWindowListener extends MouseAdapter {
         rect = frame.getBounds();
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if(rect==null) {
+        if (rect == null) {
             return;
         }
-        Side side = ((SideLabel)e.getComponent()).side;
+        Side side = ((SideLabel) e.getComponent()).side;
         frame.setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
     }
     private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
@@ -259,18 +259,18 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if(window==null) {
+        if (window == null) {
             Object o = me.getSource();
-            if(o instanceof Window) {
-                window = (Window)o;
-            }else if(o instanceof JComponent) {
+            if (o instanceof Window) {
+                window = (Window) o;
+            } else if (o instanceof JComponent) {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window!=null) {
+        if (window != null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

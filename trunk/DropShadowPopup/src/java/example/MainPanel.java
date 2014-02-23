@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         label.setComponentPopupMenu(popup1);
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
+                JCheckBox c = (JCheckBox) e.getSource();
                 label.setComponentPopupMenu(c.isSelected() ? popup1 : popup0);
             }
         });
@@ -35,17 +35,17 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void initPopupMenu(JPopupMenu p) {
-        for(JComponent c: Arrays.<JComponent>asList(
+        for (JComponent c: Arrays.<JComponent>asList(
             new JMenuItem("Open(dummy)"),
             new JMenuItem("Save(dummy)"),
             new JMenuItem("Close(dummy)"),
             new JSeparator(),
             new JMenuItem(new AbstractAction("Exit") {
                 @Override public void actionPerformed(ActionEvent e) {
-                    JMenuItem m = (JMenuItem)e.getSource();
-                    JPopupMenu pop = (JPopupMenu)SwingUtilities.getUnwrappedParent(m);
+                    JMenuItem m = (JMenuItem) e.getSource();
+                    JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
                     Window w = SwingUtilities.getWindowAncestor(pop.getInvoker());
-                    if(w != null) {
+                    if (w != null) {
                         w.dispose();
                     }
                 }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -95,14 +95,14 @@ class DropShadowPopupMenu extends JPopupMenu {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g); //???: Windows LnF
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
         g2.setPaint(getBackground()); //??? 1.7.0_03
-        g2.fillRect(0,0,getWidth()-OFFSET,getHeight()-OFFSET);
+        g2.fillRect(0, 0, getWidth()-OFFSET, getHeight()-OFFSET);
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
-        if(inner==null) {
+        if (inner == null) {
             inner = getBorder();
         }
         setBorder(makeShadowBorder(c, new Point(x, y)));
@@ -110,14 +110,14 @@ class DropShadowPopupMenu extends JPopupMenu {
         Dimension d = getPreferredSize();
         int w = d.width;
         int h = d.height;
-        if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
+        if (shadow == null || shadow.getWidth() != w || shadow.getHeight() != h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
             g2.setPaint(Color.BLACK);
-            for(int i=0;i<OFFSET;i++) {
-                g2.fillRoundRect(OFFSET, OFFSET, w-OFFSET-OFFSET+i, h-OFFSET-OFFSET+i, 4, 4);
+            for (int i = 0; i < OFFSET; i++) {
+                g2.fillRoundRect(OFFSET, OFFSET, w - OFFSET - OFFSET + i, h - OFFSET - OFFSET + i, 4, 4);
             }
             g2.dispose();
         }
@@ -127,13 +127,13 @@ class DropShadowPopupMenu extends JPopupMenu {
         Rectangle r = SwingUtilities.getWindowAncestor(c).getBounds();
         Dimension d = this.getPreferredSize();
         SwingUtilities.convertPointToScreen(p, c);
-        //System.out.println(r+" : "+p);
+        //System.out.println(r + " : " + p);
         //pointed out by sawshun
         Border outer;
-        if(r.contains(p.x, p.y, d.width+OFFSET, d.height+OFFSET)) {
-            outer = BorderFactory.createEmptyBorder(0,0,OFFSET,OFFSET);
-        }else{
-            outer = new ShadowBorder(OFFSET,OFFSET,this,p);
+        if (r.contains(p.x, p.y, d.width + OFFSET, d.height + OFFSET)) {
+            outer = BorderFactory.createEmptyBorder(0, 0, OFFSET, OFFSET);
+        } else {
+            outer = new ShadowBorder(OFFSET, OFFSET, this, p);
         }
         return BorderFactory.createCompoundBorder(outer, inner);
     }
@@ -149,11 +149,11 @@ class ShadowBorder extends AbstractBorder {
         this.xoff = x;
         this.yoff = y;
         BufferedImage bi = null;
-        try{
+        try {
             Robot robot = new Robot();
             Dimension d = c.getPreferredSize();
-            bi = robot.createScreenCapture(new Rectangle(p.x, p.y, d.width+xoff, d.height+yoff));
-        }catch(AWTException ex) {
+            bi = robot.createScreenCapture(new Rectangle(p.x, p.y, d.width + xoff, d.height + yoff));
+        } catch (AWTException ex) {
             ex.printStackTrace();
         }
         screen = bi;
@@ -162,30 +162,30 @@ class ShadowBorder extends AbstractBorder {
         return new Insets(0, 0, xoff, yoff);
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        if(screen==null) {
+        if (screen == null) {
             return;
         }
-        if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
+        if (shadow == null || shadow.getWidth() != w || shadow.getHeight() != h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
             g2.setPaint(Color.BLACK);
-            for(int i=0;i<xoff;i++) {
-                g2.fillRoundRect(xoff, xoff, w-xoff-xoff+i, h-xoff-xoff+i, 4, 4);
+            for (int i = 0; i < xoff; i++) {
+                g2.fillRoundRect(xoff, xoff, w - xoff - xoff + i, h - xoff - xoff + i, 4, 4);
             }
             g2.dispose();
         }
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.drawImage(screen, 0, 0, c);
         g2d.drawImage(shadow, 0, 0, c);
         g2d.setPaint(c.getBackground()); //??? 1.7.0_03
-        g2d.fillRect(x,y,w-xoff,h-yoff);
+        g2d.fillRect(x, y, w - xoff, h - yoff);
         g2d.dispose();
     }
 }
 /*/
-//JDK 1.7.0: JPopupMenu#setBackground(new Color(0,true));
+//JDK 1.7.0: JPopupMenu#setBackground(new Color(0, true));
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
     private transient BufferedImage shadow;
@@ -200,14 +200,14 @@ class DropShadowPopupMenu extends JPopupMenu {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
         g2.setPaint(getBackground()); //??? 1.7.0_03
-        g2.fillRect(0,0,getWidth()-OFFSET,getHeight()-OFFSET);
+        g2.fillRect(0, 0, getWidth()-OFFSET, getHeight()-OFFSET);
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
-        if(border==null) {
+        if (border == null) {
             Border inner = getBorder();
             Border outer = BorderFactory.createEmptyBorder(0, 0, OFFSET, OFFSET);
             border = BorderFactory.createCompoundBorder(outer, inner);
@@ -216,22 +216,22 @@ class DropShadowPopupMenu extends JPopupMenu {
         Dimension d = getPreferredSize();
         int w = d.width;
         int h = d.height;
-        if(shadow==null || shadow.getWidth()!=w || shadow.getHeight()!=h) {
+        if (shadow == null || shadow.getWidth() != w || shadow.getHeight() != h) {
             shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = shadow.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
             g2.setPaint(Color.BLACK);
-            for(int i=0;i<OFFSET;i++) {
-                g2.fillRoundRect(OFFSET, OFFSET, w-OFFSET-OFFSET+i, h-OFFSET-OFFSET+i, 4, 4);
+            for (int i = 0; i < OFFSET; i++) {
+                g2.fillRoundRect(OFFSET, OFFSET, w - OFFSET - OFFSET + i, h - OFFSET - OFFSET + i, 4, 4);
             }
             g2.dispose();
         }
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 Window pop = SwingUtilities.getWindowAncestor(DropShadowPopupMenu.this);
-                if(pop instanceof JWindow) {
-                    pop.setBackground(new Color(0,true)); //JDK 1.7.0
+                if (pop instanceof JWindow) {
+                    pop.setBackground(new Color(0, true)); //JDK 1.7.0
                 }
             }
         });

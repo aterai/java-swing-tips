@@ -39,15 +39,15 @@ public final class MainPanel extends JPanel {
             private final DefaultCellEditor dce = new DefaultCellEditor(new JTextField());
             @Override public void actionPerformed(ActionEvent e) {
                 table.clearSelection();
-                if(table.isEditing()) {
+                if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
                 table.setDefaultEditor(Object.class, objectCheck.isSelected() ? null : dce);
                 table.setEnabled(!editableCheck.isSelected());
             }
         };
-        JPanel p = new JPanel(new GridLayout(3,1));
-        for(JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {
+        JPanel p = new JPanel(new GridLayout(3, 1));
+        for (JCheckBox cb: Arrays.asList(modelCheck, objectCheck, editableCheck)) {
             cb.addActionListener(al);
             p.add(cb);
         }
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

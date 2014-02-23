@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
         int charWidth = fm.charWidth('m');
         int tabWidth = charWidth * 4;
         TabStop[] tabs = new TabStop[10];
-        for(int j=0;j<tabs.length;j++) {
-            tabs[j] = new TabStop((j+1)*tabWidth);
+        for (int j = 0; j < tabs.length; j++) {
+            tabs[j] = new TabStop((j + 1) * tabWidth);
         }
         TabSet tabSet = new TabSet(tabs);
         SimpleAttributeSet attributes = new SimpleAttributeSet();
@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

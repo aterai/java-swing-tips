@@ -24,30 +24,30 @@ public final class MainPanel extends JPanel {
                 //combo.removeAllItems();
                 worker = new Task() {
                     @Override protected void process(List<Integer> chunks) {
-                        if(!isDisplayable()) {
+                        if (!isDisplayable()) {
                             System.out.println("process: DISPOSE_ON_CLOSE");
                             cancel(true);
                             return;
                         }
-                        for(Integer i: chunks) {
+                        for (Integer i: chunks) {
                             counter = i;
                         }
                         combo.setSelectedIndex(-1);
                         combo.repaint();
                     }
                     @Override public void done() {
-                        if(!isDisplayable()) {
+                        if (!isDisplayable()) {
                             System.out.println("done: DISPOSE_ON_CLOSE");
                             cancel(true);
                             return;
                         }
-                        try{
-                            if(!isCancelled()) {
+                        try {
+                            if (!isCancelled()) {
                                 String[] array = get();
                                 combo.setModel(new DefaultComboBoxModel<String>(array));
                                 combo.setSelectedIndex(0);
                             }
-                        }catch(InterruptedException | ExecutionException ex) {
+                        } catch (InterruptedException | ExecutionException ex) {
                             System.out.println("Interrupted");
                         }
                         combo.setEnabled(true);
@@ -70,17 +70,17 @@ public final class MainPanel extends JPanel {
             }
         };
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            if(index<0 && worker!=null && !worker.isDone()) {
+            if (index < 0 && worker != null && !worker.isDone()) {
                 bar.setFont(list.getFont());
-                bar.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+                bar.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
                 bar.setValue(counter);
                 return bar;
             }
-            return super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+            return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         }
         @Override public void updateUI() {
             super.updateUI();
-            if(bar!=null) {
+            if (bar != null) {
                 SwingUtilities.updateComponentTreeUI(bar);
             }
         }
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
 
     public JPanel createPanel(JComponent cmp, JButton btn, String str) {
 //         JPanel panel = new JPanel(new BorderLayout(5, 5));
-//         panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+//         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 //         panel.add(new JLabel(str), BorderLayout.WEST);
 //         panel.add(cmp);
 //         panel.add(btn, BorderLayout.EAST);
@@ -129,10 +129,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -150,14 +150,14 @@ class Task extends SwingWorker<String[], Integer> {
     @Override public String[] doInBackground() {
         int current = 0;
         List<String> list = new ArrayList<>();
-        while(current<=MAX && !isCancelled()) {
-            try{
+        while (current<=MAX && !isCancelled()) {
+            try {
                 Thread.sleep(50);
                 int iv = 100 * current / MAX;
                 publish(iv);
                 //setProgress(iv);
                 list.add("Test: " + current);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 break;
             }
             current++;

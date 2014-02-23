@@ -11,9 +11,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea();
-        textArea.setMargin(new Insets(2,5,2,2));
+        textArea.setMargin(new Insets(2, 5, 2, 2));
         textArea.setText(MESSAGE + NonEditableLineDocumentFilter.PROMPT);
-        ((AbstractDocument)textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
+        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
 
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -45,9 +45,9 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     public static final String LB = "\n";
     public static final String PROMPT = "> ";
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if(string == null) {
+        if (string == null) {
             return;
-        }else{
+        } else {
             replace(fb, offset, 0, string, attr);
         }
     }
@@ -60,16 +60,16 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
         int count = root.getElementCount();
         int index = root.getElementIndex(offset);
         Element cur = root.getElement(index);
-        int promptPosition = cur.getStartOffset()+PROMPT.length();
-        if(index==count-1 && offset-promptPosition>=0) {
+        int promptPosition = cur.getStartOffset() + PROMPT.length();
+        if (index == count - 1 && offset - promptPosition >= 0) {
             String str = text;
-            if(LB.equals(str)) {
-                String line = doc.getText(promptPosition, offset-promptPosition);
+            if (LB.equals(str)) {
+                String line = doc.getText(promptPosition, offset - promptPosition);
                 String[] args = line.split(" ");
                 String cmd = args[0];
-                if(cmd.isEmpty()) {
+                if (cmd.isEmpty()) {
                     str = String.format("%n%s", PROMPT);
-                }else{
+                } else {
                     str = String.format("%n%s: command not found%n%s", cmd, PROMPT);
                 }
             }

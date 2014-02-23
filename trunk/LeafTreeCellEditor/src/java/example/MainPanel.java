@@ -9,12 +9,12 @@ import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(1,2));
+        super(new GridLayout(1, 2));
         JTree tree1 = new JTree();
         tree1.setEditable(true);
 
         JTree tree2 = new JTree();
-        tree2.setCellEditor(new LeafTreeCellEditor(tree2, (DefaultTreeCellRenderer)tree2.getCellRenderer()));
+        tree2.setCellEditor(new LeafTreeCellEditor(tree2, (DefaultTreeCellRenderer) tree2.getCellRenderer()));
         tree2.setEditable(true);
 
         add(makeTitledPanel("DefaultTreeCellEditor", tree1));
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -58,9 +58,9 @@ class LeafTreeCellEditor extends DefaultTreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         boolean b = super.isCellEditable(e);
         Object o = tree.getLastSelectedPathComponent();
-        if(b && o instanceof TreeNode) {
-            return ((TreeNode)o).isLeaf();
-        }else{
+        if (b && o instanceof TreeNode) {
+            return ((TreeNode) o).isLeaf();
+        } else {
             return b;
         }
     }

@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
             }
         };
         //combo.setBorder(BorderFactory.createEmptyBorder());
-        //((JTextField)combo.getEditor().getEditorComponent()).setBorder(null);
-        //((JTextField)combo.getEditor().getEditorComponent()).setMargin(null);
+        //((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
+        //((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
         //combo.setBackground(Color.WHITE);
         //combo.setOpaque(true);
         //combo.setEditable(true);
@@ -75,10 +75,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

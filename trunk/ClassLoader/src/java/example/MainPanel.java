@@ -13,11 +13,11 @@ public final class MainPanel extends JPanel {
         URL url1 = getClass().getClassLoader().getResource("example/test.png");
         URL url2 = getClass().getResource("test.png");
 
-        JPanel p = new JPanel(new GridLayout(3,1,5,5));
+        JPanel p = new JPanel(new GridLayout(3, 1, 5, 5));
         p.add(new JLabel(new ImageIcon(url1)));
         p.add(makePanel("getClassLoader().getResource(\"example/test.png\")", new JLabel(url1.toString())));
         p.add(makePanel("getClass().getResource(\"test.png\")", new JLabel(url2.toString())));
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 180));
     }
@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

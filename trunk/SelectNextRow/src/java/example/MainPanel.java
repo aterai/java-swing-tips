@@ -29,8 +29,8 @@ public final class MainPanel extends JPanel {
         final Object orgTabAction = im.get(tab);
         JCheckBox checkBox = new JCheckBox(new AbstractAction("selectNextRow: VK_TAB") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                im.put(tab, cb.isSelected()?im.get(enter):orgTabAction);
+                JCheckBox cb = (JCheckBox) e.getSource();
+                im.put(tab, cb.isSelected() ? im.get(enter) : orgTabAction);
             }
         });
         checkBox.setSelected(true);
@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

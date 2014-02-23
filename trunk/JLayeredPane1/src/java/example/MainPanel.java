@@ -21,9 +21,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         layerPane = new BGImageLayeredPane(new ImageIcon(getClass().getResource("tokeidai.jpg")).getImage());
-        for(int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             JPanel p = createPanel(i);
-            p.setLocation(i*70 + 20, i*50 + 15);
+            p.setLocation(i * 70 + 20, i * 50 + 15);
             layerPane.add(p, BACKLAYER);
         }
         add(layerPane);
@@ -31,10 +31,10 @@ public final class MainPanel extends JPanel {
     }
 
     private static Color getColor(int i, float f) {
-        int r = (int)((i>>16 & 0xFF) * f);
-        int g = (int)((i>>8  & 0xFF) * f);
-        int b = (int)((i>>0  & 0xFF) * f);
-        return new Color(r,g,b);
+        int r = (int) ((i >> 16 & 0xFF) * f);
+        int g = (int) ((i >> 8  & 0xFF) * f);
+        int b = (int) ((i >> 0  & 0xFF) * f);
+        return new Color(r, g, b);
     }
 
     private JPanel createPanel(int i) {
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         label.setBorder(border1);
 
         JTextArea text = new JTextArea();
-        text.setMargin(new Insets(4,4,4,4));
+        text.setMargin(new Insets(4, 4, 4, 4));
         text.setLineWrap(true);
         text.setOpaque(false);
 
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -104,16 +104,16 @@ class DragMouseListener extends MouseAdapter {
         this.parent = parent;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JComponent panel = (JComponent)e.getComponent();
+        JComponent panel = (JComponent) e.getComponent();
         origin = e.getPoint();
         //選択された部品を上へ
         parent.moveToFront(panel);
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if(origin == null) {
+        if (origin == null) {
             return;
         }
-        JComponent panel = (JComponent)e.getComponent();
+        JComponent panel = (JComponent) e.getComponent();
         //ずれた分だけ JPanel を移動させる
         int dx = e.getX() - origin.x;
         int dy = e.getY() - origin.y;
@@ -131,12 +131,12 @@ class BGImageLayeredPane extends JLayeredPane {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(bgImage != null) {
+        if (bgImage != null) {
             int imageh = bgImage.getHeight(null);
             int imagew = bgImage.getWidth(null);
             Dimension d = getSize();
-            for(int h=0; h<d.getHeight(); h += imageh) {
-                for(int w=0; w<d.getWidth(); w += imagew) {
+            for (int h = 0; h < d.getHeight(); h += imageh) {
+                for (int w = 0; w < d.getWidth(); w += imagew) {
                     g.drawImage(bgImage, w, h, this);
                 }
             }

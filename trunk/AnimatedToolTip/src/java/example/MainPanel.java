@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         l1.setToolTipText("Test1");
         l2.setToolTipText("Test2");
-        l3.setToolTipText("<html><img src='"+url+"'>Test3</html>");
+        l3.setToolTipText("<html><img src='" + url + "'>Test3</html>");
 
         JPanel p1 = new JPanel(new BorderLayout());
         p1.setBorder(BorderFactory.createTitledBorder("javax.swing.Timer"));
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
         box.add(p2);
         box.add(Box.createVerticalGlue());
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -95,8 +95,8 @@ class AnimatedToolTip extends JToolTip {
 //     @Override public Dimension getPreferredSize() {
 //         Insets i = getInsets();
 //         Dimension d = iconlabel.getPreferredSize();
-//         d.width  += i.left+i.right;
-//         d.height += i.top+i.bottom;
+//         d.width  += i.left + i.right;
+//         d.height += i.top + i.bottom;
 //         return d;
 //     }
     @Override public void setTipText(final String tipText) {
@@ -119,10 +119,10 @@ class AnimatedLabel extends JLabel implements ActionListener {
         setIcon(icon);
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0) {
-                    if(isShowing()) {
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                    if (isShowing()) {
                         startAnimation();
-                    }else{
+                    } else {
                         stopAnimation();
                     }
                 }
@@ -145,25 +145,25 @@ class AnimatedLabel extends JLabel implements ActionListener {
 
 class AnimeIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Color ELLIPSE_COLOR = new Color(0.5f,0.5f,0.5f);
+    private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
     private static final double R  = 2.0d;
     private static final double SX = 1.0d;
     private static final double SY = 1.0d;
-    private static final int WIDTH  = (int)(R*8+SX*2);
-    private static final int HEIGHT = (int)(R*8+SY*2);
+    private static final int WIDTH  = (int) (R * 8 + SX * 2);
+    private static final int HEIGHT = (int) (R * 8 + SY * 2);
     private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
-        new Ellipse2D.Double(SX+3*R, SY+0*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+5*R, SY+1*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+6*R, SY+3*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+5*R, SY+5*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+3*R, SY+6*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+1*R, SY+5*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+0*R, SY+3*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+1*R, SY+1*R, 2*R, 2*R)));
+        new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 5 * R, SY + 1 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 6 * R, SY + 3 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 5 * R, SY + 5 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 3 * R, SY + 6 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 1 * R, SY + 5 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
     private boolean isRunning;
     public void next() {
-        if(isRunning) {
+        if (isRunning) {
             list.add(list.remove(0));
         }
     }
@@ -171,15 +171,15 @@ class AnimeIcon implements Icon, Serializable {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
-        g2d.setPaint(c==null ? Color.WHITE : c.getBackground());
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setPaint(c == null ? Color.WHITE : c.getBackground());
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(ELLIPSE_COLOR);
         g2d.translate(x, y);
         int size = list.size();
-        for(int i=0;i<size;i++) {
-            float alpha = isRunning ? (i+1)/(float)size : .5f;
+        for (int i = 0; i < size; i++) {
+            float alpha = isRunning ? (i + 1) / (float) size : .5f;
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.fill(list.get(i));
         }

@@ -11,12 +11,12 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(makeTestPanel("JSeparator", new JSeparator()));
         p.add(makeTestPanel("GradientSeparator", new GradientSeparator()));
 
         Box box = Box.createHorizontalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         box.add(Box.createHorizontalStrut(10));
         box.add(new JSeparator(JSeparator.VERTICAL));
         box.add(Box.createHorizontalStrut(10));
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     private static JPanel makeTestPanel(String title, JSeparator sp) {
         JPanel p = new JPanel(new GridBagLayout());
-        p.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(2, 2, 2, 2);
         c.gridheight = 1;
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -119,7 +119,7 @@ class GradientSeparator extends JSeparator {
     }
 }
 class GradientSeparatorUI extends BasicSeparatorUI{
-    private Color bgc,ssc,shc;
+    private Color bgc, ssc, shc;
 
     public static ComponentUI createUI(JComponent c) {
         return new GradientSeparatorUI();
@@ -137,16 +137,16 @@ class GradientSeparatorUI extends BasicSeparatorUI{
         updateColors(c);
     }
     @Override public void paint(Graphics g, JComponent c) {
-        if(c instanceof JSeparator) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (c instanceof JSeparator) {
+            Graphics2D g2 = (Graphics2D) g.create();
             Dimension s = c.getSize();
-            JSeparator js = (JSeparator)c;
-            if(js.getOrientation()==JSeparator.VERTICAL) {
+            JSeparator js = (JSeparator) c;
+            if (js.getOrientation() == JSeparator.VERTICAL) {
                 g2.setPaint(new GradientPaint(0, 0, ssc, 0, s.height, bgc, true));
                 g2.fillRect(0, 0, 1, s.height);
                 g2.setPaint(new GradientPaint(0, 0, shc, 0, s.height, bgc, true));
                 g2.fillRect(1, 0, 1, s.height);
-            }else{
+            } else {
                 g2.setPaint(new GradientPaint(0, 0, ssc, s.width, 0, bgc, true));
                 g2.fillRect(0, 0, s.width, 1);
                 g2.setPaint(new GradientPaint(0, 0, shc, s.width, 0, bgc, true));

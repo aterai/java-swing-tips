@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         @Override public void doLayout() {
             Insets i = getInsets();
             float f = .08f * (getWidth() - i.left - i.right);
-            if(Math.abs(fontSize - f) > 1.0e-1) {
+            if (Math.abs(fontSize - f) > 1.0e-1) {
                 setFont(font.deriveFont(f));
                 fontSize = f;
             }
@@ -25,9 +25,9 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         editor1.setFont(font);
-        editor1.setText("Default\n"+TEST);
+        editor1.setText("Default\n" + TEST);
         editor2.setFont(font);
-        editor2.setText("doLayout+deriveFont\n"+TEST);
+        editor2.setText("doLayout + deriveFont\n" + TEST);
 
         sp.setTopComponent(editor1);
         sp.setBottomComponent(editor2);
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

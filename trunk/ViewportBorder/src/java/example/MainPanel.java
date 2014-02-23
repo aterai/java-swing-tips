@@ -25,11 +25,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + INIT_TXT);
-        textArea1.setMargin(new Insets(5,5,5,5));
+        textArea1.setMargin(new Insets(5, 5, 5, 5));
         JScrollPane scroll1 = new JScrollPane(textArea1);
 
         JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + INIT_TXT);
-        textArea2.setMargin(new Insets(0,0,0,1));
+        textArea2.setMargin(new Insets(0, 0, 0, 1));
         JScrollPane scroll2 = new JScrollPane(textArea2);
         scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));
 
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

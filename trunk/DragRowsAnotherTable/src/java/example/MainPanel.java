@@ -62,12 +62,12 @@ public final class MainPanel extends JPanel {
     }
     public MainPanel() {
         super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(new JScrollPane(makeDnDTable()));
         p.add(new JScrollPane(makeDnDTable()));
         p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JTable"));
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -79,10 +79,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -109,56 +109,56 @@ class TableRowTransferHandler extends TransferHandler {
     @Override protected Transferable createTransferable(JComponent c) {
         source = c;
         JTable table = (JTable) c;
-        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
         ArrayList<Object> list = new ArrayList<Object>();
         indices = table.getSelectedRows();
-        for(int i: indices) {
+        for (int i: indices) {
             list.add(model.getDataVector().elementAt(i));
         }
         Object[] transferedObjects = list.toArray();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
-        JTable table = (JTable)info.getComponent();
+        JTable table = (JTable) info.getComponent();
         boolean isDropable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
         //XXX bug?
-        table.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
+        table.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         return isDropable;
     }
     @Override public int getSourceActions(JComponent c) {
         return MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @Override public boolean importData(TransferSupport info) {
-        if(!canImport(info)) {
+        if (!canImport(info)) {
             return false;
         }
         TransferHandler.DropLocation tdl = info.getDropLocation();
-        if(!(tdl instanceof JTable.DropLocation)) {
+        if (!(tdl instanceof JTable.DropLocation)) {
             return false;
         }
-        JTable.DropLocation dl = (JTable.DropLocation)tdl;
-        JTable target = (JTable)info.getComponent();
-        DefaultTableModel model = (DefaultTableModel)target.getModel();
+        JTable.DropLocation dl = (JTable.DropLocation) tdl;
+        JTable target = (JTable) info.getComponent();
+        DefaultTableModel model = (DefaultTableModel) target.getModel();
         int index = dl.getRow();
         //boolean insert = dl.isInsert();
         int max = model.getRowCount();
-        if(index<0 || index>max) {
+        if (index < 0 || index > max) {
             index = max;
         }
         addIndex = index;
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        try{
-            Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
-            if(Objects.equals(source, target)) {
+        try {
+            Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            if (Objects.equals(source, target)) {
                 addCount = values.length;
             }
-            for(int i=0;i<values.length;i++) {
+            for (int i = 0; i < values.length; i++) {
                 int idx = index++;
-                model.insertRow(idx, (Vector)values[i]);
+                model.insertRow(idx, (Vector) values[i]);
                 target.getSelectionModel().addSelectionInterval(idx, idx);
             }
             return true;
-        }catch(UnsupportedFlavorException | IOException ex) {
+        } catch (UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
         }
         return false;
@@ -167,17 +167,17 @@ class TableRowTransferHandler extends TransferHandler {
         cleanup(c, action == MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
-        if(remove && indices != null) {
+        if (remove && indices != null) {
             c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            DefaultTableModel model = (DefaultTableModel)((JTable)c).getModel();
-            if(addCount > 0) {
-                for(int i=0;i<indices.length;i++) {
-                    if(indices[i]>=addIndex) {
+            DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
+            if (addCount > 0) {
+                for (int i = 0; i < indices.length; i++) {
+                    if (indices[i] >= addIndex) {
                         indices[i] += addCount;
                     }
                 }
             }
-            for(int i=indices.length-1;i>=0;i--) {
+            for (int i=indices.length - 1; i >= 0; i--) {
                 model.removeRow(indices[i]);
             }
         }

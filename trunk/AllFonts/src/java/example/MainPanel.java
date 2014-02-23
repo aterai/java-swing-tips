@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
         Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-        for(Font f: fonts) {
+        for (Font f: fonts) {
             model.addRow(new Object[] {f.getFamily(), f.getName(), f.getPSName()});
         }
         add(new JScrollPane(table));
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

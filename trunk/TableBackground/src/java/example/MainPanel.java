@@ -56,9 +56,9 @@ public final class MainPanel extends JPanel {
         check.setSelected(true);
         check.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     scroll.getViewport().setOpaque(true);
-                }else if(e.getStateChange()==ItemEvent.DESELECTED) {
+                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                     scroll.getViewport().setOpaque(false);
                 }
                 scroll.repaint();
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", model.getRowCount(), false});
@@ -97,14 +97,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -134,10 +134,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

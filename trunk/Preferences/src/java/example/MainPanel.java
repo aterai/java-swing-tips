@@ -15,22 +15,22 @@ public final class MainPanel extends JPanel {
     private final JButton exitButton = new JButton(new AbstractAction("exit") {
         @Override public void actionPerformed(ActionEvent e) {
             saveLocation();
-            Window window = SwingUtilities.getWindowAncestor((Component)e.getSource());
-            if(window!=null) {
+            Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
+            if (window != null) {
                 window.dispose();
             }
         }
     });
     private final JButton clearButton = new JButton(new AbstractAction("Preferences#clear() and JFrame#dispose()") {
         @Override public void actionPerformed(ActionEvent e) {
-            try{
+            try {
                 prefs.clear();
                 prefs.flush();
-            }catch(BackingStoreException ex) {
+            } catch (BackingStoreException ex) {
                 ex.printStackTrace();
             }
-            Window window = SwingUtilities.getWindowAncestor((Component)e.getSource());
-            if(window!=null) {
+            Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
+            if (window != null) {
                 window.dispose();
             }
         }
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel(JFrame frame) {
         super(new BorderLayout());
-        this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.prefs = Preferences.userNodeForPackage(getClass());
         frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
@@ -48,20 +48,20 @@ public final class MainPanel extends JPanel {
         });
         frame.addComponentListener(new ComponentAdapter() {
             @Override public void componentMoved(ComponentEvent e) {
-                JFrame frame = (JFrame)e.getComponent();
-                if(frame.getExtendedState()==JFrame.NORMAL) {
+                JFrame frame = (JFrame) e.getComponent();
+                if (frame.getExtendedState() == JFrame.NORMAL) {
                     Point pt = frame.getLocationOnScreen();
-                    if(pt.x<0 || pt.y<0) { return; }
-                    try{
+                    if (pt.x < 0 || pt.y < 0) { return; }
+                    try {
                         pos.setLocation(pt);
-                    }catch(IllegalComponentStateException icse) {
+                    } catch (IllegalComponentStateException icse) {
                         icse.printStackTrace();
                     }
                 }
             }
             @Override public void componentResized(ComponentEvent e) {
-                JFrame frame = (JFrame)e.getComponent();
-                if(frame.getExtendedState()==JFrame.NORMAL) {
+                JFrame frame = (JFrame) e.getComponent();
+                if (frame.getExtendedState() == JFrame.NORMAL) {
                     dim.setSize(getSize());
                 }
             }
@@ -76,27 +76,27 @@ public final class MainPanel extends JPanel {
         add(new JLabel("TEST"));
         add(box, BorderLayout.SOUTH);
 
-        int wdim = prefs.getInt(PREFIX+"dimw", dim.width);
-        int hdim = prefs.getInt(PREFIX+"dimh", dim.height);
+        int wdim = prefs.getInt(PREFIX + "dimw", dim.width);
+        int hdim = prefs.getInt(PREFIX + "dimh", dim.height);
         dim.setSize(wdim, hdim);
         setPreferredSize(dim);
 
         Rectangle screen = frame.getGraphicsConfiguration().getBounds();
-        pos.setLocation(screen.x + screen.width/2  - dim.width/2,
-                        screen.y + screen.height/2 - dim.height/2);
-        int xpos = prefs.getInt(PREFIX+"locx", pos.x);
-        int ypos = prefs.getInt(PREFIX+"locy", pos.y);
-        pos.setLocation(xpos,ypos);
+        pos.setLocation(screen.x + screen.width / 2  - dim.width / 2,
+                        screen.y + screen.height / 2 - dim.height / 2);
+        int xpos = prefs.getInt(PREFIX + "locx", pos.x);
+        int ypos = prefs.getInt(PREFIX + "locy", pos.y);
+        pos.setLocation(xpos, ypos);
         frame.setLocation(pos.x, pos.y);
     }
     private void saveLocation() {
-        prefs.putInt(PREFIX+"locx", pos.x);
-        prefs.putInt(PREFIX+"locy", pos.y);
-        prefs.putInt(PREFIX+"dimw", dim.width);
-        prefs.putInt(PREFIX+"dimh", dim.height);
-        try{
+        prefs.putInt(PREFIX + "locx", pos.x);
+        prefs.putInt(PREFIX + "locy", pos.y);
+        prefs.putInt(PREFIX + "dimw", dim.width);
+        prefs.putInt(PREFIX + "dimh", dim.height);
+        try {
             prefs.flush();
-        }catch(BackingStoreException e) {
+        } catch (BackingStoreException e) {
             e.printStackTrace();
         }
     }
@@ -109,10 +109,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

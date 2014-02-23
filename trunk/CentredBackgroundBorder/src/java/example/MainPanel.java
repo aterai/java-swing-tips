@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JTextArea area = new JTextArea();
         //area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 32));
         area.setForeground(Color.WHITE);
-        area.setBackground(new Color(0,0,0,0)); //Nimbus
+        area.setBackground(new Color(0, 0, 0, 0)); //Nimbus
         area.setLineWrap(true);
         area.setOpaque(false);
         area.setText("  public static void createAndShowGUI() {\n"
@@ -40,16 +40,16 @@ public final class MainPanel extends JPanel {
 
     private BufferedImage getFilteredImage(URL url) {
         BufferedImage image;
-        try{
+        try {
             image = ImageIO.read(url);
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for(int i=0;i<256;i++) {
-            b[i] = (byte)(i*0.2f);
+        for (int i = 0; i < 256; i++) {
+            b[i] = (byte) (i * .2f);
         }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
         op.filter(image, dest);
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -87,9 +87,9 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = x + (width-image.getWidth())/2;
-        int cy = y + (height-image.getHeight())/2;
-        Graphics2D g2 = (Graphics2D)g.create();
+        int cx = x + (width  - image.getWidth())  / 2;
+        int cy = y + (height - image.getHeight()) / 2;
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
         g2.dispose();
     }

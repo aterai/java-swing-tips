@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridBagLayout());
-        Border inside  = BorderFactory.createEmptyBorder(10,5+2,10,10+2);
+        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("JLabel text-align:justify");
         p.setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 
         add(p);
         add(new JustifiedLabel("あいうえおかきくけこ"), BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -58,10 +58,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -83,7 +83,7 @@ class JustifiedLabel extends JLabel {
         super(str);
 //         Dimension d = getPreferredSize();
 //         int baseline = getBaseline(d.width, d.height);
-//         setAlignmentY(baseline/(float)d.height);
+//         setAlignmentY(baseline/(float) d.height);
     }
 //     @Override public Dimension getMinimumSize() {
 //         return getPreferredSize();
@@ -97,16 +97,16 @@ class JustifiedLabel extends JLabel {
 //         return 120;
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
-        if(w!=prevWidth) {
+        if (w!=prevWidth) {
             gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
             prevWidth = w;
         }
-        if(gvtext==null) {
+        if (gvtext == null) {
             super.paintComponent(g);
-        }else{
+        } else {
             g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());
         }
         g2.dispose();
@@ -114,14 +114,15 @@ class JustifiedLabel extends JLabel {
     private GlyphVector getJustifiedGlyphVector(String str, Font font, FontRenderContext frc) {
         GlyphVector gv = font.createGlyphVector(frc, str);
         Rectangle2D r = gv.getVisualBounds();
-        float jwidth = (float)getWidth();
-        float vwidth = (float)r.getWidth();
-        if(jwidth<vwidth) { return gv; }
-
-        float xx = (jwidth-vwidth) / (float)(gv.getNumGlyphs()-1);
+        float jwidth = (float) getWidth();
+        float vwidth = (float) r.getWidth();
+        if (jwidth < vwidth) {
+            return gv;
+        }
+        float xx = (jwidth - vwidth) / (float) (gv.getNumGlyphs() - 1);
         float xpos = 0.0f;
         Point2D gmPos = new Point2D.Double(0.0d, 0.0d);
-        for(int i=0;i<gv.getNumGlyphs();i++) {
+        for (int i = 0; i < gv.getNumGlyphs(); i++) {
             GlyphMetrics gm = gv.getGlyphMetrics(i);
             gmPos.setLocation(xpos, 0);
             gv.setGlyphPosition(i, gmPos);

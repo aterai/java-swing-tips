@@ -11,30 +11,30 @@ public final class MainPanel extends JPanel {
     private static final String DEVICE_NAME = "con.txt";
     public MainPanel() {
         super(new BorderLayout(10, 10));
-        JPanel p = new JPanel(new GridLayout(3,1,10,10));
+        JPanel p = new JPanel(new GridLayout(3, 1, 10, 10));
         p.add(makePanel("IOException", new JButton(new AbstractAction("c:/con.txt") {
             @Override public void actionPerformed(ActionEvent ae) {
                 File file = new File(DEVICE_NAME);
-                try{
-                    if(file.createNewFile()) {
+                try {
+                    if (file.createNewFile()) {
                         System.out.println("the named file does not exist and was successfully created.");
-                    }else{
+                    } else {
                         System.out.println("the named file already exists.");
                     }
-                }catch(IOException ioe) {
+                } catch (IOException ioe) {
                     ioe.printStackTrace();
                     Object[] obj = {ioe.getMessage()};
                     JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
 //                 JFileChooser fileChooser = new JFileChooser();
 //                 int retvalue = fileChooser.showOpenDialog(MainPanel.this);
-//                 if(retvalue==JFileChooser.APPROVE_OPTION) {
+//                 if (retvalue == JFileChooser.APPROVE_OPTION) {
 //                     File file = fileChooser.getSelectedFile();
 //                     System.out.println(file.getAbsolutePath());
-//                     try{
+//                     try {
 //                         file.createNewFile();
 //                         file.deleteOnExit();
-//                     }catch(IOException ioe) {
+//                     } catch (IOException ioe) {
 //                         ioe.printStackTrace();
 //                     }
 //                 }
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         p.add(makePanel("getCanonicalPath", new JButton(new AbstractAction("c:/con.txt:getCanonicalPath") {
             @Override public void actionPerformed(ActionEvent ae) {
                 File file = new File(DEVICE_NAME);
-                if(!isCanonicalPath(file)) {
+                if (!isCanonicalPath(file)) {
                     Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
                     JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         p.add(makePanel("isFile: JDK 1.5+ ", new JButton(new AbstractAction("c:/con.txt:isFile") {
             @Override public void actionPerformed(ActionEvent ae) {
                 File file = new File(DEVICE_NAME);
-                if(!file.isFile()) {
+                if (!file.isFile()) {
                     Object[] obj = {file.getAbsolutePath() + " is not a file."};
                     JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private boolean isCanonicalPath(File file) {
-        if(file==null) { return false; }
-        try{
-            if(file.getCanonicalPath()==null) { return false; }
-        }catch(IOException ioe) {
+        if (file == null) { return false; }
+        try {
+            if (file.getCanonicalPath() == null) { return false; }
+        } catch (IOException ioe) {
             return false;
         }
         return true;
@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

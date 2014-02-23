@@ -11,9 +11,9 @@ import javax.swing.text.html.*;
 public final class MainPanel extends JPanel {
     private static Font makeFont(URL url) {
         Font font = null;
-        try(InputStream is = url.openStream()) {
+        try (InputStream is = url.openStream()) {
             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
-        }catch(IOException | FontFormatException ex) {
+        } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }
         return font;
@@ -23,13 +23,13 @@ public final class MainPanel extends JPanel {
         Font font = makeFont(getClass().getResource("Burnstown Dam.ttf"));
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
 
-        JPanel p = new JPanel(new GridLayout(0,1));
+        JPanel p = new JPanel(new GridLayout(0, 1));
         JLabel label = new JLabel();
         label.setFont(font.deriveFont(Font.PLAIN, 24));
         label.setText("1: setFont(font.deriveFont(Font.PLAIN, 24))");
         p.add(label);
         JLabel label2 = new JLabel();
-        label2.setText("<html><font size='+3' face='Burnstown Dam'>2: html,font,size,+3</font></html>");
+        label2.setText("<html><font size='+3' face='Burnstown Dam'>2: html, font, size,+3</font></html>");
         p.add(label2);
 
         StyleSheet styleSheet = new StyleSheet();
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
         editor2.setFont(font);
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setText("4: putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE)");
-        JPanel p2 = new JPanel(new GridLayout(0,1));
+        JPanel p2 = new JPanel(new GridLayout(0, 1));
         p2.add(new JScrollPane(editor));
         p2.add(new JScrollPane(editor2));
 
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     }
     private static String makeTestHtml() {
         return "<html><body>"
-             + "<div>3: StyleSheet,body{font-size:24pt; font-family:Burnstown Dam;}</div>"
+             + "<div>3: StyleSheet, body{font-size:24pt; font-family:Burnstown Dam;}</div>"
              + "</body></html>";
     }
     public static void main(String[] args) {
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

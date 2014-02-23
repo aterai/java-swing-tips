@@ -19,9 +19,9 @@ public final class MainPanel extends JPanel {
         desktop = new JDesktopPane();
         //title, resizable, closable, maximizable, iconifiable
         immovableFrame = new JInternalFrame("immovable", false, false, true, true);
-        Component north = ((BasicInternalFrameUI)immovableFrame.getUI()).getNorthPane();
-        MouseMotionListener[] actions = (MouseMotionListener[])north.getListeners(MouseMotionListener.class);
-        for(int i=0;i<actions.length;i++) {
+        Component north = ((BasicInternalFrameUI) immovableFrame.getUI()).getNorthPane();
+        MouseMotionListener[] actions = (MouseMotionListener[]) north.getListeners(MouseMotionListener.class);
+        for (int i = 0; i < actions.length; i++) {
             north.removeMouseMotionListener(actions[i]);
         }
         //immovableFrame.setLocation(0, 0);
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -93,6 +93,6 @@ class MyInternalFrame extends JInternalFrame {
     public MyInternalFrame() {
         super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
         setSize(160, 100);
-        setLocation(XOFFSET*openFrameCount.intValue(), YOFFSET*openFrameCount.intValue());
+        setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
     }
 }

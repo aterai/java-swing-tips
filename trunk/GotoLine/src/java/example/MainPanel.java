@@ -16,12 +16,12 @@ public final class MainPanel extends JPanel {
     public MainPanel(JFrame frame) {
         super(new BorderLayout());
         String dummyStr = "aaaaaaaaaaaaa\n";
-        for(int i=0;i<2000;i++) {
+        for (int i = 0; i < 2000; i++) {
             textArea.append(dummyStr);
         }
 
         scroll.setRowHeaderView(new LineNumberView(textArea));
-        textArea.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
+        textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 
         JButton button = new JButton(new AbstractAction("Goto Line") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -29,15 +29,15 @@ public final class MainPanel extends JPanel {
                 Element root = doc.getDefaultRootElement();
                 int i = Integer.parseInt(textField.getText().trim());
                 i = Math.max(1, Math.min(root.getElementCount(), i));
-                try{
-                    Element elem = root.getElement(i-1);
+                try {
+                    Element elem = root.getElement(i - 1);
                     Rectangle rect = textArea.modelToView(elem.getStartOffset());
                     Rectangle vr = scroll.getViewport().getViewRect();
                     rect.setSize(10, vr.height);
                     textArea.scrollRectToVisible(rect);
                     textArea.setCaretPosition(elem.getStartOffset());
                     //textArea.requestFocus();
-                }catch(BadLocationException ble) {
+                } catch (BadLocationException ble) {
                     Toolkit.getDefaultToolkit().beep();
                 }
             }
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -146,7 +146,7 @@ class LineNumberView extends JComponent {
         int end   = getLineAtPoint(base + clip.height);
         int y     = start * fontHeight;
         int rmg   = getBorder().getBorderInsets(this).right;
-        for(int i=start;i<=end;i++) {
+        for (int i = start; i <= end; i++) {
             String text = String.valueOf(i + 1);
             int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
             y += fontAscent;

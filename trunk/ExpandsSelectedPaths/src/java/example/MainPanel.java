@@ -43,16 +43,16 @@ public final class MainPanel extends JPanel {
         return sp;
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
-        TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node == null) {
             return;
         }
-        if(node.toString().equals(q)) {
+        if (node.toString().equals(q)) {
             tree.addSelectionPath(path);
         }
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
+            while (e.hasMoreElements()) {
                 searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
             }
         }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private MainPanel(final JFrame frame) {
         super();
         setPreferredSize(new Dimension(320, 240));
-        if(!SystemTray.isSupported()) {
+        if (!SystemTray.isSupported()) {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;
         }
@@ -24,9 +24,9 @@ public final class MainPanel extends JPanel {
 //         BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 //         ImageIcon i = new ImageIcon(getClass().getResource("16x16.png"));
 //         Graphics2D g = image.createGraphics();
-//         g.setBackground(new Color(0,0,0,0));
-//         g.clearRect(0,0,d.width,d.height);
-//         i.paintIcon(null, g, (d.width-i.getIconWidth())/2, (d.height-i.getIconWidth())/2);
+//         g.setBackground(new Color(0, 0, 0, 0));
+//         g.clearRect(0, 0, d.width, d.height);
+//         i.paintIcon(null, g, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
 //         g.dispose();
         final Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
         final PopupMenu popup = new PopupMenu();
@@ -50,9 +50,9 @@ public final class MainPanel extends JPanel {
         popup.add(item1);
         popup.add(item2);
 
-        try{
+        try {
             tray.add(icon);
-        }catch(AWTException e) {
+        } catch (AWTException e) {
             e.printStackTrace();
         }
     }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

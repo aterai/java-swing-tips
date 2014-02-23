@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         panel.add(new JLabel("Please enter your email adress twice for confirmation:"));
         panel.add(pf2);
         panel.add(Box.createVerticalStrut(5));
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(panel, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("Dummy")));
         setPreferredSize(new Dimension(320, 240));
@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -60,16 +60,16 @@ class TextFieldPopupMenu extends JPopupMenu {
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             Component c = getInvoker();
-            if(c instanceof JTextComponent) {
-                ((JTextComponent)c).replaceSelection(null);
+            if (c instanceof JTextComponent) {
+                ((JTextComponent) c).replaceSelection(null);
             }
         }
     };
     private final Action cut2Action = new AbstractAction("cut2") {
         @Override public void actionPerformed(ActionEvent e) {
             Component c = getInvoker();
-            if(c instanceof JTextComponent) {
-                ((JTextComponent)c).cut();
+            if (c instanceof JTextComponent) {
+                ((JTextComponent) c).cut();
             }
         }
     };
@@ -84,10 +84,10 @@ class TextFieldPopupMenu extends JPopupMenu {
     }
     @Override public void show(Component c, int x, int y) {
         boolean flg;
-        if(c instanceof JTextComponent) {
-            JTextComponent field = (JTextComponent)c;
-            flg = field.getSelectedText()!=null;
-        }else{
+        if (c instanceof JTextComponent) {
+            JTextComponent field = (JTextComponent) c;
+            flg = field.getSelectedText() != null;
+        } else {
             flg = false;
         }
         cutAction.setEnabled(flg);

@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         IIOMetadataNode root = null;
         Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
-        ImageReader reader = (ImageReader)readers.next();
+        ImageReader reader = (ImageReader) readers.next();
         final StringBuilder buf = new StringBuilder();
-        try(InputStream is = getClass().getResourceAsStream("test.jpg");
-            ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+        try (InputStream is = getClass().getResourceAsStream("test.jpg");
+             ImageInputStream iis = ImageIO.createImageInputStream(is)) {
             //FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
             reader.setInput(iis, true);
 
@@ -30,21 +30,21 @@ public final class MainPanel extends JPanel {
             buf.append(String.format("Height: %d%n", reader.getHeight(0)));
 
             IIOMetadata meta = reader.getImageMetadata(0);
-            for(String s:meta.getMetadataFormatNames()) {
-                buf.append(String.format("MetadataFormatName: %s%n",s));
+            for (String s:meta.getMetadataFormatNames()) {
+                buf.append(String.format("MetadataFormatName: %s%n", s));
             }
 
-            root = (IIOMetadataNode)meta.getAsTree("javax_imageio_jpeg_image_1.0");
+            root = (IIOMetadataNode) meta.getAsTree("javax_imageio_jpeg_image_1.0");
             //root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
 
             NodeList com = root.getElementsByTagName("com");
-            if(com.getLength()>0) {
-                String comment = ((IIOMetadataNode)com.item(0)).getAttribute("comment");
+            if (com.getLength() > 0) {
+                String comment = ((IIOMetadataNode) com.item(0)).getAttribute("comment");
                 buf.append(String.format("Comment: %s%n", comment));
             }
             buf.append("------------\n");
             print(buf, root, 0);
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         JTextArea log = new JTextArea(buf.toString());
@@ -59,21 +59,21 @@ public final class MainPanel extends JPanel {
     private void print(StringBuilder buf, Node node, int level) {
         StringBuilder indent = new StringBuilder();
         int l = level * 2;
-        while(l>0) {
+        while (l > 0) {
             indent.append(' ');
             l--;
         }
         buf.append(String.format("%s%s%n", indent, node.getNodeName()));
-        if(node.hasAttributes()) {
-            for(int i=0;i<node.getAttributes().getLength();i++) {
+        if (node.hasAttributes()) {
+            for (int i = 0; i < node.getAttributes().getLength(); i++) {
                 Node attr = node.getAttributes().item(i);
                 buf.append(String.format("%s    #%s=%s%n", indent, attr.getNodeName(), attr.getNodeValue()));
             }
         }
-        if(node.hasChildNodes()) {
-            for(int i=0;i<node.getChildNodes().getLength();i++) {
+        if (node.hasChildNodes()) {
+            for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 Node child = node.getChildNodes().item(i);
-                print(buf, child, level+1);
+                print(buf, child, level + 1);
             }
         }
     }
@@ -86,10 +86,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -116,10 +116,10 @@ class XMLTreeNode implements TreeNode {
         this.parent = parent;
     }
     public boolean isShowAttributes() {
-        if(showAttributes != null) {
+        if (showAttributes != null) {
             return showAttributes.booleanValue();
         }
-        if(parent != null) {
+        if (parent != null) {
             return parent.isShowAttributes();
         }
         return false;
@@ -129,18 +129,18 @@ class XMLTreeNode implements TreeNode {
     }
     private String getXMLTag() {
         boolean includeAttributes = isShowAttributes();
-        if(xmlNode instanceof Element && includeAttributes) {
-            Element e = (Element)xmlNode;
+        if (xmlNode instanceof Element && includeAttributes) {
+            Element e = (Element) xmlNode;
             StringBuilder buf = new StringBuilder();
             buf.append(e.getTagName());
-            if(e.hasAttributes()) {
+            if (e.hasAttributes()) {
                 NamedNodeMap attr = e.getAttributes();
                 int count = attr.getLength();
-                for(int i=0;i<count;i++) {
+                for (int i = 0; i < count; i++) {
                     Node a = attr.item(i);
-                    if(i==0) {
+                    if (i == 0) {
                         buf.append(" [");
-                    }else{
+                    } else {
                         buf.append(", ");
                     }
                     buf.append(a.getNodeName()).append('=').append(a.getNodeValue());
@@ -148,13 +148,13 @@ class XMLTreeNode implements TreeNode {
                 buf.append(']');
             }
             return buf.toString();
-        }else if(xmlNode instanceof Text) {
+        } else if (xmlNode instanceof Text) {
             return xmlNode.getNodeValue();
         }
         return xmlNode.getNodeName();
     }
 //     private List<XMLTreeNode> getChildren() {
-//         if(list==null) {
+//         if (list == null) {
 //             loadChildren();
 //         }
 //         return new ArrayList<XMLTreeNode>(list);
@@ -163,16 +163,16 @@ class XMLTreeNode implements TreeNode {
         NodeList cn = xmlNode.getChildNodes();
         int count = cn.getLength();
         list = new ArrayList<XMLTreeNode>(count);
-        for(int i=0;i<count;i++) {
+        for (int i = 0; i < count; i++) {
             Node c = cn.item(i);
-            if(c instanceof Text && c.getNodeValue().trim().length()==0) {
+            if (c instanceof Text && c.getNodeValue().trim().length() == 0) {
                 continue;
             }
             list.add(new XMLTreeNode(cn.item(i), this));
         }
     }
     @Override public Enumeration children() {
-        if(list==null) {
+        if (list == null) {
             loadChildren();
         }
         final Iterator<XMLTreeNode> iter = list.iterator();
@@ -185,24 +185,24 @@ class XMLTreeNode implements TreeNode {
         return true;
     }
     @Override public TreeNode getChildAt(int childIndex) {
-        if(list==null) {
+        if (list == null) {
             loadChildren();
         }
         return list.get(childIndex);
     }
     @Override public int getChildCount() {
-        if(list==null) {
+        if (list == null) {
             loadChildren();
         }
         return list.size();
     }
     @Override public int getIndex(TreeNode node) {
-        if(list==null) {
+        if (list == null) {
             loadChildren();
         }
         int i=0;
-        for(XMLTreeNode c : list) {
-            if(xmlNode==c.xmlNode) {
+        for (XMLTreeNode c : list) {
+            if (xmlNode == c.xmlNode) {
                 return i;
             }
             i++;
@@ -213,10 +213,10 @@ class XMLTreeNode implements TreeNode {
         return parent;
     }
     @Override public boolean isLeaf() {
-        if(xmlNode instanceof Element) {
+        if (xmlNode instanceof Element) {
             return false;
         }
-        if(list==null) {
+        if (list == null) {
             loadChildren();
         }
         return list.isEmpty();

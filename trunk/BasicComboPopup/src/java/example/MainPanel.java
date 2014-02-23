@@ -22,18 +22,18 @@ public final class MainPanel extends JPanel {
         amc.put("myUp",   new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo.getSelectedIndex();
-                combo.setSelectedIndex((index==0)?combo.getItemCount()-1:index-1);
+                combo.setSelectedIndex((index == 0) ? combo.getItemCount() - 1 : index - 1);
             }
         });
         amc.put("myDown", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo.getSelectedIndex();
-                combo.setSelectedIndex((index==combo.getItemCount()-1)?0:index+1);
+                combo.setSelectedIndex((index == combo.getItemCount() - 1) ? 0 : index + 1);
             }
         });
         amc.put("myEnt",  new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                append((String)combo.getSelectedItem());
+                append((String) combo.getSelectedItem());
             }
         });
 
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 
         jtp.getActionMap().put("myPop", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                try{
+                try {
                     Rectangle rect = jtp.modelToView(jtp.getCaretPosition());
                     popup.show(jtp, rect.x, rect.y + rect.height);
                     EventQueue.invokeLater(new Runnable() {
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
                             popup.requestFocusInWindow();
                         }
                     });
-                }catch(BadLocationException ble) {
+                } catch (BadLocationException ble) {
                     ble.printStackTrace();
                 }
             }
@@ -65,10 +65,12 @@ public final class MainPanel extends JPanel {
     }
     private void append(final String str) {
         popup.hide();
-        try{
+        try {
             Document doc = jtp.getDocument();
             doc.insertString(jtp.getCaretPosition(), str, null);
-        }catch(BadLocationException e) { e.printStackTrace(); }
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -79,10 +81,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -106,21 +108,21 @@ class EditorComboPopup extends BasicComboPopup {
         listener = new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 hide();
-                String str = (String)comboBox.getSelectedItem();
-                try{
+                String str = (String) comboBox.getSelectedItem();
+                try {
                     Document doc = textArea.getDocument();
                     doc.insertString(textArea.getCaretPosition(), str, null);
-                }catch(BadLocationException ex) {
+                } catch (BadLocationException ex) {
                     ex.printStackTrace();
                 }
             }
         };
-        if(list!=null) {
+        if (list != null) {
             list.addMouseListener(listener);
         }
     }
     @Override public void uninstallingUI() {
-        if(listener != null) {
+        if (listener != null) {
             list.removeMouseListener(listener);
             listener = null;
         }

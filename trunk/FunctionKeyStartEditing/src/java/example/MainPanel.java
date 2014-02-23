@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
         JTable table = new JTable(model) {
             // https://forums.oracle.com/thread/1350192 JTable starts editing when F3 is pressed - howto disable?
             @Override public boolean editCellAt(int row, int column, EventObject e) {
-                if(!check.isSelected()) { return super.editCellAt(row, column, e); }
-                if(e instanceof KeyEvent) {
-                    int c = ((KeyEvent)e).getKeyCode();
-                    if(KeyEvent.VK_F1<=c && c<=KeyEvent.VK_F21) {
+                if (!check.isSelected()) { return super.editCellAt(row, column, e); }
+                if (e instanceof KeyEvent) {
+                    int c = ((KeyEvent) e).getKeyCode();
+                    if (KeyEvent.VK_F1<=c && c<=KeyEvent.VK_F21) {
                         return false;
                     }
                 }
@@ -39,18 +39,18 @@ public final class MainPanel extends JPanel {
 //                 KeyEvent.VK_F1, KeyEvent.VK_F4, KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7,
 //                 KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11,KeyEvent.VK_F12);
 //             @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-//                 if(!check.isSelected()) { return super.processKeyBinding(ks, e, condition, pressed); }
-//                 if(e instanceof KeyEvent) {
-//                     int c = ((KeyEvent)e).getKeyCode();
-//                     if(KeyEvent.VK_F1<=c && c<=KeyEvent.VK_F21) {
+//                 if (!check.isSelected()) { return super.processKeyBinding(ks, e, condition, pressed); }
+//                 if (e instanceof KeyEvent) {
+//                     int c = ((KeyEvent) e).getKeyCode();
+//                     if (KeyEvent.VK_F1<=c && c<=KeyEvent.VK_F21) {
 //                         return false;
 //                     }
 //                 }
 //                 return super.processKeyBinding(ks, e, condition, pressed);
 //
-// //                 if(ignoreKeyList.contains(ks.getKeyCode())) {
+// //                 if (ignoreKeyList.contains(ks.getKeyCode())) {
 // //                     return false;
-// //                 }else{
+// //                 } else {
 // //                     return super.processKeyBinding(ks, e, condition, pressed);
 // //                 }
 //             }
@@ -66,11 +66,11 @@ public final class MainPanel extends JPanel {
         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "beep");
 
-//         for(int ks: Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
+//         for (int ks: Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
 //                                             KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8,
-//                                             KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11,KeyEvent.VK_F12)) {
+//                                             KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12)) {
 //             InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-//             if(im.get(KeyStroke.getKeyStroke(ks, 0))==null) {
+//             if (im.get(KeyStroke.getKeyStroke(ks, 0)) == null) {
 //                 im.put(KeyStroke.getKeyStroke(ks, 0),            "none");
 //             }
 //             im.put(KeyStroke.getKeyStroke(ks, Event.CTRL_MASK),  "none");
@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

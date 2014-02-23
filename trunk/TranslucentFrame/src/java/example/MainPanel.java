@@ -17,22 +17,22 @@ public final class MainPanel extends JPanel {
         JPanel p2 = new JPanel() {
             @Override public void paintComponent(Graphics g) {
                 //super.paintComponent(g);
-                g.setColor(new Color(100,50,50,100));
-                g.fillRect(0,0,getWidth(), getHeight());
+                g.setColor(new Color(100, 50, 50, 100));
+                g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
         p2.setOpaque(false);
 
 //         d.put("InternalFrame[Enabled].backgroundPainter", new Painter() {
 //             @Override public void paint(Graphics2D g, Object o, int w, int h) {
-//                 g.setColor(new Color(100,200,100,100));
-//                 g.fillRoundRect(0,0,w-1,h-1,15,15);
+//                 g.setColor(new Color(100, 200, 100, 100));
+//                 g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
 //             }
 //         });
 //         d.put("InternalFrame[Enabled+WindowFocused].backgroundPainter", new Painter() {
 //             @Override public void paint(Graphics2D g, Object o, int w, int h) {
-//                 g.setColor(new Color(100,250,120,100));
-//                 g.fillRoundRect(0,0,w-1,h-1,15,15);
+//                 g.setColor(new Color(100, 250, 120, 100));
+//                 g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
 //             }
 //         });
         createFrame(p1, 0);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         MyInternalFrame frame = new MyInternalFrame();
 //         frame.putClientProperty("Nimbus.Overrides", d);
 //         //frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
-        if(panel!=null) {
+        if (panel != null) {
             frame.setContentPane(panel);
             panel.add(new JLabel("label"));
             panel.add(new JButton("button"));
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         desktop.add(frame);
         frame.setOpaque(false);
         frame.setVisible(true);
-        frame.setLocation(10+60*idx, 10+40*idx);
+        frame.setLocation(10 + 60 * idx, 10 + 40 * idx);
         desktop.getDesktopManager().activateFrame(frame);
         return frame;
     }
@@ -73,18 +73,18 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-                if("Nimbus".equals(laf.getName())) {
+            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
                     UIManager.setLookAndFeel(laf.getClassName());
                     SynthLookAndFeel.setStyleFactory(
                         new MySynthStyleFactory(SynthLookAndFeel.getStyleFactory()));
                     break;
                 }
             }
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -103,8 +103,8 @@ class MySynthStyleFactory extends SynthStyleFactory {
     }
     @Override public SynthStyle getStyle(JComponent c, Region id) {
         SynthStyle s = wrappedFactory.getStyle(c, id);
-        //if(id==Region.INTERNAL_FRAME_TITLE_PANE||id==Region.INTERNAL_FRAME) {
-        if(id==Region.INTERNAL_FRAME) {
+        //if (id == Region.INTERNAL_FRAME_TITLE_PANE || id == Region.INTERNAL_FRAME) {
+        if (id == Region.INTERNAL_FRAME) {
             s = new TranslucentSynthSytle(s);
         }
         return s;
@@ -144,8 +144,8 @@ class TranslucentSynthSytle extends SynthStyle {
         return new SynthPainter() {
             @Override public void paintInternalFrameBackground(SynthContext context, Graphics g,
                                                                int x, int y, int w, int h) {
-                g.setColor(new Color(100,200,100,100));
-                g.fillRoundRect(x,y,w-1,h-1,15,15);
+                g.setColor(new Color(100, 200, 100, 100));
+                g.fillRoundRect(x, y, w - 1, h - 1, 15, 15);
             }
         };
     }
@@ -160,9 +160,9 @@ class TranslucentSynthSytle extends SynthStyle {
         style.uninstallDefaults(context);
     }
     @Override public boolean isOpaque(SynthContext context) {
-        if(context.getRegion()==Region.INTERNAL_FRAME) {
+        if (context.getRegion() == Region.INTERNAL_FRAME) {
             return false;
-        }else{
+        } else {
             return style.isOpaque(context);
         }
     }

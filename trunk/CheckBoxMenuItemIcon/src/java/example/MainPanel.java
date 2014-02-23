@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         MainPanel p = new MainPanel();
@@ -58,14 +58,14 @@ public final class MainPanel extends JPanel {
 
 class CheckIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        if(c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton)c).getModel();
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton) c).getModel();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
             g2.setPaint(m.isSelected() ? Color.ORANGE : Color.GRAY);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.fillOval(0, 2, 10, 10);
-            //g2.translate(-x,-y);
+            //g2.translate(-x, -y);
             g2.dispose();
         }
     }

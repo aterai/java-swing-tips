@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -47,16 +47,16 @@ class MyEditorKit extends StyledEditorKit {
 class MyViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if(kind!=null) {
-            if(kind.equals(AbstractDocument.ContentElementName)) {
+        if (kind != null) {
+            if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
-            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+            } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                 return new MyParagraphView(elem);
-            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+            } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
-            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+            } else if (kind.equals(StyleConstants.ComponentElementName)) {
                 return new ComponentView(elem);
-            }else if(kind.equals(StyleConstants.IconElementName)) {
+            } else if (kind.equals(StyleConstants.IconElementName)) {
                 return new IconView(elem);
             }
         }
@@ -74,19 +74,19 @@ class MyParagraphView extends ParagraphView {
         paintCustomParagraph(g, allocation);
     }
     private void paintCustomParagraph(Graphics g, Shape a) {
-        try{
+        try {
             Shape paragraph = modelToView(getEndOffset(), a, Position.Bias.Backward);
-            Rectangle r = (paragraph==null)?a.getBounds():paragraph.getBounds();
+            Rectangle r = (paragraph == null) ? a.getBounds() : paragraph.getBounds();
             int x = r.x;
             int y = r.y;
             int h = r.height;
             Color old = g.getColor();
             g.setColor(MARK_COLOR);
-            g.drawLine(x+1, y+h/2, x+1, y+h-4);
-            g.drawLine(x+2, y+h/2, x+2, y+h-5);
-            g.drawLine(x+3, y+h-6, x+3, y+h-6);
+            g.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
+            g.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
+            g.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
             g.setColor(old);
-        }catch(BadLocationException ex) {
+        } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
     }

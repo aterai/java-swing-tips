@@ -16,18 +16,18 @@ public final class MainPanel extends JPanel {
         tab0.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
         tab0.addTab("c",               new JLabel("cccccccccc"));
 
-        if(tab1.getUI() instanceof WindowsTabbedPaneUI) {
+        if (tab1.getUI() instanceof WindowsTabbedPaneUI) {
             tab1.setUI(new WindowsTabbedPaneUI() {
                 protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-                    return i<100 ? 100 : i;
+                    return i < 100 ? 100 : i;
                 }
             });
-        }else{
+        } else {
             tab1.setUI(new BasicTabbedPaneUI() {
                 protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                     int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-                    return i<100 ? 100 : i;
+                    return i < 100 ? 100 : i;
                 }
             });
         }
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     }
 
     public String makeTitle(String title) {
-        return "<html><table width='100'><tr><td align='center'>"+title+"</td></tr></table>";
+        return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
     }
 
     public static void main(String[] args) {
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

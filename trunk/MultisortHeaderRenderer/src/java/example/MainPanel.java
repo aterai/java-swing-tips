@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             MultisortHeaderRenderer r = new MultisortHeaderRenderer();
             TableColumnModel cm = getColumnModel();
-            for(int i=0; i<cm.getColumnCount(); i++) {
+            for (int i = 0; i < cm.getColumnCount(); i++) {
                 cm.getColumn(i).setHeaderRenderer(r);
             }
         }
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -63,17 +63,17 @@ public final class MainPanel extends JPanel {
 class MultisortHeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String str = Objects.toString(value, "");
-        if(table.getRowSorter()!=null) {
+        if (table.getRowSorter() != null) {
             List<?> keys = table.getRowSorter().getSortKeys();
             int max = keys.size();
-            for(int i=0; i<max; i++) {
-                TableRowSorter.SortKey sortKey = (TableRowSorter.SortKey)keys.get(i);
-                if(column==sortKey.getColumn()) {
+            for (int i = 0; i < max; i++) {
+                TableRowSorter.SortKey sortKey = (TableRowSorter.SortKey) keys.get(i);
+                if (column == sortKey.getColumn()) {
                     //BLACK TRIANGLE
-                    //String k = sortKey.getSortOrder()==SortOrder.ASCENDING ? "\u25B2 " : "\u25BC ";
+                    //String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "\u25B2 " : "\u25BC ";
                     //BLACK SMALL TRIANGLE
-                    String k = sortKey.getSortOrder()==SortOrder.ASCENDING ? "\u25B4 " : "\u25BE ";
-                    str = String.format("<html>%s<small color='gray'>%s%d", str, k, i+1);
+                    String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "\u25B4 " : "\u25BE ";
+                    str = String.format("<html>%s<small color='gray'>%s%d", str, k, i + 1);
                 }
             }
         }

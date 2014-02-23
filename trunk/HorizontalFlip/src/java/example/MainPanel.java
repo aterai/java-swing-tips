@@ -16,11 +16,11 @@ public final class MainPanel extends JPanel {
         AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
         //Rectangle r = copyright.getBounds()
         //at.translate(r.getWidth(), r.getHeight());
-        //AffineTransform at = new AffineTransform(-1d,0,0,1d,r.getWidth(),r.getHeight());
+        //AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());
         final Shape copyleft = at.createTransformedShape(copyright);
         add(new JComponent() {
             @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setPaint(Color.BLACK);
                 Rectangle2D b = copyleft.getBounds();
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

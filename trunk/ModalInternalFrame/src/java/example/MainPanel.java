@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
             iframe.setSize(130, 100);
-            iframe.setLocation(30*openFrameCount, 30*openFrameCount);
+            iframe.setLocation(30 * openFrameCount, 30 * openFrameCount);
             desktop.add(iframe);
             iframe.setVisible(true);
             openFrameCount++;
@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
             super(label);
             Rectangle screen = frame.getGraphicsConfiguration().getBounds();
             glass.setBorder(BorderFactory.createEmptyBorder());
-            glass.setLocation(0,0);
+            glass.setLocation(0, 0);
             glass.setSize(screen.width, screen.height);
             glass.setOpaque(false);
             glass.setVisible(false);
@@ -148,18 +148,18 @@ public final class MainPanel extends JPanel {
             //JComboBox<String> combo = new JComboBox<>(items);
             JComboBox combo = new JComboBox(items);
             combo.setEditable(true);
-            try{
+            try {
                 Field field;
-                if(System.getProperty("java.version").startsWith("1.6.0")) {
+                if (System.getProperty("java.version").startsWith("1.6.0")) {
                     Class clazz = Class.forName("javax.swing.PopupFactory");
                     field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-                }else{ //1.7.0, 1.8.0
+                } else { //1.7.0, 1.8.0
                     Class clazz = Class.forName("javax.swing.ClientPropertyKey");
                     field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
                 }
                 field.setAccessible(true);
                 modal.putClientProperty(field.get(null), Boolean.TRUE);
-            }catch(Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
             optionPane.setMessage(combo);
@@ -189,12 +189,12 @@ public final class MainPanel extends JPanel {
     }
 
     private static void removeSystemMenuListener(JInternalFrame modal) {
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)modal.getUI();
-        JComponent titleBar = (JComponent)ui.getNorthPane();
-        for(Component c:titleBar.getComponents()) {
-            if(c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
-                for(MouseListener ml: c.getMouseListeners()) {
-                    ((JComponent)c).removeMouseListener(ml);
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) modal.getUI();
+        JComponent titleBar = (JComponent) ui.getNorthPane();
+        for (Component c:titleBar.getComponents()) {
+            if (c instanceof JLabel || "InternalFrameTitlePane.menuButton".equals(c.getName())) {
+                for (MouseListener ml: c.getMouseListeners()) {
+                    ((JComponent) c).removeMouseListener(ml);
                 }
             }
         }
@@ -208,10 +208,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -227,15 +227,15 @@ public final class MainPanel extends JPanel {
 class MyGlassPane extends JPanel {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6);
     public MyGlassPane() {
-        super((LayoutManager)null);
+        super((LayoutManager) null);
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
             @Override public boolean accept(Component c) { return false; }
         });
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(TEXTURE);
-        g2.fillRect(0,0,getWidth(),getHeight());
+        g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
     }
 }
@@ -243,27 +243,27 @@ class MyGlassPane extends JPanel {
 class PrintGlassPane extends JPanel {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(4);
     public PrintGlassPane() {
-        super((LayoutManager)null);
+        super((LayoutManager) null);
     }
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
         JRootPane rootPane = getRootPane();
-        if(rootPane!=null && isVisible()!=oldVisible) {
+        if (rootPane != null && isVisible() != oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
     @Override public void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
-        if(rootPane != null) {
+        if (rootPane != null) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
             // it is important to call print() instead of paint() here
             // because print() doesn't affect the frame's double buffer
             rootPane.getLayeredPane().print(g);
         }
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(TEXTURE);
-        g2.fillRect(0,0,getWidth(),getHeight());
+        g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
     }
 }
@@ -272,20 +272,20 @@ final class TextureFactory {
     private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
     private TextureFactory() { /* Singleton */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {
-        int size = cs*cs;
-        BufferedImage img = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
+        int size = cs * cs;
+        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0, 0, size, size);
-        for(int i=0; i*cs < size; i++) {
-            for(int j=0; j*cs < size; j++) {
-                if((i+j)%2 == 0) {
-                    g2.fillRect(i*cs, j*cs, cs, cs);
+        for (int i=0; i * cs < size; i++) {
+            for (int j=0; j * cs < size; j++) {
+                if ((i + j)%2 == 0) {
+                    g2.fillRect(i * cs, j * cs, cs, cs);
                 }
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0,0,size,size));
+        return new TexturePaint(img, new Rectangle(0, 0, size, size));
     }
     public static TexturePaint createCheckerTexture(int cs) {
         return createCheckerTexture(cs, DEFAULT_COLOR);

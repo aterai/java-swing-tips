@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseMotionListener {
-    private static final Color ROLLOVER_ROW_COLOR = new Color(220,240,255);
+    private static final Color ROLLOVER_ROW_COLOR = new Color(220, 240, 255);
     private final JTree tree;
     private int rollOverRowIndex = -1;
 
@@ -69,21 +69,21 @@ class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseM
         tree.addMouseMotionListener(this);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-        if(row==rollOverRowIndex) {
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        if (row == rollOverRowIndex) {
             c.setOpaque(true);
             c.setBackground(ROLLOVER_ROW_COLOR);
-            if(isSelected) {
+            if (isSelected) {
                 c.setForeground(getTextNonSelectionColor());
             }
-        }else{
+        } else {
             c.setOpaque(false);
         }
         return c;
     }
     @Override public void mouseMoved(MouseEvent e) {
         int row = tree.getRowForLocation(e.getX(), e.getY());
-        if(row!=rollOverRowIndex) {
+        if (row!=rollOverRowIndex) {
             //System.out.println(row);
             rollOverRowIndex = row;
             tree.repaint();

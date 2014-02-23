@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         JTextComponent field2 = new WatermarkPasswordField();
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(16,16,16,16));
+        box.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
         box.add(makePanel("JPasswordField", b));
         box.add(Box.createVerticalStrut(16));
         box.add(makePanel("InputHintPasswordField", field2));
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -66,15 +66,15 @@ class WatermarkPasswordField extends JPasswordField implements FocusListener, Do
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(showWatermark) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (showWatermark) {
+            Graphics2D g2 = (Graphics2D) g.create();
             Insets i = getInsets();
             Font font = getFont();
             FontRenderContext frc = g2.getFontRenderContext();
             TextLayout tl = new TextLayout("Password", font, frc);
-            g2.setPaint(hasFocus()?Color.GRAY:Color.BLACK);
+            g2.setPaint(hasFocus() ? Color.GRAY : Color.BLACK);
             int baseline = getBaseline(getWidth(), getHeight());
-            tl.draw(g2, i.left+1, baseline);
+            tl.draw(g2, i.left + 1, baseline);
             g2.dispose();
         }
     }
@@ -82,15 +82,15 @@ class WatermarkPasswordField extends JPasswordField implements FocusListener, Do
         repaint();
     }
     @Override public void focusLost(FocusEvent e) {
-        showWatermark = getPassword().length==0;
+        showWatermark = getPassword().length == 0;
         repaint();
     }
     @Override public void insertUpdate(DocumentEvent e) {
-        showWatermark = e.getDocument().getLength()==0;
+        showWatermark = e.getDocument().getLength() == 0;
         repaint();
     }
     @Override public void removeUpdate(DocumentEvent e) {
-        showWatermark = e.getDocument().getLength()==0;
+        showWatermark = e.getDocument().getLength() == 0;
         repaint();
     }
     @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }

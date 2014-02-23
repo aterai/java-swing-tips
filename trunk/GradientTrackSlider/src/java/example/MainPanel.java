@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
-    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
+    private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200, 150, 100, 50));
 
     public MainPanel() {
         super(new BorderLayout());
@@ -35,13 +35,13 @@ public final class MainPanel extends JPanel {
         box.add(createPanel(slider0, "Default:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(slider1, "Gradient translucent track JSlider:"));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
@@ -58,10 +58,10 @@ public final class MainPanel extends JPanel {
         });
         slider.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSlider source = (JSlider)e.getComponent();
-                int intValue = (int)source.getValue()-e.getWheelRotation();
+                JSlider source = (JSlider) e.getComponent();
+                int intValue = (int) source.getValue() - e.getWheelRotation();
                 BoundedRangeModel model = source.getModel();
-                if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {
+                if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
                     source.setValue(intValue);
                 }
             }
@@ -83,10 +83,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -113,15 +113,15 @@ class GradientPalletSliderUI extends MetalSliderUI {
         int trackTop = 0;
         int trackRight = 0;
         int trackBottom = 0;
-        if(slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             trackBottom = trackRect.height - 1 - getThumbOverhang();
             trackTop = trackBottom - getTrackWidth() + 1;
             trackRight = trackRect.width - 1;
-        }else{
-            //if(leftToRight) {
+        } else {
+            //if (leftToRight) {
                 trackLeft = trackRect.width - getThumbOverhang() - getTrackWidth();
                 trackRight = trackRect.width - getThumbOverhang() - 1;
-            //}else{
+            //} else {
             //    trackLeft = getThumbOverhang();
             //    trackRight = getThumbOverhang() + getTrackWidth() - 1;
             //}
@@ -141,7 +141,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
     }
 
     protected void paintTrackBase(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
-        if(slider.isEnabled()) {
+        if (slider.isEnabled()) {
             g.setColor(controlDarkShadow);
             g.drawRect(trackLeft, trackTop, trackRight - trackLeft - 1, trackBottom - trackTop - 1);
 
@@ -152,7 +152,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
             g.setColor(controlShadow);
             g.drawLine(trackLeft + 1, trackTop + 1, trackRight - 2, trackTop + 1);
             g.drawLine(trackLeft + 1, trackTop + 1, trackLeft + 1, trackBottom - 2);
-        }else{
+        } else {
             g.setColor(controlShadow);
             g.drawRect(trackLeft, trackTop, trackRight - trackLeft - 1, trackBottom - trackTop - 1);
         }
@@ -165,14 +165,14 @@ class GradientPalletSliderUI extends MetalSliderUI {
         int fillBottom = 0;
         int fillRight  = 0;
 
-        if(slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
             fillTop    = trackTop + 1;
             fillBottom = trackBottom - 2;
             fillLeft   = trackLeft + 1;
             fillRight  = middleOfThumb - 2;
-        }else{
+        } else {
             middleOfThumb = thumbRect.y + thumbRect.height / 2;
             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
             fillLeft   = trackLeft;
@@ -181,43 +181,43 @@ class GradientPalletSliderUI extends MetalSliderUI {
             fillBottom = trackBottom - 1;
         }
 
-//         if(slider.getOrientation() == JSlider.HORIZONTAL) {
+//         if (slider.getOrientation() == JSlider.HORIZONTAL) {
 //             middleOfThumb = thumbRect.x + thumbRect.width / 2;
 //             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
 //             fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
 //             fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
 //
-//             if(drawInverted()) {
+//             if (drawInverted()) {
 //                 fillLeft = middleOfThumb;
 //                 fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-//             }else{
+//             } else {
 //                 fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
 //                 fillRight = middleOfThumb;
 //             }
-//         }else{
+//         } else {
 //             middleOfThumb = thumbRect.y + thumbRect.height / 2;
 //             middleOfThumb -= trackRect.y; // To compensate for the g.translate()
 //             fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
 //             fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
 //
-//             if(drawInverted()) {
+//             if (drawInverted()) {
 //                 fillTop = slider.isEnabled() ? trackTop  + 1 : trackTop;
 //                 fillBottom = middleOfThumb;
-//             }else{
+//             } else {
 //                 fillTop = middleOfThumb;
 //                 fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
 //             }
 //         }
 
-        if(slider.isEnabled()) {
+        if (slider.isEnabled()) {
 //             g.setColor(slider.getBackground());
 //             g.drawLine(fillLeft, fillTop, fillRight, fillTop);
 //             g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
-            float x = (fillRight - fillLeft) / (float)(trackRight - trackLeft);
+            float x = (fillRight - fillLeft) / (float) (trackRight - trackLeft);
             g.setColor(GradientPalletFactory.getColorFromPallet(GRADIENT_PALLET, x));
             g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
-        }else{
+        } else {
             g.setColor(controlShadow);
             g.fillRect(fillLeft, fillTop, fillRight - fillLeft, trackBottom - trackTop);
         }
@@ -225,8 +225,8 @@ class GradientPalletSliderUI extends MetalSliderUI {
 
     protected void paintTrackHighlight(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
         int yy = trackTop + (trackBottom - trackTop) / 2;
-        for(int i=10;i>=0;i--) {
-            g.setColor(new Color(1f, 1f, 1f, i*0.07f));
+        for (int i=10; i >= 0; i--) {
+            g.setColor(new Color(1f, 1f, 1f, i * 0.07f));
             g.drawLine(trackLeft + 2, yy, trackRight - trackLeft - 2, yy);
             yy--;
         }
@@ -249,20 +249,20 @@ final class GradientPalletFactory {
         int width  = image.getWidth(null);
         int[] pallet = new int[width];
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
-        try{
+        try {
             pg.grabPixels();
-        }catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
         return pallet;
     }
     public static Color getColorFromPallet(int[] pallet, float x) {
-//         if(x < 0.0 || x > 1.0) {
+//         if (x < 0.0 || x > 1.0) {
 //             throw new IllegalArgumentException("Parameter outside of expected range");
 //         }
-        int i = (int)(pallet.length * x);
-        int max = pallet.length-1;
-        int index = i<0?0:i>max?max:i;
+        int i = (int) (pallet.length * x);
+        int max = pallet.length - 1;
+        int index = i < 0 ? 0 : i > max ? max : i;
         int pix = pallet[index] & 0x00ffffff | (0x64 << 24);
         return new Color(pix, true);
     }
@@ -271,19 +271,19 @@ final class GradientPalletFactory {
 final class TextureFactory {
     private TextureFactory() { /* Singleton */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {
-        int size = cs*cs;
-        BufferedImage img = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
+        int size = cs * cs;
+        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0, 0, size, size);
-        for(int i=0; i*cs < size; i++) {
-            for(int j=0; j*cs < size; j++) {
-                if((i+j)%2 == 0) {
-                    g2.fillRect(i*cs, j*cs, cs, cs);
+        for (int i=0; i * cs < size; i++) {
+            for (int j=0; j * cs < size; j++) {
+                if ((i + j)%2 == 0) {
+                    g2.fillRect(i * cs, j * cs, cs, cs);
                 }
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0,0,size,size));
+        return new TexturePaint(img, new Rectangle(0, 0, size, size));
     }
 }

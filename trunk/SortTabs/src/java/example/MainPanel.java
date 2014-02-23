@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
     private final AbstractAction sortAction = new SortAction(MENUITEM_SORT, null);
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
-            sortAction.setEnabled(tab.getTabCount()>1);
-            closePageAction.setEnabled(tab.indexAtLocation(x, y)>=0);
-            closeAllAction.setEnabled(tab.getTabCount()>0);
-            closeAllButActiveAction.setEnabled(tab.getTabCount()>0);
+            sortAction.setEnabled(tab.getTabCount() > 1);
+            closePageAction.setEnabled(tab.indexAtLocation(x, y) >= 0);
+            closeAllAction.setEnabled(tab.getTabCount() > 0);
+            closeAllButActiveAction.setEnabled(tab.getTabCount() > 0);
             super.show(c, x, y);
         }
     };
@@ -48,17 +48,17 @@ public final class MainPanel extends JPanel {
     }
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            tab.addTab("Title: "+count, new JLabel("Tab: "+count));
+            tab.addTab("Title: " + count, new JLabel("Tab: " + count));
             tab.setSelectedIndex(tab.getTabCount()-1);
             count++;
         }
     }
     class ClosePageAction extends AbstractAction {
         public ClosePageAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.remove(tab.getSelectedIndex());
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     }
     class CloseAllAction extends AbstractAction {
         public CloseAllAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.removeAll();
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
     }
     class CloseAllButActiveAction extends AbstractAction {
         public CloseAllButActiveAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             int tabidx = tab.getSelectedIndex();
@@ -86,14 +86,14 @@ public final class MainPanel extends JPanel {
     }
     class SortAction extends AbstractAction {
         public SortAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             setSortedTab(tab, makeSortedList(tab));
         }
         private List<ComparableTab> makeSortedList(JTabbedPane t) {
             List<ComparableTab> l = new ArrayList<>();
-            for(int i=0;i<t.getTabCount();i++) {
+            for (int i = 0; i < t.getTabCount(); i++) {
                 l.add(new ComparableTab(t.getTitleAt(i), t.getComponentAt(i)));
             }
             Collections.sort(l);
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
         private void setSortedTab(JTabbedPane tabbedPane, List<ComparableTab> list) {
             tabbedPane.setVisible(false);
             tabbedPane.removeAll();
-            for(ComparableTab c: list) {
+            for (ComparableTab c: list) {
                 tabbedPane.addTab(c.title, c.comp);
             }
             tabbedPane.setVisible(true);
@@ -118,10 +118,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -144,14 +144,14 @@ class ComparableTab implements Comparable<ComparableTab> {
         return title.compareTo(o.title);
     }
     @Override public boolean equals(Object o) {
-        if(o instanceof ComparableTab) {
-            return compareTo((ComparableTab)o)==0;
-        }else{
+        if (o instanceof ComparableTab) {
+            return compareTo((ComparableTab) o) == 0;
+        } else {
             return false;
         }
     }
     @Override public int hashCode() {
-        return title.hashCode()+comp.hashCode();
+        return title.hashCode() + comp.hashCode();
     }
 }
 
@@ -170,24 +170,24 @@ class EditableTabbedPane extends JTabbedPane {
 
     public EditableTabbedPane(JFrame frame) {
         super();
-        editor.setBorder(BorderFactory.createEmptyBorder(0,3,0,3));
+        editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         editor.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
-                ((JTextField)e.getComponent()).selectAll();
+                ((JTextField) e.getComponent()).selectAll();
             }
         });
         editor.addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     renameTab();
-                }else if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     cancelEditing();
                 }
             }
         });
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent me) {
-                if(me.getClickCount()==2) {
+                if (me.getClickCount() == 2) {
                     startEditing();
                 }
             }
@@ -195,8 +195,8 @@ class EditableTabbedPane extends JTabbedPane {
 //                 dragTab = getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY());
 //             }
 //             @Override public void mouseReleased(MouseEvent e) {
-//                 if(dragTab>=0) {
-//                     if(dragTab!=getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY())) {
+//                 if (dragTab >= 0) {
+//                     if (dragTab!=getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY())) {
 //                         convertTab(dragTab, getTargetTabIndex(e.getPoint()));
 //                     }
 //                 }
@@ -208,20 +208,20 @@ class EditableTabbedPane extends JTabbedPane {
 //         addMouseMotionListener(new MouseMotionAdapter() {
 //             @Override public void mouseDragged(MouseEvent e) {
 //                 int next = getTargetTabIndex(e.getPoint());
-//                 if(next<0 || dragTab==next || next-dragTab==1) {
-//                     lineRect.setRect(0,0,0,0);
+//                 if (next < 0 || dragTab == next || next - dragTab == 1) {
+//                     lineRect.setRect(0, 0, 0, 0);
 //                     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-//                 }else if(next==getTabCount()) {
-//                     Rectangle rect = getBoundsAt(getTabCount()-1);
-//                     lineRect.setRect(rect.x+rect.width-2,rect.y,4,rect.height);
+//                 } else if (next == getTabCount()) {
+//                     Rectangle rect = getBoundsAt(getTabCount() - 1);
+//                     lineRect.setRect(rect.x + rect.width - 2, rect.y, 4, rect.height);
 //                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                 }else if(next==0) {
+//                 } else if (next == 0) {
 //                     Rectangle rect = getBoundsAt(0);
-//                     lineRect.setRect(-2,rect.y,4,rect.height);
+//                     lineRect.setRect(-2, rect.y, 4, rect.height);
 //                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                 }else{
-//                     Rectangle rect = getBoundsAt(next-1);
-//                     lineRect.setRect(rect.x+rect.width-2,rect.y,4,rect.height);
+//                 } else {
+//                     Rectangle rect = getBoundsAt(next - 1);
+//                     lineRect.setRect(rect.x + rect.width - 2, rect.y, 4, rect.height);
 //                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //                 }
 //                 repaint();
@@ -229,7 +229,7 @@ class EditableTabbedPane extends JTabbedPane {
 //         });
         addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     startEditing();
                 }
             }
@@ -240,11 +240,11 @@ class EditableTabbedPane extends JTabbedPane {
     }
 
 //     @Override public void paintComponent(Graphics g) {
-//         Graphics2D g2 = (Graphics2D)g.create();
+//         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setPaint(this.getBackground());
-//         g2.fillRect(0,0,500,50);
+//         g2.fillRect(0, 0, 500, 50);
 //         super.paintComponent(g2);
-//         if(dragTab>=0) {
+//         if (dragTab >= 0) {
 //             g2.setPaint(lineColor);
 //             g2.fill(lineRect);
 //         }
@@ -252,49 +252,49 @@ class EditableTabbedPane extends JTabbedPane {
 //     }
 //
 //     private int getTargetTabIndex(Point pt) {
-//         for(int i=0;i<this.getTabCount();i++) {
+//         for (int i = 0; i < this.getTabCount(); i++) {
 //             Rectangle rect = this.getBoundsAt(i);
-//             rect.setRect(rect.x-rect.width/2, rect.y, rect.width, rect.height);
-//             if(rect.contains(pt)) {
+//             rect.setRect(rect.x - rect.width / 2, rect.y, rect.width, rect.height);
+//             if (rect.contains(pt)) {
 //                 return i;
 //             }
 //         }
 //         Rectangle rect = this.getBoundsAt(this.getTabCount()-1);
-//         rect.setRect(rect.x+rect.width/2, rect.y, rect.width+100, rect.height);
-//         if(rect.contains(pt)) {
+//         rect.setRect(rect.x + rect.width / 2, rect.y, rect.width + 100, rect.height);
+//         if (rect.contains(pt)) {
 //             return this.getTabCount();
-//         }else{
+//         } else {
 //             return -1;
 //         }
 //     }
 //
 //     private void convertTab(int prev, int next) {
-//         if(next<0 || prev==next) {
-//             //System.out.println("press="+prev+" next="+next);
+//         if (next < 0 || prev == next) {
+//             //System.out.println("press=" + prev + " next=" + next);
 //             return;
 //         }
 //         Component cmp = this.getComponentAt(prev);
 //         String str = this.getTitleAt(prev);
-//         if(next==this.getTabCount()) {
-//             //System.out.println("last: press="+prev+" next="+next);
+//         if (next == this.getTabCount()) {
+//             //System.out.println("last: press=" + prev + " next=" + next);
 //             this.remove(prev);
 //             this.addTab(str, cmp);
 //             this.setSelectedIndex(this.getTabCount()-1);
-//         }else if(prev>next) {
-//             //System.out.println("   >: press="+prev+" next="+next);
+//         } else if (prev > next) {
+//             //System.out.println("   >: press=" + prev + " next=" + next);
 //             this.remove(prev);
 //             this.insertTab(str, null, cmp, null, next);
 //             this.setSelectedIndex(next);
-//         }else{
-//             //System.out.println("   <: press="+prev+" next="+next);
+//         } else {
+//             //System.out.println("   <: press=" + prev + " next=" + next);
 //             this.remove(prev);
-//             this.insertTab(str, null, cmp, null, next-1);
-//             this.setSelectedIndex(next-1);
+//             this.insertTab(str, null, cmp, null, next - 1);
+//             this.setSelectedIndex(next - 1);
 //         }
 //     }
     private void initEditor() {
         rect = getUI().getTabBounds(this, getSelectedIndex());
-        rect.setRect(rect.x+2, rect.y+2, rect.width-2, rect.height-2);
+        rect.setRect(rect.x + 2, rect.y + 2, rect.width - 2, rect.height - 2);
         editor.setBounds(rect);
         editor.setText(getTitleAt(getSelectedIndex()));
     }
@@ -307,7 +307,7 @@ class EditableTabbedPane extends JTabbedPane {
         panel.setVisible(false);
     }
     private void renameTab() {
-        if(editor.getText().trim().length()>0) {
+        if (editor.getText().trim().length() > 0) {
             setTitleAt(getSelectedIndex(), editor.getText());
         }
         panel.setVisible(false);
@@ -323,7 +323,7 @@ class EditableTabbedPane extends JTabbedPane {
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if(rect==null || rect.contains(me.getPoint())) {
+                    if (rect == null || rect.contains(me.getPoint())) {
                         return;
                     }
                     renameTab();

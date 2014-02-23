@@ -38,10 +38,10 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        if(DEBUG) {
+        if (DEBUG) {
             //table.setRowSorter(new TableRowSorter<TableModel>(model));
             table.setRowSorter(sorter);
-        }else{
+        } else {
             table.setAutoCreateRowSorter(true);
         }
         table.setFillsViewportHeight(true);
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("remove all rows") {
             @Override public void actionPerformed(ActionEvent ae) {
                 //model.clear();
-                if(DEBUG) {
+                if (DEBUG) {
                     // ArrayIndexOutOfBoundsException:  0 >= 0
                     // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
                     // http://bugs.sun.com/view_bug.do?bug_id=6967479
@@ -68,33 +68,33 @@ public final class MainPanel extends JPanel {
 
     private class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if(DEBUG && model.getRowCount()==0) {
+            if (DEBUG && model.getRowCount() == 0) {
                 //table.setRowSorter(new TableRowSorter<TableModel>(model));
                 table.setRowSorter(sorter);
                 model.fireTableDataChanged();
             }
             model.addRow(new Object[] {"", model.getRowCount(), false});
-            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }
     }
 
     private class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1; i>=0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
-            if(DEBUG && model.getRowCount() == 0) {
+            if (DEBUG && model.getRowCount() == 0) {
                 table.setRowSorter(null);
                 table.getTableHeader().repaint();
             }
@@ -126,10 +126,10 @@ public final class MainPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

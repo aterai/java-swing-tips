@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
         JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0%");
         //editor1.getTextField().setEditable(false);
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
         add(makeTitlePanel(spinner1, "JSpinner"));
         add(makeTitlePanel(spinner2, "getTextField().setEditable(false)"));
-        setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
+        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 200));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

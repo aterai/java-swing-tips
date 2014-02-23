@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("setMnemonic(...)") {
             @Override public void actionPerformed(ActionEvent e) {
                 String str = textField.getText().trim();
-                if(str.isEmpty()) {
+                if (str.isEmpty()) {
                     str = button.getText();
                 }
                 button.setMnemonic(str.charAt(0));
@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

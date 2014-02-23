@@ -17,21 +17,21 @@ public final class MainPanel extends JPanel {
 //         UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
 //         tree.addMouseListener(new MouseAdapter() {
 //             @Override public void mousePressed(MouseEvent e) {
-//                 JTree tree = (JTree)e.getSource();
+//                 JTree tree = (JTree) e.getSource();
 //                 TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-//                 if(!tree.getSelectionModel().isPathSelected(path)) {
+//                 if (!tree.getSelectionModel().isPathSelected(path)) {
 //                     tree.getSelectionModel().setSelectionPath(path);
 //                 }
 //             }
 //         });
 
-        tree.setCellEditor(new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer)tree.getCellRenderer()) {
+        tree.setCellEditor(new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()) {
 //             @Override protected boolean shouldStartEditingTimer(EventObject e) {
 //                 return false;
 //             }
 //             @Override protected boolean canEditImmediately(EventObject e) {
-//                 //((MouseEvent)e).getClickCount()>2
-//                 return (e instanceof MouseEvent)?false:super.canEditImmediately(e);
+//                 //((MouseEvent) e).getClickCount() > 2
+//                 return (e instanceof MouseEvent) ? false : super.canEditImmediately(e);
 //             }
             @Override public boolean isCellEditable(EventObject e) {
                 return e instanceof MouseEvent ? false : super.isCellEditable(e);
@@ -51,10 +51,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -71,27 +71,27 @@ class TreePopupMenu extends JPopupMenu {
     private final JTextField textField = new JTextField();
     private final Action editAction = new AbstractAction("Edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            if(path!=null) {
-                JTree tree = (JTree)getInvoker();
+            if (path != null) {
+                JTree tree = (JTree) getInvoker();
                 tree.startEditingAtPath(path);
             }
         }
     };
     private final Action editDialogAction = new AbstractAction("Edit Dialog") {
         @Override public void actionPerformed(ActionEvent e) {
-            if(path==null) {
+            if (path == null) {
                 return;
             }
             Object node = path.getLastPathComponent();
-            if(node instanceof DefaultMutableTreeNode) {
+            if (node instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
-                JTree tree = (JTree)getInvoker();
+                JTree tree = (JTree) getInvoker();
                 int result = JOptionPane.showConfirmDialog(tree, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION) {
+                if (result == JOptionPane.OK_OPTION) {
                     String str = textField.getText().trim();
-                    if(!str.isEmpty()) {
-                        ((DefaultTreeModel)tree.getModel()).valueForPathChanged(path, str);
+                    if (!str.isEmpty()) {
+                        ((DefaultTreeModel) tree.getModel()).valueForPathChanged(path, str);
                     }
                 }
             }
@@ -111,17 +111,17 @@ class TreePopupMenu extends JPopupMenu {
         add(new JMenuItem("dummy"));
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTree) {
-            JTree tree = (JTree)c;
+        if (c instanceof JTree) {
+            JTree tree = (JTree) c;
             ////Test:
             //path = tree.getPathForLocation(x, y);
-            //if(tree.getSelectionModel().isPathSelected(path)) {
+            //if (tree.getSelectionModel().isPathSelected(path)) {
             //    super.show(c, x, y);
             //}
             TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
-            boolean isEditable = tsp!=null && tsp.length==1 && tsp[0].equals(path);
-            //Test: if(path!=null && java.util.Arrays.asList(tsp).contains(path)) {
+            boolean isEditable = tsp != null && tsp.length == 1 && tsp[0].equals(path);
+            //Test: if (path != null && java.util.Arrays.asList(tsp).contains(path)) {
             editAction.setEnabled(isEditable);
             editDialogAction.setEnabled(isEditable);
             super.show(c, x, y);

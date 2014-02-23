@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         progressBar2.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
 
         JPanel p = new JPanel();
-        p.setBorder(BorderFactory.createEmptyBorder(16,16,16,16));
+        p.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
         p.add(progressBar1);
         p.add(progressBar2);
 
@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalGlue());
         box.add(new JCheckBox(new AbstractAction("setStringPainted") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                for(JProgressBar bar: list) {
+                JCheckBox cb = (JCheckBox) e.getSource();
+                for (JProgressBar bar: list) {
                     bar.setStringPainted(cb.isSelected());
                 }
             }
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalStrut(5));
         box.add(new JButton(new AbstractAction("Test") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) {
+                if (worker != null && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = new Task();
@@ -56,8 +56,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void hierarchyChanged(HierarchyEvent he) {
-        JComponent c = (JComponent)he.getComponent();
-        if((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker!=null) {
+        JComponent c = (JComponent) he.getComponent();
+        if ((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker != null) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
@@ -71,15 +71,15 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for(UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
-                if("Nimbus".equals(laf.getName())) {
+            for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
                     UIManager.setLookAndFeel(laf.getClassName());
                 }
             }
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -102,7 +102,7 @@ class StringAlignmentProgressBar extends JProgressBar {
     }
     @Override public void updateUI() {
         removeAll();
-        if(changeListener!=null) {
+        if (changeListener != null) {
             removeChangeListener(changeListener);
         }
         super.updateUI();
@@ -111,13 +111,13 @@ class StringAlignmentProgressBar extends JProgressBar {
                 setLayout(new BorderLayout());
                 changeListener = new ChangeListener() {
                     @Override public void stateChanged(ChangeEvent e) {
-                        //BoundedRangeModel m = (BoundedRangeModel)e.getSource(); //label.setText(m.getValue()+"%");
+                        //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
                         label.setText(getString());
                     }
                 };
                 addChangeListener(changeListener);
                 add(label);
-                label.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
+                label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
             }
         });
     }
@@ -127,10 +127,10 @@ class Task extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 100;
-        while(current<=lengthOfTask && !isCancelled()) {
+        while (current<=lengthOfTask && !isCancelled()) {
             try { // dummy task
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);
@@ -148,9 +148,9 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
         String strPropertyName = evt.getPropertyName();
-        if("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer)evt.getNewValue();
+            int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
         }
     }

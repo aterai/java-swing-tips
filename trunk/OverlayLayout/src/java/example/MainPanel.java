@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         add(new JButton("Dummy"));
         add(makeOverlayLayoutButton());
         setPreferredSize(new Dimension(320, 180));
@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JButton b1 = new JButton();
         b1.setLayout(new OverlayLayout(b1));
         Insets i = b1.getBorder().getBorderInsets(b1);
-        b1.setBorder(BorderFactory.createEmptyBorder(i.top,i.left,i.bottom,4));
+        b1.setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, 4));
         b1.setAction(new AbstractAction("OverlayLayoutButton") {
             @Override public void actionPerformed(ActionEvent e) {
                 Toolkit.getDefaultToolkit().beep();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
                 System.out.println("sub");
             }
         });
-        Dimension dim = new Dimension(64,20);
+        Dimension dim = new Dimension(64, 20);
         b2.setMaximumSize(dim);
         b2.setPreferredSize(dim);
         b2.setMinimumSize(dim);
@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

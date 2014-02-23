@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     }
     private static JComponent makeList() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        for(int i=0; i<50; i++) {
+        for (int i = 0; i < 50; i++) {
             Date d = new Date();
             model.addElement(String.format("%d: %s", i, d.toString()));
         }
@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
 
         scrollPane.setLayout(new ScrollPaneLayout() {
             @Override public void layoutContainer(Container parent) {
-                if(parent instanceof JScrollPane) {
-                    JScrollPane scrollPane = (JScrollPane)parent;
+                if (parent instanceof JScrollPane) {
+                    JScrollPane scrollPane = (JScrollPane) parent;
 
                     Rectangle availR = scrollPane.getBounds();
                     availR.setLocation(0, 0); //availR.x = availR.y = 0;
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
                     vsbR.x = availR.x + availR.width - vsbR.width;
                     vsbR.y = availR.y;
 
-                    if(viewport != null) {
+                    if (viewport != null) {
                         viewport.setBounds(availR);
                     }
-                    if(vsb != null) {
+                    if (vsb != null) {
                         vsb.setVisible(true);
                         vsb.setBounds(vsbR);
                     }
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -109,12 +109,12 @@ public final class MainPanel extends JPanel {
 class RepaintHandler extends FocusAdapter implements ListSelectionListener {
     private static void repaintEvent(Component c) {
         Container p = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
-        if(p!=null) {
+        if (p != null) {
             p.repaint();
         }
     }
     @Override public void valueChanged(ListSelectionEvent e) {
-        repaintEvent((Component)e.getSource());
+        repaintEvent((Component) e.getSource());
     }
     @Override public void focusLost(FocusEvent e) {
         repaintEvent(e.getComponent());
@@ -141,29 +141,29 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
         return new ZeroSizeButton();
     }
     @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-        //Graphics2D g2 = (Graphics2D)g.create();
-        //g2.setPaint(new Color(100,100,100,100));
-        //g2.fillRect(r.x,r.y,r.width-1,r.height-1);
+        //Graphics2D g2 = (Graphics2D) g.create();
+        //g2.setPaint(new Color(100, 100, 100, 100));
+        //g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
         //g2.dispose();
     }
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Color color = null;
-        JScrollBar sb = (JScrollBar)c;
-        if(!sb.isEnabled() || r.width>r.height) {
+        JScrollBar sb = (JScrollBar) c;
+        if (!sb.isEnabled() || r.width > r.height) {
             return;
-        }else if(isDragging) {
+        } else if (isDragging) {
             color = DRAGGING_COLOR;
-        }else if(isThumbRollover()) {
+        } else if (isThumbRollover()) {
             color = ROLLOVER_COLOR;
-        }else{
+        } else {
             color = DEFAULT_COLOR;
         }
         g2.setPaint(color);
-        g2.fillRect(r.x,r.y,r.width-1,r.height-1);
+        g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
         g2.setPaint(Color.WHITE);
-        g2.drawRect(r.x,r.y,r.width-1,r.height-1);
+        g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
         g2.dispose();
     }
     @Override protected void setThumbBounds(int x, int y, int width, int height) {
@@ -180,21 +180,21 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Component c = e.getComponent();
 //         Container p = SwingUtilities.getUnwrappedParent(c);
-//         if(p instanceof JViewport) {
-//             JViewport vport = (JViewport)p;
+//         if (p instanceof JViewport) {
+//             JViewport vport = (JViewport) p;
 //             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
 //             Point vp = vport.getViewPosition();
-//             vp.translate(pp.x-cp.x, pp.y-cp.y);
-//             ((JComponent)c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+//             vp.translate(pp.x - cp.x, pp.y - cp.y);
+//             ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
 //             pp.setLocation(cp);
 //         }
 //     }
 //     @Override public void mousePressed(MouseEvent e) {
 //         Component c = e.getComponent();
 //         Container p = SwingUtilities.getUnwrappedParent(c);
-//         if(p instanceof JViewport) {
+//         if (p instanceof JViewport) {
 //             c.setCursor(hndCursor);
-//             JViewport vport = (JViewport)p;
+//             JViewport vport = (JViewport) p;
 //             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
 //             pp.setLocation(cp);
 //         }

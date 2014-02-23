@@ -37,32 +37,32 @@ public final class MainPanel extends JPanel {
             super("Exit");
         }
         @Override public void actionPerformed(ActionEvent e) {
-            JComponent c = (JComponent)e.getSource();
+            JComponent c = (JComponent) e.getSource();
             Window window = null;
             Container parent = c.getParent();
-            if(parent instanceof JPopupMenu) {
-                JPopupMenu popup = (JPopupMenu)parent;
-                JComponent invoker = (JComponent)popup.getInvoker();
+            if (parent instanceof JPopupMenu) {
+                JPopupMenu popup = (JPopupMenu) parent;
+                JComponent invoker = (JComponent) popup.getInvoker();
                 window = SwingUtilities.getWindowAncestor(invoker);
-            }else if(parent instanceof JToolBar) {
-                JToolBar toolbar = (JToolBar)parent;
-                if(((BasicToolBarUI)toolbar.getUI()).isFloating()) {
+            } else if (parent instanceof JToolBar) {
+                JToolBar toolbar = (JToolBar) parent;
+                if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
                     window = SwingUtilities.getWindowAncestor(toolbar).getOwner();
-                }else{
+                } else {
                     window = SwingUtilities.getWindowAncestor(toolbar);
                 }
-            }else{
+            } else {
                 Component invoker = c.getParent();
                 window = SwingUtilities.getWindowAncestor(invoker);
             }
-            if(window!=null) {
+            if (window != null) {
                 //window.dispose();
                 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             }
         }
     }
     private static void initMenu(JComponent p) {
-        for(JComponent c:Arrays.<JComponent>asList(
+        for (JComponent c:Arrays.<JComponent>asList(
                 new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
                 new JSeparator(), new JMenuItem(new ExitAction()))) {
             p.add(c);
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

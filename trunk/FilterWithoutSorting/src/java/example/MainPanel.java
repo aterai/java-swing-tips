@@ -27,15 +27,15 @@ public final class MainPanel extends JPanel {
                 return false;
             }
         };
-        sorter.setRowFilter(new RowFilter<TableModel,Integer>() {
+        sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 return entry.getIdentifier() % 2 == 0;
             }
         });
         add(new JCheckBox(new AbstractAction("filter: idx%2==0") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
-                table.setRowSorter(c.isSelected()?sorter:null);
+                JCheckBox c = (JCheckBox) e.getSource();
+                table.setRowSorter(c.isSelected() ? sorter : null);
             }
         }), BorderLayout.NORTH);
         add(new JScrollPane(table));
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -30,17 +30,17 @@ public final class MainPanel extends JPanel {
     }
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            tab.addTab("Title"+count, new JLabel("Tab"+count));
+            tab.addTab("Title" + count, new JLabel("Tab" + count));
             tab.setSelectedIndex(tab.getTabCount()-1);
             count++;
         }
     }
     class CloseAllAction extends AbstractAction {
         public CloseAllAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.removeAll();
@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -78,12 +78,12 @@ class MyJTabbedPane extends JTabbedPane {
         addMouseMotionListener(new MouseMotionAdapter() {
             private int prev = -1;
             @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane source = (JTabbedPane)e.getComponent();
+                JTabbedPane source = (JTabbedPane) e.getComponent();
                 int focussed = source.indexAtLocation(e.getX(), e.getY());
-                if(focussed==prev) { return; }
-                for(int i=0;i<source.getTabCount();i++) {
-                    TabPanel tab = (TabPanel)source.getTabComponentAt(i);
-                    tab.setButtonVisible(i==focussed);
+                if (focussed == prev) { return; }
+                for (int i = 0; i < source.getTabCount(); i++) {
+                    TabPanel tab = (TabPanel) source.getTabComponentAt(i);
+                    tab.setButtonVisible(i == focussed);
                 }
                 prev = focussed;
             }
@@ -126,8 +126,8 @@ class TabPanel extends JPanel {
                 int idx = pane.indexOfComponent(content);
                 pane.removeTabAt(idx);
                 int count = pane.getTabCount();
-                if(count>idx) {
-                    TabPanel tab = (TabPanel)pane.getTabComponentAt(idx);
+                if (count > idx) {
+                    TabPanel tab = (TabPanel) pane.getTabComponentAt(idx);
                     tab.setButtonVisible(true);
                 }
             }

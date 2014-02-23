@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -58,16 +58,16 @@ class DragHereIcon implements Icon {
     private static final int ARC_SIZE = 16;
     private static final int SLIT_NUM = 3;
     private static final Shape BORDER = new RoundRectangle2D.Float(
-        BORDER_WIDTH,BORDER_WIDTH,
-        ICON_SIZE-2*BORDER_WIDTH-1,ICON_SIZE-2*BORDER_WIDTH-1,
-        ARC_SIZE,ARC_SIZE);
+        BORDER_WIDTH, BORDER_WIDTH,
+        ICON_SIZE - 2 * BORDER_WIDTH - 1, ICON_SIZE - 2 * BORDER_WIDTH - 1,
+        ARC_SIZE, ARC_SIZE);
     private static final Font FONT = new Font(Font.MONOSPACED, Font.BOLD, ICON_SIZE);
     private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
     private static final Shape ARROW = new TextLayout("\u21E9", FONT, FRC).getOutline(null); //DOWNWARDS WHITE ARROW
     //private static final Shape ARROW = new TextLayout("\u2B07", font, frc).getOutline(null); //DOWNWARDS BLACK ARROW
     private static final Color LINE_COLOR = Color.GRAY;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.translate(x, y);
 
@@ -78,28 +78,28 @@ class DragHereIcon implements Icon {
         g2.setStroke(new BasicStroke(SLIT_WIDTH));
         g2.setColor(UIManager.getColor("Panel.background"));
 
-        int n = SLIT_NUM+1;
-        int v = ICON_SIZE/n;
-        int m = n*v;
-        for(int i=1;i<n;i++) {
-            int a = i*v;
-            g2.drawLine(a,0,a,m);
-            g2.drawLine(0,a,m,a);
+        int n = SLIT_NUM + 1;
+        int v = ICON_SIZE / n;
+        int m = n * v;
+        for (int i = 1; i < n; i++) {
+            int a = i * v;
+            g2.drawLine(a, 0, a, m);
+            g2.drawLine(0, a, m, a);
         }
 
-        //g2.drawLine(1*v,0*v,1*v,4*v);
-        //g2.drawLine(2*v,0*v,2*v,4*v);
-        //g2.drawLine(3*v,0*v,3*v,4*v);
-        //g2.drawLine(0*v,1*v,4*v,1*v);
-        //g2.drawLine(0*v,2*v,4*v,2*v);
-        //g2.drawLine(0*v,3*v,4*v,3*v);
+        //g2.drawLine(1 * v, 0 * v, 1 * v, 4 * v);
+        //g2.drawLine(2 * v, 0 * v, 2 * v, 4 * v);
+        //g2.drawLine(3 * v, 0 * v, 3 * v, 4 * v);
+        //g2.drawLine(0 * v, 1 * v, 4 * v, 1 * v);
+        //g2.drawLine(0 * v, 2 * v, 4 * v, 2 * v);
+        //g2.drawLine(0 * v, 3 * v, 4 * v, 3 * v);
 
         g2.setPaint(LINE_COLOR);
         Rectangle2D b = ARROW.getBounds();
-        Point2D p = new Point2D.Double(b.getX() + b.getWidth()/2d, b.getY() + b.getHeight()/2d);
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(ICON_SIZE/2d - p.getX(), ICON_SIZE/2d - p.getY());
+        Point2D p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(ICON_SIZE / 2d - p.getX(), ICON_SIZE / 2d - p.getY());
         g2.fill(toCenterAT.createTransformedShape(ARROW));
-        g2.translate(-x,-y);
+        g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth()  {
@@ -112,7 +112,7 @@ class DragHereIcon implements Icon {
 
 class FileDropTargetAdapter extends DropTargetAdapter {
     @Override public void dragOver(DropTargetDragEvent dtde) {
-        if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
             dtde.acceptDrag(DnDConstants.ACTION_COPY);
             return;
         }
@@ -120,12 +120,12 @@ class FileDropTargetAdapter extends DropTargetAdapter {
     }
     @Override public void drop(DropTargetDropEvent dtde) {
         try {
-            if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+            if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                 dtde.acceptDrop(DnDConstants.ACTION_COPY);
                 Transferable t = dtde.getTransferable();
-                List list = (List)t.getTransferData(DataFlavor.javaFileListFlavor);
-                for(Object o: list) {
-                    if(o instanceof File) {
+                List list = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
+                for (Object o: list) {
+                    if (o instanceof File) {
                         File f = (File) o;
                         System.out.println(f.getAbsolutePath());
                     }
@@ -133,7 +133,7 @@ class FileDropTargetAdapter extends DropTargetAdapter {
                 dtde.dropComplete(true);
                 return;
             }
-        }catch(UnsupportedFlavorException | IOException ex) {
+        } catch (UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
         }
         dtde.rejectDrop();
@@ -142,17 +142,17 @@ class FileDropTargetAdapter extends DropTargetAdapter {
 
 // class FileTransferHandler extends TransferHandler {
 //     @Override public boolean importData(TransferSupport support) {
-//         try{
-//             if(canImport(support)) {
-//                 for(Object o: (List)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
-//                     if(o instanceof File) {
-//                         File file = (File)o;
+//         try {
+//             if (canImport(support)) {
+//                 for (Object o: (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
+//                     if (o instanceof File) {
+//                         File file = (File) o;
 //                         System.out.println(file.getAbsolutePath());
 //                     }
 //                 }
 //                 return true;
 //             }
-//         }catch(Exception ex) {
+//         } catch (Exception ex) {
 //             ex.printStackTrace();
 //         }
 //         return false;

@@ -24,17 +24,17 @@ public final class MainPanel extends JPanel {
         };
         boolean b = true;
         TreeModel model = tree.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         Enumeration e = root.breadthFirstEnumeration();
-        while(e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             Object o = node.getUserObject();
-            if(o instanceof String) {
+            if (o instanceof String) {
                 b ^= true;
                 node.setUserObject(new CheckBoxNode(o.toString(), b));
             }
         }
-        for(int i=0;i<tree.getRowCount();i++) {
+        for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
 
@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -103,13 +103,13 @@ public final class MainPanel extends JPanel {
 class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        if(leaf && value instanceof DefaultMutableTreeNode) {
+        if (leaf && value instanceof DefaultMutableTreeNode) {
             this.setEnabled(tree.isEnabled());
             this.setFont(tree.getFont());
             this.setOpaque(false);
-            Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-            if(userObject instanceof CheckBoxNode) {
-                CheckBoxNode node = (CheckBoxNode)userObject;
+            Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+            if (userObject instanceof CheckBoxNode) {
+                CheckBoxNode node = (CheckBoxNode) userObject;
                 this.setText(node.text);
                 this.setSelected(node.selected);
             }
@@ -121,7 +121,7 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
         super.updateUI();
         setName("Tree.cellRenderer");
         //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        //if(System.getProperty("java.version").startsWith("1.6.0")) {
+        //if (System.getProperty("java.version").startsWith("1.6.0")) {
         //    renderer = new DefaultTreeCellRenderer();
         //}
     }
@@ -140,11 +140,11 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         });
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-        if(leaf && value instanceof DefaultMutableTreeNode) {
-            Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-            if(userObject instanceof CheckBoxNode) {
-                this.setSelected(((CheckBoxNode)userObject).selected);
-            }else{
+        if (leaf && value instanceof DefaultMutableTreeNode) {
+            Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+            if (userObject instanceof CheckBoxNode) {
+                this.setSelected(((CheckBoxNode) userObject).selected);
+            } else {
                 this.setSelected(false);
             }
             this.setText(value.toString());
@@ -155,11 +155,12 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         return new CheckBoxNode(getText(), isSelected());
     }
     @Override public boolean isCellEditable(EventObject e) {
-        if(e instanceof MouseEvent) {
-            TreePath path = tree.getPathForLocation(((MouseEvent)e).getX(), ((MouseEvent)e).getY());
+        if (e instanceof MouseEvent) {
+            MouseEvent me = (MouseEvent) e;
+            TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Object o = path.getLastPathComponent();
-            if(o instanceof TreeNode) {
-                return ((TreeNode)o).isLeaf();
+            if (o instanceof TreeNode) {
+                return ((TreeNode) o).isLeaf();
             }
         }
         return false;
@@ -195,11 +196,13 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -208,11 +211,13 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }
@@ -248,30 +253,30 @@ class CheckBoxNode {
 //     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //         this.tree = tree;
 //         //String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
-//         if(leaf && value != null && value instanceof DefaultMutableTreeNode) {
-//             Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-//             if(userObject instanceof CheckBoxNode) {
+//         if (leaf && value != null && value instanceof DefaultMutableTreeNode) {
+//             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+//             if (userObject instanceof CheckBoxNode) {
 //                 leafRenderer.setEnabled(tree.isEnabled());
 //                 leafRenderer.setFont(getFont());
 //                 leafRenderer.setOpaque(false);
-// //                 if(selected) {
+// //                 if (selected) {
 // //                     leafRenderer.setForeground(getTextSelectionColor());
 // //                     leafRenderer.setBackground(getBackgroundSelectionColor());
-// //                 }else{
+// //                 } else {
 // //                     leafRenderer.setForeground(getTextNonSelectionColor());
 // //                     leafRenderer.setBackground(getBackgroundNonSelectionColor());
 // //                 }
-//                 CheckBoxNode node = (CheckBoxNode)userObject;
+//                 CheckBoxNode node = (CheckBoxNode) userObject;
 //                 leafRenderer.setText(node.text); //leafRenderer.setText(stringValue);
 //                 leafRenderer.setSelected(node.selected);
 //                 return leafRenderer;
 //             }
 //         }
-//         JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-// //         if(selected) {
+//         JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+// //         if (selected) {
 // //             c.setForeground(getTextSelectionColor());
 // //             c.setBackground(getBackgroundSelectionColor());
-// //         }else{
+// //         } else {
 // //             c.setForeground(getTextNonSelectionColor());
 // //             c.setBackground(getBackgroundNonSelectionColor());
 // //         }
@@ -280,42 +285,42 @@ class CheckBoxNode {
 //     }
 //     private JTree tree = null;
 //     @Override public void updateUI() {
-//         if(tree!=null) {
+//         if (tree != null) {
 //             tree.setCellRenderer(null);
 //             super.updateUI();
 //             TreeCellRenderer r = tree.getCellRenderer();
 //
 //         }
-//         if(leafRenderer!=null) { leafRenderer.updateUI(); }
+//         if (leafRenderer != null) { leafRenderer.updateUI(); }
 //
 //         //setLeafIcon(getDefaultLeafIcon());
 //         setOpenIcon(getDefaultOpenIcon());
 //         setClosedIcon(getDefaultClosedIcon());
 //
-// //         if(getTextSelectionColor() instanceof UIResource) {
+// //         if (getTextSelectionColor() instanceof UIResource) {
 // //             setTextSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionForeground"));
 // //         }
-// //         if(getTextNonSelectionColor() instanceof UIResource) {
+// //         if (getTextNonSelectionColor() instanceof UIResource) {
 // //             setTextNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textForeground"));
 // //         }
-// //         if(getBackgroundSelectionColor() instanceof UIResource) {
+// //         if (getBackgroundSelectionColor() instanceof UIResource) {
 // //             setBackgroundSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
 // //         }
-// //         if(getBackgroundNonSelectionColor() instanceof UIResource) {
+// //         if (getBackgroundNonSelectionColor() instanceof UIResource) {
 // //             setBackgroundNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textBackground"));
 // //         }
-// //         if(getBorderSelectionColor() instanceof UIResource) {
+// //         if (getBorderSelectionColor() instanceof UIResource) {
 // //             setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
 // //         }
 // // //         drawsFocusBorderAroundIcon = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
 // // //         drawDashedFocusIndicator = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
 // // //         fillBackground = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
 // //         Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
-// //         if(margins != null) {
+// //         if (margins != null) {
 // //             setBorder(new EmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
-// //             //if(leafRenderer!=null) { leafRenderer.setBorder(getBorder()); }
+// //             //if (leafRenderer != null) { leafRenderer.setBorder(getBorder()); }
 // //         }
 //         setName("Tree.cellRenderer");
-//         //if(tree!=null) tree.revalidate();
+//         //if (tree != null) tree.revalidate();
 //     }
 // }

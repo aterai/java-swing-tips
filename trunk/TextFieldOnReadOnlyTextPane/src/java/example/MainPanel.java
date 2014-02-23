@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
 
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
-        textPane.setMargin(new Insets(0,10,0,0));
+        textPane.setMargin(new Insets(0, 10, 0, 0));
         insertQuestion(textPane, "111 / 37 = ");
         insertQuestion(textPane, "222 / 37 = ");
         insertQuestion(textPane, "333 / 37 = ");
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     }
     private static void insertQuestion(final JTextPane textPane, String str) {
         Document doc = textPane.getDocument();
-        try{
+        try {
             doc.insertString(doc.getLength(), str, null);
 
             final int pos = doc.getLength();
@@ -39,17 +39,17 @@ public final class MainPanel extends JPanel {
                     return getPreferredSize();
                 }
             };
-            field.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
+            field.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
             field.addFocusListener(new FocusListener() {
                 @Override public void focusGained(FocusEvent e) {
-                    try{
+                    try {
                         Rectangle rect = textPane.modelToView(pos);
                         rect.grow(0, 4);
                         rect.setSize(field.getSize());
                         //System.out.println(rect);
                         //System.out.println(field.getLocation());
                         textPane.scrollRectToVisible(rect);
-                    }catch(BadLocationException ex) {
+                    } catch (BadLocationException ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
             });
             Dimension d = field.getPreferredSize();
             int baseline = field.getBaseline(d.width, d.height);
-            field.setAlignmentY(baseline/(float)d.height);
+            field.setAlignmentY(baseline/(float) d.height);
 
             SimpleAttributeSet a = new SimpleAttributeSet();
             StyleConstants.setLineSpacing(a, 1.5f);
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
             textPane.insertComponent(field);
             doc.insertString(doc.getLength(), "\n", null);
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

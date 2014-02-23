@@ -17,12 +17,12 @@ public final class MainPanel extends JPanel {
 //            private static final Color EVEN_COLOR = new Color(240, 240, 255);
 //            public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                Component c = super.prepareRenderer(tcr, row, column);
-//                if(isRowSelected(row)) {
+//                if (isRowSelected(row)) {
 //                    c.setForeground(getSelectionForeground());
 //                    c.setBackground(getSelectionBackground());
-//                }else{
+//                } else {
 //                    c.setForeground(getForeground());
-//                    c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+//                    c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
 //                }
 //               return c;
 //            }
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("New row", ""));
@@ -69,14 +69,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -106,10 +106,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -125,12 +125,12 @@ class StripeTableRenderer extends DefaultTableCellRenderer {
     private static final Color EVEN_COLOR = new Color(240, 240, 255);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if(isSelected) {
+        if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setForeground(table.getForeground());
-            setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
+            setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
         }
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         return this;

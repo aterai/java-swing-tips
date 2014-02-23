@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(new JTree()));
         p.add(new JButton(new AbstractAction("close") {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.windowForComponent((Component)e.getSource());
+                Window w = SwingUtilities.windowForComponent((Component) e.getSource());
                 w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
             }
         }), BorderLayout.SOUTH);
@@ -35,8 +35,8 @@ public final class MainPanel extends JPanel {
     @Override public void updateUI() {
         super.updateUI();
         // Translucent resize area for mouse cursor >>>
-        setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        setBackground(new Color(1f,1f,1f,.01f));
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        setBackground(new Color(1f, 1f, 1f, .01f));
         //<<<
     }
 //     private ButtonGroup lookAndFeelRadioGroup;
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
 //         JMenu menu = new JMenu("LookAndFeel");
 //         lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 //         lookAndFeelRadioGroup = new ButtonGroup();
-//         for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+//         for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
 //             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName()));
 //         }
 //         return menu;
@@ -57,10 +57,10 @@ public final class MainPanel extends JPanel {
 //         lafItem.setAction(new AbstractAction() {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-//                 try{
+//                 try {
 //                     setLookAndFeel(m.getActionCommand());
-//                 }catch(ClassNotFoundException | InstantiationException |
-//                        IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//                 } catch (ClassNotFoundException | InstantiationException |
+//                          IllegalAccessException | UnsupportedLookAndFeelException ex) {
 //                     ex.printStackTrace();
 //                 }
 //             }
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
 //     }
 //     public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 //         String oldLookAndFeel = this.lookAndFeel;
-//         if(!oldLookAndFeel.equals(lookAndFeel)) {
+//         if (!oldLookAndFeel.equals(lookAndFeel)) {
 //             UIManager.setLookAndFeel(lookAndFeel);
 //             this.lookAndFeel = lookAndFeel;
 //             updateLookAndFeel();
@@ -80,9 +80,9 @@ public final class MainPanel extends JPanel {
 //         }
 //     }
 //     private void updateLookAndFeel() {
-//         for(Window window: Frame.getWindows()) {
-//             if(window instanceof RootPaneContainer) {
-//                 RootPaneContainer rpc = (RootPaneContainer)window;
+//         for (Window window: Frame.getWindows()) {
+//             if (window instanceof RootPaneContainer) {
+//                 RootPaneContainer rpc = (RootPaneContainer) window;
 //                 SwingUtilities.updateComponentTreeUI(rpc.getContentPane());
 //             }
 //         }
@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
     }
     public static void createAndShowGUI() {
         JFrame frame = new JFrame();
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         //XXX: JFrame frame = new JFrame();
@@ -109,8 +109,8 @@ public final class MainPanel extends JPanel {
         root.setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
         JLayeredPane layeredPane = root.getLayeredPane();
         Component c = layeredPane.getComponent(1);
-        if(c instanceof JComponent) {
-            JComponent orgTitlePane = (JComponent)c;
+        if (c instanceof JComponent) {
+            JComponent orgTitlePane = (JComponent) c;
             orgTitlePane.setVisible(false);
             //layeredPane.remove(orgTitlePane);
         }
@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
         frame.setMinimumSize(new Dimension(300, 120));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
-        frame.setBackground(new Color(0,0,0,0)); //JDK 1.7
+        frame.setBackground(new Color(0, 0, 0, 0)); //JDK 1.7
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -132,18 +132,18 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if(window==null) {
+        if (window == null) {
             Object o = me.getSource();
-            if(o instanceof Window) {
-                window = (Window)o;
-            }else if(o instanceof JComponent) {
+            if (o instanceof Window) {
+                window = (Window) o;
+            } else if (o instanceof JComponent) {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window!=null) {
+        if (window != null) {
             Point pt = new Point();
             pt = window.getLocation(pt);
             int x = pt.x - startPt.x + me.getX();
@@ -160,10 +160,10 @@ class DraggableInternalFrame extends JInternalFrame {
         focusManager.addPropertyChangeListener(new PropertyChangeListener() {
             @Override public void propertyChange(PropertyChangeEvent e) {
                 String prop = e.getPropertyName();
-                if("activeWindow".equals(prop)) {
-                    try{
-                        setSelected(e.getNewValue()!=null);
-                    }catch(PropertyVetoException ex) {
+                if ("activeWindow".equals(prop)) {
+                    try {
+                        setSelected(e.getNewValue() != null);
+                    } catch (PropertyVetoException ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -172,9 +172,9 @@ class DraggableInternalFrame extends JInternalFrame {
     }
     @Override public void updateUI() {
         super.updateUI();
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
         Component titleBar = ui.getNorthPane();
-        for(MouseMotionListener l: titleBar.getListeners(MouseMotionListener.class)) {
+        for (MouseMotionListener l: titleBar.getListeners(MouseMotionListener.class)) {
             titleBar.removeMouseMotionListener(l);
         }
         DragWindowListener dwl = new DragWindowListener();
@@ -190,7 +190,7 @@ final class LookAndFeelUtil {
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
@@ -202,10 +202,10 @@ final class LookAndFeelUtil {
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
+                try {
                     setLookAndFeel(m.getActionCommand());
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -217,7 +217,7 @@ final class LookAndFeelUtil {
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
@@ -225,7 +225,7 @@ final class LookAndFeelUtil {
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

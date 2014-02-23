@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
         tab.setEnabledAt(1, false);
         checkbox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     tab.setEnabledAt(1, true);
-                }else if(e.getStateChange()==ItemEvent.DESELECTED) {
+                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                     tab.setEnabledAt(1, false);
                 }
             }
@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

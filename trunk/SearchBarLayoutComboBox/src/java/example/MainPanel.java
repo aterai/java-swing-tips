@@ -8,8 +8,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(4,1,5,5));
-        setBorder(BorderFactory.createEmptyBorder(5,20,5,20));
+        JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
+        setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         p.add(new JLabel("Default JComboBox"));
         p.add(new JComboBox<String>(new String[] {"Google", "Yahoo!", "Bing"}));
         p.add(new JLabel("SearchBar JComboBox"));
@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
 //         combo.setUI(new BasicSearchBarComboBoxUI());
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
-//                 SearchEngine se = (SearchEngine)combo.getItemAt(0);
-//                 JButton arrowButton = (JButton)combo.getComponent(0);
+//                 SearchEngine se = (SearchEngine) combo.getItemAt(0);
+//                 JButton arrowButton = (JButton) combo.getComponent(0);
 //                 arrowButton.setIcon(se.favicon);
 //                 combo.getEditor().setItem("java swing");
 //             }
@@ -46,12 +46,12 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.put("example.SearchBarComboBox", "SearchBarComboBoxUI");
             UIManager.put("SearchBarComboBoxUI", "example.BasicSearchBarComboBoxUI");
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -79,7 +79,7 @@ class SearchEngine {
 
 class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxModel<E> {
     @Override public void setSelectedItem(Object anObject) {
-        //System.out.println("model: "+anObject);
+        //System.out.println("model: " + anObject);
     }
 }
 
@@ -89,27 +89,27 @@ class JSearchBar extends JComboBox<SearchEngine> {
         return UI_CLASS_ID;
     }
     @Override public SearchBarComboBoxUI getUI() {
-        return (SearchBarComboBoxUI)ui;
+        return (SearchBarComboBoxUI) ui;
     }
 //     @Override public void setUI(SearchBarComboBoxUI newUI) {
 //         super.setUI(newUI);
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if(UIManager.get(getUIClassID())==null) {
+        if (UIManager.get(getUIClassID()) == null) {
             setUI(new BasicSearchBarComboBoxUI());
-        }else{
-            setUI((SearchBarComboBoxUI)UIManager.getUI(this));
+        } else {
+            setUI((SearchBarComboBoxUI) UIManager.getUI(this));
         }
         UIManager.put("ComboBox.font", getFont()); //XXX: ???
-        JButton arrowButton = (JButton)getComponent(0);
+        JButton arrowButton = (JButton) getComponent(0);
         SearchEngine se = getItemAt(0);
-        if(se!=null) {
+        if (se != null) {
             arrowButton.setIcon(se.favicon);
         }
 //         ListCellRenderer renderer = getRenderer();
-//         if(renderer instanceof Component) {
-//             SwingUtilities.updateComponentTreeUI((Component)renderer);
+//         if (renderer instanceof Component) {
+//             SwingUtilities.updateComponentTreeUI((Component) renderer);
 //         }
     }
 //     public JSearchBar() {

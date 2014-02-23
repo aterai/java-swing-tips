@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         box2.setBorder(BorderFactory.createTitledBorder("setEditable(true)"));
         box2.add(combobox2);
 
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box1, BorderLayout.NORTH);
         add(box2, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 200));
@@ -37,11 +37,11 @@ public final class MainPanel extends JPanel {
         JComboBox<MyItem> combo = new JComboBox<>(model);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                MyItem item = (MyItem)value;
-                JLabel label = (JLabel)super.getListCellRendererComponent(list,item,index,isSelected,cellHasFocus);
-                if(index!=-1 && item.hasSeparator()) {
-                    label.setBorder(BorderFactory.createMatteBorder(1,0,0,0,Color.GRAY));
-                }else{
+                MyItem item = (MyItem) value;
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, item, index, isSelected, cellHasFocus);
+                if (index != -1 && item.hasSeparator()) {
+                    label.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
+                } else {
                     label.setBorder(BorderFactory.createEmptyBorder());
                 }
                 return label;
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

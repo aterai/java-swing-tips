@@ -20,29 +20,29 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         final JFrame frame = new JFrame("@title@");
-        try{
-            SingleInstanceService singleInstanceService = (SingleInstanceService)ServiceManager.lookup("javax.jnlp.SingleInstanceService");
+        try {
+            SingleInstanceService singleInstanceService = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
             singleInstanceService.addSingleInstanceListener(new SingleInstanceListener() {
                 private int count;
                 @Override public void newActivation(String[] args) {
                     //System.out.println(EventQueue.isDispatchThread());
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
-                            JOptionPane.showMessageDialog(frame, "already running: "+count);
-                            frame.setTitle("title:"+count);
+                            JOptionPane.showMessageDialog(frame, "already running: " + count);
+                            frame.setTitle("title:" + count);
                             count++;
                         }
                     });
                 }
             });
-        }catch(UnavailableServiceException use) {
+        } catch (UnavailableServiceException use) {
             use.printStackTrace();
             return;
         }

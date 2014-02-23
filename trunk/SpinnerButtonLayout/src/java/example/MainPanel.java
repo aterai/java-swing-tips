@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         box.add(makePanel("L(Prev), R(Next)", spinner3));
 
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
@@ -54,10 +54,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -72,11 +72,11 @@ public final class MainPanel extends JPanel {
 class SpinnerLayout extends BorderLayout {
     @Override public void addLayoutComponent(Component comp, Object constraints) {
         Object cons = constraints;
-        if("Editor".equals(cons)) {
+        if ("Editor".equals(cons)) {
             cons = "Center";
-        }else if("Next".equals(cons)) {
+        } else if ("Next".equals(cons)) {
             cons = "East";
-        }else if("Previous".equals(cons)) {
+        } else if ("Previous".equals(cons)) {
             cons = "West";
         }
         super.addLayoutComponent(comp, cons);

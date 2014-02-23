@@ -20,14 +20,14 @@ public final class MainPanel extends JPanel {
         textField3.addHierarchyListener(new FocusHierarchyListener());
         textField4.addAncestorListener(new FocusAncestorListener());
 
-        JPanel p = new JPanel(new GridLayout(2,2,5,5));
+        JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
         p.add(makePanel("Default",           frame, textField1));
         p.add(makePanel2("WindowListener",   frame, textField2));
         p.add(makePanel("HierarchyListener", frame, textField3));
         p.add(makePanel("AncestorListener",  frame, textField4));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makePanel(String title, final JFrame frame, final JTextField textField) {
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("show") {
             @Override public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showConfirmDialog(frame, textField, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION) {
+                if (result == JOptionPane.OK_OPTION) {
                     textArea.setText(textField.getText());
                 }
             }
@@ -58,10 +58,10 @@ public final class MainPanel extends JPanel {
                 dialog.setVisible(true);
                 Object selectedValue = pane.getValue();
                 int result = JOptionPane.CLOSED_OPTION;
-                if(selectedValue instanceof Integer) {
-                    result = ((Integer)selectedValue).intValue();
+                if (selectedValue instanceof Integer) {
+                    result = ((Integer) selectedValue).intValue();
                 }
-                if(result==JOptionPane.OK_OPTION) {
+                if (result == JOptionPane.OK_OPTION) {
                     textArea.setText(textField.getText());
                 }
             }
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -93,8 +93,8 @@ public final class MainPanel extends JPanel {
 
 class FocusHierarchyListener implements HierarchyListener {
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        final JComponent c = (JComponent)e.getComponent();
-        if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && c.isShowing()) {
+        final JComponent c = (JComponent) e.getComponent();
+        if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
             EventQueue.invokeLater(new Runnable() {
                 @Override public void run() {
                     c.requestFocusInWindow();

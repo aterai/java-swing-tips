@@ -14,11 +14,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         BufferedImage bi = null;
-        try{
+        try {
             //symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
             //http://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
             bi = ImageIO.read(getClass().getResource("symbol_scale_2.jpg"));
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
         p1.add(b1);
         p1.add(b2);
 
-        try{
+        try {
             bi = ImageIO.read(getClass().getResource("blue.png"));
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         JButton b3 = new JButton("Scaling Icon", new NineSliceScalingIcon(bi, 0, 0, 0, 0));
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -103,13 +103,13 @@ class ScalingButton extends JButton {
     }
 //     @Override public Dimension getPreferredSize() {
 //         Insets i = getInsets();
-//         return new Dimension(image.getWidth(this)+i.right+i.left, 80);
+//         return new Dimension(image.getWidth(this) + i.right + i.left, 80);
 //     }
 //     @Override public Dimension getMinimumSize() {
 //         return getPreferredSize();
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int bw = getWidth();
         int bh = getHeight();
@@ -137,7 +137,7 @@ class NineSliceScalingButton extends JButton {
 //         return getPreferredSize();
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         int iw = image.getWidth(this);
@@ -184,13 +184,13 @@ class NineSliceScalingIcon implements Icon {
         return Math.max(image.getHeight(null), height);
     }
     @Override public void paintIcon(Component cmp, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         Insets i;
-        if(cmp instanceof JComponent) {
-            i = ((JComponent)cmp).getBorder().getBorderInsets(cmp);
-        }else{
+        if (cmp instanceof JComponent) {
+            i = ((JComponent) cmp).getBorder().getBorderInsets(cmp);
+        } else {
             i = new Insets(0, 0, 0, 0);
         }
 
@@ -198,12 +198,12 @@ class NineSliceScalingIcon implements Icon {
 
         int iw = image.getWidth(cmp);
         int ih = image.getHeight(cmp);
-        width  = cmp.getWidth()-i.left-i.right;
-        height = cmp.getHeight()-i.top-i.bottom;
+        width  = cmp.getWidth() - i.left - i.right;
+        height = cmp.getHeight() - i.top - i.bottom;
 
         g2.drawImage(image.getSubimage(a, c, iw - a - b, ih - c - d), a, c, width - a - b, height - c - d, cmp);
 
-        if(a>0 && b>0 && c>0 && d>0) {
+        if (a > 0 && b > 0 && c > 0 && d > 0) {
             g2.drawImage(image.getSubimage(a, 0, iw - a - b, c), a, 0, width - a - b, c, cmp);
             g2.drawImage(image.getSubimage(a, ih - d, iw - a - b, d), a, height - d, width - a - b, d, cmp);
             g2.drawImage(image.getSubimage(0, c, a, ih - c - d), 0, c, a, height - c - d, cmp);
@@ -220,17 +220,17 @@ class NineSliceScalingIcon implements Icon {
 }
 class PressedImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int)(((argb >> 16) & 0xff) * 0.6);
-        int g = (int)(((argb >>  8) & 0xff) * 1.0);
-        int b = (int)(((argb)       & 0xff) * 1.0);
+        int r = (int) (((argb >> 16) & 0xff) * 0.6);
+        int g = (int) (((argb >>  8) & 0xff) * 1.0);
+        int b = (int) (((argb)       & 0xff) * 1.0);
         return (argb & 0xff000000) | (r<<16) | (g<<8) | (b);
     }
 }
 class RolloverImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int)(((argb >> 16) & 0xff) * 1.0);
-        int g = (int)(((argb >>  8) & 0xff) * 1.5); g = Math.min(255, g);
-        int b = (int)(((argb)       & 0xff) * 1.5); b = Math.min(255, b);
+        int r = (int) (((argb >> 16) & 0xff) * 1.0);
+        int g = (int) (((argb >>  8) & 0xff) * 1.5); g = Math.min(255, g);
+        int b = (int) (((argb)       & 0xff) * 1.5); b = Math.min(255, b);
         return (argb & 0xff000000) | (r<<16) | (g<<8) | (b);
     }
 }

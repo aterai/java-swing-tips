@@ -32,10 +32,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -51,15 +51,15 @@ class CustomCellEditor extends DefaultCellEditor {
     protected final JButton button = new JButton();
     public CustomCellEditor(final JTextField field) {
         super(field);
-        field.setBorder(BorderFactory.createEmptyBorder(0,2,0,BUTTON_WIDTH));
+        field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, BUTTON_WIDTH));
         field.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && field.isShowing()) {
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && field.isShowing()) {
                     //System.out.println("hierarchyChanged: SHOWING_CHANGED");
                     field.removeAll();
                     field.add(button);
                     Rectangle r = field.getBounds();
-                    button.setBounds(r.width-BUTTON_WIDTH, 0, BUTTON_WIDTH, r.height);
+                    button.setBounds(r.width - BUTTON_WIDTH, 0, BUTTON_WIDTH, r.height);
                     //field.requestFocusInWindow();
                 }
             }
@@ -81,13 +81,13 @@ class CustomComponentCellEditor extends DefaultCellEditor {
         this.field = field;
         button = new JButton();
         button.setPreferredSize(new Dimension(25, 0));
-        field.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
+        field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
         panel.add(field);
         panel.add(button, BorderLayout.EAST);
         panel.setFocusable(false);
     }
 //     public Object getCellEditorValue() {
-//         //System.out.println("  "+field.getText());
+//         //System.out.println("  " + field.getText());
 //         return field.getText();
 //     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
@@ -103,13 +103,13 @@ class CustomComponentCellEditor extends DefaultCellEditor {
     }
     @Override public boolean isCellEditable(final EventObject e) {
         //System.out.println("isCellEditable");
-//         if(e instanceof KeyEvent) {
+//         if (e instanceof KeyEvent) {
 //             //System.out.println("KeyEvent");
 //             EventQueue.invokeLater(new Runnable() {
 //                 @Override public void run() {
-//                     char kc = ((KeyEvent)e).getKeyChar();
-//                     if(!Character.isIdentifierIgnorable(kc)) {
-//                         field.setText(field.getText()+kc);
+//                     char kc = ((KeyEvent) e).getKeyChar();
+//                     if (!Character.isIdentifierIgnorable(kc)) {
+//                         field.setText(field.getText() + kc);
 //                     }
 //                     field.setCaretPosition(field.getText().length());
 //                     //field.requestFocusInWindow();
@@ -118,12 +118,12 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 //         }
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                if(e instanceof KeyEvent) {
-                    KeyEvent ke = (KeyEvent)e;
+                if (e instanceof KeyEvent) {
+                    KeyEvent ke = (KeyEvent) e;
                     char kc = ke.getKeyChar();
                     //int kc = ke.getKeyCode();
-                    if(Character.isUnicodeIdentifierStart(kc)) {
-                        field.setText(field.getText()+kc);
+                    if (Character.isUnicodeIdentifierStart(kc)) {
+                        field.setText(field.getText() + kc);
                     }
                 }
             }
@@ -145,14 +145,14 @@ class CustomComponent extends JPanel {
     public final JTextField field = new JTextField();
     protected JButton button;
     public CustomComponent() {
-        super(new BorderLayout(0,0));
+        super(new BorderLayout(0, 0));
         button = new JButton();
         //this.setFocusable(false);
         this.add(field);
         this.add(button, BorderLayout.EAST);
     }
     @Override protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, int condition, boolean pressed) {
-        if(!field.isFocusOwner() && !pressed) {
+        if (!field.isFocusOwner() && !pressed) {
             field.requestFocusInWindow();
             SwingUtilities.invokeLater(new Runnable() {
                 @Override public void run() {

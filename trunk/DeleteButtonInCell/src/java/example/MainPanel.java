@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 //         @Override public int rowAtPoint(Point pt) {
 //             // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
 //             // http://bugs.sun.com/view_bug.do?bug_id=6291631
-//             return (pt.y<0)?-1:super.rowAtPoint(pt);
+//             return (pt.y < 0) ? -1 : super.rowAtPoint(pt);
 //         }
 //     };
     private final JTable table = new JTable(model);
@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
 //                 Point pt = e.getPoint();
 //                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
 //                 int vrow = table.rowAtPoint(e.getPoint());
-//                 int mrow = (vrow>=0)?table.convertRowIndexToModel(vrow):-1;
-//                 if(mrow>=0 && mcol==BUTTON_COLUMN) {
+//                 int mrow = (vrow >= 0) ? table.convertRowIndexToModel(vrow) : -1;
+//                 if (mrow >= 0 && mcol == BUTTON_COLUMN) {
 //                     targetRow = mrow;
 //                 }
 //             }
@@ -56,8 +56,8 @@ public final class MainPanel extends JPanel {
 //                 Point pt = e.getPoint();
 //                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
 //                 int vrow = table.rowAtPoint(e.getPoint());
-//                 int mrow = (vrow>=0)?table.convertRowIndexToModel(vrow):-1;
-//                 if(targetRow==mrow && mcol==BUTTON_COLUMN) {
+//                 int mrow = (vrow >= 0) ? table.convertRowIndexToModel(vrow) : -1;
+//                 if (targetRow == mrow && mcol == BUTTON_COLUMN) {
 //                     model.removeRow(mrow);
 //                 }
 //                 targetRow = -1;
@@ -90,10 +90,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -133,7 +133,7 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
             @Override public void actionPerformed(ActionEvent e) {
                 int row = table.convertRowIndexToModel(table.getEditingRow());
                 fireEditingStopped();
-                ((DefaultTableModel)table.getModel()).removeRow(row);
+                ((DefaultTableModel) table.getModel()).removeRow(row);
             }
         });
     }
@@ -175,11 +175,13 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -188,11 +190,13 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

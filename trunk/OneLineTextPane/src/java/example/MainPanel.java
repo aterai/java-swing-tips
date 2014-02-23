@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         //JTextField textField = new JTextField(str);
         add(makeTitlePanel(new JTextField(str), "JTextField"));
         add(makeTitlePanel(makeOneLineTextPane(str), "JTextPane+StyledDocument+JScrollPane"));
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -44,9 +44,9 @@ public final class MainPanel extends JPanel {
 
         AbstractDocument doc = new SimpleSyntaxDocument();
         textPane.setDocument(doc);
-        try{
+        try {
             doc.insertString(0, text, null);
-        }catch(BadLocationException ex) {
+        } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
         String key = "Do-Nothing";
@@ -89,10 +89,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
 //@see http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
-    //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
+    //HashMap<String, AttributeSet> keywords = new HashMap<String, AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
     private static final String OPERANDS = ".,";
     public SimpleSyntaxDocument() {
@@ -123,11 +123,11 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         // @see PlainDocument#insertString(...)
         int length = 0;
         String str = text;
-        if(str != null && str.indexOf(LB) >= 0) {
+        if (str != null && str.indexOf(LB) >= 0) {
             StringBuilder filtered = new StringBuilder(str);
             int n = filtered.length();
-            for(int i = 0; i < n; i++) {
-                if(filtered.charAt(i) == LB) {
+            for (int i = 0; i < n; i++) {
+                if (filtered.charAt(i) == LB) {
                     filtered.setCharAt(i, ' ');
                 }
             }
@@ -145,8 +145,8 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         Element root = getDefaultRootElement();
         String content = getText(0, getLength());
         int startLine = root.getElementIndex(offset);
-        int endLine = root.getElementIndex(offset+length);
-        for(int i=startLine;i<=endLine;i++) {
+        int endLine = root.getElementIndex(offset + length);
+        for (int i = startLine; i <= endLine; i++) {
             applyHighlighting(content, i);
         }
     }
@@ -156,17 +156,17 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         int endOffset     = root.getElement(line).getEndOffset() - 1;
         int lineLength    = endOffset - startOffset;
         int contentLength = content.length();
-        if(endOffset >= contentLength) { endOffset = contentLength - 1; }
+        if (endOffset >= contentLength) { endOffset = contentLength - 1; }
         setCharacterAttributes(startOffset, lineLength, normal, true);
         checkForTokens(content, startOffset, endOffset);
     }
     private void checkForTokens(String content, int startOffset, int endOffset) {
         int index = startOffset;
-        while(index <= endOffset) {
-            while(isDelimiter(content.substring(index, index+1))) {
-                if(index < endOffset) {
+        while (index <= endOffset) {
+            while (isDelimiter(content.substring(index, index + 1))) {
+                if (index < endOffset) {
                     index++;
-                }else{
+                } else {
                     return;
                 }
             }
@@ -175,17 +175,17 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private int getOtherToken(String content, int startOffset, int endOffset) {
         int endOfToken = startOffset + 1;
-        while(endOfToken <= endOffset) {
-            if(isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
+        while (endOfToken <= endOffset) {
+            if (isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
                 break;
             }
             endOfToken++;
         }
         String token = content.substring(startOffset, endOfToken);
         Style s = getStyle(token);
-        //if(keywords.containsKey(token)) {
+        //if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
-        if(s!=null) {
+        if (s != null) {
             setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
         }
         return endOfToken + 1;
@@ -212,16 +212,16 @@ class NoWrapParagraphView extends ParagraphView {
 class NoWrapViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if(kind != null) {
-            if(kind.equals(AbstractDocument.ContentElementName)) {
+        if (kind != null) {
+            if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
-            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+            } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                 return new NoWrapParagraphView(elem);
-            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+            } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
-            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+            } else if (kind.equals(StyleConstants.ComponentElementName)) {
                 return new ComponentView(elem);
-            }else if(kind.equals(StyleConstants.IconElementName)) {
+            } else if (kind.equals(StyleConstants.IconElementName)) {
                 return new IconView(elem);
             }
         }

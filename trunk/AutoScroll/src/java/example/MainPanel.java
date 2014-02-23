@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -73,9 +73,9 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
         this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 Container c = SwingUtilities.getAncestorOfClass(JViewport.class, label);
-                if(c != null) {
-                    JViewport vport = (JViewport)c;
-                    Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
+                if (c != null) {
+                    JViewport vport = (JViewport) c;
+                    Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
                     vp.translate(move.x, move.y);
                     label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); //vport.setViewPosition(vp);
                 }
@@ -83,20 +83,20 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent c = (JComponent)e.getComponent();
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
+        JComponent c = (JComponent) e.getComponent();
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
             scroller.stop();
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JViewport vport = (JViewport)e.getComponent();
+        JViewport vport = (JViewport) e.getComponent();
         Point pt = e.getPoint();
         int dx = startPt.x - pt.x;
         int dy = startPt.y - pt.y;
         Point vp = vport.getViewPosition();
         vp.translate(dx, dy);
         label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-        move.setLocation(SPEED*dx, SPEED*dy);
+        move.setLocation(SPEED * dx, SPEED * dy);
         startPt.setLocation(pt);
     }
     @Override public void mousePressed(MouseEvent e) {
@@ -133,8 +133,8 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 Container c = label.getParent();
-                if(c instanceof JViewport) {
-                    JViewport vport = (JViewport)c;
+                if (c instanceof JViewport) {
+                    JViewport vport = (JViewport) c;
                     Point vp = vport.getViewPosition();
                     vp.translate(move.x, move.y);
                     label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
@@ -143,36 +143,36 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent jc = (JComponent)e.getComponent();
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !jc.isDisplayable()) {
+        JComponent jc = (JComponent) e.getComponent();
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !jc.isDisplayable()) {
             scroller.stop();
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
         scroller.stop();
-        JComponent jc = (JComponent)e.getComponent();
+        JComponent jc = (JComponent) e.getComponent();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, jc);
-        if(c != null) {
-            JViewport vport = (JViewport)c;
-            Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+        if (c != null) {
+            JViewport vport = (JViewport) c;
+            Point cp = SwingUtilities.convertPoint(jc, e.getPoint(), vport);
             int dx = startPt.x - cp.x;
             int dy = startPt.y - cp.y;
             Point vp = vport.getViewPosition();
             vp.translate(dx, dy);
             jc.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-            move.setLocation(SPEED*dx, SPEED*dy);
+            move.setLocation(SPEED * dx, SPEED * dy);
             startPt.setLocation(cp);
         }
     }
     @Override public void mousePressed(MouseEvent e) {
         scroller.stop();
         move.setLocation(0, 0);
-        JComponent jc = (JComponent)e.getComponent();
+        JComponent jc = (JComponent) e.getComponent();
         jc.setCursor(hc);
         Container c = jc.getParent();
-        if(c instanceof JViewport) {
-            JViewport vport = (JViewport)c;
-            Point cp = SwingUtilities.convertPoint(jc,e.getPoint(),vport);
+        if (c instanceof JViewport) {
+            JViewport vport = (JViewport) c;
+            Point cp = SwingUtilities.convertPoint(jc, e.getPoint(), vport);
             startPt.setLocation(cp);
         }
     }

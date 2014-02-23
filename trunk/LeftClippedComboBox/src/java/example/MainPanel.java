@@ -13,16 +13,16 @@ public final class MainPanel extends JPanel {
         JComboBox<String> combo = makeComboBox();
         initComboBoxRenderer(combo);
 
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(makeTitledBox("Left Clip JComboBox", combo), BorderLayout.NORTH);
         add(makeTitledBox("Default JComboBox", makeComboBox()), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 200));
     }
     private static JButton getArrowButton(JComboBox box) {
-        for(Component c:box.getComponents()) {
-            if(c instanceof JButton) { //&& "ComboBox.arrowButton".equals(c.getName())) {
+        for (Component c:box.getComponents()) {
+            if (c instanceof JButton) { //&& "ComboBox.arrowButton".equals(c.getName())) {
                 //System.out.println(c.getName());
-                return (JButton)c;
+                return (JButton) c;
             }
         }
         return null;
@@ -48,24 +48,24 @@ public final class MainPanel extends JPanel {
         final JButton arrowButton = getArrowButton(combo);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 int itb = 0;
                 int ilr = 0;
                 Insets insets = getInsets();
-                itb += insets.top+insets.bottom;
-                ilr += insets.left+insets.right;
+                itb += insets.top + insets.bottom;
+                ilr += insets.left + insets.right;
                 insets = combo.getInsets();
-                itb += insets.top+insets.bottom;
-                ilr += insets.left+insets.right;
+                itb += insets.top + insets.bottom;
+                ilr += insets.left + insets.right;
                 int availableWidth = combo.getWidth()-ilr;
-                if(index<0) {
+                if (index < 0) {
                     //@see BasicComboBoxUI#rectangleForCurrentValue
                     int buttonSize = combo.getHeight()-itb;
-                    if(arrowButton!=null) {
+                    if (arrowButton != null) {
                         buttonSize = arrowButton.getWidth();
                     }
                     availableWidth -= buttonSize;
-                    JTextField tf = (JTextField)combo.getEditor().getEditorComponent();
+                    JTextField tf = (JTextField) combo.getEditor().getEditorComponent();
                     insets = tf.getMargin();
                     //availableWidth -= insets.left;
                     availableWidth -= insets.left + insets.right;
@@ -75,18 +75,18 @@ public final class MainPanel extends JPanel {
                 //@title Left Dot Renderer
                 //@auther Rob Camick
                 FontMetrics fm = getFontMetrics(getFont());
-                if(fm.stringWidth(cellText)>availableWidth) {
+                if (fm.stringWidth(cellText) > availableWidth) {
                     String dots = "...";
                     int textWidth = fm.stringWidth(dots);
                     int nChars = cellText.length() - 1;
-                    while(nChars>0) {
+                    while (nChars > 0) {
                         textWidth += fm.charWidth(cellText.charAt(nChars));
-                        if(textWidth > availableWidth) {
+                        if (textWidth > availableWidth) {
                             break;
                         }
                         nChars--;
                     }
-                    setText(dots+cellText.substring(nChars+1));
+                    setText(dots + cellText.substring(nChars + 1));
                 }
                 //</blockquote>
                 return this;
@@ -101,10 +101,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

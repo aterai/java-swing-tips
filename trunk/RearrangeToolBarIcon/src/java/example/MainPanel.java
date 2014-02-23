@@ -19,12 +19,12 @@ public final class MainPanel extends JPanel {
         DragHandler dh = new DragHandler();
         toolbar.addMouseListener(dh);
         toolbar.addMouseMotionListener(dh);
-        toolbar.setBorder(BorderFactory.createEmptyBorder(2,2,2,0));
+        toolbar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
-        for(String str: Arrays.asList("Copy24.gif", "Cut24.gif", "Paste24.gif",
+        for (String str: Arrays.asList("Copy24.gif", "Cut24.gif", "Paste24.gif",
                                       "Delete24.gif", "Undo24.gif", "Redo24.gif",
                                       "Help24.gif", "Open24.gif", "Save24.gif")) {
-            URL url = getClass().getResource(PATH+str);
+            URL url = getClass().getResource(PATH + str);
             toolbar.add(createToolbarButton(url));
         }
         add(toolbar, BorderLayout.NORTH);
@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -71,8 +71,8 @@ class DragHandler extends MouseAdapter {
         window.setBackground(new Color(0, true));
     }
     @Override public void mousePressed(MouseEvent e) {
-        JComponent parent = (JComponent)e.getComponent();
-        if(parent.getComponentCount()<=1) {
+        JComponent parent = (JComponent) e.getComponent();
+        if (parent.getComponentCount()<=1) {
             startPt = null;
             return;
         }
@@ -81,7 +81,7 @@ class DragHandler extends MouseAdapter {
     private void startDragging(JComponent parent, Point pt) {
         Component c = parent.getComponentAt(pt);
         index = parent.getComponentZOrder(c);
-        if(Objects.equals(c, parent) || index < 0) {
+        if (Objects.equals(c, parent) || index < 0) {
             return;
         }
         draggingComonent = c;
@@ -91,7 +91,7 @@ class DragHandler extends MouseAdapter {
         window.pack();
 
         Dimension d = draggingComonent.getPreferredSize();
-        Point p = new Point(pt.x - d.width/2, pt.y - d.height/2);
+        Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
         SwingUtilities.convertPointToScreen(p, parent);
         window.setLocation(p);
         window.setVisible(true);
@@ -104,32 +104,32 @@ class DragHandler extends MouseAdapter {
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
-        JComponent parent = (JComponent)e.getComponent();
+        JComponent parent = (JComponent) e.getComponent();
 
-        if(startPt != null && Math.sqrt(Math.pow(pt.x-startPt.x, 2)+Math.pow(pt.y-startPt.y, 2))>gestureMotionThreshold) {
+        if (startPt != null && Math.sqrt(Math.pow(pt.x - startPt.x, 2) + Math.pow(pt.y - startPt.y, 2)) > gestureMotionThreshold) {
             startDragging(parent, pt);
             startPt = null;
             return;
         }
-        if(!window.isVisible() || draggingComonent==null) {
+        if (!window.isVisible() || draggingComonent == null) {
             return;
         }
 
         Dimension d = draggingComonent.getPreferredSize();
-        Point p = new Point(pt.x - d.width/2, pt.y - d.height/2);
+        Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
         SwingUtilities.convertPointToScreen(p, parent);
         window.setLocation(p);
 
-        for(int i=0; i<parent.getComponentCount(); i++) {
+        for (int i = 0; i < parent.getComponentCount(); i++) {
             Component c = parent.getComponent(i);
             Rectangle r = c.getBounds();
-            int wd2 = r.width/2;
+            int wd2 = r.width / 2;
             Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
-            Rectangle r2 = new Rectangle(r.x+wd2, r.y, wd2, r.height);
-            if(r1.contains(pt)) {
-                swapComponentLocation(parent, gap, gap, i-1>0 ? i : 0);
+            Rectangle r2 = new Rectangle(r.x + wd2, r.y, wd2, r.height);
+            if (r1.contains(pt)) {
+                swapComponentLocation(parent, gap, gap, i - 1 > 0 ? i : 0);
                 return;
-            }else if(r2.contains(pt)) {
+            } else if (r2.contains(pt)) {
                 swapComponentLocation(parent, gap, gap, i);
                 return;
             }
@@ -140,33 +140,33 @@ class DragHandler extends MouseAdapter {
 
     @Override public void mouseReleased(MouseEvent e) {
         startPt = null;
-        if(!window.isVisible() || draggingComonent==null) {
+        if (!window.isVisible() || draggingComonent == null) {
             return;
         }
         Point pt = e.getPoint();
-        JComponent parent = (JComponent)e.getComponent();
+        JComponent parent = (JComponent) e.getComponent();
 
         Component cmp = draggingComonent;
         draggingComonent = null;
         window.setVisible(false);
 
-        for(int i=0; i<parent.getComponentCount(); i++) {
+        for (int i = 0; i < parent.getComponentCount(); i++) {
             Component c = parent.getComponent(i);
             Rectangle r = c.getBounds();
-            int wd2 = r.width/2;
+            int wd2 = r.width / 2;
             Rectangle r1 = new Rectangle(r.x, r.y, wd2, r.height);
-            Rectangle r2 = new Rectangle(r.x+wd2, r.y, wd2, r.height);
-            if(r1.contains(pt)) {
-                swapComponentLocation(parent, gap, cmp, i-1>0 ? i : 0);
+            Rectangle r2 = new Rectangle(r.x + wd2, r.y, wd2, r.height);
+            if (r1.contains(pt)) {
+                swapComponentLocation(parent, gap, cmp, i - 1 > 0 ? i : 0);
                 return;
-            }else if(r2.contains(pt)) {
+            } else if (r2.contains(pt)) {
                 swapComponentLocation(parent, gap, cmp, i);
                 return;
             }
         }
-        if(parent.getBounds().contains(pt)) {
+        if (parent.getBounds().contains(pt)) {
             swapComponentLocation(parent, gap, cmp, parent.getComponentCount());
-        }else{
+        } else {
             swapComponentLocation(parent, gap, cmp, index);
         }
     }

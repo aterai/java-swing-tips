@@ -12,10 +12,10 @@ public final class MainPanel extends JPanel implements ActionListener {
 //     private final JTable table = new JTable(model) {
 //         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //             Component c = super.prepareRenderer(tcr, row, column);
-//             if(1==convertColumnIndexToModel(column)) {
-//                 initLabel((JLabel)c, row);
-//             }else{
-//                 ((JLabel)c).setHorizontalAlignment(JLabel.RIGHT);
+//             if (1 == convertColumnIndexToModel(column)) {
+//                 initLabel((JLabel) c, row);
+//             } else {
+//                 ((JLabel) c).setHorizontalAlignment(JLabel.RIGHT);
 //             }
 //             return c;
 //         }
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel implements ActionListener {
         col.setHeaderRenderer(new HeaderRenderer());
 
         JPanel p = new JPanel();
-        for(JRadioButton r:Arrays.asList(leftRadio,centerRadio,rightRadio,customRadio)) {
+        for (JRadioButton r:Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
             bg.add(r); p.add(r); r.addActionListener(this);
         }
 
@@ -70,22 +70,22 @@ public final class MainPanel extends JPanel implements ActionListener {
     class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if(c instanceof JLabel) {
-                initLabel((JLabel)c, row);
+            if (c instanceof JLabel) {
+                initLabel((JLabel) c, row);
             }
             return c;
         }
         private void initLabel(JLabel l, int row) {
-            if(leftRadio.isSelected()) {
+            if (leftRadio.isSelected()) {
                 l.setHorizontalAlignment(JLabel.LEFT);
-            }else if(centerRadio.isSelected()) {
+            } else if (centerRadio.isSelected()) {
                 l.setHorizontalAlignment(JLabel.CENTER);
-            }else if(rightRadio.isSelected()) {
+            } else if (rightRadio.isSelected()) {
                 l.setHorizontalAlignment(JLabel.RIGHT);
-            }else if(customRadio.isSelected()) {
-                l.setHorizontalAlignment(row%3==0 ? JLabel.LEFT
-                                       : row%3==1 ? JLabel.CENTER
-                                                  : JLabel.RIGHT);
+            } else if (customRadio.isSelected()) {
+                l.setHorizontalAlignment(row % 3 == 0 ? JLabel.LEFT
+                                       : row % 3 == 1 ? JLabel.CENTER
+                                                      : JLabel.RIGHT);
             }
         }
     }
@@ -97,10 +97,10 @@ public final class MainPanel extends JPanel implements ActionListener {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel implements ActionListener {
 class HeaderRenderer implements TableCellRenderer {
     private static final Font FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JLabel l = (JLabel)table.getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        JLabel l = (JLabel) table.getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setFont(FONT);
         return l;

@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Year", "String", "Comment"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return (column==0)?Integer.class:Object.class;
+            return (column == 0) ? Integer.class : Object.class;
         }
     };
     private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     private final Action enterAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int v = Integer.parseInt(field.getText());
-            if(v>0 && v<=maxPageIndex) {
+            if (v > 0 && v <= maxPageIndex) {
                 currentPageIndex = v;
             }
             initFilterAndButton();
@@ -54,9 +54,9 @@ public final class MainPanel extends JPanel {
         JPanel po = new JPanel();
         po.add(field);
         po.add(label);
-        JPanel box = new JPanel(new GridLayout(1,4,2,2));
-        box.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        for(JComponent c:Arrays.asList(first, prev, po, next, last)) {
+        JPanel box = new JPanel(new GridLayout(1, 4, 2, 2));
+        box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        for (JComponent c:Arrays.asList(first, prev, po, next, last)) {
             box.add(c);
         }
 
@@ -67,19 +67,19 @@ public final class MainPanel extends JPanel {
         ActionListener jumpActionListener = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 Object c = e.getSource();
-                if(first.equals(c)) {
+                if (first.equals(c)) {
                     currentPageIndex = 1;
-                }else if(prev.equals(c)) {
+                } else if (prev.equals(c)) {
                     currentPageIndex -= 1;
-                }else if(next.equals(c)) {
+                } else if (next.equals(c)) {
                     currentPageIndex += 1;
-                }else if(last.equals(c)) {
+                } else if (last.equals(c)) {
                     currentPageIndex = maxPageIndex;
                 }
                 initFilterAndButton();
             }
         };
-        for(JButton b: Arrays.asList(first, prev, next, last)) {
+        for (JButton b: Arrays.asList(first, prev, next, last)) {
             b.addActionListener(jumpActionListener);
         }
 
@@ -95,30 +95,30 @@ public final class MainPanel extends JPanel {
             super(max, itemsPerPage);
         }
         @Override protected void process(List<List<Object[]>> chunks) {
-            if(!isDisplayable()) {
+            if (!isDisplayable()) {
                 System.out.println("process: DISPOSE_ON_CLOSE");
                 cancel(true);
                 return;
             }
-            for(List<Object[]> list: chunks) {
-                for(Object[] o: list) {
+            for (List<Object[]> list: chunks) {
+                for (Object[] o: list) {
                     model.addRow(o);
                 }
             }
             int rowCount = model.getRowCount();
-            maxPageIndex = rowCount/itemsPerPage + (rowCount%itemsPerPage==0?0:1);
+            maxPageIndex = rowCount / itemsPerPage + (rowCount % itemsPerPage == 0 ? 0 : 1);
             initFilterAndButton();
         }
         @Override public void done() {
-            if(!isDisplayable()) {
+            if (!isDisplayable()) {
                 System.out.println("done: DISPOSE_ON_CLOSE");
                 cancel(true);
                 return;
             }
             String text;
-            try{
+            try {
                 text = get();
-            }catch(InterruptedException | ExecutionException ex) {
+            } catch (InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();
                 text = "Cancelled";
             }
@@ -132,13 +132,13 @@ public final class MainPanel extends JPanel {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 int ti = currentPageIndex - 1;
                 int ei = entry.getIdentifier();
-                return ti*itemsPerPage<=ei && ei<ti*itemsPerPage+itemsPerPage;
+                return ti * itemsPerPage<=ei && ei<ti * itemsPerPage + itemsPerPage;
             }
         });
-        first.setEnabled(currentPageIndex>1);
-        prev.setEnabled(currentPageIndex>1);
-        next.setEnabled(currentPageIndex<maxPageIndex);
-        last.setEnabled(currentPageIndex<maxPageIndex);
+        first.setEnabled(currentPageIndex > 1);
+        prev.setEnabled(currentPageIndex > 1);
+        next.setEnabled(currentPageIndex < maxPageIndex);
+        last.setEnabled(currentPageIndex < maxPageIndex);
         field.setText(Integer.toString(currentPageIndex));
         label.setText(String.format("/ %d", maxPageIndex));
     }
@@ -150,10 +150,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -176,12 +176,12 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     }
     @Override public String doInBackground() {
         int current = 1;
-        int c = max/itemsPerPage;
+        int c = max / itemsPerPage;
         int i = 0;
-        while(i<c && !isCancelled()) {
-            try{
+        while (i < c && !isCancelled()) {
+            try {
                 Thread.sleep(500); //dummy
-            }catch(InterruptedException ex) {
+            } catch (InterruptedException ex) {
                 //ex.printStackTrace();
                 return "Interrupted";
             }
@@ -189,7 +189,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
             i++;
         }
         int m = max%itemsPerPage;
-        if(m>0) {
+        if (m > 0) {
             makeRowListAndPublish(current, m);
         }
         return "Done";
@@ -197,8 +197,8 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     private int makeRowListAndPublish(int current, int size) {
         List<Object[]> result = new ArrayList<Object[]>(size);
         int j = current;
-        while(j<current+size) {
-            result.add(new Object[] {j, "Test: "+j, (j%2==0)?"":"comment..."});
+        while (j<current + size) {
+            result.add(new Object[] {j, "Test: " + j, (j % 2 == 0) ? "" : "comment..."});
             j++;
         }
         publish(result);

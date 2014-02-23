@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -70,8 +70,8 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
         setOpaque(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Integer i = (Integer)value;
-        this.setBackground(isSelected?table.getSelectionBackground():table.getBackground());
+        Integer i = (Integer) value;
+        this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         this.setValue(i.intValue());
         return this;
     }
@@ -79,7 +79,7 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable. //System.out.println(p.getClass());
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -87,7 +87,7 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //         //System.out.println(propertyName);
-//         if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+//         if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
 //             super.firePropertyChange(propertyName, oldValue, newValue);
 //         }
     }
@@ -118,7 +118,7 @@ class SliderEditor extends JSlider implements TableCellEditor {
         });
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        Integer i = (Integer)value;
+        Integer i = (Integer) value;
         this.setBackground(table.getSelectionBackground());
         this.setValue(i.intValue());
         return this;
@@ -158,11 +158,13 @@ class SliderEditor extends JSlider implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -171,11 +173,13 @@ class SliderEditor extends JSlider implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

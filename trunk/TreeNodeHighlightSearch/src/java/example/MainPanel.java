@@ -41,26 +41,30 @@ public final class MainPanel extends JPanel {
         renderer.q = q;
         TreePath root = tree.getPathForRow(0);
         collapseAll(tree, root);
-        if(!q.isEmpty()) { searchTree(tree, root, q); }
+        if (!q.isEmpty()) { searchTree(tree, root, q); }
         //tree.repaint();
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
-        TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) { return; }
-        if(node.toString().startsWith(q)) { tree.expandPath(path.getParentPath()); }
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node == null) {
+            return;
+        }
+        if (node.toString().startsWith(q)) {
+            tree.expandPath(path.getParentPath());
+        }
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
+            while (e.hasMoreElements()) {
                 searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
             }
         }
     }
     private static void collapseAll(JTree tree, TreePath parent) {
-        TreeNode node = (TreeNode)parent.getLastPathComponent();
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
-                TreeNode n = (TreeNode)e.nextElement();
+            while (e.hasMoreElements()) {
+                TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 collapseAll(tree, path);
             }
@@ -75,10 +79,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -107,11 +111,11 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         return rollOver ? ROLLOVER_ROW_COLOR : super.getBackgroundNonSelectionColor();
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-        if(isSelected) {
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        if (isSelected) {
             c.setForeground(getTextSelectionColor());
-        }else{
-            rollOver = q!=null && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
+        } else {
+            rollOver = q != null && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
             c.setForeground(getTextNonSelectionColor());
             c.setBackground(getBackgroundNonSelectionColor());
         }
@@ -130,18 +134,18 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         super.updateUI();
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-        //DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-        if(isSelected) {
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        //DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        if (isSelected) {
             c.setOpaque(false);
             c.setForeground(getTextSelectionColor());
             //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
-        }else{
+        } else {
             c.setOpaque(true);
-            if(q!=null && !q.isEmpty() && value.toString().startsWith(q)) {
+            if (q != null && !q.isEmpty() && value.toString().startsWith(q)) {
                 c.setForeground(getTextNonSelectionColor());
                 c.setBackground(ROLLOVER_ROW_COLOR);
-            }else{
+            } else {
                 c.setForeground(getTextNonSelectionColor());
                 c.setBackground(getBackgroundNonSelectionColor());
             }

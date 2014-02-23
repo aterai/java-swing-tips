@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -67,19 +67,19 @@ public final class MainPanel extends JPanel {
 
 class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-        if(isSelected) {
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        if (isSelected) {
             setParticularCondition(value);
             c.setForeground(getTextSelectionColor());
             c.setBackground(getBackgroundSelectionColor());
-            if(leaf && value.toString().startsWith("a")) {
+            if (leaf && value.toString().startsWith("a")) {
                 c.setOpaque(true);
                 c.setBackground(Color.RED);
-            }else{
+            } else {
                 c.setOpaque(false);
                 c.setBackground(getBackgroundSelectionColor());
             }
-        }else{
+        } else {
             c.setForeground(getTextNonSelectionColor());
             c.setBackground(getBackgroundNonSelectionColor());
         }
@@ -87,16 +87,16 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     private Color color;
     private void setParticularCondition(Object value) {
-        if(value instanceof DefaultMutableTreeNode) {
-            Object uo = ((DefaultMutableTreeNode)value).getUserObject();
-            if(uo instanceof Color) {
-                color = (Color)uo;
+        if (value instanceof DefaultMutableTreeNode) {
+            Object uo = ((DefaultMutableTreeNode) value).getUserObject();
+            if (uo instanceof Color) {
+                color = (Color) uo;
                 return;
             }
         }
         color = null;
     }
     @Override public Color getBackgroundSelectionColor() {
-        return color==null ? super.getBackgroundSelectionColor() : color;
+        return color == null ? super.getBackgroundSelectionColor() : color;
     }
 }

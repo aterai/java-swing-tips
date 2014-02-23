@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(1,2));
+        super(new GridLayout(1, 2));
         add(makeTitledPanel("Default", makeList(true)));
         add(makeTitledPanel("clearSelection", makeList(false)));
         setPreferredSize(new Dimension(320, 240));
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         model.addElement("cccccccccc");
         model.addElement("ddddddddd");
         model.addElement("eeeeeeeeee");
-        if(def) {
+        if (def) {
             return new JList<String>(model);
         }
         JList<String> list = new JList<String>(model) {
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 super.updateUI();
-                if(listener==null) {
+                if (listener == null) {
                     listener = new ClearSelectionListener();
                 }
                 addMouseListener(listener);
@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -85,19 +85,19 @@ class ClearSelectionListener extends MouseAdapter {
         list.getSelectionModel().setLeadSelectionIndex(-1);
     }
     private static boolean contains(JList list, Point pt) {
-        for(int i=0;i<list.getModel().getSize();i++) {
+        for (int i = 0; i < list.getModel().getSize(); i++) {
             Rectangle r = list.getCellBounds(i, i);
-            if(r.contains(pt)) {
+            if (r.contains(pt)) {
                 return true;
             }
         }
         return false;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList)e.getComponent();
+        JList list = (JList) e.getComponent();
         startOutside = contains(list, e.getPoint());
         startOutside ^= true;
-        if(startOutside) {
+        if (startOutside) {
             clearSelectionAndFocus(list);
         }
     }
@@ -105,10 +105,10 @@ class ClearSelectionListener extends MouseAdapter {
         startOutside = false;
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JList list = (JList)e.getComponent();
-        if(contains(list, e.getPoint())) {
+        JList list = (JList) e.getComponent();
+        if (contains(list, e.getPoint())) {
             startOutside = false;
-        }else if(startOutside) {
+        } else if (startOutside) {
             clearSelectionAndFocus(list);
         }
     }

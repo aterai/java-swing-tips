@@ -13,16 +13,16 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JTextArea textArea = new JTextArea();
         textArea.setText("aaaaaaaasdfasdfasdfasdf\nasdfasdfasdfasdfasdfasdf\n1234567890\naaaaaaaaaaaaaaaaaasdfasd");
-        ((AbstractDocument)textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
-        try{
+        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
+        try {
             Highlighter hilite = textArea.getHighlighter();
             Document doc = textArea.getDocument();
             Element root = doc.getDefaultRootElement();
-            for(int i=0;i<2;i++) { //root.getElementCount();i++) {
+            for (int i = 0; i < 2; i++) { //root.getElementCount(); i++) {
                 Element elem = root.getElement(i);
                 hilite.addHighlight(elem.getStartOffset(), elem.getEndOffset()-1, highlightPainter);
             }
-        }catch(BadLocationException ble) {
+        } catch (BadLocationException ble) {
             ble.printStackTrace();
         }
         add(new JScrollPane(textArea));
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -52,9 +52,9 @@ public final class MainPanel extends JPanel {
 }
 class NonEditableLineDocumentFilter extends DocumentFilter {
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if(string == null) {
+        if (string == null) {
             return;
-        }else{
+        } else {
             replace(fb, offset, 0, string, attr);
         }
     }
@@ -63,7 +63,9 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     }
     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         Document doc = fb.getDocument();
-        if(doc.getDefaultRootElement().getElementIndex(offset)<2) { return; }
+        if (doc.getDefaultRootElement().getElementIndex(offset) < 2) {
+            return;
+        }
         fb.replace(offset, length, text, attrs);
     }
 }

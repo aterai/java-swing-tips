@@ -13,17 +13,18 @@ public final class MainPanel extends JPanel {
     //@auther Nobuo Tamemasa
     private static final String ES = "";
     private final Object[][] data = new Object[][] {
-        {1,11,"A", ES, ES, ES, ES, ES},
-        {2,22, ES,"B", ES, ES, ES, ES},
-        {3,33, ES, ES,"C", ES, ES, ES},
-        {4, 1, ES, ES, ES,"D", ES, ES},
-        {5,55, ES, ES, ES, ES,"E", ES},
-        {6,66, ES, ES, ES, ES, ES,"F"}};
-    private final Object[] columnNames = {"fixed 1","fixed 2","a","b","c","d","e","f"};
+        {1, 11, "A", ES,  ES,  ES,  ES,  ES},
+        {2, 22, ES,  "B", ES,  ES,  ES,  ES},
+        {3, 33, ES,  ES,  "C", ES,  ES,  ES},
+        {4, 1,  ES,  ES,  ES,  "D", ES,  ES},
+        {5, 55, ES,  ES,  ES,  ES,  "E", ES},
+        {6, 66, ES,  ES,  ES,  ES,  ES,  "F"}
+    };
+    private final Object[] columnNames = {"fixed 1", "fixed 2", "a", "b", "c", "d", "e", "f"};
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int modelIndex) {
-            return modelIndex<2 ? Integer.class : Object.class;
+            return modelIndex < 2 ? Integer.class : Object.class;
         }
     };
     private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -34,11 +35,11 @@ public final class MainPanel extends JPanel {
         JTable table      = new JTable(model);
         fixedTable.setSelectionModel(table.getSelectionModel());
 
-        for(int i=model.getColumnCount()-1;i>=0;i--) {
-            if(i<2) {
+        for (int i = model.getColumnCount() - 1; i >= 0; i--) {
+            if (i < 2) {
                 table.removeColumn(table.getColumnModel().getColumn(i));
                 fixedTable.getColumnModel().getColumn(i).setResizable(false);
-            }else{
+            } else {
                 fixedTable.removeColumn(fixedTable.getColumnModel().getColumn(i));
             }
         }
@@ -69,7 +70,7 @@ public final class MainPanel extends JPanel {
         //@auther Rob Camick
         scroll.getRowHeader().addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JViewport viewport = (JViewport)e.getSource();
+                JViewport viewport = (JViewport) e.getSource();
                 scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
             }
         });
@@ -78,9 +79,9 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
                 sorter.setSortKeys(null);
-                for(int i=0;i<100;i++) {
+                for (int i = 0; i < 100; i++) {
                     model.addRow(new Object[] {
-                        i, i+1, "A"+i, "B"+i
+                        i, i + 1, "A" + i, "B" + i
                     });
                 }
             }
@@ -95,13 +96,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-            //    if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
+            //for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+            //    if ("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
             //}
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

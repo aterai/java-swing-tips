@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         //title, resizable, closable, maximizable, iconifiable
         JInternalFrame iframe = new JInternalFrame("AlwaysOnTop", true, false, true, true);
         iframe.setSize(180, 180);
-        desktop.add(iframe, Integer.valueOf(JLayeredPane.MODAL_LAYER+1));
+        desktop.add(iframe, Integer.valueOf(JLayeredPane.MODAL_LAYER + 1));
         iframe.setVisible(true);
         //desktop.getDesktopManager().activateFrame(iframe);
         add(desktop);
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -88,6 +88,6 @@ class MyInternalFrame extends JInternalFrame {
         //title, resizable, closable, maximizable, iconifiable
         super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
         setSize(180, 100);
-        setLocation(XOFFSET*openFrameCount.intValue(), YOFFSET*openFrameCount.intValue());
+        setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
     }
 }

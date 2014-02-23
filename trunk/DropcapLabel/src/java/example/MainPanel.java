@@ -18,9 +18,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JLabel label = new DropcapLabel(TEXT);
         label.setFont(new Font(Font.SERIF, Font.PLAIN, 17));
-        label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(label);
-        setBorder(BorderFactory.createLineBorder(new Color(100,200,200,100), 10));
+        setBorder(BorderFactory.createLineBorder(new Color(100, 200, 200, 100), 10));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -31,10 +31,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -51,7 +51,7 @@ class DropcapLabel extends JLabel {
         super(text);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(getBackground());
         g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -76,7 +76,7 @@ class DropcapLabel extends JLabel {
         int rw = r.width;
         int rh = r.height;
 
-        AffineTransform at2 = AffineTransform.getTranslateInstance(x0, y0+rh);
+        AffineTransform at2 = AffineTransform.getTranslateInstance(x0, y0 + rh);
         Shape s2 = at2.createTransformedShape(s1);
         g2.setPaint(getForeground());
         g2.fill(s2);
@@ -86,11 +86,11 @@ class DropcapLabel extends JLabel {
         int w0 = getWidth() - i.left - i.right;
         int w = w0 - rw;
         LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
-        while(lbm.getPosition() < aci.getEndIndex()) {
+        while (lbm.getPosition() < aci.getEndIndex()) {
             TextLayout tl = lbm.nextLayout(w);
             tl.draw(g2, x, y + tl.getAscent());
             y += tl.getDescent() + tl.getLeading() + tl.getAscent();
-            if(y0+rh < y) {
+            if (y0 + rh < y) {
                 x = x0;
                 w = w0;
             }

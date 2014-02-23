@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 //         TabTitleEditListener l = new TabTitleEditListener(tabbedPane);
 //         tabbedPane.addChangeListener(l);
 //         tabbedPane.addMouseListener(l);
-        for(int i=0;i<3;i++) {
+        for (int i = 0; i < 3; i++) {
             String title = "Tab " + i;
             tabbedPane.add(title, new JLabel(title));
             tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -55,7 +55,7 @@ class ButtonTabComponent extends JPanel {
 
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if(pane == null) {
+        if (pane == null) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
         this.pane = pane;
@@ -63,7 +63,7 @@ class ButtonTabComponent extends JPanel {
         JLabel label = new JLabel() {
             @Override public String getText() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-                if(i != -1) {
+                if (i != -1) {
                     return pane.getTitleAt(i);
                 }
                 return null;
@@ -81,20 +81,20 @@ class ButtonTabComponent extends JPanel {
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            if(i != -1) {
+            if (i != -1) {
                 pane.remove(i);
             }
         }
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
+            if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
                 button.setBorderPainted(true);
             }
         }
         @Override public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
+            if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
                 button.setBorderPainted(false);
             }
@@ -127,10 +127,10 @@ class TabButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.BLACK);
-        if(getModel().isRollover()) {
+        if (getModel().isRollover()) {
             g2.setColor(Color.ORANGE);
         }
-        if(getModel().isPressed()) {
+        if (getModel().isPressed()) {
             g2.setColor(Color.BLUE);
         }
         g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
@@ -143,17 +143,17 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
     private final JTextField textField = new JTextField(10);
     private final Action renameAction = new AbstractAction("rename") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTabbedPane t = (JTabbedPane)getInvoker();
+            JTabbedPane t = (JTabbedPane) getInvoker();
             int idx = t.getSelectedIndex();
             String title = t.getTitleAt(idx);
             textField.setText(title);
             int result = JOptionPane.showConfirmDialog(
                 t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if(result==JOptionPane.OK_OPTION) {
+            if (result == JOptionPane.OK_OPTION) {
                 String str = textField.getText();
-                if(!str.trim().isEmpty()) {
+                if (!str.trim().isEmpty()) {
                     t.setTitleAt(idx, str);
-                    JComponent c = (JComponent)t.getTabComponentAt(idx);
+                    JComponent c = (JComponent) t.getTabComponentAt(idx);
                     c.revalidate();
                 }
             }
@@ -161,7 +161,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
     };
     private final Action newTabAction = new AbstractAction("new tab") {
         @Override public void actionPerformed(ActionEvent evt) {
-            JTabbedPane t = (JTabbedPane)getInvoker();
+            JTabbedPane t = (JTabbedPane) getInvoker();
             int count = t.getTabCount();
             String title = "Tab " + count;
             t.add(title, new JLabel(title));
@@ -170,7 +170,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
     };
     private final Action closeAllAction = new AbstractAction("close all") {
         @Override public void actionPerformed(ActionEvent evt) {
-            JTabbedPane t = (JTabbedPane)getInvoker();
+            JTabbedPane t = (JTabbedPane) getInvoker();
             t.removeAll();
         }
     };
@@ -189,9 +189,9 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         add(closeAllAction);
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTabbedPane) {
-            JTabbedPane t = (JTabbedPane)c;
-            renameAction.setEnabled(t.indexAtLocation(x, y)>=0);
+        if (c instanceof JTabbedPane) {
+            JTabbedPane t = (JTabbedPane) c;
+            renameAction.setEnabled(t.indexAtLocation(x, y) >= 0);
             super.show(c, x, y);
         }
     }
@@ -210,12 +210,12 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //         });
 //         editor.addKeyListener(new KeyAdapter() {
 //             @Override public void keyPressed(KeyEvent e) {
-//                 if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+//                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 //                     renameTabTitle();
-//                 }else if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+//                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 //                     cancelEditing();
-//                 }else{
-//                     editor.setPreferredSize((editor.getText().length()>len)?null:dim);
+//                 } else {
+//                     editor.setPreferredSize((editor.getText().length() > len) ? null : dim);
 //                     tabbedPane.revalidate();
 //                 }
 //             }
@@ -233,9 +233,9 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     }
 //     @Override public void mouseClicked(MouseEvent me) {
 //         Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
-//         if(rect!=null && rect.contains(me.getPoint()) && me.getClickCount()==2) {
+//         if (rect != null && rect.contains(me.getPoint()) && me.getClickCount() == 2) {
 //             startEditing();
-//         }else{
+//         } else {
 //             renameTabTitle();
 //         }
 //     }
@@ -256,7 +256,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //         editor.setMinimumSize(dim);
 //     }
 //     private void cancelEditing() {
-//         if(editing_idx>=0) {
+//         if (editing_idx >= 0) {
 //             tabbedPane.setTabComponentAt(editing_idx, tabComponent); //<----add----
 //             editor.setVisible(false);
 //             editing_idx = -1;
@@ -267,7 +267,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     }
 //     private void renameTabTitle() {
 //         String title = editor.getText().trim();
-//         if(editing_idx>=0 && !title.isEmpty()) {
+//         if (editing_idx >= 0 && !title.isEmpty()) {
 //             tabbedPane.setTitleAt(editing_idx, title);
 //         }
 //         cancelEditing();

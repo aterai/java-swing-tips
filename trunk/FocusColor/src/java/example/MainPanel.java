@@ -13,16 +13,16 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Color c = field1.getBackground();
-        field1.addFocusListener(new BGFocusListener(c, new Color(230,230,255)));
-        field2.addFocusListener(new BGFocusListener(c, new Color(255,255,230)));
-        field3.addFocusListener(new BGFocusListener(c, new Color(255,230,230)));
+        field1.addFocusListener(new BGFocusListener(c, new Color(230, 230, 255)));
+        field2.addFocusListener(new BGFocusListener(c, new Color(255, 255, 230)));
+        field3.addFocusListener(new BGFocusListener(c, new Color(255, 230, 230)));
         Box box = Box.createVerticalBox();
-        box.add(makePanel("Color(230,230,255)", field1));
+        box.add(makePanel("Color(230, 230, 255)", field1));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("Color(255,255,230)", field2));
+        box.add(makePanel("Color(255, 255, 230)", field2));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("Color(255,230,230)", field3));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.add(makePanel("Color(255, 230, 230)", field3));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

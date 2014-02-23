@@ -9,7 +9,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JButton button = new JButton(new AbstractAction("showMessageDialog") {
         @Override public void actionPerformed(ActionEvent e) {
-            JButton b = (JButton)e.getSource();
+            JButton b = (JButton) e.getSource();
             JOptionPane.showMessageDialog(b, "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
             Toolkit.getDefaultToolkit().beep();
         }
@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("Toolkit.getDefaultToolkit().beep()"));
         p.add(button);
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 200));
     }
     public static void main(String[] args) {
@@ -31,10 +31,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

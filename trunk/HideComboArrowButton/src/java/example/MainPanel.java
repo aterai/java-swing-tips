@@ -44,19 +44,19 @@ public final class MainPanel extends JPanel {
                 setRenderer(new ListCellRenderer<String>() {
                     private final Color bgc = UIManager.getColor("ComboBox.background");
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-                        JLabel c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        JLabel c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                         c.setHorizontalAlignment(SwingConstants.RIGHT);
-                        if(isSelected) {
+                        if (isSelected) {
                             c.setForeground(list.getSelectionForeground());
                             c.setBackground(list.getSelectionBackground());
-                        }else{
+                        } else {
                             c.setForeground(list.getForeground());
                             c.setBackground(bgc);
                         }
                         return c;
                     }
                 });
-                setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
+                setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
                 //setBackground(p.getBackground());
                 setOpaque(false);
                 setFocusable(false);
@@ -74,10 +74,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
 //         UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.BLUE));

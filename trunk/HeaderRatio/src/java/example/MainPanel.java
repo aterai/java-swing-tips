@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                if(check.isSelected()) {
+                if (check.isSelected()) {
                     setTableHeaderColumnRaito();
                 }
             }
@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
     }
 
     private JPanel makeSettingPanel() {
-        JPanel p = new JPanel(new BorderLayout(5,5));
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel p = new JPanel(new BorderLayout(5, 5));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(new JLabel("Ratio:"), BorderLayout.WEST);
         p.add(field);
         p.add(new JButton(new AbstractAction("revalidate") {
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
                 setTableHeaderColumnRaito();
             }
         }), BorderLayout.EAST);
-        JPanel panel = new JPanel(new GridLayout(2,1));
+        JPanel panel = new JPanel(new GridLayout(2, 1));
         panel.setBorder(BorderFactory.createTitledBorder("JTableHeader column width ratio"));
         panel.add(p);
         panel.add(check);
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
         //System.out.println("a: "+table.getColumnModel().getTotalColumnWidth());
         //System.out.println("b: "+table.getSize().width);
         int total = table.getSize().width; //table.getColumnModel().getTotalColumnWidth();
-        double raito = total/(double)getRaitoTotal(list);
-        for(int i=0;i<table.getColumnModel().getColumnCount()-1;i++) {
+        double raito = total / (double) getRaitoTotal(list);
+        for (int i = 0; i < table.getColumnModel().getColumnCount() - 1; i++) {
             TableColumn col = table.getColumnModel().getColumn(i);
-            int colwidth = (int)(0.5 + list.get(i)*raito);
+            int colwidth = (int) (.5 + list.get(i) * raito);
             //col.setMaxWidth(colwidth);
             col.setPreferredWidth(colwidth);
             total -= colwidth;
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 
     private int getRaitoTotal(List<Integer> list) {
         int w = 0;
-        for(int i=0;i<table.getColumnModel().getColumnCount();i++) {
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             w += list.get(i);
         }
         return w;
@@ -87,16 +87,16 @@ public final class MainPanel extends JPanel {
     private List<Integer> getWidthRaitoArray() {
         StringTokenizer st = new StringTokenizer(field.getText(), ":");
         List<Integer> list = new ArrayList<>();
-        try{
-            while(st.hasMoreTokens()) {
+        try {
+            while (st.hasMoreTokens()) {
                 list.add(Integer.valueOf(st.nextToken().trim()));
             }
-        }catch(NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(),
                                           "Error", JOptionPane.ERROR_MESSAGE);
         }
-        while(list.size()<columnNames.length) {
+        while (list.size() < columnNames.length) {
             list.add(1);
         }
         return list;
@@ -111,10 +111,10 @@ public final class MainPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

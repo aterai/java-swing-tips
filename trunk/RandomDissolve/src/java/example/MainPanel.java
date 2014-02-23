@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
 
     private BufferedImage makeImage(URL url) {
         BufferedImage img = null;
-        try{
+        try {
             img = ImageIO.read(url);
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         return img;
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -78,15 +78,15 @@ class RandomDissolve extends JComponent implements ActionListener {
         animator = new Timer(10, this);
     }
     public boolean nextStage() {
-        if(currentStage > 0) {
+        if (currentStage > 0) {
             currentStage = currentStage - 1;
-            for(int i=0; i<step.length; i++) {
-                if(step[i]==currentStage) {
+            for (int i = 0; i < step.length; i++) {
+                if (step[i] == currentStage) {
                     src[i] = dst[i];
                 }
             }
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -101,7 +101,7 @@ class RandomDissolve extends JComponent implements ActionListener {
     }
     private int[] getData(BufferedImage image) {
         WritableRaster wr = image.getRaster();
-        DataBufferInt dbi = (DataBufferInt)wr.getDataBuffer();
+        DataBufferInt dbi = (DataBufferInt) wr.getDataBuffer();
         return dbi.getData();
         //return ((DataBufferInt)(image.getRaster().getDataBuffer())).getData();
     }
@@ -113,23 +113,23 @@ class RandomDissolve extends JComponent implements ActionListener {
         step   = new int[src.length];
         mode  ^= true;
         Random rnd = new Random();
-        for(int i=0;i<step.length;i++) {
+        for (int i = 0; i < step.length; i++) {
             step[i] = rnd.nextInt(currentStage);
         }
         animator.start();
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.setPaint(getBackground());
         g2d.fillRect(0, 0, getWidth(), getHeight());
         g2d.drawImage(srcimg, 0, 0, srcimg.getWidth(), srcimg.getHeight(), this);
         g2d.dispose();
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(nextStage()) {
+        if (nextStage()) {
             repaint();
-        }else{
+        } else {
             animator.stop();
         }
     }

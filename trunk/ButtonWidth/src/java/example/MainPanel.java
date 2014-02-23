@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
                 return super.getPreferredSize();
             }
         };
-        for(JButton b: list) {
+        for (JButton b: list) {
             p.add(b);
         }
         Box box = Box.createHorizontalBox();
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
                 int maxHeight = 0;
-                for(JButton b: list) {
+                for (JButton b: list) {
                     maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
                 }
                 return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
         Spring y     = Spring.constant(gap);
         Spring g     = Spring.minus(Spring.constant(gap));
         Spring width = Spring.constant(buttonWidth);
-        for(JButton b: list) {
+        for (JButton b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
             x = Spring.sum(x, g);
             constraints.setConstraint(SpringLayout.EAST, x);
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(layout) {
             @Override public Dimension getPreferredSize() {
                 int maxHeight = 0;
-                for(JButton b: list) {
+                for (JButton b: list) {
                     maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
                 }
                 return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
@@ -89,13 +89,13 @@ public final class MainPanel extends JPanel {
         };
         SpringLayout.Constraints pCons = layout.getConstraints(p);
         //pCons.setConstraint(SpringLayout.SOUTH, Spring.constant(p.getPreferredSize().height));
-        pCons.setConstraint(SpringLayout.EAST,  Spring.constant((buttonWidth+gap)*list.size()));
+        pCons.setConstraint(SpringLayout.EAST, Spring.constant((buttonWidth + gap) * list.size()));
 
         Spring x     = Spring.constant(0);
         Spring y     = Spring.constant(gap);
         Spring g     = Spring.constant(gap);
         Spring width = Spring.constant(buttonWidth);
-        for(JButton b: list) {
+        for (JButton b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
             constraints.setX(x);
             constraints.setY(y);
@@ -114,18 +114,18 @@ public final class MainPanel extends JPanel {
     private static JComponent createRightAlignButtonBox2(final List<JButton> list, final int buttonWidth, int gap) {
         JComponent box = new JPanel() {
             @Override public void updateUI() {
-                for(JButton b: list) {
+                for (JButton b: list) {
                     b.setPreferredSize(null);
                 }
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         int maxHeight = 0;
-                        for(JButton b: list) {
+                        for (JButton b: list) {
                             maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
                         }
                         Dimension d = new Dimension(buttonWidth, maxHeight);
-                        for(JButton b: list) {
+                        for (JButton b: list) {
                             b.setPreferredSize(d);
                         }
                         revalidate();
@@ -135,7 +135,7 @@ public final class MainPanel extends JPanel {
         };
         box.setLayout(new BoxLayout(box, BoxLayout.X_AXIS));
         box.add(Box.createHorizontalGlue());
-        for(JButton b: list) {
+        for (JButton b: list) {
             box.add(b);
             box.add(Box.createHorizontalStrut(gap));
         }
@@ -151,10 +151,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

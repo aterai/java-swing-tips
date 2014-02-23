@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
         desktop.setDesktopManager(new ReIconifyDesktopManager());
         desktop.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                if(!check.isSelected()) {
+                if (!check.isSelected()) {
                     return;
                 }
-                doReIconify((JDesktopPane)e.getComponent());
+                doReIconify((JDesktopPane) e.getComponent());
             }
         });
         button.addActionListener(new ActionListener() {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         addButton.addActionListener(new ActionListener() {
             private int n;
             @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame f = createFrame("#"+n, n*10, n*10);
+                JInternalFrame f = createFrame("#" + n, n * 10, n * 10);
                 desktop.add(f);
                 desktop.getDesktopManager().activateFrame(f);
                 n++;
@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
     }
     private static void doReIconify(JDesktopPane desktopPane) {
         DesktopManager dm = desktopPane.getDesktopManager();
-        if(dm instanceof ReIconifyDesktopManager) {
-            ReIconifyDesktopManager rdm = (ReIconifyDesktopManager)dm;
-            for(JInternalFrame f: desktopPane.getAllFrames()) {
-                if(f.isIcon()) { rdm.reIconifyFrame(f); }
+        if (dm instanceof ReIconifyDesktopManager) {
+            ReIconifyDesktopManager rdm = (ReIconifyDesktopManager) dm;
+            for (JInternalFrame f: desktopPane.getAllFrames()) {
+                if (f.isIcon()) { rdm.reIconifyFrame(f); }
             }
         }
     }
@@ -77,9 +77,9 @@ public final class MainPanel extends JPanel {
     }
     private void addIconifiedFrame(JInternalFrame f) {
         desktop.add(f);
-        try{
+        try {
             f.setIcon(true);
-        }catch(java.beans.PropertyVetoException e) {
+        } catch (java.beans.PropertyVetoException e) {
             e.printStackTrace();
         }
     }
@@ -92,10 +92,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

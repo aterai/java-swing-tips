@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
     private final AbstractAction closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE, null);
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
-            closePageAction.setEnabled(tab.indexAtLocation(x, y)>=0);
-            closeAllAction.setEnabled(tab.getTabCount()>0);
-            closeAllButActiveAction.setEnabled(tab.getTabCount()>0);
+            closePageAction.setEnabled(tab.indexAtLocation(x, y) >= 0);
+            closeAllAction.setEnabled(tab.getTabCount() > 0);
+            closeAllButActiveAction.setEnabled(tab.getTabCount() > 0);
             super.show(c, x, y);
         }
     };
@@ -38,16 +38,18 @@ public final class MainPanel extends JPanel {
         tab.setComponentPopupMenu(pop);
         tab.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane jtab = (JTabbedPane)e.getSource();
-                if(jtab.getTabCount()<=0) { return; }
+                JTabbedPane jtab = (JTabbedPane) e.getSource();
+                if (jtab.getTabCount() <= 0) {
+                    return;
+                }
                 int sindex = jtab.getSelectedIndex();
-                for(int i=0;i<jtab.getTabCount();i++) {
-                    if(i==sindex && jtab.getTitleAt(sindex).endsWith("1")) {
+                for (int i = 0; i < jtab.getTabCount(); i++) {
+                    if (i == sindex && jtab.getTitleAt(sindex).endsWith("1")) {
                         jtab.setForegroundAt(i, Color.GREEN);
-                    }else if(i==sindex) {
-                        Color sc = (sindex%2==0)?Color.RED:Color.BLUE;
+                    } else if (i == sindex) {
+                        Color sc = (sindex % 2 == 0) ? Color.RED : Color.BLUE;
                         jtab.setForegroundAt(i, sc);
-                    }else{
+                    } else {
                         jtab.setForegroundAt(i, Color.BLACK);
                     }
                 }
@@ -55,24 +57,23 @@ public final class MainPanel extends JPanel {
         });
         tab.addTab("Title", new JLabel("Tab"));
         add(tab);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            tab.addTab("Title: "+count,
-                       (count%2==0)? new JLabel("Tab: "+count)
-                                   : new JScrollPane(new JTree()));
-            tab.setSelectedIndex(tab.getTabCount()-1);
+            tab.addTab("Title: " + count, (count % 2 == 0) ? new JLabel("Tab: " + count)
+                                                           : new JScrollPane(new JTree()));
+            tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
     class ClosePageAction extends AbstractAction {
         public ClosePageAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.remove(tab.getSelectedIndex());
@@ -80,7 +81,7 @@ public final class MainPanel extends JPanel {
     }
     class CloseAllAction extends AbstractAction {
         public CloseAllAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.removeAll();
@@ -88,7 +89,7 @@ public final class MainPanel extends JPanel {
     }
     class CloseAllButActiveAction extends AbstractAction {
         public CloseAllButActiveAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             int tabidx = tab.getSelectedIndex();
@@ -107,10 +108,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

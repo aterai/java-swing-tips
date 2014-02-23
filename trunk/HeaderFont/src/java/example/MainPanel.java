@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-            JLabel l = (JLabel)r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             l.setFont(font);
             return l;
         }
@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

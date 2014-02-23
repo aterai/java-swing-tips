@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(1,3));
+        super(new GridLayout(1, 3));
         UIManager.put("Tree.closedIcon", new ColorIcon(Color.RED));
         UIManager.put("Tree.openIcon", new ColorIcon(Color.GREEN));
 
@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -63,8 +63,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon = new JLabel();
     private final JLabel text = new JLabel();
-    private final Border innerBorder = BorderFactory.createEmptyBorder(1,2,1,2);
-    private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1,1,1,1), innerBorder);
+    private final Border innerBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
+    private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerBorder);
     private final Border hasFocusBorder;
 
     public CompoundTreeCellRenderer() {
@@ -73,7 +73,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         Color focusBGColor = new Color(~getBackgroundSelectionColor().getRGB());
         hasFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBGColor, bsColor), innerBorder);
 
-        icon.setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
+        icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
         text.setBorder(emptyBorder);
         text.setOpaque(true);
         p.setOpaque(false);
@@ -85,25 +85,25 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         p.add(wrap);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel l = (JLabel)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         Color bColor;
         Color fColor;
-        if(selected) {
+        if (selected) {
             bColor = getBackgroundSelectionColor();
             fColor = getTextSelectionColor();
-        }else{
+        } else {
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
-            if(bColor == null) {
+            if (bColor == null) {
                 bColor = getBackground();
             }
-            if(fColor == null) {
+            if (fColor == null) {
                 fColor = getForeground();
             }
         }
         text.setForeground(fColor);
         text.setBackground(bColor);
-        text.setBorder(hasFocus?hasFocusBorder:emptyBorder);
+        text.setBorder(hasFocus ? hasFocusBorder : emptyBorder);
         text.setText(l.getText());
         icon.setIcon(l.getIcon());
 
@@ -118,15 +118,17 @@ class DotBorder extends LineBorder {
         super(color, 1);
         this.borderSelectionColor = borderSelectionColor;
     }
-    @Override public boolean isBorderOpaque() { return true; }
+    @Override public boolean isBorderOpaque() {
+        return true;
+    }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g.create();
-        //g2.translate(x,y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        //g2.translate(x, y);
         g2.setPaint(borderSelectionColor);
-        g2.drawRect(x, y, w-1, h-1);
+        g2.drawRect(x, y, w - 1, h - 1);
         g2.setPaint(getLineColor());
         BasicGraphicsUtils.drawDashedRect(g2, x, y, w, h);
-        //g2.translate(-x,-y);
+        //g2.translate(-x, -y);
         g2.dispose();
     }
 }
@@ -138,7 +140,7 @@ class ColorIcon implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.setColor(color);
-        g.fillRoundRect(x+1, y+1, 22, 22, 10, 10);
+        g.fillRoundRect(x + 1, y + 1, 22, 22, 10, 10);
     }
     @Override public int getIconWidth()  {
         return 24;

@@ -19,20 +19,20 @@ public final class MainPanel extends JPanel {
         table = new JTable(model);
         DropTargetListener dtl = new DropTargetAdapter() {
             @Override public void dragOver(DropTargetDragEvent dtde) {
-                if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     dtde.acceptDrag(DnDConstants.ACTION_COPY);
                     return;
                 }
                 dtde.rejectDrag();
             }
             @Override public void drop(DropTargetDropEvent dtde) {
-                try{
-                    if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                try {
+                    if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                         dtde.acceptDrop(DnDConstants.ACTION_COPY);
                         Transferable transferable = dtde.getTransferable();
-                        List list = (List)transferable.getTransferData(DataFlavor.javaFileListFlavor);
-                        for(Object o: list) {
-                            if(o instanceof File) {
+                        List list = (List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                        for (Object o: list) {
+                            if (o instanceof File) {
                                 File file = (File) o;
                                 model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
                             }
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
                         dtde.dropComplete(true);
                         return;
                     }
-                }catch(UnsupportedFlavorException | IOException ex) {
+                } catch (UnsupportedFlavorException | IOException ex) {
                     ex.printStackTrace();
                 }
                 dtde.rejectDrop();
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
         private final Action deleteAction = new AbstractAction("delete") {
             @Override public void actionPerformed(ActionEvent e) {
                 int[] selection = table.getSelectedRows();
-                if(selection.length == 0) {
+                if (selection.length == 0) {
                     return;
                 }
-                for(int i=selection.length-1;i>=0;i--) {
+                for (int i=selection.length - 1; i >= 0; i--) {
                     model.removeRow(table.convertRowIndexToModel(selection[i]));
                 }
             }
@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -115,27 +115,27 @@ public final class MainPanel extends JPanel {
 // //table.setTransferHandler(new FileTransferHandler());
 // class FileTransferHandler extends TransferHandler {
 //     @Override public boolean importData(JComponent component, Transferable transferable) {
-//         try{
-//             if(canImport(component, transferable.getTransferDataFlavors())) {
-//                 //DefaultTableModel model = (DefaultTableModel)((JTable)component).getModel();
-//                 FileModel model = (FileModel)((JTable)component).getModel();
-//                 for(Object o: (List)transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
-//                     if(o instanceof File) {
-//                         File file = (File)o;
+//         try {
+//             if (canImport(component, transferable.getTransferDataFlavors())) {
+//                 //DefaultTableModel model = (DefaultTableModel)((JTable) component).getModel();
+//                 FileModel model = (FileModel)((JTable) component).getModel();
+//                 for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+//                     if (o instanceof File) {
+//                         File file = (File) o;
 //                         //model.addRow(new Object[] {file, file.length(), file.getAbsolutePath()});
 //                         model.addFileName(new FileName(file.getName(), file.getAbsolutePath()));
 //                     }
 //                 }
 //                 return true;
 //             }
-//         }catch(Exception ex) {
+//         } catch (Exception ex) {
 //             ex.printStackTrace();
 //         }
 //         return false;
 //     }
 //     @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
-//         for(DataFlavor f: flavors) {
-//             if(DataFlavor.javaFileListFlavor.equals(f)) {
+//         for (DataFlavor f: flavors) {
+//             if (DataFlavor.javaFileListFlavor.equals(f)) {
 //                 return true;
 //             }
 //         }

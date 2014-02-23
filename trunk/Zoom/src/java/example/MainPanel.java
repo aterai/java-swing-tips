@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
             addMouseWheelListener(this);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.scale(scale, scale);
             g2.drawImage(icon.getImage(), 0, 0, iw, ih, this);
             g2.dispose();
@@ -60,17 +60,17 @@ public final class MainPanel extends JPanel {
             changeScale(e.getWheelRotation());
         }
         public void initScale() {
-            scale = 1.0d;
+            scale = 1d;
             repaint();
         }
         public void changeScale(int iv) {
-            scale = Math.max(0.05d, Math.min(5.0d, scale-iv*0.05d));
+            scale = Math.max(.05, Math.min(5.0d, scale - iv * .05));
             repaint();
-//             double v = scale - iv * 0.1d;
-//             if(v-1.0d>-1.0e-2) {
-//                 scale = Math.min(10.0d, v);
-//             }else{
-//                 scale = Math.max(0.01d, scale - iv * 0.01d);
+//             double v = scale - iv * .1;
+//             if (v - 1d > -1.0e-2) {
+//                 scale = Math.min(10d, v);
+//             } else {
+//                 scale = Math.max(.01, scale - iv * .01);
 //             }
         }
     }
@@ -83,10 +83,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -68,29 +68,29 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     private final long timeFactor;
     public TableNextMatchKeyHandler() {
         super();
-        //Long l = (Long)UIManager.get("List.timeFactor");
-        timeFactor = 500L; //(l!=null) ? l.longValue() : 1000L;
+        //Long l = (Long) UIManager.get("List.timeFactor");
+        timeFactor = 500L; //(l != null) ? l.longValue() : 1000L;
     }
     private boolean isNavigationKey(KeyEvent event) {
-        JTable table = (JTable)event.getComponent();
+        JTable table = (JTable) event.getComponent();
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         KeyStroke key = KeyStroke.getKeyStrokeForEvent(event);
-        if(inputMap != null && inputMap.get(key) != null) {
+        if (inputMap != null && inputMap.get(key) != null) {
             return true;
         }
         return false;
     }
     @Override public void keyPressed(KeyEvent e) {
-        if(isNavigationKey(e)) {
+        if (isNavigationKey(e)) {
             prefix = "";
             typedString = "";
             lastTime = 0L;
         }
     }
     @Override public void keyTyped(KeyEvent e) {
-        JTable src = (JTable)e.getComponent();
+        JTable src = (JTable) e.getComponent();
         int max = src.getRowCount();
-        if(max == 0 || e.isAltDown() || isNavigationKey(e)) { //|| BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
+        if (max == 0 || e.isAltDown() || isNavigationKey(e)) { //|| BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
             // Nothing to select
             return;
         }
@@ -99,16 +99,16 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         int increment = e.isShiftDown() ? -1 : 1;
         long time = e.getWhen();
         int startIndex = src.getSelectedRow();
-        if(time - lastTime < timeFactor) {
+        if (time - lastTime < timeFactor) {
             typedString += c;
-            if(prefix != null && prefix.length() == 1 && c == prefix.charAt(0)) {
+            if (prefix != null && prefix.length() == 1 && c == prefix.charAt(0)) {
                 // Subsequent same key presses move the keyboard focus to the next
                 // object that starts with the same letter.
                 startIndex += increment;
-            }else{
+            } else {
                 prefix = typedString;
             }
-        }else{
+        } else {
             startIndex += increment;
             typedString = String.valueOf(c);
             prefix = typedString;
@@ -120,22 +120,22 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     private static void selectAndScrollNextMatch(JTable src, int max, KeyEvent e, String prefix, int startIndex, boolean startingFromSelection) {
         int start = startIndex;
         boolean isStartingSelection = startingFromSelection;
-        if(start < 0 || start >= max) {
-            if(e.isShiftDown()) {
-                start = max-1;
-            }else{
+        if (start < 0 || start >= max) {
+            if (e.isShiftDown()) {
+                start = max - 1;
+            } else {
                 isStartingSelection = false;
                 start = 0;
             }
         }
-        Position.Bias bias = e.isShiftDown()?Position.Bias.Backward:Position.Bias.Forward;
+        Position.Bias bias = e.isShiftDown() ? Position.Bias.Backward : Position.Bias.Forward;
         int index = getNextMatch(src, prefix, start, bias);
-        if(index >= 0) {
+        if (index >= 0) {
             src.getSelectionModel().setSelectionInterval(index, index);
             src.scrollRectToVisible(src.getCellRect(index, TARGET_COLUMN, true));
-        }else if(isStartingSelection) { // wrap
+        } else if (isStartingSelection) { // wrap
             index = getNextMatch(src, prefix, 0, bias);
-            if(index >= 0) {
+            if (index >= 0) {
                 src.getSelectionModel().setSelectionInterval(index, index);
                 src.scrollRectToVisible(src.getCellRect(index, TARGET_COLUMN, true));
             }
@@ -145,7 +145,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     //@see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
     public static int getNextMatch(JTable table, String prefix, int startingRow, Position.Bias bias) {
         int max = table.getRowCount();
-        if(prefix == null || startingRow < 0 || startingRow >= max) {
+        if (prefix == null || startingRow < 0 || startingRow >= max) {
             throw new IllegalArgumentException();
         }
         String uprefix = prefix.toUpperCase(Locale.ENGLISH);
@@ -157,11 +157,11 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         do{
             Object value = table.getValueAt(row, TARGET_COLUMN);
             String text = Objects.toString(value, "");
-            if(text.toUpperCase(Locale.ENGLISH).startsWith(uprefix)) {
+            if (text.toUpperCase(Locale.ENGLISH).startsWith(uprefix)) {
                 return row;
             }
             row = (row + increment + max) % max;
-        }while(row != startingRow);
+        }while (row != startingRow);
         return -1;
     }
 }

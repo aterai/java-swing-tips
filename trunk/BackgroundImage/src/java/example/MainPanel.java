@@ -18,13 +18,13 @@ public final class MainPanel extends JPanel {
         Dimension d = getSize();
         int w = bgimage.getIconWidth();
         int h = bgimage.getIconHeight();
-        for(int i=0;i*w<d.width;i++) {
-            for(int j=0;j*h<d.height;j++) {
-                g.drawImage(bgimage.getImage(), i*w, j*h, w, h, null);
+        for (int i = 0; i * w < d.width; i++) {
+            for (int j = 0; j * h < d.height; j++) {
+                g.drawImage(bgimage.getImage(), i * w, j * h, w, h, null);
             }
         }
-//         for(int x=0;x<d.width;x+=w) {
-//             for(int y=0;y<d.height;y+=h) {
+//         for (int x = 0; x < d.width; x += w) {
+//             for (int y = 0; y < d.height; y += h) {
 //                 g.drawImage(bgimage.getImage(), x, y, w, h, this);
 //             }
 //         }
@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

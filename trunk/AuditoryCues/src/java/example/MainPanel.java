@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"
     };
-    private final JPanel panel = new JPanel(new GridLayout(2,1,5,5));
+    private final JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
     public MainPanel() {
         super(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panel.add(makePanel("Look&Feel Default", new JButton(new AbstractAction("showMessageDialog1") {
             @Override public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(panel, "showMessageDialog1");
@@ -48,50 +48,44 @@ public final class MainPanel extends JPanel {
         return p;
     }
     private void loadAndPlayAudio(String audioResource) {
-        try{
-            AudioInputStream soundStream = AudioSystem.getAudioInputStream(
-                getClass().getResource(audioResource));
+        try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(getClass().getResource(audioResource))) {
             DataLine.Info info = new DataLine.Info(Clip.class, soundStream.getFormat());
             Clip clip = (Clip) AudioSystem.getLine(info);
             clip.open(soundStream);
             clip.start();
-        }catch(UnsupportedAudioFileException uafe) {
-            uafe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
-        }catch(LineUnavailableException lue) {
-            lue.printStackTrace();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
         }
     }
 //     private byte[] loadAudioData(final String soundFile) {
-//         if(soundFile==null) { return null; }
+//         if (soundFile == null) { return null; }
 //         byte[] buffer = (byte[])AccessController.doPrivileged(new PrivilegedAction() {
 //             public Object run() {
-//                 try{
+//                 try {
 //                     InputStream resource = getClass().getResourceAsStream(soundFile);
-//                     if(resource==null) { return null; }
+//                     if (resource == null) { return null; }
 //                     BufferedInputStream in = new BufferedInputStream(resource);
 //                     ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
 //                     byte[] buffer = new byte[1024];
 //                     int n;
-//                     while((n = in.read(buffer)) > 0) {
+//                     while ((n = in.read(buffer)) > 0) {
 //                         out.write(buffer, 0, n);
 //                     }
 //                     in.close();
 //                     out.flush();
 //                     buffer = out.toByteArray();
 //                     return buffer;
-//                 }catch(IOException ioe) {
+//                 } catch (IOException ioe) {
 //                     ioe.printStackTrace();
 //                     return null;
 //                 }
 //             }
 //         });
-//         if(buffer==null) {
+//         if (buffer == null) {
 //             System.err.println(getClass().getName() + "/" + soundFile + " not found.");
 //             return null;
 //         }
-//         if(buffer.length == 0) {
+//         if (buffer.length == 0) {
 //             System.err.println("warning: " + soundFile + " is zero-length");
 //             return null;
 //         }
@@ -106,10 +100,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         //UIManager.put("AuditoryCues.playList", UIManager.get("AuditoryCues.allAuditoryCues"));
@@ -136,7 +130,7 @@ final class LookAndFeelUtil {
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
@@ -148,10 +142,10 @@ final class LookAndFeelUtil {
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
+                try {
                     setLookAndFeel(m.getActionCommand());
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -163,7 +157,7 @@ final class LookAndFeelUtil {
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
@@ -171,7 +165,7 @@ final class LookAndFeelUtil {
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

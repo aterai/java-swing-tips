@@ -18,16 +18,15 @@ public final class MainPanel extends JPanel {
 
         jtp.addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane source = (JTabbedPane)e.getComponent();
+                JTabbedPane source = (JTabbedPane) e.getComponent();
                 int num = source.indexAtLocation(e.getX(), e.getY());
-                for(int i=0;i<source.getTabCount();i++) {
-                    source.setForegroundAt(i, i==num ? Color.GREEN
-                                                     : Color.BLACK);
+                for (int i = 0; i < source.getTabCount(); i++) {
+                    source.setForegroundAt(i, i == num ? Color.GREEN : Color.BLACK);
                 }
             }
         });
         add(jtp);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -38,10 +37,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

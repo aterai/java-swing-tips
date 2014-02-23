@@ -29,11 +29,11 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
 
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JSlider makeSlider() {
-        JSlider slider = new JSlider(0,100,0);
+        JSlider slider = new JSlider(0, 100, 0);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
@@ -48,9 +48,9 @@ public final class MainPanel extends JPanel {
         return p;
     }
     private static void setSilderUI(JSlider slider) {
-        if(slider.getUI() instanceof WindowsSliderUI) {
+        if (slider.getUI() instanceof WindowsSliderUI) {
             slider.setUI(new WindowsTooltipSliderUI(slider));
-        }else{
+        } else {
             slider.setUI(new MetalTooltipSliderUI());
         }
     }
@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -84,7 +84,7 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getComponent();
+                JSlider slider = (JSlider) e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
@@ -109,7 +109,7 @@ class MetalTooltipSliderUI extends MetalSliderUI {
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getComponent();
+                JSlider slider = (JSlider) e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
@@ -145,14 +145,14 @@ class SliderPopupListener extends MouseAdapter {
         toolTip.setSize(size);
     }
     protected void updateToolTip(MouseEvent me) {
-        JSlider slider = (JSlider)me.getComponent();
-        int intValue = (int)slider.getValue();
-        if(prevValue!=intValue) {
+        JSlider slider = (JSlider) me.getComponent();
+        int intValue = (int) slider.getValue();
+        if (prevValue != intValue) {
             label.setText(String.format("%03d", slider.getValue()));
             Point pt = me.getPoint();
             pt.y = -size.height;
             SwingUtilities.convertPointToScreen(pt, me.getComponent());
-            pt.translate(-size.width/2, 0);
+            pt.translate(-size.width / 2, 0);
             toolTip.setLocation(pt);
         }
         prevValue = intValue;
@@ -171,10 +171,10 @@ class SliderPopupListener extends MouseAdapter {
 
 class SliderMouseWheelListener implements MouseWheelListener {
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
-        JSlider source = (JSlider)e.getComponent();
-        int intValue = (int)source.getValue()-e.getWheelRotation();
+        JSlider source = (JSlider) e.getComponent();
+        int intValue = (int) source.getValue() - e.getWheelRotation();
         BoundedRangeModel model = source.getModel();
-        if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {
+        if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
             source.setValue(intValue);
         }
     }

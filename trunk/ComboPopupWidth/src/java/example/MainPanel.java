@@ -21,12 +21,12 @@ public final class MainPanel extends JPanel {
         combo03.addPopupMenuListener(new WidePopupMenuListener());
 
         int g = 5;
-        JPanel p = new JPanel(new GridLayout(4,2,g,g));
+        JPanel p = new JPanel(new GridLayout(4, 2, g, g));
         p.add(combo00); p.add(new JLabel("<- nomal"));
         p.add(combo01); p.add(new JLabel("<- nomal, editable"));
         p.add(combo02); p.add(new JLabel("<- wide"));
         p.add(combo03); p.add(new JLabel("<- wide, editable"));
-        setBorder(BorderFactory.createEmptyBorder(g,g,g,g));
+        setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
@@ -45,12 +45,12 @@ public final class MainPanel extends JPanel {
         private static final int POPUP_MIN_WIDTH = 300;
         private boolean adjusting;
         @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-            JComboBox combo = (JComboBox)e.getSource();
+            JComboBox combo = (JComboBox) e.getSource();
             Dimension size  = combo.getSize();
-            if(size.width>=POPUP_MIN_WIDTH) {
+            if (size.width >= POPUP_MIN_WIDTH) {
                 return;
             }
-            if(!adjusting) {
+            if (!adjusting) {
                 adjusting = true;
                 combo.setSize(POPUP_MIN_WIDTH, size.height);
                 combo.showPopup();
@@ -70,10 +70,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("Stop 5sec") {
             @Override public void actionPerformed(ActionEvent e) {
                 layerUI.start();
-                if(!stopper.isRunning()) {
+                if (!stopper.isRunning()) {
                     stopper.start();
                 }
             }
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,7 +65,7 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
     private boolean isRunning;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if(!isRunning) { return; }
+        if (!isRunning) { return; }
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
         g2.setPaint(Color.GRAY);
@@ -74,38 +74,38 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
     }
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        if(c instanceof JLayer) {
-            JLayer jlayer = (JLayer)c;
+        if (c instanceof JLayer) {
+            JLayer jlayer = (JLayer) c;
             jlayer.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             jlayer.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
                                    | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
         }
     }
     @Override public void uninstallUI(JComponent c) {
-        if(c instanceof JLayer) {
-            ((JLayer)c).setLayerEventMask(0);
+        if (c instanceof JLayer) {
+            ((JLayer) c).setLayerEventMask(0);
         }
         super.uninstallUI(c);
     }
     @Override public void eventDispatched(AWTEvent e, JLayer l) {
-        if(isRunning && e instanceof InputEvent) {
-            ((InputEvent)e).consume();
+        if (isRunning && e instanceof InputEvent) {
+            ((InputEvent) e).consume();
         }
     }
     private static final String CMD_REPAINT = "repaint";
     public void start() {
-        if(isRunning) { return; }
+        if (isRunning) { return; }
         isRunning = true;
-        firePropertyChange(CMD_REPAINT,false,true);
+        firePropertyChange(CMD_REPAINT, false, true);
     }
     public void stop() {
         isRunning = false;
-        firePropertyChange(CMD_REPAINT,true,false);
+        firePropertyChange(CMD_REPAINT, true, false);
     }
     @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer l) {
         String cmd = pce.getPropertyName();
-        if(CMD_REPAINT.equals(cmd)) {
-            l.getGlassPane().setVisible((Boolean)pce.getNewValue());
+        if (CMD_REPAINT.equals(cmd)) {
+            l.getGlassPane().setVisible((Boolean) pce.getNewValue());
             l.repaint();
         }
     }

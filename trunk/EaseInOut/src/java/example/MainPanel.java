@@ -25,10 +25,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 class ImageCaptionLabel extends JLabel {
     private final JTextArea textArea = new JTextArea() {
         @Override protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());
             g2.dispose();
@@ -68,9 +68,9 @@ class ImageCaptionLabel extends JLabel {
         textArea.setOpaque(false);
         textArea.setEditable(false);
         //textArea.setFocusable(false);
-        textArea.setBackground(new Color(0,true));
+        textArea.setBackground(new Color(0, true));
         textArea.setForeground(Color.WHITE);
-        textArea.setBorder(BorderFactory.createEmptyBorder(2,4,4,4));
+        textArea.setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
         textArea.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 dispatchMouseEvent(e);
@@ -80,22 +80,22 @@ class ImageCaptionLabel extends JLabel {
             }
         });
 
-        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(222,222,222)),
+        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(222, 222, 222)),
                                                      BorderFactory.createLineBorder(Color.WHITE, 4)));
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
-                if(ncomponents == 0) {
+                if (ncomponents == 0) {
                     return;
                 }
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
                 int x = 0; //insets.left; int y = insets.top;
                 int tah = handler.getTextAreaHeight();
-                //for(int i=0;i<ncomponents;i++) {
+                //for (int i = 0; i < ncomponents; i++) {
                 Component c = parent.getComponent(0); //= textArea;
-                c.setBounds(x, height-tah, width, c.getPreferredSize().height);
+                c.setBounds(x, height - tah, width, c.getPreferredSize().height);
                 //}
             }
         });
@@ -120,48 +120,48 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
         return txah;
     }
     private Timer createTimer(final int dir) {
-        final double height = (double)textArea.getPreferredSize().height;
+        final double height = (double) textArea.getPreferredSize().height;
         return new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                double a = AnimationUtil.easeInOut(count/height);
+                double a = AnimationUtil.easeInOut(count / height);
                 count += dir;
-                txah = (int)(.5d+a*height);
-                textArea.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
-                if(dir>0) { //show
-                    if(txah>=textArea.getPreferredSize().height) {
+                txah = (int) (.5 + a * height);
+                textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                if (dir > 0) { //show
+                    if (txah >= textArea.getPreferredSize().height) {
                         txah = textArea.getPreferredSize().height;
                         animator.stop();
                     }
-                }else{ //hide
-                    if(txah<=0) {
+                } else { //hide
+                    if (txah <= 0) {
                         txah = 0;
                         animator.stop();
                     }
                 }
-                JComponent p = (JComponent)SwingUtilities.getUnwrappedParent(textArea);
+                JComponent p = (JComponent) SwingUtilities.getUnwrappedParent(textArea);
                 p.revalidate();
                 p.repaint();
             }
         });
     }
     @Override public void mouseEntered(MouseEvent e) {
-        if(animator!=null && animator.isRunning() || txah==textArea.getPreferredSize().height) {
+        if (animator != null && animator.isRunning() || txah == textArea.getPreferredSize().height) {
             return;
         }
         animator = createTimer(1);
         animator.start();
     }
     @Override public void mouseExited(MouseEvent e) {
-        JComponent parent = (JComponent)e.getComponent();
-        if(animator!=null && animator.isRunning() || parent.contains(e.getPoint()) && txah==textArea.getPreferredSize().height) {
+        JComponent parent = (JComponent) e.getComponent();
+        if (animator != null && animator.isRunning() || parent.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
             return;
         }
         animator = createTimer(-1);
         animator.start();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent c = (JComponent)e.getComponent();
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !c.isDisplayable()) {
+        JComponent c = (JComponent) e.getComponent();
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !c.isDisplayable()) {
             animator.stop();
         }
     }
@@ -177,22 +177,22 @@ final class AnimationUtil {
         return Math.pow(t, N);
     }
     public static double easeOut(double t) {
-        return Math.pow(t-1d, N) + 1d;
+        return Math.pow(t - 1d, N) + 1d;
     }
     public static double easeInOut(double t) {
 /*/
-        if(t<0.5d) {
-            return 0.5d*Math.pow(t*2d, N);
-        }else{
-            return 0.5d*(Math.pow(t*2d-2d, N) + 2d);
+        if (t < .5) {
+            return 0.5d * Math.pow(t * 2d, N);
+        } else {
+            return 0.5d*(Math.pow(t * 2d - 2d, N) + 2d);
         }
     }
 /*/
         double ret;
-        if(t < .5) {
-            ret = .5*intpow(t*2d, N);
-        }else{
-            ret = .5*(intpow(t*2d-2d, N) + 2d);
+        if (t < .5) {
+            ret = .5 * intpow(t * 2d, N);
+        } else {
+            ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
         }
         return ret;
     }
@@ -202,14 +202,14 @@ final class AnimationUtil {
     //http://www.osix.net/modules/article/?id=696
     public static double intpow(double da, int ib) {
         int b = ib;
-        if(b < 0) {
+        if (b < 0) {
             //return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;
         double d = 1.0;
-        for(; b > 0; a *= a, b >>>= 1) {
-            if((b & 1) != 0) {
+        for (; b > 0; a *= a, b >>>= 1) {
+            if ((b & 1) != 0) {
                 d *= a;
             }
         }

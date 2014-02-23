@@ -13,31 +13,31 @@ import javax.swing.undo.*;
 public final class MainPanel extends JPanel {
     private ClipboardService cs;
     public MainPanel() {
-        super(new GridLayout(2,1));
-        try{
-            cs = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(UnavailableServiceException t) {
+        super(new GridLayout(2, 1));
+        try {
+            cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
+        } catch (UnavailableServiceException t) {
             cs = null;
         }
         JTextArea textArea = new JTextArea() {
             @Override public void copy() {
-                if(cs != null) {
+                if (cs != null) {
                     cs.setContents(new StringSelection(getSelectedText()));
                 }
                 super.copy();
             }
             @Override public void cut() {
-                if(cs != null) {
+                if (cs != null) {
                     cs.setContents(new StringSelection(getSelectedText()));
                 }
                 super.cut();
             }
             @Override public void paste() {
-                if(cs == null) {
+                if (cs == null) {
                     super.paste();
-                }else{
+                } else {
                     Transferable tr = cs.getContents();
-                    if(tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    if (tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                         getTransferHandler().importData(this, tr);
                     }
                 }
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -87,7 +87,7 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action redoAction  = new RedoAction(manager);
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTextComponent tc = (JTextComponent)getInvoker();
+            JTextComponent tc = (JTextComponent) getInvoker();
             tc.replaceSelection(null);
         }
     };
@@ -108,9 +108,9 @@ class TextComponentPopupMenu extends JPopupMenu {
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK), "redo");
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTextComponent) {
-            JTextComponent textComponent = (JTextComponent)c;
-            boolean flg = textComponent.getSelectedText()!=null;
+        if (c instanceof JTextComponent) {
+            JTextComponent textComponent = (JTextComponent) c;
+            boolean flg = textComponent.getSelectedText() != null;
             cutAction.setEnabled(flg);
             copyAction.setEnabled(flg);
             deleteAction.setEnabled(flg);
@@ -126,9 +126,9 @@ class UndoAction extends AbstractAction {
         this.undoManager = manager;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        try{
+        try {
             undoManager.undo();
-        }catch(CannotUndoException cue) {
+        } catch (CannotUndoException cue) {
             //cue.printStackTrace();
             Toolkit.getDefaultToolkit().beep();
         }
@@ -142,9 +142,9 @@ class RedoAction extends AbstractAction {
         this.undoManager = manager;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        try{
+        try {
             undoManager.redo();
-        }catch(CannotRedoException cre) {
+        } catch (CannotRedoException cre) {
             //cre.printStackTrace();
             Toolkit.getDefaultToolkit().beep();
         }

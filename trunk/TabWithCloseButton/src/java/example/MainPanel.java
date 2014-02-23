@@ -24,17 +24,17 @@ public final class MainPanel extends JPanel {
     }
     class NewTabAction extends AbstractAction {
         public NewTabAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            tab.addTab("Title"+count, new JLabel("Tab"+count));
+            tab.addTab("Title" + count, new JLabel("Tab" + count));
             tab.setSelectedIndex(tab.getTabCount()-1);
             count++;
         }
     }
     class CloseAllAction extends AbstractAction {
         public CloseAllAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.removeAll();
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -70,7 +70,7 @@ class MyJTabbedPane extends JTabbedPane {
         JPanel tab = new JPanel(new BorderLayout());
         tab.setOpaque(false);
         JLabel label = new JLabel(title);
-        label.setBorder(BorderFactory.createEmptyBorder(0,0,0,4));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
         JButton button = new JButton(CLOSE_ICON);
         //button.setBorderPainted(false);
         //button.setFocusPainted(false);
@@ -83,7 +83,7 @@ class MyJTabbedPane extends JTabbedPane {
         });
         tab.add(label,  BorderLayout.WEST);
         tab.add(button, BorderLayout.EAST);
-        tab.setBorder(BorderFactory.createEmptyBorder(2,1,1,1));
+        tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));
         super.addTab(title, content);
         setTabComponentAt(getTabCount()-1, tab);
     }

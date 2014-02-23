@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
             }
             @Override public void mousePressed(MouseEvent e) {
                 Point p = getToolTipLocation(e);
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    tip.setTipText(String.format("Window(x,y)=(%4d,%4d)", p.x, p.y));
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    tip.setTipText(String.format("Window(x, y)=(%4d,%4d)", p.x, p.y));
                     window.getContentPane().removeAll();
                     window.add(tip);
                     window.pack();
@@ -34,24 +34,24 @@ public final class MainPanel extends JPanel {
             }
             @Override public void mouseDragged(MouseEvent e) {
                 Point p = e.getPoint();
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    tip.setTipText(String.format("Window(x,y)=(%4d,%4d)", p.x, p.y));
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    tip.setTipText(String.format("Window(x, y)=(%4d,%4d)", p.x, p.y));
                     //tip.revalidate();
                     tip.repaint();
                     //window.pack();
                     window.setLocation(getToolTipLocation(e));
-                }else{
-                    if(popup!=null) {
+                } else {
+                    if (popup != null) {
                         popup.hide();
                     }
-                    tip.setTipText(String.format("Popup(x,y)=(%d,%d)", p.x, p.y));
+                    tip.setTipText(String.format("Popup(x, y)=(%d,%d)", p.x, p.y));
                     p = getToolTipLocation(e);
                     popup = factory.getPopup(e.getComponent(), tip, p.x, p.y);
                     popup.show();
                 }
             }
             @Override public void mouseReleased(MouseEvent me) {
-                if(popup!=null) { popup.hide(); }
+                if (popup != null) { popup.hide(); }
                 window.setVisible(false);
             }
         };
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

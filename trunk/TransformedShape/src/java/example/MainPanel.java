@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -49,7 +49,7 @@ class FontRotateAnimation extends JComponent implements ActionListener {
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 Component c = e.getComponent();
-                if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !c.isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !c.isDisplayable()) {
                     animator.stop();
                 }
             }
@@ -61,7 +61,7 @@ class FontRotateAnimation extends JComponent implements ActionListener {
         animator.start();
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(Color.BLACK);
@@ -86,6 +86,6 @@ class FontRotateAnimation extends JComponent implements ActionListener {
         Shape s1 = at.createTransformedShape(shape);
         s = toCenterAT.createTransformedShape(s1);
         repaint(s.getBounds());
-        rotate = rotate>=360 ? 0 : rotate+2;
+        rotate = rotate >= 360 ? 0 : rotate + 2;
     }
 }

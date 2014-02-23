@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -80,9 +80,9 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 //int i = --countdown;
                 int i = atomicDown.decrementAndGet();
                 l.setText(String.format("Closing in %d seconds", i));
-                if(i<=0) {
+                if (i <= 0) {
                     Window w = SwingUtilities.getWindowAncestor(l);
-                    if(w!=null && timer!=null && timer.isRunning()) {
+                    if (w != null && timer != null && timer.isRunning()) {
                         textArea.append("Timer: timer.stop()\n");
                         timer.stop();
                         textArea.append("window.dispose()\n");
@@ -93,17 +93,17 @@ class AutomaticallyCloseListener implements HierarchyListener {
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0) {
-            JLabel l = (JLabel)e.getComponent();
-            if(l.isShowing()) {
+        if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+            JLabel l = (JLabel) e.getComponent();
+            if (l.isShowing()) {
                 textArea.append("isShowing=ture\n");
                 atomicDown.set(SECONDS);
                 l.setText(String.format("Closing in %d seconds", SECONDS));
                 timer = makeTimer(l);
                 timer.start();
-            }else{
+            } else {
                 textArea.append("isShowing=false\n");
-                if(timer!=null && timer.isRunning()) {
+                if (timer != null && timer.isRunning()) {
                     textArea.append("timer.stop()\n");
                     timer.stop();
                     timer = null;

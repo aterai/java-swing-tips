@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     }
     public MainPanel() {
         super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
 
         JTable table1 = makeTable();
         //Bad: >>>>
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         add(p);
         add(new JButton(new AbstractAction("addColumn") {
             @Override public void actionPerformed(ActionEvent e) {
-                for(JTable t: list) {
+                for (JTable t: list) {
                     t.getColumnModel().addColumn(new TableColumn());
                     JTableHeader h = t.getTableHeader();
                     Dimension d = h.getPreferredSize();
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         }), BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeTitledPanel(String title, JComponent c) {
@@ -78,10 +78,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

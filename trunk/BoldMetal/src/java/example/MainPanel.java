@@ -18,12 +18,12 @@ public final class MainPanel extends JPanel {
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 //http://docs.oracle.com/javase/jp/6/api/javax/swing/plaf/metal/DefaultMetalTheme.html
-                JCheckBox c = (JCheckBox)e.getSource();
+                JCheckBox c = (JCheckBox) e.getSource();
                 UIManager.put("swing.boldMetal", c.isSelected());
                 // re-install the Metal Look and Feel
-                try{
+                try {
                     UIManager.setLookAndFeel(new MetalLookAndFeel());
-                }catch(UnsupportedLookAndFeelException ex) {
+                } catch (UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
                 // Update the ComponentUIs for all Components. This
@@ -36,18 +36,18 @@ public final class MainPanel extends JPanel {
         tree.setComponentPopupMenu(new TreePopupMenu());
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
-        tabbedPane.addTab(TAG+"JTree", new JScrollPane(tree));
-        tabbedPane.addTab("JLabel",    new JLabel("JLabel"));
-        tabbedPane.addTab("JTextArea", new JScrollPane(new JTextArea("JTextArea")));
-        tabbedPane.addTab("JButton",   new JScrollPane(new JButton("JButton")));
+        tabbedPane.addTab(TAG + "JTree", new JScrollPane(tree));
+        tabbedPane.addTab("JLabel",      new JLabel("JLabel"));
+        tabbedPane.addTab("JTextArea",   new JScrollPane(new JTextArea("JTextArea")));
+        tabbedPane.addTab("JButton",     new JScrollPane(new JButton("JButton")));
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane t = (JTabbedPane)e.getSource();
-                for(int i=0;i<t.getTabCount();i++) {
+                JTabbedPane t = (JTabbedPane) e.getSource();
+                for (int i = 0; i < t.getTabCount(); i++) {
                     String title = t.getTitleAt(i);
-                    if(i==t.getSelectedIndex()) {
-                        t.setTitleAt(i, TAG+title);
-                    }else if(title.startsWith(TAG)) {
+                    if (i == t.getSelectedIndex()) {
+                        t.setTitleAt(i, TAG + title);
+                    } else if (title.startsWith(TAG)) {
                         t.setTitleAt(i, title.substring(TAG.length()));
                     }
                 }
@@ -81,9 +81,9 @@ class TreePopupMenu extends JPopupMenu {
     private TreePath path;
     private final Action addNodeAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTree tree = (JTree)getInvoker();
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
+            JTree tree = (JTree) getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
             model.insertNodeInto(child, parent, parent.getChildCount());
             //parent.add(child);
@@ -93,19 +93,19 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editNodeAction = new AbstractAction("edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            //if(path==null) { return; }
+            //if (path == null) { return; }
             Object node = path.getLastPathComponent();
-            if(node instanceof DefaultMutableTreeNode) {
-                DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)node;
+            if (node instanceof DefaultMutableTreeNode) {
+                DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
-                JTree tree = (JTree)getInvoker();
+                JTree tree = (JTree) getInvoker();
                 int result = JOptionPane.showConfirmDialog(
                     tree, textField, "edit",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION) {
+                if (result == JOptionPane.OK_OPTION) {
                     String str = textField.getText();
-                    if(!str.trim().isEmpty()) {
-                        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+                    if (!str.trim().isEmpty()) {
+                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                         model.valueForPathChanged(path, str);
                         //leaf.setUserObject(str);
                         //model.nodeChanged(leaf);
@@ -116,11 +116,11 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action removeNodeAction = new AbstractAction("remove") {
         @Override public void actionPerformed(ActionEvent e) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-            //if(path.getParentPath()!=null) {
-            if(!node.isRoot()) {
-                JTree tree = (JTree)getInvoker();
-                DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            //if (path.getParentPath() != null) {
+            if (!node.isRoot()) {
+                JTree tree = (JTree) getInvoker();
+                DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                 model.removeNodeFromParent(node);
             }
         }
@@ -140,12 +140,12 @@ class TreePopupMenu extends JPopupMenu {
         add(removeNodeAction);
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTree) {
-            JTree tree = (JTree)c;
+        if (c instanceof JTree) {
+            JTree tree = (JTree) c;
             //TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y);
-            //if(path!=null && Arrays.asList(tsp).contains(path)) {
-            if(path!=null) {
+            //if (path != null && Arrays.asList(tsp).contains(path)) {
+            if (path != null) {
                 tree.setSelectionPath(path);
                 super.show(c, x, y);
             }

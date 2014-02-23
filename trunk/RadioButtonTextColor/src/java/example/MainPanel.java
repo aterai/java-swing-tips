@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         Box box0 = Box.createVerticalBox();
         box0.setBorder(BorderFactory.createTitledBorder("Default"));
         int i = 0;
-        while(i < 4) {
+        while (i < 4) {
             JRadioButton b = new JRadioButton("Default: " + i);
             bg.add(b);
             box0.add(b);
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         }
         Box box1 = Box.createVerticalBox();
         box1.setBorder(BorderFactory.createTitledBorder("Text Color"));
-        while(i < 8) {
+        while (i < 8) {
             JRadioButton b = new ColorRadioButton("Text: " + i);
             bg.add(b);
             box1.add(b);
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         }
         Box box2 = Box.createVerticalBox();
         box2.setBorder(BorderFactory.createTitledBorder("Icon Color"));
-        while(i < 12) {
+        while (i < 12) {
             JRadioButton b = new ColorRadioButton("Icon: " + i);
             bg.add(b);
             box2.add(b);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         add(box0);
         add(box1);
         add(box2);
-        setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -57,10 +57,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -89,15 +89,15 @@ class ColorRadioButton extends JRadioButton {
 //         addChangeListener(new ChangeListener() {
 //             @Override public void stateChanged(ChangeEvent e) {
 //                 ButtonModel model = getModel();
-//                 if(!model.isEnabled()) {
+//                 if (!model.isEnabled()) {
 //                     setForeground(Color.GRAY);
-//                 }else if(model.isPressed() && model.isArmed()) {
+//                 } else if (model.isPressed() && model.isArmed()) {
 //                     setForeground(PRESSED_COLOR);
-//                 }else if(model.isSelected()) {
+//                 } else if (model.isSelected()) {
 //                     setForeground(SELECTED_COLOR);
-//                 }else if(isRolloverEnabled() && model.isRollover()) {
+//                 } else if (isRolloverEnabled() && model.isRollover()) {
 //                     setForeground(ROLLOVER_COLOR);
-//                 }else{
+//                 } else {
 //                     setForeground(DEFAULT_COLOR);
 //                 }
 //             }
@@ -105,24 +105,24 @@ class ColorRadioButton extends JRadioButton {
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
-        if(model.isEnabled()) {
-            if(model.isPressed() && model.isArmed()) {
+        if (model.isEnabled()) {
+            if (model.isPressed() && model.isArmed()) {
                 setForeground(PRESSED_COLOR);
-            }else if(model.isSelected()) {
+            } else if (model.isSelected()) {
                 setForeground(SELECTED_COLOR);
-            }else if(isRolloverEnabled() && model.isRollover()) {
+            } else if (isRolloverEnabled() && model.isRollover()) {
                 setForeground(ROLLOVER_COLOR);
-            }else{
+            } else {
                 setForeground(DEFAULT_COLOR);
             }
-        }else{
+        } else {
             setForeground(Color.GRAY);
         }
         super.fireStateChanged();
     };
     private static class DefaultIcon implements Icon {
         @Override public int getIconWidth() {
-            return ICON_SIZE*2;
+            return ICON_SIZE * 2;
         }
         @Override public int getIconHeight() {
             return ICON_SIZE;
@@ -130,8 +130,8 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
             g.setColor(DEFAULT_COLOR);
-            g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
-            g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
+            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
             g.translate(-x, -y);
         }
     }
@@ -139,11 +139,11 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
             g.setColor(PRESSED_COLOR);
-            g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
-            g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
+            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
             g.setColor(SELECTED_COLOR);
-            g.fillRect(4, 4, getIconWidth()-8, getIconHeight()-8);
+            g.fillRect(4, 4, getIconWidth() - 8, getIconHeight() - 8);
             g.translate(-x, -y);
         }
     }
@@ -151,11 +151,11 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
             g.setColor(SELECTED_COLOR);
-            g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
-            g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
+            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
             g.setColor(PRESSED_COLOR);
-            g.fillRect(6, 6, getIconWidth()-12, getIconHeight()-12);
+            g.fillRect(6, 6, getIconWidth() - 12, getIconHeight() - 12);
             g.translate(-x, -y);
         }
     }
@@ -163,8 +163,8 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             g.translate(x, y);
             g.setColor(ROLLOVER_COLOR);
-            g.drawRect(0, 0, getIconWidth()-1,   getIconHeight()-1);
-            g.drawRect(1, 1, getIconWidth()-2-1, getIconHeight()-2-1);
+            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
             g.translate(-x, -y);
         }
     }

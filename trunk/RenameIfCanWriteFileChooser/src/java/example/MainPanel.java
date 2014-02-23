@@ -22,30 +22,30 @@ public final class MainPanel extends JPanel {
                 UIManager.put("FileChooser.readOnly", Boolean.TRUE);
                 JFileChooser fileChooser = new JFileChooser(".");
                 int retvalue = fileChooser.showOpenDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
         }));
-        p.add(new JButton(new AbstractAction("Rename only File#canWrite()==true") {
+        p.add(new JButton(new AbstractAction("Rename only File#canWrite() == true") {
             @Override public void actionPerformed(ActionEvent ae) {
                 UIManager.put("FileChooser.readOnly", Boolean.FALSE);
                 JFileChooser fileChooser = new JFileChooser(".") {
                     @Override protected void setUI(ComponentUI ui) {
-                        if(ui instanceof WindowsFileChooserUI) {
+                        if (ui instanceof WindowsFileChooserUI) {
                             super.setUI(WindowsCanWriteFileChooserUI.createUI(this));
-                        }else{
+                        } else {
                             super.setUI(MetalCanWriteFileChooserUI.createUI(this));
                         }
                     }
                 };
 //         ActionMap am = fc.getActionMap();
-//         //WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,editFileName,pressed F2
+//         //WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
 //         final Action editFileNameAction = am.get("editFileName");
 //         am.put("editFileName", new AbstractAction("editFileName2") {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 File file = fc.getSelectedFile();
-//                 if(file!=null && file.canWrite()) {
+//                 if (file != null && file.canWrite()) {
 //                     editFileNameAction.actionPerformed(e);
 //                 }
 //             }
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 //                 newFolder.setEnabled(false);
 
                 int retvalue = fileChooser.showOpenDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -93,18 +93,18 @@ class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI{
         super(chooser);
     }
     public static ComponentUI createUI(JComponent c) {
-        if(c instanceof JFileChooser) {
-            return new WindowsCanWriteFileChooserUI((JFileChooser)c);
+        if (c instanceof JFileChooser) {
+            return new WindowsCanWriteFileChooserUI((JFileChooser) c);
         }
         throw new InternalError("Should never happen");
     }
     @Override public void createModel() {
-        if(model2!=null) {
+        if (model2!=null) {
             model2.invalidateFileCache();
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
             @Override public boolean renameFile(File oldFile, File newFile) {
-                return oldFile.canWrite()?super.renameFile(oldFile, newFile):false;
+                return oldFile.canWrite() ? super.renameFile(oldFile, newFile) : false;
             }
         };
     }
@@ -120,18 +120,18 @@ class MetalCanWriteFileChooserUI extends MetalFileChooserUI{
         super(chooser);
     }
     public static ComponentUI createUI(JComponent c) {
-        if(c instanceof JFileChooser) {
-            return new MetalCanWriteFileChooserUI((JFileChooser)c);
+        if (c instanceof JFileChooser) {
+            return new MetalCanWriteFileChooserUI((JFileChooser) c);
         }
         throw new InternalError("Should never happen");
     }
     @Override public void createModel() {
-        if(model2!=null) {
+        if (model2!=null) {
             model2.invalidateFileCache();
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
             @Override public boolean renameFile(File oldFile, File newFile) {
-                return oldFile.canWrite()?super.renameFile(oldFile, newFile):false;
+                return oldFile.canWrite() ? super.renameFile(oldFile, newFile) : false;
             }
         };
     }

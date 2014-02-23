@@ -13,7 +13,7 @@ import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
     private static final Color BG_COLOR = new Color(1f, .8f, .8f, .2f);
-    private final JTextField field0,field1,field2;
+    private final JTextField field0, field1, field2;
     private transient TexturePaint texture;
 
     public MainPanel() {
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
 
         field2 = new JTextField("cccccccccccccccccccccc") {
             @Override protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(getBackground());
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.dispose();
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     }
     private void initComponents() {
         setLayout(new GridBagLayout());
-        Border inside  = BorderFactory.createEmptyBorder(10,5+2,10,10+2);
+        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("setBackground(1.0, 0.8, 0.8, 0.2)");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
@@ -66,10 +66,10 @@ public final class MainPanel extends JPanel {
         //Viva! edo>http://www.viva-edo.com/komon/edokomon.html
         URL url = getClass().getResource("unkaku_w.gif");
         BufferedImage bfimage = null;
-        try{
+        try {
             bfimage = ImageIO.read(url);
-            //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1.0f,1.0f,0.5f});
-        }catch(IOException ioe) {
+            //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1.0f, 1.0f, 0.5f});
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);
         }
@@ -79,10 +79,10 @@ public final class MainPanel extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(texture==null) {
+        if (texture == null) {
             texture = makeTexturePaint();
         }
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
@@ -96,13 +96,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-            //    if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
+            //for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+            //    if ("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
             //}
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

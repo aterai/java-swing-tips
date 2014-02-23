@@ -10,18 +10,18 @@ public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel("MANIFEST.MF");
     public MainPanel() {
         super(new BorderLayout());
-        Border outside = BorderFactory.createMatteBorder(0,10,1,0,new Color(50,200,50));
-        Border inside  = BorderFactory.createEmptyBorder(0,5,0,0);
+        Border outside = BorderFactory.createMatteBorder(0, 10, 1, 0, new Color(50, 200, 50));
+        Border inside  = BorderFactory.createEmptyBorder(0, 5, 0, 0);
         label.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
         Font font = label.getFont();
         label.setFont(new Font(font.getFontName(), font.getStyle(), font.getSize()*2));
 
-        JPanel p = new JPanel(new BorderLayout(2,2));
+        JPanel p = new JPanel(new BorderLayout(2, 2));
         p.add(label, BorderLayout.NORTH);
         p.add(makeInfoBox(), BorderLayout.SOUTH);
         add(p, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 180));
     }
 
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

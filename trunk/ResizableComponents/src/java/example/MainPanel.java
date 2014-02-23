@@ -35,14 +35,14 @@ public final class MainPanel extends JPanel {
         add(layeredPane);
         toolbar.add(new AbstractAction("add table") {
             @Override public void actionPerformed(ActionEvent e) {
-                pt.setLocation(pt.x+20, pt.y+20);
+                pt.setLocation(pt.x + 20, pt.y + 20);
                 createTable();
             }
         });
         toolbar.addSeparator();
         toolbar.add(new AbstractAction("add tree") {
             @Override public void actionPerformed(ActionEvent e) {
-                pt.setLocation(pt.x+20, pt.y+20);
+                pt.setLocation(pt.x + 20, pt.y + 20);
                 createTree();
             }
         });
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -117,7 +117,7 @@ class JResizer extends JPanel { // implements Serializable {
     @Override public void setBorder(Border border) {
         removeMouseListener(resizeListener);
         removeMouseMotionListener(resizeListener);
-        if(border instanceof ResizableBorder) {
+        if (border instanceof ResizableBorder) {
             addMouseListener(resizeListener);
             addMouseMotionListener(resizeListener);
         }
@@ -132,8 +132,8 @@ class ResizeMouseListener extends MouseAdapter {
     private Point startPos;
     private Rectangle startingBounds;
     @Override public void mouseMoved(MouseEvent e) {
-        JComponent c = (JComponent)e.getComponent();
-        ResizableBorder border = (ResizableBorder)c.getBorder();
+        JComponent c = (JComponent) e.getComponent();
+        ResizableBorder border = (ResizableBorder) c.getBorder();
         c.setCursor(Cursor.getPredefinedCursor(border.getResizeCursor(e)));
     }
     @Override public void mouseExited(MouseEvent e) {
@@ -141,67 +141,67 @@ class ResizeMouseListener extends MouseAdapter {
         c.setCursor(Cursor.getDefaultCursor());
     }
     @Override public void mousePressed(MouseEvent e) {
-        JComponent c = (JComponent)e.getComponent();
-        ResizableBorder border = (ResizableBorder)c.getBorder();
+        JComponent c = (JComponent) e.getComponent();
+        ResizableBorder border = (ResizableBorder) c.getBorder();
         cursor = border.getResizeCursor(e);
         startPos = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
         startingBounds = c.getBounds();
         Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
-        if(parent != null) {
-            ((JLayeredPane)parent).moveToFront(c);
+        if (parent != null) {
+            ((JLayeredPane) parent).moveToFront(c);
         }
     }
     private int getDeltaX(int dx) {
         int deltaX = dx;
-        if(startingBounds.width + deltaX < MIN.width) {
+        if (startingBounds.width + deltaX < MIN.width) {
             deltaX = -(startingBounds.width - MIN.width);
-        }else if(startingBounds.width + deltaX > MAX.width) {
+        } else if (startingBounds.width + deltaX > MAX.width) {
             deltaX = MAX.width - startingBounds.width;
         }
-        if(startingBounds.x - deltaX < 0) {
+        if (startingBounds.x - deltaX < 0) {
             deltaX = startingBounds.x;
         }
         return deltaX;
     }
     private int getDeltaX(int dx, Rectangle parentBounds) {
         int deltaX = dx;
-        if(startingBounds.width - deltaX < MIN.width) {
+        if (startingBounds.width - deltaX < MIN.width) {
             deltaX = startingBounds.width - MIN.width;
-        }else if(startingBounds.width - deltaX > MAX.width) {
+        } else if (startingBounds.width - deltaX > MAX.width) {
             deltaX = -(MAX.width - startingBounds.width);
         }
-        if(startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
+        if (startingBounds.x + startingBounds.width - deltaX > parentBounds.width) {
             deltaX = startingBounds.x + startingBounds.width - parentBounds.width;
         }
         return deltaX;
     }
     private int getDeltaY(int dy) {
         int deltaY = dy;
-        if(startingBounds.height + deltaY < MIN.height) {
+        if (startingBounds.height + deltaY < MIN.height) {
             deltaY = -(startingBounds.height - MIN.height);
-        }else if(startingBounds.height + deltaY > MAX.height) {
+        } else if (startingBounds.height + deltaY > MAX.height) {
             deltaY = MAX.height - startingBounds.height;
         }
-        if(startingBounds.y - deltaY < 0) {
+        if (startingBounds.y - deltaY < 0) {
             deltaY = startingBounds.y;
         }
         return deltaY;
     }
     private int getDeltaY(int dy, Rectangle parentBounds) {
         int deltaY = dy;
-        if(startingBounds.height - deltaY < MIN.height) {
+        if (startingBounds.height - deltaY < MIN.height) {
             deltaY = startingBounds.height - MIN.height;
-        }else if(startingBounds.height - deltaY > MAX.height) {
+        } else if (startingBounds.height - deltaY > MAX.height) {
             deltaY = -(MAX.height - startingBounds.height);
         }
-        if(startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
+        if (startingBounds.y + startingBounds.height - deltaY > parentBounds.height) {
             deltaY = startingBounds.y + startingBounds.height - parentBounds.height;
         }
         return deltaY;
     }
     //@see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
     @Override public void mouseDragged(MouseEvent e) {
-        if(startPos==null || startingBounds==null) {
+        if (startPos == null || startingBounds == null) {
             return;
         }
         Component c = e.getComponent();
@@ -352,26 +352,26 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
 
     @Override public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
         g.setColor(Color.black);
-        g.drawRect(x+dist/2, y+dist/2, w-dist, h-dist);
-        for(int i=0; i<locations.length-2; i++) {
+        g.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
+        for (int i = 0; i < locations.length - 2; i++) {
             Rectangle rect = getRectangle(x, y, w, h, locations[i]);
             g.setColor(Color.WHITE);
-            g.fillRect(rect.x, rect.y, rect.width-1, rect.height-1);
+            g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
             g.setColor(Color.BLACK);
-            g.drawRect(rect.x, rect.y, rect.width-1, rect.height-1);
+            g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
         }
     }
 
     private Rectangle getRectangle(int x, int y, int w, int h, int location) {
         switch(location) {
-          case NORTH:      return new Rectangle(x+w/2-dist/2, y, dist, dist);
-          case SOUTH:      return new Rectangle(x+w/2-dist/2, y+h-dist, dist, dist);
-          case WEST:       return new Rectangle(x, y+h/2-dist/2, dist, dist);
-          case EAST:       return new Rectangle(x+w-dist, y+h/2-dist/2, dist, dist);
+          case NORTH:      return new Rectangle(x + w / 2 - dist / 2, y, dist, dist);
+          case SOUTH:      return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist, dist);
+          case WEST:       return new Rectangle(x, y + h / 2 - dist / 2, dist, dist);
+          case EAST:       return new Rectangle(x + w - dist, y + h / 2 - dist / 2, dist, dist);
           case NORTH_WEST: return new Rectangle(x, y, dist, dist);
-          case NORTH_EAST: return new Rectangle(x+w-dist, y, dist, dist);
-          case SOUTH_WEST: return new Rectangle(x, y+h-dist, dist, dist);
-          case SOUTH_EAST: return new Rectangle(x+w-dist, y+h-dist, dist, dist);
+          case NORTH_EAST: return new Rectangle(x + w - dist, y, dist, dist);
+          case SOUTH_WEST: return new Rectangle(x, y + h - dist, dist, dist);
+          case SOUTH_EAST: return new Rectangle(x + w - dist, y + h - dist, dist, dist);
           default:         return null; //throw  new AssertionError("Unknown location");
         }
         //return null;
@@ -384,17 +384,17 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
         Point pt = e.getPoint();
 
         Rectangle bounds = new Rectangle(0, 0, w, h);
-        if(!bounds.contains(pt)) {
+        if (!bounds.contains(pt)) {
             return Cursor.DEFAULT_CURSOR;
         }
 
-        Rectangle actualBounds = new Rectangle(dist, dist, w-2*dist, h-2*dist);
-        if(actualBounds.contains(pt)) {
+        Rectangle actualBounds = new Rectangle(dist, dist, w - 2 * dist, h - 2 * dist);
+        if (actualBounds.contains(pt)) {
             return Cursor.DEFAULT_CURSOR;
         }
-        for(int i=0; i<locations.length-2; i++) {
+        for (int i = 0; i < locations.length - 2; i++) {
             Rectangle r = getRectangle(0, 0, w, h, locations[i]);
-            if(r.contains(pt)) {
+            if (r.contains(pt)) {
                 return cursors[i];
             }
         }

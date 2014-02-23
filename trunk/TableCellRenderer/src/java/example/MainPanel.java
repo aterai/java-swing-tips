@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -74,13 +74,13 @@ class TestRenderer extends WrappedLabel implements TableCellRenderer {
     public TestRenderer() {
         super();
         setOpaque(true);
-        setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if(isSelected) {
+        if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
@@ -102,8 +102,8 @@ class WrappedLabel extends JLabel {
     //private int prevwidth = -1;
     @Override public void doLayout() {
         Insets i = getInsets();
-        int w = getWidth()-i.left-i.right;
-        //if(w!=prevwidth) {
+        int w = getWidth() - i.left - i.right;
+        //if (w!=prevwidth) {
             Font font = getFont();
             FontMetrics fm = getFontMetrics(font);
             FontRenderContext frc = fm.getFontRenderContext();
@@ -113,15 +113,15 @@ class WrappedLabel extends JLabel {
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
-        if(gvtext==null) {
+        if (gvtext == null) {
             super.paintComponent(g);
-        }else{
+        } else {
             Insets i = getInsets();
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());
-            g2.fillRect(0,0,getWidth(),getHeight());
+            g2.fillRect(0, 0, getWidth(), getHeight());
             g2.setPaint(getForeground());
-            g2.drawGlyphVector(gvtext, i.left, getFont().getSize()+i.top);
+            g2.drawGlyphVector(gvtext, i.left, getFont().getSize() + i.top);
             g2.dispose();
         }
     }
@@ -133,14 +133,14 @@ class WrappedLabel extends JLabel {
         float advance    = 0.0f;
         int   lineCount  = 0;
         GlyphMetrics gm;
-        for(int i=0;i<gv.getNumGlyphs();i++) {
+        for (int i = 0; i < gv.getNumGlyphs(); i++) {
             gm = gv.getGlyphMetrics(i);
             advance = gm.getAdvance();
-            if(xpos<width && width<=xpos+advance) {
+            if (xpos<width && width<=xpos + advance) {
                 lineCount++;
                 xpos = 0.0f;
             }
-            gmPos.setLocation(xpos, lineheight*lineCount);
+            gmPos.setLocation(xpos, lineheight * lineCount);
             gv.setGlyphPosition(i, gmPos);
             xpos = xpos + advance;
         }
@@ -153,14 +153,14 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     public TextAreaCellRenderer() {
         super();
         setLineWrap(true);
-        setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         //setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if(isSelected) {
+        if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
@@ -172,7 +172,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -180,8 +180,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //String literal pool
-        //if(propertyName=="document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
-        if("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
+        //if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+        if ("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

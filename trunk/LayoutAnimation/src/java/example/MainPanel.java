@@ -21,20 +21,20 @@ public final class MainPanel extends JPanel {
             //synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);
             controlsPreferredHeight = ps.height;
-            if(animator!=null) {
-                if(isHidden) {
-                    if(controls.getHeight()<controlsPreferredHeight) {
+            if (animator != null) {
+                if (isHidden) {
+                    if (controls.getHeight() < controlsPreferredHeight) {
                         controlsHeight += 5;
                     }
-                }else{
-                    if(controls.getHeight()>0) {
+                } else {
+                    if (controls.getHeight() > 0) {
                         controlsHeight -= 5;
                     }
                 }
-                if(controlsHeight<=0) {
+                if (controlsHeight <= 0) {
                     controlsHeight = 0;
                     animator.stop();
-                }else if(controlsHeight>=controlsPreferredHeight) {
+                } else if (controlsHeight >= controlsPreferredHeight) {
                     controlsHeight = controlsPreferredHeight;
                     animator.stop();
                 }
@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
     private Action makeShowHideAction() {
         return new AbstractAction("Show/Hide Search Box") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(animator!=null && animator.isRunning()) {
+                if (animator != null && animator.isRunning()) {
                     return;
                 }
-                isHidden = controls.getHeight()==0;
+                isHidden = controls.getHeight() == 0;
                 animator = new Timer(5, new ActionListener() {
                     @Override public void actionPerformed(ActionEvent e) {
                         controls.revalidate();
@@ -93,10 +93,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

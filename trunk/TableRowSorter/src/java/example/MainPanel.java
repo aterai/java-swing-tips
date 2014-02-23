@@ -22,12 +22,12 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -42,16 +42,16 @@ public final class MainPanel extends JPanel {
         TableCellRenderer renderer = new TableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable t, Object v, boolean isS, boolean hasF, int row, int col) {
                 TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
-                JLabel l = (JLabel)r.getTableCellRendererComponent(t, v, isS, hasF, row, col);
-                l.setForeground(((DefaultRowSorter)table.getRowSorter()).isSortable(t.convertColumnIndexToModel(col))?Color.BLACK:Color.GRAY);
+                JLabel l = (JLabel) r.getTableCellRendererComponent(t, v, isS, hasF, row, col);
+                l.setForeground(((DefaultRowSorter) table.getRowSorter()).isSortable(t.convertColumnIndexToModel(col)) ? Color.BLACK : Color.GRAY);
                 return l;
             }
         };
         TableColumnModel columns = table.getColumnModel();
-        for(int i=0;i<columns.getColumnCount();i++) {
+        for (int i = 0; i < columns.getColumnCount(); i++) {
             TableColumn c = columns.getColumn(i);
             c.setHeaderRenderer(renderer);
-            if(i==0) {
+            if (i == 0) {
                 c.setMinWidth(60);
                 c.setMaxWidth(60);
                 c.setResizable(false);
@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
         }
         add(new JCheckBox(new AbstractAction("Sortable(1, false)") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                ((DefaultRowSorter<?,?>)table.getRowSorter()).setSortable(1, !cb.isSelected());
+                JCheckBox cb = (JCheckBox) e.getSource();
+                ((DefaultRowSorter<?, ?>) table.getRowSorter()).setSortable(1, !cb.isSelected());
                 table.getTableHeader().repaint();
             }
         }), BorderLayout.NORTH);
@@ -81,10 +81,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

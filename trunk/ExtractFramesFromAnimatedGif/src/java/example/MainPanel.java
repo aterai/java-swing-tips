@@ -21,13 +21,13 @@ public final class MainPanel extends JPanel {
         Box p = Box.createHorizontalBox();
         p.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
 
-        try(InputStream is = getClass().getResourceAsStream("duke.running.gif");
-            ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-            for(BufferedImage image: loadFromStream(iis)) {
+        try (InputStream is = getClass().getResourceAsStream("duke.running.gif");
+             ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+            for (BufferedImage image: loadFromStream(iis)) {
                 p.add(new JLabel(new ImageIcon(image)));
             }
             //iis.close();
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         add(label, BorderLayout.WEST);
@@ -38,22 +38,22 @@ public final class MainPanel extends JPanel {
     private List<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
         ImageReader reader = null;
         Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
-        while(readers.hasNext()) {
+        while (readers.hasNext()) {
             reader = readers.next();
             String metaFormat = reader.getOriginatingProvider().getNativeImageMetadataFormatName();
-            if("gif".equalsIgnoreCase(reader.getFormatName()) && "javax_imageio_gif_image_1.0".equals(metaFormat)) {
+            if ("gif".equalsIgnoreCase(reader.getFormatName()) && "javax_imageio_gif_image_1.0".equals(metaFormat)) {
                 break;
             }
         }
-        if(reader == null) {
+        if (reader == null) {
             throw new IOException("Can not read image format!");
         }
         boolean isGif = reader.getFormatName().equalsIgnoreCase("gif");
         reader.setInput(imageStream, false, !isGif);
         List<BufferedImage> list = new ArrayList<BufferedImage>();
-        for(int i=0;i<reader.getNumImages(true);i++) {
+        for (int i = 0; i < reader.getNumImages(true); i++) {
             IIOImage frame = reader.readAll(i, null);
-            list.add((BufferedImage)frame.getRenderedImage());
+            list.add((BufferedImage) frame.getRenderedImage());
         }
         reader.dispose();
         return list;
@@ -66,10 +66,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

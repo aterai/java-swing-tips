@@ -26,12 +26,12 @@ public final class MainPanel extends JPanel {
         table = new JTable(model) {
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
-                if(isCellSelected(row, column)) {
+                if (isCellSelected(row, column)) {
                     c.setForeground(getSelectionForeground());
                     c.setBackground(getSelectionBackground());
-                }else{
+                } else {
                     c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+                    c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
                 }
                 return c;
             }
@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
         final JTableHeader header = table.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                if(!check.isSelected()) { return; }
-                if(table.isEditing()) {
+                if (!check.isSelected()) { return; }
+                if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
                 int col = header.columnAtPoint(e.getPoint());
@@ -53,11 +53,11 @@ public final class MainPanel extends JPanel {
 
 //         table.getTableHeader().addMouseListener(new MouseAdapter() {
 //             @Override public void mousePressed(MouseEvent e) {
-//                 JTable table = ((JTableHeader)e.getSource()).getTable();
-//                 if(table.isEditing()) {
+//                 JTable table = ((JTableHeader) e.getSource()).getTable();
+//                 if (table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();
 //                 }
-//                 if(check.isSelected()) {
+//                 if (check.isSelected()) {
 //                     //table.getSelectionModel().clearSelection();
 //                     //table.getSelectionModel().setAnchorSelectionIndex(-1);
 //                     //table.getSelectionModel().setLeadSelectionIndex(-1);
@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -11,11 +11,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         add(new JButton(new AbstractAction("show frame title") {
             @Override public void actionPerformed(ActionEvent e) {
-                JButton btn  = (JButton)e.getSource();
-                JFrame frame = (JFrame)SwingUtilities.getWindowAncestor(btn);
-                //JFrame frame = (JFrame)btn.getTopLevelAncestor();
+                JButton btn  = (JButton) e.getSource();
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(btn);
+                //JFrame frame = (JFrame) btn.getTopLevelAncestor();
                 //JFrame frame = (JFrame)JOptionPane.getFrameForComponent(btn);
-                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): "+frame.getTitle(),
+                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(),
                                               "title", JOptionPane.INFORMATION_MESSAGE);
             }
         }));
@@ -30,10 +30,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame1 = new JFrame("@title@");
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
         frame2.getContentPane().add(new MainPanel());
         frame2.pack();
         Point pt = frame1.getLocation();
-        frame2.setLocation(pt.x, pt.y+frame1.getSize().height);
+        frame2.setLocation(pt.x, pt.y + frame1.getSize().height);
 
         frame1.setVisible(true);
         frame2.setVisible(true);

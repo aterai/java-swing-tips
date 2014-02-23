@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new EditableTabbedPane();
-        //for(int i = 0; i < 5; i++) {
+        //for (int i = 0; i < 5; i++) {
         //    String title = "Tab " + i;
         //    tabbedPane.add(title, new JLabel(title));
         //    tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -61,28 +61,28 @@ class EditableTabbedPane extends JTabbedPane {
         editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         editor.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
-                ((JTextField)e.getComponent()).selectAll();
+                ((JTextField) e.getComponent()).selectAll();
             }
         });
         editor.addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     renameTab();
-                }else if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     cancelEditing();
                 }
             }
         });
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount()==2) {
+                if (e.getClickCount() == 2) {
                     startEditing();
                 }
             }
         });
         addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     startEditing();
                 }
             }
@@ -93,7 +93,7 @@ class EditableTabbedPane extends JTabbedPane {
     private void initEditor() {
         rect = getUI().getTabBounds(this, getSelectedIndex());
         Point p = SwingUtilities.convertPoint(this, rect.getLocation(), glassPane);
-        rect.setRect(p.x+2, p.y+2, rect.width-4, rect.height-4);
+        rect.setRect(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
         editor.setBounds(rect);
         editor.setText(getTitleAt(getSelectedIndex()));
     }
@@ -107,12 +107,12 @@ class EditableTabbedPane extends JTabbedPane {
         glassPane.setVisible(false);
     }
     private void renameTab() {
-        if(editor.getText().trim().length()>0) {
+        if (editor.getText().trim().length() > 0) {
             setTitleAt(getSelectedIndex(), editor.getText());
             //java 1.6.0 ---->
             Component c = getTabComponentAt(getSelectedIndex());
-            if(c instanceof JComponent) {
-                ((JComponent)c).revalidate();
+            if (c instanceof JComponent) {
+                ((JComponent) c).revalidate();
             }
             //<----
         }
@@ -129,7 +129,7 @@ class EditableTabbedPane extends JTabbedPane {
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if(rect==null || rect.contains(me.getPoint())) {
+                    if (rect == null || rect.contains(me.getPoint())) {
                         return;
                     }
                     renameTab();

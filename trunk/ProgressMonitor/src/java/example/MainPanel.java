@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     private final transient ProgressMonitor monitor; // = new ProgressMonitor(p, "message", "note", 0, 100);
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         monitor = new ProgressMonitor(this, "message", "note", 0, 100);
         area.setEditable(false);
         Box box = Box.createHorizontalBox();
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-                    for(String message : chunks) {
+                    for (String message : chunks) {
                         monitor.setNote(message);
                     }
                 }
@@ -46,13 +46,13 @@ public final class MainPanel extends JPanel {
                     //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
                     runButton.setEnabled(true);
                     monitor.close();
-                    try{
-                        if(isCancelled()) {
+                    try {
+                        if (isCancelled()) {
                             area.append("Cancelled\n");
-                        }else{
+                        } else {
                             area.append(get() + "\n");
                         }
-                    }catch(InterruptedException | ExecutionException ex) {
+                    } catch (InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
                         area.append("Exception\n");
                     }
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -92,10 +92,10 @@ class Task extends SwingWorker<String, String> {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
         int lengthOfTask = 120; //list.size();
-        while(current<lengthOfTask && !isCancelled()) {
-            try{
+        while (current<lengthOfTask && !isCancelled()) {
+            try {
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);
@@ -114,10 +114,10 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
-        if("progress".equals(strPropertyName)) {
-            monitor.setProgress((Integer)e.getNewValue());
-            if(monitor.isCanceled()) {
-                ((SwingWorker)e.getSource()).cancel(true);
+        if ("progress".equals(strPropertyName)) {
+            monitor.setProgress((Integer) e.getNewValue());
+            if (monitor.isCanceled()) {
+                ((SwingWorker) e.getSource()).cancel(true);
             }
         }
     }

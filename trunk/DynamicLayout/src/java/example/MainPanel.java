@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 //             @Override public void componentResized(ComponentEvent e) {
 //                 int fw = frame.getSize().width;
 //                 int fh = frame.getSize().height;
-//                 frame.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
+//                 frame.setSize(mw > fw ? mw : fw, mh > fh ? mh : fh);
 //             }
 //         });
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

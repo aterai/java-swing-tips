@@ -15,9 +15,9 @@ public final class MainPanel extends JPanel {
         //toolbar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
         //toolbar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
 
-        URL url1 = getClass().getResource(PATH+"Copy24.gif");
-        URL url2 = getClass().getResource(PATH+"Cut24.gif");
-        URL url3 = getClass().getResource(PATH+"Help24.gif");
+        URL url1 = getClass().getResource(PATH + "Copy24.gif");
+        URL url2 = getClass().getResource(PATH + "Cut24.gif");
+        URL url3 = getClass().getResource(PATH + "Help24.gif");
 
         toolbar1.add(new JButton(new ImageIcon(url1)));
         toolbar1.add(new JButton(new ImageIcon(url2)));
@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

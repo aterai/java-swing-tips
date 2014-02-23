@@ -26,8 +26,8 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         super.installDefaults(b);
         b.setBorder(BorderFactory.createEmptyBorder());
         b.setForeground(Color.WHITE);
-        if(b instanceof TabButton) {
-            TabButton tabViewButton = (TabButton)b;
+        if (b instanceof TabButton) {
+            TabButton tabViewButton = (TabButton) b;
             tabViewButton.setTextColor(new Color(230, 245, 255));
             tabViewButton.setPressedTextColor(Color.WHITE.darker());
             tabViewButton.setRolloverTextColor(Color.WHITE);
@@ -36,12 +36,12 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         }
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        if(!(c instanceof AbstractButton)) {
+        if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
 
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -57,7 +57,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
 
         //g2.setColor(Color.CYAN); //c.getBackground());
-        //g2.fillRect(0, 0, size.width-1, size.height);
+        //g2.fillRect(0, 0, size.width - 1, size.height);
         //g2.fill(viewRect);
         tabPainter(g2, viewRect);
 
@@ -70,50 +70,50 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             b.getText() == null ? 0 : b.getIconTextGap());
 
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v==null) {
+        if (v == null) {
             textRect.x += 4;
             paintText(g, b, textRect, text);
-        }else{
+        } else {
             v.paint(g, textRect);
         }
-        if(icon!=null) {
-            icon.paintIcon(c, g, iconRect.x+4, iconRect.y+2);
+        if (icon != null) {
+            icon.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2);
         }
 
         ButtonModel model = b.getModel();
-        if(!model.isSelected() && !model.isArmed() && !model.isRollover()) {
-            g2.setPaint(new Color(0,0,0,100));
-            g2.fillRect(0,0,size.width,size.height);
+        if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {
+            g2.setPaint(new Color(0, 0, 0, 100));
+            g2.fillRect(0, 0, size.width, size.height);
             //g2.fill(viewRect);
         }
         g2.dispose();
     }
 
     public static void tabPainter(Graphics2D g2, Rectangle r) {
-        Rectangle r1 = new Rectangle(r.x, r.y,              r.width, r.height/2);
-        Rectangle r2 = new Rectangle(r.x, r.y+r.height/2,   r.width, r.height/2);
-        Rectangle r3 = new Rectangle(r.x, r.y+r.height/2-2, r.width, r.height/4);
+        Rectangle r1 = new Rectangle(r.x, r.y,                    r.width, r.height / 2);
+        Rectangle r2 = new Rectangle(r.x, r.y + r.height / 2,     r.width, r.height / 2);
+        Rectangle r3 = new Rectangle(r.x, r.y + r.height / 2 - 2, r.width, r.height / 4);
 
-        g2.setPaint(new GradientPaint(0, r1.y, new Color(132,162,180), 0, r1.y+r1.height, new Color(103,133,152), true));
+        g2.setPaint(new GradientPaint(0, r1.y, new Color(132, 162, 180), 0, r1.y + r1.height, new Color(103, 133, 152), true));
         g2.fill(r1);
-        g2.setPaint(new GradientPaint(0, r2.y, new Color(50,73,87),    0, r2.y+r2.height, new Color(60,86,101), true));
+        g2.setPaint(new GradientPaint(0, r2.y, new Color(50, 73, 87),    0, r2.y + r2.height, new Color(60, 86, 101),   true));
         g2.fill(r2);
-        g2.setPaint(new GradientPaint(0, r3.y, new Color(0,0,0,30),    0, r3.y+r3.height, new Color(0,0,0,5), true));
+        g2.setPaint(new GradientPaint(0, r3.y, new Color(0, 0, 0, 30),   0, r3.y + r3.height, new Color(0, 0, 0, 5),    true));
         g2.fill(r3);
 
-        g2.setPaint(new Color(39,56,67)); //g2.setPaint(Color.GREEN);
-        g2.drawLine(r.x, r.y, r.x+r.width, r.y);
+        g2.setPaint(new Color(39, 56, 67)); //g2.setPaint(Color.GREEN);
+        g2.drawLine(r.x, r.y, r.x + r.width, r.y);
 
-        g2.setPaint(new Color(255,255,255,30)); //g2.setPaint(Color.RED);
-        g2.drawLine(r.x+1, r.y+1, r.x+r.width, r.y+1);
+        g2.setPaint(new Color(255, 255, 255, 30)); //g2.setPaint(Color.RED);
+        g2.drawLine(r.x + 1, r.y + 1, r.x + r.width, r.y + 1);
 
-        g2.setPaint(new Color(255,255,255,60)); //g2.setPaint(Color.BLUE);
-        g2.drawLine(r.x, r.y, r.x, r.y+r.height);
+        g2.setPaint(new Color(255, 255, 255, 60)); //g2.setPaint(Color.BLUE);
+        g2.drawLine(r.x, r.y, r.x, r.y + r.height);
 
-        g2.setPaint(new Color(39,56,67,250)); //g2.setPaint(Color.YELLOW);
-        g2.drawLine(r.x+r.width-1, r.y, r.x+r.width-1, r.y+r.height);
+        g2.setPaint(new Color(39, 56, 67, 250)); //g2.setPaint(Color.YELLOW);
+        g2.drawLine(r.x + r.width - 1, r.y, r.x + r.width - 1, r.y + r.height);
 
         //g2.setPaint(Color.PINK);
-        g2.drawLine(r.x, r.y+r.height-1, r.x+r.width-1, r.y+r.height-1);
+        g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
     }
 }

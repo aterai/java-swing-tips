@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         final JTableHeader header = table.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                if(table.isEditing()) {
+                if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
                 int col = header.columnAtPoint(e.getPoint());
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("add row", ""));
@@ -73,14 +73,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -110,10 +110,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -141,7 +141,7 @@ class RowHeaderList<E> extends JList<E> {
         RollOverListener rol = new RollOverListener();
         addMouseListener(rol);
         addMouseMotionListener(rol);
-        //setBorder(BorderFactory.createMatteBorder(1,0,0,0,Color.GRAY.brighter()));
+        //setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.brighter()));
 
         tableSelection = table.getSelectionModel();
         rListSelection = getSelectionModel();
@@ -153,20 +153,20 @@ class RowHeaderList<E> extends JList<E> {
             this.header = header;
             this.setOpaque(true);
             //this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
-            this.setBorder(BorderFactory.createMatteBorder(0,0,1,2,Color.GRAY.brighter()));
+            this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 2, Color.GRAY.brighter()));
             this.setHorizontalAlignment(CENTER);
             this.setForeground(header.getForeground());
             this.setBackground(header.getBackground());
             this.setFont(header.getFont());
         }
         @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-            if(index==pressedRowIndex) {
+            if (index == pressedRowIndex) {
                 setBackground(Color.GRAY);
-            }else if(index==rollOverRowIndex) {
+            } else if (index == rollOverRowIndex) {
                 setBackground(Color.WHITE);
-            }else if(isSelected) {
+            } else if (isSelected) {
                 setBackground(Color.GRAY.brighter());
-            }else{
+            } else {
                 setForeground(header.getForeground());
                 setBackground(header.getBackground());
             }
@@ -176,7 +176,7 @@ class RowHeaderList<E> extends JList<E> {
     }
     class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
-            if(pressedRowIndex<0) {
+            if (pressedRowIndex < 0) {
                 //pressedRowIndex  = -1;
                 rollOverRowIndex = -1;
                 repaint();
@@ -184,16 +184,16 @@ class RowHeaderList<E> extends JList<E> {
         }
         @Override public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
-            if(row != rollOverRowIndex) {
+            if (row != rollOverRowIndex) {
                 rollOverRowIndex = row;
                 repaint();
             }
         }
         @Override public void mouseDragged(MouseEvent e) {
-            if(pressedRowIndex>=0) {
+            if (pressedRowIndex >= 0) {
                 int row   = locationToIndex(e.getPoint());
-                int start = Math.min(row,pressedRowIndex);
-                int end   = Math.max(row,pressedRowIndex);
+                int start = Math.min(row, pressedRowIndex);
+                int end   = Math.max(row, pressedRowIndex);
                 tableSelection.clearSelection();
                 rListSelection.clearSelection();
                 tableSelection.addSelectionInterval(start, end);
@@ -203,7 +203,7 @@ class RowHeaderList<E> extends JList<E> {
         }
         @Override public void mousePressed(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
-            if(row==pressedRowIndex) {
+            if (row == pressedRowIndex) {
                 return;
             }
             rListSelection.clearSelection();
@@ -215,8 +215,8 @@ class RowHeaderList<E> extends JList<E> {
 //             tableSelection.clearSelection();
 //             table.getSelectionModel().setAnchorSelectionIndex(row);
 //             table.getSelectionModel().setLeadSelectionIndex(row);
-//             tableSelection.addSelectionInterval(row,row);
-//             rListSelection.addSelectionInterval(row,row);
+//             tableSelection.addSelectionInterval(row, row);
+//             rListSelection.addSelectionInterval(row, row);
 //             table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
 //             table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
 //             table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount()-1, false, true);
@@ -245,7 +245,7 @@ class TestModel extends DefaultTableModel {
     public void addTest(Test t) {
         Object[] obj = {t.getName(), t.getComment()};
         super.addRow(obj);
-        rowListModel.addElement("row"+number);
+        rowListModel.addElement("row" + number);
         number++;
     }
     public void removeRow(int index) {

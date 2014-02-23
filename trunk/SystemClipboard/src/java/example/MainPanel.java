@@ -16,32 +16,32 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         ClipboardService tmp;
-        try{
-            tmp = (ClipboardService)ServiceManager.lookup("javax.jnlp.ClipboardService");
-        }catch(UnavailableServiceException t) {
+        try {
+            tmp = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
+        } catch (UnavailableServiceException t) {
             tmp = null;
         }
         cs = tmp;
         add(new JScrollPane(label));
         add(new JButton(new AbstractAction("get Clipboard DataFlavor") {
             @Override public void actionPerformed(ActionEvent e) {
-                try{
-                    Transferable t = (cs==null)?Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
+                try {
+                    Transferable t = (cs == null)?Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
                                                :cs.getContents();
-                    if(t==null) {
+                    if (t == null) {
                         Toolkit.getDefaultToolkit().beep();
                         return;
                     }
                     String str = "";
                     ImageIcon image = null;
-                    if(t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-                        image = new ImageIcon((Image)t.getTransferData(DataFlavor.imageFlavor));
-                    }else if(t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                        str = (String)t.getTransferData(DataFlavor.stringFlavor);
+                    if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                        image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
+                    } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                        str = (String) t.getTransferData(DataFlavor.stringFlavor);
                     }
                     label.setText(str);
                     label.setIcon(image);
-                }catch(UnsupportedFlavorException | IOException ex) {
+                } catch (UnsupportedFlavorException | IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

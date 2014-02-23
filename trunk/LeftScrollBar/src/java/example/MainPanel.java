@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
             int h = vr.height;
             int x = e.getX();
             int y = e.getY();
-            Point pt = SwingUtilities.convertPoint(vport,0,0,label);
-            rect.setRect(pt.x-x+startX, pt.y-y+startY, w, h);
+            Point pt = SwingUtilities.convertPoint(vport, 0, 0, label);
+            rect.setRect(pt.x - x + startX, pt.y - y + startY, w, h);
             label.scrollRectToVisible(rect);
             startX = x; startY = y;
         }
@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

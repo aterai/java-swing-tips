@@ -16,15 +16,15 @@ public final class MainPanel extends JPanel {
         JLabel l1 = new JLabel("ToolTip icon using JLabel") {
             @Override public JToolTip createToolTip() {
                 final JLabel iconlabel = new JLabel(icon);
-                iconlabel.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+                iconlabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
                 //LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
                 JToolTip tip = new JToolTip() {
                     @Override public Dimension getPreferredSize() {
-//                     if(getLayout()==null) {
+//                     if (getLayout() == null) {
 //                         Insets i = getInsets();
 //                         Dimension d = iconlabel.getPreferredSize();
-//                         d.width  += i.left+i.right;
-//                         d.height += i.top+i.bottom;
+//                         d.width  += i.left + i.right;
+//                         d.height += i.top + i.bottom;
 //                         return d;
                         return getLayout().preferredLayoutSize(this);
                     }
@@ -48,14 +48,14 @@ public final class MainPanel extends JPanel {
                     @Override public Dimension getPreferredSize() {
                         Dimension d = super.getPreferredSize();
                         Insets i = getInsets();
-                        d.height = Math.max(d.height, icon.getIconHeight()+i.top+i.bottom);
+                        d.height = Math.max(d.height, icon.getIconHeight() + i.top + i.bottom);
                         return d;
                     }
                 };
                 tip.setComponent(this);
                 Border b1 = tip.getBorder();
                 Border b2 = BorderFactory.createMatteBorder(0, icon.getIconWidth(), 0, 0, icon);
-                Border b3 = BorderFactory.createEmptyBorder(1,1,1,1);
+                Border b3 = BorderFactory.createEmptyBorder(1, 1, 1, 1);
                 Border b4 = BorderFactory.createCompoundBorder(b3, b2);
                 tip.setBorder(BorderFactory.createCompoundBorder(b1, b4));
                 return tip;
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
         l2.setToolTipText("Test2");
 
         JLabel l3 = new JLabel("ToolTip icon using HTML tags");
-        l3.setToolTipText("<html><img src='"+url+"'>Test3</img></html>"); //align='middle'
+        l3.setToolTipText("<html><img src='" + url + "'>Test3</img></html>"); //align='middle'
 
         Box box = Box.createVerticalBox();
         box.add(l1);
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
 
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+        setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         setPreferredSize(new Dimension(320, 200));
     }
 
@@ -87,10 +87,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

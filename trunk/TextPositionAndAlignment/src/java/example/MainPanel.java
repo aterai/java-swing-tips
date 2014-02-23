@@ -27,14 +27,14 @@ public final class MainPanel extends JPanel {
 
         ItemListener il = new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
-                    Vertical v1 = (Vertical)verticalAlignmentChoices.getSelectedItem();
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Vertical v1 = (Vertical) verticalAlignmentChoices.getSelectedItem();
                     label.setVerticalAlignment(v1.alignment);
-                    Vertical v2 = (Vertical)verticalTextPositionChoices.getSelectedItem();
+                    Vertical v2 = (Vertical) verticalTextPositionChoices.getSelectedItem();
                     label.setVerticalTextPosition(v2.alignment);
-                    Horizontal h1 = (Horizontal)horizontalAlignmentChoices.getSelectedItem();
+                    Horizontal h1 = (Horizontal) horizontalAlignmentChoices.getSelectedItem();
                     label.setHorizontalAlignment(h1.alignment);
-                    Horizontal h2 = (Horizontal)horizontalTextPositionChoices.getSelectedItem();
+                    Horizontal h2 = (Horizontal) horizontalTextPositionChoices.getSelectedItem();
                     label.setHorizontalTextPosition(h2.alignment);
                     label.repaint();
                 }
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 
         add(p1);
         add(p2, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -124,29 +124,29 @@ class StarburstIcon implements Icon {
     private final Shape star;
     public StarburstIcon() {
         double agl = 0.0;
-        double add = 2*Math.PI/(VC*2);
+        double add = 2 * Math.PI / (VC * 2);
         Path2D.Double p = new Path2D.Double();
-        p.moveTo(R2*1, R2*0);
-        for(int i=0;i<VC*2-1;i++) {
-            agl+=add;
-            if(i%2==0) {
-                p.lineTo(R1*Math.cos(agl), R1*Math.sin(agl));
-            }else{
-                p.lineTo(R2*Math.cos(agl), R2*Math.sin(agl));
+        p.moveTo(R2 * 1, R2 * 0);
+        for (int i = 0; i < VC * 2 - 1; i++) {
+            agl += add;
+            if (i % 2 == 0) {
+                p.lineTo(R1 * Math.cos(agl), R1 * Math.sin(agl));
+            } else {
+                p.lineTo(R2 * Math.cos(agl), R2 * Math.sin(agl));
             }
         }
         p.closePath();
-        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,R2,0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R2, 0);
         star = new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {
-        return 2*R2;
+        return 2 * R2;
     }
     @Override public int getIconHeight() {
-        return 2*R2;
+        return 2 * R2;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);

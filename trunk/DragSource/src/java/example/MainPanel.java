@@ -32,12 +32,12 @@ public final class MainPanel extends JPanel {
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
             @Override public void dragGestureRecognized(DragGestureEvent dge) {
                 File tmpfile = getFile();
-                if(tmpfile==null) {
+                if (tmpfile == null) {
                     return;
                 }
                 DragSourceAdapter dsa = new DragSourceAdapter() {
                     @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-                        if(dsde.getDropSuccess()) {
+                        if (dsde.getDropSuccess()) {
                             clearFile();
                         }
                     }
@@ -52,9 +52,9 @@ public final class MainPanel extends JPanel {
             }
             @Override protected Transferable createTransferable(JComponent c) {
                 File tmpfile = getFile();
-                if(tmpfile==null) {
+                if (tmpfile == null) {
                     return null;
-                }else{
+                } else {
                     return new TempFileTransferable(tmpfile);
                 }
             }
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
                 cleanup(c, action == MOVE);
             }
             private void cleanup(JComponent c, boolean removeFile) {
-                if(removeFile) {
+                if (removeFile) {
                     clearFile();
                     c.repaint();
                 }
@@ -71,23 +71,23 @@ public final class MainPanel extends JPanel {
         label.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 System.out.println(e);
-                JComponent c = (JComponent)e.getComponent();
+                JComponent c = (JComponent) e.getComponent();
                 c.getTransferHandler().exportAsDrag(c, e, TransferHandler.COPY);
             }
         });
 //*/
         final Box box = Box.createHorizontalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Create Temp File") {
             @Override public void actionPerformed(ActionEvent ae) {
                 File outfile;
-                try{
-                    outfile = File.createTempFile("test",".tmp");
+                try {
+                    outfile = File.createTempFile("test", ".tmp");
                     outfile.deleteOnExit();
-                }catch(IOException ioe) {
+                } catch (IOException ioe) {
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(box,"Could not create file.","Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(box, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 setFile(outfile);
@@ -126,10 +126,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

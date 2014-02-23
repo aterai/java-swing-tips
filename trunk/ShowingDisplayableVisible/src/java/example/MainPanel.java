@@ -12,21 +12,21 @@ public final class MainPanel extends JPanel {
     private final JButton button   = new JButton("JButton JButton");
     private final JCheckBox vcheck = new JCheckBox(new AbstractAction("setVisible") {
         @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox)e.getSource();
+            JCheckBox c = (JCheckBox) e.getSource();
             button.setVisible(c.isSelected());
         }
     });
     private final JCheckBox echeck = new JCheckBox(new AbstractAction("setEnabled") {
         @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox)e.getSource();
+            JCheckBox c = (JCheckBox) e.getSource();
             button.setEnabled(c.isSelected());
         }
     });
     private final JCheckBox tcheck = new JCheckBox(new AbstractAction("start") {
         @Override public void actionPerformed(ActionEvent e) {
-            if(tcheck.isSelected()) {
+            if (tcheck.isSelected()) {
                 timer.start();
-            }else{
+            } else {
                 timer.stop();
             }
         }
@@ -41,9 +41,9 @@ public final class MainPanel extends JPanel {
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         button.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0) { //NOPMD
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) { //NOPMD
                     printInfo("SHOWING_CHANGED");
-                }else if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0) { //NOPMD
+                } else if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) { //NOPMD
                     printInfo("DISPLAYABILITY_CHANGED");
                 }
             }
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
         JPanel panel = new JPanel();
         panel.add(button);
-        for(int i=0;i<5;i++) {
+        for (int i = 0; i < 5; i++) {
             panel.add(new JLabel("<html>asfasfdasdfasdfsa<br>asfdd134123fgh"));
         }
         tab.addTab("Main",   new JScrollPane(panel));
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         JPanel p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p2.add(new JLabel("Timer:")); p2.add(tcheck);
 
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(p1); p.add(p2);
         add(p, BorderLayout.NORTH);
         add(tab);
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private void printInfo(String str) {
-        System.out.println("JButton: "+str);
-        System.out.println("  isDisplayable:"+button.isDisplayable());
-        System.out.println("  isShowing:"+button.isShowing());
-        System.out.println("  isVisible:"+button.isVisible());
+        System.out.println("JButton: " + str);
+        System.out.println("  isDisplayable:" + button.isDisplayable());
+        System.out.println("  isShowing:" + button.isShowing());
+        System.out.println("  isVisible:" + button.isVisible());
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -89,10 +89,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

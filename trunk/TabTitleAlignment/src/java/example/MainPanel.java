@@ -17,9 +17,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-        if(tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
+        if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
             tabbedPane.setUI(new MyWindowsTabbedPaneUI());
-        }else{
+        } else {
             tabbedPane.setUI(new MyTabbedPaneUI());
         }
         final List<? extends JTabbedPane> list = Arrays.asList(
@@ -27,15 +27,15 @@ public final class MainPanel extends JPanel {
             makeTestTabbedPane(tabbedPane),
             makeTestTabbedPane(new ClippedTitleTabbedPane(JTabbedPane.LEFT)));
 
-        JPanel p = new JPanel(new GridLayout(list.size(),1));
-        for(JTabbedPane t:list) {
+        JPanel p = new JPanel(new GridLayout(list.size(), 1));
+        for (JTabbedPane t:list) {
             p.add(t);
         }
         add(new JCheckBox(new AbstractAction("TOP") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
-                for(JTabbedPane t:list) {
-                    t.setTabPlacement(c.isSelected()?JTabbedPane.TOP:JTabbedPane.LEFT);
+                JCheckBox c = (JCheckBox) e.getSource();
+                for (JTabbedPane t:list) {
+                    t.setTabPlacement(c.isSelected() ? JTabbedPane.TOP : JTabbedPane.LEFT);
                 }
             }
         }), BorderLayout.NORTH);
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -84,27 +84,27 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     private Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     private Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount  = getTabCount();
-        if(tabCount==0) {
+        if (tabCount == 0) {
             return;
         }
         Insets tabInsets     = getTabInsets();
@@ -125,19 +125,19 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
-        for(int i=0;i<tabCount;i++) {
-            JComponent l = (JComponent)getTabComponentAt(i);
+        for (int i = 0; i < tabCount; i++) {
+            JComponent l = (JComponent) getTabComponentAt(i);
             int v = i < gap ? 1 : 0;
             l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
         }
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        super.insertTab(title, icon, component, tip==null?title:tip, index);
+        super.insertTab(title, icon, component, tip == null ? title : tip, index);
         //JLabel label = new JLabel(title, JLabel.LEFT);
         //Dimension dim = label.getPreferredSize();
         //Insets tabInsets = getTabInsets();
-        //label.setPreferredSize(new Dimension(0, dim.height+tabInsets.top+tabInsets.bottom));
+        //label.setPreferredSize(new Dimension(0, dim.height + tabInsets.top + tabInsets.bottom));
         setTabComponentAt(index, new ButtonTabComponent(this));
     }
 }
@@ -152,7 +152,7 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
         String html = "html";
-        if(v != null) {
+        if (v != null) {
             tabPane.putClientProperty(html, v);
         }
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
@@ -166,8 +166,8 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
                                            textRect,
                                            textIconGap);
         tabPane.putClientProperty(html, null);
-        textRect.translate(tabInsets.left+2, 0); //<----
-        textRect.width -= tabInsets.left+tabInsets.right;
+        textRect.translate(tabInsets.left + 2, 0); //<----
+        textRect.width -= tabInsets.left + tabInsets.right;
 
         int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
         int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
@@ -187,7 +187,7 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
-        if(v != null) {
+        if (v != null) {
             tabPane.putClientProperty("html", v);
         }
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
@@ -202,7 +202,7 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
                                            textIconGap);
         tabPane.putClientProperty("html", null);
         textRect.translate(tabInsets.left, 0); //<----
-        textRect.width -= tabInsets.left+tabInsets.right;
+        textRect.width -= tabInsets.left + tabInsets.right;
 
         int xNudge = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
         int yNudge = getTabLabelShiftY(tabPlacement, tabIndex, isSelected);
@@ -220,7 +220,7 @@ class ButtonTabComponent extends JPanel {
 
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new BorderLayout(0, 0)); //FlowLayout(FlowLayout.LEFT, 0, 0));
-        if(pane == null) {
+        if (pane == null) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
         this.pane = pane;
@@ -228,7 +228,7 @@ class ButtonTabComponent extends JPanel {
         JLabel label = new JLabel() {
             @Override public String getText() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-                if(i != -1) {
+                if (i != -1) {
                     return pane.getTitleAt(i);
                 }
                 return null;
@@ -246,20 +246,20 @@ class ButtonTabComponent extends JPanel {
     private class TabButtonHandler extends MouseAdapter implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            if(i != -1) {
+            if (i != -1) {
                 pane.remove(i);
             }
         }
         @Override public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
+            if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
                 button.setBorderPainted(true);
             }
         }
         @Override public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
-            if(component instanceof AbstractButton) {
+            if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
                 button.setBorderPainted(false);
             }
@@ -292,10 +292,10 @@ class TabButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.BLACK);
-        if(getModel().isRollover()) {
+        if (getModel().isRollover()) {
             g2.setColor(Color.ORANGE);
         }
-        if(getModel().isPressed()) {
+        if (getModel().isPressed()) {
             g2.setColor(Color.BLUE);
         }
         g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);

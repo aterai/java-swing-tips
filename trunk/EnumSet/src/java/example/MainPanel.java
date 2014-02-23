@@ -26,11 +26,11 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        if(System.getProperty("java.version").startsWith("1.6.0")) {
+        if (System.getProperty("java.version").startsWith("1.6.0")) {
             //1.6.0_xx bug? column header click -> edit cancel?
             table.getTableHeader().addMouseListener(new MouseAdapter() {
                 @Override public void mousePressed(MouseEvent e) {
-                    if(table.isEditing()) {
+                    if (table.isEditing()) {
                         table.getCellEditor().stopCellEditing();
                     }
                 }
@@ -49,31 +49,31 @@ public final class MainPanel extends JPanel {
             private static final String M = "-";
             @Override public void actionPerformed(ActionEvent e) {
                 StringBuilder buf = new StringBuilder(9);
-                for(int i=0; i<model.getRowCount(); i++) {
+                for (int i = 0; i < model.getRowCount(); i++) {
                     @SuppressWarnings("unchecked")
-                    EnumSet<Permissions> v = (EnumSet<Permissions>)model.getValueAt(i, 1);
+                    EnumSet<Permissions> v = (EnumSet<Permissions>) model.getValueAt(i, 1);
                     int flg = 0;
-                    if(v.contains(Permissions.READ)) {
+                    if (v.contains(Permissions.READ)) {
                         flg|=map.get(Permissions.READ);
                         buf.append('r');
-                    }else{
+                    } else {
                         buf.append(M);
                     }
-                    if(v.contains(Permissions.WRITE)) {
+                    if (v.contains(Permissions.WRITE)) {
                         flg|=map.get(Permissions.WRITE);
                         buf.append('w');
-                    }else{
+                    } else {
                         buf.append(M);
                     }
-                    if(v.contains(Permissions.EXECUTE)) {
+                    if (v.contains(Permissions.EXECUTE)) {
                         flg|=map.get(Permissions.EXECUTE);
                         buf.append('x');
-                    }else{
+                    } else {
                         buf.append(M);
                     }
                     System.out.print(flg);
                 }
-                System.out.println(" "+M+buf.toString());
+                System.out.println(" " + M + buf.toString());
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
@@ -87,10 +87,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -111,30 +111,30 @@ class CheckBoxesPanel extends JPanel {
     public CheckBoxesPanel() {
         super();
         setOpaque(false);
-        setBackground(new Color(0,0,0,0));
+        setBackground(new Color(0, 0, 0, 0));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
     private void initButtons() {
         buttons = new JCheckBox[title.length];
-        for(int i=0; i<buttons.length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             JCheckBox b = new JCheckBox(title[i]);
             b.setOpaque(false);
             b.setFocusable(false);
             b.setRolloverEnabled(false);
-            b.setBackground(new Color(0,0,0,0));
+            b.setBackground(new Color(0, 0, 0, 0));
             buttons[i] = b;
             add(b);
             add(Box.createHorizontalStrut(5));
         }
     }
     protected void updateButtons(Object v) {
-        if("Windows 7".equals(OSNAME)) { //Windows aero?
+        if ("Windows 7".equals(OSNAME)) { //Windows aero?
             removeAll();
             initButtons();
         }
         @SuppressWarnings("unchecked")
-        EnumSet<Permissions> f = (v==null) ? EnumSet.noneOf(Permissions.class) : (EnumSet<Permissions>)v;
+        EnumSet<Permissions> f = (v == null) ? EnumSet.noneOf(Permissions.class) : (EnumSet<Permissions>) v;
         buttons[0].setSelected(f.contains(Permissions.READ));
         buttons[1].setSelected(f.contains(Permissions.WRITE));
         buttons[2].setSelected(f.contains(Permissions.EXECUTE));
@@ -159,13 +159,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     public CheckBoxesEditor() {
         super();
         ActionMap am = getActionMap();
-        for(int i=0; i<buttons.length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             //buttons[i].addActionListener(al);
             final String t = title[i];
             am.put(t, new AbstractAction(t) {
                 @Override public void actionPerformed(ActionEvent e) {
-                    for(JCheckBox b: buttons) {
-                        if(b.getText().equals(t)) {
+                    for (JCheckBox b: buttons) {
+                        if (b.getText().equals(t)) {
                             b.doClick();
                             break;
                         }
@@ -185,9 +185,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     }
     @Override public Object getCellEditorValue() {
         EnumSet<Permissions> f = EnumSet.noneOf(Permissions.class);
-        if(buttons[0].isSelected()) { f.add(Permissions.READ);    }
-        if(buttons[1].isSelected()) { f.add(Permissions.WRITE);   }
-        if(buttons[2].isSelected()) { f.add(Permissions.EXECUTE); }
+        if (buttons[0].isSelected()) { f.add(Permissions.READ);    }
+        if (buttons[1].isSelected()) { f.add(Permissions.WRITE);   }
+        if (buttons[2].isSelected()) { f.add(Permissions.EXECUTE); }
         return f;
     }
 
@@ -221,13 +221,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -236,13 +236,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

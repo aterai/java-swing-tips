@@ -21,32 +21,32 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        JPanel box = new JPanel(new GridLayout(2,2));
+        JPanel box = new JPanel(new GridLayout(2, 2));
         ActionListener sortActionListener = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox check = (JCheckBox)e.getSource();
-                if(check.isSelected()) {
+                JCheckBox check = (JCheckBox) e.getSource();
+                if (check.isSelected()) {
                     TreeUtil.compareCount.set(0);
                     TreeUtil.swapCount.set(0);
-                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode)root.clone());
-                    if(check.equals(sort0)) {
+                    DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
+                    if (check.equals(sort0)) {
                         TreeUtil.sortTree0(r);
-                    }else if(check.equals(sort1)) {
+                    } else if (check.equals(sort1)) {
                         TreeUtil.sortTree1(r);
-                    }else if(check.equals(sort2)) {
+                    } else if (check.equals(sort2)) {
                         TreeUtil.sortTree2(r);
-                    }else{
+                    } else {
                         TreeUtil.sortTree3(r);
                     }
                     log(check.getText());
                     tree.setModel(new DefaultTreeModel(r));
-                }else{
+                } else {
                     tree.setModel(new DefaultTreeModel(root));
                 }
                 TreeUtil.expandAll(tree);
             }
         };
-        for(JCheckBox check: Arrays.asList(sort0, sort1, sort2, sort3)) {
+        for (JCheckBox check: Arrays.asList(sort0, sort1, sort2, sort3)) {
             box.add(check);
             check.addActionListener(sortActionListener);
         }
@@ -61,10 +61,10 @@ public final class MainPanel extends JPanel {
     }
 
     private static void log(String title) {
-        if(TreeUtil.swapCount.get()==0) {
+        if (TreeUtil.swapCount.get() == 0) {
             System.out.format("%-24s - compare: %3d, swap: ---%n",
                               title, TreeUtil.compareCount.get());
-        }else{
+        } else {
             System.out.format("%-24s - compare: %3d, swap: %3d%n",
                               title, TreeUtil.compareCount.get(), TreeUtil.swapCount.get());
         }
@@ -78,10 +78,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -103,22 +103,22 @@ final class TreeUtil {
 
     // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
     public static void sortTree0(DefaultMutableTreeNode root) {
-        for(int i=0;i<root.getChildCount();i++) {
+        for (int i = 0; i < root.getChildCount(); i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
-            for(int j=0; j<i; j++) {
+            for (int j = 0; j < i; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
                 compareCount.getAndIncrement();
-                if(tnc.compare(node, prevNode)<0) {
+                if (tnc.compare(node, prevNode) < 0) {
                     root.insert(node, j);
                     root.insert(prevNode, i);
                     swapCount.getAndIncrement();
-                    if(DEBUG) {
+                    if (DEBUG) {
                         i--;
                         break;
                     }
                 }
             }
-            if(node.getChildCount() > 0) {
+            if (node.getChildCount() > 0) {
                 sortTree0(node);
             }
         }
@@ -127,11 +127,11 @@ final class TreeUtil {
     // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
     public static void sortTree1(DefaultMutableTreeNode root) {
         int n = root.getChildCount();
-        for(int i=0;i<n-1;i++) {
+        for (int i = 0; i < n - 1; i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
-            for(int j=i+1; j<n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
-                if(tnc.compare(node, prevNode)>0) {
+                if (tnc.compare(node, prevNode) > 0) {
                     swapCount.getAndIncrement();
                     root.insert(node, j);
                     root.insert(prevNode, i);
@@ -139,7 +139,7 @@ final class TreeUtil {
                     break;
                 }
             }
-            if(node.getChildCount() > 0) {
+            if (node.getChildCount() > 0) {
                 sortTree1(node);
             }
         }
@@ -147,21 +147,21 @@ final class TreeUtil {
 
     private static void sort2(DefaultMutableTreeNode parent) {
         int n = parent.getChildCount();
-        for(int i=0; i<n-1; i++) {
+        for (int i = 0; i < n - 1; i++) {
             int min = i;
-            for(int j=i+1; j<n; j++) {
-                if(tnc.compare((DefaultMutableTreeNode)parent.getChildAt(min),
-                               (DefaultMutableTreeNode)parent.getChildAt(j))>0) {
+            for (int j = i + 1; j < n; j++) {
+                if (tnc.compare((DefaultMutableTreeNode) parent.getChildAt(min),
+                               (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
                     min = j;
                 }
             }
-            if(i!=min) {
+            if (i != min) {
                 swapCount.getAndIncrement();
-                MutableTreeNode a = (MutableTreeNode)parent.getChildAt(i);
-                MutableTreeNode b = (MutableTreeNode)parent.getChildAt(min);
+                MutableTreeNode a = (MutableTreeNode) parent.getChildAt(i);
+                MutableTreeNode b = (MutableTreeNode) parent.getChildAt(min);
                 parent.insert(b, i);
                 parent.insert(a, min);
-                //MutableTreeNode node = (MutableTreeNode)parent.getChildAt(min);
+                //MutableTreeNode node = (MutableTreeNode) parent.getChildAt(min);
                 //parent.insert(node, i);
                 //compareCount++;
             }
@@ -169,9 +169,9 @@ final class TreeUtil {
     }
     public static void sortTree2(DefaultMutableTreeNode root) {
         Enumeration e = root.depthFirstEnumeration();
-        while(e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-            if(!node.isLeaf()) {
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+            if (!node.isLeaf()) {
                 sort2(node);
             }
         }
@@ -184,21 +184,21 @@ final class TreeUtil {
 
         int n = parent.getChildCount();
         List<DefaultMutableTreeNode> children = new ArrayList<>(n);
-        for(int i=0; i<n; i++) {
-            children.add((DefaultMutableTreeNode)parent.getChildAt(i));
+        for (int i = 0; i < n; i++) {
+            children.add((DefaultMutableTreeNode) parent.getChildAt(i));
         }
 
         Collections.sort(children, tnc);
         parent.removeAllChildren();
-        for(MutableTreeNode node: children) {
+        for (MutableTreeNode node: children) {
             parent.add(node);
         }
     }
     public static void sortTree3(DefaultMutableTreeNode root) {
         Enumeration e = root.depthFirstEnumeration();
-        while(e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-            if(!node.isLeaf()) {
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+            if (!node.isLeaf()) {
                 sort3(node);
             }
         }
@@ -208,11 +208,11 @@ final class TreeUtil {
         private static final long serialVersionUID = 1L;
         @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
             compareCount.getAndIncrement();
-            if(a.isLeaf() && !b.isLeaf()) {
+            if (a.isLeaf() && !b.isLeaf()) {
                 return 1;
-            }else if(!a.isLeaf() && b.isLeaf()) {
+            } else if (!a.isLeaf() && b.isLeaf()) {
                 return -1;
-            }else{
+            } else {
                 String sa = a.getUserObject().toString();
                 String sb = b.getUserObject().toString();
                 return sa.compareToIgnoreCase(sb);
@@ -221,11 +221,11 @@ final class TreeUtil {
     }
 
     public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
-        for(int i=0; i<src.getChildCount(); i++) {
-            DefaultMutableTreeNode node  = (DefaultMutableTreeNode)src.getChildAt(i);
-            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject()); //(DefaultMutableTreeNode)node.clone();
+        for (int i = 0; i < src.getChildCount(); i++) {
+            DefaultMutableTreeNode node  = (DefaultMutableTreeNode) src.getChildAt(i);
+            DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject()); //(DefaultMutableTreeNode) node.clone();
             tgt.add(clone);
-            if(!node.isLeaf()) {
+            if (!node.isLeaf()) {
                 deepCopyTree(node, clone);
             }
         }
@@ -268,7 +268,7 @@ final class TreeUtil {
 
     public static void expandAll(JTree tree) {
         int row = 0;
-        while(row<tree.getRowCount()) {
+        while (row<tree.getRowCount()) {
             tree.expandRow(row++);
         }
     }

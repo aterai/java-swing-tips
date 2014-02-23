@@ -17,9 +17,9 @@ public final class MainPanel extends JPanel {
       // JDK 5
       //new Box(BoxLayout.X_AXIS) {
       //    @Override protected void paintComponent(Graphics g) {
-      //        if(ui != null) {
+      //        if (ui != null) {
       //            super.paintComponent(g);
-      //        }else if(isOpaque()) {
+      //        } else if (isOpaque()) {
       //            g.setColor(getBackground());
       //            g.fillRect(0, 0, getWidth(), getHeight());
       //        }
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         //TEST: buttons = makeButtonArray2(getClass()); //Set ButtonUI
 
         box.setOpaque(true);
-        box.setBackground(new Color(120,120,160));
+        box.setBackground(new Color(120, 120, 160));
         box.add(Box.createHorizontalGlue());
-        box.setBorder(BorderFactory.createEmptyBorder(60,10,60,10));
-        for(JButton b: buttons) {
+        box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
+        for (JButton b: buttons) {
             box.add(b);
             box.add(Box.createHorizontalStrut(5));
         }
@@ -49,9 +49,9 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel();
         p.add(new JCheckBox(new AbstractAction("ButtonBorder Color") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
+                JCheckBox cb = (JCheckBox) e.getSource();
                 Color bgc = cb.isSelected() ? Color.WHITE : Color.BLACK;
-                for(JButton b: buttons) {
+                for (JButton b: buttons) {
                     b.setBackground(bgc);
                 }
                 box.repaint();
@@ -59,9 +59,9 @@ public final class MainPanel extends JPanel {
         }));
         alignmentsChoices.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
-                    ButtonAlignments ba = (ButtonAlignments)alignmentsChoices.getSelectedItem();
-                    for(JButton b: buttons) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ButtonAlignments ba = (ButtonAlignments) alignmentsChoices.getSelectedItem();
+                    for (JButton b: buttons) {
                         b.setAlignmentY(ba.alingment);
                     }
                     box.revalidate();
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         });
         alignmentsChoices.setSelectedIndex(1);
         p.add(alignmentsChoices);
-        p.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -113,10 +113,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -155,7 +155,7 @@ class RoundButton extends JButton {
     }
     @Override public void updateUI() {
         super.updateUI();
-        setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setBackground(Color.BLACK);
         setContentAreaFilled(false);
         setFocusPainted(false);
@@ -167,18 +167,18 @@ class RoundButton extends JButton {
         Icon icon = getIcon();
         Insets i = getInsets();
         int iw = Math.max(icon.getIconWidth(), icon.getIconHeight());
-        return new Dimension(iw+i.right+i.left, iw+i.top+i.bottom);
+        return new Dimension(iw + i.right + i.left, iw + i.top + i.bottom);
     }
     protected void initShape() {
-        if(!getBounds().equals(base)) {
+        if (!getBounds().equals(base)) {
             Dimension s = getPreferredSize();
             base = getBounds();
-            shape = new Ellipse2D.Float(0, 0, s.width-1, s.height-1);
+            shape = new Ellipse2D.Float(0, 0, s.width - 1, s.height - 1);
         }
     }
     @Override protected void paintBorder(Graphics g) {
         initShape();
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
         //g2.setStroke(new BasicStroke(1.0f));
@@ -188,7 +188,7 @@ class RoundButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        return shape==null ? false : shape.contains(x, y);
+        return shape == null ? false : shape.contains(x, y);
     }
 }
 
@@ -199,8 +199,8 @@ class RoundButton extends JButton {
 //         clearTextShiftOffset();
 //         defaultTextShiftOffset = 0;
 //         Icon icon = b.getIcon();
-//         if(icon==null) { return; }
-//         b.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+//         if (icon == null) { return; }
+//         b.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 //         b.setContentAreaFilled(false);
 //         b.setFocusPainted(false);
 //         b.setOpaque(false);
@@ -214,24 +214,24 @@ class RoundButton extends JButton {
 //             @Override public void mousePressed(MouseEvent e) {
 //                 AbstractButton b = (AbstractButton) e.getSource();
 //                 initShape(b);
-//                 if(shape.contains(e.getX(), e.getY())) {
+//                 if (shape.contains(e.getX(), e.getY())) {
 //                     super.mousePressed(e);
 //                 }
 //             }
 //             @Override public void mouseEntered(MouseEvent e) {
-//                 if(shape.contains(e.getX(), e.getY())) {
+//                 if (shape.contains(e.getX(), e.getY())) {
 //                     super.mouseEntered(e);
 //                 }
 //             }
 //             @Override public void mouseMoved(MouseEvent e) {
-//                 if(shape.contains(e.getX(), e.getY())) {
+//                 if (shape.contains(e.getX(), e.getY())) {
 //                     super.mouseEntered(e);
-//                 }else{
+//                 } else {
 //                     super.mouseExited(e);
 //                 }
 //             }
 //         };
-//         if(listener != null) {
+//         if (listener != null) {
 //             b.addMouseListener(listener);
 //             b.addMouseMotionListener(listener);
 //             b.addFocusListener(listener);
@@ -241,7 +241,7 @@ class RoundButton extends JButton {
 //     }
 //     @Override public void paint(Graphics g, JComponent c) {
 //         super.paint(g, c);
-//         Graphics2D g2 = (Graphics2D)g.create();
+//         Graphics2D g2 = (Graphics2D) g.create();
 //         initShape(c);
 //         //Border
 //         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -252,17 +252,17 @@ class RoundButton extends JButton {
 //         g2.dispose();
 //     }
 //     @Override public Dimension getPreferredSize(JComponent c) {
-//         JButton b = (JButton)c;
+//         JButton b = (JButton) c;
 //         Icon icon = b.getIcon();
 //         Insets i = b.getInsets();
 //         int iw = Math.max(icon.getIconWidth(), icon.getIconHeight());
-//         return new Dimension(iw+i.right+i.left, iw+i.top+i.bottom);
+//         return new Dimension(iw + i.right + i.left, iw + i.top + i.bottom);
 //     }
 //     private void initShape(JComponent c) {
-//         if(!c.getBounds().equals(base)) {
+//         if (!c.getBounds().equals(base)) {
 //             Dimension s = c.getPreferredSize();
 //             base = c.getBounds();
-//             shape = new Ellipse2D.Float(0, 0, s.width-1, s.height-1);
+//             shape = new Ellipse2D.Float(0, 0, s.width - 1, s.height - 1);
 //         }
 //     }
 // }

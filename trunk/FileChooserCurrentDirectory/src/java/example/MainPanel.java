@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private final JFileChooser fc1 = new JFileChooser();
     private final JFileChooser fc2 = new JFileChooser() {
         @Override public void setCurrentDirectory(File dir) {
-            if(dir!=null && !dir.exists()) {
+            if (dir != null && !dir.exists()) {
                 this.setCurrentDirectory(dir.getParentFile());
             }
             super.setCurrentDirectory(dir);
@@ -25,9 +25,9 @@ public final class MainPanel extends JPanel {
     };
     @Override public void updateUI() {
         super.updateUI();
-        if(fc0!=null) { SwingUtilities.updateComponentTreeUI(fc0); }
-        if(fc1!=null) { SwingUtilities.updateComponentTreeUI(fc1); }
-        if(fc2!=null) { SwingUtilities.updateComponentTreeUI(fc2); }
+        if (fc0!=null) { SwingUtilities.updateComponentTreeUI(fc0); }
+        if (fc1!=null) { SwingUtilities.updateComponentTreeUI(fc1); }
+        if (fc2!=null) { SwingUtilities.updateComponentTreeUI(fc2); }
     }
     public MainPanel() {
         super(new BorderLayout());
@@ -35,9 +35,9 @@ public final class MainPanel extends JPanel {
         fc0.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc2.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        try{
+        try {
             field.setText(new File(".").getCanonicalPath());
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("setCurrentDirectory") {
             @Override public void actionPerformed(ActionEvent e) {
                 File f = new File(field.getText().trim());
-                JFileChooser fc = check1.isSelected()?fc2:fc0;
+                JFileChooser fc = check1.isSelected() ? fc2 : fc0;
                 fc.setCurrentDirectory(f);
                 int retvalue = fc.showOpenDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fc.getSelectedFile().getAbsolutePath());
                 }
             }
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
                                   !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
                 fc.setSelectedFile(f);
                 int retvalue = fc.showOpenDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fc.getSelectedFile().getAbsolutePath());
                 }
-                if(check2.isSelected()) { fc.setSelectedFile(f.getParentFile()); } //XXX: reset???
+                if (check2.isSelected()) { fc.setSelectedFile(f.getParentFile()); } //XXX: reset???
             }
         }), c);
         c.gridx++;
@@ -98,11 +98,11 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

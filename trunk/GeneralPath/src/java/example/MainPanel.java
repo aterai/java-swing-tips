@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         add(makeTitledPanel("Font(Outline)", new StarPanel3()));
         add(makeTitledPanel("Icon",          new JLabel(new StarIcon0())));
         add(makeTitledPanel("Icon(R=40)",    new JLabel(new StarIcon1())));
-        add(makeTitledPanel("Icon(R=20,40)", new JLabel(new StarIcon2())));
+        add(makeTitledPanel("Icon(R=20, 40)", new JLabel(new StarIcon2())));
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitledPanel(String title, JComponent c) {
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException |
-                    IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -112,7 +112,7 @@ class StarPanel3 extends JPanel {
 
 // class StarPanel4 extends JPanel {
 //     @Override public void paintComponent(Graphics g) {
-//         Graphics2D g2 = (Graphics2D)g.create();
+//         Graphics2D g2 = (Graphics2D) g.create();
 //         int w = getWidth();
 //         int h = getHeight();
 //         Path2D.Double p = new Path2D.Double();
@@ -204,7 +204,7 @@ class StarIcon1 implements Icon {
 class StarIcon2 implements Icon {
     private static final int R2 = 40;
     private static final int R1 = 20;
-    //private static final double R1 = R2*Math.sin(Math.PI/10.0)/Math.cos(Math.PI/5.0); //=15.0;
+    //private static final double R1 = R2 * Math.sin(Math.PI / 10.0) / Math.cos(Math.PI / 5.0); //=15.0;
     private static final int VC = 5; //16;
     private final Shape star;
     public StarIcon2() {
@@ -244,27 +244,27 @@ class StarIcon2 implements Icon {
 
 //     //Java2D Shapes project.>http://java-sl.com/shapes.html
 //     protected static int[] getXCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
-//         int res[]=new int[vertexCount*2];
-//         double addAngle=2*Math.PI/vertexCount;
-//         double angle=startAngle;
-//         double innerAngle=startAngle+Math.PI/vertexCount;
-//         for(int i=0; i<vertexCount; i++) {
-//             res[i*2]=(int)Math.round(r*Math.cos(angle))+x;
+//         int res[] = new int[vertexCount * 2];
+//         double addAngle = 2 * Math.PI / vertexCount;
+//         double angle = startAngle;
+//         double innerAngle = startAngle + Math.PI / vertexCount;
+//         for (int i=0; i < vertexCount; i++) {
+//             res[i * 2] = (int) Math.round(r * Math.cos(angle)) + x;
 //             angle+=addAngle;
-//             res[i*2+1]=(int)Math.round(innerR*Math.cos(innerAngle))+x;
-//             innerAngle+=addAngle;
+//             res[i * 2 + 1] = (int) Math.round(innerR * Math.cos(innerAngle)) + x;
+//             innerAngle += addAngle;
 //         }
 //         return res;
 //     }
 //     protected static int[] getYCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
-//         int res[]=new int[vertexCount*2];
-//         double addAngle=2*Math.PI/vertexCount;
-//         double angle=startAngle;
-//         double innerAngle=startAngle+Math.PI/vertexCount;
-//         for(int i=0; i<vertexCount; i++) {
-//             res[i*2]=(int)Math.round(r*Math.sin(angle))+y;
-//             angle+=addAngle;
-//             res[i*2+1]=(int)Math.round(innerR*Math.sin(innerAngle))+y;
+//         int res[] = new int[vertexCount * 2];
+//         double addAngle = 2 * Math.PI / vertexCount;
+//         double angle = startAngle;
+//         double innerAngle = startAngle + Math.PI / vertexCount;
+//         for (int i = 0; i < vertexCount; i++) {
+//             res[i * 2]=(int)Math.round(r * Math.sin(angle)) + y;
+//             angle += addAngle;
+//             res[i * 2 + 1] = (int) Math.round(innerR * Math.sin(innerAngle)) + y;
 //             innerAngle+=addAngle;
 //         }
 //         return res;

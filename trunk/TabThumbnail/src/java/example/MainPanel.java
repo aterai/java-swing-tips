@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         addImageTab(tab, getClass().getResource("tokeidai.jpg"));
         addImageTab(tab, getClass().getResource("CRW_3857_JFR.jpg")); //http://sozai-free.com/
         add(tab);
-        setPreferredSize(new Dimension(320,240));
+        setPreferredSize(new Dimension(320, 240));
     }
     private void addImageTab(JTabbedPane tabs, URL url) {
         JScrollPane scroll = new JScrollPane(new JLabel(new ImageIcon(url)));
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -57,27 +57,27 @@ class MyTabbedPane extends JTabbedPane {
     private Component getTabThumbnail(int index) {
         Component c = getComponentAt(index);
         Icon icon = null;
-        if(c instanceof JScrollPane) {
-            c = ((JScrollPane)c).getViewport().getView();
+        if (c instanceof JScrollPane) {
+            c = ((JScrollPane) c).getViewport().getView();
             Dimension d = c.getPreferredSize();
-            int newW = (int)(d.width  * SCALE);
-            int newH = (int)(d.height * SCALE);
+            int newW = (int) (d.width  * SCALE);
+            int newH = (int) (d.height * SCALE);
             BufferedImage image = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = (Graphics2D)image.getGraphics();
+            Graphics2D g2 = (Graphics2D) image.getGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2.scale(SCALE,SCALE);
+            g2.scale(SCALE, SCALE);
             c.paint(g2);
             g2.dispose();
             icon = new ImageIcon(image);
-        }else if(c instanceof JLabel) {
-            icon = ((JLabel)c).getIcon();
+        } else if (c instanceof JLabel) {
+            icon = ((JLabel) c).getIcon();
         }
         return new JLabel(icon);
     }
     @Override public JToolTip createToolTip() {
         int index = current;
-        if(index<0) { return null; }
+        if (index < 0) { return null; }
 
         final JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder());
@@ -99,7 +99,7 @@ class MyTabbedPane extends JTabbedPane {
     }
     @Override public String getToolTipText(MouseEvent e) {
         int index = indexAtLocation(e.getX(), e.getY());
-        String str = (current==index) ? super.getToolTipText(e) : null;
+        String str = (current == index) ? super.getToolTipText(e) : null;
         current = index;
         return str;
     }

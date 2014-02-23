@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         JComboBox<LRItem> combo = new JComboBox<>(model);
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     initTextField(e.getItem());
                 }
             }
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         initTextField(combo.getSelectedItem());
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(leftTextField);
         box.add(Box.createVerticalStrut(2));
         box.add(rightTextField);
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
     private void initTextField(Object obj) {
-        LRItem item = (LRItem)obj;
+        LRItem item = (LRItem) obj;
         leftTextField.setText(item.getLeftText());
         rightTextField.setText(item.getRightText());
     }
@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -10,8 +10,8 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JPanel gp = new GridPanel();
-        for(int i = 0; i<GridPanel.cols*GridPanel.rows;i++) {
-            gp.add(i%2==0 ? new JButton("aa"+i) : new JScrollPane(new JTree()));
+        for (int i = 0; i< GridPanel.cols * GridPanel.rows; i++) {
+            gp.add(i % 2 == 0 ? new JButton("aa" + i) : new JScrollPane(new JTree()));
         }
         final JScrollPane scrollPane = new JScrollPane(gp);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -53,20 +53,20 @@ public final class MainPanel extends JPanel {
 
 class GridPanel extends JPanel implements Scrollable {
     public static int cols = 3, rows = 4;
-    public static Dimension size = new Dimension(160*cols, 120*rows);
+    public static Dimension size = new Dimension(160 * cols, 120 * rows);
     public GridPanel() {
         super(new GridLayout(rows, cols, 0, 0));
         //putClientProperty("JScrollBar.fastWheelScrolling", Boolean.FALSE);
     }
     @Override public Dimension getPreferredScrollableViewportSize() {
         Dimension d = getPreferredSize();
-        return new Dimension(d.width/cols, d.height/rows);
+        return new Dimension(d.width / cols, d.height / rows);
     }
     @Override public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return orientation==SwingConstants.HORIZONTAL ? visibleRect.width : visibleRect.height;
+        return orientation == SwingConstants.HORIZONTAL ? visibleRect.width : visibleRect.height;
     }
     @Override public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return orientation==SwingConstants.HORIZONTAL ? visibleRect.width : visibleRect.height;
+        return orientation == SwingConstants.HORIZONTAL ? visibleRect.width : visibleRect.height;
     }
     @Override public boolean getScrollableTracksViewportWidth() { //NOPMD
         return false;
@@ -90,24 +90,25 @@ class ScrollAction extends AbstractAction {
         this.vec = vec;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(scroller!=null && scroller.isRunning()) {
+        if (scroller != null && scroller.isRunning()) {
             return;
         }
         final JViewport vport = scrollPane.getViewport();
-        final JComponent v = (JComponent)vport.getView();
+        final JComponent v = (JComponent) vport.getView();
         final int w  = vport.getWidth();
         final int h  = vport.getHeight();
         final int sx = vport.getViewPosition().x;
         final int sy = vport.getViewPosition().y;
         final Rectangle rect = new Rectangle(w, h);
         scroller = new Timer(5, new ActionListener() {
-            int count = (int)SIZE;
+            int count = (int) SIZE;
             @Override public void actionPerformed(ActionEvent e) {
-                double a = easeInOut(--count/SIZE);
-                int dx = (int)(w - a*w + 0.5d);
-                int dy = (int)(h - a*h + 0.5d);
-                if(count<=0) {
-                    dx = w; dy = h;
+                double a = easeInOut(--count / SIZE);
+                int dx = (int) (w - a * w + .5);
+                int dy = (int) (h - a * h + .5);
+                if (count <= 0) {
+                    dx = w;
+                    dy = h;
                     scroller.stop();
                 }
                 rect.setLocation(sx + vec.x * dx, sy + vec.y * dy);
@@ -118,10 +119,10 @@ class ScrollAction extends AbstractAction {
     }
     private static double easeInOut(double t) {
         //range: 0.0<=t<=1.0
-        if(t<0.5d) {
-            return 0.5d*pow3(t*2d);
-        }else{
-            return 0.5d*(pow3(t*2d-2d) + 2d);
+        if (t < .5) {
+            return .5 * pow3(t * 2d);
+        } else {
+            return .5 * (pow3(t * 2d - 2d) + 2d);
         }
     }
     private static double pow3(double a) {

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final JPopupMenu pop1  = new JPopupMenu();
     private final JPopupMenu pop2  = new JPopupMenu();
     private final URL url = getClass().getResource("ei0021-16.png");
-    private final Component rigid = Box.createRigidArea(new Dimension(5,5));
+    private final Component rigid = Box.createRigidArea(new Dimension(5, 5));
     public MainPanel() {
         super(new BorderLayout());
         pop1.add("000");
@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -66,13 +66,13 @@ public final class MainPanel extends JPanel {
 }
 class MenuArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.BLACK);
-        g2.translate(x,y);
+        g2.translate(x, y);
         g2.drawLine(2, 3, 6, 3);
         g2.drawLine(3, 4, 5, 4);
         g2.drawLine(4, 5, 4, 5);
-        //g2.translate(-x,-y);
+        //g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth()  { return 9; }
@@ -96,8 +96,8 @@ class MenuToggleButton extends JToggleButton {
         super();
         Action a = new AbstractAction(text) {
             @Override public void actionPerformed(ActionEvent ae) {
-                MenuToggleButton b = (MenuToggleButton)ae.getSource();
-                if(pop!=null) {
+                MenuToggleButton b = (MenuToggleButton) ae.getSource();
+                if (pop != null) {
                     pop.show(b, 0, b.getHeight());
                 }
             }
@@ -105,7 +105,7 @@ class MenuToggleButton extends JToggleButton {
         a.putValue(Action.SMALL_ICON, icon);
         setAction(a);
         setFocusable(false);
-        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+ARROW_ICON.getIconWidth()));
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
     }
     public void setPopupMenu(final JPopupMenu pop) {
         this.pop = pop;
@@ -121,8 +121,8 @@ class MenuToggleButton extends JToggleButton {
         super.paintComponent(g);
         Dimension dim = getSize();
         Insets ins = getInsets();
-        int x = dim.width-ins.right;
-        int y = ins.top+(dim.height-ins.top-ins.bottom-ARROW_ICON.getIconHeight())/2;
+        int x = dim.width - ins.right;
+        int y = ins.top+(dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
         ARROW_ICON.paintIcon(this, g, x, y);
     }
 }

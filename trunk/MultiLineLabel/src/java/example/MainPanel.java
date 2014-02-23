@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JLabel    label3 = new JLabel();
 
     public MainPanel() {
-        super(new GridLayout(3,1));
+        super(new GridLayout(3, 1));
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
@@ -21,16 +21,16 @@ public final class MainPanel extends JPanel {
         label1.setParagraphAttributes(attr, true);
 
         String dummyText = "asdfasdfasdfasdfasdfasdfasd";
-        label1.setText("JTextPane\n"+dummyText);
-        label2.setText("JTextArea\n"+dummyText);
-        label3.setText("<html>JLabel+html<br>"+dummyText);
+        label1.setText("JTextPane\n" + dummyText);
+        label2.setText("JTextArea\n" + dummyText);
+        label3.setText("<html>JLabel+html<br>" + dummyText);
         label3.setIcon(icon);
 
         add(setLeftIcon(label1, icon));
         add(setLeftIcon(label2, icon));
         add(label3);
 
-        setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+        setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setPreferredSize(new Dimension(320, 160));
     }
     private static Box setLeftIcon(JTextComponent label, ImageIcon icon) {
@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

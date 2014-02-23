@@ -24,11 +24,11 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        if(System.getProperty("java.version").startsWith("1.6.0")) {
+        if (System.getProperty("java.version").startsWith("1.6.0")) {
             //1.6.0_xx bug? column header click -> edit cancel?
             table.getTableHeader().addMouseListener(new MouseAdapter() {
                 @Override public void mousePressed(MouseEvent e) {
-                    if(table.isEditing()) {
+                    if (table.isEditing()) {
                         table.getCellEditor().stopCellEditing();
                     }
                 }
@@ -41,11 +41,11 @@ public final class MainPanel extends JPanel {
         //or
 //         table.addMouseListener(new MouseAdapter() {
 //             @Override public void mouseReleased(MouseEvent e) {
-//                 JTable t = (JTable)e.getComponent();
+//                 JTable t = (JTable) e.getComponent();
 //                 Point p  = e.getPoint();
 //                 int row  = t.rowAtPoint(p);
 //                 int col  = t.columnAtPoint(p);
-//                 if(t.convertColumnIndexToModel(col)==1) {
+//                 if (t.convertColumnIndexToModel(col) == 1) {
 //                     t.getCellEditor(row, col).stopCellEditing();
 //                 }
 //             }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -87,32 +87,32 @@ class CheckBoxesPanel extends JPanel {
     public CheckBoxesPanel() {
         super();
         setOpaque(false);
-        setBackground(new Color(0,0,0,0));
+        setBackground(new Color(0, 0, 0, 0));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
     private void initButtons() {
         buttons = new JCheckBox[title.length];
-        for(int i=0; i<buttons.length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             JCheckBox b = new JCheckBox(title[i]);
             b.setOpaque(false);
             b.setFocusable(false);
             b.setRolloverEnabled(false);
-            b.setBackground(new Color(0,0,0,0));
+            b.setBackground(new Color(0, 0, 0, 0));
             buttons[i] = b;
             add(b);
             add(Box.createHorizontalStrut(5));
         }
     }
     protected void updateButtons(Object v) {
-        if("Windows 7".equals(OSNAME)) { //Windows aero?
+        if ("Windows 7".equals(OSNAME)) { //Windows aero?
             removeAll();
             initButtons();
         }
-        Integer i = (Integer)(v==null?0:v);
-        buttons[0].setSelected((i&(1<<2))!=0);
-        buttons[1].setSelected((i&(1<<1))!=0);
-        buttons[2].setSelected((i&(1<<0))!=0);
+        Integer i = (Integer) (v == null ? 0 : v);
+        buttons[0].setSelected((i & (1 << 2)) != 0);
+        buttons[1].setSelected((i & (1 << 1)) != 0);
+        buttons[2].setSelected((i & (1 << 0)) != 0);
     }
 }
 
@@ -139,13 +139,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     public CheckBoxesEditor() {
         super();
         ActionMap am = getActionMap();
-        for(int i=0; i<buttons.length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             //buttons[i].addActionListener(al);
             final String t = title[i];
             am.put(t, new AbstractAction(t) {
                 @Override public void actionPerformed(ActionEvent e) {
-                    for(JCheckBox b:buttons) {
-                        if(b.getText().equals(t)) {
+                    for (JCheckBox b:buttons) {
+                        if (b.getText().equals(t)) {
                             b.doClick();
                             break;
                         }
@@ -165,9 +165,9 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     }
     @Override public Object getCellEditorValue() {
         int i = 0;
-        if(buttons[0].isSelected()) { i|=1<<2; }
-        if(buttons[1].isSelected()) { i|=1<<1; }
-        if(buttons[2].isSelected()) { i|=1<<0; }
+        if (buttons[0].isSelected()) { i |= 1 << 2; }
+        if (buttons[1].isSelected()) { i |= 1 << 1; }
+        if (buttons[2].isSelected()) { i |= 1 << 0; }
         return i;
     }
 
@@ -201,11 +201,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -214,11 +216,13 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

@@ -25,9 +25,9 @@ public final class MainPanel extends JPanel {
                 String str = field.getText().trim();
                 ParsePosition pp = new ParsePosition(0);
                 Date date = format.parse(str, pp);
-                if(date==null) {
+                if (date == null) {
                     outf.setText("error");
-                }else{
+                } else {
                     outf.setText(df.format(date));
                 }
             }
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         button.setAlignmentX(1.0f);
 
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 160));
     }
 
@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

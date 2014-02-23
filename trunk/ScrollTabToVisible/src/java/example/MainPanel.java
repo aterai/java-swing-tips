@@ -12,18 +12,18 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         final JTabbedPane jtp = new JTabbedPane();
         jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        for(int i=0;i<100;i++) {
-            jtp.addTab("title"+i, new JLabel("label"+i));
+        for (int i = 0; i < 100; i++) {
+            jtp.addTab("title" + i, new JLabel("label" + i));
         }
-        JSlider slider = new JSlider(0,jtp.getTabCount()-1,50);
+        JSlider slider = new JSlider(0, jtp.getTabCount()-1, 50);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                int i = ((JSlider)e.getSource()).getValue();
-                if(check.isSelected()) {
+                int i = ((JSlider) e.getSource()).getValue();
+                if (check.isSelected()) {
                     jtp.setSelectedIndex(i);
                 }
                 scrollTabAt(jtp, i);
@@ -40,21 +40,21 @@ public final class MainPanel extends JPanel {
     }
     private static void scrollTabAt(JTabbedPane tp, int index) {
         JViewport vp = null;
-        for(Component c:tp.getComponents()) {
-            if("TabbedPane.scrollableViewport".equals(c.getName())) {
-                vp = (JViewport)c; break;
+        for (Component c:tp.getComponents()) {
+            if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+                vp = (JViewport) c; break;
             }
         }
-        if(vp==null) {
+        if (vp == null) {
             return;
         }
         final JViewport viewport = vp;
-        for(int i=0;i<tp.getTabCount();i++) {
-            tp.setForegroundAt(i, i==index?Color.RED:Color.BLACK);
+        for (int i = 0; i < tp.getTabCount(); i++) {
+            tp.setForegroundAt(i, i == index ? Color.RED : Color.BLACK);
         }
         Dimension d = tp.getSize();
         Rectangle r = tp.getBoundsAt(index);
-        int gw = (d.width-r.width)/2;
+        int gw = (d.width - r.width) / 2;
         r.grow(gw, 0);
         viewport.scrollRectToVisible(r);
     }
@@ -66,10 +66,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

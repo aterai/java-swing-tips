@@ -26,17 +26,19 @@ public final class MainPanel extends JPanel {
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 final RowSorter<? extends TableModel> sorter = table.getRowSorter();
-                if(sorter==null || sorter.getSortKeys().size()==0) { return; }
+                if (sorter == null || sorter.getSortKeys().size() == 0) { return; }
 
-                JTableHeader h = (JTableHeader)e.getComponent();
+                JTableHeader h = (JTableHeader) e.getComponent();
                 TableColumnModel columnModel = h.getColumnModel();
                 int viewColumn = columnModel.getColumnIndexAtX(e.getX());
                 // ArrayIndexOutOfBoundsException: -1
-                if(viewColumn<0) { return; }
+                if (viewColumn < 0) {
+                    return;
+                }
                 int column = columnModel.getColumn(viewColumn).getModelIndex();
 
-                if(column != -1 && e.isShiftDown()) {
-                    //if(column != -1 && e.isControlDown()) {
+                if (column != -1 && e.isShiftDown()) {
+                    //if (column != -1 && e.isControlDown()) {
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
                             sorter.setSortKeys(null);
@@ -51,7 +53,7 @@ public final class MainPanel extends JPanel {
         col.setMaxWidth(60);
         col.setResizable(false);
 
-        add(new JLabel("Shift+Click -> Clear Sorting State"), BorderLayout.NORTH);
+        add(new JLabel("Shift + Click -> Clear Sorting State"), BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -64,10 +66,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

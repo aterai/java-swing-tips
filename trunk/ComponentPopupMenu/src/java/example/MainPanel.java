@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
 //         final Action pasteAction = new DefaultEditorKit.PasteAction();
 //         final Action deleteAction = new AbstractAction("delete") {
 //             @Override public void actionPerformed(ActionEvent e) {
-//                 JPopupMenu p = (JPopupMenu)e.getSource();
-//                 ((JTextComponent)p.getInvoker()).replaceSelection(null);
+//                 JPopupMenu p = (JPopupMenu) e.getSource();
+//                 ((JTextComponent) p.getInvoker()).replaceSelection(null);
 //             }
 //         };
 //         final Action selectAllAction = new AbstractAction("select all") {
 //             @Override public void actionPerformed(ActionEvent e) {
-//                 JPopupMenu p = (JPopupMenu)e.getSource();
-//                 ((JTextComponent)p.getInvoker()).selectAll();
+//                 JPopupMenu p = (JPopupMenu) e.getSource();
+//                 ((JTextComponent) p.getInvoker()).selectAll();
 //             }
 //         };
 //         popup.add(cutAction);
@@ -45,9 +45,9 @@ public final class MainPanel extends JPanel {
 //             @Override public void popupMenuCanceled(PopupMenuEvent e) {}
 //             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
 //             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-//                 JPopupMenu p = (JPopupMenu)e.getSource();
-//                 JTextComponent c = (JTextComponent)p.getInvoker();
-//                 boolean flg = c.getSelectedText()!=null;
+//                 JPopupMenu p = (JPopupMenu) e.getSource();
+//                 JTextComponent c = (JTextComponent) p.getInvoker();
+//                 boolean flg = c.getSelectedText() != null;
 //                 cutAction.setEnabled(flg);
 //                 copyAction.setEnabled(flg);
 //                 deleteAction.setEnabled(flg);
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -85,7 +85,7 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action pasteAction = new DefaultEditorKit.PasteAction();
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
-            ((JTextComponent)getInvoker()).replaceSelection(null);
+            ((JTextComponent) getInvoker()).replaceSelection(null);
         }
     };
     public TextComponentPopupMenu() {
@@ -98,14 +98,14 @@ class TextComponentPopupMenu extends JPopupMenu {
         addSeparator();
         add(new AbstractAction("select all") {
             @Override public void actionPerformed(ActionEvent e) {
-                ((JTextComponent)getInvoker()).selectAll();
+                ((JTextComponent) getInvoker()).selectAll();
             }
         });
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTextComponent) {
-            JTextComponent textArea = (JTextComponent)c;
-            boolean flg = textArea.getSelectedText()!=null;
+        if (c instanceof JTextComponent) {
+            JTextComponent textArea = (JTextComponent) c;
+            boolean flg = textArea.getSelectedText() != null;
             cutAction.setEnabled(flg);
             copyAction.setEnabled(flg);
             deleteAction.setEnabled(flg);

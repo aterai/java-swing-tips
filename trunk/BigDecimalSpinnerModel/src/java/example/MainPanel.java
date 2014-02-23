@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
         p2.add(new JSpinner(new BigDecimalSpinnerModel(2.01, 2.00, 3.02, 0.01)));
         p2.add(new JSpinner(new BigDecimalSpinnerModel(29.7, 29.6, 30.2, 0.1)));
         box.add(p2);
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         //TEST:
         StringBuilder sb = new StringBuilder();
         double d = 29.7 - 29.6 - 0.1;
-        sb.append(String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, 0.1, d>=0));
-        sb.append(String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, 0.1, Math.abs(d)<1.0e-14));
-        sb.append(String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, 0.1, Math.abs(d)<1.0e-15));
+        sb.append(String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, 0.1, d >= 0));
+        sb.append(String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, 0.1, Math.abs(d) < 1.0e-14));
+        sb.append(String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, 0.1, Math.abs(d) < 1.0e-15));
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea(sb.toString())));
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -77,19 +77,19 @@ class BigDecimalSpinnerModel extends SpinnerNumberModel {
         BigDecimal stepSize = new BigDecimal(getStepSize().toString());
 
         BigDecimal newValue;
-        if(dir>0) {
+        if (dir > 0) {
             newValue = value.add(stepSize);
-        }else{
+        } else {
             newValue = value.subtract(stepSize);
         }
 
         BigDecimal maximum  = new BigDecimal(getMaximum().toString());
-        if(maximum.compareTo(newValue) < 0) {
+        if (maximum.compareTo(newValue) < 0) {
             return null;
         }
 
         BigDecimal minimum  = new BigDecimal(getMinimum().toString());
-        if(minimum.compareTo(newValue) > 0) {
+        if (minimum.compareTo(newValue) > 0) {
             return null;
         }
         return newValue;

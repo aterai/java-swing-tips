@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     private static ComboBoxModel<Object> makeModel() {
         DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<Object>() {
             @Override public void setSelectedItem(Object anObject) {
-                if(!(anObject instanceof JSeparator)) {
+                if (!(anObject instanceof JSeparator)) {
                     super.setSelectedItem(anObject);
                 }
             }
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         JComboBox<Object> combo = new JComboBox<>(makeModel());
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if(value instanceof JSeparator) {
-                    return (Component)value;
-                }else{
-                    return super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                if (value instanceof JSeparator) {
+                    return (Component) value;
+                } else {
+                    return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 }
             }
         });
@@ -52,31 +52,31 @@ public final class MainPanel extends JPanel {
         ActionMap am = combo.getActionMap();
         am.put("selectPrevious3", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
+                JComboBox cb = (JComboBox) e.getSource();
                 int index = cb.getSelectedIndex();
-                if(index==0) {
+                if (index == 0) {
                     return;
                 }
-                Object o = cb.getItemAt(index-1);
-                if(o instanceof JSeparator) {
-                    cb.setSelectedIndex(index-2);
-                }else{
-                    cb.setSelectedIndex(index-1);
+                Object o = cb.getItemAt(index - 1);
+                if (o instanceof JSeparator) {
+                    cb.setSelectedIndex(index - 2);
+                } else {
+                    cb.setSelectedIndex(index - 1);
                 }
             }
         });
         am.put("selectNext3", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
+                JComboBox cb = (JComboBox) e.getSource();
                 int index = cb.getSelectedIndex();
-                if(index==cb.getItemCount()-1) {
+                if (index == cb.getItemCount()-1) {
                     return;
                 }
-                Object o = cb.getItemAt(index+1);
-                if(o instanceof JSeparator) {
-                    cb.setSelectedIndex(index+2);
-                }else{
-                    cb.setSelectedIndex(index+1);
+                Object o = cb.getItemAt(index + 1);
+                if (o instanceof JSeparator) {
+                    cb.setSelectedIndex(index + 2);
+                } else {
+                    cb.setSelectedIndex(index + 1);
                 }
             }
         });
@@ -97,10 +97,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

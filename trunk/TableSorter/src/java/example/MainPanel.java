@@ -22,12 +22,12 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(sorter) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

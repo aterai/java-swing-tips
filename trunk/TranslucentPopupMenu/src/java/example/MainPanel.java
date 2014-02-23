@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     }
 //     @Override public void updateUI() {
 //         super.updateUI();
-//         if(tree!=null && System.getProperty("java.version").startsWith("1.6.0")) {
+//         if (tree != null && System.getProperty("java.version").startsWith("1.6.0")) {
 //             System.out.println("???: 1.6.0_xx bug??? remake JPopupMenu");
 //             tree.setComponentPopupMenu(makePopupMenu());
 //         }
@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -57,15 +57,15 @@ public final class MainPanel extends JPanel {
 
 class TranslucentPopupMenu extends JPopupMenu {
     private static final Color ALPHA_ZERO = new Color(0, true);
-    private static final Color POPUP_BACK = new Color(250,250,250,200);
-    private static final Color POPUP_LEFT = new Color(230,230,230,200);
+    private static final Color POPUP_BACK = new Color(250, 250, 250, 200);
+    private static final Color POPUP_LEFT = new Color(230, 230, 230, 200);
     private static final int LEFT_WIDTH = 24;
     @Override public boolean isOpaque() {
         return false;
     }
     @Override public void updateUI() {
         super.updateUI();
-        if(UIManager.getBorder("PopupMenu.border")==null) {
+        if (UIManager.getBorder("PopupMenu.border") == null) {
             setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.GRAY)));
         }
     }
@@ -78,19 +78,19 @@ class TranslucentPopupMenu extends JPopupMenu {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 Window p = SwingUtilities.getWindowAncestor(TranslucentPopupMenu.this);
-                if(p instanceof JWindow) {
+                if (p instanceof JWindow) {
                     System.out.println("Heavy weight");
-                    JWindow w = (JWindow)p;
-//                     if(System.getProperty("java.version").startsWith("1.6.0")) {
+                    JWindow w = (JWindow) p;
+//                     if (System.getProperty("java.version").startsWith("1.6.0")) {
 //                         w.dispose();
-//                         if(com.sun.awt.AWTUtilities.isWindowOpaque(w)) {
+//                         if (com.sun.awt.AWTUtilities.isWindowOpaque(w)) {
 //                             com.sun.awt.AWTUtilities.setWindowOpaque(w, false);
 //                         }
 //                         w.setVisible(true);
-//                     }else{
+//                     } else {
                         w.setBackground(ALPHA_ZERO);
 //                     }
-                }else{
+                } else {
                     System.out.println("Light weight");
                 }
             }
@@ -98,11 +98,11 @@ class TranslucentPopupMenu extends JPopupMenu {
         super.show(c, x, y);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(POPUP_LEFT);
-        g2.fillRect(0,0,LEFT_WIDTH,getHeight());
+        g2.fillRect(0, 0, LEFT_WIDTH, getHeight());
         g2.setPaint(POPUP_BACK);
-        g2.fillRect(LEFT_WIDTH,0,getWidth(),getHeight());
+        g2.fillRect(LEFT_WIDTH, 0, getWidth(), getHeight());
         g2.dispose();
         //super.paintComponent(g);
     }

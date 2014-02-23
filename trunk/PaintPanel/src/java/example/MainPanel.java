@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
 }
 
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
-    private Point startPoint = new Point(-10,-10);
-    private Point p = new Point(-10,-10);
+    private Point startPoint = new Point(-10, -10);
+    private Point p = new Point(-10, -10);
     public PaintPanel() {
         super();
         addMouseMotionListener(this);
@@ -48,7 +48,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.setStroke(new BasicStroke(3.0F));
         g2d.setPaint(Color.BLACK);
         g2d.drawLine(startPoint.x, startPoint.y, p.x, p.y);
@@ -71,7 +71,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 
 // class PaintPanel2 extends JPanel implements MouseMotionListener, MouseListener {
 //     private final Polygon polygon = new Polygon();
-//     private Point startPoint = new Point(-1,-1);
+//     private Point startPoint = new Point(-1, -1);
 //     private java.awt.image.BufferedImage offImage = null;
 //     public PaintPanel2() {
 //         super();
@@ -82,17 +82,17 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         if(offImage!=null) { ((Graphics2D)g).drawImage(offImage, 0, 0, this); }
+//         if (offImage != null) { ((Graphics2D) g).drawImage(offImage, 0, 0, this); }
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();
-//         Graphics2D g2d = (Graphics2D)offImage.createGraphics();
+//         Graphics2D g2d = (Graphics2D) offImage.createGraphics();
 //         g2d.setStroke(new BasicStroke(3.0F));
 //         g2d.setPaint(Color.BLACK);
 //         g2d.drawLine(startPoint.x, startPoint.y, p.x, p.y);
 //         //repaint();
 //         Rectangle r = getRepaintRectangle(startPoint, p);
-//         repaint(r.x-2,r.y-2,r.width+2+2,r.height+2+2); //(3.0/2) = 1.5 < 2
+//         repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); //(3.0 / 2) = 1.5 < 2
 //         startPoint = p;
 //     }
 //     private Rectangle getRepaintRectangle(Point srcPoint, Point destPoint) {
@@ -105,8 +105,8 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     }
 //     @Override public void mousePressed(MouseEvent e) {
 //         startPoint = e.getPoint();
-// //         if(offImage==null) { //resized
-// //             offImage = (BufferedImage)createImage(getWidth(), getHeight());
+// //         if (offImage == null) { //resized
+// //             offImage = (BufferedImage) createImage(getWidth(), getHeight());
 // //         }
 //     }
 //     @Override public void mouseMoved(MouseEvent e) {}
@@ -136,10 +136,10 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         repaint();
 //     }
 //     @Override public void paintComponent (Graphics g) {
-//         Graphics2D g2d = (Graphics2D)g.create();
+//         Graphics2D g2d = (Graphics2D) g.create();
 //         g2d.setPaint(Color.BLACK);
 //         g2d.setStroke(stroke);
-//         for(Shape s:list) g2d.draw(s);
+//         for (Shape s:list) g2d.draw(s);
 //         g2d.dispose();
 //     }
 //     @Override public void mouseMoved(MouseEvent e) {}

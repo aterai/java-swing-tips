@@ -16,13 +16,13 @@ public final class MainPanel extends JPanel {
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo02.getSelectedIndex();
-                combo02.setSelectedIndex((index==0)?combo02.getItemCount()-1:index-1);
+                combo02.setSelectedIndex((index == 0) ? combo02.getItemCount() - 1 : index - 1);
             }
         };
         Action down = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo02.getSelectedIndex();
-                combo02.setSelectedIndex((index==combo02.getItemCount()-1)?0:index+1);
+                combo02.setSelectedIndex((index == combo02.getItemCount() - 1) ? 0 : index + 1);
             }
         };
         ActionMap amc = combo02.getActionMap();
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         box.add(createPanel(combo01, "default:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo02, "loop:"));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 200));
     }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

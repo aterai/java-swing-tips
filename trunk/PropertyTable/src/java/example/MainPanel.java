@@ -29,19 +29,19 @@ public final class MainPanel extends JPanel {
         }
         @Override public TableCellRenderer getCellRenderer(int row, int column) {
             //editingClass = null;
-            if(convertColumnIndexToModel(column)==1) {
+            if (convertColumnIndexToModel(column) == 1) {
                 //System.out.println("getCellRenderer");
                 return getDefaultRenderer(getClassAt(row, column));
-            }else{
+            } else {
                 return super.getCellRenderer(row, column);
             }
         }
         @Override public TableCellEditor getCellEditor(int row, int column) {
-            if(convertColumnIndexToModel(column)==1) {
+            if (convertColumnIndexToModel(column) == 1) {
                 //System.out.println("getCellEditor");
                 editingClass = getClassAt(row, column);
                 return getDefaultEditor(editingClass);
-            }else{
+            } else {
                 editingClass = null;
                 return super.getCellEditor(row, column);
             }
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
         // editor was invoked so the proper class can be created.
         @Override public Class<?> getColumnClass(int column) {
             //return editingClass != null ? editingClass : super.getColumnClass(column);
-            if(convertColumnIndexToModel(column)==1) {
+            if (convertColumnIndexToModel(column) == 1) {
                 //System.out.println("getColumnClass");
                 return editingClass;
-            }else{
+            } else {
                 return super.getColumnClass(column);
             }
         }
@@ -81,10 +81,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -129,12 +129,12 @@ class DateEditor extends JSpinner implements TableCellEditor {
                 });
             }
         });
-        setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     private void setArrowButtonEnabled(boolean flag) {
-        for(Component c: getComponents()) {
-            if(c instanceof JButton) {
-                ((JButton)c).setEnabled(flag);
+        for (Component c: getComponents()) {
+            if (c instanceof JButton) {
+                ((JButton) c).setEnabled(flag);
             }
         }
     }
@@ -156,9 +156,9 @@ class DateEditor extends JSpinner implements TableCellEditor {
         return true;
     }
     @Override public boolean stopCellEditing() {
-        try{
+        try {
             commitEdit();
-        }catch(ParseException pe) {
+        } catch (ParseException pe) {
             Toolkit.getDefaultToolkit().beep();
             return false;
 //             // Edited value is invalid, spinner.getValue() will return
@@ -185,13 +185,13 @@ class DateEditor extends JSpinner implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -200,13 +200,13 @@ class DateEditor extends JSpinner implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }
@@ -214,9 +214,9 @@ class DateEditor extends JSpinner implements TableCellEditor {
 
 class ColorRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JLabel l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if(value instanceof Color) {
-            Color color = (Color)value;
+        JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        if (value instanceof Color) {
+            Color color = (Color) value;
             l.setIcon(new ColorIcon(color));
             l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
         }
@@ -243,7 +243,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
         //button.setBorderPainted(false);
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         button.setOpaque(false);
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -257,7 +257,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
      * the dialog's OK button.
      */
     @Override public void actionPerformed(ActionEvent e) {
-        if(EDIT.equals(e.getActionCommand())) {
+        if (EDIT.equals(e.getActionCommand())) {
             //The user has clicked the cell, so
             //bring up the dialog.
             button.setBackground(currentColor);
@@ -267,7 +267,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
             //Make the renderer reappear.
             fireEditingStopped();
-        }else{ //User pressed dialog's "OK" button.
+        } else { //User pressed dialog's "OK" button.
             currentColor = colorChooser.getColor();
         }
     }
@@ -277,7 +277,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
     }
     //Implement the one method defined by TableCellEditor.
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        currentColor = (Color)value;
+        currentColor = (Color) value;
         button.setIcon(new ColorIcon(currentColor));
         button.setText(String.format("(%d, %d, %d)", currentColor.getRed(), currentColor.getGreen(), currentColor.getBlue()));
         return button;

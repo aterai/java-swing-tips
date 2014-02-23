@@ -35,12 +35,12 @@ public final class MainPanel extends JPanel {
         FontChangeEvent evt = new FontChangeEvent(this, cmd, font);
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==FontChangeListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == FontChangeListener.class) {
                 // Lazily create the event:
-//                 if(fontChangeEvent == null)
+//                 if (fontChangeEvent == null)
 //                   fontChangeEvent = new FontChangeEvent(this);
-                ((FontChangeListener)listeners[i+1]).fontStateChanged(evt);
+                ((FontChangeListener) listeners[i + 1]).fontStateChanged(evt);
             }
         }
     }
@@ -48,17 +48,17 @@ public final class MainPanel extends JPanel {
     // http://www.asahi-net.or.jp/~dp8t-asm/java/tips/Event.html
     private final Vector<FontChangeListener> listenerList = new Vector<FontChangeListener>();
     public void addFontChangeListener(FontChangeListener listener) {
-        if(!listenerList.contains(listener)) { listenerList.add(listener); }
+        if (!listenerList.contains(listener)) { listenerList.add(listener); }
     }
     public void removeFontChangeListener(FontChangeListener listener) {
         listenerList.remove(listener);
     }
     public void fireFontChangeEvent(String cmd, Font font) {
-        Vector list = (Vector)listenerList.clone();
+        Vector list = (Vector) listenerList.clone();
         Enumeration e = list.elements();
         FontChangeEvent evt = new FontChangeEvent(this, cmd, font);
-        while(e.hasMoreElements()) {
-            FontChangeListener listener = (FontChangeListener)e.nextElement();
+        while (e.hasMoreElements()) {
+            FontChangeListener listener = (FontChangeListener) e.nextElement();
             listener.fontStateChanged(evt);
         }
         revalidate();
@@ -112,10 +112,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

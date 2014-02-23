@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
 
         JTextArea textArea = new JTextArea();
         StringBuilder sb = new StringBuilder();
-        for(int i=0;i<2000;i++) {
+        for (int i = 0; i < 2000; i++) {
             sb.append(String.format("%04d%n", i));
         }
         textArea.setText(sb.toString());
@@ -30,14 +30,14 @@ public final class MainPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(c);
         scroll.getVerticalScrollBar().getModel().addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                BoundedRangeModel m = (BoundedRangeModel)e.getSource();
+                BoundedRangeModel m = (BoundedRangeModel) e.getSource();
                 int extent  = m.getExtent();
                 int maximum = m.getMaximum();
                 int value   = m.getValue();
                 //http://stackoverflow.com/questions/12916192/how-to-know-if-a-jscrollbar-has-reached-the-bottom-of-the-jscrollpane
                 //System.out.println("2. Value: " + (value + extent) + " Max: " + maximum);
                 //http://terai.xrea.jp/Swing/ScrollBarAsSlider.html
-                if(value + extent >= maximum) {
+                if (value + extent >= maximum) {
                     check.setEnabled(true);
                 }
             }
@@ -54,10 +54,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

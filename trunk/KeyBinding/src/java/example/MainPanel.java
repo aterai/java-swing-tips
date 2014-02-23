@@ -17,12 +17,12 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -35,14 +35,14 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        JPanel p = new JPanel(new GridLayout(2,1,5,5));
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(componentChoices);
         p.add(new JButton(new AbstractAction("show") {
             @Override public void actionPerformed(ActionEvent e) {
                 model.setRowCount(0);
-                JComponent c = ((JComponentType)componentChoices.getSelectedItem()).component;
-                for(Integer f:focusType) {
+                JComponent c = ((JComponentType) componentChoices.getSelectedItem()).component;
+                for (Integer f:focusType) {
                     loadBindingMap(f, c.getInputMap(f), c.getActionMap());
                 }
             }
@@ -57,12 +57,12 @@ public final class MainPanel extends JPanel {
     // modified by terai
 //     private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
 //         Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<Object, ArrayList<KeyStroke>>();
-//         if(im.allKeys()==null) { return h; }
-//         for(KeyStroke ks:im.allKeys()) {
+//         if (im.allKeys() == null) { return h; }
+//         for (KeyStroke ks:im.allKeys()) {
 //             Object name = im.get(ks);
-//             if(h.containsKey(name)) {
+//             if (h.containsKey(name)) {
 //                 h.get(name).add(ks);
-//             }else{
+//             } else {
 //                 ArrayList<KeyStroke> keylist = new ArrayList<KeyStroke>();
 //                 keylist.add(ks);
 //                 h.put(name, keylist);
@@ -71,27 +71,27 @@ public final class MainPanel extends JPanel {
 //         return h;
 //     }
     private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
-        if(im.allKeys()==null) {
+        if (im.allKeys() == null) {
             return;
         }
         ActionMap tmpAm = new ActionMap();
-        for(Object actionMapKey:am.allKeys()) {
+        for (Object actionMapKey:am.allKeys()) {
             tmpAm.put(actionMapKey, am.get(actionMapKey));
         }
-        for(KeyStroke ks:im.allKeys()) {
+        for (KeyStroke ks:im.allKeys()) {
             Object actionMapKey = im.get(ks);
             Action action = am.get(actionMapKey);
-            if(action==null) {
-                model.addBinding(new Binding(focusType, "____"+actionMapKey.toString(), ks.toString()));
-            }else{
+            if (action == null) {
+                model.addBinding(new Binding(focusType, "____" + actionMapKey.toString(), ks.toString()));
+            } else {
                 model.addBinding(new Binding(focusType, actionMapKey.toString(), ks.toString()));
             }
             tmpAm.remove(actionMapKey);
         }
-        if(tmpAm.allKeys()==null) {
+        if (tmpAm.allKeys() == null) {
             return;
         }
-        for(Object actionMapKey:tmpAm.allKeys()) {
+        for (Object actionMapKey:tmpAm.allKeys()) {
             model.addBinding(new Binding(focusType, actionMapKey.toString(), ""));
         }
     }
@@ -105,10 +105,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -163,9 +163,9 @@ class BindingMapModel extends DefaultTableModel {
     };
     public void addBinding(Binding t) {
         Integer ft = t.getFocusType();
-        String s = (ft==JComponent.WHEN_FOCUSED)?"WHEN_FOCUSED"
-          :(ft==JComponent.WHEN_IN_FOCUSED_WINDOW)?"WHEN_IN_FOCUSED_WINDOW"
-            :"WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
+        String s = (ft == JComponent.WHEN_FOCUSED)           ? "WHEN_FOCUSED"
+                  :(ft == JComponent.WHEN_IN_FOCUSED_WINDOW) ? "WHEN_IN_FOCUSED_WINDOW"
+                                                             : "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
         Object[] obj = {s, t.getActionName(), t.getKeyDescription()};
         super.addRow(obj);
     }

@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
             final String id = field.getText().trim();
-            HTMLDocument doc = (HTMLDocument)editorPane.getDocument();
+            HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
             Element element = doc.getElement(id);
-            if(element!=null) {
+            if (element != null) {
                 textArea.append(String.format("found: %s%n", element));
                 editorPane.requestFocusInWindow();
                 editorPane.select(element.getStartOffset(), element.getEndOffset());
@@ -32,12 +32,12 @@ public final class MainPanel extends JPanel {
     private final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
         @Override public void actionPerformed(ActionEvent e) {
             textArea.append(String.format("----%n%s%n", getValue(Action.NAME)));
-            JToggleButton b = (JToggleButton)e.getSource();
-            if(b.isSelected()) {
-                for(Element root: editorPane.getDocument().getRootElements()) {
+            JToggleButton b = (JToggleButton) e.getSource();
+            if (b.isSelected()) {
+                for (Element root: editorPane.getDocument().getRootElements()) {
                     traverseElementById(root);
                 }
-            }else{
+            } else {
                 Highlighter highlighter = editorPane.getHighlighter();
                 highlighter.removeAllHighlights();
             }
@@ -49,19 +49,19 @@ public final class MainPanel extends JPanel {
             final String id = field.getText().trim();
             final String text = editorPane.getText();
             ParserDelegator delegator = new ParserDelegator();
-            try{
+            try {
                 delegator.parse(new StringReader(text), new HTMLEditorKit.ParserCallback() {
                     @Override public void handleStartTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
                         Object attrid = a.getAttribute(HTML.Attribute.ID);
                         textArea.append(String.format("%s@id=%s%n", tag, attrid));
-                        if(id.equals(attrid)) {
+                        if (id.equals(attrid)) {
                             textArea.append(String.format("found: pos=%d%n", pos));
                             int endoffs = text.indexOf('>', pos);
-                            textArea.append(String.format("%s%n", text.substring(pos, endoffs+1)));
+                            textArea.append(String.format("%s%n", text.substring(pos, endoffs + 1)));
                         }
                     }
                 }, Boolean.TRUE);
-            }catch(IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
@@ -71,15 +71,15 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         editorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
         editorPane.setText("<html>12<span id='2'>345678</span>90<p>1<a href='..'>23</a>45<span class='insert' id='0'>6</span>7<span id='1'>8</span>90<div class='fff' id='3'>123</div>4567890</p></html>");
-        DefaultHighlighter dh = (DefaultHighlighter)editorPane.getHighlighter();
+        DefaultHighlighter dh = (DefaultHighlighter) editorPane.getHighlighter();
         dh.setDrawsLayeredHighlights(false);
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setTopComponent(new JScrollPane(editorPane));
         sp.setBottomComponent(new JScrollPane(textArea));
 
-        JPanel p = new JPanel(new GridLayout(2,2,5,5));
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(field);
         p.add(new JButton(elementIDAction));
         p.add(new JToggleButton(highlightAction));
@@ -93,20 +93,20 @@ public final class MainPanel extends JPanel {
         int start = element.getStartOffset();
         int lf    = isBlock ? 1 : 0;
         int end   = element.getEndOffset() - lf; //lf???, setDrawsLayeredHighlights(false) bug???
-        try{
+        try {
             highlighter.addHighlight(start, end, highlightPainter);
-        }catch(BadLocationException ex) {
+        } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
     }
     private void traverseElementById(Element element) {
-        if(element.isLeaf()) {
+        if (element.isLeaf()) {
             checkID(element);
-        }else{
-            for(int i=0;i<element.getElementCount();i++) {
+        } else {
+            for (int i = 0; i < element.getElementCount(); i++) {
                 Element child = element.getElement(i);
                 checkID(child);
-                if(!child.isLeaf()) {
+                if (!child.isLeaf()) {
                     traverseElementById(child);
                 }
             }
@@ -117,27 +117,27 @@ public final class MainPanel extends JPanel {
         Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
         Object name = (elementName == null) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
         HTML.Tag tag;
-        if(name instanceof HTML.Tag) {
-            tag = (HTML.Tag)name;
-        }else{
+        if (name instanceof HTML.Tag) {
+            tag = (HTML.Tag) name;
+        } else {
             return;
         }
         textArea.append(String.format("%s%n", tag));
-        if(tag.isBlock()) { //block
+        if (tag.isBlock()) { //block
             Object bid = attrs.getAttribute(HTML.Attribute.ID);
-            if(bid!=null) {
+            if (bid != null) {
                 textArea.append(String.format("block: id=%s%n", bid));
                 addHighlight(element, true);
             }
-        }else{ //inline
+        } else { //inline
             Enumeration e = attrs.getAttributeNames();
-            while(e.hasMoreElements()) {
+            while (e.hasMoreElements()) {
                 Object obj = attrs.getAttribute(e.nextElement());
-                //System.out.println("AttributeNames: "+obj);
-                if(obj instanceof AttributeSet) {
-                    AttributeSet a = (AttributeSet)obj;
+                //System.out.println("AttributeNames: " + obj);
+                if (obj instanceof AttributeSet) {
+                    AttributeSet a = (AttributeSet) obj;
                     Object iid = a.getAttribute(HTML.Attribute.ID);
-                    if(iid!=null) {
+                    if (iid != null) {
                         textArea.append(String.format("inline: id=%s%n", iid));
                         addHighlight(element, false);
                     }
@@ -153,10 +153,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

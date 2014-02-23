@@ -18,12 +18,12 @@ public final class MainPanel extends JPanel {
     private transient ProgressMonitor monitor;
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         area.setEditable(false);
 
         monitor = new ProgressMonitor(null, "message", "note", 0, 100);
-        millisToDecideToPopup = makeSpinner(monitor.getMillisToDecideToPopup(), 0, 5*1000, 100);
-        millisToPopup = makeSpinner(monitor.getMillisToPopup(), 0, 5*1000, 100);
+        millisToDecideToPopup = makeSpinner(monitor.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
+        millisToPopup = makeSpinner(monitor.getMillisToPopup(), 0, 5 * 1000, 100);
 
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(area));
         add(p, BorderLayout.NORTH);
         add(box, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     class RunAction extends AbstractAction {
@@ -54,10 +54,10 @@ public final class MainPanel extends JPanel {
             super("run");
         }
         @Override public void actionPerformed(ActionEvent e) {
-            Window w = SwingUtilities.getWindowAncestor((Component)e.getSource());
-            int toDecideToPopup = (int)millisToDecideToPopup.getValue();
-            int toPopup         = (int)millisToPopup.getValue();
-            int lengthOfTask    = Math.max(10000, toDecideToPopup*5);
+            Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
+            int toDecideToPopup = (int) millisToDecideToPopup.getValue();
+            int toPopup         = (int) millisToPopup.getValue();
+            int lengthOfTask    = Math.max(10000, toDecideToPopup * 5);
             monitor = new ProgressMonitor(w, "message", "note", 0, 100);
             monitor.setMillisToDecideToPopup(toDecideToPopup);
             monitor.setMillisToPopup(toPopup);
@@ -68,17 +68,17 @@ public final class MainPanel extends JPanel {
             runButton.setEnabled(false);
             worker = new Task(lengthOfTask) {
                 @Override protected void process(List<String> chunks) {
-                    if(!isDisplayable()) {
+                    if (!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
                         cancel(true);
                         return;
                     }
-                    for(String message : chunks) {
+                    for (String message : chunks) {
                         monitor.setNote(message);
                     }
                 }
                 @Override public void done() {
-                    if(!isDisplayable()) {
+                    if (!isDisplayable()) {
                         System.out.println("done: DISPOSE_ON_CLOSE");
                         cancel(true);
                         return;
@@ -86,17 +86,17 @@ public final class MainPanel extends JPanel {
                     runButton.setEnabled(true);
                     monitor.close();
                     String text = null;
-                    if(isCancelled()) {
+                    if (isCancelled()) {
                         text = "Cancelled";
-                    }else{
-                        try{
+                    } else {
+                        try {
                             text = get();
-                        }catch(InterruptedException | ExecutionException ex) {
+                        } catch (InterruptedException | ExecutionException ex) {
                             ex.printStackTrace();
                             text = "Exception";
                         }
                     }
-                    area.append(text+"\n");
+                    area.append(text + "\n");
                     area.setCaretPosition(area.getDocument().getLength());
                 }
             };
@@ -115,10 +115,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -139,11 +139,11 @@ class Task extends SwingWorker<String, String> {
     }
     @Override public String doInBackground() {
         int current = 0;
-        while(current<lengthOfTask && !isCancelled()) {
-            if(current%10==0) {
-                try{
+        while (current<lengthOfTask && !isCancelled()) {
+            if (current % 10 == 0) {
+                try {
                     Thread.sleep(5);
-                }catch(InterruptedException ie) {
+                } catch (InterruptedException ie) {
                     return "Interrupted";
                 }
             }
@@ -164,10 +164,10 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
-        if("progress".equals(strPropertyName)) {
-            monitor.setProgress((Integer)e.getNewValue());
-            if(monitor.isCanceled()) {
-                ((SwingWorker)e.getSource()).cancel(true);
+        if ("progress".equals(strPropertyName)) {
+            monitor.setProgress((Integer) e.getNewValue());
+            if (monitor.isCanceled()) {
+                ((SwingWorker) e.getSource()).cancel(true);
             }
         }
     }

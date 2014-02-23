@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     private final JTextArea textArea = new JTextArea();
     private final TreeModel model = tree.getModel();
-    private final DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+    private final DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     public MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane();
@@ -23,14 +23,14 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makeButtonPanel() {
-        JPanel p = new JPanel(new GridLayout(0,1,5,5));
+        JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
         p.add(new JButton(new AbstractAction("<html>depthFirst<br>postorder") {
             @Override public void actionPerformed(ActionEvent ev) {
                 textArea.setText("");
                 Enumeration e = root.depthFirstEnumeration();
-                while(e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                    textArea.append(node.toString()+"\n");
+                while (e.hasMoreElements()) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                    textArea.append(node.toString() + "\n");
                 }
             }
         }));
@@ -38,9 +38,9 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent ev) {
                 textArea.setText("");
                 Enumeration e = root.breadthFirstEnumeration();
-                while(e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                    textArea.append(node.toString()+"\n");
+                while (e.hasMoreElements()) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                    textArea.append(node.toString() + "\n");
                 }
             }
         }));
@@ -48,9 +48,9 @@ public final class MainPanel extends JPanel {
 //             @Override public void actionPerformed(ActionEvent ev) {
 //                 textArea.setText("");
 //                 Enumeration e = root.postorderEnumeration();
-//                 while(e.hasMoreElements()) {
-//                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-//                     textArea.append(node.toString()+"\n");
+//                 while (e.hasMoreElements()) {
+//                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+//                     textArea.append(node.toString() + "\n");
 //                 }
 //             }
 //         }));
@@ -58,14 +58,14 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent ev) {
                 textArea.setText("");
                 Enumeration e = root.preorderEnumeration();
-                while(e.hasMoreElements()) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-                    textArea.append(node.toString()+"\n");
+                while (e.hasMoreElements()) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                    textArea.append(node.toString() + "\n");
                 }
             }
         }));
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panel.add(p, BorderLayout.NORTH);
         return panel;
     }
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

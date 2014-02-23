@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
 //         addComponentListener(new ComponentAdapter() {
 //             @Override public void componentResized(ComponentEvent e) {
 //                 System.out.println("componentResized");
-//                 ((JComponent)e.getSource()).revalidate();
+//                 ((JComponent) e.getSource()).revalidate();
 //             }
 //         });
 //         frame.addWindowStateListener(new WindowAdapter() {
@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
 //                 EventQueue.invokeLater(new Runnable() {
 //                     @Override public void run() {
 //                         System.out.println("windowStateChanged");
-//                         JFrame f = (JFrame)e.getWindow();
-//                         ((JComponent)f.getContentPane()).revalidate();
+//                         JFrame f = (JFrame) e.getWindow();
+//                         ((JComponent) f.getContentPane()).revalidate();
 //                     }
 //                 });
 //             }
@@ -32,11 +32,11 @@ public final class MainPanel extends JPanel {
     }
     private JMenuBar createMenubar() {
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT,2,2) {
+        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2) {
             @Override public Dimension preferredLayoutSize(Container target) {
                 synchronized (target.getTreeLock()) {
                     int targetWidth = target.getSize().width;
-                    if(targetWidth == 0) { targetWidth = Integer.MAX_VALUE; }
+                    if (targetWidth == 0) { targetWidth = Integer.MAX_VALUE; }
                     Insets insets = target.getInsets();
                     int hgap = getHgap();
                     int vgap = getVgap();
@@ -45,11 +45,11 @@ public final class MainPanel extends JPanel {
                     int rowWidth = hgap;
                     int rowHeight = 0;
                     int nmembers = target.getComponentCount();
-                    for(int i = 0; i < nmembers; i++) {
+                    for (int i = 0; i < nmembers; i++) {
                         Component m = target.getComponent(i);
-                        if(m.isVisible()) {
+                        if (m.isVisible()) {
                             Dimension d = m.getPreferredSize();
-                            if(rowWidth + d.width > maxWidth) {
+                            if (rowWidth + d.width > maxWidth) {
                                 height += rowHeight;
                                 rowWidth = hgap;
                                 rowHeight = 0;
@@ -68,19 +68,19 @@ public final class MainPanel extends JPanel {
 //             private Dimension preferredLayoutSize;
 //             @Override public void layoutContainer(Container target) {
 //                 Dimension size = preferredLayoutSize(target);
-//                 if(size.equals(preferredLayoutSize)) {
+//                 if (size.equals(preferredLayoutSize)) {
 //                     super.layoutContainer(target);
-//                 }else{
+//                 } else {
 //                     preferredLayoutSize = size;
 //                     Container top = target;
-//                     while(!(top instanceof Window) && top.getParent() != null) {
+//                     while (!(top instanceof Window) && top.getParent() != null) {
 //                         top = top.getParent();
 //                     }
 //                     top.validate();
 //                 }
 //             }
         });
-        for(String key: new String[] {"File", "Edit", "Aaaaaaaaaaaaaaaaaaaaa", "Bbbbbbbbbbbbb", "Help"}) {
+        for (String key: new String[] {"File", "Edit", "Aaaaaaaaaaaaaaaaaaaaa", "Bbbbbbbbbbbbb", "Help"}) {
             menuBar.add(createMenu(key));
         }
         return menuBar;
@@ -98,10 +98,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -30,11 +30,11 @@ public final class MainPanel extends JPanel {
         });
         button = new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton)e.getSource();
-                if(animator.isRunning()) {
+                JButton b = (JButton) e.getSource();
+                if (animator.isRunning()) {
                     b.setText("Start");
                     animator.stop();
-                }else{
+                } else {
                     b.setText("Stop");
                     animator.start();
                 }
@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
         button.setPreferredSize(new Dimension(0, 100));
         button.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                JButton button = (JButton)e.getComponent();
-                if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !button.isDisplayable()) {
+                JButton button = (JButton) e.getComponent();
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !button.isDisplayable()) {
                     animator.stop();
                 }
             }
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("delay=100ms"));
         p.add(button);
         add(p, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -66,10 +66,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

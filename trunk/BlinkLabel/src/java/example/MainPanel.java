@@ -29,22 +29,22 @@ public final class MainPanel extends JPanel {
 
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0) {
-                    if(isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
+                    if (isDisplayable()) {
                         timer1.start();
                         timer2.start();
-                    }else{
+                    } else {
                         timer1.stop();
                         timer2.stop();
                     }
                 }
             }
         });
-        JPanel p = new JPanel(new GridLayout(2,1,5,5));
+        JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.add(makePanel("\u25CB<->\u25CF", label1));
         p.add(makePanel("!!!Warning!!!<->Empty", label2));
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
@@ -61,10 +61,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

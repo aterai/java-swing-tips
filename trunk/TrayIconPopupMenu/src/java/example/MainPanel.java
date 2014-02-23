@@ -21,20 +21,20 @@ public final class MainPanel extends JPanel {
     public MainPanel(JFrame f) {
         super(new BorderLayout());
         this.frame = f;
-        add(new JLabel("SystemTray.isSupported(): "+SystemTray.isSupported()), BorderLayout.NORTH);
+        add(new JLabel("SystemTray.isSupported(): " + SystemTray.isSupported()), BorderLayout.NORTH);
 
         ButtonGroup group = new ButtonGroup();
         Box box = Box.createVerticalBox();
-        for(LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
+        for (LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
             JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.<JComponent>asList(popup)));
             group.add(rb); box.add(rb);
         }
         box.add(Box.createVerticalGlue());
-        box.setBorder(BorderFactory.createEmptyBorder(5,25,5,25));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
 
         add(box);
         setPreferredSize(new Dimension(320, 240));
-        if(!SystemTray.isSupported()) {
+        if (!SystemTray.isSupported()) {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;
         }
@@ -49,9 +49,9 @@ public final class MainPanel extends JPanel {
         icon.addMouseListener(new TrayIconPopupMenuHandler(popup, dummy));
 
         initPopupMenu();
-        try{
+        try {
             tray.add(icon);
-        }catch(AWTException e) {
+        } catch (AWTException e) {
             e.printStackTrace();
         }
     }
@@ -96,13 +96,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//             for(UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
-//               if("Nimbus".equals(laf.getName()))
+//             for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
+//               if ("Nimbus".equals(laf.getName()))
 //                 UIManager.setLookAndFeel(laf.getClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -122,10 +122,10 @@ final class TrayIconPopupMenuUtil {
     // Try to find GraphicsConfiguration, that includes mouse pointer position
     private static GraphicsConfiguration getGraphicsConfiguration(Point p) {
         GraphicsConfiguration gc = null;
-        for(GraphicsDevice gd: GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
-            if(gd.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
+        for (GraphicsDevice gd: GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+            if (gd.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
                 GraphicsConfiguration dgc = gd.getDefaultConfiguration();
-                if(dgc.getBounds().contains(p)) {
+                if (dgc.getBounds().contains(p)) {
                     gc = dgc;
                     break;
                 }
@@ -137,7 +137,7 @@ final class TrayIconPopupMenuUtil {
     //Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
     public static Point adjustPopupLocation(JPopupMenu popup, int xposition, int yposition) {
         Point p = new Point(xposition, yposition);
-        if(GraphicsEnvironment.isHeadless()) {
+        if (GraphicsEnvironment.isHeadless()) {
             return p;
         }
 
@@ -145,14 +145,14 @@ final class TrayIconPopupMenuUtil {
         GraphicsConfiguration gc = getGraphicsConfiguration(p);
 
         // If not found and popup have invoker, ask invoker about his gc
-        if(gc == null && popup.getInvoker() != null) {
+        if (gc == null && popup.getInvoker() != null) {
             gc = popup.getInvoker().getGraphicsConfiguration();
         }
 
-        if(gc == null) {
+        if (gc == null) {
             // If we don't have GraphicsConfiguration use primary screen
             screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-        }else{
+        } else {
             // If we have GraphicsConfiguration use it to get
             // screen bounds
             screenBounds = gc.getBounds();
@@ -164,19 +164,19 @@ final class TrayIconPopupMenuUtil {
         long pw = (long) p.x + (long) size.width;
         long ph = (long) p.y + (long) size.height;
 
-        if(pw > screenBounds.x + screenBounds.width)  {
+        if (pw > screenBounds.x + screenBounds.width)  {
             p.x -= size.width;
         }
-        if(ph > screenBounds.y + screenBounds.height) {
+        if (ph > screenBounds.y + screenBounds.height) {
             p.y -= size.height;
         }
 
-        // Change is made to the desired (X,Y) values, when the
+        // Change is made to the desired (X, Y) values, when the
         // PopupMenu is too tall OR too wide for the screen
-        if(p.x < screenBounds.x) {
+        if (p.x < screenBounds.x) {
             p.x = screenBounds.x;
         }
-        if(p.y < screenBounds.y) {
+        if (p.y < screenBounds.y) {
             p.y = screenBounds.y;
         }
         return p;
@@ -192,7 +192,7 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
         this.dummy = dummy;
     }
     private void showJPopupMenu(MouseEvent e) {
-        if(e.isPopupTrigger()) {
+        if (e.isPopupTrigger()) {
             Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getX(), e.getY());
             dummy.setLocation(p);
             dummy.setVisible(true);
@@ -234,27 +234,27 @@ class ChangeLookAndFeelAction extends AbstractAction {
         this.setEnabled(isAvailableLookAndFeel(lnf));
     }
     private static boolean isAvailableLookAndFeel(String lnf) {
-        try{
+        try {
             Class lnfClass = Class.forName(lnf);
-            LookAndFeel newLnF = (LookAndFeel)(lnfClass.newInstance());
+            LookAndFeel newLnF = (LookAndFeel) lnfClass.newInstance();
             return newLnF.isSupportedLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             return false;
         }
     }
     @Override public void actionPerformed(ActionEvent e) {
-        try{
+        try {
             UIManager.setLookAndFeel(lnf);
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + lnf);
         }
-        for(Frame f:Frame.getFrames()) {
+        for (Frame f:Frame.getFrames()) {
             SwingUtilities.updateComponentTreeUI(f);
             f.pack();
         }
-        for(JComponent c:list) {
+        for (JComponent c:list) {
             SwingUtilities.updateComponentTreeUI(c);
         }
     }

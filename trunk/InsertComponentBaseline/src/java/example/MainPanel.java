@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         Dimension d = check1.getPreferredSize();
         int baseline = check1.getBaseline(d.width, d.height);
         //System.out.println(check1.getAlignmentY());
-        check1.setAlignmentY(baseline/(float)d.height);
+        check1.setAlignmentY(baseline/(float) d.height);
         textPane.replaceSelection("\n\n Baseline: ");
         textPane.insertComponent(check1);
 
@@ -30,12 +30,12 @@ public final class MainPanel extends JPanel {
         check2.setFocusable(false);
         d = check2.getPreferredSize();
         baseline = check2.getBaseline(d.width, d.height);
-        check2.setAlignmentY(baseline/(float)d.height);
+        check2.setAlignmentY(baseline/(float) d.height);
         textPane.replaceSelection("\n\n Baseline+Cursor: ");
         textPane.insertComponent(check2);
 
         add(new JScrollPane(textPane));
-        setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+        setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

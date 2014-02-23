@@ -27,18 +27,18 @@ public final class MainPanel extends JPanel {
             int vcol = columnAtPoint(pt);
             //int mrow = convertRowIndexToModel(vrow);
             int mcol = convertColumnIndexToModel(vcol);
-            if(mcol==1) {
+            if (mcol == 1) {
                 TableCellRenderer tcr = getCellRenderer(vrow, vcol);
                 Component c = prepareRenderer(tcr, vrow, vcol); //Component c = tcr.getTableCellRendererComponent(this, getValueAt(vrow, vcol), false, false, vrow, vcol);
-                if(c instanceof JPanel) {
+                if (c instanceof JPanel) {
                     Rectangle r = getCellRect(vrow, vcol, true);
                     c.setBounds(r);
                     //@see http://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
                     c.doLayout();
                     pt.translate(-r.x, -r.y);
                     Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-                    if(l instanceof JLabel) {
-                        ImageIcon icon = (ImageIcon)((JLabel)l).getIcon();
+                    if (l instanceof JLabel) {
+                        ImageIcon icon = (ImageIcon) ((JLabel) l).getIcon();
                         return icon.getDescription();
                     }
                 }
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     public static Icon getOptionPaneIcon(String key) {
-        ImageIcon icon = (ImageIcon)UIManager.getIcon(key);
+        ImageIcon icon = (ImageIcon) UIManager.getIcon(key);
         icon.setDescription(key);
         return icon;
     }
@@ -70,10 +70,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -88,10 +88,10 @@ class ListIconRenderer extends JPanel implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAll();
         setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        if(value instanceof List<?>) {
-            for(Object o: (List<?>) value) {
-                if(o instanceof Icon) {
-                    Icon icon = (Icon)o;
+        if (value instanceof List<?>) {
+            for (Object o: (List<?>) value) {
+                if (o instanceof Icon) {
+                    Icon icon = (Icon) o;
                     JLabel label = new JLabel(icon);
                     label.setToolTipText(icon.toString());
                     add(label);

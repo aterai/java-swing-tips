@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 //PersistenceService persistenceService = ...
 //                 persistenceService.delete(codebase);
-//                 Window frame = SwingUtilities.getWindowAncestor((Component)e.getSource());
+//                 Window frame = SwingUtilities.getWindowAncestor((Component) e.getSource());
 //                 frame.dispose();
 //             }
 //         });
@@ -43,16 +43,16 @@ public final class MainPanel extends JPanel {
         SwingWorker<WindowAdapter, Void> worker = new LoadSaveTask(windowState) {
             @Override public void done() {
                 WindowAdapter windowListener = null;
-                try{
+                try {
                     windowListener = get();
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                }catch(InterruptedException   | ExecutionException |
-                       ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (InterruptedException   | ExecutionException |
+                         ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
                 JFrame frame = new JFrame("@title@");
-                if(windowListener!=null) {
+                if (windowListener != null) {
                     frame.addWindowListener(windowListener);
                 }
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -75,27 +75,27 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
     @Override public WindowAdapter doInBackground() {
         PersistenceService ps;
         BasicService bs;
-        try{
-            bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
-            ps = (PersistenceService)ServiceManager.lookup("javax.jnlp.PersistenceService");
-        }catch(UnavailableServiceException use) {
+        try {
+            bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+            ps = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
+        } catch (UnavailableServiceException use) {
             //use.printStackTrace();
             ps = null;
             bs = null;
         }
-        if(ps == null || bs == null) {
+        if (ps == null || bs == null) {
             return null;
-        }else{
+        } else {
             final PersistenceService persistenceService = ps;
             final URL codebase = bs.getCodeBase();
             loadWindowState(persistenceService, codebase, windowState);
             return new WindowAdapter() {
                 @Override public void windowClosing(WindowEvent e) {
-                    JFrame f = (JFrame)e.getComponent();
-                    if(f.getExtendedState()==JFrame.NORMAL) {
+                    JFrame f = (JFrame) e.getComponent();
+                    if (f.getExtendedState() == JFrame.NORMAL) {
                         windowState.setSize(f.getSize());
                         //Point pt = f.getLocationOnScreen();
-                        //if(pt.x<0 || pt.y<0) { return; }
+                        //if (pt.x < 0 || pt.y < 0) { return; }
                         windowState.setLocation(f.getLocationOnScreen());
                     }
                     saveWindowState(persistenceService, codebase, windowState);
@@ -104,49 +104,49 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
         }
     }
     private static void loadWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
-        try{
+        try {
             FileContents fc = ps.get(codebase);
-            try(XMLDecoder d = new XMLDecoder(new BufferedInputStream(fc.getInputStream()))) {
-                @SuppressWarnings("unchecked") Map<String, Serializable> map = (Map<String, Serializable>)d.readObject();
+            try (XMLDecoder d = new XMLDecoder(new BufferedInputStream(fc.getInputStream()))) {
+                @SuppressWarnings("unchecked") Map<String, Serializable> map = (Map<String, Serializable>) d.readObject();
                 //d.close();
-                windowState.setSize((Dimension)map.get("size"));
-                windowState.setLocation((Point)map.get("location"));
+                windowState.setSize((Dimension) map.get("size"));
+                windowState.setLocation((Point) map.get("location"));
                 ////Test:
                 ////ObjectInputStream d = new ObjectInputStream(appSettings.getInputStream());
-                ////WindowState cache = (WindowState)d.readObject();
+                ////WindowState cache = (WindowState) d.readObject();
                 ////Test:
-                //WindowState cache = (WindowState)map.get("setting");
-                //System.out.println("aaa: "+cache.getSize());
-                //System.out.println("aaa: "+cache.getLocation());
+                //WindowState cache = (WindowState) map.get("setting");
+                //System.out.println("aaa: " + cache.getSize());
+                //System.out.println("aaa: " + cache.getLocation());
             }
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             //create the cache
-            try{
+            try {
                 long size = ps.create(codebase, 64000);
                 System.out.println("Cache created - size: " + size);
-            }catch(IOException ioe) {
+            } catch (IOException ioe) {
                 //System.err.println("Application codebase is not a valid URL?!");
                 ioe.printStackTrace();
             }
         }
     }
     private static void saveWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
-        try{
+        try {
             FileContents fc = ps.get(codebase);
-            try(XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {
+            try (XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {
                 //Test: delete muf ex. C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxxxxx-xxxxx.muf
                 //ps.delete(codebase);
                 //ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
                 HashMap<String, Serializable> map = new HashMap<>();
-                map.put("size", (Serializable)windowState.getSize());
-                map.put("location", (Serializable)windowState.getLocation());
-                //Test1: map.put("setting", (Serializable)windowState);
+                map.put("size", (Serializable) windowState.getSize());
+                map.put("location", (Serializable) windowState.getLocation());
+                //Test1: map.put("setting", (Serializable) windowState);
                 //Test2: e.writeObject(windowState);
                 e.writeObject(map);
                 e.flush();
                 //e.close();
             }
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }

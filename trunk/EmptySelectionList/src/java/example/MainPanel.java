@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private final JList<String> list3 = new JList<>(makeModel());
 
     public MainPanel() {
-        super(new GridLayout(1,0));
+        super(new GridLayout(1, 0));
 
         list1.setEnabled(false);
 
@@ -58,10 +58,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

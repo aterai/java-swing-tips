@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         MainPanel p = new MainPanel();
@@ -63,15 +63,15 @@ public final class MainPanel extends JPanel {
 class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
     private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        if(!(c instanceof AbstractButton)) {
+        if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
-        if(model.isSelected()) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (model.isSelected()) {
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.fillRoundRect(x+3,y+3, getIconWidth()-6, getIconHeight()-6, 4, 4);
+            g2.fillRoundRect(x + 3, y + 3, getIconWidth()-6, getIconHeight()-6, 4, 4);
             //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g2.dispose();
         }
@@ -87,15 +87,15 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
 class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {
     private static final long serialVersionUID = 1L;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        if(!(c instanceof AbstractButton)) {
+        if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
-        if(model.isSelected()) {
-            //g.fillRoundRect(x+3,y+3, getIconWidth()-6, getIconHeight()-6, 4, 4);
-            g.fillOval(x+2,y+2, getIconWidth()-5, getIconHeight()-5);
-            //g.fillArc(x+2,y+2,getIconWidth()-5, getIconHeight()-5, 0, 360);
+        if (model.isSelected()) {
+            //g.fillRoundRect(x + 3, y + 3, getIconWidth()-6, getIconHeight()-6, 4, 4);
+            g.fillOval(x + 2, y + 2, getIconWidth()-5, getIconHeight()-5);
+            //g.fillArc(x + 2, y + 2, getIconWidth()-5, getIconHeight()-5, 0, 360);
         }
     }
     @Override public int getIconWidth()  { return 12; }

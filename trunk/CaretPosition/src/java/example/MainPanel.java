@@ -44,14 +44,14 @@ public final class MainPanel extends JPanel {
         clearButton.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 jtp.setText("");
-                if(!timer.isRunning()) {
+                if (!timer.isRunning()) {
                     startButton.setEnabled(true);
                     stopButton.setEnabled(false);
                 }
             }
         });
         Box box = Box.createHorizontalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
         box.add(startButton);
         box.add(stopButton);
@@ -76,17 +76,17 @@ public final class MainPanel extends JPanel {
     private void append(String str) {
         Document doc = jtp.getDocument();
         String text;
-        if(doc.getLength()>LIMIT) {
+        if (doc.getLength() > LIMIT) {
             timerStop();
             startButton.setEnabled(false);
             text = "doc.getLength()>1000";
-        }else{
+        } else {
             text = str;
         }
-        try{
-            doc.insertString(doc.getLength(), text+LINESEPARATOR, null);
+        try {
+            doc.insertString(doc.getLength(), text + LINESEPARATOR, null);
             jtp.setCaretPosition(doc.getLength());
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -99,10 +99,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

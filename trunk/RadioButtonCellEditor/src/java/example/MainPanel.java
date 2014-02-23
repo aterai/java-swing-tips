@@ -20,11 +20,11 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
         @Override public void setValueAt(Object v, int row, int column) {
-            if(v instanceof Boolean) {
-                for(int i = 0; i < getRowCount(); i++) {
+            if (v instanceof Boolean) {
+                for (int i = 0; i < getRowCount(); i++) {
                     super.setValueAt(i == row, i, column);
                 }
-            }else{
+            } else {
                 super.setValueAt(v, row, column);
             }
         }
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -71,8 +71,8 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
         setHorizontalAlignment(SwingConstants.CENTER);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if(value instanceof Boolean) {
-            setSelected((Boolean)value);
+        if (value instanceof Boolean) {
+            setSelected((Boolean) value);
         }
         return this;
     }
@@ -86,8 +86,8 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
         addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 fireEditingStopped();
-//                 for(int i=0; i<model.getRowCount(); i++) {
-//                     model.setValueAt(i==index, i, 2);
+//                 for (int i = 0; i < model.getRowCount(); i++) {
+//                     model.setValueAt(i == index, i, 2);
 //                 }
             }
         });
@@ -95,8 +95,8 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
 //     private int index = -1;
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 //         index = table.convertRowIndexToModel(row);
-        if(value instanceof Boolean) {
-            setSelected((Boolean)value);
+        if (value instanceof Boolean) {
+            setSelected((Boolean) value);
         }
         return this;
     }
@@ -134,13 +134,13 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -149,13 +149,13 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

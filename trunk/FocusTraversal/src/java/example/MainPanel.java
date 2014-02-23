@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JPanel p = new JPanel(new BorderLayout(2,2));
+    private final JPanel p = new JPanel(new BorderLayout(2, 2));
     private final JTextArea textarea = new JTextArea();
     private final JButton nb = new JButton("NORTH");
     private final JButton sb = new JButton("SOUTH");
@@ -19,12 +19,12 @@ public final class MainPanel extends JPanel {
     private final JScrollPane scroll = new JScrollPane(textarea);
     private final Box box = Box.createHorizontalBox();
     private final JFrame frame;
-    private final JCheckBox check = new JCheckBox("setEditable",true);
+    private final JCheckBox check = new JCheckBox("setEditable", true);
 
     public MainPanel(JFrame frame) {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         this.frame = frame;
-        p.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         p.add(scroll);
         p.add(nb, BorderLayout.NORTH);
         p.add(sb, BorderLayout.SOUTH);
@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
         FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(Arrays.asList(eb, wb, sb, nb));
         FocusTraversalPolicy policy2 = new LayoutFocusTraversalPolicy() {
             @Override protected boolean accept(Component c) {
-                if(c instanceof JTextComponent) {
-                    return ((JTextComponent)c).isEditable();
-                }else{
+                if (c instanceof JTextComponent) {
+                    return ((JTextComponent) c).isEditable();
+                } else {
                     return super.accept(c);
                 }
             }
@@ -55,13 +55,13 @@ public final class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         box.setBorder(BorderFactory.createTitledBorder("FocusTraversalPolicy"));
         //boolean flag = true;
-        for(JRadioButton rb: rl) {
-            //if(flag) {rb.setSelected(true); flag = false;}
+        for (JRadioButton rb: rl) {
+            //if (flag) {rb.setSelected(true); flag = false;}
             bg.add(rb);
             box.add(rb);
             box.add(Box.createHorizontalStrut(3));
         }
-        ((JRadioButton)bg.getElements().nextElement()).setSelected(true);
+        ((JRadioButton) bg.getElements().nextElement()).setSelected(true);
         box.add(Box.createHorizontalGlue());
 
         check.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -99,7 +99,7 @@ public final class MainPanel extends JPanel {
           + debugString("eb",       eb));
     }
     private static String debugString(String label, Container c) {
-        return label+"------------------"
+        return label + "------------------"
           + "\n  isFocusCycleRoot: "               + c.isFocusCycleRoot()
           + "\n  isFocusTraversalPolicySet: "      + c.isFocusTraversalPolicySet()
           + "\n  isFocusTraversalPolicyProvider: " + c.isFocusTraversalPolicyProvider()
@@ -114,10 +114,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

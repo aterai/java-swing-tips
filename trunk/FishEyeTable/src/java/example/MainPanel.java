@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         final FishEyeTable table = new FishEyeTable(makeTestModel());
-        table.setRowSelectionInterval(0,0);
+        table.setRowSelectionInterval(0, 0);
         JScrollPane scroll = new JScrollPane(table);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(320, 240));
@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
     }
     private static TableModel makeTestModel() {
         TestModel m = new TestModel();
-        for(int i=0;i<20;i++) {
-            m.addTest(new Test("Name:"+i, i%2==0?"Comment":""));
+        for (int i = 0; i < 20; i++) {
+            m.addTest(new Test("Name:" + i, i % 2 == 0 ? "Comment" : ""));
         }
         return m;
     }
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -76,23 +76,23 @@ class FishEyeTable extends JTable {
         Font font18 = font.deriveFont(16.0f);
         Font font24 = font.deriveFont(22.0f);
         Font font32 = font.deriveFont(30.0f);
-        Color color12 = new Color(250,250,250);
-        Color color18 = new Color(245,245,245);
-        Color color24 = new Color(240,240,240);
-        Color color32 = new Color(230,230,250);
+        Color color12 = new Color(250, 250, 250);
+        Color color18 = new Color(245, 245, 245);
+        Color color24 = new Color(240, 240, 240);
+        Color color32 = new Color(230, 230, 250);
 
         fishEyeRowList = Arrays.asList(
-            new FishEyeRowContext(12,font12,color12),
-            new FishEyeRowContext(18,font18,color18),
-            new FishEyeRowContext(24,font24,color24),
-            new FishEyeRowContext(32,font32,color32),
-            new FishEyeRowContext(24,font24,color24),
-            new FishEyeRowContext(18,font18,color18),
-            new FishEyeRowContext(12,font12,color12)
+            new FishEyeRowContext(12, font12, color12),
+            new FishEyeRowContext(18, font18, color18),
+            new FishEyeRowContext(24, font24, color24),
+            new FishEyeRowContext(32, font32, color32),
+            new FishEyeRowContext(24, font24, color24),
+            new FishEyeRowContext(18, font18, color18),
+            new FishEyeRowContext(12, font12, color12)
         );
     }
     @Override public void updateUI() {
-        if(handler!=null) {
+        if (handler != null) {
             removeMouseListener(handler);
             removeMouseMotionListener(handler);
             getSelectionModel().removeListSelectionListener(handler);
@@ -102,7 +102,7 @@ class FishEyeTable extends JTable {
         setRowSelectionAllowed(true);
         setFillsViewportHeight(true);
 
-        if(handler==null) {
+        if (handler == null) {
             handler = new FishEyeTableHandler();
         }
         addMouseListener(handler);
@@ -115,7 +115,7 @@ class FishEyeTable extends JTable {
         protected int prevHeight;
         @Override public void mouseMoved(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
-            if(prevRow==row) {
+            if (prevRow == row) {
                 return;
             }
             initRowHeigth(prevHeight, row);
@@ -123,7 +123,7 @@ class FishEyeTable extends JTable {
         }
         @Override public void mouseDragged(MouseEvent e) {
             int row = rowAtPoint(e.getPoint());
-            if(prevRow==row) {
+            if (prevRow == row) {
                 return;
             }
             initRowHeigth(prevHeight, row);
@@ -133,11 +133,11 @@ class FishEyeTable extends JTable {
             repaint();
         }
         @Override public void valueChanged(ListSelectionEvent e) {
-            if(e.getValueIsAdjusting()) {
+            if (e.getValueIsAdjusting()) {
                 return;
             }
             int row = getSelectedRow();
-            if(prevRow==row) {
+            if (prevRow == row) {
                 return;
             }
             initRowHeigth(prevHeight, row);
@@ -148,11 +148,11 @@ class FishEyeTable extends JTable {
     @Override public void doLayout() {
         super.doLayout();
         Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
-        if(p==null) {
+        if (p == null) {
             return;
         }
-        int h = ((JViewport)p).getExtentSize().height;
-        if(h==handler.prevHeight) {
+        int h = ((JViewport) p).getExtentSize().height;
+        if (h == handler.prevHeight) {
             return;
         }
         initRowHeigth(h, getSelectedRow());
@@ -166,10 +166,10 @@ class FishEyeTable extends JTable {
         Font font   = minFont;
         int ccRow   = handler.prevRow;
         int index   = 0;
-        int rd2     = (fishEyeRowList.size()-1)/2;
-        for(int i=-rd2;i<rowCount;i++) {
-            if(ccRow-rd2<=i && i<=ccRow+rd2) {
-                if(i==row) {
+        int rd2     = (fishEyeRowList.size() - 1) / 2;
+        for (int i = -rd2; i < rowCount; i++) {
+            if (ccRow - rd2 <= i && i <= ccRow + rd2) {
+                if (i == row) {
                     color = fishEyeRowList.get(index).color;
                     font  = fishEyeRowList.get(index).font;
                     break;
@@ -179,7 +179,7 @@ class FishEyeTable extends JTable {
         }
         c.setBackground(color);
         c.setFont(font);
-        if(isRowSelected(row)) {
+        if (isRowSelected(row)) {
             c.setBackground(getSelectionBackground());
         }
         return c;
@@ -188,9 +188,9 @@ class FishEyeTable extends JTable {
     private int getViewableColoredRowCount(int ridx) {
         int rd2 = (fishEyeRowList.size()-1)/2;
         int rc  = getModel().getRowCount();
-        if(rd2-ridx>0 && ridx<rd2) {
+        if (rd2 - ridx > 0 && ridx < rd2) {
             return rd2 + 1 + ridx;
-        }else if(ridx>rc-1-rd2 && ridx<rc-1+rd2) {
+        } else if (ridx > rc - 1 - rd2 && ridx < rc - 1 + rd2) {
             return rc - ridx + rd2;
         }
         return fishEyeRowList.size();
@@ -201,28 +201,28 @@ class FishEyeTable extends JTable {
         int rowCount = getModel().getRowCount();
         int viewRc   = getViewableColoredRowCount(ccRow);
         int viewH    = 0;
-        for(int i=0;i<viewRc;i++) {
+        for (int i = 0; i < viewRc; i++) {
             viewH += fishEyeRowList.get(i).height;
         }
         int restRc   = rowCount - viewRc;
         int restH    = height - viewH;
-        int restRh   = restH/restRc; restRh = restRh>0 ? restRh : 1;
-        int restGap  = restH - restRh*restRc;
+        int restRh   = restH / restRc; restRh = restRh > 0 ? restRh : 1;
+        int restGap  = restH - restRh * restRc;
         //System.out.println(String.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH));
         int index = -1;
-        for(int i=-rd2;i<rowCount;i++) {
+        for (int i= -rd2; i < rowCount; i++) {
             int crh;
-            if(ccRow-rd2<=i && i<=ccRow+rd2) {
+            if (ccRow - rd2 <= i && i <= ccRow + rd2) {
                 index++;
-                if(i<0) {
+                if (i < 0) {
                     continue;
                 }
                 crh = fishEyeRowList.get(index).height;
-            }else{
-                if(i<0) {
+            } else {
+                if (i < 0) {
                     continue;
                 }
-                crh = restRh + (restGap>0 ? 1 : 0);
+                crh = restRh + (restGap > 0 ? 1 : 0);
                 restGap--;
             }
             setRowHeight(i, crh);

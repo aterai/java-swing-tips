@@ -15,8 +15,8 @@ public final class MainPanel extends JPanel {
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
 
-        JPanel p = new JPanel(new BorderLayout(5,5));
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel p = new JPanel(new BorderLayout(5, 5));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         p.add(nb, BorderLayout.NORTH);
         p.add(sb, BorderLayout.SOUTH);
         p.add(wb, BorderLayout.WEST);
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 //         focusManager.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
 //             @Override public void propertyChange(java.beans.PropertyChangeEvent e) {
 //                 String prop = e.getPropertyName();
-//                 if("activeWindow".equals(prop) && e.getNewValue()!=null) {
+//                 if ("activeWindow".equals(prop) && e.getNewValue() != null) {
 //                     System.out.println("activeWindow");
 //                     field.requestFocusInWindow();
 //                 }
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

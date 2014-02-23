@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 
     private static JPanel createCompButtonPanel1(JComponent cmp, JButton btn, String str) {
         JPanel panel = new JPanel(new BorderLayout(GAP, GAP));
-        panel.setBorder(BorderFactory.createEmptyBorder(GAP,GAP,GAP,GAP));
+        panel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
         panel.add(new JLabel(str), BorderLayout.WEST);
         panel.add(cmp);
         panel.add(btn, BorderLayout.EAST);
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

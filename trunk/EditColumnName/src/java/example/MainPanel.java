@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -60,15 +60,15 @@ class TablePopupMenu extends JPopupMenu {
     private final JTextField textField = new JTextField();
     private final JMenuItem editItem1 = new JMenuItem(new AbstractAction("Edit: setHeaderValue") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTableHeader header = (JTableHeader)getInvoker();
+            JTableHeader header = (JTableHeader) getInvoker();
             TableColumn column = header.getColumnModel().getColumn(index);
             String name = column.getHeaderValue().toString();
             textField.setText(name);
             int result = JOptionPane.showConfirmDialog(header.getTable(), textField, getValue(NAME).toString(),
                                                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if(result==JOptionPane.OK_OPTION) {
+            if (result == JOptionPane.OK_OPTION) {
                 String str = textField.getText().trim();
-                if(!str.equals(name)) {
+                if (!str.equals(name)) {
                     column.setHeaderValue(str);
                     header.repaint();
                 }
@@ -77,18 +77,18 @@ class TablePopupMenu extends JPopupMenu {
     });
     private final JMenuItem editItem2 = new JMenuItem(new AbstractAction("Edit: setColumnIdentifiers") {
         @Override public void actionPerformed(ActionEvent e) {
-            final JTableHeader header = (JTableHeader)getInvoker();
+            final JTableHeader header = (JTableHeader) getInvoker();
             final JTable table = header.getTable();
-            final DefaultTableModel model = (DefaultTableModel)table.getModel();
+            final DefaultTableModel model = (DefaultTableModel) table.getModel();
             String name = table.getColumnName(index);
             textField.setText(name);
             int result = JOptionPane.showConfirmDialog(table, textField, getValue(NAME).toString(),
                                                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if(result==JOptionPane.OK_OPTION) {
+            if (result == JOptionPane.OK_OPTION) {
                 String str = textField.getText().trim();
-                if(!str.equals(name)) {
+                if (!str.equals(name)) {
                     columnNames[table.convertColumnIndexToModel(index)] = str;
-                    // Bug?: if(header.getDraggedColumn()!=null): ArrayIndexOutOfBoundsException: -1
+                    // Bug?: if (header.getDraggedColumn() != null): ArrayIndexOutOfBoundsException: -1
                     // @see bookmark_1: header.setDraggedColumn(null);
                     model.setColumnIdentifiers(columnNames);
                 }
@@ -101,7 +101,7 @@ class TablePopupMenu extends JPopupMenu {
         super();
         columnNames = new String[arrays.length];
         System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
-//         for(int i=0;i<arrays.length;i++) {
+//         for (int i = 0; i < arrays.length; i++) {
 //             columnNames[i] = arrays[i];
 //         }
         textField.addAncestorListener(new AncestorListener() {
@@ -115,10 +115,10 @@ class TablePopupMenu extends JPopupMenu {
         add(editItem2);
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTableHeader) {
-            JTableHeader header = (JTableHeader)c;
+        if (c instanceof JTableHeader) {
+            JTableHeader header = (JTableHeader) c;
             header.setDraggedColumn(null); // bookmark_1
-            //if(header.getDraggedColumn()!=null) remain dirty area >>>
+            //if (header.getDraggedColumn() != null) remain dirty area >>>
             header.repaint();
             header.getTable().repaint();
             //<<<

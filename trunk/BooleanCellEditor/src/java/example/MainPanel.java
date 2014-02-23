@@ -51,17 +51,17 @@ public final class MainPanel extends JPanel {
             }
             private void updateRenderer() {
                 TableModel m = getModel();
-                for(int i=0;i<m.getColumnCount();i++) {
+                for (int i = 0; i < m.getColumnCount(); i++) {
                     TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-                    if(r instanceof JComponent) {
-                        ((JComponent)r).updateUI();
+                    if (r instanceof JComponent) {
+                        ((JComponent) r).updateUI();
                     }
                 }
             }
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
+                if (c instanceof JCheckBox) {
+                    JCheckBox b = (JCheckBox) c;
                     b.setBackground(getSelectionBackground());
                     b.setBorderPainted(true);
                 }
@@ -76,25 +76,25 @@ public final class MainPanel extends JPanel {
         checkBox.setOpaque(true);
         checkBox.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                JCheckBox cb = (JCheckBox)e.getComponent();
+                JCheckBox cb = (JCheckBox) e.getComponent();
                 ButtonModel m = cb.getModel();
                 int editingRow = table.getEditingRow();
-                if(m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
-                    if(editingRow%2==0) {
+                if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
+                    if (editingRow % 2 == 0) {
                         cb.setOpaque(false);
                         //cb.setBackground(getBackground());
-                    }else{
+                    } else {
                         cb.setOpaque(true);
                         cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
                     }
-                }else{
+                } else {
                     cb.setBackground(table.getSelectionBackground());
                     cb.setOpaque(true);
                 }
             }
             @Override public void mouseExited(MouseEvent e) {
                 //in order to drag table row selection
-                if(table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+                if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
                     table.getCellEditor().cancelCellEditing();
                 }
             }
@@ -109,10 +109,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

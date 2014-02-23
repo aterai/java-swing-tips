@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
         add(makeTitlePanel("setEditable(false)", Arrays.asList(combo02)), BorderLayout.NORTH);
         add(makeTitlePanel("setEditable(true)",  Arrays.asList(combo03, combo04, combo05, combo06)), BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     public static ComboBoxModel<String> makeModel() {
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         c.insets  = new Insets(5, 5, 5, 5);
         c.weightx = 1.0;
         c.gridy   = 0;
-        for(JComponent cmp:list) {
+        for (JComponent cmp:list) {
             p.add(cmp, c);
             c.gridy++;
         }
@@ -89,10 +89,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -119,7 +119,7 @@ final class ComboBoxUtil {
                 g.translate(x, y);
                 int ih = icon.getIconHeight();
                 int ch = getIconHeight();
-                int yy = ch-ih > 0 ? (ch-ih)/2 : 0;
+                int yy = ch - ih > 0 ? (ch - ih) / 2 : 0;
                 g.drawImage(icon.getImage(), 0, yy, c);
                 g.translate(-x, -y);
             }
@@ -130,7 +130,7 @@ final class ComboBoxUtil {
         return BorderFactory.createCompoundBorder(comp.getBorder(), b3);
     }
     public static void initIconComboBorder1(JComboBox comboBox, final ImageIcon icon) {
-        final JTextField comp = (JTextField)comboBox.getEditor().getEditorComponent();
+        final JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
         Icon wrappedIcon = new ImageIcon() {
             @Override public int getIconWidth()  {
                 return icon.getIconWidth();
@@ -140,11 +140,11 @@ final class ComboBoxUtil {
                 return comp.getPreferredSize().height - is.top - is.bottom;
             }
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 //g2.translate(x, y);
                 int ih = icon.getIconHeight();
                 int ch = getIconHeight();
-                int yy = ch-ih > 0 ? (int)(.5 + (ch-ih)*.5) : 0;
+                int yy = ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
                 g2.drawImage(icon.getImage(), 0, yy, c);
                 g2.dispose();
                 //g.translate(-x, -y);
@@ -158,13 +158,13 @@ final class ComboBoxUtil {
     public static void initIconComboBorder2(final JComboBox comboBox, final ImageIcon icon) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                JTextField c = (JTextField)comboBox.getEditor().getEditorComponent();
+                JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
                 Insets is = c.getInsets();
 
                 int ih = icon.getIconHeight();
                 int ch = comboBox.getPreferredSize().height;
                 //int ch = c.getPreferredSize().height; //Nimbus???
-                int yy = ch-ih > 0 ? (int)(.5 + (ch-ih)*.5) : 0;
+                int yy = ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
 
                 Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
                 c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
@@ -181,7 +181,7 @@ final class ComboBoxUtil {
     public static void initComboBoxRenderer(JComboBox<String> combo, final ImageIcon icon) {
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel l = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 l.setIcon(icon);
                 return l;
             }

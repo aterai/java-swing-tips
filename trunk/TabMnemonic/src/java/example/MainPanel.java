@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
 //         JPanel tab = new JPanel(new BorderLayout());
 //         tab.setOpaque(false);
 //         JLabel label = new JLabel(title);
-//         label.setBorder(BorderFactory.createEmptyBorder(0,0,0,4));
+//         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
 //         JButton button = new JButton(icon);
 //         button.setPreferredSize(new Dimension(icon.getIconWidth(),
 //                                               icon.getIconHeight()));
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
 //         label.setDisplayedMnemonic(KeyEvent.VK_A);
 //         tab.add(label,  BorderLayout.WEST);
 //         tab.add(button, BorderLayout.EAST);
-//         tab.setBorder(BorderFactory.createEmptyBorder(2,1,1,1));
+//         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));
 //         super.addTab(title, content);
 //         setTabComponentAt(getTabCount()-1, tab);
 //     }

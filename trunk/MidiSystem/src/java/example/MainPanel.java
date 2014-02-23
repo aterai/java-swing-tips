@@ -19,12 +19,12 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout(5, 5));
         URL url = getClass().getResource("Mozart_toruko_k.mid");
-        try{
+        try {
             Sequence s = MidiSystem.getSequence(url);
             sequencer = MidiSystem.getSequencer();
             sequencer.open();
             sequencer.setSequence(s);
-        }catch(InvalidMidiDataException | MidiUnavailableException | IOException ex) {
+        } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
             ex.printStackTrace();
             start = null;
             stop = null;
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         }
         sequencer.addMetaEventListener(new MetaEventListener() {
             @Override public void meta(MetaMessage meta) {
-                if(meta.getType() == END_OF_TRACK) {
+                if (meta.getType() == END_OF_TRACK) {
                     tickpos = 0;
                     start.setEnabled(true);
                     stop.setEnabled(false);
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
         label.setBackground(getBackground());
 
         Box box = Box.createHorizontalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,0,0));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
         box.add(Box.createHorizontalGlue());
         box.add(start);
         box.add(stop);
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 
         add(label);
         add(box, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -92,10 +92,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

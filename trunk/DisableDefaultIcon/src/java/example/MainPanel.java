@@ -15,20 +15,20 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         final JRadioButton r1 = new JRadioButton("img=null");
         final JRadioButton r2 = new JRadioButton("img=new ImageIcon(\"\").getImage()");
-        final JRadioButton r3 = new JRadioButton("img=new BufferedImage(1,1,TYPE_INT_ARGB)");
+        final JRadioButton r3 = new JRadioButton("img=new BufferedImage(1, 1, TYPE_INT_ARGB)");
         final JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)");
 
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton)e.getSource();
+                AbstractButton b = (AbstractButton) e.getSource();
                 Image image = null;
-                if(b.equals(r2)) {
+                if (b.equals(r2)) {
                     //JDK 1.5
                     image = new ImageIcon("").getImage();
-                }else if(b.equals(r3)) {
+                } else if (b.equals(r3)) {
                     //size=(1x1)
-                    image = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB);
-                }else if(b.equals(r4)) {
+                    image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+                } else if (b.equals(r4)) {
                     //16x16transparent.png
                     image = Toolkit.getDefaultToolkit().createImage(url);
                 }
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder("frame.setIconImage(img)"));
         ButtonGroup bg = new ButtonGroup();
-        for(AbstractButton b: Arrays.asList(r1,r2,r3,r4)) {
+        for (AbstractButton b: Arrays.asList(r1, r2, r3, r4)) {
             b.addActionListener(al);
             bg.add(b);
             box.add(b);
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

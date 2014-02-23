@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -49,14 +49,14 @@ public final class MainPanel extends JPanel {
 }
 
 class RollOverList<E> extends JList<E> {
-    private static final Color ROLLOVERBACKGROUND = new Color(220,240,255);
+    private static final Color ROLLOVERBACKGROUND = new Color(220, 240, 255);
     private transient RollOverListener rollOverListener;
 
     public RollOverList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {
-        if(rollOverListener!=null) {
+        if (rollOverListener != null) {
             removeMouseListener(rollOverListener);
             removeMouseMotionListener(rollOverListener);
         }
@@ -74,9 +74,9 @@ class RollOverList<E> extends JList<E> {
     private class RollOverCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if(rollOverListener != null && index == rollOverListener.rollOverRowIndex) {
+            if (rollOverListener != null && index == rollOverListener.rollOverRowIndex) {
                 c.setBackground(ROLLOVERBACKGROUND);
-                if(isSelected) {
+                if (isSelected) {
                     c.setForeground(Color.BLACK);
                 }
                 //c.setForeground(getSelectionForeground());
@@ -93,9 +93,9 @@ class RollOverList<E> extends JList<E> {
         }
         @Override public void mouseMoved(MouseEvent e) {
             int row = locationToIndex(e.getPoint());
-            if(row != rollOverRowIndex) {
+            if (row != rollOverRowIndex) {
                 Rectangle rect = getCellBounds(row, row);
-                if(rollOverRowIndex>=0) {
+                if (rollOverRowIndex >= 0) {
                     rect.add(getCellBounds(rollOverRowIndex, rollOverRowIndex));
                 }
                 rollOverRowIndex = row;

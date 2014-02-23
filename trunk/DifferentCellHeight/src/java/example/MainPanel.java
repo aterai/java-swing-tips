@@ -9,7 +9,7 @@ import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(1,0));
+        super(new GridLayout(1, 0));
         add(new JScrollPane(makeList(true)));
         add(new JScrollPane(makeList(false)));
         setPreferredSize(new Dimension(320, 240));
@@ -23,9 +23,9 @@ public final class MainPanel extends JPanel {
         model.addElement("111\n222222\n333333333\n444444444444");
 
         JList<String> list = new JList<>(model);
-        if(hasTextAreaRenderer) {
+        if (hasTextAreaRenderer) {
             list.setCellRenderer(new TextAreaRenderer());
-            if(list.getFixedCellHeight()!=-1) {
+            if (list.getFixedCellHeight() != -1) {
                 System.out.println(list.getFixedCellHeight());
                 list.setFixedCellHeight(-1);
             }
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -57,25 +57,25 @@ public final class MainPanel extends JPanel {
 }
 
 class TextAreaRenderer extends JTextArea implements ListCellRenderer<String> {
-    private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()),2);
-    private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2,2,2,2);
-    private static final Color EVEN_COLOR = new Color(230,255,230);
+    private Border focusBorder; // = new DotBorder(new Color(~list1.getSelectionBackground().getRGB()), 2);
+    private static final Border NOMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    private static final Color EVEN_COLOR = new Color(230, 255, 230);
     @Override public Component getListCellRendererComponent(JList list, String str, int index, boolean isSelected, boolean cellHasFocus) {
         //setLineWrap(true);
-        setText(str==null ? "" : str);
-        if(isSelected) {
+        setText(str == null ? "" : str);
+        if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
-        }else{
-            setBackground(index%2==0 ? EVEN_COLOR : list.getBackground());
+        } else {
+            setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
             setForeground(list.getForeground());
         }
-        if(cellHasFocus) {
-            if(focusBorder==null) {
+        if (cellHasFocus) {
+            if (focusBorder == null) {
                 focusBorder = new DotBorder(new Color(~list.getSelectionBackground().getRGB()), 2);
             }
             setBorder(focusBorder);
-        }else{
+        } else {
             setBorder(NOMAL_BORDER);
         }
         return this;
@@ -90,11 +90,11 @@ class DotBorder extends LineBorder {
         return true;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g.create();
-        g2.translate(x,y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
         g2.setPaint(getLineColor());
         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-        //g2.translate(-x,-y);
+        //g2.translate(-x, -y);
         g2.dispose();
     }
 }
@@ -111,12 +111,12 @@ class DotBorder extends LineBorder {
 //     }
 //     @Override public boolean isBorderOpaque() { return true; }
 //     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-//         Graphics2D g2 = (Graphics2D)g.create();
+//         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setPaint(c.getForeground());
 //         g2.setStroke(dashed);
-//         g2.translate(x,y);
-//         g2.drawRect(0, 0, w-1, h-1);
-//         //g2.translate(-x,-y);
+//         g2.translate(x, y);
+//         g2.drawRect(0, 0, w - 1, h - 1);
+//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 //     //@Override public Insets getBorderInsets()

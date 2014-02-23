@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         box.add(createPanel(combo01, "setForeground:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo02, "html tag:"));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -77,27 +77,27 @@ class ColorItem implements Serializable {
 }
 
 class ComboForegroundRenderer extends DefaultListCellRenderer {
-    private static final Color SELECTION_BACKGROUND = new Color(240,245,250);
+    private static final Color SELECTION_BACKGROUND = new Color(240, 245, 250);
     private final JComboBox combo;
     public ComboForegroundRenderer(JComboBox combo) {
         super();
         this.combo = combo;
     }
     @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-        if(value instanceof ColorItem) {
+        if (value instanceof ColorItem) {
             ColorItem item = (ColorItem) value;
             Color ic = item.color;
-            if(index<0 && ic!=null && !ic.equals(combo.getForeground())) {
+            if (index < 0 && ic != null && !ic.equals(combo.getForeground())) {
                 combo.setForeground(ic); //Windows, Motif Look&Feel
                 list.setSelectionForeground(ic);
                 list.setSelectionBackground(SELECTION_BACKGROUND);
             }
-            JLabel l = (JLabel)super.getListCellRendererComponent(list, item.description, index, isSelected, hasFocus);
+            JLabel l = (JLabel) super.getListCellRendererComponent(list, item.description, index, isSelected, hasFocus);
             l.setForeground(ic);
             l.setBackground(isSelected ? SELECTION_BACKGROUND : list.getBackground());
             //l.setText(item.description);
             return l;
-        }else{
+        } else {
             super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
             return this;
         }
@@ -105,14 +105,14 @@ class ComboForegroundRenderer extends DefaultListCellRenderer {
 }
 
 class ComboHtmlRenderer extends DefaultListCellRenderer {
-    private static final Color SELECTION_BACKGROUND = new Color(240,245,250);
+    private static final Color SELECTION_BACKGROUND = new Color(240, 245, 250);
     @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-        ColorItem item = (ColorItem)value;
-        if(index<0) {
+        ColorItem item = (ColorItem) value;
+        if (index < 0) {
             list.setSelectionBackground(SELECTION_BACKGROUND);
         }
-        JLabel l = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
-        l.setText("<html><font color="+hex(item.color)+">"+item.description);
+        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+        l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
         l.setBackground(isSelected ? SELECTION_BACKGROUND : list.getBackground());
         return l;
     }

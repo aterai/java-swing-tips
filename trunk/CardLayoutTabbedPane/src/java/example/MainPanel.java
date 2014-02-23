@@ -56,13 +56,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-            //    if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
+            //for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+            //    if ("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
             //}
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -84,8 +84,8 @@ class CardLayoutTabbedPane extends JPanel {
         super(new BorderLayout());
         int left  = 1;
         int right = 3;
-        tabPanel.setBorder(BorderFactory.createEmptyBorder(1,left,0,right));
-        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4,left,2,right));
+        tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
+        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
         wrapPanel.add(tabPanel);
         wrapPanel.add(new JLabel("test:"), BorderLayout.WEST);
         add(wrapPanel, BorderLayout.NORTH);
@@ -95,7 +95,7 @@ class CardLayoutTabbedPane extends JPanel {
         TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                ((AbstractButton)e.getComponent()).setSelected(true);
+                ((AbstractButton) e.getComponent()).setSelected(true);
                 cardLayout.show(contentsPanel, title);
             }
         });
@@ -114,7 +114,7 @@ class CardLayoutTabbedPane extends JPanel {
         //close.setMinimumSize(dim);
         //close.setAlignmentX(0.9f);
         //close.setAlignmentY(0.1f);
-        //close.setBorder(BorderFactory.createLineBorder(Color.GREEN,1));
+        //close.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
         close.setBorder(BorderFactory.createEmptyBorder());
         close.setFocusPainted(false);
         close.setContentAreaFilled(false);
@@ -145,10 +145,10 @@ class TabButton extends JRadioButton {
     private Color rolloverSelectedTextColor; // = Color.WHITE;
     private Color selectedTextColor; // = Color.WHITE;
     @Override public void updateUI() {
-        if(UIManager.get(getUIClassID())==null) {
+        if (UIManager.get(getUIClassID()) == null) {
             setUI(new BasicTabViewButtonUI());
-        }else{
-            setUI((TabViewButtonUI)UIManager.getUI(this));
+        } else {
+            setUI((TabViewButtonUI) UIManager.getUI(this));
         }
     }
     @Override public String getUIClassID() {
@@ -158,7 +158,7 @@ class TabButton extends JRadioButton {
 //         super.setUI(ui);
 //     }
     public TabViewButtonUI getUI() {
-        return (TabViewButtonUI)ui;
+        return (TabViewButtonUI) ui;
     }
     public TabButton() {
         super(null, null);
@@ -177,17 +177,17 @@ class TabButton extends JRadioButton {
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
-        if(model.isEnabled()) {
-            if(model.isPressed() && model.isArmed()) {
+        if (model.isEnabled()) {
+            if (model.isPressed() && model.isArmed()) {
                 setForeground(getPressedTextColor());
-            }else if(model.isSelected()) {
+            } else if (model.isSelected()) {
                 setForeground(getSelectedTextColor());
-            }else if(isRolloverEnabled() && model.isRollover()) {
+            } else if (isRolloverEnabled() && model.isRollover()) {
                 setForeground(getRolloverTextColor());
-            }else{
+            } else {
                 setForeground(getTextColor());
             }
-        }else{
+        } else {
             setForeground(Color.GRAY);
         }
         super.fireStateChanged();
@@ -264,8 +264,8 @@ class TableHeaderTabbedPane extends JPanel {
         String[] columnNames = {};
         final JTable table = new JTable(new DefaultTableModel(null, columnNames));
         model = table.getTableHeader().getColumnModel();
-        tabPanel.setBorder(BorderFactory.createEmptyBorder(1,left,0,right));
-        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4,left,2,right));
+        tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
+        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
         header = table.getTableHeader();
         MouseInputHandler handler = new MouseInputHandler();
         header.addMouseListener(handler);
@@ -274,15 +274,15 @@ class TableHeaderTabbedPane extends JPanel {
 //         final TableCellRenderer hr = header.getDefaultRenderer();
         header.setDefaultRenderer(new TableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
-                l.setText((String)val);
+                l.setText((String) val);
                 l.setSelected(Objects.equals(val, selectedColumn) || Objects.equals(col, rolloverColumn));
                 return l;
 //                 JLabel l;
-//                 if(val==selectedColumn) {
-//                     l = (JLabel)hr.getTableCellRendererComponent(tbl, val, true, true, row, col);
+//                 if (val == selectedColumn) {
+//                     l = (JLabel) hr.getTableCellRendererComponent(tbl, val, true, true, row, col);
 //                     //l.setForeground(Color.RED);
-//                 }else{
-//                     l = (JLabel)hr.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+//                 } else {
+//                     l = (JLabel) hr.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
 //                 }
 //                 return l;
             }
@@ -299,18 +299,20 @@ class TableHeaderTabbedPane extends JPanel {
             model.getColumnCount(), 75, header.getDefaultRenderer(), null);
         tc.setHeaderValue(title);
         model.addColumn(tc);
-        if(selectedColumn==null) {
+        if (selectedColumn == null) {
             cardLayout.show(contentsPanel, title);
             selectedColumn = title;
         }
     }
     private class MouseInputHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
-            JTableHeader header = (JTableHeader)e.getComponent();
+            JTableHeader header = (JTableHeader) e.getComponent();
             int index = header.columnAtPoint(e.getPoint());
-            if(index<0) { return; }
+            if (index < 0) {
+                return;
+            }
             Object title = model.getColumn(index).getHeaderValue();
-            cardLayout.show(contentsPanel, (String)title);
+            cardLayout.show(contentsPanel, (String) title);
             selectedColumn = title;
         }
         @Override public void mouseEntered(MouseEvent e) {
@@ -329,9 +331,9 @@ class TableHeaderTabbedPane extends JPanel {
         }
         //@see BasicTableHeaderUI.MouseInputHandler
         private void updateRolloverColumn(MouseEvent e) {
-            if(header.getDraggedColumn()==null && header.contains(e.getPoint())) {
+            if (header.getDraggedColumn() == null && header.contains(e.getPoint())) {
                 int col = header.columnAtPoint(e.getPoint());
-                if(col!=rolloverColumn) {
+                if (col != rolloverColumn) {
                     //int oldRolloverColumn = rolloverColumn;
                     rolloverColumn = col;
                     //rolloverColumnUpdated(oldRolloverColumn, rolloverColumn);

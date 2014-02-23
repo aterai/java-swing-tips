@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         setFocusable(true);
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount()==2) {
+                if (e.getClickCount() == 2) {
                     toggleFullScreenWindow();
                 }
             }
@@ -43,15 +43,15 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("ESC KeyEvent:");
 //                 int mode = 2;
-//                 if(mode==0) {
+//                 if (mode == 0) {
 //                     //dialog.dispose();
 //                     //triggered windowClosed
-//                 }else if(mode==1) {
+//                 } else if (mode == 1) {
 //                     ////When DISPOSE_ON_CLOSE met WebStart > www.pushing-pixels.org/?p=232
 //                     ////Webstart thread is a non-daemon thread so the JVM cannot exit.
 //                     ////JVM shutdown
 //                     //System.exit(0);
-//                 }else{
+//                 } else {
 
                 ////click on the X
                 dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
@@ -64,12 +64,12 @@ public final class MainPanel extends JPanel {
     private void toggleFullScreenWindow() {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-        if(graphicsDevice.getFullScreenWindow()==null) {
+        if (graphicsDevice.getFullScreenWindow() == null) {
             dialog.dispose(); //destroy the native resources
             dialog.setUndecorated(true);
             dialog.setVisible(true); //rebuilding the native resources
             graphicsDevice.setFullScreenWindow(dialog);
-        }else{
+        } else {
             graphicsDevice.setFullScreenWindow(null);
             dialog.dispose();
             dialog.setUndecorated(false);
@@ -87,10 +87,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         final JDialog dialog = new JDialog();

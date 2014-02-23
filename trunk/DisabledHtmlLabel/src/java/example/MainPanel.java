@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setFont(UIManager.getFont("Label.font"));
 
-        JPanel box = new JPanel(new GridLayout(2,3));
+        JPanel box = new JPanel(new GridLayout(2, 3));
         box.add(makePanel("JLabel",        label0));
         box.add(makePanel("JLabel+Html",   label1));
         box.add(makePanel("JLabel+Html+",  label2));
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("setEnabled", true);
         check.setAction(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flag = ((JCheckBox)e.getSource()).isSelected();
+                boolean flag = ((JCheckBox) e.getSource()).isSelected();
                 setVisible(false);
                 label0.setEnabled(flag);
                 label1.setEnabled(flag);
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makePanel(String title, JComponent label) {
-        JPanel p = new JPanel(new GridLayout(1,1));
+        JPanel p = new JPanel(new GridLayout(1, 1));
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(label);
         return p;
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -101,7 +101,7 @@ class DisabledHtmlLabel extends JLabel {
     @Override public void setEnabled(boolean b) {
         setForeground(b ? UIManager.getColor("Label.foreground")
                         : UIManager.getColor("Label.disabledForeground"));
-        if(!b) {
+        if (!b) {
             BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = source.createGraphics();
             g2.setPaint(new Color(0, true));
@@ -114,10 +114,10 @@ class DisabledHtmlLabel extends JLabel {
         super.setEnabled(b);
     }
     @Override public void paintComponent(Graphics g) {
-        if(isEnabled()) {
+        if (isEnabled()) {
             super.paintComponent(g);
-        }else{
-            if(shadow!=null) {
+        } else {
+            if (shadow != null) {
                 g.drawImage(shadow, 0, 0, this);
             }
         }

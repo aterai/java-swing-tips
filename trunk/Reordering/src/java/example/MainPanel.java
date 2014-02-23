@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 
         JCheckBox checkBox = new JCheckBox(new AbstractAction("disable column dragging") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
+                JCheckBox cb = (JCheckBox) e.getSource();
                 table.getTableHeader().setReorderingAllowed(!cb.isSelected());
             }
         });
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

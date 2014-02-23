@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         p.add(messageType);
         p.add(new JButton(new AbstractAction("TrayIcon#displayMessage()") {
             @Override public void actionPerformed(ActionEvent e) {
-                icon.displayMessage("caption", "text text text text", (TrayIcon.MessageType)messageType.getSelectedItem());
+                icon.displayMessage("caption", "text text text text", (TrayIcon.MessageType) messageType.getSelectedItem());
             }
         }));
 
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
         setPreferredSize(new Dimension(320, 240));
-        if(!SystemTray.isSupported()) {
+        if (!SystemTray.isSupported()) {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;
         }
@@ -62,9 +62,9 @@ public final class MainPanel extends JPanel {
                 frame.dispose();
             }
         });
-        try{
+        try {
             tray.add(icon);
-        }catch(AWTException e) {
+        } catch (AWTException e) {
             e.printStackTrace();
         }
     }
@@ -76,13 +76,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//             for(UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
-//               if("Nimbus".equals(laf.getName()))
+//             for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
+//               if ("Nimbus".equals(laf.getName()))
 //                 UIManager.setLookAndFeel(laf.getClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
     private final JToggleButton button = new JToggleButton(new AbstractAction("show") {
         private JFrame frame;
         @Override public void actionPerformed(ActionEvent e) {
-            AbstractButton button = (AbstractButton)e.getSource();
+            AbstractButton button = (AbstractButton) e.getSource();
             Window parent = SwingUtilities.getWindowAncestor(button);
-            if(frame==null) {
+            if (frame == null) {
                 frame = new JFrame();
                 frame.setUndecorated(true);
                 frame.setAlwaysOnTop(true);
@@ -27,12 +27,12 @@ public final class MainPanel extends JPanel {
                 frame.getContentPane().setBackground(Color.GREEN);
                 frame.pack();
             }
-            if(button.isSelected()) {
+            if (button.isSelected()) {
                 String str = textField.getText().trim();
                 //label.setText(str);
                 TextLayout tl = new TextLayout(str, FONT, FRC);
                 Rectangle2D b = tl.getBounds();
-                Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(),-b.getY()));
+                Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(), -b.getY()));
 
 //                 int w = 300;
 //                 int h = 300;
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 //                 p.lineTo(+     0.0f, - h / 4.0f);
 //                 p.lineTo(+ w / 6.0f, + h / 4.0f);
 //                 p.closePath();
-//                 AffineTransform at = AffineTransform.getTranslateInstance(w/4, h/4);
+//                 AffineTransform at = AffineTransform.getTranslateInstance(w / 4, h / 4);
 //                 shape = at.createTransformedShape(p);
 
                 frame.setBounds(shape.getBounds());
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
                 frame.setShape(shape); //JDK 1.7.0
                 frame.setLocationRelativeTo(parent);
                 frame.setVisible(true);
-            }else{
+            } else {
                 frame.setVisible(false);
             }
         }
@@ -75,10 +75,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -94,18 +94,18 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if(window==null) {
+        if (window == null) {
             Object o = me.getSource();
-            if(o instanceof Window) {
-                window = (Window)o;
-            }else if(o instanceof JComponent) {
+            if (o instanceof Window) {
+                window = (Window) o;
+            } else if (o instanceof JComponent) {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window!=null) {
+        if (window != null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

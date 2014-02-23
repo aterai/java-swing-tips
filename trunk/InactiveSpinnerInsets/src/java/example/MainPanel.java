@@ -15,29 +15,29 @@ public final class MainPanel extends JPanel {
         JSpinner spinner0 = new JSpinner();
 
         JSpinner spinner1 = new JSpinner();
-        JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor)spinner1.getEditor();
+        JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) spinner1.getEditor();
         editor1.setOpaque(false);
         JTextField field1 = editor1.getTextField();
         field1.setOpaque(false);
 
 //         JSpinner s2 = new JSpinner();
 //         s2.setBorder(BorderFactory.createCompoundBorder(
-//             BorderFactory.createLineBorder(new Color(127,157,185)),
+//             BorderFactory.createLineBorder(new Color(127, 157, 185)),
 //             BorderFactory.createLineBorder(
 //                 UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
 
         JSpinner spinner2 = new JSpinner();
         spinner2.setBorder(BorderFactory.createEmptyBorder());
-        JSpinner.DefaultEditor editor2 = (JSpinner.DefaultEditor)spinner2.getEditor();
-        editor2.setBorder(BorderFactory.createMatteBorder(1,1,1,0, new Color(127,157,185)));
+        JSpinner.DefaultEditor editor2 = (JSpinner.DefaultEditor) spinner2.getEditor();
+        editor2.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(127, 157, 185)));
         JTextField field2 = editor2.getTextField();
-        field2.setBorder(BorderFactory.createEmptyBorder(2,2,2,0));
+        field2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
         JSpinner spinner3 = new SimpleBorderSpinner();
 
-        final List<JSpinner> list = Arrays.asList(spinner0,spinner1,spinner2,spinner3);
+        final List<JSpinner> list = Arrays.asList(spinner0, spinner1, spinner2, spinner3);
         Box box = Box.createVerticalBox();
-        for(JSpinner s:list) {
+        for (JSpinner s:list) {
             s.setEnabled(false);
         }
 
@@ -46,12 +46,12 @@ public final class MainPanel extends JPanel {
         addTestSpinner(box, spinner2, "setBorder(...)");
         addTestSpinner(box, spinner3, "paintComponent, paintChildren");
 
-        setBorder(BorderFactory.createEmptyBorder(2,20,2,20));
+        setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 20));
         add(box, BorderLayout.NORTH);
         add(new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                for(JSpinner s:list) {
+                JCheckBox cb = (JCheckBox) e.getSource();
+                for (JSpinner s:list) {
                     s.setEnabled(cb.isSelected());
                 }
             }
@@ -73,10 +73,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -90,17 +90,17 @@ public final class MainPanel extends JPanel {
 
 class SimpleBorderSpinner extends JSpinner {
     @Override protected void paintComponent(Graphics g) {
-        if(getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
+        if (getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
                                      : UIManager.getColor("FormattedTextField.inactiveBackground"));
-            g2d.fillRect(0,0,getWidth(),getHeight());
+            g2d.fillRect(0, 0, getWidth(), getHeight());
             g2d.dispose();
         }
     }
     @Override protected void paintChildren(Graphics g) {
         super.paintChildren(g);
-        if(!isEnabled() && getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
+        if (!isEnabled() && getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
             Graphics2D g2d = (Graphics2D) g.create();
             Rectangle r = getComponent(0).getBounds();
             r.add(getComponent(1).getBounds());

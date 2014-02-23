@@ -40,18 +40,18 @@ public final class MainPanel extends JPanel {
 
 //         table.addMouseListener(new MouseAdapter() {
 //             @Override public void mouseReleased(MouseEvent e) {
-//                 JTable t = (JTable)e.getComponent();
+//                 JTable t = (JTable) e.getComponent();
 //                 Point pt = e.getPoint();
 //                 int row  = t.rowAtPoint(pt);
 //                 int col  = t.columnAtPoint(pt);
-//                 if (t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
+//                 if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
 //                     TableCellEditor ce = t.getCellEditor(row, col);
 //                     //http://tips4java.wordpress.com/2009/07/12/table-button-column/
 //                     ce.stopCellEditing();
 //                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
 //                     Point p = SwingUtilities.convertPoint(t, pt, c);
 //                     Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-//                     if (b instanceof JRadioButton) { ((JRadioButton)b).doClick(); }
+//                     if (b instanceof JRadioButton) { ((JRadioButton) b).doClick(); }
 //                 }
 //             }
 //         });

@@ -17,14 +17,14 @@ import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
     private static final String PATTERN = "[Ff]rame";
-    private static final Color SELECTION_COLOR = new Color(0xC86464FF,true);
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));
+    private static final Color SELECTION_COLOR = new Color(0xC86464FF, true);
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 255, 50, 100));
     private final JEditorPane area = new JEditorPane();
     //private final JTextArea area = new JTextArea();
 
     private final JCheckBox check = new JCheckBox(new AbstractAction("setSelectionColor(#C86464FF)") {
         @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox)e.getSource();
+            JCheckBox c = (JCheckBox) e.getSource();
             //http://docs.oracle.com/javase/7/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor(java.awt.Color)
             //DOUBT?: Setting the color to null is the same as setting Color.white.
             area.setSelectionColor(c.isSelected() ? SELECTION_COLOR : null);
@@ -38,14 +38,14 @@ public final class MainPanel extends JPanel {
         //http://terai.xrea.jp/Swing/StyleSheet.html
         StyleSheet styleSheet = new StyleSheet();
         styleSheet.addRule(".highlight {color: blue; background: #FF5533; opacity: 0.5;}"); //INCOMPLETE: opacity
-        //INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255,100,100,0.6); opacity: 0.5;}");
+        //INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
         area.setEditorKit(htmlEditorKit);
         area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         area.setOpaque(false);
-        area.setForeground(new Color(200,200,200));
+        area.setForeground(new Color(200, 200, 200));
         area.setSelectedTextColor(Color.WHITE);
         area.setBackground(new Color(0, true)); //Nimbus
         area.setSelectionColor(SELECTION_COLOR);
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         );
 
         //TEST: http://terai.xrea.jp/Swing/DrawsLayeredHighlights.html
-        //DefaultHighlighter dh = (DefaultHighlighter)area.getHighlighter();
+        //DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
         //dh.setDrawsLayeredHighlights(false);
 
         URL url = getClass().getResource("tokeidai.jpg");
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalGlue());
         box.add(new JToggleButton(new AbstractAction("highlight") {
             @Override public void actionPerformed(ActionEvent e) {
-                JToggleButton t = (JToggleButton)e.getSource();
-                if(t.isSelected()) {
+                JToggleButton t = (JToggleButton) e.getSource();
+                if (t.isSelected()) {
                     setHighlight(area, PATTERN);
-                }else{
+                } else {
                     area.getHighlighter().removeAllHighlights();
                 }
             }
@@ -92,16 +92,16 @@ public final class MainPanel extends JPanel {
 
     private BufferedImage getFilteredImage(URL url) {
         BufferedImage image;
-        try{
+        try {
             image = ImageIO.read(url);
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for(int i=0;i<256;i++) {
-            b[i] = (byte)(i*0.2f);
+        for (int i = 0; i < 256; i++) {
+            b[i] = (byte) (i * .2f);
         }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
         op.filter(image, dest);
@@ -113,17 +113,17 @@ public final class MainPanel extends JPanel {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
         Document doc = jtc.getDocument();
-        try{
+        try {
             String text = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(pattern).matcher(text);
             int pos = 0;
-            while(matcher.find(pos)) {
+            while (matcher.find(pos)) {
                 int start = matcher.start();
                 int end   = matcher.end();
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
         jtc.repaint();
@@ -137,10 +137,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -161,9 +161,9 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = x + (width-image.getWidth())/2;
-        int cy = y + (height-image.getHeight())/2;
-        Graphics2D g2 = (Graphics2D)g.create();
+        int cx = x + (width - image.getWidth()) / 2;
+        int cy = y + (height - image.getHeight()) / 2;
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
         g2.dispose();
     }

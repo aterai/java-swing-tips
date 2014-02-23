@@ -54,23 +54,23 @@ public final class MainPanel extends JPanel {
 //         Action tabAction = new AbstractAction() {
 //             @Override public void actionPerformed(ActionEvent e) {
 //                 oldTabAction.actionPerformed(e);
-//                 JTable table = (JTable)e.getSource();
+//                 JTable table = (JTable) e.getSource();
 //                 int rowCount = table.getRowCount();
 //                 int columnCount = table.getColumnCount();
 //                 int row = table.getSelectedRow();
 //                 int column = table.getSelectedColumn();
 //
 //                 TableColumn col = table.getColumnModel().getColumn(column);
-//                 while(col.getWidth()==0) {
+//                 while (col.getWidth() == 0) {
 //                     column += 1;
-//                     if(column==columnCount) {
+//                     if (column == columnCount) {
 //                         column = 0;
 //                         row +=1;
 //                     }
-//                     if(row==rowCount) {
+//                     if (row == rowCount) {
 //                         row = 0;
 //                     }
-//                     if(row==table.getSelectedRow() && column==table.getSelectedColumn()) {
+//                     if (row == table.getSelectedRow() && column == table.getSelectedColumn()) {
 //                         break;
 //                     }
 //                     col = table.getColumnModel().getColumn(column);
@@ -93,10 +93,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

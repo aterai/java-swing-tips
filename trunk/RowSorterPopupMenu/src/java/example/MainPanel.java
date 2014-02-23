@@ -59,16 +59,16 @@ public final class MainPanel extends JPanel {
             //new SortAction(SortOrder.UNSORTED));
         public TablePopupMenu() {
             super();
-            for(Action a:actions) {
+            for (Action a:actions) {
                 add(a);
             }
         }
         @Override public void show(Component c, int x, int y) {
-            if(c instanceof JTableHeader) {
-                JTableHeader h = (JTableHeader)c;
+            if (c instanceof JTableHeader) {
+                JTableHeader h = (JTableHeader) c;
                 int i = h.columnAtPoint(new Point(x, y));
                 i = h.getTable().convertColumnIndexToModel(i);
-                for(SortAction a:actions) {
+                for (SortAction a:actions) {
                     a.setIndex(i);
                 }
                 super.show(c, x, y);
@@ -98,10 +98,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

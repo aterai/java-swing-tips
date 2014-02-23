@@ -14,10 +14,10 @@ public final class MainPanel extends JPanel {
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         frame.setSize(240, 240);
 
-        JPanel p = new JPanel(new GridLayout(2,1,5,5));
+        JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
         p.add(makePanel("in center of screen", new JButton(new AbstractAction("frame.setLocationRelativeTo(null)") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(frame.isVisible()) {
+                if (frame.isVisible()) {
                     return;
                 }
                 frame.setLocationRelativeTo(null);
@@ -26,15 +26,15 @@ public final class MainPanel extends JPanel {
         })));
         p.add(makePanel("relative to this button", new JButton(new AbstractAction("frame.setLocationRelativeTo(button)") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(frame.isVisible()) {
+                if (frame.isVisible()) {
                     return;
                 }
-                frame.setLocationRelativeTo((Component)e.getSource());
+                frame.setLocationRelativeTo((Component) e.getSource());
                 frame.setVisible(true);
             }
         })));
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 180));
     }
     private static JPanel makePanel(String title, JComponent c) {
@@ -51,10 +51,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

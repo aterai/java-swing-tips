@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
 
         combo02.addMouseListener(new MouseAdapter() {
             private ButtonModel getButtonModel(MouseEvent e) {
-                JComboBox cb = (JComboBox)e.getComponent();
-                JButton b = (JButton)cb.getComponent(0);
+                JComboBox cb = (JComboBox) e.getComponent();
+                JButton b = (JButton) cb.getComponent(0);
                 return b.getModel();
             }
             @Override public void mouseEntered(MouseEvent e) {
@@ -63,11 +63,11 @@ public final class MainPanel extends JPanel {
         });
 
         Object o = combo00.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,Color.WHITE));
+        ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
         o = combo01.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,Color.WHITE));
+        ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
         o = combo02.getAccessibleContext().getAccessibleChild(0);
-        ((JComponent)o).setBorder(BorderFactory.createMatteBorder(0,1,1,1,Color.WHITE));
+        ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
 
         Box box = Box.createVerticalBox();
         box.add(createPanel(combo00, "MetalComboBoxUI:"));
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         box.add(createPanel(combo01, "BasicComboBoxUI:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo02, "BasicComboBoxUI#createArrowButton():"));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(box, BorderLayout.NORTH);
         setOpaque(true);
@@ -116,26 +116,26 @@ public final class MainPanel extends JPanel {
 
 class ArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.WHITE);
         int shift = 0;
-        if(c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton)c).getModel();
-            if(m.isPressed()) {
+        if (c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton) c).getModel();
+            if (m.isPressed()) {
                 shift = 1;
-            }else{
-                if(m.isRollover()) {
+            } else {
+                if (m.isRollover()) {
                     g2.setPaint(Color.WHITE);
-                }else{
+                } else {
                     g2.setPaint(Color.BLACK);
                 }
             }
         }
-        g2.translate(x, y+shift);
+        g2.translate(x, y + shift);
         g2.drawLine(2, 3, 6, 3);
         g2.drawLine(3, 4, 5, 4);
         g2.drawLine(4, 5, 4, 5);
-        //g2.translate(-x,-y-shift);
+        //g2.translate(-x, -y - shift);
         g2.dispose();
     }
     @Override public int getIconWidth()  {

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     private SwingWorker<String, String> worker;
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         area.setEditable(false);
         area.setLineWrap(true);
         Box box = Box.createHorizontalBox();
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -56,20 +56,20 @@ public final class MainPanel extends JPanel {
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-                    if(!isDisplayable()) {
+                    if (!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
                         cancel(true);
                         return;
                     }
-                    for(String message: chunks) {
-                        if(!isCancelled()) {
+                    for (String message: chunks) {
+                        if (!isCancelled()) {
                             appendText(message);
                         }
                     }
                 }
                 @Override public void done() {
                     System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-                    if(!isDisplayable()) {
+                    if (!isDisplayable()) {
                         System.out.println("done: DISPOSE_ON_CLOSE");
                         cancel(true);
                         return;
@@ -79,13 +79,13 @@ public final class MainPanel extends JPanel {
                     canButton.setEnabled(false);
                     statusPanel.remove(bar);
                     statusPanel.revalidate();
-                    try{
-                        if(isCancelled()) {
+                    try {
+                        if (isCancelled()) {
                             appendText("\nCancelled\n");
-                        }else{
+                        } else {
                             appendText("\n" + get() + "\n");
                         }
-                    }catch(InterruptedException | ExecutionException ex) {
+                    } catch (InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
                         appendText("\nException\n");
                     }
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if(worker!=null && !worker.isDone()) {
+            if (worker != null && !worker.isDone()) {
                 worker.cancel(true);
             }
             //worker = null;
@@ -119,10 +119,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -138,9 +138,9 @@ public final class MainPanel extends JPanel {
 class Task extends SwingWorker<String, String> {
     @Override public String doInBackground() {
         System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-//         try{
+//         try {
 //             Thread.sleep(1000);
-//         }catch(InterruptedException ie) {
+//         } catch (InterruptedException ie) {
 //             return "Interrupted";
 //         }
         int current = 0;
@@ -148,10 +148,10 @@ class Task extends SwingWorker<String, String> {
         publish("Length Of Task: " + lengthOfTask);
         publish("\n------------------------------\n");
 
-        while(current<lengthOfTask && !isCancelled()) {
-            try{
+        while (current<lengthOfTask && !isCancelled()) {
+            try {
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 //return "Interrupted";
                 break;
             }
@@ -170,14 +170,14 @@ class ProgressListener implements PropertyChangeListener {
         this.progressBar.setValue(0);
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
-        if(!progressBar.isDisplayable() && evt.getSource() instanceof SwingWorker) {
+        if (!progressBar.isDisplayable() && evt.getSource() instanceof SwingWorker) {
             System.out.println("progress: DISPOSE_ON_CLOSE");
-            ((SwingWorker)evt.getSource()).cancel(true);
+            ((SwingWorker) evt.getSource()).cancel(true);
         }
         String strPropertyName = evt.getPropertyName();
-        if("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer)evt.getNewValue();
+            int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
         }
     }
@@ -197,7 +197,7 @@ class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener 
         repaint();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !isDisplayable()) {
             animator.stop();
         }
     }
@@ -213,25 +213,25 @@ class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener 
 
 class AnimeIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Color ELLIPSE_COLOR = new Color(0.5f,0.5f,0.5f);
+    private static final Color ELLIPSE_COLOR = new Color(0.5f, 0.5f, 0.5f);
     private static final double R  = 2.0d;
     private static final double SX = 1.0d;
     private static final double SY = 1.0d;
-    private static final int WIDTH  = (int)(R*8+SX*2);
-    private static final int HEIGHT = (int)(R*8+SY*2);
+    private static final int WIDTH  = (int) (R * 8 + SX * 2);
+    private static final int HEIGHT = (int) (R * 8 + SY * 2);
     private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
-        new Ellipse2D.Double(SX+3*R, SY+0*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+5*R, SY+1*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+6*R, SY+3*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+5*R, SY+5*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+3*R, SY+6*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+1*R, SY+5*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+0*R, SY+3*R, 2*R, 2*R),
-        new Ellipse2D.Double(SX+1*R, SY+1*R, 2*R, 2*R)));
+        new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 5 * R, SY + 1 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 6 * R, SY + 3 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 5 * R, SY + 5 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 3 * R, SY + 6 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 1 * R, SY + 5 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
+        new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
     private boolean isRunning;
     public void next() {
-        if(isRunning) {
+        if (isRunning) {
             list.add(list.remove(0));
         }
     }
@@ -239,15 +239,15 @@ class AnimeIcon implements Icon, Serializable {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
-        g2d.setPaint(c==null ? Color.WHITE : c.getBackground());
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setPaint(c == null ? Color.WHITE : c.getBackground());
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(ELLIPSE_COLOR);
         g2d.translate(x, y);
         int size = list.size();
-        for(int i=0;i<size;i++) {
-            float alpha = isRunning ? (i+1)/(float)size : .5f;
+        for (int i = 0; i < size; i++) {
+            float alpha = isRunning ? (i + 1)/(float) size : .5f;
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.fill(list.get(i));
         }

@@ -17,19 +17,19 @@ public final class MainPanel extends JPanel {
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override public Void run() {
-                try{
+                try {
                     Field field;
-                    if(System.getProperty("java.version").startsWith("1.6.0")) {
+                    if (System.getProperty("java.version").startsWith("1.6.0")) {
                         // https://forums.oracle.com/thread/1357949 ComboBox scroll and selected/highlight on glasspane
                         Class clazz = Class.forName("javax.swing.PopupFactory");
                         field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-                    }else{ //JDK 1.7.0, 1.8.0
+                    } else { //JDK 1.7.0, 1.8.0
                         Class clazz = Class.forName("javax.swing.ClientPropertyKey");
                         field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
                     }
                     field.setAccessible(true);
                     label2.putClientProperty(field.get(null), Boolean.TRUE);
-                }catch(ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
+                } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
                     ex.printStackTrace();
                 }
                 return null;
@@ -43,14 +43,14 @@ public final class MainPanel extends JPanel {
 
 //         add(new JButton(new AbstractAction("show GlassPane") {
 //             @Override public void actionPerformed(ActionEvent e) {
-//                 final JButton button = (JButton)e.getSource();
+//                 final JButton button = (JButton) e.getSource();
 //                 button.setEnabled(false);
 //                 frame.getGlassPane().setVisible(true);
 //                 new SwingWorker() {
 //                     @Override public Object doInBackground() {
-//                         try{
+//                         try {
 //                             Thread.sleep(8000);
-//                         }catch(Exception ex) {
+//                         } catch (Exception ex) {
 //                             ex.printStackTrace();
 //                         }
 //                         return "Done";
@@ -81,10 +81,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
