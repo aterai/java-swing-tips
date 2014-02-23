@@ -137,7 +137,7 @@ class TestCreateAction extends AbstractAction {
         }
         TestModel model = (TestModel) table.getModel();
         model.addTest(new Test("New row", ""));
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+        Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
         table.scrollRectToVisible(r);
     }
 }
@@ -157,7 +157,7 @@ class DeleteAction extends AbstractAction {
             return;
         }
         TestModel model = (TestModel) table.getModel();
-        for (int i=selection.length - 1; i >= 0; i--) {
+        for (int i = selection.length - 1; i >= 0; i--) {
             //Test ixsc = model.getTest(selection[i]);
             model.removeRow(selection[i]);
         }
@@ -235,7 +235,7 @@ class InitAction extends AbstractAction {
             table.getCellEditor().stopCellEditing();
         }
         int row = table.getRowCount();
-        if (row<=0) {
+        if (row <= 0) {
             return;
         }
         TestModel model = (TestModel) table.getModel();

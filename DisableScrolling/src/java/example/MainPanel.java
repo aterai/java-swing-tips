@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New Name", Integer.valueOf(0), Boolean.FALSE});
-            Rectangle rect = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }
     }

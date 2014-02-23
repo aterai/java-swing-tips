@@ -58,8 +58,7 @@ class SplitPaneWrapper extends JPanel {
 //             setDividerLocation((int)Math.round(s * proportionalLocation));
 //         }
 // //         @Override public void setDividerLocation(double proportionalLocation) {
-// //             if (proportionalLocation < 0.0 ||
-// //                 proportionalLocation > 1.0) {
+// //             if (proportionalLocation < 0.0 || proportionalLocation > 1.0) {
 // //                 throw new IllegalArgumentException("proportional location must be between 0.0 and 1.0.");
 // //             }
 // //             if (getOrientation() == VERTICAL_SPLIT) {
@@ -102,7 +101,7 @@ class SplitPaneWrapper extends JPanel {
     @Override public void doLayout() {
         if (flag) {
             int size = getOrientedSize(splitPane);
-            final double proportionalLocation = splitPane.getDividerLocation()/(double) size;
+            final double proportionalLocation = splitPane.getDividerLocation() / (double) size;
             super.doLayout();
             int state = ((Frame) SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
             if (splitPane.isShowing() && state != prevState) {

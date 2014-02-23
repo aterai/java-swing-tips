@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
                         controlsHeight -= 5;
                     }
                 }
-                if (controlsHeight<=0) {
+                if (controlsHeight <= 0) {
                     controlsHeight = 0;
                     animator.stop();
                 } else if (controlsHeight >= controlsPreferredHeight) {
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
                 int size = rollOverPathLists.size();
                 for (int i = 0; i < size; i++) {
                     if (rollOverPathLists.get(i).equals(selectedPath)) {
-                        nextIndex = i + 1<size ? i + 1 : 0;
+                        nextIndex = i + 1 < size ? i + 1 : 0;
                         break;
                     }
                 }

@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
                 }
                 int col = header.columnAtPoint(e.getPoint());
                 table.changeSelection(0, col, false, false);
-                table.changeSelection(table.getRowCount()-1, col, false, true);
+                table.changeSelection(table.getRowCount() - 1, col, false, true);
             }
         });
 
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("add row", ""));
-            Rectangle rect = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }
     }
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
             if (selection.length == 0) {
                 return;
             }
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -208,7 +208,7 @@ class RowHeaderList<E> extends JList<E> {
             }
             rListSelection.clearSelection();
             table.changeSelection(row, 0, false, false);
-            table.changeSelection(row, table.getColumnModel().getColumnCount()-1, false, true);
+            table.changeSelection(row, table.getColumnModel().getColumnCount() - 1, false, true);
             pressedRowIndex = row;
 //             table.setRowSelectionInterval(row, row);
 //             table.getSelectionModel().setSelectionInterval(row, row);
@@ -219,7 +219,7 @@ class RowHeaderList<E> extends JList<E> {
 //             rListSelection.addSelectionInterval(row, row);
 //             table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
 //             table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
-//             table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount()-1, false, true);
+//             table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount() - 1, false, true);
         }
         @Override public void mouseReleased(MouseEvent e) {
             rListSelection.clearSelection();

@@ -99,8 +99,9 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
             Point pt = e.getPoint();
             int col = table.columnAtPoint(pt);
             int column = table.convertColumnIndexToModel(col);
-            if (column!=0) { return; }
-
+            if (column != 0) {
+                return;
+            }
             int prevRow = rollOverRowIndex;
             rollOverRowIndex = table.rowAtPoint(pt);
             if (rollOverRowIndex == prevRow) { return; }
@@ -122,8 +123,9 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
             Point pt = e.getPoint();
             int col = table.columnAtPoint(pt);
             int column = table.convertColumnIndexToModel(col);
-            if (column!=0) { return; }
-
+            if (column != 0) {
+                return;
+            }
             if (rollOverRowIndex >= 0) {
                 table.repaint(table.getCellRect(rollOverRowIndex, col, false));
             }

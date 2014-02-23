@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         Dimension d = check1.getPreferredSize();
         int baseline = check1.getBaseline(d.width, d.height);
         //System.out.println(check1.getAlignmentY());
-        check1.setAlignmentY(baseline/(float) d.height);
+        check1.setAlignmentY(baseline / (float) d.height);
         textPane.replaceSelection("\n\n Baseline: ");
         textPane.insertComponent(check1);
 
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         check2.setFocusable(false);
         d = check2.getPreferredSize();
         baseline = check2.getBaseline(d.width, d.height);
-        check2.setAlignmentY(baseline/(float) d.height);
+        check2.setAlignmentY(baseline / (float) d.height);
         textPane.replaceSelection("\n\n Baseline+Cursor: ");
         textPane.insertComponent(check2);
 

@@ -141,7 +141,7 @@ class HyperlinkButton extends JButton {
     }
 }
 
-class LinkViewButtonUI extends BasicButtonUI {}
+class LinkViewButtonUI extends BasicButtonUI { /* ButtonUI */ }
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
     private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();

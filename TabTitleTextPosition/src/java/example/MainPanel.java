@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         label.setHorizontalTextPosition(SwingConstants.CENTER);
         //label.setVerticalAlignment(SwingConstants.CENTER);
         //label.setHorizontalAlignment(SwingConstants.CENTER);
-        tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, label);
+        tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
     }
     private MainPanel() {
         super(new BorderLayout());

@@ -86,8 +86,8 @@ public final class MainPanel extends JPanel {
             JRadioButton c = makeRadioButton(itemsPerPage, currentPageIndex, i); box.add(c); bg.add(c);
         }
         box.add(Box.createHorizontalGlue());
-        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", currentPageIndex<maxPageIndex); box.add(n); bg.add(n);
-        JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex<maxPageIndex); box.add(l); bg.add(l);
+        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", currentPageIndex < maxPageIndex); box.add(n); bg.add(n);
+        JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex < maxPageIndex); box.add(l); bg.add(l);
         box.revalidate();
         box.repaint();
     }

@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         am.put("selectNextRow", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent ae) {
                 int index = list.getSelectedIndex();
-                for (int i = index + 1; i< list.getModel().getSize(); i++) {
+                for (int i = index + 1; i < list.getModel().getSize(); i++) {
                     if (!disableIndexSet.contains(i)) {
                         list.setSelectedIndex(i);
                         break;

@@ -106,7 +106,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (renderer!= null && renderer.polygon != null) {
+        if (renderer != null && renderer.polygon != null) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getSelectionBackground());
             g2.draw(renderer.polygon);

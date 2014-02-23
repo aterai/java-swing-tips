@@ -268,7 +268,7 @@ final class TreeUtil {
 
     public static void expandAll(JTree tree) {
         int row = 0;
-        while (row<tree.getRowCount()) {
+        while (row < tree.getRowCount()) {
             tree.expandRow(row++);
         }
     }

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
                 //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
                 frame.getGlassPane().setVisible(true);
                 button.setEnabled(false);
-                new Task() {
+                (new Task() {
                     @Override public void done() {
                         if (!isDisplayable()) {
                             System.out.println("done: DISPOSE_ON_CLOSE");
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                         frame.getGlassPane().setVisible(false);
                         button.setEnabled(true);
                     }
-                }.execute();
+                }).execute();
             }
         });
         Box box = Box.createHorizontalBox();

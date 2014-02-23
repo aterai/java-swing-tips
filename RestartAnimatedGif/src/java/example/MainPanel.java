@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeTitledPanel(String title, JComponent c) {
-        JPanel p= new JPanel();
+        JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(c);
         return p;

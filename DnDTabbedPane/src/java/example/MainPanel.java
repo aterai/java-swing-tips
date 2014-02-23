@@ -51,8 +51,8 @@ public final class MainPanel extends JPanel {
         });
         scheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tab.setTabLayoutPolicy(scheck.isSelected()?JTabbedPane.SCROLL_TAB_LAYOUT
-                                                          :JTabbedPane.WRAP_TAB_LAYOUT);
+                tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT
+                                                           : JTabbedPane.WRAP_TAB_LAYOUT);
             }
         });
         debugp.addActionListener(new ActionListener() {
@@ -248,7 +248,7 @@ class DnDTabbedPane extends JTabbedPane {
         //Rectangle compRect   = getSelectedComponent().getBounds();
         Component comp = getSelectedComponent();
         int idx = 0;
-        while (comp == null && idx<getTabCount()) {
+        while (comp == null && idx < getTabCount()) {
             comp = getComponentAt(idx++);
         }
         Rectangle compRect = (comp == null) ? new Rectangle() : comp.getBounds();
@@ -304,7 +304,7 @@ class TabDragSourceListener implements DragSourceListener {
         //JComponent glassPane = (JComponent) e.getDragSourceContext();
         //SwingUtilities.convertPointFromScreen(glassPt, glassPane);
         //int targetIdx = getTargetTabIndex(glassPt);
-        //if (getTabAreaBounds().contains(glassPt) && targetIdx >= 0 && targetIdx!=dragTabIndex && targetIdx!=dragTabIndex + 1) {
+        //if (getTabAreaBounds().contains(glassPt) && targetIdx >= 0 && targetIdx != dragTabIndex && targetIdx != dragTabIndex + 1) {
         //    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
         //    glassPane.setCursor(DragSource.DefaultMoveDrop);
         //} else {
@@ -328,7 +328,7 @@ class TabDragGestureListener implements DragGestureListener {
             return;
         }
         DnDTabbedPane tabbedPane = (DnDTabbedPane) c;
-        if (tabbedPane.getTabCount()<=1) {
+        if (tabbedPane.getTabCount() <= 1) {
             return;
         }
         Point tabPt = e.getDragOrigin();
@@ -447,9 +447,9 @@ class GhostGlassPane extends JPanel {
             g2.fill(tabbedPane.rForward);
         }
         if (draggingGhost != null) {
-            double xx = location.getX() - draggingGhost.getWidth(this) /2d;
-            double yy = location.getY() - draggingGhost.getHeight(this)/2d;
-            g2.drawImage(draggingGhost, (int) xx, (int) yy , null);
+            double xx = location.getX() - draggingGhost.getWidth(this)  / 2d;
+            double yy = location.getY() - draggingGhost.getHeight(this) / 2d;
+            g2.drawImage(draggingGhost, (int) xx, (int) yy, null);
         }
         if (tabbedPane.dragTabIndex >= 0) {
             g2.setPaint(lineColor);

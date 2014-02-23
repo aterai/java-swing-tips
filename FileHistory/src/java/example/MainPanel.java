@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         } else {
             fileHistory.removeAll();
         }
-        if (fh.size()<=0) {
+        if (fh.size() <= 0) {
             noFile.setEnabled(false);
             fileHistory.add(noFile);
         } else {
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
                 String name = fh.get(i);
                 String num  = Integer.toString(i + 1);
                 JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
-                mi.setText(num + ": "+ name);
+                mi.setText(num + ": " + name);
                 //byte[] bt = num.getBytes();
                 mi.setMnemonic((int) num.charAt(0));
                 fileHistory.add(mi);
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
             String num  = Integer.toString(i + 1);
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
-            mi.setText(num + ": "+ name);
+            mi.setText(num + ": " + name);
             //byte[] bt = num.getBytes();
             mi.setMnemonic((int) num.charAt(0));
             fileHistory.add(mi, i);

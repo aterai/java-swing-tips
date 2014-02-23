@@ -89,7 +89,7 @@ class VerticalTitledBorder extends TitledBorder {
             border.paintBorder(c, g, borderX, borderY, borderW, borderH);
 
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.translate(0, (height + labelW)/2);
+            g2.translate(0, (height + labelW) / 2);
             g2.rotate(Math.toRadians(-90));
             //or: g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
             label.setSize(labelW, labelH);

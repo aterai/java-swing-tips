@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 //         StyledDocument doc = new DefaultStyledDocument();
 //         SimpleAttributeSet a = new SimpleAttributeSet();
 //         StyleConstants.setLineSpacing(a, .5f);
-//         doc.setParagraphAttributes(0, doc.getLength()-1, a, false);
+//         doc.setParagraphAttributes(0, doc.getLength() - 1, a, false);
 //         textPane.setStyledDocument(doc);
     }
     public static void main(String[] args) {

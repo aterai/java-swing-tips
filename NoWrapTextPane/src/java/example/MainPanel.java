@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
                 Component p = getParent();
                 if (p == null) { return true; }
                 int ewidth = getUI().getPreferredSize(this).width;
-                return ewidth<=p.getSize().width;
+                return ewidth <= p.getSize().width;
             }
         };
         textPane.setEditorKit(new NoWrapEditorKit1());

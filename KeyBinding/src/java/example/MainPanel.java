@@ -164,7 +164,7 @@ class BindingMapModel extends DefaultTableModel {
     public void addBinding(Binding t) {
         Integer ft = t.getFocusType();
         String s = (ft == JComponent.WHEN_FOCUSED)           ? "WHEN_FOCUSED"
-                  :(ft == JComponent.WHEN_IN_FOCUSED_WINDOW) ? "WHEN_IN_FOCUSED_WINDOW"
+                 : (ft == JComponent.WHEN_IN_FOCUSED_WINDOW) ? "WHEN_IN_FOCUSED_WINDOW"
                                                              : "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
         Object[] obj = {s, t.getActionName(), t.getKeyDescription()};
         super.addRow(obj);

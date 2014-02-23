@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
             tracker.waitForID(IMAGE_ID);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             if (!tracker.isErrorID(IMAGE_ID)) {
                 model.addTest(new Test(file.getName(), path,
                                        img.getWidth(this), img.getHeight(this)));
@@ -201,7 +201,7 @@ class TablePopupMenu extends JPopupMenu {
                 return;
             }
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }

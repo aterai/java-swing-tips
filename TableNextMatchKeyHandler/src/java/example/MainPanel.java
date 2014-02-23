@@ -154,14 +154,14 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         // selected element
         int increment = bias == Position.Bias.Forward ? 1 : -1;
         int row = startingRow;
-        do{
+        do {
             Object value = table.getValueAt(row, TARGET_COLUMN);
             String text = Objects.toString(value, "");
             if (text.toUpperCase(Locale.ENGLISH).startsWith(uprefix)) {
                 return row;
             }
             row = (row + increment + max) % max;
-        }while (row != startingRow);
+        } while (row != startingRow);
         return -1;
     }
 }

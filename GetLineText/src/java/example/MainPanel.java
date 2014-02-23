@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 //                         try {
 //                             for (int i = 0; i < root.getElementCount(); i++) {
 //                                 Element elem = root.getElement(i);
-//                                 String line = doc.getText(elem.getStartOffset(), elem.getEndOffset()-elem.getStartOffset());
+//                                 String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
 //                                 if (line.startsWith("#")) {
 //                                     count++;
 //                                 }

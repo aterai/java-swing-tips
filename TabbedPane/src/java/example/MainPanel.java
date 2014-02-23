@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.addTab("Title: " + count, new JLabel("Tab: " + count));
-            tab.setSelectedIndex(tab.getTabCount()-1);
+            tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }

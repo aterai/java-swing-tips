@@ -92,7 +92,7 @@ class Task extends SwingWorker<String, String> {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
         int lengthOfTask = 120; //list.size();
-        while (current<lengthOfTask && !isCancelled()) {
+        while (current < lengthOfTask && !isCancelled()) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ie) {

@@ -52,13 +52,13 @@ public final class MainPanel extends JPanel {
 //         int w = panel.getWidth()  - i.left - i.right;
 //         int h = panel.getHeight() - i.top  - i.bottom;
 //
-//         l1.setPreferredSize(new Dimension(w * 90/100, h * 55/100));
-//         l2.setPreferredSize(new Dimension(w * 40/100, h * 30/100));
+//         l1.setPreferredSize(new Dimension(w * 90 / 100, h * 55 / 100));
+//         l2.setPreferredSize(new Dimension(w * 40 / 100, h * 30 / 100));
 //
-//         layout.putConstraint(SpringLayout.WEST,  l1, w * 5/100,  SpringLayout.WEST,  panel);
-//         layout.putConstraint(SpringLayout.NORTH, l1, h * 5/100,  SpringLayout.NORTH, panel);
-//         layout.putConstraint(SpringLayout.WEST,  l2, w * 50/100, SpringLayout.WEST,  panel);
-//         layout.putConstraint(SpringLayout.SOUTH, l2, -h * 5/100, SpringLayout.SOUTH, panel);
+//         layout.putConstraint(SpringLayout.WEST,  l1,  w *  5 / 100, SpringLayout.WEST,  panel);
+//         layout.putConstraint(SpringLayout.NORTH, l1,  h *  5 / 100, SpringLayout.NORTH, panel);
+//         layout.putConstraint(SpringLayout.WEST,  l2,  w * 50 / 100, SpringLayout.WEST,  panel);
+//         layout.putConstraint(SpringLayout.SOUTH, l2, -h *  5 / 100, SpringLayout.SOUTH, panel);
 //
 //         panel.setLayout(layout);
 //         panel.revalidate();

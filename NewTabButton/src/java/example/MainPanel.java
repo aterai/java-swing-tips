@@ -285,7 +285,7 @@ class TabLayout implements LayoutManager, Serializable {
     @Override public Dimension preferredLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
-            int last = parent.getComponentCount()-1;
+            int last = parent.getComponentCount() - 1;
             int w = 0;
             int h = 0;
             if (last >= 0) {

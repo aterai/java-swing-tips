@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
             });
             Dimension d = field.getPreferredSize();
             int baseline = field.getBaseline(d.width, d.height);
-            field.setAlignmentY(baseline/(float) d.height);
+            field.setAlignmentY(baseline / (float) d.height);
 
             SimpleAttributeSet a = new SimpleAttributeSet();
             StyleConstants.setLineSpacing(a, 1.5f);

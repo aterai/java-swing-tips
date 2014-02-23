@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JButton b = (JButton) e.getSource();
                 int mnemonic = b.getMnemonic();
-                if (mnemonic<KeyEvent.VK_A) {
+                if (mnemonic < KeyEvent.VK_A) {
                     mnemonic = KeyEvent.VK_A;
-                } else if (mnemonic<KeyEvent.VK_K) {
+                } else if (mnemonic < KeyEvent.VK_K) {
                     mnemonic++;
                 } else {
                     mnemonic = 0;

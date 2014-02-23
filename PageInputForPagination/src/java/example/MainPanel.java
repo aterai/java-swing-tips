@@ -132,7 +132,7 @@ public final class MainPanel extends JPanel {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 int ti = currentPageIndex - 1;
                 int ei = entry.getIdentifier();
-                return ti * itemsPerPage<=ei && ei<ti * itemsPerPage + itemsPerPage;
+                return ti * itemsPerPage <= ei && ei < ti * itemsPerPage + itemsPerPage;
             }
         });
         first.setEnabled(currentPageIndex > 1);
@@ -188,7 +188,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
             current = makeRowListAndPublish(current, itemsPerPage);
             i++;
         }
-        int m = max%itemsPerPage;
+        int m = max % itemsPerPage;
         if (m > 0) {
             makeRowListAndPublish(current, m);
         }
@@ -197,7 +197,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     private int makeRowListAndPublish(int current, int size) {
         List<Object[]> result = new ArrayList<Object[]>(size);
         int j = current;
-        while (j<current + size) {
+        while (j < current + size) {
             result.add(new Object[] {j, "Test: " + j, (j % 2 == 0) ? "" : "comment..."});
             j++;
         }

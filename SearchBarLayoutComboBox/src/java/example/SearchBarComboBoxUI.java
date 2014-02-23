@@ -3,4 +3,4 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import javax.swing.plaf.basic.BasicComboBoxUI;
-public class SearchBarComboBoxUI extends BasicComboBoxUI {}
+public class SearchBarComboBoxUI extends BasicComboBoxUI { /* ComboBoxUI */ }

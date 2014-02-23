@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         double a = 0.0;
         double d = 2 * Math.PI / v;
         Polygon polygon = new Polygon();
-        for (int i=0; i < v; i++) {
+        for (int i = 0; i < v; i++) {
             polygon.addPoint((int) (r1 * Math.cos(a) + x0), (int) (r2 * Math.sin(a) + y0));
             a += d;
         }

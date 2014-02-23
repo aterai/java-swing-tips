@@ -110,6 +110,6 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         return endOfToken + 1;
     }
     protected boolean isDelimiter(String character) {
-        return Character.isWhitespace(character.charAt(0)) || OPERANDS.indexOf(character)!=-1;
+        return Character.isWhitespace(character.charAt(0)) || OPERANDS.indexOf(character) != -1;
     }
 }

@@ -240,7 +240,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
 
         try {
             int current = 0;
-            while (current<lengthOfTask && !isCancelled()) {
+            while (current < lengthOfTask && !isCancelled()) {
                 //if (!pBar.isDisplayable()) {
                 //    return "Disposed";
                 //}

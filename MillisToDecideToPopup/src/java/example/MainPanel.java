@@ -139,7 +139,7 @@ class Task extends SwingWorker<String, String> {
     }
     @Override public String doInBackground() {
         int current = 0;
-        while (current<lengthOfTask && !isCancelled()) {
+        while (current < lengthOfTask && !isCancelled()) {
             if (current % 10 == 0) {
                 try {
                     Thread.sleep(5);

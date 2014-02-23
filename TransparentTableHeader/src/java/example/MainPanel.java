@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
 
         JScrollPane scroll = new JScrollPane(table) {
             @Override public void paintComponent(Graphics g) {
-                if (TEXTURE!=null) {
+                if (TEXTURE != null) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setPaint(TEXTURE);
                     g2.fillRect(0, 0, getWidth(), getHeight());

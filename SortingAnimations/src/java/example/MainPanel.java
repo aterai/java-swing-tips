@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             setComponentEnabled(false);
             int tmp = model.getNumber().intValue();
-            if (tmp!=number) {
+            if (tmp != number) {
                 number = tmp;
                 genArray(number);
             }

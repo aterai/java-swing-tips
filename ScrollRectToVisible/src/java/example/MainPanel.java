@@ -47,13 +47,13 @@ public final class MainPanel extends JPanel {
 
                 //JTable
                 model.addRow(new Object[] {date.toString(), model.getRowCount(), false});
-                int i = table.convertRowIndexToView(model.getRowCount()-1);
+                int i = table.convertRowIndexToView(model.getRowCount() - 1);
                 Rectangle r = table.getCellRect(i, 0, true);
                 table.scrollRectToVisible(r);
 
                 //JList
                 listModel.addElement(date);
-                int index = listModel.getSize()-1;
+                int index = listModel.getSize() - 1;
                 list.ensureIndexIsVisible(index);
                 //Rectangle cellBounds = list.getCellBounds(index, index);
                 //if (cellBounds != null) {
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
                 DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(date);
                 treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
                 /* //tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
-                tree.scrollRowToVisible(tree.getRowCount()-1);
+                tree.scrollRowToVisible(tree.getRowCount() - 1);
                 /*/
                 tree.scrollPathToVisible(new TreePath(newChild.getPath()));
                 //*/

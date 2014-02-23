@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
             int i1 = ((Integer) spinner1.getValue()).intValue();
             int i2 = ((Integer) spinner2.getValue()).intValue();
-            new Task(file, i1, i2) {
+            (new Task(file, i1, i2) {
                 @Override protected void process(List<Message> chunks) {
                     for (Message m: chunks) {
                         append(m);
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
                     }
                     append(new Message("----------------------------------", MessageType.REGULAR));
                 }
-            }.execute();
+            }).execute();
         }
     });
 

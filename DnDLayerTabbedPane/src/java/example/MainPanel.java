@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
         final JCheckBoxMenuItem check = new JCheckBoxMenuItem(new AbstractAction("Ghost image: Heavyweight") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBoxMenuItem c = (JCheckBoxMenuItem) e.getSource();
-                handler.setDragImageMode(c.isSelected() ? DragImageMode.Heavyweight: DragImageMode.Lightweight);
+                handler.setDragImageMode(c.isSelected() ? DragImageMode.Heavyweight : DragImageMode.Lightweight);
             }
         });
         JMenu menu = new JMenu("Debug");
@@ -348,7 +348,7 @@ class DnDTabbedPane extends JTabbedPane {
         // MouseListener
         @Override public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
-            if (src.getTabCount()<=1) {
+            if (src.getTabCount() <= 1) {
                 startPt = null;
                 return;
             }

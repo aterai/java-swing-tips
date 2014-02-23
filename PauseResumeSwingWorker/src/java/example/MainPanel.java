@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
                       } else {
                           try {
                               Document doc = area.getDocument();
-                              doc.remove(area.getDocument().getLength()-1, 1);
+                              doc.remove(area.getDocument().getLength() - 1, 1);
                           } catch (BadLocationException ex) {
                               ex.printStackTrace();
                           }
@@ -193,7 +193,7 @@ class Task extends SwingWorker<String, Progress> {
         int lengthOfTask = 12; //filelist.size();
         publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
         publish(new Progress(Component.LOG, "\n------------------------------\n"));
-        while (current<lengthOfTask && !isCancelled()) {
+        while (current < lengthOfTask && !isCancelled()) {
             publish(new Progress(Component.LOG, "*"));
             try {
                 convertFileToSomething();
@@ -210,7 +210,7 @@ class Task extends SwingWorker<String, Progress> {
         boolean blinking = false;
         int current = 0;
         int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
-        while (current<=lengthOfTask && !isCancelled()) {
+        while (current <= lengthOfTask && !isCancelled()) {
             if (isPaused) {
                 try {
                     Thread.sleep(500);
@@ -275,7 +275,7 @@ class Task extends SwingWorker<String, Progress> {
 //                     publish("Length Of Task: " + lengthOfTask);
 //                     publish("\n------------------------------\n");
 //                     setProgress(0);
-//                     while (current<lengthOfTask && !isCancelled()) {
+//                     while (current < lengthOfTask && !isCancelled()) {
 //                         if (!bar1.isDisplayable()) {
 //                             return "Disposed";
 //                         }
@@ -295,7 +295,7 @@ class Task extends SwingWorker<String, Progress> {
 //                 private void convertFileToSomething() throws InterruptedException {
 //                     int current = 0;
 //                     int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
-//                     while (current<=lengthOfTask && !isCancelled()) {
+//                     while (current <= lengthOfTask && !isCancelled()) {
 //                         int iv = 100 * current / lengthOfTask;
 //                         Thread.sleep(20); // dummy
 //                         firePropertyChange("progress2", iv, iv + 1);

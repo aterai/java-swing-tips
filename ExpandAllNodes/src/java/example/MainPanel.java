@@ -87,13 +87,13 @@ public final class MainPanel extends JPanel {
     //http://www.rgagnon.com/javadetails/java-0210.html
     private void expandAll(JTree tree) {
         int row = 0;
-        while (row<tree.getRowCount()) {
+        while (row < tree.getRowCount()) {
             tree.expandRow(row);
             row++;
         }
     }
     private void collapseAll(JTree tree) {
-        int row = tree.getRowCount()-1;
+        int row = tree.getRowCount() - 1;
         while (row >= 0) {
             tree.collapseRow(row);
             row--;

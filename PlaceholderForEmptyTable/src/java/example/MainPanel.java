@@ -80,7 +80,7 @@ class TablePopupMenu extends JPopupMenu {
             JTable table = (JTable) getInvoker();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.addRow(new Object[] {0, "aaa", Boolean.FALSE});
-            Rectangle rect = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }
     };
@@ -92,7 +92,7 @@ class TablePopupMenu extends JPopupMenu {
                 return;
             }
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }

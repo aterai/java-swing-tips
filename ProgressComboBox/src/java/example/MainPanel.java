@@ -150,7 +150,7 @@ class Task extends SwingWorker<String[], Integer> {
     @Override public String[] doInBackground() {
         int current = 0;
         List<String> list = new ArrayList<>();
-        while (current<=MAX && !isCancelled()) {
+        while (current <= MAX && !isCancelled()) {
             try {
                 Thread.sleep(50);
                 int iv = 100 * current / MAX;

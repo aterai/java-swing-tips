@@ -599,9 +599,9 @@ class GhostGlassPane extends JPanel {
                 //tabbedPane.paintDropLine(g2);
             }
             //Point p = SwingUtilities.convertPoint(tabbedPane, dl.getDropPoint(), this);
-            double xx = p.getX() - draggingGhost.getWidth(this) /2d;
-            double yy = p.getY() - draggingGhost.getHeight(this)/2d;
-            g2.drawImage(draggingGhost, (int) xx, (int) yy , this);
+            double xx = p.getX() - draggingGhost.getWidth(this)  / 2d;
+            double yy = p.getY() - draggingGhost.getHeight(this) / 2d;
+            g2.drawImage(draggingGhost, (int) xx, (int) yy, this);
             g2.dispose();
         }
     }

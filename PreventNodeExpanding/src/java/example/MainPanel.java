@@ -99,7 +99,7 @@ class FolderSelectionListener implements TreeSelectionListener {
             return;
         }
         final JTree tree = (JTree) e.getSource();
-        new Task(fileSystemView, parent) {
+        (new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
                 if (!tree.isDisplayable()) {
                     cancel(true);
@@ -111,7 +111,7 @@ class FolderSelectionListener implements TreeSelectionListener {
                 }
                 //((DefaultTreeModel) tree.getModel()).reload(node);
             }
-        }.execute();
+        }).execute();
     }
 }
 

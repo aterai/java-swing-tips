@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
             if (selection.length == 0) {
                 return;
             }
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }

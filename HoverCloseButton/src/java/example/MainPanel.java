@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.addTab("Title" + count, new JLabel("Tab" + count));
-            tab.setSelectedIndex(tab.getTabCount()-1);
+            tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
@@ -91,7 +91,7 @@ class MyJTabbedPane extends JTabbedPane {
     }
     @Override public void addTab(String title, final Component content) {
         super.addTab(title, content);
-        setTabComponentAt(getTabCount()-1, new TabPanel(this, title, content));
+        setTabComponentAt(getTabCount() - 1, new TabPanel(this, title, content));
     }
 }
 

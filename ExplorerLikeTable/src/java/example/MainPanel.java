@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("new", ""));
-            Rectangle rect = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }
     }
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
             if (selection.length == 0) {
                 return;
             }
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -178,7 +178,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         textLabel.setText(Objects.toString(value, ""));
         FontMetrics fm = table.getFontMetrics(table.getFont());
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
-        int cwidth = table.getColumnModel().getColumn(column).getWidth()-iconLabel.getPreferredSize().width;
+        int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
         textLabel.setPreferredSize(new Dimension(Math.min(swidth, cwidth), 0)); //height:0 is dummy
         if (isSelected) {
             textLabel.setForeground(table.getSelectionForeground());

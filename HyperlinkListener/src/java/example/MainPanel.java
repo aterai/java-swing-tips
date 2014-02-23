@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         StyleConstants.setComponent(s, button);
         try {
             doc.insertString(doc.getLength(), "\n----\nJButton:\n", null);
-            doc.insertString(doc.getLength(), LINK +"\n", doc.getStyle("button"));
+            doc.insertString(doc.getLength(), LINK + "\n", doc.getStyle("button"));
             //doc.insertString(doc.getLength(), "\n", null);
         } catch (BadLocationException ble) {
             ble.printStackTrace();
@@ -147,7 +147,7 @@ class HyperlinkButton extends JButton {
     }
 }
 
-class LinkViewButtonUI extends BasicButtonUI {}
+class LinkViewButtonUI extends BasicButtonUI { /* ButtonUI */ }
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
     private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();

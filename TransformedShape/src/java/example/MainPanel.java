@@ -71,17 +71,17 @@ class FontRotateAnimation extends JComponent implements ActionListener {
     @Override public void actionPerformed(ActionEvent e) {
         repaint(s.getBounds());
         Rectangle2D b = shape.getBounds();
-        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth()/2d, b.getY() + b.getHeight()/2d);
+        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), p.getX(), p.getY());
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth()/2d - p.getX(), getHeight()/2d - p.getY());
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - p.getX(), getHeight() / 2d - p.getY());
 
 //         AffineTransform at = AffineTransform.getRotateInstance(
 //             Math.toRadians(rotate),
-//             b.getX() + b.getWidth()/2,
-//             b.getY() + b.getHeight()/2);
+//             b.getX() + b.getWidth()  / 2,
+//             b.getY() + b.getHeight() / 2);
 //         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(
-//             getWidth()/2  - b.getWidth()/2  - b.getX(),
-//             getHeight()/2 - b.getHeight()/2 - b.getY());
+//             getWidth()  / 2 - b.getWidth()  / 2 - b.getX(),
+//             getHeight() / 2 - b.getHeight() / 2 - b.getY());
 
         Shape s1 = at.createTransformedShape(shape);
         s = toCenterAT.createTransformedShape(s1);

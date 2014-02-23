@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             tab.addTab("Title: " + count, new JLabel("Tab: " + count));
-            tab.setSelectedIndex(tab.getTabCount()-1);
+            tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
@@ -196,7 +196,7 @@ class EditableTabbedPane extends JTabbedPane {
 //             }
 //             @Override public void mouseReleased(MouseEvent e) {
 //                 if (dragTab >= 0) {
-//                     if (dragTab!=getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY())) {
+//                     if (dragTab != getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY())) {
 //                         convertTab(dragTab, getTargetTabIndex(e.getPoint()));
 //                     }
 //                 }
@@ -259,7 +259,7 @@ class EditableTabbedPane extends JTabbedPane {
 //                 return i;
 //             }
 //         }
-//         Rectangle rect = this.getBoundsAt(this.getTabCount()-1);
+//         Rectangle rect = this.getBoundsAt(this.getTabCount() - 1);
 //         rect.setRect(rect.x + rect.width / 2, rect.y, rect.width + 100, rect.height);
 //         if (rect.contains(pt)) {
 //             return this.getTabCount();
@@ -279,7 +279,7 @@ class EditableTabbedPane extends JTabbedPane {
 //             //System.out.println("last: press=" + prev + " next=" + next);
 //             this.remove(prev);
 //             this.addTab(str, cmp);
-//             this.setSelectedIndex(this.getTabCount()-1);
+//             this.setSelectedIndex(this.getTabCount() - 1);
 //         } else if (prev > next) {
 //             //System.out.println("   >: press=" + prev + " next=" + next);
 //             this.remove(prev);

@@ -98,8 +98,8 @@ class MarqueePanel extends JComponent implements ActionListener {
         g2.dispose();
     }
     @Override public void actionPerformed(ActionEvent e) {
-        xx = getWidth() + gv.getVisualBounds().getWidth()-xx > 0 ? xx + 2f : 0f;
-        baseline = getHeight()/2f;
+        xx = getWidth() + gv.getVisualBounds().getWidth() - xx > 0 ? xx + 2f : 0f;
+        baseline = getHeight() / 2f;
         repaint();
     }
 }

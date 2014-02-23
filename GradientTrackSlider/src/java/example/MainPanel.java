@@ -225,7 +225,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
 
     protected void paintTrackHighlight(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
         int yy = trackTop + (trackBottom - trackTop) / 2;
-        for (int i=10; i >= 0; i--) {
+        for (int i = 10; i >= 0; i--) {
             g.setColor(new Color(1f, 1f, 1f, i * 0.07f));
             g.drawLine(trackLeft + 2, yy, trackRight - trackLeft - 2, yy);
             yy--;
@@ -276,9 +276,9 @@ final class TextureFactory {
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0, 0, size, size);
-        for (int i=0; i * cs < size; i++) {
-            for (int j=0; j * cs < size; j++) {
-                if ((i + j)%2 == 0) {
+        for (int i = 0; i * cs < size; i++) {
+            for (int j = 0; j * cs < size; j++) {
+                if ((i + j) % 2 == 0) {
                     g2.fillRect(i * cs, j * cs, cs, cs);
                 }
             }

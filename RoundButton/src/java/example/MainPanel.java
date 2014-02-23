@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         Path2D.Double p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);
         for (int i = 0; i < vc * 2 - 1; i++) {
-            agl+=add;
+            agl += add;
             int r = i % 2 == 0 ? ir : or;
             p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
         }
@@ -114,7 +114,7 @@ class RoundedCornerButton extends JButton {
         }
     }
     private void paintFocusAndRollover(Graphics2D g2, Color color) {
-        g2.setPaint(new GradientPaint(0, 0, color, getWidth()-1, getHeight()-1, color.brighter(), true));
+        g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
         g2.setColor(getBackground());
         g2.fill(border);
@@ -191,7 +191,7 @@ class RoundButton extends RoundedCornerButton {
     }
 }
 
-class RoundedCornerButtonUI extends BasicButtonUI{
+class RoundedCornerButtonUI extends BasicButtonUI {
     private static final float ARC_WIDTH  = 16f;
     private static final float ARC_HEIGHT = 16f;
     protected static final int FOCUS_STROKE = 2;
@@ -310,7 +310,7 @@ class ShapeButton extends JButton {
         setBackground(new Color(250, 250, 250));
     }
     private void paintFocusAndRollover(Graphics2D g2, Color color) {
-        g2.setPaint(new GradientPaint(0, 0, color, getWidth()-1, getHeight()-1, color.brighter(), true));
+        g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
     }
     @Override protected void paintComponent(Graphics g) {

@@ -103,7 +103,7 @@ class WrappedLabel extends JLabel {
     @Override public void doLayout() {
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
-        //if (w!=prevwidth) {
+        //if (w != prevwidth) {
             Font font = getFont();
             FontMetrics fm = getFontMetrics(font);
             FontRenderContext frc = fm.getFontRenderContext();
@@ -136,9 +136,9 @@ class WrappedLabel extends JLabel {
         for (int i = 0; i < gv.getNumGlyphs(); i++) {
             gm = gv.getGlyphMetrics(i);
             advance = gm.getAdvance();
-            if (xpos<width && width<=xpos + advance) {
+            if (xpos < width && width <= xpos + advance) {
                 lineCount++;
-                xpos = 0.0f;
+                xpos = 0f;
             }
             gmPos.setLocation(xpos, lineheight * lineCount);
             gv.setGlyphPosition(i, gmPos);

@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
                 }
                 int col = header.columnAtPoint(e.getPoint());
                 table.changeSelection(0, col, false, false);
-                table.changeSelection(table.getRowCount()-1, col, false, true);
+                table.changeSelection(table.getRowCount() - 1, col, false, true);
             }
         });
 

@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI{
+class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI {
     private BasicDirectoryModel model2;
 
     protected WindowsCanWriteFileChooserUI(JFileChooser chooser) {
@@ -99,7 +99,7 @@ class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI{
         throw new InternalError("Should never happen");
     }
     @Override public void createModel() {
-        if (model2!=null) {
+        if (model2 != null) {
             model2.invalidateFileCache();
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
@@ -113,7 +113,7 @@ class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI{
     }
 }
 
-class MetalCanWriteFileChooserUI extends MetalFileChooserUI{
+class MetalCanWriteFileChooserUI extends MetalFileChooserUI {
     private BasicDirectoryModel model2;
 
     protected MetalCanWriteFileChooserUI(JFileChooser chooser) {
@@ -126,7 +126,7 @@ class MetalCanWriteFileChooserUI extends MetalFileChooserUI{
         throw new InternalError("Should never happen");
     }
     @Override public void createModel() {
-        if (model2!=null) {
+        if (model2 != null) {
             model2.invalidateFileCache();
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {

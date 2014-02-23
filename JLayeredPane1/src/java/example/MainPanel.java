@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     }
 
     private JPanel createPanel(int i) {
-        String s = "<html><font color=#333333>ヘッダーだよん:"+ i +"</font></html>";
+        String s = "<html><font color=#333333>ヘッダーだよん:" + i + "</font></html>";
         JLabel label = new JLabel(s);
         label.setFont(FONT);
         label.setOpaque(true);

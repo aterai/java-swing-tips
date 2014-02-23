@@ -57,10 +57,10 @@ public final class MainPanel extends JPanel {
                 insets = combo.getInsets();
                 itb += insets.top + insets.bottom;
                 ilr += insets.left + insets.right;
-                int availableWidth = combo.getWidth()-ilr;
+                int availableWidth = combo.getWidth() - ilr;
                 if (index < 0) {
                     //@see BasicComboBoxUI#rectangleForCurrentValue
-                    int buttonSize = combo.getHeight()-itb;
+                    int buttonSize = combo.getHeight() - itb;
                     if (arrowButton != null) {
                         buttonSize = arrowButton.getWidth();
                     }
