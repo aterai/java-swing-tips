@@ -150,7 +150,7 @@ class TempFileTransferable implements Transferable {
         return Arrays.asList(file);
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] { DataFlavor.javaFileListFlavor };
+        return new DataFlavor[] {DataFlavor.javaFileListFlavor};
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.equals(DataFlavor.javaFileListFlavor);

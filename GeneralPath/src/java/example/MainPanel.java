@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,3));
+        super(new GridLayout(2, 3));
         add(makeTitledPanel("GeneralPath",   new StarPanel1()));
         add(makeTitledPanel("Polygon",       new StarPanel2()));
         add(makeTitledPanel("Font(Outline)", new StarPanel3()));
@@ -32,10 +32,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                    IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -49,19 +49,19 @@ public final class MainPanel extends JPanel {
 
 class StarPanel1 extends JPanel {
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
         //<blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
         GeneralPath p = new GeneralPath();
-        p.moveTo(- w / 4.0f, - h / 12.0f);
-        p.lineTo(+ w / 4.0f, - h / 12.0f);
-        p.lineTo(- w / 6.0f, + h / 4.0f);
-        p.lineTo(+     0.0f, - h / 4.0f);
-        p.lineTo(+ w / 6.0f, + h / 4.0f);
+        p.moveTo(-w / 4.0f, -h / 12.0f);
+        p.lineTo(+w / 4.0f, -h / 12.0f);
+        p.lineTo(-w / 6.0f, +h / 4.0f);
+        p.lineTo(0.0f,      -h / 4.0f);
+        p.lineTo(+w / 6.0f, +h / 4.0f);
         p.closePath();
         //</blockquote>
-        g2.translate(w/2, h/2);
+        g2.translate(w / 2, h / 2);
         g2.setColor(Color.YELLOW);
         g2.fill(p);
         g2.setColor(Color.BLACK);
@@ -72,16 +72,16 @@ class StarPanel1 extends JPanel {
 
 class StarPanel2 extends JPanel {
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
         Polygon p = new Polygon();
-        p.addPoint(Math.round(- w / 4.0f), Math.round(- h / 12.0f));
-        p.addPoint(Math.round(+ w / 4.0f), Math.round(- h / 12.0f));
-        p.addPoint(Math.round(- w / 6.0f), Math.round(+ h / 4.0f));
-        p.addPoint(Math.round(+     0.0f), Math.round(- h / 4.0f));
-        p.addPoint(Math.round(+ w / 6.0f), Math.round(+ h / 4.0f));
-        g2.translate(w/2, h/2);
+        p.addPoint(Math.round(-w / 4.0f), Math.round(-h / 12.0f));
+        p.addPoint(Math.round(+w / 4.0f), Math.round(-h / 12.0f));
+        p.addPoint(Math.round(-w / 6.0f), Math.round(+h / 4.0f));
+        p.addPoint(0.0f,                  Math.round(-h / 4.0f));
+        p.addPoint(Math.round(+w / 6.0f), Math.round(+h / 4.0f));
+        g2.translate(w / 2, h / 2);
         g2.setColor(Color.YELLOW);
         g2.fill(p);
         g2.setColor(Color.BLACK);
@@ -100,8 +100,8 @@ class StarPanel3 extends JPanel {
         shape = new TextLayout("\u2605", font, frc).getOutline(null);
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
-        g2.translate(0,FONTSIZE);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(0, FONTSIZE);
         g2.setColor(Color.YELLOW);
         g2.fill(shape);
         g2.setColor(Color.BLACK);
@@ -116,12 +116,12 @@ class StarPanel3 extends JPanel {
 //         int w = getWidth();
 //         int h = getHeight();
 //         Path2D.Double p = new Path2D.Double();
-//         p.moveTo(- w / 4.0, - h / 12.0);
-//         p.quadTo(+     0.0, - h / 4.0,  + w / 4.0, - h / 12.0);
-//         p.quadTo(+ w / 6.0, + h / 4.0,  - w / 6.0, + h / 4.0);
-//         p.quadTo(- w / 4.0, - h / 12.0, +     0.0, - h / 4.0);
-//         p.quadTo(+ w / 4.0, - h / 12.0, + w / 6.0, + h / 4.0);
-//         p.quadTo(- w / 6.0, + h / 4.0,  - w / 4.0, - h / 12.0);
+//         p.moveTo(-w / 4.0, -h / 12.0);
+//         p.quadTo(     0.0, -h / 4.0,  +w / 4.0, -h / 12.0);
+//         p.quadTo(+w / 6.0, +h / 4.0,  -w / 6.0, +h / 4.0);
+//         p.quadTo(-w / 4.0, -h / 12.0,      0.0, -h / 4.0);
+//         p.quadTo(+w / 4.0, -h / 12.0, +w / 6.0, +h / 4.0);
+//         p.quadTo(-w / 6.0, +h / 4.0,  -w / 4.0, -h / 12.0);
 //         p.closePath();
 //         g2.translate(w/2, h/2);
 //         g2.setColor(Color.YELLOW);
@@ -136,16 +136,16 @@ class StarIcon0 implements Icon {
     private final GeneralPath path = new GeneralPath();
     public StarIcon0() {
         //<blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
-        path.moveTo(50    *0.8 , 0     *0.8);
-        path.lineTo(61.803*0.8 , 38.196*0.8);
-        path.lineTo(100   *0.8 , 38.196*0.8);
-        path.lineTo(69.098*0.8 , 61.804*0.8);
-        path.lineTo(80.902*0.8 , 100   *0.8);
-        path.lineTo(50    *0.8 , 76.394*0.8);
-        path.lineTo(19.098*0.8 , 100   *0.8);
-        path.lineTo(30.902*0.8 , 61.804*0.8);
-        path.lineTo(0     *0.8 , 38.196*0.8);
-        path.lineTo(38.197*0.8 , 38.196*0.8);
+        path.moveTo(50     * .8, 0      * .8);
+        path.lineTo(61.803 * .8, 38.196 * .8);
+        path.lineTo(100    * .8, 38.196 * .8);
+        path.lineTo(69.098 * .8, 61.804 * .8);
+        path.lineTo(80.902 * .8, 100    * .8);
+        path.lineTo(50     * .8, 76.394 * .8);
+        path.lineTo(19.098 * .8, 100    * .8);
+        path.lineTo(30.902 * .8, 61.804 * .8);
+        path.lineTo(0      * .8, 38.196 * .8);
+        path.lineTo(38.197 * .8, 38.196 * .8);
         path.closePath();
         //</blockquote>
     }
@@ -156,7 +156,7 @@ class StarIcon0 implements Icon {
         return 80;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);
         g2d.fill(path);
@@ -172,25 +172,25 @@ class StarIcon1 implements Icon {
     private final Shape star;
     public StarIcon1() {
         double agl = 0.0;
-        double add = 2*Math.PI/5;
+        double add = 2 * Math.PI / 5d;
         Path2D.Double p = new Path2D.Double();
-        p.moveTo(R*1, R*0);
-        for(int i=0;i<5;i++) {
-            p.lineTo(R*Math.cos(agl), R*Math.sin(agl));
-            agl+=add+add;
+        p.moveTo(R * 1, R * 0);
+        for (int i = 0; i < 5; i++) {
+            p.lineTo(R * Math.cos(agl), R * Math.sin(agl));
+            agl += add + add;
         }
         p.closePath();
-        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,R,0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R, 0);
         star = new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {
-        return 2*R;
+        return 2 * R;
     }
     @Override public int getIconHeight() {
-        return 2*R;
+        return 2 * R;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);
         g2d.fill(star);
@@ -209,29 +209,29 @@ class StarIcon2 implements Icon {
     private final Shape star;
     public StarIcon2() {
         double agl = 0.0;
-        double add = 2*Math.PI/(VC*2);
+        double add = 2 * Math.PI / (VC * 2);
         Path2D.Double p = new Path2D.Double();
-        p.moveTo(R2*1, R2*0);
-        for(int i=0;i<VC*2-1;i++) {
-            agl+=add;
-            if(i%2==0) {
-                p.lineTo(R1*Math.cos(agl), R1*Math.sin(agl));
-            }else{
-                p.lineTo(R2*Math.cos(agl), R2*Math.sin(agl));
+        p.moveTo(R2 * 1, R2 * 0);
+        for (int i = 0; i < VC * 2 - 1; i++) {
+            agl += add;
+            if (i % 2 == 0) {
+                p.lineTo(R1 * Math.cos(agl), R1 * Math.sin(agl));
+            } else {
+                p.lineTo(R2 * Math.cos(agl), R2 * Math.sin(agl));
             }
         }
         p.closePath();
-        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2,R2,0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R2, 0);
         star = new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {
-        return 2*R2;
+        return 2 * R2;
     }
     @Override public int getIconHeight() {
-        return 2*R2;
+        return 2 * R2;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.translate(x, y);
         g2d.setPaint(Color.YELLOW);
         g2d.fill(star);
@@ -269,3 +269,4 @@ class StarIcon2 implements Icon {
 //         }
 //         return res;
 //     }
+

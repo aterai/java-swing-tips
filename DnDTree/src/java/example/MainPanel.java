@@ -236,7 +236,7 @@ class RJLTransferable implements Transferable {
         //return (df.equals(LOCAL_OBJECT_FLAVOR));
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] { LOCAL_OBJECT_FLAVOR };
+        return new DataFlavor[] {LOCAL_OBJECT_FLAVOR};
     }
 }
 

@@ -12,8 +12,8 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Boolean"};
     private final Object[][] data = {
-        { 1, "D", true },  { 2, "B", false }, { 3, "C", false },
-        { 4, "E", false }, { 5, "A", false }
+        {1, "D", true},  {2, "B", false}, {3, "C", false},
+        {4, "E", false}, {5, "A", false}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
         }
         @Override public void setValueAt(Object v, int row, int column) {
             if(v instanceof Boolean) {
-                for(int i=0; i<getRowCount(); i++) {
-                    super.setValueAt(i==row, i, column);
+                for(int i = 0; i < getRowCount(); i++) {
+                    super.setValueAt(i == row, i, column);
                 }
             }else{
                 super.setValueAt(v, row, column);

@@ -80,13 +80,13 @@ public final class MainPanel extends JPanel {
         }
         add(box, BorderLayout.NORTH);
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
         RescaleOp op = new RescaleOp(
-            new float[] { 1.2f,1.2f,1.2f,1.0f },
-            new float[] { 0f,0f,0f,0f }, null);
+            new float[] {1.2f, 1.2f, 1.2f, 1.0f},
+            new float[] {0f, 0f, 0f, 0f}, null);
         BufferedImage img = new BufferedImage(
             srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();

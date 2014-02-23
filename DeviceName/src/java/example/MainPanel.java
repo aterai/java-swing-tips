@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
                     }
                 }catch(IOException ioe) {
                     ioe.printStackTrace();
-                    Object[] obj = { ioe.getMessage() };
+                    Object[] obj = {ioe.getMessage()};
                     JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
 //                 JFileChooser fileChooser = new JFileChooser();
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent ae) {
                 File file = new File(DEVICE_NAME);
                 if(!isCanonicalPath(file)) {
-                    Object[] obj = { file.getAbsolutePath()+" is not a canonical path." };
+                    Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
                     JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent ae) {
                 File file = new File(DEVICE_NAME);
                 if(!file.isFile()) {
-                    Object[] obj = { file.getAbsolutePath()+" is not a file." };
+                    Object[] obj = {file.getAbsolutePath() + " is not a file."};
                     JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

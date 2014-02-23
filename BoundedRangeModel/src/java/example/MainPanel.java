@@ -30,10 +30,10 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        for(int i=0; i<100; i++) {
-            boolean flag = i%19==0 || i%17==0;
+        for(int i = 0; i < 100; i++) {
+            boolean flag = i % 19 == 0 || i % 17==0;
             String str = flag ? PATTERN : "aaaaa";
-            model.addRow(new Object[] { str, "" });
+            model.addRow(new Object[] {str, ""});
         }
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(

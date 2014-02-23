@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
             JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         if(i==0) {
-            list = new float[] { 1f };
+            list = new float[] {1f};
         }
         return list;
     }
