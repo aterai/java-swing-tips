@@ -7,8 +7,8 @@ import java.util.Objects;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 import javax.swing.table.*;
+import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final Color WARNING_COLOR = new Color(255, 200, 200);

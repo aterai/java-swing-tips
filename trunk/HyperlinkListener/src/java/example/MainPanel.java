@@ -7,9 +7,9 @@ import java.awt.event.*;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
-import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
     private static final String LINK = "http://terai.xrea.jp/";

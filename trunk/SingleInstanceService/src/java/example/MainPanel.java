@@ -3,8 +3,8 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import javax.swing.*;
 import javax.jnlp.*;
+import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {

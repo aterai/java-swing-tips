@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.tree.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {

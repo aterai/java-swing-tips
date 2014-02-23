@@ -5,10 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.io.*;
 import javax.swing.*;
 
 //import java.nio.file.*;

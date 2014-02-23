@@ -4,9 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.text.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();

@@ -5,9 +5,9 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.beans.*;
 import java.util.Arrays;
 import java.util.List;
-import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 

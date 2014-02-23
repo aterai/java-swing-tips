@@ -8,8 +8,8 @@ import java.awt.geom.*;
 import java.util.Objects;
 import java.util.regex.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
+import javax.swing.text.*;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public final class MainPanel extends JPanel {
