@@ -67,7 +67,8 @@ public final class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
         c.anchor = GridBagConstraints.WEST;
-        c.gridx = c.gridy = 0;
+        c.gridx = 0;
+        c.gridy = 0;
         p.add(opaque, c); c.gridy++;
         p.add(combo,  c);
 

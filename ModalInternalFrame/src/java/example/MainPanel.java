@@ -268,7 +268,7 @@ class PrintGlassPane extends JPanel {
     }
 }
 
-class TextureFactory {
+final class TextureFactory {
     private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
     private TextureFactory() { /* Singleton */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {

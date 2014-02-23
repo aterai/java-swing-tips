@@ -12,7 +12,6 @@ import javax.swing.tree.*;
 public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        boolean b = true;
         JTree tree = new JTree() {
             @Override public void updateUI() {
                 setCellRenderer(null);
@@ -23,6 +22,7 @@ public class MainPanel extends JPanel {
                 setCellEditor(new CheckBoxNodeEditor(this));
             }
         };
+        boolean b = true;
         TreeModel model = tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         Enumeration e = root.breadthFirstEnumeration();
@@ -30,7 +30,8 @@ public class MainPanel extends JPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
             Object o = node.getUserObject();
             if(o instanceof String) {
-                node.setUserObject(new CheckBoxNode(o.toString(), b^=true));
+                b ^= true;
+                node.setUserObject(new CheckBoxNode(o.toString(), b));
             }
         }
         for(int i=0;i<tree.getRowCount();i++) {

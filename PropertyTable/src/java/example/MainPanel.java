@@ -102,7 +102,8 @@ class DateEditor extends JSpinner implements TableCellEditor {
 
     public DateEditor() {
         super(new SpinnerDateModel());
-        setEditor(editor = new JSpinner.DateEditor(this, "yyyy/MM/dd"));
+        editor = new JSpinner.DateEditor(this, "yyyy/MM/dd");
+        setEditor(editor);
         setArrowButtonEnabled(false);
         editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
 

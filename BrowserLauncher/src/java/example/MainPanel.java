@@ -67,7 +67,7 @@ public class MainPanel extends JPanel {
 //  Public Domain Software -- Free to Use as You Like  //
 /////////////////////////////////////////////////////////
 //class BareBonesBrowserLaunch {
-class BrowserLauncher {
+final class BrowserLauncher {
     private static final String ERR_MSG = "Error attempting to launch web browser";
     private BrowserLauncher() { /* Singleton */ }
     public static void openURL(String url) {

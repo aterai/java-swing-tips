@@ -114,7 +114,8 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
         table.repaint();
     }
     @Override public void mouseExited(MouseEvent e)  {
-        row =  col = -1;
+        row = -1;
+        col = -1;
         e.getComponent().repaint();
     }
     @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }

@@ -233,7 +233,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
     }
 }
 
-class GradientPalletFactory {
+final class GradientPalletFactory {
     private GradientPalletFactory() { /* Singleton */ }
     public static int[] makeGradientPallet() {
         BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
@@ -268,7 +268,7 @@ class GradientPalletFactory {
     }
 }
 
-class TextureFactory {
+final class TextureFactory {
     private TextureFactory() { /* Singleton */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {
         int size = cs*cs;

@@ -66,7 +66,8 @@ public final class MainPanel extends JPanel {
         Spring width = Spring.constant(buttonWidth);
         for(JButton b: list) {
             SpringLayout.Constraints constraints = layout.getConstraints(b);
-            constraints.setConstraint(SpringLayout.EAST, x = Spring.sum(x, g));
+            x = Spring.sum(x, g);
+            constraints.setConstraint(SpringLayout.EAST, x);
             constraints.setY(y);
             constraints.setWidth(width);
             p.add(b);
