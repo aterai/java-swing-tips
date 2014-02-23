@@ -10,33 +10,29 @@ import javax.swing.*;
 
 public class MainPanel extends JPanel {
     private final JTextArea textarea = new JTextArea();
-    private final JButton b;
-    public MainPanel(final JFrame frame) {
+    private final JButton button = new JButton(new AbstractAction("showOptionDialog") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JComponent c = (JComponent)e.getSource();
+            String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"
+                        + "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
+            int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), info);
+            if(retValue==JOptionPane.YES_OPTION) {
+                System.out.println("YES_OPTION");
+            }else if(retValue==JOptionPane.NO_OPTION) {
+                System.out.println("NO_OPTION");
+            }else if(retValue==JOptionPane.CANCEL_OPTION) {
+                System.out.println("CANCEL_OPTION");
+            }
+        }
+    });
+    public MainPanel(JFrame frame) {
         super(new BorderLayout());
         Box box = Box.createHorizontalBox();
         box.add(box.createHorizontalGlue());
         box.add(new JButton("111"));
         box.add(new JButton("222"));
-        box.add(b = new JButton("showOptionDialog"));
+        box.add(button);
         box.add(new JButton("333"));
-        b.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent ae) {
-                String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"
-                            + "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
-                int retValue = JOptionPane.showConfirmDialog(frame, info);
-//                 int retValue = showOptionDialog(frame, info, "Test Options",
-//                                                 JOptionPane.YES_NO_CANCEL_OPTION,
-//                                                 JOptionPane.INFORMATION_MESSAGE,
-//                                                 null, null, null);
-                if(retValue==JOptionPane.YES_OPTION) {
-                    System.out.println("YES_OPTION");
-                }else if(retValue==JOptionPane.NO_OPTION) {
-                    System.out.println("NO_OPTION");
-                }else if(retValue==JOptionPane.CANCEL_OPTION) {
-                    System.out.println("CANCEL_OPTION");
-                }
-            }
-        });
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
         //Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(frame.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -58,7 +54,7 @@ public class MainPanel extends JPanel {
                 return Objects.equals(c, textarea) ? false : super.accept(c);
             }
             @Override public Component getDefaultComponent(Container aContainer) {
-                return b;
+                return button;
             }
         });
         textarea.setText("FORWARD_TRAVERSAL_KEYS: TAB, RIGHT, DOWN\nBACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP");

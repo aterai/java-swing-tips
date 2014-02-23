@@ -108,7 +108,7 @@ public final class MainPanel {
 }
 
 //@see javax/swing/plaf/basic/BasicMenuItemUI.java
-class MenuItemUIHelper {
+final class MenuItemUIHelper {
     private MenuItemUIHelper() { /* Singleton */ }
     public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc) {
         if(lh.getIcon() != null) {

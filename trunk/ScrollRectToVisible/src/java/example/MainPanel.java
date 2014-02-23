@@ -77,11 +77,11 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void updateUI() {
-        if(hierarchyListener!=null) {
+        if(hierarchyListener != null) {
             removeHierarchyListener(hierarchyListener);
         }
         super.updateUI();
-        addHierarchyListener(hierarchyListener = new HierarchyListener() {
+        hierarchyListener = new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 Component c = e.getComponent();
                 if(timer!=null && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
@@ -89,7 +89,8 @@ public class MainPanel extends JPanel {
                     timer.stop();
                 }
             }
-        });
+        };
+        addHierarchyListener(hierarchyListener);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

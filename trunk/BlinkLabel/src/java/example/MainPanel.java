@@ -12,13 +12,15 @@ public class MainPanel extends JPanel {
     private final Timer timer1 = new Timer(600, new ActionListener() {
         private boolean flg = true;
         @Override public void actionPerformed(ActionEvent e) {
-            label1.setText((flg^=true) ? "\u25CB" : "\u25CF");
+            flg ^= true;
+            label1.setText(flg ? "\u25CB" : "\u25CF");
         }
     });
     private final Timer timer2 = new Timer(300, new ActionListener() {
         private boolean flg = true;
         @Override public void actionPerformed(ActionEvent e) {
-            label2.setText((flg^=true) ? "!!!Warning!!!" : "");
+            flg ^= true;
+            label2.setText(flg ? "!!!Warning!!!" : "");
         }
     });
 

@@ -12,7 +12,7 @@ import java.util.List;
 import javax.activation.*;
 import javax.swing.*;
 
-public final class MainPanel extends JPanel {
+public final class MainPanel {
     private MainPanel() { /* Singleton */ }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

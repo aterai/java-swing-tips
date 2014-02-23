@@ -111,7 +111,8 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
          * space to each and move the lower one (incrButton) down. */
         int sbAvailButtonH = sbSize.height - sbInsetsH;
         if(sbAvailButtonH < sbButtonsH) {
-            incrButtonH = decrButtonH = sbAvailButtonH / 2;
+            incrButtonH = sbAvailButtonH / 2;
+            decrButtonH = sbAvailButtonH / 2;
             incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
         }
         decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);
@@ -210,7 +211,8 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
          * space to each and move the lower one (incrButton) down. */
         int sbAvailButtonH = sbSize.height - sbInsetsH;
         if(sbAvailButtonH < sbButtonsH) {
-            incrButtonH = decrButtonH = sbAvailButtonH / 2;
+            incrButtonH = sbAvailButtonH / 2;
+            decrButtonH = sbAvailButtonH / 2;
             incrButtonY = sbSize.height - sbInsets.bottom - incrButtonH;
         }
         decrButton.setBounds(itemX, decrButtonY, itemW, decrButtonH);

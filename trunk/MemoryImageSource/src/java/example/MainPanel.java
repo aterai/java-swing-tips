@@ -114,7 +114,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
 }
 
-class TextureFactory {
+final class TextureFactory {
     private static final Color DEFAULT_COLOR = new Color(100, 100, 100, 100);
     private TextureFactory() { /* Singleton */ }
     public static TexturePaint createCheckerTexture(int cs, Color color) {

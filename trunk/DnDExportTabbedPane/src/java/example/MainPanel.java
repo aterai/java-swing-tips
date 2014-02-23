@@ -512,7 +512,8 @@ class TabTransferHandler extends TransferHandler {
         if(c instanceof DnDTabbedPane) {
             DnDTabbedPane src = (DnDTabbedPane)c;
             if(glassPane==null) {
-                c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
+                glassPane = new GhostGlassPane(src);
+                c.getRootPane().setGlassPane(glassPane);
             }
             if(src.dragTabIndex<0) {
                 return NONE;

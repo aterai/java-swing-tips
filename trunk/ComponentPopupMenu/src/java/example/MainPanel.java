@@ -83,18 +83,18 @@ class TextComponentPopupMenu extends JPopupMenu {
     private final Action cutAction = new DefaultEditorKit.CutAction();
     private final Action copyAction = new DefaultEditorKit.CopyAction();
     private final Action pasteAction = new DefaultEditorKit.PasteAction();
-    private final Action deleteAction;
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            ((JTextComponent)getInvoker()).replaceSelection(null);
+        }
+    };
     public TextComponentPopupMenu() {
         super();
         add(cutAction);
         add(copyAction);
         add(pasteAction);
         addSeparator();
-        add(deleteAction = new AbstractAction("delete") {
-            @Override public void actionPerformed(ActionEvent e) {
-                ((JTextComponent)getInvoker()).replaceSelection(null);
-            }
-        });
+        add(deleteAction);
         addSeparator();
         add(new AbstractAction("select all") {
             @Override public void actionPerformed(ActionEvent e) {

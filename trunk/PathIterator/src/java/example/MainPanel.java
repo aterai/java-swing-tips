@@ -143,7 +143,7 @@ public class MainPanel extends JPanel {
     }
 }
 
-class StarburstSVGMaker {
+final class StarburstSVGMaker {
     private StarburstSVGMaker() { /* Singleton */ }
     public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
         StringBuilder sb = new StringBuilder(200);

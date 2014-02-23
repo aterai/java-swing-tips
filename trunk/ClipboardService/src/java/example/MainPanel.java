@@ -77,27 +77,29 @@ public class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class TextComponentPopupMenu extends JPopupMenu {
+    private final UndoManager manager = new UndoManager();
     private final Action cutAction   = new DefaultEditorKit.CutAction();
     private final Action copyAction  = new DefaultEditorKit.CopyAction();
     private final Action pasteAction = new DefaultEditorKit.PasteAction();
-    private final Action deleteAction;
-    private final Action undoAction;
-    private final Action redoAction;
-    private final UndoManager manager = new UndoManager();
-    public TextComponentPopupMenu(final JTextComponent textComponent) {
+    private final Action undoAction  = new UndoAction(manager);
+    private final Action redoAction  = new RedoAction(manager);
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTextComponent tc = (JTextComponent)getInvoker();
+            tc.replaceSelection(null);
+        }
+    };
+    public TextComponentPopupMenu(JTextComponent textComponent) {
         super();
         add(cutAction);
         add(copyAction);
         add(pasteAction);
-        add(deleteAction = new AbstractAction("delete") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                textComponent.replaceSelection(null);
-            }
-        });
+        add(deleteAction);
         addSeparator();
-        add(undoAction = new UndoAction(manager));
-        add(redoAction = new RedoAction(manager));
+        add(undoAction);
+        add(redoAction);
         textComponent.getDocument().addUndoableEditListener(manager);
         textComponent.getActionMap().put("undo", undoAction);
         textComponent.getActionMap().put("redo", redoAction);
@@ -116,6 +118,7 @@ class TextComponentPopupMenu extends JPopupMenu {
         }
     }
 }
+
 class UndoAction extends AbstractAction {
     private final UndoManager undoManager;
     public UndoAction(UndoManager manager) {
@@ -131,6 +134,7 @@ class UndoAction extends AbstractAction {
         }
     }
 }
+
 class RedoAction extends AbstractAction {
     private final UndoManager undoManager;
     public RedoAction(UndoManager manager) {

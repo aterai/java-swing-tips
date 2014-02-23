@@ -123,10 +123,10 @@ class LinkViewButtonUI extends BasicButtonUI {
     private static final LinkViewButtonUI LINK_VIEW_BUTTON_UI = new LinkViewButtonUI();
     //private static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
     private static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
+    private final Dimension size;
+    private final Rectangle viewRect;
+    private final Rectangle iconRect;
+    private final Rectangle textRect;
 
     public static ButtonUI createUI(JButton b, final String href) {
         b.setForeground(Color.BLUE);
@@ -161,8 +161,12 @@ class LinkViewButtonUI extends BasicButtonUI {
         });
         return LINK_VIEW_BUTTON_UI;
     }
-    private LinkViewButtonUI() {
+    public LinkViewButtonUI() {
         super();
+        size = new Dimension();
+        viewRect = new Rectangle();
+        iconRect = new Rectangle();
+        textRect = new Rectangle();
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
         if(!(c instanceof AbstractButton)) {

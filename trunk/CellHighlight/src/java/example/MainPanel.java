@@ -86,7 +86,8 @@ class HighlightListener extends MouseAdapter {
         setHighlighTableCell(e.getPoint());
     }
     @Override public void mouseExited(MouseEvent e) {
-        row = col = -1;
+        row = -1;
+        col = -1;
         table.repaint();
     }
 }

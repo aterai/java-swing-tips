@@ -190,7 +190,6 @@ class ParentDispatchMouseListener extends MouseAdapter {
     }
 }
 
-
 final class AnimationUtil {
     private static final int N = 3;
     private AnimationUtil() { /* Singleton */ }

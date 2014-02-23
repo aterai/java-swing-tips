@@ -125,7 +125,8 @@ class HighlightListener extends MouseAdapter {
         if(row >= 0 && col >= 0) {
             table.repaint(table.getCellRect(row, col, false));
         }
-        row = col = -1;
+        row = -1;
+        col = -1;
     }
 }
 

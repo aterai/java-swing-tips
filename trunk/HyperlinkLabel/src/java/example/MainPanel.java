@@ -145,10 +145,10 @@ class LinkViewButtonUI extends BasicButtonUI {}
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
     private static final LinkViewButtonUI LINKVIEW_BUTTON_UI = new BasicLinkViewButtonUI();
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
+    private final Dimension size;
+    private final Rectangle viewRect;
+    private final Rectangle iconRect;
+    private final Rectangle textRect;
 
     public static LinkViewButtonUI createUI(JButton b) {
 //         b.setForeground(Color.BLUE);
@@ -156,8 +156,12 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
 //         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return LINKVIEW_BUTTON_UI;
     }
-    private BasicLinkViewButtonUI() {
+    public BasicLinkViewButtonUI() {
         super();
+        size = new Dimension();
+        viewRect = new Rectangle();
+        iconRect = new Rectangle();
+        textRect = new Rectangle();
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
         if(!(c instanceof AbstractButton)) {

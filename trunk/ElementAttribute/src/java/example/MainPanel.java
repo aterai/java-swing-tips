@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
       + "<a href='http://terai.xrea.jp/' title='Title: JST'>Java Swing Tips</a></div>"
       + "</body></html>";
 
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         JEditorPane editor1 = new CustomTooltipEditorPane();

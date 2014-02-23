@@ -33,7 +33,7 @@ public class MainPanel extends JPanel {
         table.setRowSorter(sorter);
         model.addTest(new Test("Name 1", "comment..."));
         model.addTest(new Test("Name 2", "Test"));
-        model.addTest(new Test("Name d", "ee"));
+        model.addTest(new Test("Name d", ""));
         model.addTest(new Test("Name c", "Test cc"));
         model.addTest(new Test("Name b", "Test bb"));
         model.addTest(new Test("Name a", "ff"));
@@ -66,11 +66,9 @@ public class MainPanel extends JPanel {
         };
         //sorter.setRowFilter(RowFilter.andFilter(filters));
         //sorter.setRowFilter(filter1);
-
-        Box box = Box.createHorizontalBox();
-        box.add(check1 = new JCheckBox(new AbstractAction("comment!=null") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                JCheckBox cb = (JCheckBox)evt.getSource();
+        check1 = new JCheckBox(new AbstractAction("!comment.isEmpty()") {
+            @Override public void actionPerformed(ActionEvent e) {
+                JCheckBox cb = (JCheckBox)e.getSource();
                 if(cb.isSelected()) {
                     filters.add(filter1);
                 }else{
@@ -78,10 +76,10 @@ public class MainPanel extends JPanel {
                 }
                 sorter.setRowFilter(RowFilter.andFilter(filters));
             }
-        }));
-        box.add(check2 = new JCheckBox(new AbstractAction("idx%2==0") {
-            @Override public void actionPerformed(ActionEvent evt) {
-                JCheckBox cb = (JCheckBox)evt.getSource();
+        });
+        check2 = new JCheckBox(new AbstractAction("idx%2==0") {
+            @Override public void actionPerformed(ActionEvent e) {
+                JCheckBox cb = (JCheckBox)e.getSource();
                 if(cb.isSelected()) {
                     filters.add(filter2);
                 }else{
@@ -89,7 +87,10 @@ public class MainPanel extends JPanel {
                 }
                 sorter.setRowFilter(RowFilter.andFilter(filters));
             }
-        }));
+        });
+        Box box = Box.createHorizontalBox();
+        box.add(check1);
+        box.add(check2);
         add(box, BorderLayout.NORTH);
         add(scrollPane);
         setPreferredSize(new Dimension(320, 240));
