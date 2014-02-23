@@ -8,7 +8,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextPane textpane = new JTextPane();
     public MainPanel() {
         super(new BorderLayout());

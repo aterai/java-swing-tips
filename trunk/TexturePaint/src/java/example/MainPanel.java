@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final transient TexturePaint texture;
 
     public MainPanel() {

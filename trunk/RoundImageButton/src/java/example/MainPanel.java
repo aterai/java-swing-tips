@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 //import javax.swing.plaf.basic.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
     private final List<? extends JButton> buttons;
     private final Box box = Box.createHorizontalBox();

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel implements ActionListener {
+public final class MainPanel extends JPanel implements ActionListener {
 //     private final JTable table = new JTable(model) {
 //         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //             Component c = super.prepareRenderer(tcr, row, column);
@@ -63,7 +63,7 @@ public class MainPanel extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    @Override public final void actionPerformed(ActionEvent e) {
+    @Override public void actionPerformed(ActionEvent e) {
         repaint();
     }
 

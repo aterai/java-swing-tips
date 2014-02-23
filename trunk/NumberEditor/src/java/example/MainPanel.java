@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(2,1));
         JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));

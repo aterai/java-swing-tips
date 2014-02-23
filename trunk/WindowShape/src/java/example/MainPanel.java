@@ -8,7 +8,7 @@ import java.awt.font.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
     private static final Font FONT = new Font(Font.SERIF, Font.PLAIN, 300);
     private final JTextField textField = new JTextField("\u2605", 20);

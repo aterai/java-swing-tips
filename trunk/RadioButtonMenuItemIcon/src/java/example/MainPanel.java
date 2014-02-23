@@ -7,7 +7,7 @@ import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(new JTextArea());

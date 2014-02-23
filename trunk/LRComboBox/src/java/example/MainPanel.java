@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField leftTextField  = new JTextField();
     private final JTextField rightTextField = new JTextField();
     public MainPanel() {

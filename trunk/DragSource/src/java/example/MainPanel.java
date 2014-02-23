@@ -11,7 +11,7 @@ import java.net.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
     private final URL u1 = MainPanel.class.getResource("i03-04.gif");
     private final URL u2 = MainPanel.class.getResource("i03-10.gif");

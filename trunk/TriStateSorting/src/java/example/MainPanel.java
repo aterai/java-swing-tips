@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
     private final JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
     private final String[] columnNames = {"String", "Integer", "Boolean"};

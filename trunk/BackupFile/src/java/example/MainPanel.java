@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String FILE_NAME = "example.txt";
     private final JSpinner spinner1 = new JSpinner(new SpinnerNumberModel(0, 0, 6, 1));
     private final JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(2, 0, 6, 1));

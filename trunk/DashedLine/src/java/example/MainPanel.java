@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField field = new JTextField("1.0f, 1.0f, 5.0f, 1.0f");
     private final JLabel label;
     private transient BasicStroke dashedStroke;

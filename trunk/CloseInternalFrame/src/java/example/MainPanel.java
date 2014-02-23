@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final Action closeSelectedFrameAction1 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {

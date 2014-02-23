@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(240, 255, 250);
     private final JCheckBox check1;
     private final JCheckBox check2;

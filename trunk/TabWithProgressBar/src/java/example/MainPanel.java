@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTabbedPane tab = new ProgressJTabbedPane();
 
     public MainPanel() {

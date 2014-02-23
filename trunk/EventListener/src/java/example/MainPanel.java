@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
     private final MyButton   button = new MyButton("dummy");

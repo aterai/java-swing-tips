@@ -14,7 +14,7 @@ import javax.swing.table.*;
 // JDK 1.7
 import javax.swing.plaf.nimbus.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"A", "B", "C"};
     private final Object[][] data = {
         { "A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1" },

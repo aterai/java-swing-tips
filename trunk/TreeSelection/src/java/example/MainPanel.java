@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION");
     private final JRadioButton r1 = new JRadioButton("SINGLE_TREE_SELECTION");
     private final JRadioButton r2 = new JRadioButton("CONTIGUOUS_TREE_SELECTION");

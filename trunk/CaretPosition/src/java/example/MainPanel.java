@@ -10,7 +10,7 @@ import java.text.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String LINESEPARATOR = "\n";
     private static final int LIMIT = 1000;
     private final JTextPane jtp = new JTextPane();

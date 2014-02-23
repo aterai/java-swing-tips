@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel("MANIFEST.MF");
     public MainPanel() {
         super(new BorderLayout());

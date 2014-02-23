@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTabbedPane tabbedPane = new JTabbedPane() {
         @Override public String getToolTipTextAt(int index) {
             return getTitleAt(index);

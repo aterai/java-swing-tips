@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTabbedPane tab0 = new JTabbedPane();
     private final JTabbedPane tab1 = new JTabbedPane();
     public MainPanel() {

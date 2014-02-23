@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel lbl1 = new JLabel("aaaaaaaaaa");
     private final JLabel lbl2 = new JLabel("bbbbbbbbbb");
     private final JScrollPane sp1 = new JScrollPane(lbl1);

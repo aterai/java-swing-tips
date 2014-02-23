@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Locale[] LOCALE_ARRAY = {
         Locale.ENGLISH,
         Locale.FRENCH,

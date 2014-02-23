@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel();
     private final JLabel label2 = new JLabel() {
         @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {

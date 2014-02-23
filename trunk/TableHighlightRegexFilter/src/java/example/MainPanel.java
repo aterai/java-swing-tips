@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
     private final JTextField field = new JTextField("ab+");
     private final HighlightTableCellRenderer renderer = new HighlightTableCellRenderer();

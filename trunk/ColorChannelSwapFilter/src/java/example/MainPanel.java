@@ -11,7 +11,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel implements HierarchyListener {
     private final BoundedRangeModel model = new DefaultBoundedRangeModel();
     private final JProgressBar progress01 = new JProgressBar(model);
     private final JProgressBar progress02 = new JProgressBar(model);

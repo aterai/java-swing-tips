@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final FileModel model = new FileModel();
     private final JTable table;
     public MainPanel() {

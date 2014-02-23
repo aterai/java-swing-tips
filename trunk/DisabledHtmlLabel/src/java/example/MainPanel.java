@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html>Html <font color='red'>label</font><br/> Test";
     public MainPanel() {
         super(new BorderLayout());

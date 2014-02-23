@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final LinkViewRadioButtonUI LINKVIEW_RADIOBUTTON_UI = new LinkViewRadioButtonUI();
     private static final int LR_PAGE_SIZE = 5;
     private final Box box = Box.createHorizontalBox();

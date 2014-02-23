@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea jta = new JTextArea();
     private final Timer timer = new Timer(200, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {

@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String SEE = "See Also: Constan Field Values";
     private final String[] columnNames = {"AAA", "BBB"};
     private final Object[][] data = {

@@ -12,7 +12,7 @@ import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Name", "Comment"};
     private final Object[][] data = {
         {"test1.jpg", "adfasd"},

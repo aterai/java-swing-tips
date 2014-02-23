@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
     private final JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
     private final String[] columnNames = {"String", "Integer", "Boolean"};

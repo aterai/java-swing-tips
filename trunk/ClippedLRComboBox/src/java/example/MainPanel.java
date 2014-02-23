@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<LRItem> combo1 = makeComboBox(true);
     private final JComboBox<LRItem> combo2 = makeComboBox(false);
     public MainPanel() {

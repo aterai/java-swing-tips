@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
     private final JTree tree = new JTree(new DefaultTreeModel(TreeUtil.makeTreeRoot()));
     private final JCheckBox sort0 = new JCheckBox("0: bubble sort");

@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color WARNING_COLOR = new Color(255, 200, 200);
     private static final String INITTXT =
         "Trail: Creating a GUI with JFC/Swing\n"

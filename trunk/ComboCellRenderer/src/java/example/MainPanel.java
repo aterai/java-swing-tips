@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(240, 240, 250);
     private final String[] columnNames = {"Integer", "String", "Boolean"};
     private final Object[][] data = {

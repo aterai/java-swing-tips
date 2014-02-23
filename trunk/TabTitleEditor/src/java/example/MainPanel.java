@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String INFO =
         " Start editing: Double-Click, Enter-Key\n"
       + " Commit rename: field-focusLost, Enter-Key\n"

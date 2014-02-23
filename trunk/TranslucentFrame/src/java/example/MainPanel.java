@@ -8,7 +8,7 @@ import javax.swing.plaf.synth.*;
 //import com.sun.java.swing.Painter; // 1.6.0
 //import javax.swing.Painter; // 1.7.0
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     public MainPanel() {
         super(new BorderLayout());

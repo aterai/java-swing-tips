@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree       = new JTree(makeModel());
     private final JTextField field = new JTextField("asd", 10);
     private final JButton button   = new JButton();

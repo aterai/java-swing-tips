@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import java.text.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String TEXT = "あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも";
     private final JLabel    lbl1 = new JLabel(TEXT);
     private final JLabel    lbl2 = new WrappedLabel(TEXT);

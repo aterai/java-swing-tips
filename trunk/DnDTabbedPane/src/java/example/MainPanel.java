@@ -10,7 +10,7 @@ import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final DnDTabbedPane tab = new DnDTabbedPane();
     private final JCheckBox gcheck  = new JCheckBox("Tab Ghost", true);
     private final JCheckBox tcheck  = new JCheckBox("Top", true);

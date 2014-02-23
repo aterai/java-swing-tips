@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JScrollPane scroll = new JScrollPane(textArea);
 

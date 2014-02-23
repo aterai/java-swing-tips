@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "String"};
     private final Object[][] data = {
         {"aaa", 1, "eee"}, {"bbb", 2, "FFF"},

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Arrays;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final List<JButton> list = Arrays.asList(
         new JButton("JButton"),
         new JButton("+getPreferredSize") {

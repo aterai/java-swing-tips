@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final ImageIcon bgimage;
     public MainPanel() {
         super(new BorderLayout());

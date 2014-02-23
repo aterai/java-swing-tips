@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField tf = new JTextField(24);
     private final JTextField field = new JTextField(24);
     private final UndoManager um = new UndoManager();

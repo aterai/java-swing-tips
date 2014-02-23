@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JTextField textField01 = new JTextField(20) {

@@ -10,7 +10,7 @@ import javax.swing.table.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "String"};
     private final Object[][] data = {
         {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},

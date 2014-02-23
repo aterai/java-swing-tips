@@ -8,7 +8,7 @@ import javax.swing.border.*;
 import javax.swing.tree.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,3));
         JTree tree1 = new JTree() {

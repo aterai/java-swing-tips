@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 //import javax.swing.text.html.parser.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JTextPane textPane = new JTextPane();
 

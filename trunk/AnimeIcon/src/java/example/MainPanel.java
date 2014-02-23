@@ -15,7 +15,7 @@ import javax.swing.*;
 //import javax.swing.SwingWorker;
 //import org.jdesktop.swingworker.SwingWorker;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
     private final JProgressBar bar   = new JProgressBar();
     private final JPanel statusPanel = new JPanel(new BorderLayout());

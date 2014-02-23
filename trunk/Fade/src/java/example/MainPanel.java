@@ -10,7 +10,7 @@ import java.net.*;
 import javax.imageio.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private boolean mode = true;
     private final Timer animator;
     private transient BufferedImage icon;

@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Date"};
     private final Object[][] data = {
         {-1, "AAA", new Date()}, {2, "BBB", new Date()},

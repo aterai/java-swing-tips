@@ -11,7 +11,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea log = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());

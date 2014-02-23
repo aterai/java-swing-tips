@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 import javax.swing.*;
 
-public class MainPanel extends JPanel implements ActionListener, HierarchyListener {
+public final class MainPanel extends JPanel implements ActionListener, HierarchyListener {
     private final Dimension panelDim = new Dimension(320, 240);
     private final Racket racket   = new Racket(panelDim);
     private final JLabel absolute = new JLabel("absolute:");

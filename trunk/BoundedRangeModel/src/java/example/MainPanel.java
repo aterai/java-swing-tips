@@ -14,7 +14,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color THUMB_COLOR  = new Color(0,0,255,50);
     private static final String PATTERN     = "Swing";
     private final List<Integer> highlighter = new ArrayList<>();

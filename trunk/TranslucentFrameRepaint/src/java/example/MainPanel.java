@@ -13,7 +13,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> combo = new JComboBox<>(TexturePaints.values());
     private final SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private final JLabel label = new JLabel(df.format(new Date()), SwingConstants.CENTER);

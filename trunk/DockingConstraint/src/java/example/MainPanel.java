@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 // import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<String> combo = new JComboBox<>(makeModel());
     private final JLabel label     = new JLabel();
     private final JToolBar toolbar = new JToolBar("toolbar");

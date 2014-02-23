@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color SELC = new Color(100,150,200);
     private final JTree tree = new JTree() {
         @Override public void paintComponent(Graphics g) {

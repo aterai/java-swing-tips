@@ -15,7 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String PATTERN = "[Ff]rame";
     private static final Color SELECTION_COLOR = new Color(0xC86464FF,true);
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,255,50,100));

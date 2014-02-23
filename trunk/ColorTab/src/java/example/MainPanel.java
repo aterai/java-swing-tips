@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String MENUITEM_NEWTAB    = "New tab";
     private static final String MENUITEM_CLOSEPAGE = "Close";
     private static final String MENUITEM_CLOSEALL  = "Close all";

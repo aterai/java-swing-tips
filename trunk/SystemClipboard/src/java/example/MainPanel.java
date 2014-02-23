@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.jnlp.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
     private final ClipboardService cs;
     public MainPanel() {

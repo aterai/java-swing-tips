@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField field1 = new JTextField("aaaaaaaaaa");
     private final JTextField field2 = new JTextField();
     private final JTextField field3 = new JTextField("123465789735");

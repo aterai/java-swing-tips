@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private boolean isPressed;
     private final JLabel label = new JLabel();
     private final JScrollPane scroll = new JScrollPane(label);

@@ -10,7 +10,7 @@ import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final SpinnerNumberModel outer   = new SpinnerNumberModel(40, 10, 1000, 1);
     private final SpinnerNumberModel inner   = new SpinnerNumberModel(30, 10, 1000, 1);
     private final SpinnerNumberModel vcModel = new SpinnerNumberModel(20, 3,  100,  1);

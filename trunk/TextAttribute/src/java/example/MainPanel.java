@@ -10,7 +10,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String TEXT = "0123456789";
     private final JTextField textField0 = new JTextField(TEXT);
     private final JTextField textField1 = new JTextField(TEXT);

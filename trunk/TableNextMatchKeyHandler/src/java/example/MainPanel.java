@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.Position;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final Dimension preferredSize = new Dimension(320, 240);
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {

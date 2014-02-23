@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final JCheckBox check      = new JCheckBox("Icons should be relocated", true);
     private final JButton button       = new JButton("relocate");

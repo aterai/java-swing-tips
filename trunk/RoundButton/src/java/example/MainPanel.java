@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JButton button = new JButton("RoundedCornerButtonUI");
     public MainPanel() {
         super();

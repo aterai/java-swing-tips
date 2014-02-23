@@ -11,7 +11,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final TexturePaint TEXTURE = ImageUtil.makeCheckerTexture();
     private final JDesktopPane desktop = new JDesktopPane() {
         @Override public void updateUI() {

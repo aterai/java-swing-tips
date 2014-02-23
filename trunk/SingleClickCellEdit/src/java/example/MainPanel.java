@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox modelCheck = new JCheckBox("edit the cell on single click");
 
     private final String[] columnNames = {"A", "B", "C"};

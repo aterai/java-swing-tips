@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static URL image = MainPanel.class.getResource("favicon.png");
     private static final String HTML_TEXT = "<html><body>"
       + "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />"

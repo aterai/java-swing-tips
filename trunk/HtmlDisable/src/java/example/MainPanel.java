@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel();
     private final JLabel label2 = new JLabel();
     private final JButton button1 = new JButton();

@@ -12,7 +12,7 @@ import javax.swing.*;
 // import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
 //*
     private final DefaultMutableTreeNode root = makeTreeRoot();
     private final JTree tree = new JTree(new DefaultTreeModel(root));

@@ -8,7 +8,7 @@ import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         Box box = Box.createVerticalBox();

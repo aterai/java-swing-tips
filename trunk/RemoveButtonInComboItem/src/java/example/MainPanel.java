@@ -10,7 +10,7 @@ import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JPanel p = new JPanel(new GridLayout(2,1));

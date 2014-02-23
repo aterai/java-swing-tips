@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JSlider slider1 = new JSlider(JSlider.VERTICAL,0,1000,500);
     private final JSlider slider2 = new JSlider(0,1000,500);
 

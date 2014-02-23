@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JButton label1 = new JButton("?");
     private final JButton label2 = new JButton("Oval");
     private final JButton label3 = new JButton("Rect");

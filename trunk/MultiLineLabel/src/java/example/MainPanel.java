@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextPane label1 = new JTextPane();
     private final JTextArea label2 = new JTextArea();
     private final JLabel    label3 = new JLabel();

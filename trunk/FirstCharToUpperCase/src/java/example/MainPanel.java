@@ -7,7 +7,7 @@ import java.util.Locale;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField field1 = new JTextField("asdfasdfasdfasdfasdf");
     private final JTextField field2 = new JTextField();
     public MainPanel() {

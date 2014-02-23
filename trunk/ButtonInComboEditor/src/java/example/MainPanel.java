@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final ImageIcon image1;
     private final ImageIcon image2;
     public MainPanel() {

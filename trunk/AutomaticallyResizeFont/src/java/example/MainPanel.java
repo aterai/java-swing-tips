@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String TEST = "1234567890\nabcdefghijklmn";
     private final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     private final Font font = new Font(Font.MONOSPACED, Font.PLAIN, 12);

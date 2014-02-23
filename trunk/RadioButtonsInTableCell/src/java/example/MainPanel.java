@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 //http://www.crionics.com/products/opensource/faq/swing_ex/JTableExamples2.html
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "Answer"};
     private final Object[][] data = {
         { 1, Answer.A }, { 2, Answer.B }, { 3, Answer.C },

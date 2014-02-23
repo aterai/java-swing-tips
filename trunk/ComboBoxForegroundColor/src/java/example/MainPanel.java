@@ -6,7 +6,7 @@ import java.awt.*;
 import java.io.Serializable;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final ColorItem[] model = new ColorItem[] {
         new ColorItem(Color.RED,     "Red"),
         new ColorItem(Color.GREEN,   "Green"),

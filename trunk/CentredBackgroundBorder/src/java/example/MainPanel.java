@@ -11,7 +11,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JTextArea area = new JTextArea();

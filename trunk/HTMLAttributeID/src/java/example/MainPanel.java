@@ -11,7 +11,7 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.text.html.parser.ParserDelegator;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea = new JTextArea();
     private final JEditorPane editorPane = new JEditorPane();

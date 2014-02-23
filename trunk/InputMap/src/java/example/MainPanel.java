@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel(final JFrame frame) {
         super(new GridLayout(2,1));
         JPanel p1 = new JPanel();

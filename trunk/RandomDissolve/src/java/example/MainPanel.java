@@ -11,7 +11,7 @@ import java.util.Random;
 import javax.imageio.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         BufferedImage i1 = makeImage(getClass().getResource("test.png"));

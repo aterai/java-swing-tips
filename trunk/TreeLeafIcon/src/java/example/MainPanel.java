@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox folderCheck = new JCheckBox("OpenIcon, ClosedIcon");
     private final JCheckBox leafCheck   = new JCheckBox("LeafIcon");
     //private final Icon emptyIcon = new EmptyIcon();

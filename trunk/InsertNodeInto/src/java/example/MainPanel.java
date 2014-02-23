@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree1 = new JTree();
     private final JTree tree2 = new JTree();
     public MainPanel() {

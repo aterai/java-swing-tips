@@ -7,7 +7,7 @@ import java.lang.reflect.*;
 import java.security.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
     private final JComponent glass = new MyGlassPane();
     private final JLabel label1 = makeLabel("Default: setToolTipText");

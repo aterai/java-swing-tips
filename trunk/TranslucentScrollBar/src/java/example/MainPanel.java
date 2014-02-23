@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1, 2));
 //         ImageIcon icon = new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg")); //http://sozai-free.com/

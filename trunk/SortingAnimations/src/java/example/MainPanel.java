@@ -16,7 +16,7 @@ import javax.swing.*;
 //http://www.cs.bell-labs.com/cm/cs/pearls/sortanim.html
 // modified by aterai at.terai@gmail.com
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
     private final JComboBox<? extends Enum> algorithmsChoices    = new JComboBox<>(SortAlgorithms.values());
     //private final JComboBox<Enum> algorithmsChoices = new JComboBox<Enum>(SortAlgorithms.values());

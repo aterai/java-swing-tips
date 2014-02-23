@@ -8,7 +8,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "ImageIcon"};
     private final JTable table = new JTable();
     public MainPanel() {

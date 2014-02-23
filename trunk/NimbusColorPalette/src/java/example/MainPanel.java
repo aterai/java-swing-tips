@@ -8,7 +8,7 @@ import java.beans.*;
 import javax.swing.*;
 // JDK 1.6.0 import com.sun.java.swing.Painter;
 
-public class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel implements HierarchyListener {
     private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
     private SwingWorker<String, Void> worker;
     public MainPanel() {

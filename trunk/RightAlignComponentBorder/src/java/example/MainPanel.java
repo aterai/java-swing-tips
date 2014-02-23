@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     private final JTextArea textArea = new JTextArea("aaaaaaaaaa");
     public MainPanel() {

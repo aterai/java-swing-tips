@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static String text;
     //private final JTextPane   textPane;
     private final JEditorPane editorPane   = new JEditorPane();

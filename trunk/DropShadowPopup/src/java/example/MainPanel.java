@@ -9,7 +9,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("Paint Shadow", true);
     private final JLabel label = new JLabel();
 

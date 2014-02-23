@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JRadioButton r0 = new JRadioButton("default");
     private final JRadioButton r1 = new JRadioButton("prevent KeyStroke autoStartsEdit");
     private final JRadioButton r2 = new JRadioButton("prevent mouse from starting edit");
