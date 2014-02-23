@@ -10,22 +10,26 @@ import javax.swing.plaf.basic.*;
 
 public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     //private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
-    private static Dimension size = new Dimension();
-    private static Rectangle viewRect = new Rectangle();
-    private static Rectangle iconRect = new Rectangle();
-    private static Rectangle textRect = new Rectangle();
     private static final int CLOSEICON_WIDTH = 12;
+    private final Dimension size = new Dimension();
+    private final Rectangle viewRect = new Rectangle();
+    private final Rectangle iconRect = new Rectangle();
+    private final Rectangle textRect = new Rectangle();
 
     public static ComponentUI createUI(JComponent c) {
         return new OperaTabViewButtonUI();
     }
-    @Override public void installUI(JComponent c) {
-        super.installUI(c);
-        c.setBorder(BorderFactory.createEmptyBorder());
-        c.setForeground(Color.WHITE);
-        if(tabViewButton != null) {
+//     @Override public void installUI(JComponent c) {
+//         super.installUI(c);
+//     }
+    @Override protected void installDefaults(AbstractButton b) {
+        super.installDefaults(b);
+        b.setBorder(BorderFactory.createEmptyBorder());
+        b.setForeground(Color.WHITE);
+        if(b instanceof TabButton) {
+            TabButton tabViewButton = (TabButton)b;
             tabViewButton.setTextColor(new Color(230, 245, 255));
-            tabViewButton.setPressedTextColor(Color.WHITE);
+            tabViewButton.setPressedTextColor(Color.WHITE.darker());
             tabViewButton.setRolloverTextColor(Color.WHITE);
             tabViewButton.setRolloverSelectedTextColor(Color.WHITE);
             tabViewButton.setSelectedTextColor(Color.WHITE);

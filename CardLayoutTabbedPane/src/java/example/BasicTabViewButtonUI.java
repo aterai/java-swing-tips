@@ -16,28 +16,33 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     private static Rectangle iconRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
 
-    protected TabButton tabViewButton;
+    //protected TabButton tabViewButton;
 
     public static ComponentUI createUI(JComponent c) {
         return new BasicTabViewButtonUI();
     }
-    @Override public void installUI(JComponent c) {
-        super.installUI(c);
-        if(c instanceof TabButton) {
-            this.tabViewButton = (TabButton)c;
-            tabViewButton.setRolloverEnabled(true);
+    @Override protected void installDefaults(AbstractButton b) {
+        super.installDefaults(b);
+        b.setPreferredSize(new Dimension(0, 24));
+        b.setRolloverEnabled(true);
+        b.setOpaque(true);
+        Border out = BorderFactory.createMatteBorder(2, 0, 0, 0, b.getBackground());
+        Border in  = BorderFactory.createMatteBorder(1, 1, 0, 1, Color.RED);
+        b.setBorder(BorderFactory.createCompoundBorder(out, in));
+        //b.setForeground(Color.GREEN);
+        if(b instanceof TabButton) {
+            TabButton tabViewButton = (TabButton)b;
+            tabViewButton.setTextColor(new Color(100, 100, 100));
+            tabViewButton.setPressedTextColor(Color.GRAY);
+            tabViewButton.setRolloverTextColor(Color.BLACK);
+            tabViewButton.setRolloverSelectedTextColor(Color.GRAY);
+            tabViewButton.setSelectedTextColor(Color.BLACK);
         }
-        c.setPreferredSize(new Dimension(0, 24));
-        c.setOpaque(true);
-        Border out = BorderFactory.createMatteBorder(2,0,0,0,c.getBackground());
-        Border in  = BorderFactory.createMatteBorder(1,1,0,1,Color.RED);
-        c.setBorder(BorderFactory.createCompoundBorder(out, in));
-        //c.setForeground(Color.GREEN);
     }
-    @Override public void uninstallUI(JComponent c) {
-        super.uninstallUI(c);
-        this.tabViewButton = null;
-    }
+//     @Override public void uninstallUI(JComponent c) {
+//         super.uninstallUI(c);
+//         this.tabViewButton = null;
+//     }
 //     @Override public void installDefaults() {}
 
     @Override public synchronized void paint(Graphics g, JComponent c) {
@@ -93,7 +98,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
             g.setColor(color);
             g.drawLine(viewRect.x+0, viewRect.y+2, viewRect.x+viewRect.width-0, viewRect.y+2);
         }
-        View v = (View) c.getClientProperty(BasicHTML.propertyKey);
+        View v = (View)c.getClientProperty(BasicHTML.propertyKey);
         if(v==null) {
             if(model.isSelected()) {
                 textRect.y -= 2;
