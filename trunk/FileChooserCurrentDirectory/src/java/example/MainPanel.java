@@ -25,9 +25,9 @@ public final class MainPanel extends JPanel {
     };
     @Override public void updateUI() {
         super.updateUI();
-        if (fc0!=null) { SwingUtilities.updateComponentTreeUI(fc0); }
-        if (fc1!=null) { SwingUtilities.updateComponentTreeUI(fc1); }
-        if (fc2!=null) { SwingUtilities.updateComponentTreeUI(fc2); }
+        if (fc0 != null) { SwingUtilities.updateComponentTreeUI(fc0); }
+        if (fc1 != null) { SwingUtilities.updateComponentTreeUI(fc1); }
+        if (fc2 != null) { SwingUtilities.updateComponentTreeUI(fc2); }
     }
     public MainPanel() {
         super(new BorderLayout());

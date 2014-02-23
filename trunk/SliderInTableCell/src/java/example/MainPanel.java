@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
         @Override public boolean isCellEditable(int row, int column) {
-            return column!=0;
+            return column != 0;
         }
     };
     private final JTable table = new JTable(model);

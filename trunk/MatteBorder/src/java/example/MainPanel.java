@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         label.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
         Font font = label.getFont();
-        label.setFont(new Font(font.getFontName(), font.getStyle(), font.getSize()*2));
+        label.setFont(new Font(font.getFontName(), font.getStyle(), font.getSize() * 2));
 
         JPanel p = new JPanel(new BorderLayout(2, 2));
         p.add(label, BorderLayout.NORTH);

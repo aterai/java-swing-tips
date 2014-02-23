@@ -174,8 +174,8 @@ public final class MainPanel extends JPanel {
             glass.add(modal);
             modal.pack();
 //             Rectangle screen = desktop.getBounds();
-//             modal.setLocation(screen.x + screen.width/2  - modal.getSize().width/2,
-//                               screen.y + screen.height/2 - modal.getSize().height/2);
+//             modal.setLocation(screen.x + screen.width  / 2 - modal.getSize().width  / 2,
+//                               screen.y + screen.height / 2 - modal.getSize().height / 2);
             frame.setGlassPane(glass);
             glass.setVisible(true);
             modal.setVisible(true);
@@ -277,9 +277,9 @@ final class TextureFactory {
         Graphics2D g2 = img.createGraphics();
         g2.setPaint(color);
         g2.fillRect(0, 0, size, size);
-        for (int i=0; i * cs < size; i++) {
-            for (int j=0; j * cs < size; j++) {
-                if ((i + j)%2 == 0) {
+        for (int i = 0; i * cs < size; i++) {
+            for (int j = 0; j * cs < size; j++) {
+                if ((i + j) % 2 == 0) {
                     g2.fillRect(i * cs, j * cs, cs, cs);
                 }
             }

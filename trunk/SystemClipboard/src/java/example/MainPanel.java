@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("get Clipboard DataFlavor") {
             @Override public void actionPerformed(ActionEvent e) {
                 try {
-                    Transferable t = (cs == null)?Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
-                                               :cs.getContents();
+                    Transferable t = (cs == null) ? Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
+                                                  : cs.getContents();
                     if (t == null) {
                         Toolkit.getDefaultToolkit().beep();
                         return;

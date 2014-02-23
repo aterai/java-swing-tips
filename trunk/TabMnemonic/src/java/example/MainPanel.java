@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
 //         tab.add(button, BorderLayout.EAST);
 //         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));
 //         super.addTab(title, content);
-//         setTabComponentAt(getTabCount()-1, tab);
+//         setTabComponentAt(getTabCount() - 1, tab);
 //     }
 //     private static class CloseTabIcon implements Icon {
 //         @Override public void paintIcon(Component c, Graphics g, int x, int y) {

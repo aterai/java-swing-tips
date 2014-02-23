@@ -83,7 +83,7 @@ class RollOverTreeCellRenderer extends DefaultTreeCellRenderer implements MouseM
     }
     @Override public void mouseMoved(MouseEvent e) {
         int row = tree.getRowForLocation(e.getX(), e.getY());
-        if (row!=rollOverRowIndex) {
+        if (row != rollOverRowIndex) {
             //System.out.println(row);
             rollOverRowIndex = row;
             tree.repaint();

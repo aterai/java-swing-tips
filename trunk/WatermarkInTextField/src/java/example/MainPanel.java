@@ -75,7 +75,7 @@ class WatermarkTextField extends JTextField implements FocusListener {
             Graphics2D g2d = (Graphics2D) g.create();
             //Insets i = getMargin();
             Insets i = getInsets();
-            int yy = (getHeight()-image.getIconHeight())/2;
+            int yy = (getHeight() - image.getIconHeight()) / 2;
             g2d.drawImage(image.getImage(), i.left, yy, this);
             g2d.dispose();
         }

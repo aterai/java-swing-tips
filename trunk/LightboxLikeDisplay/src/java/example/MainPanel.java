@@ -199,7 +199,7 @@ class AnimeIcon implements Icon, Serializable {
         g2d.translate(x, y);
         int size = list.size();
         for (int i = 0; i < size; i++) {
-            float alpha = isRunning ? (i + 1)/(float) size : .5f;
+            float alpha = isRunning ? (i + 1) / (float) size : .5f;
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.fill(list.get(i));
         }

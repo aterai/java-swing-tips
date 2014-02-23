@@ -43,7 +43,7 @@ class TextLayoutPanel extends JComponent {
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
-        float baseline = getHeight()/2f;
+        float baseline = getHeight() / 2f;
 
         g2.setPaint(Color.RED);
         g2.draw(new Line2D.Float(0, baseline, w, baseline));
@@ -80,7 +80,7 @@ class GlyphVectorPanel extends JComponent {
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
-        float baseline = getHeight()/2f;
+        float baseline = getHeight() / 2f;
 
         g2.setPaint(Color.RED);
         g2.draw(new Line2D.Float(0, baseline, w, baseline));

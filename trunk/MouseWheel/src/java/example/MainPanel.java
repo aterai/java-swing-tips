@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         slider.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
                 JSlider source = (JSlider) e.getSource();
-                int intValue = (int) source.getValue()*10;
+                int intValue = (int) source.getValue() * 10;
                 spinner.setValue(intValue);
             }
         });
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             @Override public void stateChanged(ChangeEvent e) {
                 JSpinner source = (JSpinner) e.getSource();
                 Integer newValue = (Integer) source.getValue();
-                slider.setValue((int) newValue.intValue()/10);
+                slider.setValue((int) newValue.intValue() / 10);
             }
         });
         spinner.addMouseWheelListener(new MouseWheelListener() {
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
                 JSpinner source = (JSpinner) e.getComponent();
                 SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
                 Integer oldValue = (Integer) source.getValue();
-                int intValue = oldValue.intValue()-e.getWheelRotation()*model.getStepSize().intValue();
+                int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
                 int max = ((Integer) model.getMaximum()).intValue(); //1000
                 int min = ((Integer) model.getMinimum()).intValue(); //0
-                if (min<=intValue && intValue<=max) {
+                if (min <= intValue && intValue <= max) {
                     source.setValue(intValue);
                 }
             }

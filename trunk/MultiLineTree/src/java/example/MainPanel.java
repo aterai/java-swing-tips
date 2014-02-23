@@ -236,8 +236,8 @@ class CellTextArea2 extends JTextArea {
         Dimension d = new Dimension(10, 10);
         //d = (d == null) ? new Dimension(400, 400) : d;
         Insets i = getInsets();
-        d.width  = Math.max(d.width,  getColumns()*getColumnWidth() + i.left + i.right);
-        d.height = Math.max(d.height, getRows()*getRowHeight() + i.top + i.bottom);
+        d.width  = Math.max(d.width,  getColumns() * getColumnWidth() + i.left + i.right);
+        d.height = Math.max(d.height, getRows() * getRowHeight() + i.top + i.bottom);
         return d;
     }
     @Override public void setText(String str) {

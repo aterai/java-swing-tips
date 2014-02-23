@@ -110,8 +110,8 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
             loadImage();
         }
         if (thumbnail != null) {
-            int x = getWidth()/2  - thumbnail.getIconWidth()/2;
-            int y = getHeight()/2 - thumbnail.getIconHeight()/2;
+            int x = getWidth()  / 2 - thumbnail.getIconWidth()  / 2;
+            int y = getHeight() / 2 - thumbnail.getIconHeight() / 2;
             if (y < 0) {
                 y = 0;
             }

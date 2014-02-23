@@ -98,7 +98,7 @@ class DropShadowPopupMenu extends JPopupMenu {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
         g2.setPaint(getBackground()); //??? 1.7.0_03
-        g2.fillRect(0, 0, getWidth()-OFFSET, getHeight()-OFFSET);
+        g2.fillRect(0, 0, getWidth() - OFFSET, getHeight() - OFFSET);
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {
@@ -203,7 +203,7 @@ class DropShadowPopupMenu extends JPopupMenu {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
         g2.setPaint(getBackground()); //??? 1.7.0_03
-        g2.fillRect(0, 0, getWidth()-OFFSET, getHeight()-OFFSET);
+        g2.fillRect(0, 0, getWidth() - OFFSET, getHeight() - OFFSET);
         g2.dispose();
     }
     @Override public void show(Component c, int x, int y) {

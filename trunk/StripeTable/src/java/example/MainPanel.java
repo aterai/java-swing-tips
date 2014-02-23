@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("New row", ""));
-            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }
     }
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
             if (selection.length == 0) {
                 return;
             }
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }

@@ -201,7 +201,7 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
     //private static NumberFormat amountDisplayFormat = NumberFormat.getCurrencyInstance();
     //private static MaskFormatter mf;
     private static NumberFormatter numberFormatter = new NumberFormatter();
-    static{
+    static {
         //amountDisplayFormat.setMinimumFractionDigits(0);
         //amountEditFormat.setGroupingUsed(false);
         //try { mf = new MaskFormatter("#######"); } catch (ParseException e) {}

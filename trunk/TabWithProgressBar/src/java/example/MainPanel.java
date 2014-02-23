@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             JComponent c = (count % 2 == 0) ? new JTree() : new JLabel("Tab" + count);
             tab.addTab("Title" + count, c);
-            tab.setSelectedIndex(tab.getTabCount()-1);
+            tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
@@ -76,13 +76,13 @@ class ProgressJTabbedPane extends JTabbedPane {
     @Override public void addTab(String title, final Component content) {
         super.addTab(title, new JLabel("Loading..."));
         final JProgressBar bar = new JProgressBar();
-        final int currentIndex = getTabCount()-1;
+        final int currentIndex = getTabCount() - 1;
         final JLabel label = new JLabel(title);
         Dimension dim = label.getPreferredSize();
         int w = Math.max(80, dim.width);
         label.setPreferredSize(new Dimension(w, dim.height));
         Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
-        bar.setPreferredSize(new Dimension(w, dim.height - tabInsets.top-1));
+        bar.setPreferredSize(new Dimension(w, dim.height - tabInsets.top - 1));
         //bar.setString(title);
         //bar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
         setTabComponentAt(currentIndex, bar);
@@ -121,7 +121,7 @@ class Task extends SwingWorker<String, Integer> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 120;
-        while (current<lengthOfTask) {
+        while (current < lengthOfTask) {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ie) {

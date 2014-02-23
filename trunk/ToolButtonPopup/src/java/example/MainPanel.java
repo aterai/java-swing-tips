@@ -122,7 +122,7 @@ class MenuToggleButton extends JToggleButton {
         Dimension dim = getSize();
         Insets ins = getInsets();
         int x = dim.width - ins.right;
-        int y = ins.top+(dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
+        int y = ins.top + (dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
         ARROW_ICON.paintIcon(this, g, x, y);
     }
 }

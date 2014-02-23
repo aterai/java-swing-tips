@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
                 if (!check.isSelected()) { return super.editCellAt(row, column, e); }
                 if (e instanceof KeyEvent) {
                     int c = ((KeyEvent) e).getKeyCode();
-                    if (KeyEvent.VK_F1<=c && c<=KeyEvent.VK_F21) {
+                    if (KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21) {
                         return false;
                     }
                 }
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 //                 if (!check.isSelected()) { return super.processKeyBinding(ks, e, condition, pressed); }
 //                 if (e instanceof KeyEvent) {
 //                     int c = ((KeyEvent) e).getKeyCode();
-//                     if (KeyEvent.VK_F1<=c && c<=KeyEvent.VK_F21) {
+//                     if (KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21) {
 //                         return false;
 //                     }
 //                 }

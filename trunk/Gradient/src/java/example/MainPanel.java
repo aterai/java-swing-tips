@@ -118,7 +118,8 @@ class GradientSeparator extends JSeparator {
         setUI(GradientSeparatorUI.createUI(this));
     }
 }
-class GradientSeparatorUI extends BasicSeparatorUI{
+
+class GradientSeparatorUI extends BasicSeparatorUI {
     private Color bgc, ssc, shc;
 
     public static ComponentUI createUI(JComponent c) {

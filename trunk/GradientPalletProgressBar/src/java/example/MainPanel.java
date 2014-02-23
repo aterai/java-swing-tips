@@ -88,7 +88,7 @@ class Task extends SwingWorker<Void, Void> {
     @Override public Void doInBackground() {
         int current = 0;
         int lengthOfTask = 100;
-        while (current<=lengthOfTask && !isCancelled()) {
+        while (current <= lengthOfTask && !isCancelled()) {
             try { // dummy task
                 Thread.sleep(50);
             } catch (InterruptedException ie) {
@@ -117,7 +117,7 @@ class ProgressListener implements PropertyChangeListener {
     }
 }
 
-class GradientPalletProgressBarUI extends BasicProgressBarUI{
+class GradientPalletProgressBarUI extends BasicProgressBarUI {
     private final int[] pallet;
     public GradientPalletProgressBarUI() {
         super();

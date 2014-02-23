@@ -45,20 +45,20 @@ public final class MainPanel {
 
         menuItem = new JMenuItem("bbbbb");
         menuItem.setMnemonic(KeyEvent.VK_2);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK|ActionEvent.CTRL_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK));
         menu0.add(menuItem);
         menuItem = makeMenuItem("bbbbb");
         menuItem.setMnemonic(KeyEvent.VK_2);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK|ActionEvent.CTRL_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK));
         menu1.add(menuItem);
 
         menuItem = new JMenuItem("c");
         menuItem.setMnemonic(KeyEvent.VK_3);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK|ActionEvent.CTRL_MASK|ActionEvent.SHIFT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menu0.add(menuItem);
         menuItem = makeMenuItem("c");
         menuItem.setMnemonic(KeyEvent.VK_3);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK|ActionEvent.CTRL_MASK|ActionEvent.SHIFT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menu1.add(menuItem);
 
         return menuBar;

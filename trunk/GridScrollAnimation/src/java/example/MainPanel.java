@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JPanel gp = new GridPanel();
-        for (int i = 0; i< GridPanel.cols * GridPanel.rows; i++) {
+        for (int i = 0; i < GridPanel.cols * GridPanel.rows; i++) {
             gp.add(i % 2 == 0 ? new JButton("aa" + i) : new JScrollPane(new JTree()));
         }
         final JScrollPane scrollPane = new JScrollPane(gp);
@@ -118,7 +118,7 @@ class ScrollAction extends AbstractAction {
         scroller.start();
     }
     private static double easeInOut(double t) {
-        //range: 0.0<=t<=1.0
+        //range: 0.0 <= t <= 1.0
         if (t < .5) {
             return .5 * pow3(t * 2d);
         } else {

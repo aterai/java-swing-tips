@@ -123,7 +123,7 @@ class ToggleButtonBarCellIcon implements Icon {
         p.lineTo(w,      h2);
         p.lineTo(w - w2, h);
         p.lineTo(0,      h);
-        if (c!=parent.getComponent(0)) {
+        if (c != parent.getComponent(0)) {
             p.lineTo(w2, h2);
         }
         p.closePath();

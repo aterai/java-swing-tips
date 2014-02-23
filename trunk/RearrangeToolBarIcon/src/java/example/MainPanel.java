@@ -72,7 +72,7 @@ class DragHandler extends MouseAdapter {
     }
     @Override public void mousePressed(MouseEvent e) {
         JComponent parent = (JComponent) e.getComponent();
-        if (parent.getComponentCount()<=1) {
+        if (parent.getComponentCount() <= 1) {
             startPt = null;
             return;
         }

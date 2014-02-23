@@ -11,7 +11,7 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        OvertypeTextArea textArea= new OvertypeTextArea();
+        OvertypeTextArea textArea = new OvertypeTextArea();
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textArea.setText("Press the INSERT key to toggle the overwrite mode.\n\u3042\u3042\u3042\naaaaaaaaaaafasdfas");
         add(new JScrollPane(textArea));
@@ -81,7 +81,7 @@ class OvertypeTextArea extends JTextArea {
         //  caret position
         if (isOvertypeMode()) {
             int pos = getCaretPosition();
-            if (getSelectedText() == null &&  pos<getDocument().getLength()) {
+            if (getSelectedText() == null && pos < getDocument().getLength()) {
                 moveCaretPosition(pos + 1);
             }
         }
@@ -121,7 +121,7 @@ class OvertypeTextArea extends JTextArea {
                     // A patch for double-width CJK character >>>>
                     if (isOvertypeMode()) {
                         int pos = getCaretPosition();
-                        if (pos<getDocument().getLength()) {
+                        if (pos < getDocument().getLength()) {
                             if (getSelectedText() == null) {
                                 String str = getText(pos, 1);
                                 width = g.getFontMetrics().stringWidth(str);
@@ -132,7 +132,9 @@ class OvertypeTextArea extends JTextArea {
                     } // <<<<
                     int y = r.y + r.height - 2;
                     g.drawLine(r.x, y, r.x + width - 2, y);
-                } catch (BadLocationException e) { e.printStackTrace(); }
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

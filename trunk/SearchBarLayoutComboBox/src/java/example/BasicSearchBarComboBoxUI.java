@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
+public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     protected PopupMenuListener popupMenuListener;
     protected JButton loupeButton;
     protected Action loupeAction = new AbstractAction() {
@@ -19,7 +19,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
             if (o == null) {
                 o = comboBox.getItemAt(0);
             }
-            System.out.println(o + ": " +comboBox.getEditor().getItem());
+            System.out.println(o + ": " + comboBox.getEditor().getItem());
         }
     };
     public static javax.swing.plaf.ComponentUI createUI(JComponent c) {
@@ -71,7 +71,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI{
         return popupMenuListener;
     }
     //NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
-    private static class DummyKeyAdapter extends KeyAdapter {}
+    private static class DummyKeyAdapter extends KeyAdapter { /* dummy */ }
     @Override protected KeyListener createKeyListener() {
         if (keyListener == null) {
             keyListener = new DummyKeyAdapter();

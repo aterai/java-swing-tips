@@ -186,7 +186,7 @@ class FishEyeTable extends JTable {
     }
 
     private int getViewableColoredRowCount(int ridx) {
-        int rd2 = (fishEyeRowList.size()-1)/2;
+        int rd2 = (fishEyeRowList.size() - 1) / 2;
         int rc  = getModel().getRowCount();
         if (rd2 - ridx > 0 && ridx < rd2) {
             return rd2 + 1 + ridx;
@@ -197,7 +197,7 @@ class FishEyeTable extends JTable {
     }
 
     private void initRowHeigth(int height, int ccRow) {
-        int rd2      = (fishEyeRowList.size()-1)/2;
+        int rd2      = (fishEyeRowList.size() - 1) / 2;
         int rowCount = getModel().getRowCount();
         int viewRc   = getViewableColoredRowCount(ccRow);
         int viewH    = 0;
@@ -210,7 +210,7 @@ class FishEyeTable extends JTable {
         int restGap  = restH - restRh * restRc;
         //System.out.println(String.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH));
         int index = -1;
-        for (int i= -rd2; i < rowCount; i++) {
+        for (int i = -rd2; i < rowCount; i++) {
             int crh;
             if (ccRow - rd2 <= i && i <= ccRow + rd2) {
                 index++;

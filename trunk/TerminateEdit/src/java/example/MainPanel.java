@@ -143,7 +143,7 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
 
-        JFrame frame2 = new JFrame("@title@"+2);
+        JFrame frame2 = new JFrame("@title@" + 2);
         frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame2.getContentPane().add(new MainPanel());
         frame2.pack();
@@ -154,7 +154,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-enum AutoResizeMode{
+enum AutoResizeMode {
     AUTO_RESIZE_OFF(JTable.AUTO_RESIZE_OFF),
     AUTO_RESIZE_ALL_COLUMNS(JTable.AUTO_RESIZE_ALL_COLUMNS);
     public int mode;

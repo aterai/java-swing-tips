@@ -165,7 +165,7 @@ class ListItemTransferHandler extends TransferHandler {
             }
             JList source = (JList) c;
             DefaultListModel model  = (DefaultListModel) source.getModel();
-            for (int i=indices.length - 1; i >= 0; i--) {
+            for (int i = indices.length - 1; i >= 0; i--) {
                 model.remove(indices[i]);
             }
         }

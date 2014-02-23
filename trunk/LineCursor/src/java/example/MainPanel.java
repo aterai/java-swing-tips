@@ -9,7 +9,7 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("LineWrap");
-    private final LineCursorTextArea textArea= new LineCursorTextArea();
+    private final LineCursorTextArea textArea = new LineCursorTextArea();
     public MainPanel() {
         super(new BorderLayout());
         textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));

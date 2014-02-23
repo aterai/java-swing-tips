@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         for (int i = 0; i < 100; i++) {
             jtp.addTab("title" + i, new JLabel("label" + i));
         }
-        JSlider slider = new JSlider(0, jtp.getTabCount()-1, 50);
+        JSlider slider = new JSlider(0, jtp.getTabCount() - 1, 50);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);

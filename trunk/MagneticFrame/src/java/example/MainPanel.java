@@ -111,10 +111,10 @@ class MagneticDesktopManager extends DefaultDesktopManager {
         }
     }
     private static int getX(int e, int w) {
-        return e<w ? isNear(e) ? 0 : e : isNear(w) ? w + e : e;
+        return e < w ? isNear(e) ? 0 : e : isNear(w) ? w + e : e;
     }
     private static int getY(int n, int s) {
-        return n<s ? isNear(n) ? 0 : n : isNear(s) ? s + n : n;
+        return n < s ? isNear(n) ? 0 : n : isNear(s) ? s + n : n;
     }
     private static boolean isNear(int c) {
         return Math.abs(c) < 10;

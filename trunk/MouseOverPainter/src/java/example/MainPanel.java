@@ -11,7 +11,7 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        HighlightCursorTextArea textArea= new HighlightCursorTextArea();
+        HighlightCursorTextArea textArea = new HighlightCursorTextArea();
         textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         textArea.setText("MouseOver Painter Test\n\naaaaaaaaaaafasdfas");
         JScrollPane scroll = new JScrollPane(textArea);

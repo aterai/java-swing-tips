@@ -144,7 +144,7 @@ class Task extends SwingWorker<String, Progress> {
         int lengthOfTask = 12; //filelist.size();
         publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
         publish(new Progress(Component.LOG, "\n------------------------------\n"));
-        while (current<lengthOfTask && !isCancelled()) {
+        while (current < lengthOfTask && !isCancelled()) {
             try {
                 convertFileToSomething();
             } catch (InterruptedException ie) {
@@ -161,7 +161,7 @@ class Task extends SwingWorker<String, Progress> {
     private void convertFileToSomething() throws InterruptedException {
         int current = 0;
         int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
-        while (current<=lengthOfTask && !isCancelled()) {
+        while (current <= lengthOfTask && !isCancelled()) {
             int iv = 100 * current / lengthOfTask;
             Thread.sleep(20); // dummy
             publish(new Progress(Component.FILE, iv + 1));
@@ -216,7 +216,7 @@ class Task extends SwingWorker<String, Progress> {
 //                     publish("Length Of Task: " + lengthOfTask);
 //                     publish("\n------------------------------\n");
 //                     setProgress(0);
-//                     while (current<lengthOfTask && !isCancelled()) {
+//                     while (current < lengthOfTask && !isCancelled()) {
 //                         if (!bar1.isDisplayable()) {
 //                             return "Disposed";
 //                         }
@@ -236,7 +236,7 @@ class Task extends SwingWorker<String, Progress> {
 //                 private void convertFileToSomething() throws InterruptedException {
 //                     int current = 0;
 //                     int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
-//                     while (current<=lengthOfTask && !isCancelled()) {
+//                     while (current <= lengthOfTask && !isCancelled()) {
 //                         int iv = 100 * current / lengthOfTask;
 //                         Thread.sleep(20); // dummy
 //                         firePropertyChange("progress2", iv, iv + 1);

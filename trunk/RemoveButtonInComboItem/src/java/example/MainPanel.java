@@ -233,7 +233,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
             label.setForeground(list.getForeground());
         }
         MutableComboBoxModel m = (MutableComboBoxModel) list.getModel();
-        if (index < 0 || m.getSize()-1<=0) {
+        if (index < 0 || m.getSize() - 1 <= 0) {
             setOpaque(false);
             deleteButton.setVisible(false);
             label.setForeground(list.getForeground());

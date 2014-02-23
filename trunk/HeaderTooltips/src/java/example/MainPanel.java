@@ -25,8 +25,7 @@ public final class MainPanel extends JPanel {
         table.setTableHeader(new JTableHeader(table.getColumnModel()) {
             @Override public String getToolTipText(MouseEvent e) {
                 int c = columnAtPoint(e.getPoint());
-                return getTable().getColumnName(c)
-                  +" (aaaaaaaaaaaaaaaaaaaaaaa...)";
+                return getTable().getColumnName(c) + " (aaaaaaaaaaaaaaaaaaaaaaa...)";
             }
         });
 

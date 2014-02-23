@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", 0, true});
-            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }
     }
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
             if (selection.length == 0) {
                 return;
             }
-            for (int i=selection.length - 1; i >= 0; i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -298,7 +298,7 @@ class DotBorder extends EmptyBorder {
 //         if (isLeadRow) {
 //           border.type.add(DotBorder.Type.LEAD);
 //           if (column == 0) { border.type.add(DotBorder.Type.WEST); }
-//           if (column == getColumnCount()-1) { border.type.add(DotBorder.Type.EAST); }
+//           if (column == getColumnCount() - 1) { border.type.add(DotBorder.Type.EAST); }
 //         }
 //       }
 //       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {

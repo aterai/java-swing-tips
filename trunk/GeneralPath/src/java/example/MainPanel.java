@@ -123,7 +123,7 @@ class StarPanel3 extends JPanel {
 //         p.quadTo(+w / 4.0, -h / 12.0, +w / 6.0, +h / 4.0);
 //         p.quadTo(-w / 6.0, +h / 4.0,  -w / 4.0, -h / 12.0);
 //         p.closePath();
-//         g2.translate(w/2, h/2);
+//         g2.translate(w / 2, h / 2);
 //         g2.setColor(Color.YELLOW);
 //         g2.fill(p);
 //         g2.setColor(Color.BLACK);

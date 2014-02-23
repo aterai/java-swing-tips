@@ -76,7 +76,7 @@ class Task extends SwingWorker<Void, Void> {
     @Override public Void doInBackground() {
         int current = 0;
         int lengthOfTask = 120;
-        while (current<lengthOfTask && !isCancelled()) {
+        while (current < lengthOfTask && !isCancelled()) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ie) {

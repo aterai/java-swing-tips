@@ -117,6 +117,6 @@ class ComboHtmlRenderer extends DefaultListCellRenderer {
         return l;
     }
     private static String hex(Color c) {
-        return String.format("#%06x", c.getRGB()&0xffffff);
+        return String.format("#%06x", c.getRGB() & 0xffffff);
     }
 }

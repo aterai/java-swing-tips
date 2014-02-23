@@ -173,7 +173,7 @@ final class AnimationUtil {
     //http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
     //Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
     public static double easeIn(double t) {
-        //range: 0.0<=t<=1.0
+        //range: 0.0 <= t <= 1.0
         return Math.pow(t, N);
     }
     public static double easeOut(double t) {

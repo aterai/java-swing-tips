@@ -80,7 +80,7 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
         String second   = "";
         int columnWidth = table.getColumnModel().getColumn(column).getWidth();
         int textWidth   = 0;
-        for (int i=0; i < text.length(); i++) {
+        for (int i = 0; i < text.length(); i++) {
             textWidth += fm.charWidth(text.charAt(i));
             if (textWidth > columnWidth) {
                 first  = text.substring(0, i - 1);

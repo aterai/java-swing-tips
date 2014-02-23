@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
                         executor.shutdown();
                         return;
                     }
-                    model.setValueAt(c.get(c.size()-1), key, 2);
+                    model.setValueAt(c.get(c.size() - 1), key, 2);
                     //for (Integer value : chunks) {
                     //    model.setValueAt(value, key, 2);
                     //}
@@ -192,7 +192,7 @@ class Task extends SwingWorker<Integer, Integer> {
     @Override protected Integer doInBackground() {
         int lengthOfTask = 120;
         int current = 0;
-        while (current<lengthOfTask && !isCancelled()) {
+        while (current < lengthOfTask && !isCancelled()) {
             current++;
             try {
                 Thread.sleep(sleepDummy);

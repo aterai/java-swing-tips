@@ -126,7 +126,7 @@ class WrappedLabel extends JLabel {
         for (int i = 0; i < gv.getNumGlyphs(); i++) {
             gm = gv.getGlyphMetrics(i);
             advance = gm.getAdvance();
-            if (xpos<width && width<=xpos + advance) {
+            if (xpos < width && width <= xpos + advance) {
                 lineCount++;
                 xpos = 0.0f;
             }

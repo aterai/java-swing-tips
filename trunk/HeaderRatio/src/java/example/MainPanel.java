@@ -71,8 +71,8 @@ public final class MainPanel extends JPanel {
             col.setPreferredWidth(colwidth);
             total -= colwidth;
         }
-        //table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setMaxWidth(total);
-        table.getColumnModel().getColumn(table.getColumnModel().getColumnCount()-1).setPreferredWidth(total);
+        //table.getColumnModel().getColumn(table.getColumnModel().getColumnCount() - 1).setMaxWidth(total);
+        table.getColumnModel().getColumn(table.getColumnModel().getColumnCount() - 1).setPreferredWidth(total);
         table.revalidate();
     }
 

@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();
                 int index = cb.getSelectedIndex();
-                if (index == cb.getItemCount()-1) {
+                if (index == cb.getItemCount() - 1) {
                     return;
                 }
                 Object o = cb.getItemAt(index + 1);

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
                     //String m = "The file exists, overwrite?";
                     String m = String.format("<html>%s already exists.<br>Do you want to replace it?", f.getAbsolutePath());
                     int rv = JOptionPane.showConfirmDialog(this, m, "Save As", JOptionPane.YES_NO_OPTION);
-                    if (rv!=JOptionPane.YES_OPTION) {
+                    if (rv != JOptionPane.YES_OPTION) {
                         return;
                     }
                 }

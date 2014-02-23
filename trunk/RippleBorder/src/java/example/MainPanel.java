@@ -62,7 +62,7 @@ class RippleBorder extends EmptyBorder {
         animator = new Timer(80, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 comp.repaint();
-                count+=0.9f;
+                count += .9f;
             }
         });
         comp.addMouseListener(new MouseAdapter() {

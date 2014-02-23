@@ -42,9 +42,9 @@ public final class MainPanel extends JPanel {
         c.setCellEditor(new CheckBoxesEditor());
 
         final EnumMap<Permissions, Integer> map = new EnumMap<Permissions, Integer>(Permissions.class);
-        map.put(Permissions.READ,    1<<2);
-        map.put(Permissions.WRITE,   1<<1);
-        map.put(Permissions.EXECUTE, 1<<0);
+        map.put(Permissions.READ,    1 << 2);
+        map.put(Permissions.WRITE,   1 << 1);
+        map.put(Permissions.EXECUTE, 1 << 0);
         add(new JButton(new AbstractAction("ls -l (chmod)") {
             private static final String M = "-";
             @Override public void actionPerformed(ActionEvent e) {
@@ -54,19 +54,19 @@ public final class MainPanel extends JPanel {
                     EnumSet<Permissions> v = (EnumSet<Permissions>) model.getValueAt(i, 1);
                     int flg = 0;
                     if (v.contains(Permissions.READ)) {
-                        flg|=map.get(Permissions.READ);
+                        flg |= map.get(Permissions.READ);
                         buf.append('r');
                     } else {
                         buf.append(M);
                     }
                     if (v.contains(Permissions.WRITE)) {
-                        flg|=map.get(Permissions.WRITE);
+                        flg |= map.get(Permissions.WRITE);
                         buf.append('w');
                     } else {
                         buf.append(M);
                     }
                     if (v.contains(Permissions.EXECUTE)) {
-                        flg|=map.get(Permissions.EXECUTE);
+                        flg |= map.get(Permissions.EXECUTE);
                         buf.append('x');
                     } else {
                         buf.append(M);

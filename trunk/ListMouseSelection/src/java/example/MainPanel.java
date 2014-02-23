@@ -70,7 +70,7 @@ class SingleMouseClickSelectList<E> extends JList<E> {
         if (e.getID() == MouseEvent.MOUSE_ENTERED || e.getID() == MouseEvent.MOUSE_EXITED) {
             super.processMouseEvent(e);
         } else {
-            if (getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
+            if (getCellBounds(0, getModel().getSize() - 1).contains(e.getPoint())) {
                 super.processMouseEvent(convertMouseEvent(e));
             } else {
                 e.consume();

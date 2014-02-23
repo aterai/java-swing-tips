@@ -200,8 +200,8 @@ class XMLTreeNode implements TreeNode {
         if (list == null) {
             loadChildren();
         }
-        int i=0;
-        for (XMLTreeNode c : list) {
+        int i = 0;
+        for (XMLTreeNode c: list) {
             if (xmlNode == c.xmlNode) {
                 return i;
             }

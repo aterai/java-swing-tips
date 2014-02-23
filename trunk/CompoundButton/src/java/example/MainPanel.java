@@ -134,8 +134,7 @@ class CompoundButton extends JButton {
         }
     }
     private void paintFocusAndRollover(Graphics2D g2, Color color) {
-        g2.setPaint(new GradientPaint(0, 0, color,
-                                      getWidth()-1, getHeight()-1, color.brighter(), true));
+        g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
         g2.setColor(getBackground());
     }

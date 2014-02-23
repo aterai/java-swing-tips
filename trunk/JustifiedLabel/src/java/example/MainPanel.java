@@ -100,7 +100,7 @@ class JustifiedLabel extends JLabel {
         Graphics2D g2 = (Graphics2D) g.create();
         Insets i = getInsets();
         int w = getWidth() - i.left - i.right;
-        if (w!=prevWidth) {
+        if (w != prevWidth) {
             gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
             prevWidth = w;
         }

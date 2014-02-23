@@ -61,7 +61,7 @@ class RotateIcon implements Icon {
     private final Image image;
     private AffineTransform trans;
     public RotateIcon(Icon icon, int rotate) {
-        if (rotate%90 != 0) {
+        if (rotate % 90 != 0) {
             throw new IllegalArgumentException(rotate + ": Rotate must be (rotate % 90 == 0)");
         }
 

@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
         };
         panel2.setLayout(new FlowLayout() {
             @Override public void layoutContainer(Container target) {
-                synchronized(target.getTreeLock()) {
-                    int nmembers  = target.getComponentCount();
-                    if (nmembers<=0) {
+                synchronized (target.getTreeLock()) {
+                    int nmembers = target.getComponentCount();
+                    if (nmembers <= 0) {
                         return;
                     }
                     Insets insets = target.getInsets();

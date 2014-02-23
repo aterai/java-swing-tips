@@ -412,7 +412,7 @@ public class TableSorter extends AbstractTableModel {
                 //List<?> list = saveSelectedRow(t, keyCol);
                 List<Object> list = new ArrayList<>();
                 int[] ilist = t.getSelectedRows();
-                for (int i=ilist.length - 1; i >= 0; i--) {
+                for (int i = ilist.length - 1; i >= 0; i--) {
                     list.add(tableModel.getValueAt(modelIndex(ilist[i]), keyCol));
                 }
                 int status = getSortingStatus(column) + (e.isShiftDown() ? -1 : 1);
@@ -433,7 +433,7 @@ public class TableSorter extends AbstractTableModel {
 //             int[] ilist = table.getSelectedRows();
 //             if (ilist.length > 0) {
 //                 DefaultTableModel model = (DefaultTableModel) tableModel;
-//                 for (int i=ilist.length - 1; i >= 0; i--) {
+//                 for (int i = ilist.length - 1; i >= 0; i--) {
 //                     list.add(model.getValueAt(modelIndex(ilist[i]), keyColIndex));
 //                 }
 //             }

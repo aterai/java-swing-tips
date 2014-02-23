@@ -58,7 +58,7 @@ class TricoloreLabel extends JComponent {
         Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - p.getX(), h / 2d - p.getY());
 
-        double d = b.getHeight()/3;
+        double d = b.getHeight() / 3d;
         Rectangle2D.Double clip  = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
         Rectangle2D.Double clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), d);
         Rectangle2D.Double clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2 * d, b.getWidth(), d);

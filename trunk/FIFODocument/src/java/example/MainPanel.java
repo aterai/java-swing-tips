@@ -92,7 +92,7 @@ class FIFODocumentListener implements DocumentListener {
     @Override public void insertUpdate(DocumentEvent e) {
         final Document doc = e.getDocument();
         final Element root = doc.getDefaultRootElement();
-        if (root.getElementCount()<=MAX_LINES) {
+        if (root.getElementCount() <= MAX_LINES) {
             return;
         }
         EventQueue.invokeLater(new Runnable() {

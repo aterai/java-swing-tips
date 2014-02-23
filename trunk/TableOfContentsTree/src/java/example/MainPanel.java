@@ -277,13 +277,13 @@ class TableOfContentsTree extends JTree {
                 if (o instanceof TableOfContents) {
                     TableOfContents toc = (TableOfContents) o;
                     String pn = Integer.toString(toc.page);
-                    int x = getWidth() -1 - fm.stringWidth(pn) - ins.right;
+                    int x = getWidth() - 1 - fm.stringWidth(pn) - ins.right;
                     //int y = (int) (0.5 + r.y + (r.height + fm.getAscent()) * 0.5);
                     int y = r.y + c.getBaseline(r.width, r.height);
                     g2.drawString(pn, x, y);
 
                     int gap = 5;
-                    int x2  = getWidth() -1 - pnmaxWidth - ins.right;
+                    int x2  = getWidth() - 1 - pnmaxWidth - ins.right;
                     Stroke s = g2.getStroke();
                     g2.setStroke(READER);
                     g2.drawLine(r.x + r.width + gap, y, x2 - gap, y);
