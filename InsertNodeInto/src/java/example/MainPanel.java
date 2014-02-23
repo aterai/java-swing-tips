@@ -28,15 +28,15 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 Date date = new Date();
 
-                DefaultTreeModel model1 = (DefaultTreeModel)tree1.getModel();
-                DefaultMutableTreeNode parent1 = (DefaultMutableTreeNode)model1.getRoot();
+                DefaultTreeModel model1 = (DefaultTreeModel) tree1.getModel();
+                DefaultMutableTreeNode parent1 = (DefaultMutableTreeNode) model1.getRoot();
                 DefaultMutableTreeNode child1  = new DefaultMutableTreeNode(date);
                 parent1.add(child1);
                 model1.reload(parent1);
                 tree1.scrollPathToVisible(new TreePath(child1.getPath()));
 
-                DefaultTreeModel model2 = (DefaultTreeModel)tree2.getModel();
-                DefaultMutableTreeNode parent2 = (DefaultMutableTreeNode)model2.getRoot();
+                DefaultTreeModel model2 = (DefaultTreeModel) tree2.getModel();
+                DefaultMutableTreeNode parent2 = (DefaultMutableTreeNode) model2.getRoot();
                 DefaultMutableTreeNode child2  = new DefaultMutableTreeNode(date);
                 model2.insertNodeInto(child2, parent2, parent2.getChildCount());
                 tree2.scrollPathToVisible(new TreePath(child2.getPath()));
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     }
     private static void expandAll(JTree tree) {
         int row = 0;
-        while(row<tree.getRowCount()) {
+        while (row<tree.getRowCount()) {
             tree.expandRow(row);
             row++;
         }
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

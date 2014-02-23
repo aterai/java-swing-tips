@@ -27,12 +27,12 @@ public final class MainPanel extends JPanel {
                 label.setText(frame.getSize().toString());
             }
         });
-        checkbox1.setAction(new AbstractAction("the minimum size of this window: "+MW+"x"+MH1) {
+        checkbox1.setAction(new AbstractAction("the minimum size of this window: " + MW + "x" + MH1) {
             @Override public void actionPerformed(ActionEvent e) {
                 initFrameSize();
             }
         });
-        checkbox2.setAction(new AbstractAction("the minimum size of this window(since 1.6): "+MW+"x"+MH2) {
+        checkbox2.setAction(new AbstractAction("the minimum size of this window(since 1.6): " + MW + "x" + MH2) {
             @Override public void actionPerformed(ActionEvent e) {
                 frame.setMinimumSize(checkbox2.isSelected() ? new Dimension(MW, MH2) : null);
             }
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private void initFrameSize() {
-        if(!checkbox1.isSelected()) { return; }
+        if (!checkbox1.isSelected()) { return; }
         int fw = frame.getSize().width;
         int fh = frame.getSize().height;
-        frame.setSize(MW>fw?MW:fw, MH1>fh?MH1:fh);
+        frame.setSize(MW > fw ? MW : fw, MH1 > fh ? MH1 : fh);
     }
 
     public static void main(String[] args) {
@@ -63,20 +63,20 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
 //         final int MAX = 500;
-//         //frame.setMaximumSize(new Dimension(MAX,MAX));
+//         //frame.setMaximumSize(new Dimension(MAX, MAX));
 //         Robot r;
 //         final Robot r2;
-//         try{
+//         try {
 //             r = new Robot();
-//         }catch(AWTException ex) {
+//         } catch (AWTException ex) {
 //             r = null;
 //         }
 //         r2 = r;
@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
 //             @Override public void componentResized(ComponentEvent e) {
 //                 Point loc   = frame.getLocationOnScreen();
 //                 Point mouse = MouseInfo.getPointerInfo().getLocation();
-//                 if(r2!=null && (mouse.getX()>loc.getX()+MAX || mouse.getY()>loc.getY()+MAX)) {
+//                 if (r2 != null && (mouse.getX() > loc.getX() + MAX || mouse.getY() > loc.getY() + MAX)) {
 //                     r2.mouseRelease(InputEvent.BUTTON1_MASK);
 //                     frame.setSize(Math.min(MAX, frame.getWidth()),
 //                                   Math.min(MAX, frame.getHeight()));

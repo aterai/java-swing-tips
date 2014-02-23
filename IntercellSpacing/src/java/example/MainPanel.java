@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
-            return column==2;
+            return column == 2;
         }
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
@@ -24,8 +24,8 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
             Component c = super.prepareEditor(editor, row, column);
-            if(c instanceof JCheckBox) {
-                ((JCheckBox)c).setBackground(getSelectionBackground());
+            if (c instanceof JCheckBox) {
+                ((JCheckBox) c).setBackground(getSelectionBackground());
             }
             return c;
         }
@@ -40,30 +40,30 @@ public final class MainPanel extends JPanel {
 
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
-        table.setIntercellSpacing(new Dimension(0,0));
+        table.setIntercellSpacing(new Dimension(0, 0));
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JCheckBox(new AbstractAction("setShowVerticalLines") {
             @Override public void actionPerformed(ActionEvent e) {
                 Dimension d = table.getIntercellSpacing();
-                if(((JCheckBox)e.getSource()).isSelected()) {
+                if (((JCheckBox) e.getSource()).isSelected()) {
                     table.setShowVerticalLines(true);
-                    table.setIntercellSpacing(new Dimension(1,d.height));
-                }else{
+                    table.setIntercellSpacing(new Dimension(1, d.height));
+                } else {
                     table.setShowVerticalLines(false);
-                    table.setIntercellSpacing(new Dimension(0,d.height));
+                    table.setIntercellSpacing(new Dimension(0, d.height));
                 }
             }
         }), BorderLayout.WEST);
         p.add(new JCheckBox(new AbstractAction("setShowHorizontalLines") {
             @Override public void actionPerformed(ActionEvent e) {
                 Dimension d = table.getIntercellSpacing();
-                if(((JCheckBox)e.getSource()).isSelected()) {
+                if (((JCheckBox) e.getSource()).isSelected()) {
                     table.setShowHorizontalLines(true);
-                    table.setIntercellSpacing(new Dimension(d.width,1));
-                }else{
+                    table.setIntercellSpacing(new Dimension(d.width, 1));
+                } else {
                     table.setShowHorizontalLines(false);
-                    table.setIntercellSpacing(new Dimension(d.width,0));
+                    table.setIntercellSpacing(new Dimension(d.width, 0));
                 }
             }
         }), BorderLayout.EAST);
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

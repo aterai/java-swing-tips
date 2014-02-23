@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -63,17 +63,17 @@ public final class MainPanel extends JPanel {
 }
 // class CellButtonsMouseListener extends MouseAdapter {
 //     @Override public void mouseReleased(MouseEvent e) {
-//         JTable t = (JTable)e.getComponent();
+//         JTable t = (JTable) e.getComponent();
 //         Point pt = e.getPoint();
 //         int row  = t.rowAtPoint(pt);
 //         int col  = t.columnAtPoint(pt);
-//         if(t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
+//         if (t.convertRowIndexToModel(row) >= 0 && t.convertColumnIndexToModel(col) == 1) {
 //             TableCellEditor ce = t.getCellEditor(row, col);
 //             ce.stopCellEditing();
 //             Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
 //             Point p = SwingUtilities.convertPoint(t, pt, c);
 //             Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-//             if(b instanceof JButton) { ((JButton)b).doClick(); }
+//             if (b instanceof JButton) { ((JButton) b).doClick(); }
 //         }
 //     }
 // }
@@ -83,7 +83,7 @@ class ButtonsPanel extends JPanel {
     public ButtonsPanel() {
         super();
         setOpaque(true);
-        for(JButton b: buttons) {
+        for (JButton b: buttons) {
             b.setFocusable(false);
             b.setRolloverEnabled(false);
             add(b);
@@ -100,7 +100,7 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        this.setBackground(isSelected?table.getSelectionBackground():table.getBackground());
+        this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         return this;
     }
 }
@@ -126,7 +126,7 @@ class EditAction extends AbstractAction {
         //Object o = table.getModel().getValueAt(table.getSelectedRow(), 0);
         int row = table.convertRowIndexToModel(table.getEditingRow());
         Object o = table.getModel().getValueAt(row, 0);
-        JOptionPane.showMessageDialog(table, "Editing: "+o);
+        JOptionPane.showMessageDialog(table, "Editing: " + o);
     }
 }
 
@@ -136,12 +136,12 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
     private class EditingStopHandler extends MouseAdapter implements ActionListener {
         @Override public void mousePressed(MouseEvent e) {
             Object o = e.getSource();
-            if(o instanceof TableCellEditor) {
+            if (o instanceof TableCellEditor) {
                 actionPerformed(null);
-            }else if(o instanceof JButton) {
+            } else if (o instanceof JButton) {
                 //DEBUG: view button click -> control key down + edit button(same cell) press -> remain selection color
-                ButtonModel m = ((JButton)e.getComponent()).getModel();
-                if(m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
+                ButtonModel m = ((JButton) e.getComponent()).getModel();
+                if (m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
                     setBackground(table.getBackground());
                 }
             }
@@ -161,7 +161,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         buttons.get(1).setAction(new EditAction(table));
 
         EditingStopHandler handler = new EditingStopHandler();
-        for(JButton b: buttons) {
+        for (JButton b: buttons) {
             b.addMouseListener(handler);
             b.addActionListener(handler);
         }
@@ -205,13 +205,13 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -220,13 +220,13 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

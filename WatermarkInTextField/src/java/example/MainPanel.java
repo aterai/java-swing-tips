@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), "xxx");
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("E-mail", field1));
         box.add(Box.createVerticalStrut(5));
         box.add(makePanel("Search", field2));
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -71,8 +71,8 @@ class WatermarkTextField extends JTextField implements FocusListener {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(showWatermark) {
-            Graphics2D g2d = (Graphics2D)g.create();
+        if (showWatermark) {
+            Graphics2D g2d = (Graphics2D) g.create();
             //Insets i = getMargin();
             Insets i = getInsets();
             int yy = (getHeight()-image.getIconHeight())/2;
@@ -98,18 +98,18 @@ class GhostFocusListener implements FocusListener {
         tf.setForeground(INACTIVE_COLOR);
     }
     @Override public void focusGained(FocusEvent e) {
-        JTextComponent textField = (JTextComponent)e.getComponent();
+        JTextComponent textField = (JTextComponent) e.getComponent();
         String str = textField.getText();
         Color col  = textField.getForeground();
-        if(ghostMessage.equals(str) && INACTIVE_COLOR.equals(col)) {
+        if (ghostMessage.equals(str) && INACTIVE_COLOR.equals(col)) {
             textField.setForeground(ORIGINAL_COLOR);
             textField.setText("");
         }
     }
     @Override public void focusLost(FocusEvent e) {
-        JTextComponent textField = (JTextComponent)e.getComponent();
+        JTextComponent textField = (JTextComponent) e.getComponent();
         String str = textField.getText().trim();
-        if("".equals(str)) {
+        if ("".equals(str)) {
             textField.setForeground(INACTIVE_COLOR);
             textField.setText(ghostMessage);
         }

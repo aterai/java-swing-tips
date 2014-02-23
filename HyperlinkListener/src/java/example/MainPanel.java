@@ -14,7 +14,7 @@ import javax.swing.plaf.basic.*;
 public final class MainPanel extends JPanel {
     private static final String LINK = "http://terai.xrea.jp/";
     private static final String HTML_TEXT = "<html><body>"
-                                          + "html tag: <br /><a href='"+LINK+"'>"+LINK+"</a>"
+                                          + "html tag: <br /><a href='" + LINK + "'>" + LINK + "</a>"
                                           + "</body></html>";
 
     private MainPanel() {
@@ -35,36 +35,36 @@ public final class MainPanel extends JPanel {
         editorPane.addHyperlinkListener(new HyperlinkListener() {
             private String tooltip;
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                     JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
-                }else if(e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+                } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
-                    editorPane.setToolTipText(url==null ? null : url.toExternalForm());
-                }else if(e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+                    editorPane.setToolTipText(url == null ? null : url.toExternalForm());
+                } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editorPane.setToolTipText(tooltip);
                 }
             }
         });
 
-        HTMLDocument doc = (HTMLDocument)editorPane.getDocument();
+        HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
         Style s = doc.addStyle("button", null);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
         HyperlinkButton button = new HyperlinkButton(new AbstractAction(LINK) {
             @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton)e.getSource();
-                editorPane.setBackground(b.isSelected()?Color.RED:Color.WHITE);
+                AbstractButton b = (AbstractButton) e.getSource();
+                editorPane.setBackground(b.isSelected() ? Color.RED : Color.WHITE);
                 JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + LINK);
             }
         });
-        button.setToolTipText("button: "+LINK);
+        button.setToolTipText("button: " + LINK);
         button.setOpaque(false);
         StyleConstants.setComponent(s, button);
-        try{
+        try {
             doc.insertString(doc.getLength(), "\n----\nJButton:\n", null);
             doc.insertString(doc.getLength(), LINK +"\n", doc.getStyle("button"));
             //doc.insertString(doc.getLength(), "\n", null);
-        }catch(BadLocationException ble) {
+        } catch (BadLocationException ble) {
             ble.printStackTrace();
         }
         return editorPane;
@@ -78,10 +78,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
 // class URILabel extends JLabel {
 //     private final String href;
 //     public URILabel(String str) {
-//         super("<html><a href='"+str+"'>"+str+"</a>");
+//         super("<html><a href='" + str + "'>" + str + "</a>");
 //         href = str;
 //         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //         addMouseListener(new MouseAdapter() {
@@ -117,13 +117,13 @@ class HyperlinkButton extends JButton {
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if(UIManager.get(UI_CLASS_ID)==null) {
+        if (UIManager.get(UI_CLASS_ID) == null) {
             setUI(BasicLinkViewButtonUI.createUI(this));
-        }else{
-            setUI((LinkViewButtonUI)UIManager.getUI(this));
+        } else {
+            setUI((LinkViewButtonUI) UIManager.getUI(this));
         }
         setForeground(Color.BLUE);
-        setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     @Override public LinkViewButtonUI getUI() {
@@ -158,7 +158,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
 
     public static LinkViewButtonUI createUI(JButton b) {
 //         b.setForeground(Color.BLUE);
-//         b.setBorder(BorderFactory.createEmptyBorder(0,0,2,0));
+//         b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
 //         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return LINKVIEW_BUTTON_UI;
     }
@@ -170,10 +170,10 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
         textRect = new Rectangle();
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        if(!(c instanceof AbstractButton)) {
+        if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -194,21 +194,21 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
             viewRect, iconRect, textRect,
             0); //b.getText() == null ? 0 : b.getIconTextGap());
 
-        if(c.isOpaque()) {
+        if (c.isOpaque()) {
             g.setColor(b.getBackground());
-            g.fillRect(0,0, size.width, size.height);
+            g.fillRect(0, 0, size.width, size.height);
         }
 
         ButtonModel model = b.getModel();
-        if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
+        if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
-            g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
-                       viewRect.x+viewRect.width, viewRect.y+viewRect.height);
+            g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+                       viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if(v==null) {
+        if (v == null) {
             paintText(g, b, textRect, text);
-        }else{
+        } else {
             v.paint(g, textRect);
         }
     }

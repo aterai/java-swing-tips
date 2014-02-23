@@ -13,14 +13,14 @@ public final class MainPanel extends JPanel {
     private final JSpinner s1 = new JSpinner(makeSpinnerNumberModel());
     private final JSpinner s2 = new WarningSpinner(makeSpinnerNumberModel());
     public MainPanel() {
-        super(new GridLayout(3,1));
-        JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s1.getEditor();
+        super(new GridLayout(3, 1));
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s1.getEditor();
         DefaultFormatter formatter = (DefaultFormatter) editor.getTextField().getFormatter();
         formatter.setAllowsInvalid(false);
         add(makeTitlePanel(s0, "Default"));
         add(makeTitlePanel(s1, "NumberFormatter#setAllowsInvalid(false)"));
         add(makeTitlePanel(s2, "BackgroundColor"));
-        setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
+        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private static SpinnerNumberModel makeSpinnerNumberModel() {
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -64,8 +64,8 @@ class WarningSpinner extends JSpinner {
     private static final Color ERROR_BG = new Color(255, 200, 200);
     public WarningSpinner(SpinnerNumberModel model) {
         super(model);
-        JSpinner.NumberEditor editor = (JSpinner.NumberEditor)getEditor();
-        final JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) getEditor();
+        final JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
         ftf.setFormatterFactory(makeFFactory(model));
         ftf.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void changedUpdate(DocumentEvent e) {
@@ -80,7 +80,7 @@ class WarningSpinner extends JSpinner {
             private void updateEditValid() {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        ftf.setBackground(ftf.isEditValid()?Color.WHITE:ERROR_BG);
+                        ftf.setBackground(ftf.isEditValid() ? Color.WHITE : ERROR_BG);
                     }
                 });
             }
@@ -93,19 +93,19 @@ class WarningSpinner extends JSpinner {
             //    return new IntegerDocumentFilter();
             //}
             @Override public Object stringToValue(String text) throws ParseException {
-                try{
+                try {
                     Long.parseLong(text);
-                }catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     ParseException ex = new ParseException(e.getMessage(), 0);
                     ex.initCause(e);
                     throw ex;
                 }
                 Object o = format.parse(text);
-                if(o instanceof Long) {
-                    Long val = (Long)format.parse(text);
-                    Long max = (Long)m.getMaximum();
-                    Long min = (Long)m.getMinimum();
-                    if(max.compareTo(val)<0 || min.compareTo(val)>0) {
+                if (o instanceof Long) {
+                    Long val = (Long) format.parse(text);
+                    Long max = (Long) m.getMaximum();
+                    Long min = (Long) m.getMinimum();
+                    if (max.compareTo(val) < 0 || min.compareTo(val) > 0) {
                         throw new ParseException("out of bounds", 0);
                     }
                     return val;
@@ -123,25 +123,25 @@ class WarningSpinner extends JSpinner {
 
 //     private static JSpinner makeSpinner2(final SpinnerNumberModel m) {
 //         JSpinner s = new JSpinner(m);
-//         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s.getEditor();
-//         final JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
+//         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s.getEditor();
+//         final JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
 //         ftf.setFormatterFactory(makeFFactory2(m));
 //         ftf.addFocusListener(new FocusAdapter() {
 //             @Override public void focusLost(final FocusEvent e) {
-//                 //JTextComponent textField = (JTextComponent)e.getSource();
+//                 //JTextComponent textField = (JTextComponent) e.getSource();
 //                 System.out.println(ftf.getText());
-// //                 try{
+// //                 try {
 // //                     ftf.commitEdit();
-// //                 }catch(Exception ex) {
+// //                 } catch (Exception ex) {
 // //                     ex.printStackTrace();
 // //                 }
-//                 Long value = (Long)m.getValue();
+//                 Long value = (Long) m.getValue();
 //                 System.out.println(value);
-//                 Long max = (Long)m.getMaximum();
-//                 Long min = (Long)m.getMinimum();
-//                 if(max.compareTo(value)<0) {
+//                 Long max = (Long) m.getMaximum();
+//                 Long min = (Long) m.getMinimum();
+//                 if (max.compareTo(value) < 0) {
 //                     m.setValue(max);
-//                 }else if(min.compareTo(value)>0) {
+//                 } else if (min.compareTo(value) > 0) {
 //                     m.setValue(min);
 //                 }
 //             }
@@ -158,9 +158,9 @@ class WarningSpinner extends JSpinner {
 
 // class IntegerDocumentFilter extends DocumentFilter {
 //     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-//         if(string == null) {
+//         if (string == null) {
 //             return;
-//         }else{
+//         } else {
 //             replace(fb, offset, 0, string, attr);
 //         }
 //     }
@@ -172,7 +172,7 @@ class WarningSpinner extends JSpinner {
 //         int currentLength = doc.getLength();
 //         String currentContent = doc.getText(0, currentLength);
 //         String before = currentContent.substring(0, offset);
-//         String after = currentContent.substring(length+offset, currentLength);
+//         String after = currentContent.substring(length + offset, currentLength);
 //         String newValue = before + (text == null ? "" : text) + after;
 //         //currentValue =
 //         checkInput(newValue, offset);
@@ -180,10 +180,10 @@ class WarningSpinner extends JSpinner {
 //     }
 //     private static int checkInput(String proposedValue, int offset) throws BadLocationException {
 //         int newValue = 0;
-//         if(proposedValue.length() > 0) {
-//             try{
+//         if (proposedValue.length() > 0) {
+//             try {
 //                 newValue = Integer.parseInt(proposedValue);
-//             }catch(NumberFormatException e) {
+//             } catch (NumberFormatException e) {
 //                 throw new BadLocationException(proposedValue, offset);
 //             }
 //         }

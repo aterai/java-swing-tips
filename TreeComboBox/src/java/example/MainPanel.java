@@ -15,11 +15,11 @@ public final class MainPanel extends JPanel {
         DefaultComboBoxModel<DefaultMutableTreeNode> model1 = new DefaultComboBoxModel<>();
         DefaultComboBoxModel<DefaultMutableTreeNode> model2 = new DefaultComboBoxModel<>();
         TreeModel tm = makeModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)tm.getRoot();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tm.getRoot();
 //         Enumeration depth = root.depthFirstEnumeration();
-//         while(depth.hasMoreElements()) {
-//             DefaultMutableTreeNode node = (DefaultMutableTreeNode)depth.nextElement();
-//             if(node.isRoot()) { break; }
+//         while (depth.hasMoreElements()) {
+//             DefaultMutableTreeNode node = (DefaultMutableTreeNode) depth.nextElement();
+//             if (node.isRoot()) { break; }
 //             model.insertElementAt(node, 0);
 //         }
         makeComboBoxModel(model1, root);
@@ -31,18 +31,18 @@ public final class MainPanel extends JPanel {
         box.add(createPanel(new JComboBox<DefaultMutableTreeNode>(model1), "default:"));
         box.add(Box.createVerticalStrut(5));
         box.add(createPanel(combo, "Tree ComboBoxModel:"));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static void makeComboBoxModel(DefaultComboBoxModel<DefaultMutableTreeNode> model, DefaultMutableTreeNode node) {
-        if(!node.isRoot()) {
+        if (!node.isRoot()) {
             model.addElement(node);
         }
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
-                makeComboBoxModel(model, (DefaultMutableTreeNode)e.nextElement());
+            while (e.hasMoreElements()) {
+                makeComboBoxModel(model, (DefaultMutableTreeNode) e.nextElement());
             }
         }
     }
@@ -79,10 +79,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -99,10 +99,10 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     private final Action up = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int si = getSelectedIndex();
-            for(int i = si-1;i>=0;i--) {
+            for (int i = si - 1; i >= 0; i--) {
                 //E o = getItemAt(i);
-                //if(o instanceof TreeNode && ((TreeNode)o).isLeaf()) {
-                if(getItemAt(i).isLeaf()) {
+                //if (o instanceof TreeNode && ((TreeNode) o).isLeaf()) {
+                if (getItemAt(i).isLeaf()) {
                     setSelectedIndex(i);
                     break;
                 }
@@ -112,8 +112,8 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     private final Action down = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             int si = getSelectedIndex();
-            for(int i = si+1;i<getModel().getSize();i++) {
-                if(getItemAt(i).isLeaf()) {
+            for (int i = si + 1; i < getModel().getSize(); i++) {
+                if (getItemAt(i).isLeaf()) {
                     setSelectedIndex(i);
                     break;
                 }
@@ -137,37 +137,37 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
         setRenderer(new ListCellRenderer<E>() {
             @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel c;
-                if(value instanceof DefaultMutableTreeNode) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-                    int indent = 2 + index<0 ? 0 : (node.getPath().length-2)*16;
-                    if(node.isLeaf()) {
-                        c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    }else{
-                        c = (JLabel)r.getListCellRendererComponent(list, value, index, false, false);
-                        JLabel l = (JLabel)c;
+                if (value instanceof DefaultMutableTreeNode) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+                    int indent = 2 + index < 0 ? 0 : (node.getPath().length - 2) * 16;
+                    if (node.isLeaf()) {
+                        c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    } else {
+                        c = (JLabel) r.getListCellRendererComponent(list, value, index, false, false);
+                        JLabel l = (JLabel) c;
                         l.setForeground(Color.WHITE);
                         l.setBackground(Color.GRAY.darker());
                     }
                     c.setBorder(BorderFactory.createEmptyBorder(0, indent, 0, 0));
-                }else{
-                    c = (JLabel)r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                } else {
+                    c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 }
                 return c;
             }
         });
     }
     @Override public void setPopupVisible(boolean v) {
-        if(!v && isNotSelectableIndex) {
+        if (!v && isNotSelectableIndex) {
             isNotSelectableIndex = false;
-        }else{
+        } else {
             super.setPopupVisible(v);
         }
     }
     @Override public void setSelectedIndex(int index) {
         TreeNode node = getItemAt(index);
-        if(node!=null && node.isLeaf()) {
+        if (node != null && node.isLeaf()) {
             super.setSelectedIndex(index);
-        }else{
+        } else {
             isNotSelectableIndex = true;
         }
     }

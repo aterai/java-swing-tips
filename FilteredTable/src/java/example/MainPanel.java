@@ -21,12 +21,12 @@ public final class MainPanel extends JPanel {
         table = new JTable(model) {
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
-                if(isRowSelected(row)) {
+                if (isRowSelected(row)) {
                     c.setForeground(getSelectionForeground());
                     c.setBackground(getSelectionBackground());
-                }else{
+                } else {
                     c.setForeground(getForeground());
-                    c.setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
+                    c.setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
                 }
                 return c;
             }
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -131,8 +131,10 @@ class TestModel extends DefaultTableModel {
     public void filterRows(boolean flg) {
         //dataVector.clear();
         setRowCount(0);
-        for(int i=0;i<list.size();i++) {
-            if(flg && i%2==0) { continue; }
+        for (int i = 0; i < list.size(); i++) {
+            if (flg && i % 2 == 0) {
+                continue;
+            }
             Test t = list.get(i);
             addRow(convertToVector(new Object[] {i, t.getName(), t.getComment()}));
             //dataVector.add(convertToVector(new Object[] {i, t.getName(), t.getComment()}));

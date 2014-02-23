@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JSlider  slider;
 
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         slider = new JSlider(0, 100, 50);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
         slider.setPaintLabels(true);
         slider.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JSlider source = (JSlider)e.getSource();
-                int intValue = (int)source.getValue()*10;
+                JSlider source = (JSlider) e.getSource();
+                int intValue = (int) source.getValue()*10;
                 spinner.setValue(intValue);
             }
         });
@@ -31,20 +31,20 @@ public final class MainPanel extends JPanel {
 
         spinner.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JSpinner source = (JSpinner)e.getSource();
-                Integer newValue = (Integer)source.getValue();
-                slider.setValue((int)newValue.intValue()/10);
+                JSpinner source = (JSpinner) e.getSource();
+                Integer newValue = (Integer) source.getValue();
+                slider.setValue((int) newValue.intValue()/10);
             }
         });
         spinner.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSpinner source = (JSpinner)e.getComponent();
-                SpinnerNumberModel model = (SpinnerNumberModel)source.getModel();
-                Integer oldValue = (Integer)source.getValue();
+                JSpinner source = (JSpinner) e.getComponent();
+                SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
+                Integer oldValue = (Integer) source.getValue();
                 int intValue = oldValue.intValue()-e.getWheelRotation()*model.getStepSize().intValue();
-                int max = ((Integer)model.getMaximum()).intValue(); //1000
-                int min = ((Integer)model.getMinimum()).intValue(); //0
-                if(min<=intValue && intValue<=max) {
+                int max = ((Integer) model.getMaximum()).intValue(); //1000
+                int min = ((Integer) model.getMinimum()).intValue(); //0
+                if (min<=intValue && intValue<=max) {
                     source.setValue(intValue);
                 }
             }
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
 
         slider.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSlider source = (JSlider)e.getComponent();
-                int intValue = (int)source.getValue()-e.getWheelRotation();
+                JSlider source = (JSlider) e.getComponent();
+                int intValue = (int) source.getValue() - e.getWheelRotation();
                 BoundedRangeModel model = source.getModel();
-                if(model.getMaximum()>=intValue && model.getMinimum()<=intValue) {
+                if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
                     slider.setValue(intValue);
                 }
             }
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 
         add(makeTitlePanel(spinner, "MouseWheel+JSpinner"));
         add(makeTitlePanel(slider,  "MouseWheel+JSlider"));
-        setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
+        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 200));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

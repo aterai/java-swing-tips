@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private final JLabel    lbl3 = new WrappingLabel(TEXT);
     private final JTextArea lbl4 = new JTextArea(TEXT);
     public MainPanel() {
-        super(new GridLayout(4,1,0,0));
+        super(new GridLayout(4, 1, 0, 0));
         lbl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.YELLOW, 5), "JLabel"));
         lbl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN,  5), "GlyphVector"));
         lbl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN,   5), "LineBreakMeasurer"));
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -62,7 +62,7 @@ class WrappingLabel extends JLabel {
         super(text);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(getForeground());
         Insets i = getInsets();
         float x = i.left;
@@ -73,7 +73,7 @@ class WrappingLabel extends JLabel {
         AttributedCharacterIterator aci = as.getIterator();
         FontRenderContext frc = g2.getFontRenderContext();
         LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
-        while(lbm.getPosition() < aci.getEndIndex()) {
+        while (lbm.getPosition() < aci.getEndIndex()) {
             TextLayout tl = lbm.nextLayout(w);
             tl.draw(g2, x, y + tl.getAscent());
             y += tl.getDescent() + tl.getLeading() + tl.getAscent();
@@ -94,8 +94,8 @@ class WrappedLabel extends JLabel {
     }
     @Override public void doLayout() {
         Insets i = getInsets();
-        int w = getWidth()-i.left-i.right;
-        if(w!=width) {
+        int w = getWidth() - i.left - i.right;
+        if (w != width) {
             Font font = getFont();
             FontMetrics fm = getFontMetrics(font);
             FontRenderContext frc = fm.getFontRenderContext();
@@ -105,13 +105,13 @@ class WrappedLabel extends JLabel {
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
-        if(gvtext==null) {
+        if (gvtext == null) {
             super.paintComponent(g);
-        }else{
+        } else {
             Insets i = getInsets();
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(Color.RED);
-            g2.drawGlyphVector(gvtext, i.left, getFont().getSize()+i.top);
+            g2.drawGlyphVector(gvtext, i.left, getFont().getSize() + i.top);
             g2.dispose();
         }
     }
@@ -123,14 +123,14 @@ class WrappedLabel extends JLabel {
         float advance    = 0.0f;
         int   lineCount  = 0;
         GlyphMetrics gm;
-        for(int i=0;i<gv.getNumGlyphs();i++) {
+        for (int i = 0; i < gv.getNumGlyphs(); i++) {
             gm = gv.getGlyphMetrics(i);
             advance = gm.getAdvance();
-            if(xpos<width && width<=xpos+advance) {
+            if (xpos<width && width<=xpos + advance) {
                 lineCount++;
                 xpos = 0.0f;
             }
-            gmPos.setLocation(xpos, lineheight*lineCount);
+            gmPos.setLocation(xpos, lineheight * lineCount);
             gv.setGlyphPosition(i, gmPos);
             xpos = xpos + advance;
         }

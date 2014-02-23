@@ -26,17 +26,17 @@ public final class MainPanel extends JPanel {
 //         //TEST:
 //         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 //         DefaultTreeModel treeModel = new DefaultTreeModel(root);
-//         for(File fileSystemRoot: fileSystemView.getRoots()) {
+//         for (File fileSystemRoot: fileSystemView.getRoots()) {
 //             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
 //             root.add(node);
-//             for(File file: fileSystemView.getFiles(fileSystemRoot, true)) {
-//                 if(file.isDirectory()) {
+//             for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
+//                 if (file.isDirectory()) {
 //                     node.add(new DefaultMutableTreeNode(file));
 //                 }
 //             }
 //         }
 //         tree.setModel(treeModel);
-//         tree.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+//         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 //         tree.setRootVisible(false);
 //         tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
 //         tree.setCellRenderer(new FileTreeCellRenderer(tree.getCellRenderer(), fileSystemView));
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
         box.add(new JButton(new AbstractAction("Load") {
             @Override public void actionPerformed(ActionEvent e) {
                 visitAll(tree, rootPath, false);
-                if(expandedState == null) {
+                if (expandedState == null) {
                     return;
                 }
-                while(expandedState.hasMoreElements()) {
+                while (expandedState.hasMoreElements()) {
                     tree.expandPath(expandedState.nextElement());
                 }
                 expandedState = tree.getExpandedDescendants(rootPath);
@@ -77,18 +77,18 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void visitAll(JTree tree, TreePath parent, boolean expand) {
-        TreeNode node = (TreeNode)parent.getLastPathComponent();
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
-                TreeNode n = (TreeNode)e.nextElement();
+            while (e.hasMoreElements()) {
+                TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 visitAll(tree, path, expand);
             }
         }
-        if(expand) {
+        if (expand) {
             tree.expandPath(parent);
-        }else if(tree.isRootVisible() || parent.getParentPath()!=null) {
+        } else if (tree.isRootVisible() || parent.getParentPath() != null) {
             tree.collapsePath(parent);
         }
     }
@@ -134,10 +134,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -156,30 +156,30 @@ public final class MainPanel extends JPanel {
 //         this.fileSystemView = fileSystemView;
 //     }
 //     @Override public void valueChanged(TreeSelectionEvent e) {
-//         final JTree tree = (JTree)e.getSource();
-//         final DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
-// //         if(frame==null) {
-// //             frame = (JFrame)SwingUtilities.getWindowAncestor(tree);
+//         final JTree tree = (JTree) e.getSource();
+//         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+// //         if (frame == null) {
+// //             frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
 // //             frame.setGlassPane(new LockingGlassPane());
 // //         }
 // //         frame.getGlassPane().setVisible(true);
 //
-//         final DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+//         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
 //         //final TreePath path = e.getPath();
 //
-//         if(!node.isLeaf()) { return; }
-//         final File parent = (File)node.getUserObject();
-//         if(!parent.isDirectory()) return;
+//         if (!node.isLeaf()) { return; }
+//         final File parent = (File) node.getUserObject();
+//         if (!parent.isDirectory()) return;
 //
 //         SwingWorker<String, File> worker = new SwingWorker<String, File>() {
 //             @Override public String doInBackground() {
 //                 File[] children = fileSystemView.getFiles(parent, true);
-//                 for(File child: children) {
-//                     if(child.isDirectory()) {
+//                 for (File child: children) {
+//                     if (child.isDirectory()) {
 //                         publish(child);
-// //                         try{
+// //                         try {
 // //                             Thread.sleep(500);
-// //                         }catch(InterruptedException ex) {
+// //                         } catch (InterruptedException ex) {
 // //                             ex.printStackTrace();
 // //                         }
 //                     }
@@ -187,7 +187,7 @@ public final class MainPanel extends JPanel {
 //                 return "done";
 //             }
 //             @Override protected void process(List<File> chunks) {
-//                 for(File file: chunks) {
+//                 for (File file: chunks) {
 //                     node.add(new DefaultMutableTreeNode(file));
 //                 }
 //                 model.reload(parent); //= model.nodeStructureChanged(parent);
@@ -210,21 +210,21 @@ public final class MainPanel extends JPanel {
 //         this.fileSystemView = fileSystemView;
 //     }
 //     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//         JLabel c = (JLabel)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-//         if(isSelected) {
+//         JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+//         if (isSelected) {
 //             c.setOpaque(false);
 //             c.setForeground(getTextSelectionColor());
 //             //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
-//         }else{
+//         } else {
 //             c.setOpaque(true);
 //             c.setForeground(getTextNonSelectionColor());
 //             c.setBackground(getBackgroundNonSelectionColor());
 //         }
-//         if(value instanceof DefaultMutableTreeNode) {
-//             DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
+//         if (value instanceof DefaultMutableTreeNode) {
+//             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 //             Object o = node.getUserObject();
-//             if(o instanceof File) {
-//                 File file = (File)o;
+//             if (o instanceof File) {
+//                 File file = (File) o;
 //                 c.setIcon(fileSystemView.getSystemIcon(file));
 //                 c.setText(fileSystemView.getSystemDisplayName(file));
 //                 c.setToolTipText(file.getPath());

@@ -31,13 +31,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-            //    if("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
+            //for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+            //    if ("Nimbus".equals(laf.getName())) { UIManager.setLookAndFeel(laf.getClassName()); }
             //}
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -59,7 +59,7 @@ class CardLayoutTabbedPane extends JPanel {
     private int count;
     private final JButton button = new JButton(new AbstractAction("+") {
         @Override public void actionPerformed(ActionEvent e) {
-            addTab("new tab:"+count, new JLabel("xxx:"+count));
+            addTab("new tab:" + count, new JLabel("xxx:" + count));
             count++;
         }
     });
@@ -82,17 +82,17 @@ class CardLayoutTabbedPane extends JPanel {
         super(new BorderLayout());
         int left  = 0;
         int right = 0;
-        tabPanel.setBorder(BorderFactory.createMatteBorder(0,left,0,right,new Color(20,30,50)));
-        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4,left,2,right));
+        tabPanel.setBorder(BorderFactory.createMatteBorder(0, left, 0, right, new Color(20, 30, 50)));
+        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
 
         tabPanel.setOpaque(true);
-        tabPanel.setBackground(new Color(20,30,50));
+        tabPanel.setBackground(new Color(20, 30, 50));
 
         wrapPanel.setOpaque(true);
-        wrapPanel.setBackground(new Color(20,30,50));
+        wrapPanel.setBackground(new Color(20, 30, 50));
 
         //contentsPanel.setOpaque(true);
-        //contentsPanel.setBackground(new Color(20,30,50));
+        //contentsPanel.setBackground(new Color(20, 30, 50));
 
         wrapPanel.add(tabPanel);
         //TEST: wrapPanel.add(new JButton("a"), BorderLayout.WEST);
@@ -117,7 +117,7 @@ class CardLayoutTabbedPane extends JPanel {
         final TabButton tab = new TabButton(title);
         tab.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                ((AbstractButton)e.getComponent()).setSelected(true);
+                ((AbstractButton) e.getComponent()).setSelected(true);
                 cardLayout.show(contentsPanel, title);
             }
         });
@@ -127,9 +127,9 @@ class CardLayoutTabbedPane extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 tabPanel.remove(tab);
                 contentsPanel.remove(comp);
-                if(tabPanel.getComponentCount()>1) {
+                if (tabPanel.getComponentCount() > 1) {
                     tabPanel.revalidate();
-                    TabButton b = (TabButton)tabPanel.getComponent(0);
+                    TabButton b = (TabButton) tabPanel.getComponent(0);
                     b.setSelected(true);
                     cardLayout.first(contentsPanel);
                 }
@@ -172,10 +172,10 @@ class TabButton extends JRadioButton {
     private Color rolloverSelectedTextColor; // = Color.WHITE;
     private Color selectedTextColor; // = Color.WHITE;
     @Override public void updateUI() {
-        if(UIManager.get(getUIClassID())==null) {
+        if (UIManager.get(getUIClassID()) == null) {
             setUI(new BasicTabViewButtonUI());
-        }else{
-            setUI((TabViewButtonUI)UIManager.getUI(this));
+        } else {
+            setUI((TabViewButtonUI) UIManager.getUI(this));
         }
     }
     @Override public String getUIClassID() {
@@ -185,7 +185,7 @@ class TabButton extends JRadioButton {
 //         super.setUI(ui);
 //     }
     public TabViewButtonUI getUI() {
-        return (TabViewButtonUI)ui;
+        return (TabViewButtonUI) ui;
     }
     public TabButton() {
         super(null, null);
@@ -207,17 +207,17 @@ class TabButton extends JRadioButton {
     }
     @Override protected void fireStateChanged() {
         ButtonModel model = getModel();
-        if(model.isEnabled()) {
-            if(model.isPressed() && model.isArmed()) {
+        if (model.isEnabled()) {
+            if (model.isPressed() && model.isArmed()) {
                 setForeground(getPressedTextColor());
-            }else if(model.isSelected()) {
+            } else if (model.isSelected()) {
                 setForeground(getSelectedTextColor());
-            }else if(isRolloverEnabled() && model.isRollover()) {
+            } else if (isRolloverEnabled() && model.isRollover()) {
                 setForeground(getRolloverTextColor());
-            }else{
+            } else {
                 setForeground(getTextColor());
             }
-        }else{
+        } else {
             setForeground(Color.GRAY);
         }
         super.fireStateChanged();
@@ -288,7 +288,7 @@ class TabLayout implements LayoutManager, Serializable {
             int last = parent.getComponentCount()-1;
             int w = 0;
             int h = 0;
-            if(last>=0) {
+            if (last >= 0) {
                 Component comp = parent.getComponent(last);
                 Dimension d = comp.getPreferredSize();
                 w = d.width;
@@ -308,28 +308,28 @@ class TabLayout implements LayoutManager, Serializable {
     @Override public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             int ncomponents = parent.getComponentCount();
-            if(ncomponents == 0) {
+            if (ncomponents == 0) {
                 return;
             }
             //int nrows = 1;
             //boolean ltr = parent.getComponentOrientation().isLeftToRight();
             Insets insets = parent.getInsets();
-            int ncols = ncomponents-1;
-            int lastw = parent.getComponent(ncomponents-1).getPreferredSize().width;
+            int ncols = ncomponents - 1;
+            int lastw = parent.getComponent(ncomponents - 1).getPreferredSize().width;
             int width = parent.getWidth() - insets.left - insets.right - lastw;
             int h = parent.getHeight() - insets.top - insets.bottom;
-            int w = width>100*(ncomponents-1) ? 100 : width/ncols;
-            int gap = width - w*ncols;
+            int w = width > 100 * (ncomponents - 1) ? 100 : width / ncols;
+            int gap = width - w * ncols;
             int x = insets.left;
             int y = insets.top;
-            for(int i=0;i<ncomponents;i++) {
+            for (int i = 0; i < ncomponents; i++) {
                 int a = 0;
-                if(gap>0) {
+                if (gap > 0) {
                     a = 1;
                     gap--;
                 }
                 int cw = w + a;
-                if(i==ncols) {
+                if (i == ncols) {
                     cw = lastw;
                 }
                 parent.getComponent(i).setBounds(x, y, cw, h);
@@ -345,13 +345,13 @@ class TabLayout implements LayoutManager, Serializable {
 class DummyIcon implements Icon {
     private static Rectangle viewRect = new Rectangle();
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
-        g2.translate(x,y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
 
         Insets i;
-        if(c instanceof JComponent) {
-            i = ((JComponent)c).getInsets();
-        }else{
+        if (c instanceof JComponent) {
+            i = ((JComponent) c).getInsets();
+        } else {
             i = new Insets(0, 0, 0, 0);
         }
         Dimension size = c.getSize();
@@ -364,14 +364,14 @@ class DummyIcon implements Icon {
 
         g2.setPaint(Color.WHITE);
         int w = viewRect.width;
-        int a = w/2;
-        int b = w/3;
-        w-=2;
-        g2.drawLine(a,   b, a,   w-b);
-        g2.drawLine(a-1, b, a-1, w-b);
-        g2.drawLine(b, a,   w-b, a);
-        g2.drawLine(b, a-1, w-b, a-1);
-        //g2.translate(-x,-y);
+        int a = w / 2;
+        int b = w / 3;
+        w -= 2;
+        g2.drawLine(a,     b,     a,     w - b);
+        g2.drawLine(a - 1, b,     a - 1, w - b);
+        g2.drawLine(b,     a,     w - b, a);
+        g2.drawLine(b,     a - 1, w - b, a - 1);
+        //g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth()  {

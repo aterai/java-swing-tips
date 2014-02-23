@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("new", ""));
@@ -89,14 +89,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
 
     class ClearAction extends AbstractAction {
         public ClearAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
             table.clearSelection();
@@ -134,10 +134,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -150,7 +150,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TestRenderer extends Box implements TableCellRenderer {
-    private static final Border NO_FOCUS_BORDER = BorderFactory.createEmptyBorder(1,1,1,1);
+    private static final Border NO_FOCUS_BORDER = BorderFactory.createEmptyBorder(1, 1, 1, 1);
     private final ImageIcon nicon;
     private final ImageIcon sicon;
     //private final DotLabel textLabel;
@@ -180,21 +180,21 @@ class TestRenderer extends Box implements TableCellRenderer {
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth()-iconLabel.getPreferredSize().width;
         textLabel.setPreferredSize(new Dimension(Math.min(swidth, cwidth), 0)); //height:0 is dummy
-        if(isSelected) {
+        if (isSelected) {
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             textLabel.setForeground(table.getForeground());
             textLabel.setBackground(table.getBackground());
         }
-        if(hasFocus) {
+        if (hasFocus) {
             textLabel.setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        }else{
+        } else {
             textLabel.setBorder(NO_FOCUS_BORDER);
         }
         //textLabel.setFocusedBorder(hasFocus);
         textLabel.setFont(table.getFont());
-        iconLabel.setIcon(isSelected?sicon:nicon);
+        iconLabel.setIcon(isSelected ? sicon : nicon);
         return this;
     }
     private static class SelectedImageFilter extends RGBImageFilter {
@@ -202,7 +202,7 @@ class TestRenderer extends Box implements TableCellRenderer {
         //    canFilterIndexColorModel = false;
         //}
         @Override public int filterRGB(int x, int y, int argb) {
-            //Color color = new Color(argb,true);
+            //Color color = new Color(argb, true);
             //float[] array = new float[4];
             //color.getComponents(array);
             //return new Color(array[0]*0.5f, array[1]*0.5f, array[2], array[3]).getRGB();
@@ -215,10 +215,10 @@ class TestRenderer extends Box implements TableCellRenderer {
 
 // class DotLabel extends JLabel {
 //     private final Border dotBorder;
-//     private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
+//     private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //     public DotLabel(Color color) {
 //         super("dummy");
-//         dotBorder = new DotBorder(color,2);
+//         dotBorder = new DotBorder(color, 2);
 //         setOpaque(true);
 //         setBorder(empBorder);
 //         //setFocusable(true);
@@ -228,7 +228,7 @@ class TestRenderer extends Box implements TableCellRenderer {
 //         return focusflag;
 //     }
 //     public void setFocusedBorder(boolean flag) {
-//         setBorder(flag?dotBorder:empBorder);
+//         setBorder(flag ? dotBorder : empBorder);
 //         focusflag = flag;
 //     }
 //     private class DotBorder extends LineBorder {
@@ -237,13 +237,13 @@ class TestRenderer extends Box implements TableCellRenderer {
 //         }
 //         @Override public boolean isBorderOpaque() { return true; }
 //         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-//             Graphics2D g2 = (Graphics2D)g.create();
-//             g2.translate(x,y);
-//             if(isFocusedBorder()) {
+//             Graphics2D g2 = (Graphics2D) g.create();
+//             g2.translate(x, y);
+//             if (isFocusedBorder()) {
 //                 g2.setPaint(getLineColor());
 //                 javax.swing.plaf.basic.BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //             }
-//             //g2.translate(-x,-y);
+//             //g2.translate(-x, -y);
 //             g2.dispose();
 //         }
 //     }

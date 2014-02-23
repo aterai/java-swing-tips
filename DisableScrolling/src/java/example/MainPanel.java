@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         @Override public void updateUI() {
             super.updateUI();
             JPopupMenu jpm = getComponentPopupMenu();
-            if(jpm==null && pop!=null) {
+            if (jpm == null && pop != null) {
                 SwingUtilities.updateComponentTreeUI(pop);
             }
         }
@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        for(int i=0;i<100;i++) {
-            model.addRow(new Object[] {"Name "+i, Integer.valueOf(i), Boolean.FALSE});
+        for (int i = 0; i < 100; i++) {
+            model.addRow(new Object[] {"Name " + i, Integer.valueOf(i), Boolean.FALSE});
         }
         table.setAutoCreateRowSorter(true);
 
@@ -48,13 +48,13 @@ public final class MainPanel extends JPanel {
             @Override public void itemStateChanged(ItemEvent ie) {
                 table.clearSelection();
                 JScrollBar bar = scroll.getVerticalScrollBar();
-                if(((JCheckBox)ie.getSource()).isSelected()) {
+                if (((JCheckBox) ie.getSource()).isSelected()) {
                     bar.setEnabled(false);
                     scroll.setWheelScrollingEnabled(false);
                     table.setEnabled(false);
                     //table.getTableHeader().setEnabled(false);
                     //scroll.setComponentPopupMenu(null);
-                }else{
+                } else {
                     bar.setEnabled(true);
                     scroll.setWheelScrollingEnabled(true);
                     table.setEnabled(true);
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New Name", Integer.valueOf(0), Boolean.FALSE});
@@ -85,14 +85,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -123,10 +123,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

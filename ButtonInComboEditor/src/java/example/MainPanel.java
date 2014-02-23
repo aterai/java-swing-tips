@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final ImageIcon image1;
     private final ImageIcon image2;
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         image1  = new ImageIcon(getClass().getResource("favicon.png"));
         image2  = new ImageIcon(getClass().getResource("16x16.png"));
         ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
         combo.setEditable(true);
         combo.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel c = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                c.setIcon(((URLItem)value).favicon);
+                JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                c.setIcon(((URLItem) value).favicon);
                 return c;
             }
         });
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     private static JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder(title));
-        for(JComponent cmp:list) {
+        for (JComponent cmp:list) {
             box.add(Box.createVerticalStrut(5));
             box.add(cmp);
         }
@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -87,7 +87,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
     public URLItemComboBox(DefaultComboBoxModel<URLItem> model, ImageIcon rss) {
         super(model);
 
-        final JTextField field = (JTextField)getEditor().getEditorComponent();
+        final JTextField field = (JTextField) getEditor().getEditorComponent();
         final JButton button = makeRssButton(rss);
         final JLabel label = makeLabel(field);
         setLayout(new ComboBoxLayout(label, button));
@@ -96,7 +96,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
 
         field.addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
-                //field.setBorder(BorderFactory.createEmptyBorder(0,16+4,0,0));
+                //field.setBorder(BorderFactory.createEmptyBorder(0, 16 + 4, 0, 0));
                 button.setVisible(false);
             }
             @Override public void focusLost(FocusEvent e) {
@@ -108,7 +108,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         });
         addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) {
+                if (e.getStateChange() != ItemEvent.SELECTED) {
                     return;
                 }
                 updateFavicon(label);
@@ -120,7 +120,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 Object o = getSelectedItem();
-                URLItem i = o instanceof URLItem ? (URLItem)o : getURLItemFromModel(o.toString());
+                URLItem i = o instanceof URLItem ? (URLItem) o : getURLItemFromModel(o.toString());
                 label.setIcon(i.favicon);
             }
         });
@@ -140,7 +140,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        button.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        button.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return button;
     }
     private static JLabel makeLabel(final JTextField field) {
@@ -156,29 +156,29 @@ class URLItemComboBox extends JComboBox<URLItem> {
             }
         });
         label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        label.setBorder(BorderFactory.createEmptyBorder(0,1,0,2));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return label;
     }
     private URLItem getURLItemFromModel(String text) {
-        DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>)getModel();
+        DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>) getModel();
         URLItem item = null;
-        for(int i=0;i<model.getSize();i++) {
+        for (int i = 0; i < model.getSize(); i++) {
             URLItem tmp = model.getElementAt(i);
-            if(tmp.url.equals(text)) {
+            if (tmp.url.equals(text)) {
                 item = tmp;
                 break;
             }
         }
-        if(item!=null) {
+        if (item != null) {
             model.removeElement(item);
             model.insertElementAt(item, 0);
         }
         return item;
     }
 //     private ImageIcon getFavicon(String url) {
-//         if(url.startsWith("http://terai.xrea.jp/")) {
+//         if (url.startsWith("http://terai.xrea.jp/")) {
 //             return image1;
-//         }else{
+//         } else {
 //             return image2;
 //         }
 //     }
@@ -191,7 +191,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
 //     }
 //     //Test:
 //     public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
-//         RescaleOp op = new RescaleOp(new float[] { 1.2f,1.2f,1.2f,1.0f }, new float[] { 0f,0f,0f,0f }, null);
+//         RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1.0f }, new float[] { 0f, 0f, 0f, 0f }, null);
 //         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 //         //TEST: RescaleOp op = new RescaleOp(1.2f, 0.0f, null);
 //         //BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
@@ -219,10 +219,10 @@ class ComboBoxLayout implements LayoutManager {
         return parent.getMinimumSize();
     }
     @Override public void layoutContainer(Container parent) {
-        if(!(parent instanceof JComboBox)) {
+        if (!(parent instanceof JComboBox)) {
             return;
         }
-        JComboBox cb     = (JComboBox)parent;
+        JComboBox cb     = (JComboBox) parent;
         int width        = cb.getWidth();
         int height       = cb.getHeight();
         Insets insets    = cb.getInsets();
@@ -231,34 +231,34 @@ class ComboBoxLayout implements LayoutManager {
         int labelWidth   = buttonHeight;
         int loupeWidth; //   = buttonHeight;
 
-        JButton arrowButton = (JButton)cb.getComponent(0);
-        if(arrowButton != null) {
+        JButton arrowButton = (JButton) cb.getComponent(0);
+        if (arrowButton != null) {
             Insets arrowInsets = arrowButton.getInsets();
             buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
             arrowButton.setBounds(width - insets.right - buttonWidth, insets.top, buttonWidth, buttonHeight);
         }
-        if(label != null) {
+        if (label != null) {
             Insets labelInsets = label.getInsets();
             labelWidth = label.getPreferredSize().width + labelInsets.left + labelInsets.right;
             label.setBounds(insets.left, insets.top, labelWidth, buttonHeight);
         }
         JButton rssButton = button;
-        //for(Component c: cb.getComponents()) {
-        //    if("ComboBox.rssButton".equals(c.getName())) {
-        //        rssButton = (JButton)c;
+        //for (Component c: cb.getComponents()) {
+        //    if ("ComboBox.rssButton".equals(c.getName())) {
+        //        rssButton = (JButton) c;
         //        break;
         //    }
         //}
-        if(rssButton != null && rssButton.isVisible()) {
+        if (rssButton != null && rssButton.isVisible()) {
             Insets loupeInsets = rssButton.getInsets();
             loupeWidth = rssButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
             rssButton.setBounds(width - insets.right - loupeWidth - buttonWidth, insets.top, loupeWidth, buttonHeight);
-        }else{
+        } else {
             loupeWidth = 0;
         }
 
         Component editor = cb.getEditor().getEditorComponent();
-        if(editor != null) {
+        if (editor != null) {
             editor.setBounds(insets.left + labelWidth, insets.top,
                              width  - insets.left - insets.right - buttonWidth - labelWidth - loupeWidth,
                              height - insets.top  - insets.bottom);
@@ -288,14 +288,14 @@ class SelectedImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
         //int a = (argb >> 24) & 0xff;
         int r = (argb >> 16) & 0xff;
-        int g = (argb >> 8)  & 0xff;
+        int g = (argb >>  8) & 0xff;
         int b = (argb)       & 0xff;
-        r = (int)(r*SCALE);
-        g = (int)(g*SCALE);
-        b = (int)(b*SCALE);
-        if(r > 255) { r = 255; }
-        if(g > 255) { g = 255; }
-        if(b > 255) { b = 255; }
-        return (argb & 0xff000000) | (r<<16) | (g<<8) | (b);
+        r = (int) (r * SCALE);
+        g = (int) (g * SCALE);
+        b = (int) (b * SCALE);
+        if (r > 255) { r = 255; }
+        if (g > 255) { g = 255; }
+        if (b > 255) { b = 255; }
+        return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }

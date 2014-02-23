@@ -25,14 +25,14 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             //XXX: Nimbus
             TableCellRenderer r = getDefaultRenderer(Boolean.class);
-            if(r instanceof JComponent) {
-                ((JComponent)r).updateUI();
+            if (r instanceof JComponent) {
+                ((JComponent) r).updateUI();
             }
         }
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
             Component c = super.prepareEditor(editor, row, column);
-            if(c instanceof JCheckBox) {
-                JCheckBox b = (JCheckBox)c;
+            if (c instanceof JCheckBox) {
+                JCheckBox b = (JCheckBox) c;
                 b.setBackground(getSelectionBackground());
                 b.setBorderPainted(true);
             }
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JMenuBar mb = new JMenuBar();
@@ -96,13 +96,13 @@ class TriStateActionListener implements ActionListener {
         this.icon = icon;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        JCheckBox cb = (JCheckBox)e.getSource();
-        if(cb.isSelected()) {
-            if(cb.getIcon()!=null) {
+        JCheckBox cb = (JCheckBox) e.getSource();
+        if (cb.isSelected()) {
+            if (cb.getIcon() != null) {
                 cb.setIcon(null);
                 cb.setSelected(false);
             }
-        }else{
+        } else {
             cb.setIcon(icon);
         }
     }
@@ -120,13 +120,13 @@ class TriStateCheckBox extends JCheckBox {
         super.updateUI();
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                if(listener==null) {
+                if (listener == null) {
                     listener = new TriStateActionListener();
                 }
                 Icon icon = new IndeterminateIcon();
                 listener.setIcon(icon);
                 addActionListener(listener);
-                if(oi!=null) {
+                if (oi != null) {
                     setIcon(icon);
                 }
             }
@@ -139,26 +139,26 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     private final int targetColumnIndex;
     private transient Icon icon;
     public HeaderRenderer(JTableHeader header, int index) {
-        super((String)null);
+        super((String) null);
         this.targetColumnIndex = index;
         setOpaque(false);
         setFont(header.getFont());
         header.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                JTableHeader header = (JTableHeader)e.getComponent();
+                JTableHeader header = (JTableHeader) e.getComponent();
                 JTable table = header.getTable();
                 TableColumnModel columnModel = table.getColumnModel();
                 int vci = columnModel.getColumnIndexAtX(e.getX());
                 int mci = table.convertColumnIndexToModel(vci);
-                if(mci == targetColumnIndex) {
+                if (mci == targetColumnIndex) {
                     TableColumn column = columnModel.getColumn(vci);
                     Object v = column.getHeaderValue();
-                    boolean b = Status.DESELECTED.equals(v)?true:false;
+                    boolean b = Status.DESELECTED.equals(v);
                     TableModel m = table.getModel();
-                    for(int i=0; i<m.getRowCount(); i++) {
+                    for (int i = 0; i < m.getRowCount(); i++) {
                         m.setValueAt(b, i, mci);
                     }
-                    column.setHeaderValue(b?Status.SELECTED:Status.DESELECTED);
+                    column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
                     //header.repaint();
                 }
             }
@@ -166,23 +166,23 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel)r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
-        if(targetColumnIndex==tbl.convertColumnIndexToModel(col)) {
-            if(val instanceof Status) {
-                switch((Status)val) {
+        JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+        if (targetColumnIndex == tbl.convertColumnIndexToModel(col)) {
+            if (val instanceof Status) {
+                switch((Status) val) {
                   case SELECTED:      setSelected(true);  setIcon(null); break;
                   case DESELECTED:    setSelected(false); setIcon(null); break;
                   case INDETERMINATE: setSelected(false); setIcon(icon); break;
                   default:            throw new AssertionError("Unknown Status");
                 }
-            }else{
+            } else {
                 setSelected(true);
             }
             label.setIcon(new ComponentIcon(this));
             l.setIcon(new ComponentIcon(label));
             l.setText(null); //XXX: Nimbus???
             l.setHorizontalAlignment(SwingConstants.CENTER);
-        //}else{
+        //} else {
         //    l.setHorizontalAlignment(SwingConstants.LEFT);
         }
 
@@ -190,7 +190,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
 //         System.out.println("getPreferredSize: " + l.getPreferredSize());
 //         System.out.println("getMaximunSize: " + l.getMaximumSize());
 //         System.out.println("----");
-//         if(l.getPreferredSize().height>1000) { //XXX: Nimbus???
+//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus???
 //             System.out.println(l.getPreferredSize().height);
 //             Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
 //             l.setPreferredSize(new Dimension(0, rect.height));
@@ -203,7 +203,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
         icon = new IndeterminateIcon();
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                if(oi!=null) {
+                if (oi != null) {
                     setIcon(icon);
                 }
             }
@@ -220,10 +220,10 @@ class IndeterminateIcon implements Icon {
         icon.paintIcon(c, g, x, y);
         int w = getIconWidth();
         int h = getIconHeight();
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
-        g2.fillRect(SIDE_MARGIN, (h-HEIGHT)/2, w-SIDE_MARGIN-SIDE_MARGIN, HEIGHT);
+        g2.fillRect(SIDE_MARGIN, (h - HEIGHT) / 2, w - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
         g2.translate(-x, -y);
         g2.dispose();
     }
@@ -243,29 +243,29 @@ class HeaderCheckBoxHandler implements TableModelListener {
         this.targetColumnIndex = index;
     }
     @Override public void tableChanged(TableModelEvent e) {
-        if(e.getType()==TableModelEvent.UPDATE && e.getColumn()==targetColumnIndex) {
+        if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
             int vci = table.convertColumnIndexToView(targetColumnIndex);
             TableColumn column = table.getColumnModel().getColumn(vci);
-            if(Status.INDETERMINATE.equals(column.getHeaderValue())) {
+            if (Status.INDETERMINATE.equals(column.getHeaderValue())) {
                 boolean selected = true;
                 boolean deselected = true;
                 TableModel m = table.getModel();
-                for(int i=0; i<m.getRowCount(); i++) {
-                    Boolean b = (Boolean)m.getValueAt(i, targetColumnIndex);
+                for (int i = 0; i < m.getRowCount(); i++) {
+                    Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
                     selected &= b;
                     deselected &= !b;
-                    if(selected==deselected) {
+                    if (selected == deselected) {
                         return;
                     }
                 }
-                if(selected) {
+                if (selected) {
                     column.setHeaderValue(Status.SELECTED);
-                }else if(deselected) {
+                } else if (deselected) {
                     column.setHeaderValue(Status.DESELECTED);
-                }else{
+                } else {
                     return;
                 }
-            }else{
+            } else {
                 column.setHeaderValue(Status.INDETERMINATE);
             }
             JTableHeader h = table.getTableHeader();
@@ -299,7 +299,7 @@ final class LookAndFeelUtil {
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
@@ -311,10 +311,10 @@ final class LookAndFeelUtil {
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
+                try {
                     setLookAndFeel(m.getActionCommand());
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -326,7 +326,7 @@ final class LookAndFeelUtil {
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
@@ -334,7 +334,7 @@ final class LookAndFeelUtil {
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

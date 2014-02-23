@@ -25,17 +25,17 @@ public final class MainPanel extends JPanel {
     }
     public static Polygon convertEllipse2Polygon(Ellipse2D e) {
         Rectangle b = e.getBounds();
-        int r1 = b.width/2;
-        int r2 = b.height/2;
+        int r1 = b.width / 2;
+        int r2 = b.height / 2;
         int x0 = b.x + r1;
         int y0 = b.y + r2;
         int v  = 60;
         double a = 0.0;
-        double d = 2*Math.PI/v;
+        double d = 2 * Math.PI / v;
         Polygon polygon = new Polygon();
-        for(int i=0; i<v; i++) {
-            polygon.addPoint((int)(r1*Math.cos(a)+x0), (int)(r2*Math.sin(a)+y0));
-            a+=d;
+        for (int i=0; i < v; i++) {
+            polygon.addPoint((int) (r1 * Math.cos(a) + x0), (int) (r2 * Math.sin(a) + y0));
+            a += d;
         }
         return polygon;
     }
@@ -45,9 +45,9 @@ public final class MainPanel extends JPanel {
         PathIterator i  = new FlatteningPathIterator(s.getPathIterator(null), 1.0);
         Polygon polygon = new Polygon();
         float[] coords  = new float[6];
-        while(!i.isDone()) {
+        while (!i.isDone()) {
             i.currentSegment(coords);
-            polygon.addPoint((int)coords[0], (int)coords[1]);
+            polygon.addPoint((int) coords[0], (int) coords[1]);
             i.next();
         }
         return polygon;
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -92,7 +92,7 @@ class ShapeIcon implements Icon {
         return shape.getBounds().height + 1;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(Color.BLACK);
         g2.draw(shape);
@@ -100,9 +100,9 @@ class ShapeIcon implements Icon {
 
         PathIterator i = new FlatteningPathIterator(shape.getPathIterator(null), 1.0);
         double[] coords = new double[6];
-        while(!i.isDone()) {
+        while (!i.isDone()) {
             i.currentSegment(coords);
-            g2.fillRect((int)(coords[0]-.5), (int)(coords[1]-.5), 2, 2);
+            g2.fillRect((int) (coords[0] - .5), (int) (coords[1] - .5), 2, 2);
             i.next();
         }
         g2.dispose();

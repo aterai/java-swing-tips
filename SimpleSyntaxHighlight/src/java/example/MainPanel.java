@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 }
 //From: http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
-    //HashMap<String,AttributeSet> keywords = new HashMap<String,AttributeSet>();
+    //HashMap<String, AttributeSet> keywords = new HashMap<String, AttributeSet>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
     private static final String OPERANDS = ".,";
     public SimpleSyntaxDocument() {
@@ -63,7 +63,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         String content = getText(0, getLength());
         int startLine = root.getElementIndex(offset);
         int endLine = root.getElementIndex(offset + length);
-        for(int i = startLine; i <= endLine; i++) {
+        for (int i = startLine; i <= endLine; i++) {
             applyHighlighting(content, i);
         }
     }
@@ -73,7 +73,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         int endOffset     = root.getElement(line).getEndOffset() - 1;
         int lineLength    = endOffset - startOffset;
         int contentLength = content.length();
-        if(endOffset >= contentLength) {
+        if (endOffset >= contentLength) {
             endOffset = contentLength - 1;
         }
         setCharacterAttributes(startOffset, lineLength, normal, true);
@@ -81,11 +81,11 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private void checkForTokens(String content, int startOffset, int endOffset) {
         int index = startOffset;
-        while(index <= endOffset) {
-            while(isDelimiter(content.substring(index, index+1))) {
-                if(index < endOffset) {
+        while (index <= endOffset) {
+            while (isDelimiter(content.substring(index, index + 1))) {
+                if (index < endOffset) {
                     index++;
-                }else{
+                } else {
                     return;
                 }
             }
@@ -94,17 +94,17 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private int getOtherToken(String content, int startOffset, int endOffset) {
         int endOfToken = startOffset + 1;
-        while(endOfToken <= endOffset) {
-            if(isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
+        while (endOfToken <= endOffset) {
+            if (isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
                 break;
             }
             endOfToken++;
         }
         String token = content.substring(startOffset, endOfToken);
         Style s = getStyle(token);
-        //if(keywords.containsKey(token)) {
+        //if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
-        if(s!=null) {
+        if (s != null) {
             setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
         }
         return endOfToken + 1;

@@ -17,9 +17,9 @@ public final class MainPanel extends JPanel {
     }
     private static JComponent makeUI() {
         final JInternalFrame internal = new JInternalFrame("@title@");
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)internal.getUI();
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) internal.getUI();
         Component title = ui.getNorthPane();
-        for(MouseMotionListener l:title.getListeners(MouseMotionListener.class)) {
+        for (MouseMotionListener l:title.getListeners(MouseMotionListener.class)) {
             title.removeMouseMotionListener(l);
         }
         DragWindowListener dwl = new DragWindowListener();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(new JTree()));
         p.add(new JButton(new AbstractAction("close") {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.windowForComponent((Component)e.getSource());
+                Window w = SwingUtilities.windowForComponent((Component) e.getSource());
                 //w.dispose();
                 w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
             }
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
             @Override public void propertyChange(PropertyChangeEvent e) {
                 String prop = e.getPropertyName();
                 //System.out.println(prop);
-                if("activeWindow".equals(prop)) {
-                    try{
-                        internal.setSelected(e.getNewValue()!=null);
-                    }catch(PropertyVetoException ex) {
+                if ("activeWindow".equals(prop)) {
+                    try {
+                        internal.setSelected(e.getNewValue() != null);
+                    } catch (PropertyVetoException ex) {
                         ex.printStackTrace();
                     }
                     //System.out.println("---------------------");
@@ -56,22 +56,22 @@ public final class MainPanel extends JPanel {
 //         frame.addWindowListener(new WindowAdapter() {
 //             @Override public void windowLostFocus(FocusEvent e) {
 //                 System.out.println("bbbbbbbbb");
-//                 try{
+//                 try {
 //                     internal.setSelected(false);
-//                 }catch(PropertyVetoException ex) { ex.printStackTrace(); }
+//                 } catch (PropertyVetoException ex) { ex.printStackTrace(); }
 //             }
 //             @Override public void windowGainedFocus(FocusEvent e) {
 //                 System.out.println("aaaaaaaa");
-//                 try{
+//                 try {
 //                     internal.setSelected(true);
-//                 }catch(PropertyVetoException ex) { ex.printStackTrace(); }
+//                 } catch (PropertyVetoException ex) { ex.printStackTrace(); }
 //             }
 //         });
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
-//                 try{
+//                 try {
 //                     internal.setSelected(true);
-//                 }catch(java.beans.PropertyVetoException ex) {
+//                 } catch (java.beans.PropertyVetoException ex) {
 //                     ex.printStackTrace();
 //                 }
 //                 //internal.requestFocusInWindow();
@@ -87,15 +87,15 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for(UIManager.LookAndFeelInfo laf:UIManager.getInstalledLookAndFeels()) {
-                if("Nimbus".equals(laf.getName())) {
+            for (UIManager.LookAndFeelInfo laf:UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
                     UIManager.setLookAndFeel(laf.getClassName());
                 }
             }
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame();
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
         frame.setMinimumSize(new Dimension(300, 120));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
-        frame.setBackground(new Color(0,0,0,0)); //JDK 1.7
+        frame.setBackground(new Color(0, 0, 0, 0)); //JDK 1.7
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -114,18 +114,18 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if(window==null) {
+        if (window == null) {
             Object o = me.getSource();
-            if(o instanceof Window) {
-                window = (Window)o;
-            }else if(o instanceof JComponent) {
+            if (o instanceof Window) {
+                window = (Window) o;
+            } else if (o instanceof JComponent) {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window!=null) {
+        if (window != null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

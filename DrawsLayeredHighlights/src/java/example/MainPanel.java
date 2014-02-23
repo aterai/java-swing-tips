@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
         check.setFocusable(false);
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
+                JCheckBox cb = (JCheckBox) e.getSource();
                 int start = textArea.getSelectionStart();
                 int end   = textArea.getSelectionEnd();
-                DefaultHighlighter dh = (DefaultHighlighter)textArea.getHighlighter();
+                DefaultHighlighter dh = (DefaultHighlighter) textArea.getHighlighter();
                 dh.setDrawsLayeredHighlights(cb.isSelected());
                 fireDocumentChangeEvent();
                 textArea.select(start, end);
@@ -89,21 +89,21 @@ public final class MainPanel extends JPanel {
         String pattern = field.getText().trim();
         Highlighter highlighter = textArea.getHighlighter();
         highlighter.removeAllHighlights();
-        if(pattern.isEmpty()) {
+        if (pattern.isEmpty()) {
             return;
         }
         Document doc = textArea.getDocument();
-        try{
+        try {
             String text = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(pattern).matcher(text);
             int pos = 0;
-            while(matcher.find(pos)) {
+            while (matcher.find(pos)) {
                 int start = matcher.start();
                 int end   = matcher.end();
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             //e.printStackTrace();
             field.setBackground(WARNING_COLOR);
         }
@@ -119,10 +119,10 @@ public final class MainPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -16,18 +16,18 @@ public final class MainPanel extends JPanel {
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        for(File fileSystemRoot: fileSystemView.getRoots()) {
+        for (File fileSystemRoot: fileSystemView.getRoots()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
-            for(File file: fileSystemView.getFiles(fileSystemRoot, true)) {
-                if(file.isDirectory()) {
+            for (File file: fileSystemView.getFiles(fileSystemRoot, true)) {
+                if (file.isDirectory()) {
                     node.add(new DefaultMutableTreeNode(file));
                 }
             }
         }
 
         JTree tree = new JTree(treeModel);
-        tree.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         tree.setRootVisible(false);
         //http://stackoverflow.com/questions/6182110/file-browser-gui
         //java - File Browser GUI - Stack Overflow]
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 
         tree.addTreeWillExpandListener(new DirectoryExpandVetoListener());
 
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -70,12 +70,12 @@ class DirectoryExpandVetoListener implements TreeWillExpandListener {
     @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
         TreePath path = e.getPath();
         Object o = path.getLastPathComponent();
-        if(o instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)o;
-            File file = (File)node.getUserObject();
+        if (o instanceof DefaultMutableTreeNode) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+            File file = (File) node.getUserObject();
             String title = file.getName();
             System.out.println(title);
-            if(title.charAt(0)=='.') {
+            if (title.charAt(0) == '.') {
                 throw new ExpandVetoException(e, "Tree expansion cancelled");
             }
         }
@@ -90,26 +90,26 @@ class FolderSelectionListener implements TreeSelectionListener {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
-        final DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
-        if(!node.isLeaf()) {
+        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        if (!node.isLeaf()) {
             return;
         }
-        File parent = (File)node.getUserObject();
-        if(!parent.isDirectory()) {
+        File parent = (File) node.getUserObject();
+        if (!parent.isDirectory()) {
             return;
         }
-        final JTree tree = (JTree)e.getSource();
+        final JTree tree = (JTree) e.getSource();
         new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
-                if(!tree.isDisplayable()) {
+                if (!tree.isDisplayable()) {
                     cancel(true);
                     return;
                 }
-                for(File file: chunks) {
-                    ((DefaultTreeModel)tree.getModel()).insertNodeInto(new DefaultMutableTreeNode(file), node, node.getChildCount());
+                for (File file: chunks) {
+                    ((DefaultTreeModel) tree.getModel()).insertNodeInto(new DefaultMutableTreeNode(file), node, node.getChildCount());
                     //node.add(new DefaultMutableTreeNode(file));
                 }
-                //((DefaultTreeModel)tree.getModel()).reload(node);
+                //((DefaultTreeModel) tree.getModel()).reload(node);
             }
         }.execute();
     }
@@ -124,8 +124,8 @@ class Task extends SwingWorker<String, File> {
         this.parent = parent;
     }
     @Override public String doInBackground() {
-        for(File child: fileSystemView.getFiles(parent, true)) {
-            if(child.isDirectory()) {
+        for (File child: fileSystemView.getFiles(parent, true)) {
+            if (child.isDirectory()) {
                 publish(child);
             }
         }
@@ -142,26 +142,26 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
         this.fileSystemView = fileSystemView;
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JLabel c = (JLabel)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-        if(isSelected) {
+        JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        if (isSelected) {
             c.setOpaque(false);
             c.setForeground(getTextSelectionColor());
-        }else{
+        } else {
             c.setOpaque(true);
             c.setForeground(getTextNonSelectionColor());
             c.setBackground(getBackgroundNonSelectionColor());
         }
-        if(value instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
+        if (value instanceof DefaultMutableTreeNode) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             Object o = node.getUserObject();
-            if(o instanceof File) {
-                File file = (File)o;
+            if (o instanceof File) {
+                File file = (File) o;
                 c.setIcon(fileSystemView.getSystemIcon(file));
                 c.setText(fileSystemView.getSystemDisplayName(file));
                 c.setToolTipText(file.getPath());
-                if(file.getName().startsWith(".")) {
+                if (file.getName().startsWith(".")) {
                     c.setEnabled(false);
-                }else{
+                } else {
                     c.setEnabled(true);
                 }
             }

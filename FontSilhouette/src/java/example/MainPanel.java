@@ -12,17 +12,17 @@ public final class MainPanel extends JPanel {
     private static final int SIZE = 50;
     private static final Font FONT = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
     private MainPanel() {
-        super(new GridLayout(4,6,0,0));
+        super(new GridLayout(4, 6, 0, 0));
         // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
         // http://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels
         String[] pieces = {
             "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
             "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
         };
-        for(int i=0;i<pieces.length;i++) {
+        for (int i = 0; i < pieces.length; i++) {
             add(initLabel(new JLabel(pieces[i], SwingConstants.CENTER), i));
         }
-        for(int i=0;i<pieces.length;i++) {
+        for (int i = 0; i < pieces.length; i++) {
             add(initLabel(new JLabel(new SilhouetteIcon(FONT, pieces[i], SIZE)), i));
         }
         setPreferredSize(new Dimension(320, 240));
@@ -30,11 +30,11 @@ public final class MainPanel extends JPanel {
     private static JLabel initLabel(JLabel l, int i) {
         l.setFont(FONT);
         l.setOpaque(true);
-        boolean f = i%2==0;
-        if(i<6 ? !f : f) {
+        boolean f = i % 2 == 0;
+        if (i < 6 ? !f : f) {
             l.setForeground(Color.WHITE);
             l.setBackground(Color.BLACK);
-        }else{
+        } else {
             l.setForeground(Color.BLACK);
             l.setBackground(Color.WHITE);
         }
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
 class SilhouetteIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Color PIECE_PAINT = new Color(150,100,20);
+    private static final Color PIECE_PAINT = new Color(150, 100, 20);
     private final Font font;
     private final String str;
     private final int size;
@@ -79,16 +79,16 @@ class SilhouetteIcon implements Icon, Serializable {
         double[] coords = new double[6];
         PathIterator pi = shape.getPathIterator(null);
         Path2D.Double path = new Path2D.Double();
-        while(!pi.isDone()) {
+        while (!pi.isDone()) {
             int pathSegmentType = pi.currentSegment(coords);
-            if(pathSegmentType == PathIterator.SEG_MOVETO) {
-                if(area.isEmpty() || !area.contains(coords[0], coords[1])) {
+            if (pathSegmentType == PathIterator.SEG_MOVETO) {
+                if (area.isEmpty() || !area.contains(coords[0], coords[1])) {
                     path.moveTo(coords[0], coords[1]);
                 }
-            }else if(path.getCurrentPoint()==null) {
+            } else if (path.getCurrentPoint() == null) {
                 pi.next();
                 continue;
-            }else{
+            } else {
                 addPathSegment2Area(pathSegmentType, area, coords, path);
             }
             pi.next();
@@ -119,7 +119,7 @@ class SilhouetteIcon implements Icon, Serializable {
         }
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

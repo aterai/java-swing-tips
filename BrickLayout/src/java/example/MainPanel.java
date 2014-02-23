@@ -15,13 +15,13 @@ public final class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         //c.weightx = 1.0; c.weighty = 0.0;
-        for(int i=0;i<SIZE;i++) {
-            int x = i & 1; //= (i%2==0)?0:1;
-            for(int j=0;j<SIZE;j++) {
+        for (int i = 0; i < SIZE; i++) {
+            int x = i & 1; //= (i % 2 == 0) ? 0 : 1;
+            for (int j = 0; j < SIZE; j++) {
                 c.gridy = i;
-                c.gridx = 2*j+x;
+                c.gridx = 2 * j + x;
                 c.gridwidth = 2;
-                panel.add(new JButton(" "),c);
+                panel.add(new JButton(" "), c);
             }
         }
         //<blockquote cite="https://forums.oracle.com/thread/1357310"
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         //<dummy-row>
         c.gridwidth = 1;
         c.gridy = 10;
-        for(c.gridx=0; c.gridx<=2*SIZE; c.gridx++) {
+        for (c.gridx = 0; c.gridx <= 2 * SIZE; c.gridx++) {
             panel.add(Box.createHorizontalStrut(24), c);
         }
         //</dummy-row>
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

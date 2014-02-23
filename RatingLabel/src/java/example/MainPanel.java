@@ -5,13 +5,13 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,2,4,4));
+        super(new GridLayout(2, 2, 4, 4));
         //PI Diagona Icons Pack 1.0 - Download Royalty Free Icons and Stock Images For Web & Graphics Design
         //http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
         ImageIcon defaultIcon = new ImageIcon(getClass().getResource("31g.png"));
@@ -19,24 +19,24 @@ public final class MainPanel extends JPanel {
 
         // 1
         List<ImageIcon> list = Arrays.asList(
-            makeStarImageIcon(ip, new float[]{1.0f,0.5f,0.5f}),
-            makeStarImageIcon(ip, new float[]{0.5f,1.0f,0.5f}),
-            makeStarImageIcon(ip, new float[]{1.0f,0.5f,1.0f}),
-            makeStarImageIcon(ip, new float[]{0.5f,0.5f,1.0f}),
-            makeStarImageIcon(ip, new float[]{1.0f,1.0f,0.5f}));
+            makeStarImageIcon(ip, new float[]{1.0f, 0.5f, 0.5f}),
+            makeStarImageIcon(ip, new float[]{0.5f, 1.0f, 0.5f}),
+            makeStarImageIcon(ip, new float[]{1.0f, 0.5f, 1.0f}),
+            makeStarImageIcon(ip, new float[]{0.5f, 0.5f, 1.0f}),
+            makeStarImageIcon(ip, new float[]{1.0f, 1.0f, 0.5f}));
         add(makeStarRatingPanel("gap=0", new LevelBar(defaultIcon, list, 0)));
 
         // 2
         list = Arrays.asList(
-            makeStarImageIcon(ip, new float[]{0.2f,0.5f,0.5f}),
-            makeStarImageIcon(ip, new float[]{0.0f,1.0f,0.2f}),
-            makeStarImageIcon(ip, new float[]{1.0f,1.0f,0.2f}),
-            makeStarImageIcon(ip, new float[]{0.8f,0.4f,0.2f}),
-            makeStarImageIcon(ip, new float[]{1.0f,0.1f,0.1f}));
+            makeStarImageIcon(ip, new float[]{0.2f, 0.5f, 0.5f}),
+            makeStarImageIcon(ip, new float[]{0.0f, 1.0f, 0.2f}),
+            makeStarImageIcon(ip, new float[]{1.0f, 1.0f, 0.2f}),
+            makeStarImageIcon(ip, new float[]{0.8f, 0.4f, 0.2f}),
+            makeStarImageIcon(ip, new float[]{1.0f, 0.1f, 0.1f}));
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1) {
             @Override protected void repaintIcon(int index) {
-                for(int i=0;i<labelList.size();i++) {
-                    labelList.get(i).setIcon(i<=index ? iconList.get(index) : defaultIcon);
+                for (int i = 0; i < labelList.size(); i++) {
+                    labelList.get(i).setIcon(i <= index ? iconList.get(index) : defaultIcon);
                 }
                 repaint();
             }
@@ -44,15 +44,15 @@ public final class MainPanel extends JPanel {
 
         // 3
         list = Arrays.asList(
-            makeStarImageIcon(ip, new float[]{.6f,.6f,.0f}),
-            makeStarImageIcon(ip, new float[]{.7f,.7f,.0f}),
-            makeStarImageIcon(ip, new float[]{.8f,.8f,.0f}),
-            makeStarImageIcon(ip, new float[]{.9f,.9f,.0f}),
-            makeStarImageIcon(ip, new float[]{1.0f,1.0f,.0f}));
+            makeStarImageIcon(ip, new float[]{.6f, .6f, .0f}),
+            makeStarImageIcon(ip, new float[]{.7f, .7f, .0f}),
+            makeStarImageIcon(ip, new float[]{.8f, .8f, .0f}),
+            makeStarImageIcon(ip, new float[]{.9f, .9f, .0f}),
+            makeStarImageIcon(ip, new float[]{1f,   1f, .0f}));
         add(makeStarRatingPanel("gap=2+2", new LevelBar(defaultIcon, list, 2)));
 
         // 4
-        ImageIcon yStar = makeStarImageIcon(ip, new float[]{1.0f,1.0f,.0f});
+        ImageIcon yStar = makeStarImageIcon(ip, new float[] {1f, 1f, .0f});
         list = Arrays.asList(yStar, yStar, yStar, yStar, yStar);
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1)));
         setPreferredSize(new Dimension(320, 240));
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -99,16 +99,16 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
     private final int gap;
     protected final List<ImageIcon> iconList;
     protected final List<JLabel> labelList = Arrays.asList(
-        new JLabel(),new JLabel(),new JLabel(),new JLabel(),new JLabel()
+        new JLabel(), new JLabel(), new JLabel(), new JLabel(), new JLabel()
     );
     protected final ImageIcon defaultIcon;
     private int clicked = -1;
     public LevelBar(ImageIcon defaultIcon, List<ImageIcon> list, int gap) {
-        super(new GridLayout(1, 5, gap*2, gap*2));
+        super(new GridLayout(1, 5, gap * 2, gap * 2));
         this.defaultIcon = defaultIcon;
         this.iconList = list;
         this.gap = gap;
-        for(JLabel l:labelList) {
+        for (JLabel l:labelList) {
             l.setIcon(defaultIcon);
             add(l);
         }
@@ -127,18 +127,18 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
         repaintIcon(clicked);
     }
     private int getSelectedIconIndex(Point p) {
-        for(int i=0;i<labelList.size();i++) {
+        for (int i = 0; i < labelList.size(); i++) {
             Rectangle r = labelList.get(i).getBounds();
             r.grow(gap, gap);
-            if(r.contains(p)) {
+            if (r.contains(p)) {
                 return i;
             }
         }
         return -1;
     }
     protected void repaintIcon(int index) {
-        for(int i=0;i<labelList.size();i++) {
-            labelList.get(i).setIcon(i<=index?iconList.get(i):defaultIcon);
+        for (int i = 0; i < labelList.size(); i++) {
+            labelList.get(i).setIcon(i <= index ? iconList.get(i) : defaultIcon);
         }
         repaint();
     }
@@ -166,7 +166,7 @@ class SelectedImageFilter extends RGBImageFilter {
         //filter = array;
         filter = new float[array.length];
         System.arraycopy(array, 0, filter, 0, array.length);
-//         for(int i=0;i<arrays.length;i++) {
+//         for (int i = 0; i < arrays.length; i++) {
 //             filter[i] = arrays[i];
 //         }
         canFilterIndexColorModel = false;
@@ -178,9 +178,9 @@ class SelectedImageFilter extends RGBImageFilter {
 //         return new Color(array[0]*filter[0], array[1]*filter[1], array[2]*filter[2], array[3]).getRGB();
 //     }
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int)(((argb >> 16) & 0xff) * filter[0]);
-        int g = (int)(((argb >>  8) & 0xff) * filter[1]);
-        int b = (int)(((argb)       & 0xff) * filter[2]);
-        return (argb & 0xff000000) | (r<<16) | (g<<8) | (b);
+        int r = (int) (((argb >> 16) & 0xff) * filter[0]);
+        int g = (int) (((argb >>  8) & 0xff) * filter[1]);
+        int b = (int) (((argb)       & 0xff) * filter[2]);
+        return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }

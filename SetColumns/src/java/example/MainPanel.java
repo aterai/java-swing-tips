@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
         SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
-        ((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setColumns(20);
+        ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setColumns(20);
 
         combo1.setEditable(true);
-        ((JTextField)combo1.getEditor().getEditorComponent()).setColumns(20);
+        ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
 
         combo2.setEditable(true);
 
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

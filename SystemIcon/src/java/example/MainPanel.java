@@ -16,14 +16,14 @@ public final class MainPanel extends JPanel {
     private final JLabel largeLabel = new JLabel();
     public MainPanel() {
         super();
-        smallLabel.setPreferredSize(new Dimension(16+1,16+1));
-        smallLabel.setMaximumSize(new Dimension(16+1,16+1));
-        smallLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+        smallLabel.setPreferredSize(new Dimension(16 + 1, 16 + 1));
+        smallLabel.setMaximumSize(new Dimension(16 + 1, 16 + 1));
+        smallLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         smallLabel.setAlignmentY(BOTTOM_ALIGNMENT);
 
-        largeLabel.setPreferredSize(new Dimension(32+1,32+1));
-        largeLabel.setMaximumSize(new Dimension(32+1,32+1));
-        largeLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+        largeLabel.setPreferredSize(new Dimension(32 + 1, 32 + 1));
+        largeLabel.setMaximumSize(new Dimension(32 + 1, 32 + 1));
+        largeLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         largeLabel.setAlignmentY(BOTTOM_ALIGNMENT);
 
         Box box = Box.createHorizontalBox();
@@ -31,27 +31,27 @@ public final class MainPanel extends JPanel {
         box.add(smallLabel);
         box.add(Box.createHorizontalStrut(5));
         box.add(largeLabel);
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(box);
         add(new JLabel("<html>warning: ShellFolder is internal proprietary API"
                      + "<br> and may be removed in a future release"));
 
         DropTargetListener dtl = new DropTargetAdapter() {
             @Override public void dragOver(DropTargetDragEvent dtde) {
-                if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     dtde.acceptDrag(DnDConstants.ACTION_COPY);
                     return;
                 }
                 dtde.rejectDrag();
             }
             @Override public void drop(DropTargetDropEvent dtde) {
-                try{
-                    if(dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                try {
+                    if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                         dtde.acceptDrop(DnDConstants.ACTION_COPY);
                         Transferable t = dtde.getTransferable();
-                        List list = (List)t.getTransferData(DataFlavor.javaFileListFlavor);
+                        List list = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
                         Object o = list.get(0);
-                        if(o instanceof File) {
+                        if (o instanceof File) {
                             File file = (File) o;
                             smallLabel.setIcon(FileSystemView.getFileSystemView().getSystemIcon(file));
                             largeLabel.setIcon(new ImageIcon(
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
                         dtde.dropComplete(true);
                         return;
                     }
-                }catch(UnsupportedFlavorException | IOException ex) {
+                } catch (UnsupportedFlavorException | IOException ex) {
                     ex.printStackTrace();
                 }
                 dtde.rejectDrop();
@@ -78,10 +78,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

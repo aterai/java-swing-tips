@@ -10,8 +10,8 @@ public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     private final transient MouseListener ml = new MouseAdapter() {
         @Override public void mousePressed(MouseEvent e) {
-            JTree tree = (JTree)e.getComponent();
-            if(tree.getRowForLocation(e.getX(), e.getY())<0) {
+            JTree tree = (JTree) e.getComponent();
+            if (tree.getRowForLocation(e.getX(), e.getY()) < 0) {
                 tree.clearSelection();
             }
         }
@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         add(new JCheckBox(new AbstractAction("JTree#clearSelection: when user clicks empty surface") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(((JCheckBox)e.getSource()).isSelected()) {
+                if (((JCheckBox) e.getSource()).isSelected()) {
                     tree.addMouseListener(ml);
-                }else{
+                } else {
                     tree.removeMouseListener(ml);
                 }
             }
@@ -38,10 +38,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

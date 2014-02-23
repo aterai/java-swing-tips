@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JPanel p = new JPanel(new GridLayout(3,1));
+        JPanel p = new JPanel(new GridLayout(3, 1));
         p.add(makeUI());
         p.add(makeUI());
         p.add(makeUI());
@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
 
         GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
-        p.setBorder(BorderFactory.createEmptyBorder(32,8,0,8));
+        p.setBorder(BorderFactory.createEmptyBorder(32, 8, 0, 8));
 
         c.gridheight = 1;
         c.gridwidth  = 1;
@@ -44,11 +44,11 @@ public final class MainPanel extends JPanel {
         c.weightx = 0.0;
         p.add(new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {
-                final JButton b = (JButton)e.getSource();
+                final JButton b = (JButton) e.getSource();
                 b.setEnabled(false);
-                SwingWorker<Void,Void> worker = new Task() {
+                SwingWorker<Void, Void> worker = new Task() {
                     @Override public void done() {
-                        if(b.isDisplayable()) {
+                        if (b.isDisplayable()) {
                             b.setEnabled(true);
                         }
                     }
@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -84,14 +84,14 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<Void,Void> {
+class Task extends SwingWorker<Void, Void> {
     @Override public Void doInBackground() {
         int current = 0;
         int lengthOfTask = 100;
-        while(current<=lengthOfTask && !isCancelled()) {
-            try{ // dummy task
+        while (current<=lengthOfTask && !isCancelled()) {
+            try { // dummy task
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return null;
             }
             setProgress(100 * current / lengthOfTask);
@@ -109,9 +109,9 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
         String strPropertyName = evt.getPropertyName();
-        if("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer)evt.getNewValue();
+            int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
         }
     }
@@ -137,20 +137,20 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI{
         int width  = image.getWidth(null);
         int[] pallet = new int[width];
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
-        try{
+        try {
             pg.grabPixels();
-        }catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
         return pallet;
     }
     private static Color getColorFromPallet(int[] pallet, float x) {
-        if(x < 0.0 || x > 1.0) {
+        if (x < 0.0 || x > 1.0) {
             throw new IllegalArgumentException("Parameter outside of expected range");
         }
-        int i = (int)(pallet.length * x);
-        int max = pallet.length-1;
-        int index = i<0?0:i>max?max:i;
+        int i = (int) (pallet.length * x);
+        int max = pallet.length - 1;
+        int index = i < 0 ? 0 : i > max ? max : i;
         return new Color(pallet[index] & 0x00ffffff);
         //translucent
         //int pix = pallet[index] & 0x00ffffff | (0x64 << 24);
@@ -160,7 +160,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI{
         Insets b = progressBar.getInsets(); // area for border
         int barRectWidth  = progressBar.getWidth()  - b.right - b.left;
         int barRectHeight = progressBar.getHeight() - b.top   - b.bottom;
-        if(barRectWidth <= 0 || barRectHeight <= 0) {
+        if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }
         //int cellLength = getCellLength();
@@ -168,19 +168,19 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI{
         // amount of progress to draw
         int amountFull = getAmountFull(b, barRectWidth, barRectHeight);
 
-        if(progressBar.getOrientation() == JProgressBar.HORIZONTAL) {
+        if (progressBar.getOrientation() == JProgressBar.HORIZONTAL) {
             // draw the cells
-            float x = amountFull / (float)barRectWidth;
+            float x = amountFull / (float) barRectWidth;
             g.setColor(getColorFromPallet(pallet, x));
             g.fillRect(b.left, b.top, amountFull, barRectHeight);
 
-        }else{ // VERTICAL
+        } else { // VERTICAL
             //XXX
             super.paintDeterminate(g, c);
             return;
         }
         // Deal with possible text painting
-        if(progressBar.isStringPainted()) {
+        if (progressBar.isStringPainted()) {
             paintString(g, b.left, b.top, barRectWidth, barRectHeight, amountFull, b);
         }
     }

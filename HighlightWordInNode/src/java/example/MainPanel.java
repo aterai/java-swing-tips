@@ -42,30 +42,30 @@ public final class MainPanel extends JPanel {
         renderer.q = q;
         TreePath root = tree.getPathForRow(0);
         collapseAll(tree, root);
-        if(!q.isEmpty()) {
+        if (!q.isEmpty()) {
             searchTree(tree, root, q);
         }
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
-        TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node == null) {
             return;
-        }else if(node.toString().startsWith(q)) {
+        } else if (node.toString().startsWith(q)) {
             tree.expandPath(path.getParentPath());
         }
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
+            while (e.hasMoreElements()) {
                 searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
             }
         }
     }
     private static void collapseAll(JTree tree, TreePath parent) {
-        TreeNode node = (TreeNode)parent.getLastPathComponent();
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
-                TreeNode n = (TreeNode)e.nextElement();
+            while (e.hasMoreElements()) {
+                TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 collapseAll(tree, path);
             }
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -113,10 +113,10 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
         getHighlighter().removeAllHighlights();
         setText(txt);
         setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
-        if(q!=null && !q.isEmpty() && txt.startsWith(q)) {
-            try{
+        if (q != null && !q.isEmpty() && txt.startsWith(q)) {
+            try {
                 getHighlighter().addHighlight(0, q.length(), highlightPainter);
-            }catch(BadLocationException e) {
+            } catch (BadLocationException e) {
                 e.printStackTrace();
             }
         }

@@ -27,17 +27,17 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         ButtonGroup bg = new ButtonGroup();
         bg.add(check1); bg.add(check2);
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(check1); p.add(check2);
 
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
             @Override public void toggleSortOrder(int column) {
-                //if(column>=0 && column<getModelWrapper().getColumnCount() && isSortable(column)) {
-                if(check2.isSelected() && column>=0 && column<getModelWrapper().getColumnCount() && isSortable(column)) {
+                //if (column >= 0 && column<getModelWrapper().getColumnCount() && isSortable(column)) {
+                if (check2.isSelected() && column >= 0 && column < getModelWrapper().getColumnCount() && isSortable(column)) {
                     List<SortKey> keys = new ArrayList<SortKey>(getSortKeys());
-                    if(!keys.isEmpty()) {
+                    if (!keys.isEmpty()) {
                         SortKey sortKey = keys.get(0);
-                        if(sortKey.getColumn()==column && sortKey.getSortOrder()==SortOrder.DESCENDING) {
+                        if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
                             setSortKeys(null);
                             return;
                         }
@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

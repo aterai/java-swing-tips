@@ -15,23 +15,23 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         super(new BorderLayout());
 
         UIDefaults def = UIManager.getLookAndFeelDefaults(); //new UIDefaults();
-        def.put("nimbusOrange", new Color(255,220,35,200));
+        def.put("nimbusOrange", new Color(255, 220, 35, 200));
 
         UIDefaults d = new UIDefaults();
         d.put("ProgressBar[Enabled].foregroundPainter", new Painter() {
             @Override public void paint(Graphics2D g, Object o, int w, int h) {
-                g.setColor(new Color(100,250,120,50));
-                g.fillRect(0,0,w-1,h-1);
-                g.setColor(new Color(100,250,120,150));
-                g.fillRect(3,h/2,w-5,h/2-2);
+                g.setColor(new Color(100, 250, 120, 50));
+                g.fillRect(0, 0, w - 1, h - 1);
+                g.setColor(new Color(100, 250, 120, 150));
+                g.fillRect(3, h / 2, w - 5, h / 2 - 2);
             }
         });
         d.put("ProgressBar[Enabled+Finished].foregroundPainter", new Painter() {
             @Override public void paint(Graphics2D g, Object o, int w, int h) {
-                g.setColor(new Color(100,250,120,50));
-                g.fillRect(0,0,w-1,h-1);
-                g.setColor(new Color(100,250,120,150));
-                g.fillRect(3,h/2,w-5,h/2-2);
+                g.setColor(new Color(100, 250, 120, 50));
+                g.fillRect(0, 0, w - 1, h - 1);
+                g.setColor(new Color(100, 250, 120, 150));
+                g.fillRect(3, h / 2, w - 5, h / 2 - 2);
             }
         });
 
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         progressBar2.putClientProperty("Nimbus.Overrides", d);
 
         JPanel p = new JPanel();
-        p.setBorder(BorderFactory.createEmptyBorder(16,16,16,16));
+        p.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
         p.add(progressBar1);
         p.add(progressBar2);
 
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Test start") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) {
+                if (worker != null && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = new Task();
@@ -62,12 +62,12 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         addHierarchyListener(this);
         add(p);
         add(box, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void hierarchyChanged(HierarchyEvent he) {
-        JComponent c = (JComponent)he.getComponent();
-        if((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker!=null) {
+        JComponent c = (JComponent) he.getComponent();
+        if ((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker != null) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
@@ -81,15 +81,15 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for(UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
-                if("Nimbus".equals(laf.getName())) {
+            for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
                     UIManager.setLookAndFeel(laf.getClassName());
                 }
             }
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -106,10 +106,10 @@ class Task extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 100;
-        while(current<=lengthOfTask && !isCancelled()) {
-            try{ // dummy task
+        while (current<=lengthOfTask && !isCancelled()) {
+            try { // dummy task
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);
@@ -127,9 +127,9 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
         String strPropertyName = evt.getPropertyName();
-        if("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer)evt.getNewValue();
+            int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
         }
     }

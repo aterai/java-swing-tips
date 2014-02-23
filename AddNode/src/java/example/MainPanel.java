@@ -24,10 +24,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -44,9 +44,9 @@ class TreePopupMenu extends JPopupMenu {
     private TreePath path;
     private final Action addNodeAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
-            final JTree tree = (JTree)getInvoker();
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
+            final JTree tree = (JTree) getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
             model.insertNodeInto(child, parent, parent.getChildCount());
             tree.scrollPathToVisible(new TreePath(child.getPath())); //http://terai.xrea.jp/Swing/ScrollRectToVisible.html
@@ -54,9 +54,9 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action addReloadNodeAction = new AbstractAction("add & reload") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTree tree = (JTree)getInvoker();
-            DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-            DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getLastPathComponent();
+            JTree tree = (JTree) getInvoker();
+            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
             parent.add(child);
             model.reload(parent); //= model.nodeStructureChanged(parent);
@@ -65,19 +65,19 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editNodeAction = new AbstractAction("edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            //if(path==null) { return; }
+            //if (path == null) { return; }
             Object node = path.getLastPathComponent();
-            if(node instanceof DefaultMutableTreeNode) {
-                DefaultMutableTreeNode leaf = (DefaultMutableTreeNode)node;
+            if (node instanceof DefaultMutableTreeNode) {
+                DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
-                JTree tree = (JTree)getInvoker();
+                JTree tree = (JTree) getInvoker();
                 int result = JOptionPane.showConfirmDialog(
                     tree, textField, "edit",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION) {
+                if (result == JOptionPane.OK_OPTION) {
                     String str = textField.getText();
-                    if(!str.trim().isEmpty()) {
-                        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+                    if (!str.trim().isEmpty()) {
+                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                         model.valueForPathChanged(path, str);
                         //leaf.setUserObject(str);
                         //model.nodeChanged(leaf);
@@ -88,11 +88,11 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action removeNodeAction = new AbstractAction("remove") {
         @Override public void actionPerformed(ActionEvent e) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-            //if(path.getParentPath()!=null) {
-            if(!node.isRoot()) {
-                JTree tree = (JTree)getInvoker();
-                DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            //if (path.getParentPath() != null) {
+            if (!node.isRoot()) {
+                JTree tree = (JTree) getInvoker();
+                DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                 model.removeNodeFromParent(node);
             }
         }
@@ -113,12 +113,12 @@ class TreePopupMenu extends JPopupMenu {
         add(removeNodeAction);
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTree) {
-            JTree tree = (JTree)c;
+        if (c instanceof JTree) {
+            JTree tree = (JTree) c;
             //TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y);
-            //if(path!=null && Arrays.asList(tsp).contains(path)) {
-            if(path!=null) {
+            //if (path != null && Arrays.asList(tsp).contains(path)) {
+            if (path != null) {
                 tree.setSelectionPath(path);
                 super.show(c, x, y);
             }

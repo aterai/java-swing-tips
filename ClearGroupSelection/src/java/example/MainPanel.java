@@ -26,9 +26,9 @@ public final class MainPanel extends JPanel {
             new JRadioButton("RadioButton2"),
             t1, t2);
 
-        JPanel p = new JPanel(new GridLayout(2,2));
+        JPanel p = new JPanel(new GridLayout(2, 2));
         p.setBorder(BorderFactory.createTitledBorder("ButtonGroup"));
-        for(AbstractButton b:l) { bg.add(b); p.add(b); }
+        for (AbstractButton b:l) { bg.add(b); p.add(b); }
         t2.setSelected(true);
 
         add(p, BorderLayout.NORTH);
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
                 bg.clearSelection();
             }
         }), BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 180));
     }
     private static class SelectedImageFilter extends RGBImageFilter {
@@ -61,10 +61,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

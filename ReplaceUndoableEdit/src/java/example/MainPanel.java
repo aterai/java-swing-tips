@@ -30,20 +30,20 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel();
         p.add(new JButton(new AbstractAction("undo") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(undoManager.canUndo()) {
+                if (undoManager.canUndo()) {
                     undoManager.undo();
                 }
-                if(um.canUndo()) {
+                if (um.canUndo()) {
                     um.undo();
                 }
             }
         }));
         p.add(new JButton(new AbstractAction("redo") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(undoManager.canRedo()) {
+                if (undoManager.canRedo()) {
                     undoManager.redo();
                 }
-                if(um.canRedo()) {
+                if (um.canRedo()) {
                     um.redo();
                 }
             }
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         }));
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("Default", tf));
         box.add(Box.createVerticalStrut(5));
         box.add(makePanel("replace ignoring undo", field));
@@ -81,10 +81,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -102,9 +102,9 @@ class CustomUndoPlainDocument extends PlainDocument {
 //         this.undoManager = undoManager;
 //     }
     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-        if(length==0) { //insert
+        if (length == 0) { //insert
             super.replace(offset, length, text, attrs);
-        }else{ //replace
+        } else { //replace
 //             undoManager.undoableEditHappened(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
             fireUndoableEditUpdate(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
             replaceIgnoringUndo(offset, length, text, attrs);
@@ -112,11 +112,11 @@ class CustomUndoPlainDocument extends PlainDocument {
     }
     private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         UndoableEditListener[] uels = getUndoableEditListeners();
-        for(UndoableEditListener l: uels) {
+        for (UndoableEditListener l: uels) {
             removeUndoableEditListener(l);
         }
         super.replace(offset, length, text, attrs);
-        for(UndoableEditListener l: uels) {
+        for (UndoableEditListener l: uels) {
             addUndoableEditListener(l);
         }
 //         removeUndoableEditListener(undoManager);
@@ -130,9 +130,9 @@ class CustomUndoPlainDocument extends PlainDocument {
         public ReplaceUndoableEdit(int offset, int length, String newValue) {
             super();
             String txt;
-            try{
+            try {
                 txt = getText(offset, length);
-            }catch(BadLocationException e) {
+            } catch (BadLocationException e) {
                 txt = null;
             }
             this.oldValue = txt;
@@ -140,18 +140,18 @@ class CustomUndoPlainDocument extends PlainDocument {
             this.offset = offset;
         }
         @Override public void undo() { //throws CannotUndoException {
-            try{
+            try {
                 replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
-            }catch(BadLocationException e) {
+            } catch (BadLocationException e) {
                 CannotUndoException ex = new CannotUndoException();
                 ex.initCause(e);
                 throw ex;
             }
         }
         @Override public void redo() { //throws CannotRedoException {
-            try{
+            try {
                 replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
-            }catch(final BadLocationException e) {
+            } catch (BadLocationException e) {
                 CannotUndoException ex = new CannotUndoException();
                 ex.initCause(e);
                 throw ex;

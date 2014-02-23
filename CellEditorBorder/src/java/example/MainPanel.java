@@ -38,23 +38,23 @@ public final class MainPanel extends JPanel {
 //             private static final Color EVEN_COLOR = new Color(250, 250, 250);
 //             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                 Component c = super.prepareRenderer(tcr, row, column);
-//                 if(isRowSelected(row)) {
+//                 if (isRowSelected(row)) {
 //                     c.setForeground(getSelectionForeground());
 //                     c.setBackground(getSelectionBackground());
-//                 }else{
+//                 } else {
 //                     c.setForeground(getForeground());
-//                     c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+//                     c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
 //                 }
 //                 return c;
 //             }
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JCheckBox) {
-                    JCheckBox b = (JCheckBox)c;
+                if (c instanceof JCheckBox) {
+                    JCheckBox b = (JCheckBox) c;
                     b.setBorderPainted(true);
                     b.setBackground(getSelectionBackground());
-                }else if(convertColumnIndexToModel(column)==1) {
-                    ((JComponent)c).setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+                } else if (convertColumnIndexToModel(column) == 1) {
+                    ((JComponent) c).setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
                 }
                 return c;
             }
@@ -70,14 +70,14 @@ public final class MainPanel extends JPanel {
 //         table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
 //             @Override public boolean stopCellEditing() {
 //                 Object o = getCellEditorValue();
-//                 return (o==null)?false:super.stopCellEditing();
+//                 return (o == null) ? false : super.stopCellEditing();
 //             }
 //             @Override public Object getCellEditorValue() {
 //                 Object o = super.getCellEditorValue();
 //                 Integer iv;
-//                 try{
+//                 try {
 //                     iv = Integer.valueOf(o.toString());
-//                 }catch(NumberFormatException nfe) {
+//                 } catch (NumberFormatException nfe) {
 //                     iv = null;
 //                 }
 //                 return iv;
@@ -93,24 +93,24 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", 0, true});
-            Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }
     }
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -138,10 +138,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
             //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
             @Override public boolean getScrollableTracksViewportWidth() {
                 Component p = getParent();
-                if(p==null) { return true; }
+                if (p == null) { return true; }
                 int ewidth = getUI().getPreferredSize(this).width;
                 return ewidth<=p.getSize().width;
             }
@@ -36,13 +36,13 @@ public final class MainPanel extends JPanel {
 
         ActionListener longTextListener = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                final JComponent c = (JComponent)e.getSource();
+                final JComponent c = (JComponent) e.getSource();
                 threadPool.execute(new Runnable() {
                     @Override public void run() {
-                        if(text!=null) {
-                            if(c.equals(editorPaneButton)) {
+                        if (text != null) {
+                            if (c.equals(editorPaneButton)) {
                                 editorPane.setText(text);
-                            }else{
+                            } else {
                                 textArea.setText(text);
                             }
                         }
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
         threadPool.execute(new Runnable() {
             @Override public void run() {
                 StringBuffer sb = new StringBuffer(length);
-                for(int i=0;i<length-2;i++) {
+                for (int i = 0; i < length - 2; i++) {
                     sb.append('a');
                 }
                 sb.append("x\n");
@@ -97,10 +97,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         ExecutorService threadPool = Executors.newCachedThreadPool();
@@ -122,16 +122,16 @@ class NoWrapEditorKit1 extends StyledEditorKit {
     static class StyledViewFactory implements ViewFactory {
         @Override public View create(Element elem) {
             String kind = elem.getName();
-            if(kind != null) {
-                if(kind.equals(AbstractDocument.ContentElementName)) {
+            if (kind != null) {
+                if (kind.equals(AbstractDocument.ContentElementName)) {
                     return new LabelView(elem);
-                }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+                } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                     return new ParagraphView(elem);
-                }else if(kind.equals(AbstractDocument.SectionElementName)) {
+                } else if (kind.equals(AbstractDocument.SectionElementName)) {
                     return new NoWrapBoxView(elem, View.Y_AXIS);
-                }else if(kind.equals(StyleConstants.ComponentElementName)) {
+                } else if (kind.equals(StyleConstants.ComponentElementName)) {
                     return new ComponentView(elem);
-                }else if(kind.equals(StyleConstants.IconElementName)) {
+                } else if (kind.equals(StyleConstants.IconElementName)) {
                     return new IconView(elem);
                 }
             }
@@ -143,9 +143,9 @@ class NoWrapEditorKit1 extends StyledEditorKit {
             super(elem, axis);
         }
         @Override public void layout(int width, int height) {
-            super.layout(Integer.MAX_VALUE-64, height);
-            //??? Integer.MAX_VALUE-64 = error?
-            //??? Integer.MAX_VALUE-64 = ok?
+            super.layout(Integer.MAX_VALUE - 64, height);
+            //??? Integer.MAX_VALUE - 64 = error?
+            //??? Integer.MAX_VALUE - 64 = ok?
         }
     }
 }
@@ -168,16 +168,16 @@ class NoWrapParagraphView extends ParagraphView {
 class NoWrapViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if(kind != null) {
-            if(kind.equals(AbstractDocument.ContentElementName)) {
+        if (kind != null) {
+            if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
-            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+            } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                 return new NoWrapParagraphView(elem);
-            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+            } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
-            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+            } else if (kind.equals(StyleConstants.ComponentElementName)) {
                 return new ComponentView(elem);
-            }else if(kind.equals(StyleConstants.IconElementName)) {
+            } else if (kind.equals(StyleConstants.IconElementName)) {
                 return new IconView(elem);
             }
         }

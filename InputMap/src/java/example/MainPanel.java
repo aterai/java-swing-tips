@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel(final JFrame frame) {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("JOptionPane"));
         p1.add(new JButton(new AbstractAction("JOptionPane.showMessageDialog") {
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
             }
         }));
         add(p1); add(p2);
-        setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         setPreferredSize(new Dimension(320, 200));
     }
 
@@ -99,10 +99,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

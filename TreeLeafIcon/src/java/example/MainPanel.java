@@ -16,11 +16,11 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        for(int i=0;i<tree.getRowCount();i++) {
+        for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
 
-        DefaultTreeCellRenderer r = (DefaultTreeCellRenderer)tree.getCellRenderer();
+        DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
         r.setOpenIcon(null);
         r.setClosedIcon(null);
         r.setLeafIcon(null);
@@ -28,11 +28,11 @@ public final class MainPanel extends JPanel {
 
         folderCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                DefaultTreeCellRenderer r = (DefaultTreeCellRenderer)tree.getCellRenderer();
-                if(((JCheckBox)e.getSource()).isSelected()) {
+                DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
+                if (((JCheckBox) e.getSource()).isSelected()) {
                     r.setOpenIcon(r.getDefaultOpenIcon());
                     r.setClosedIcon(r.getDefaultClosedIcon());
-                }else{
+                } else {
                     r.setOpenIcon(null);
                     r.setClosedIcon(null);
                 }
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         });
         leafCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                DefaultTreeCellRenderer r = (DefaultTreeCellRenderer)tree.getCellRenderer();
-                if(((JCheckBox)e.getSource()).isSelected()) {
+                DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
+                if (((JCheckBox) e.getSource()).isSelected()) {
                     r.setLeafIcon(r.getDefaultLeafIcon());
-                }else{
+                } else {
                     r.setLeafIcon(null);
                 }
                 allNodesChanged(tree);
@@ -54,19 +54,19 @@ public final class MainPanel extends JPanel {
 //         tree.setCellRenderer(new DefaultTreeCellRenderer() {
 //             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //                 super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-//                 if(leaf) {
-//                     if(!leafCheck.isSelected()) {
+//                 if (leaf) {
+//                     if (!leafCheck.isSelected()) {
 //                         setIcon(null);
-//                     }else{
+//                     } else {
 //                         setIcon(getDefaultLeafIcon());
 //                     }
-//                 }else{
-//                     if(!folderCheck.isSelected()) {
+//                 } else {
+//                     if (!folderCheck.isSelected()) {
 //                         setIcon(null);
-//                     }else{
-//                         if(expanded) {
+//                     } else {
+//                         if (expanded) {
 //                             setIcon(getDefaultOpenIcon());
-//                         }else{
+//                         } else {
 //                             setIcon(getDefaultClosedIcon());
 //                         }
 //                     }
@@ -85,11 +85,11 @@ public final class MainPanel extends JPanel {
     }
 
     private static void allNodesChanged(JTree tree) {
-        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         Enumeration depth = root.depthFirstEnumeration();
-        while(depth.hasMoreElements()) {
-            model.nodeChanged((TreeNode)depth.nextElement());
+        while (depth.hasMoreElements()) {
+            model.nodeChanged((TreeNode) depth.nextElement());
         }
         //tree.revalidate();
         //tree.repaint();
@@ -102,10 +102,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

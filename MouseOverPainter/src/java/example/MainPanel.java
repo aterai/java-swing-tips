@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         HighlightCursorTextArea textArea= new HighlightCursorTextArea();
-        textArea.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         textArea.setText("MouseOver Painter Test\n\naaaaaaaaaaafasdfas");
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.getViewport().setBackground(Color.WHITE);
@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightCursorTextArea extends JTextArea {
-    private static final Color LINE_COLOR = new Color(250,250,220);
+    private static final Color LINE_COLOR = new Color(250, 250, 220);
     private int rollOverRowIndex = -1;
 
     public HighlightCursorTextArea() {
@@ -55,12 +55,12 @@ class HighlightCursorTextArea extends JTextArea {
         addMouseListener(rol);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         Insets i = getInsets();
         int h = g2.getFontMetrics().getHeight();
-        int y = rollOverRowIndex*h+i.top;
+        int y = rollOverRowIndex * h + i.top;
         g2.setPaint(LINE_COLOR);
-        g2.fillRect(i.left, y, getSize().width-i.left-i.right, h);
+        g2.fillRect(i.left, y, getSize().width - i.left - i.right, h);
         g2.dispose();
         super.paintComponent(g);
     }
@@ -71,7 +71,7 @@ class HighlightCursorTextArea extends JTextArea {
         }
         @Override public void mouseMoved(MouseEvent e) {
             int row = getLineAtPoint(e.getPoint());
-            if(row != rollOverRowIndex) {
+            if (row != rollOverRowIndex) {
                 rollOverRowIndex = row;
                 repaint();
             }

@@ -32,19 +32,19 @@ class ColumnComparator implements Comparator, Serializable {
     }
     @SuppressWarnings("unchecked")
     @Override public int compare(Object one, Object two) {
-        if(one instanceof Vector && two instanceof Vector) {
-            Object oOne = ((Vector)one).elementAt(index);
-            Object oTwo = ((Vector)two).elementAt(index);
+        if (one instanceof Vector && two instanceof Vector) {
+            Object oOne = ((Vector) one).elementAt(index);
+            Object oTwo = ((Vector) two).elementAt(index);
             int dir = ascending ? 1 :  -1;
-            if(oOne instanceof Comparable && oTwo instanceof Comparable) {
-                Comparable cOne = (Comparable)oOne;
-                Comparable cTwo = (Comparable)oTwo;
+            if (oOne instanceof Comparable && oTwo instanceof Comparable) {
+                Comparable cOne = (Comparable) oOne;
+                Comparable cTwo = (Comparable) oTwo;
                 return cOne.compareTo(cTwo) * dir;
-            }else if(oOne==null && oTwo==null) {
+            } else if (oOne == null && oTwo == null) {
                 return 0;
-            }else if(oOne==null) {
+            } else if (oOne == null) {
                 return -1 * dir;
-            }else{ // if(oTwo==null) {
+            } else { // if (oTwo == null) {
                 return  1 * dir;
             }
         }
@@ -54,11 +54,11 @@ class ColumnComparator implements Comparator, Serializable {
 //         return new BigDecimal(o1.toString()).compareTo(new BigDecimal(o2.toString()));
 // //         double n1 = o1.doubleValue();
 // //         double n2 = o2.doubleValue();
-// //         if(n1 < n2) {
+// //         if (n1 < n2) {
 // //             return -1;
-// //         }else if(n1 > n2) {
+// //         } else if (n1 > n2) {
 // //             return 1;
-// //         }else{
+// //         } else {
 // //             return 0;
 // //         }
 //     }
@@ -90,18 +90,18 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         setText(Objects.toString(value, ""));
         setIcon(new EmptyIcon(iconSize));
         int modelColumn = table.convertColumnIndexToModel(column);
-        if(!isEnabledAt(modelColumn)) {
+        if (!isEnabledAt(modelColumn)) {
             getModel().setEnabled(false);
             return this;
         }
         getModel().setEnabled(true);
         Integer ivalue = state.get(modelColumn);
-        if(ivalue != null) {
-            if(ivalue == DOWN) {
+        if (ivalue != null) {
+            if (ivalue == DOWN) {
                 setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
                 //setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-            }else if(ivalue == UP) {
+            } else if (ivalue == UP) {
                 setIcon(UIManager.getIcon("Table.descendingSortIcon"));
                 //setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
                 //setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
@@ -131,7 +131,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         return dmap.containsKey(col) ? dmap.get(col) : true;
     }
     public void setSelectedColumn(int col) {
-        if(col < 0) {
+        if (col < 0) {
             state.clear();
             return;
         }
@@ -149,28 +149,28 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
 
 class HeaderMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-        JTableHeader h = (JTableHeader)e.getComponent();
+        JTableHeader h = (JTableHeader) e.getComponent();
         TableColumnModel columnModel = h.getColumnModel();
         int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-        if(viewColumn<0) {
+        if (viewColumn < 0) {
             return;
         }
         TableCellRenderer tcr = h.getDefaultRenderer();
         int column = columnModel.getColumn(viewColumn).getModelIndex();
-        if(column != -1 && tcr instanceof SortButtonRenderer) {
-            SortButtonRenderer sbr = (SortButtonRenderer)tcr;
-            if(!sbr.isEnabledAt(column)) {
+        if (column != -1 && tcr instanceof SortButtonRenderer) {
+            SortButtonRenderer sbr = (SortButtonRenderer) tcr;
+            if (!sbr.isEnabledAt(column)) {
                 return;
             }
             sbr.setPressedColumn(column);
             sbr.setSelectedColumn(column);
             h.repaint();
             JTable table = h.getTable();
-            if(table.isEditing()) {
+            if (table.isEditing()) {
                 table.getCellEditor().stopCellEditing();
             }
-            SortableTableModel model = (SortableTableModel)table.getModel();
-            model.sortByColumn(column, SortButtonRenderer.DOWN==sbr.getState(column));
+            SortableTableModel model = (SortableTableModel) table.getModel();
+            model.sortByColumn(column, SortButtonRenderer.DOWN == sbr.getState(column));
         }
     }
     @Override public void mouseReleased(MouseEvent e) {

@@ -13,13 +13,13 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());
-        JEditorPane editor = new JEditorPane("text/html", "<html><a href='"+MYSITE+"'>"+MYSITE+"</a>");
+        JEditorPane editor = new JEditorPane("text/html", "<html><a href='" + MYSITE + "'>" + MYSITE + "</a>");
         editor.setOpaque(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor.setEditable(false);
         editor.addHyperlinkListener(new HyperlinkListener() {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
+                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                     BrowserLauncher.openURL(MYSITE);
                     textArea.setText(e.toString());
                 }
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -72,30 +72,30 @@ final class BrowserLauncher {
     private BrowserLauncher() { /* Singleton */ }
     public static void openURL(String url) {
         String osName = System.getProperty("os.name");
-        try{
-            if(osName.startsWith("Mac OS")) {
+        try {
+            if (osName.startsWith("Mac OS")) {
                 Class fileMgr = Class.forName("com.apple.eio.FileManager");
                 //Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
                 @SuppressWarnings("unchecked") Method openURL = fileMgr.getDeclaredMethod("openURL", String.class);
                 openURL.invoke(null, new Object[] {url});
-            }else if(osName.startsWith("Windows")) {
-                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-            }else{ //assume Unix or Linux
+            } else if (osName.startsWith("Windows")) {
+                Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);
+            } else { //assume Unix or Linux
                 String[] browsers = {"firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
                 String browser = null;
-                for(int count = 0; count < browsers.length && browser == null; count++) {
-                    if(Runtime.getRuntime().exec(new String[] {"which", browsers[count]}).waitFor() == 0) {
+                for (int count = 0; count < browsers.length && browser == null; count++) {
+                    if (Runtime.getRuntime().exec(new String[] {"which", browsers[count]}).waitFor() == 0) {
                         browser = browsers[count];
                     }
                 }
-                if(browser == null) {
+                if (browser == null) {
                     throw new UnsupportedOperationException("Could not find web browser");
-                }else{
+                } else {
                     Runtime.getRuntime().exec(new String[] {browser, url});
                 }
             }
-        }catch(IOException | InterruptedException | ClassNotFoundException |
-               IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (IOException | InterruptedException | ClassNotFoundException |
+                 IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(null, ERR_MSG + ":\n" + e.getLocalizedMessage(), "titlebar", JOptionPane.ERROR_MESSAGE);
         }

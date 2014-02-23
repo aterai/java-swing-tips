@@ -25,12 +25,12 @@ public final class MainPanel extends JPanel {
     private final DnDTable table = new DnDTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
             }
             return c;
         }
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", Integer.valueOf(0), Boolean.FALSE});
@@ -62,14 +62,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -99,10 +99,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -127,12 +127,12 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         //DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         //DragSource dragSource = new DragSource();
-        new DragSource().createDefaultDragGestureRecognizer((Component)this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener)this);
+        new DragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(targetIndex>=0) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (targetIndex >= 0) {
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(LINE_COLOR);
             g2.fill(targetLine);
             g2.dispose();
@@ -145,32 +145,32 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         int lineHeight = 2;
         int modelSize  = getRowCount();
         targetIndex = -1;
-        for(int i=0;i<modelSize;i++) {
-            testArea.setRect(0, cellHeight*i-cellHeight/2, lineWidht, cellHeight);
-            if(testArea.contains(p)) {
+        for (int i = 0; i < modelSize; i++) {
+            testArea.setRect(0, cellHeight * i - cellHeight / 2, lineWidht, cellHeight);
+            if (testArea.contains(p)) {
                 targetIndex = i;
-                targetLine.setRect(0, i*cellHeight, lineWidht, lineHeight);
+                targetLine.setRect(0, i * cellHeight, lineWidht, lineHeight);
                 break;
             }
         }
-        if(targetIndex<0) {
+        if (targetIndex < 0) {
             targetIndex = modelSize;
-            targetLine.setRect(0, targetIndex*cellHeight-lineHeight, lineWidht, lineHeight);
+            targetLine.setRect(0, targetIndex * cellHeight - lineHeight, lineWidht, lineHeight);
         }
     }
 
     // Interface: DragGestureListener
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        if(getSelectedRowCount()>1) {
+        if (getSelectedRowCount() > 1) {
             return;
         }
         draggedIndex = rowAtPoint(e.getDragOrigin());
-        if(draggedIndex<0) {
+        if (draggedIndex < 0) {
             return;
         }
-        try{
-            e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, new TableDragSourceListener());
-        }catch(InvalidDnDOperationException idoe) {
+        try {
+            e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new TableDragSourceListener());
+        } catch (InvalidDnDOperationException idoe) {
             idoe.printStackTrace();
         }
     }
@@ -194,17 +194,17 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             repaint();
         }
         @Override public void dragEnter(DropTargetDragEvent e) {
-            if(isDragAcceptable(e)) {
+            if (isDragAcceptable(e)) {
                 e.acceptDrag(e.getDropAction());
-            }else{
+            } else {
                 e.rejectDrag();
             }
         }
         @Override public void dragOver(final DropTargetDragEvent e) {
-            if(isDragAcceptable(e)) {
+            if (isDragAcceptable(e)) {
                 e.acceptDrag(e.getDropAction());
                 setCursor(DragSource.DefaultMoveDrop);
-            }else{
+            } else {
                 e.rejectDrag();
                 setCursor(DragSource.DefaultMoveNoDrop);
                 return;
@@ -213,34 +213,34 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             repaint();
         }
         @Override public void dropActionChanged(DropTargetDragEvent e) {
-            // if(isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
+            // if (isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
             // else e.rejectDrag();
         }
         @Override public void drop(DropTargetDropEvent e) {
 //             Transferable t = e.getTransferable();
 //             DataFlavor[] f = t.getTransferDataFlavors();
 //             Component c = null;
-//             try{
+//             try {
 //                 c = (Component) t.getTransferData(f[0]);
-//             }catch(UnsupportedFlavorException ex) {
+//             } catch (UnsupportedFlavorException ex) {
 //                 e.dropComplete(false);
-//             }catch(IOException ie) {
+//             } catch (IOException ie) {
 //                 e.dropComplete(false);
 //             }
-//             if(c!=null && c instanceof JTable) {
-//                 JTable table = (JTable)c;
-//                 DefaultTableModel model = (DefaultTableModel)table.getModel();
-            DefaultTableModel model = (DefaultTableModel)getModel();
-            if(isDropAcceptable(e)) {
-                if(targetIndex==draggedIndex) {
-                    setRowSelectionInterval(targetIndex,targetIndex);
-                }else{
-                    int tg = targetIndex<draggedIndex ? targetIndex : targetIndex-1;
-                    model.moveRow(draggedIndex,draggedIndex,tg);
-                    setRowSelectionInterval(tg,tg);
+//             if (c != null && c instanceof JTable) {
+//                 JTable table = (JTable) c;
+//                 DefaultTableModel model = (DefaultTableModel) table.getModel();
+            DefaultTableModel model = (DefaultTableModel) getModel();
+            if (isDropAcceptable(e)) {
+                if (targetIndex == draggedIndex) {
+                    setRowSelectionInterval(targetIndex, targetIndex);
+                } else {
+                    int tg = targetIndex < draggedIndex ? targetIndex : targetIndex - 1;
+                    model.moveRow(draggedIndex, draggedIndex, tg);
+                    setRowSelectionInterval(tg, tg);
                 }
                 e.dropComplete(true);
-            }else{
+            } else {
                 e.dropComplete(false);
             }
             e.dropComplete(false);

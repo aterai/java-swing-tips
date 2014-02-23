@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JLabel label2 = new JLabel() {
         @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
             int info = infoflags;
-            if(!isEnabled()) {
+            if (!isEnabled()) {
                 info &= ~FRAMEBITS;
             }
             return super.imageUpdate(img, info, x, y, w, h);
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 
         JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
+                JCheckBox c = (JCheckBox) e.getSource();
                 label1.setEnabled(c.isSelected());
                 label2.setEnabled(c.isSelected());
                 label3.setEnabled(c.isSelected());
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         p.add(label3);
         add(check, BorderLayout.NORTH);
         add(p);
-        //setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+        //setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         setPreferredSize(new Dimension(320, 240));
     }
     private static Icon makeDisabledIcon(ImageIcon icon) {
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

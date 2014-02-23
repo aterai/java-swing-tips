@@ -14,20 +14,20 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         BufferedImage bi = null;
-        try{
+        try {
             bi = ImageIO.read(getClass().getResource("16x16.png"));
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);
         }
-        texture = new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
+        texture = new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
 
         add(new JLabel("@title@"));
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

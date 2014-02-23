@@ -29,11 +29,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                if(r2.isSelected()) {
+                if (r2.isSelected()) {
                     sp.setResizeWeight(1.0);
-                }else if(r1.isSelected()) {
+                } else if (r1.isSelected()) {
                     sp.setResizeWeight(0.5);
-                }else{
+                } else {
                     sp.setResizeWeight(0.0);
                 }
             }
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
         p.add(new JLabel("JSplitPane#setResizeWeight: "));
-        for(JRadioButton r: Arrays.asList(r0, r1, r2)) {
+        for (JRadioButton r: Arrays.asList(r0, r1, r2)) {
             r.addActionListener(al);
             bg.add(r);
             p.add(r);
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

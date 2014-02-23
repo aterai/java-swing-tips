@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return column==1?Integer.class:String.class;
+            return column == 1 ? Integer.class : String.class;
         }
         @Override public boolean isCellEditable(int row, int column) {
             return false;
@@ -26,12 +26,12 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         table.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                JTable t = (JTable)e.getComponent();
-                if(e.getClickCount()==2) {
+                JTable t = (JTable) e.getComponent();
+                if (e.getClickCount() == 2) {
                     TableModel m = t.getModel();
                     Point pt = e.getPoint();
                     int i = t.rowAtPoint(pt);
-                    if(i>=0) {
+                    if (i >= 0) {
                         int row = t.convertRowIndexToModel(i);
                         String s = String.format("%s (%s)", m.getValueAt(row, 0), m.getValueAt(row, 1));
                         JOptionPane.showMessageDialog(t, s, "title", JOptionPane.INFORMATION_MESSAGE);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         });
-        //DefaultCellEditor ce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
+        //DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
         //ce.setClickCountToStart(Integer.MAX_VALUE);
 
         table.setAutoCreateRowSorter(true);
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", 0, ""});
@@ -62,14 +62,14 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -99,10 +99,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

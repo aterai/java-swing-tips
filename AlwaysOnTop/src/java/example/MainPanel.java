@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JCheckBox checkbox = new JCheckBox(new AbstractAction("Always On Top") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
+                JCheckBox c = (JCheckBox) e.getSource();
                 frame.setAlwaysOnTop(c.isSelected());
             }
         });
@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

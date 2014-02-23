@@ -9,19 +9,19 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final Set<Integer> disableIndexSet = new HashSet<>();
-    private final JTextField field = new JTextField("1,2,5");
+    private final JTextField field = new JTextField("1, 2, 5");
     private final JList list = makeList(disableIndexSet);
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
 
         initDisableIndex(disableIndexSet);
         ActionMap am = list.getActionMap();
         am.put("selectNextRow", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent ae) {
                 int index = list.getSelectedIndex();
-                for(int i = index+1;i<list.getModel().getSize();i++) {
-                    if(!disableIndexSet.contains(i)) {
+                for (int i = index + 1; i< list.getModel().getSize(); i++) {
+                    if (!disableIndexSet.contains(i)) {
                         list.setSelectedIndex(i);
                         break;
                     }
@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
         am.put("selectPreviousRow", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent ae) {
                 int index = list.getSelectedIndex();
-                for(int i = index-1;i>=0;i--) {
-                    if(!disableIndexSet.contains(i)) {
+                for (int i = index - 1; i >= 0; i--) {
+                    if (!disableIndexSet.contains(i)) {
                         list.setSelectedIndex(i);
                         break;
                     }
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
 
         add(new JScrollPane(list));
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -71,11 +71,11 @@ public final class MainPanel extends JPanel {
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
-                if(disableIndexSet.contains(index)) {
-                    c = super.getListCellRendererComponent(list,value,index,false,false);
+                if (disableIndexSet.contains(index)) {
+                    c = super.getListCellRendererComponent(list, value, index, false, false);
                     c.setEnabled(false);
-                }else{
-                    c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                } else {
+                    c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 }
                 return c;
             }
@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
 
 //         list.setSelectionModel(new DefaultListSelectionModel() {
 //             @Override public boolean isSelectedIndex(int index) {
-//                 if(disableIndexSet.contains(index)) { return false; }
+//                 if (disableIndexSet.contains(index)) { return false; }
 //                 return super.isSelectedIndex(index);
 //             }
 //         });
@@ -94,13 +94,13 @@ public final class MainPanel extends JPanel {
     private void initDisableIndex(Set<Integer> set) {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         set.clear();
-        try{
-            while(st.hasMoreTokens()) {
+        try {
+            while (st.hasMoreTokens()) {
                 set.add(Integer.valueOf(st.nextToken().trim()));
             }
-        }catch(NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(),
                                           "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -113,10 +113,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

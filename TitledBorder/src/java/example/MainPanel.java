@@ -17,14 +17,14 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         verticalOrientationChoices.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     initTitleBorder();
                 }
             }
         });
         justificationChoices.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     initTitleBorder();
                 }
             }
@@ -46,13 +46,13 @@ public final class MainPanel extends JPanel {
         c.gridy   = 1; p2.add(justificationChoices, c);
 
         add(p2, BorderLayout.NORTH); add(panel);
-        setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+        setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setPreferredSize(new Dimension(320, 240));
     }
     private void initTitleBorder() {
-        VerticalOrientation vo = (VerticalOrientation)verticalOrientationChoices.getSelectedItem();
+        VerticalOrientation vo = (VerticalOrientation) verticalOrientationChoices.getSelectedItem();
         border.setTitlePosition(vo.mode);
-        Justification jc = (Justification)justificationChoices.getSelectedItem();
+        Justification jc = (Justification) justificationChoices.getSelectedItem();
         border.setTitleJustification(jc.mode);
         panel.repaint();
     }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

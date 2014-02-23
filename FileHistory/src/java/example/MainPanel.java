@@ -22,12 +22,12 @@ public final class MainPanel extends JPanel {
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
         JMenuBar menuBar = BAR_FACTORY.createMenubar();
-        //if(menuBar!=null)
+        //if (menuBar != null)
         menupanel.add(menuBar, BorderLayout.NORTH);
         initHistory();
 
         JToolBar toolBar = BAR_FACTORY.createToolbar();
-        if(toolBar!=null) {
+        if (toolBar != null) {
             menupanel.add(toolBar, BorderLayout.SOUTH);
         }
         add(menupanel, BorderLayout.NORTH);
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
 
     private void initHistory() {
         JMenu fm = BAR_FACTORY.getMenu("file");
-        if(fileHistory==null) {
+        if (fileHistory == null) {
             fileHistory = new JMenu("最近使ったファイル(F)");
             fileHistory.setMnemonic('F');
             JMenuItem exit = BAR_FACTORY.getMenuItem("exit");
@@ -45,17 +45,17 @@ public final class MainPanel extends JPanel {
             fm.add(fileHistory);
             fm.addSeparator();
             fm.add(exit);
-        }else{
+        } else {
             fileHistory.removeAll();
         }
-        if(fh.size()<=0) {
+        if (fh.size()<=0) {
             noFile.setEnabled(false);
             fileHistory.add(noFile);
-        }else{
+        } else {
             fm.remove(noFile);
-            for(int i=0;i<fh.size();i++) {
+            for (int i = 0; i < fh.size(); i++) {
                 String name = fh.get(i);
-                String num  = Integer.toString(i+1);
+                String num  = Integer.toString(i + 1);
                 JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
                 mi.setText(num + ": "+ name);
                 //byte[] bt = num.getBytes();
@@ -68,12 +68,12 @@ public final class MainPanel extends JPanel {
         fileHistory.removeAll();
         fh.remove(str);
         fh.add(0, str);
-        if(fh.size()>MAXHISTORY) {
-            fh.remove(fh.size()-1);
+        if (fh.size() > MAXHISTORY) {
+            fh.remove(fh.size() - 1);
         }
-        for(int i=0;i<fh.size();i++) {
+        for (int i = 0; i < fh.size(); i++) {
             String name = fh.get(i);
-            String num  = Integer.toString(i+1);
+            String num  = Integer.toString(i + 1);
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
             mi.setText(num + ": "+ name);
@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
             Object[] obj = {"本来はファイルを開いたりする。\n",
                 "このサンプルではなにもせずに\n",
                 "履歴の先頭にファイルを移動する。"};
-            JComponent c = (JComponent)e.getSource();
+            JComponent c = (JComponent) e.getSource();
             JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
             updateHistory(fileName);
         }
@@ -143,15 +143,15 @@ public final class MainPanel extends JPanel {
             //File file = null;
             //JFileChooser fileChooser = new JFileChooser();
             //int retvalue = fileChooser.showOpenDialog(this);
-            //if(retvalue==JFileChooser.APPROVE_OPTION) {
+            //if (retvalue == JFileChooser.APPROVE_OPTION) {
             //    file = fileChooser.getSelectedFile();
             //}
             Object[] obj = {"本来はJFileChooserなどでファイルを選択する。\n",
                 "このサンプルではなにもせずに\n",
                 "適当なファイル名を生成して開いたふりをする。"};
-            JComponent c = (JComponent)e.getSource();
+            JComponent c = (JComponent) e.getSource();
             JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
-            String fileName = "C:/tmp/dummy.jpg."+count+"~";
+            String fileName = "C:/tmp/dummy.jpg." + count + "~";
             updateHistory(fileName);
             count++;
         }
@@ -165,10 +165,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -196,8 +196,8 @@ class ExitAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         //exitActionPerformed();
         //saveLocation(prefs);
-        Window w = SwingUtilities.getWindowAncestor((Component)e.getSource());
-        if(w!=null) {
+        Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
+        if (w != null) {
             w.dispose();
         }
         //System.exit(0);
@@ -222,7 +222,7 @@ class VersionAction extends AbstractAction {
         super("version");
     }
     @Override public void actionPerformed(ActionEvent e) {
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent) e.getSource();
         Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
         JOptionPane.showMessageDialog(c.getRootPane(), obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
     }

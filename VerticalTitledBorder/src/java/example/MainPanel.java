@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         add(p1);
         add(p2);
         add(p3);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -62,9 +62,9 @@ class VerticalTitledBorder extends TitledBorder {
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
         String title = getTitle();
-        if(title == null || title.isEmpty() || border == null) {
+        if (title == null || title.isEmpty() || border == null) {
             super.paintBorder(c, g, x, y, width, height);
-        }else{
+        } else {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
@@ -77,19 +77,19 @@ class VerticalTitledBorder extends TitledBorder {
 
             int labelH = size.height;
             int labelW = height - insets.top - insets.bottom; //TEST: - (edge * 8);
-            if(labelW > size.width) {
+            if (labelW > size.width) {
                 labelW = size.width;
             }
 
-            int ileft = edge + insets.left/2 - labelH/2;
-            if(ileft < edge) {
+            int ileft = edge + insets.left / 2 - labelH / 2;
+            if (ileft < edge) {
                 borderX -= ileft;
                 borderW += ileft;
             }
             border.paintBorder(c, g, borderX, borderY, borderW, borderH);
 
-            Graphics2D g2 = (Graphics2D)g.create();
-            g2.translate(0, (height+labelW)/2);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(0, (height + labelW)/2);
             g2.rotate(Math.toRadians(-90));
             //or: g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
             label.setSize(labelW, labelH);
@@ -101,11 +101,11 @@ class VerticalTitledBorder extends TitledBorder {
         Border border = getBorder();
         Insets ins = getBorderInsets(border, c, insets);
         String title = getTitle();
-        if(title != null && !title.isEmpty()) {
+        if (title != null && !title.isEmpty()) {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
-            if(ins.left < size.height) {
+            if (ins.left < size.height) {
                 ins.left = size.height - edge;
             }
             ins.top += edge + TEXT_SPACING;
@@ -119,11 +119,11 @@ class VerticalTitledBorder extends TitledBorder {
     //Copied from TitledBorder
     private Color getColor(Component c) {
         Color color = getTitleColor();
-        if(color != null) {
+        if (color != null) {
             return color;
         }
         color = UIManager.getColor("TitledBorder.titleColor");
-        if(color != null) {
+        if (color != null) {
             return color;
         }
         return c == null ? null : c.getForeground();
@@ -139,12 +139,12 @@ class VerticalTitledBorder extends TitledBorder {
     }
     private static Insets getBorderInsets(Border border, Component c, Insets i) {
         Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
-        if(border == null) {
+        if (border == null) {
             ins.set(0, 0, 0, 0);
-        }else if(border instanceof AbstractBorder) {
-            AbstractBorder ab = (AbstractBorder)border;
+        } else if (border instanceof AbstractBorder) {
+            AbstractBorder ab = (AbstractBorder) border;
             ins = ab.getBorderInsets(c, i);
-        }else{
+        } else {
             ins = border.getBorderInsets(c);
         }
         return ins;

@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setText("aaaaaaaaa\nbbbbbbbbbbbbbb\n\n\n\n\nccccccccccccc");
-        textArea.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
+        textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -27,10 +27,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -117,7 +117,7 @@ class LineNumberView extends JComponent {
         int end   = getLineAtPoint(base + clip.height);
         int y     = start * fontHeight;
         int rmg   = getBorder().getBorderInsets(this).right;
-        for(int i=start;i<=end;i++) {
+        for (int i = start; i <= end; i++) {
             String text = String.valueOf(i + 1);
             int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
             y += fontAscent;

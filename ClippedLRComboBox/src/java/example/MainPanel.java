@@ -31,10 +31,10 @@ public final class MainPanel extends JPanel {
         box.add(rightTextField);
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
-                    //JComboBox c = (JComboBox)e.getSource();
-                    //LRItem item = (LRItem)c.getSelectedItem();
-                    LRItem item = (LRItem)e.getItem();
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    //JComboBox c = (JComboBox) e.getSource();
+                    //LRItem item = (LRItem) c.getSelectedItem();
+                    LRItem item = (LRItem) e.getItem();
                     leftTextField.setText(item.getLeftText());
                     rightTextField.setText(item.getRightText());
                 }
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         model.addElement(new LRItem("cccccccc", "fffffff"));
 
         JComboBox<LRItem> combo = new JComboBox<>(model);
-        if(hasMultiColumn) {
+        if (hasMultiColumn) {
             combo.setRenderer(new MultiColumnCellRenderer(80));
         }
         return combo;
@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -88,10 +88,10 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer<LRItem>
     private final JLabel rightLabel;
     public MultiColumnCellRenderer(int rightWidth) {
         super(new BorderLayout());
-        this.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        this.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         leftLabel.setOpaque(false);
-        leftLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
+        leftLabel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 
         final Dimension dim = new Dimension(rightWidth, 0);
         rightLabel = new JLabel() {
@@ -100,7 +100,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer<LRItem>
             }
         };
         rightLabel.setOpaque(false);
-        rightLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
+        rightLabel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
         rightLabel.setForeground(Color.GRAY);
         rightLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
@@ -114,12 +114,12 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer<LRItem>
         leftLabel.setFont(list.getFont());
         rightLabel.setFont(list.getFont());
 
-        if(index<0) {
+        if (index < 0) {
             leftLabel.setForeground(list.getForeground());
             this.setOpaque(false);
-        }else{
-            leftLabel.setForeground(isSelected?list.getSelectionForeground():list.getForeground());
-            this.setBackground(isSelected?list.getSelectionBackground():list.getBackground());
+        } else {
+            leftLabel.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
+            this.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
             this.setOpaque(true);
         }
         return this;

@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();
-        for(int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
             String s = i + LF;
             buf.append(s);
         }
@@ -23,15 +23,15 @@ public final class MainPanel extends JPanel {
         spinner.setEditor(new JSpinner.NumberEditor(spinner, "#####0"));
         spinner.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JSpinner s = (JSpinner)e.getSource();
-                scrollPane.getVerticalScrollBar().setUnitIncrement((Integer)s.getValue());
+                JSpinner s = (JSpinner) e.getSource();
+                scrollPane.getVerticalScrollBar().setUnitIncrement((Integer) s.getValue());
             }
         });
         Box box = Box.createHorizontalBox();
         box.add(new JLabel("Unit Increment:"));
         box.add(Box.createHorizontalStrut(2));
         box.add(spinner);
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         add(scrollPane);
         setPreferredSize(new Dimension(320, 200));
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
                 UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
                 JFileChooser fileChooser = new JFileChooser();
                 int retvalue = fileChooser.showOpenDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
                 UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
                 JFileChooser fileChooser = new JFileChooser();
                 int retvalue = fileChooser.showOpenDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
@@ -44,11 +44,11 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

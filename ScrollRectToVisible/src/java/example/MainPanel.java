@@ -56,13 +56,13 @@ public final class MainPanel extends JPanel {
                 int index = listModel.getSize()-1;
                 list.ensureIndexIsVisible(index);
                 //Rectangle cellBounds = list.getCellBounds(index, index);
-                //if(cellBounds != null) {
+                //if (cellBounds != null) {
                 //    list.scrollRectToVisible(cellBounds);
                 //}
 
                 //JTree
-                DefaultTreeModel treeModel = (DefaultTreeModel)tree.getModel();
-                DefaultMutableTreeNode parent   = (DefaultMutableTreeNode)treeModel.getRoot();
+                DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+                DefaultMutableTreeNode parent   = (DefaultMutableTreeNode) treeModel.getRoot();
                 DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(date);
                 treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
                 /* //tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
@@ -77,14 +77,14 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void updateUI() {
-        if(hierarchyListener != null) {
+        if (hierarchyListener != null) {
             removeHierarchyListener(hierarchyListener);
         }
         super.updateUI();
         hierarchyListener = new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 Component c = e.getComponent();
-                if(timer!=null && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
+                if (timer != null && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
                     System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
                     timer.stop();
                 }
@@ -100,10 +100,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

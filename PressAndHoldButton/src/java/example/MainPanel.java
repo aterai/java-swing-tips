@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -72,8 +72,8 @@ class PressAndHoldButton extends JToggleButton {
     public PressAndHoldButton(Icon icon, List<MenuContext> iconList) {
         super();
         //this.iconList = iconList;
-        pop.setLayout(new GridLayout(0,3));
-        for(MenuContext m: iconList) {
+        pop.setLayout(new GridLayout(0, 3));
+        for (MenuContext m: iconList) {
             AbstractButton b = new JRadioButton();
             b.setBorder(BorderFactory.createEmptyBorder());
             //b.setAction(m.action);
@@ -99,14 +99,14 @@ class PressAndHoldButton extends JToggleButton {
         setAction(handler);
         addMouseListener(handler);
         setFocusable(false);
-        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4+ARROW_ICON.getIconWidth()));
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension dim = getSize();
         Insets ins = getInsets();
-        int x = dim.width-ins.right;
-        int y = ins.top+(dim.height-ins.top-ins.bottom-ARROW_ICON.getIconHeight())/2;
+        int x = dim.width - ins.right;
+        int y = ins.top + (dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
         ARROW_ICON.paintIcon(this, g, x, y);
     }
 }
@@ -132,7 +132,7 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
         autoRepeatTimer = new Timer(1000, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("InitialDelay(1000)");
-                if(arrowButton!=null && arrowButton.getModel().isPressed() && autoRepeatTimer.isRunning()) {
+                if (arrowButton != null && arrowButton.getModel().isPressed() && autoRepeatTimer.isRunning()) {
                     autoRepeatTimer.stop();
                     pop.show(arrowButton, 0, arrowButton.getHeight());
                     pop.requestFocusInWindow();
@@ -144,17 +144,17 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                if(arrowButton!=null) {
+                if (arrowButton != null) {
                     arrowButton.setSelected(false);
                 }
             }
         });
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(autoRepeatTimer.isRunning()) {
+        if (autoRepeatTimer.isRunning()) {
             System.out.println("actionPerformed");
-            //System.out.println("    "+bg.getSelection().getActionCommand());
-            if(arrowButton!=null) {
+            //System.out.println("    " + bg.getSelection().getActionCommand());
+            if (arrowButton != null) {
                 arrowButton.setSelected(false);
             }
             autoRepeatTimer.stop();
@@ -163,8 +163,8 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
     @Override public void mousePressed(MouseEvent e) {
         System.out.println("mousePressed");
         Component c = e.getComponent();
-        if(SwingUtilities.isLeftMouseButton(e) && c.isEnabled()) {
-            arrowButton = (AbstractButton)c;
+        if (SwingUtilities.isLeftMouseButton(e) && c.isEnabled()) {
+            arrowButton = (AbstractButton) c;
             autoRepeatTimer.start();
         }
     }
@@ -172,7 +172,7 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
         autoRepeatTimer.stop();
     }
     @Override public void mouseExited(MouseEvent e) {
-        if(autoRepeatTimer.isRunning()) {
+        if (autoRepeatTimer.isRunning()) {
             autoRepeatTimer.stop();
         }
     }
@@ -182,7 +182,7 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
 
 class MenuArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.BLACK);
         g2.translate(x, y);
         g2.drawLine(2, 3, 6, 3);
@@ -201,7 +201,7 @@ class DummyIcon implements Icon {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(color);
         g2.translate(x, y);
         g2.fillOval(4, 4, 16, 16);
@@ -222,7 +222,7 @@ class DummyIcon2 extends DummyIcon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         super.paintIcon(c, g, x, y);
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.BLACK);
         g2.translate(x, y);
         g2.drawOval(4, 4, 16, 16);

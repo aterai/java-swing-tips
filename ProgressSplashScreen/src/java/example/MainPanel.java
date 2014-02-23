@@ -9,9 +9,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        try{
+        try {
             Thread.sleep(3000); //dummy task
-        }catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         add(new JScrollPane(new JTree()));
@@ -19,15 +19,15 @@ public final class MainPanel extends JPanel {
     }
 
     public static void main(String[] args) {
-        System.out.println("main start / EDT: "+EventQueue.isDispatchThread());
+        System.out.println("main start / EDT: " + EventQueue.isDispatchThread());
         createAndShowGUI();
         System.out.println("main end");
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         final JFrame frame = new JFrame("@title@");
@@ -46,15 +46,15 @@ public final class MainPanel extends JPanel {
                 splashScreen.setVisible(true);
             }
         });
-        SwingWorker<Void,Void> worker = new Task() {
+        SwingWorker<Void, Void> worker = new Task() {
             @Override public void done() {
                 splashScreen.dispose();
             }
         };
         worker.addPropertyChangeListener(new PropertyChangeListener() {
             @Override public void propertyChange(PropertyChangeEvent e) {
-                if("progress".equals(e.getPropertyName())) {
-                    progress.setValue((Integer)e.getNewValue());
+                if ("progress".equals(e.getPropertyName())) {
+                    progress.setValue((Integer) e.getNewValue());
                 }
             }
         });
@@ -72,14 +72,14 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class Task extends SwingWorker<Void,Void> {
+class Task extends SwingWorker<Void, Void> {
     @Override public Void doInBackground() {
         int current = 0;
         int lengthOfTask = 120;
-        while(current<lengthOfTask && !isCancelled()) {
-            try{
+        while (current<lengthOfTask && !isCancelled()) {
+            try {
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 ie.printStackTrace();
                 return null;
             }

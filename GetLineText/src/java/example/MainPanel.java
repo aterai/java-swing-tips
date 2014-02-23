@@ -18,13 +18,15 @@ public final class MainPanel extends JPanel {
         StringBuilder sb = new StringBuilder();
         String dummy   = "aaaaaaaaaaaaa\n";
         String comment = "#comment\n";
-        for(int i=0;i<200;i++) {
+        for (int i = 0; i < 200; i++) {
             sb.append(dummy);
-            if(i%16==0) { sb.append(comment); }
+            if (i % 16 == 0) {
+                sb.append(comment);
+            }
         }
         textArea.setText(sb.toString());
         scroll.setRowHeaderView(new LineNumberView(textArea));
-        textArea.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
+        textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 
         JButton button = new JButton(new AbstractAction("count commented lines: startsWith(\"#\")") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -32,29 +34,29 @@ public final class MainPanel extends JPanel {
                     @Override public void run() {
                         int count = 0;
                         StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
-                        while(st.hasMoreTokens()) {
-                            if(st.nextToken().startsWith("#")) {
+                        while (st.hasMoreTokens()) {
+                            if (st.nextToken().startsWith("#")) {
                                 count++;
                             }
                         }
 
 //                         //String#split >>>>
-//                         for(String line: textArea.getText().split("\\n")) {
-//                             if(line.startsWith("#")) {
+//                         for (String line: textArea.getText().split("\\n")) {
+//                             if (line.startsWith("#")) {
 //                                 count++;
 //                             }
 //                         }
 //                         //<<<< String#split
 
 //                         //LineNumberReader >>>>
-//                         try(LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
+//                         try (LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
 //                             String line = null;
-//                             while((line = lnr.readLine()) != null) {
-//                                 if(line.startsWith("#")) {
+//                             while ((line = lnr.readLine()) != null) {
+//                                 if (line.startsWith("#")) {
 //                                     count++;
 //                                 }
 //                             }
-//                         }catch(IOException ioe) {
+//                         } catch (IOException ioe) {
 //                             ioe.printStackTrace();
 //                         }
 //                         //<<<< LineNumberReader
@@ -62,19 +64,19 @@ public final class MainPanel extends JPanel {
 //                         //ElementCount >>>>
 //                         Document doc = textArea.getDocument();
 //                         Element root = doc.getDefaultRootElement();
-//                         try{
-//                             for(int i=0;i<root.getElementCount();i++) {
+//                         try {
+//                             for (int i = 0; i < root.getElementCount(); i++) {
 //                                 Element elem = root.getElement(i);
 //                                 String line = doc.getText(elem.getStartOffset(), elem.getEndOffset()-elem.getStartOffset());
-//                                 if(line.startsWith("#")) {
+//                                 if (line.startsWith("#")) {
 //                                     count++;
 //                                 }
 //                             }
-//                         }catch(BadLocationException ble) {
+//                         } catch (BadLocationException ble) {
 //                             ble.printStackTrace();
 //                         }
 //                         //<<<< ElementCount
-                        JOptionPane.showMessageDialog(scroll, "commented lines: "+count, "title", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(scroll, "commented lines: " + count, "title", JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
             }
@@ -93,10 +95,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -180,7 +182,7 @@ class LineNumberView extends JComponent {
         int end   = getLineAtPoint(base + clip.height);
         int y     = start * fontHeight;
         int rmg   = getBorder().getBorderInsets(this).right;
-        for(int i=start;i<=end;i++) {
+        for (int i = start; i <= end; i++) {
             String text = String.valueOf(i + 1);
             int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
             y += fontAscent;

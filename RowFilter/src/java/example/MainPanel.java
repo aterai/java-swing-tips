@@ -17,12 +17,12 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:table.getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
             }
             return c;
         }
@@ -68,21 +68,21 @@ public final class MainPanel extends JPanel {
         //sorter.setRowFilter(filter1);
         check1 = new JCheckBox(new AbstractAction("!comment.isEmpty()") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                if(cb.isSelected()) {
+                JCheckBox cb = (JCheckBox) e.getSource();
+                if (cb.isSelected()) {
                     filters.add(filter1);
-                }else{
+                } else {
                     filters.remove(filter1);
                 }
                 sorter.setRowFilter(RowFilter.andFilter(filters));
             }
         });
-        check2 = new JCheckBox(new AbstractAction("idx%2==0") {
+        check2 = new JCheckBox(new AbstractAction("idx % 2 == 0") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox)e.getSource();
-                if(cb.isSelected()) {
+                JCheckBox cb = (JCheckBox) e.getSource();
+                if (cb.isSelected()) {
                     filters.add(filter2);
-                }else{
+                } else {
                     filters.remove(filter2);
                 }
                 sorter.setRowFilter(RowFilter.andFilter(filters));
@@ -123,10 +123,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -151,7 +151,7 @@ class TestModel extends DefaultTableModel {
         number++;
     }
     public Test getTest(int identifier) {
-        return new Test((String)getValueAt(identifier,1), (String)getValueAt(identifier,2));
+        return new Test((String) getValueAt(identifier, 1), (String) getValueAt(identifier, 2));
     }
     @Override public boolean isCellEditable(int row, int col) {
         return COLUMN_ARRAY[col].isEditable;
@@ -204,7 +204,7 @@ class TestCreateAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        TestModel model = (TestModel)table.getModel();
+        TestModel model = (TestModel) table.getModel();
         model.addTest(new Test("example", ""));
     }
 }
@@ -217,11 +217,11 @@ class DeleteAction extends AbstractAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         int[] selection = table.getSelectedRows();
-        if(selection.length == 0) {
+        if (selection.length == 0) {
             return;
         }
-        for(int i=selection.length-1;i>=0;i--) {
-            TestModel model = (TestModel)table.getModel();
+        for (int i=selection.length - 1; i >= 0; i--) {
+            TestModel model = (TestModel) table.getModel();
             model.removeRow(table.convertRowIndexToModel(selection[i]));
         }
     }

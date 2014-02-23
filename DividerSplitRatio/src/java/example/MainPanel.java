@@ -29,10 +29,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -51,22 +51,22 @@ class SplitPaneWrapper extends JPanel {
     private int prevState = Frame.NORMAL;
 //     private final JSplitPane splitPane = new JSplitPane() {
 //         @Override public void setDividerLocation(double proportionalLocation) {
-//             if(proportionalLocation < 0.0 || proportionalLocation > 1.0) {
+//             if (proportionalLocation < 0.0 || proportionalLocation > 1.0) {
 //                 throw new IllegalArgumentException("proportional location must " + "be between 0.0 and 1.0.");
 //             }
 //             int s = ((getOrientation() == VERTICAL_SPLIT) ? getHeight() : getWidth()) - getDividerSize();
 //             setDividerLocation((int)Math.round(s * proportionalLocation));
 //         }
 // //         @Override public void setDividerLocation(double proportionalLocation) {
-// //             if(proportionalLocation < 0.0 ||
+// //             if (proportionalLocation < 0.0 ||
 // //                 proportionalLocation > 1.0) {
 // //                 throw new IllegalArgumentException("proportional location must be between 0.0 and 1.0.");
 // //             }
-// //             if(getOrientation() == VERTICAL_SPLIT) {
-// //                 setDividerLocation((int)((double)(getHeight() - getDividerSize()) *
+// //             if (getOrientation() == VERTICAL_SPLIT) {
+// //                 setDividerLocation((int) ((double)(getHeight() - getDividerSize()) *
 // //                                          proportionalLocation));
-// //             }else{
-// //                 setDividerLocation((int)((double)(getWidth() - getDividerSize()) *
+// //             } else {
+// //                 setDividerLocation((int) ((double)(getWidth() - getDividerSize()) *
 // //                                          proportionalLocation));
 // //             }
 // //         }
@@ -100,23 +100,23 @@ class SplitPaneWrapper extends JPanel {
             : sp.getWidth()  - sp.getDividerSize();
     }
     @Override public void doLayout() {
-        if(flag) {
+        if (flag) {
             int size = getOrientedSize(splitPane);
-            final double proportionalLocation = splitPane.getDividerLocation()/(double)size;
+            final double proportionalLocation = splitPane.getDividerLocation()/(double) size;
             super.doLayout();
-            int state = ((Frame)SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
-            if(splitPane.isShowing() && state!=prevState) {
+            int state = ((Frame) SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
+            if (splitPane.isShowing() && state != prevState) {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         int s = getOrientedSize(splitPane);
-                        int iv = (int)Math.round(s * proportionalLocation);
+                        int iv = (int) Math.round(s * proportionalLocation);
                         log.append(String.format("DividerLocation: %d%n", iv));
                         splitPane.setDividerLocation(iv);
                     }
                 });
                 prevState = state;
             }
-        }else{
+        } else {
             super.doLayout();
         }
     }

@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -73,8 +73,8 @@ enum ButtonLocation {
 }
 
 class CompoundButton extends JButton {
-    protected final Color fc = new Color(100,150,255,200);
-    protected final Color ac = new Color(230,230,230);
+    protected final Color fc = new Color(100, 150, 255, 200);
+    protected final Color ac = new Color(230, 230, 230);
     protected final Color rc = Color.ORANGE;
     protected transient Shape shape;
     protected transient Shape base;
@@ -86,17 +86,17 @@ class CompoundButton extends JButton {
         this.bl = bl;
         setIcon(new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                                     RenderingHints.VALUE_ANTIALIAS_ON);
-                if(getModel().isArmed()) {
+                if (getModel().isArmed()) {
                     g2.setColor(ac);
                     g2.fill(shape);
-                }else if(isRolloverEnabled() && getModel().isRollover()) {
+                } else if (isRolloverEnabled() && getModel().isRollover()) {
                     paintFocusAndRollover(g2, rc);
-                }else if(hasFocus()) {
+                } else if (hasFocus()) {
                     paintFocusAndRollover(g2, fc);
-                }else{
+                } else {
                     g2.setColor(getBackground());
                     g2.fill(shape);
                 }
@@ -118,15 +118,15 @@ class CompoundButton extends JButton {
         return dim;
     }
     private void initShape() {
-        if(!getBounds().equals(base)) {
+        if (!getBounds().equals(base)) {
             base = getBounds();
-            float ww = getWidth() * 0.5f;
-            float xx = ww * 0.5f;
+            float ww = getWidth() * .5f;
+            float xx = ww * .5f;
             Shape inner = new Ellipse2D.Float(xx, xx, ww, ww);
-            if(ButtonLocation.CENTER==bl) {
+            if (ButtonLocation.CENTER == bl) {
                 shape = inner;
-            }else{
-                Shape outer = new Arc2D.Float(1, 1, getWidth()-2, getHeight()-2, bl.getStartDegree(), 90f, Arc2D.PIE);
+            } else {
+                Shape outer = new Arc2D.Float(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90f, Arc2D.PIE);
                 Area area = new Area(outer);
                 area.subtract(new Area(inner));
                 shape = area;
@@ -144,7 +144,7 @@ class CompoundButton extends JButton {
         super.paintComponent(g);
     }
     @Override protected void paintBorder(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getForeground());
@@ -155,6 +155,6 @@ class CompoundButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         //initShape();
-        return shape==null ? false : shape.contains(x, y);
+        return shape == null ? false : shape.contains(x, y);
     }
 }

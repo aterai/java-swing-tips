@@ -8,17 +8,17 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
 
         JTextField textField = new JTextField();
 //         textField.setCaret(new DefaultCaret() {
 //             @Override public void paint(Graphics g) {}
 //         });
-        ((DefaultCaret)textField.getCaret()).setBlinkRate(0);
+        ((DefaultCaret) textField.getCaret()).setBlinkRate(0);
 
         add(makeTitlePanel(new JTextField(), "default"));
         add(makeTitlePanel(textField, "DefaultCaret#setBlinkRate(0)"));
-        setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
+        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 200));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

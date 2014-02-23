@@ -14,12 +14,12 @@ public final class MainPanel extends JPanel {
         JComboBox<String> combo = makeComboBox();
         combo.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JComboBox source = (JComboBox)e.getComponent();
-                if(!source.hasFocus()) {
+                JComboBox source = (JComboBox) e.getComponent();
+                if (!source.hasFocus()) {
                     return;
                 }
                 int ni = source.getSelectedIndex() + e.getWheelRotation();
-                if(ni>=0 && ni<source.getItemCount()) {
+                if (ni >= 0 && ni < source.getItemCount()) {
                     source.setSelectedIndex(ni);
                 }
             }
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

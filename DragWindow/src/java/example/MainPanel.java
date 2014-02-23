@@ -19,7 +19,7 @@ class MainPanel {
 
         (new Thread() {
             @Override public void run() {
-                try{
+                try {
                     //dummy long task
                     Thread.sleep(6000);
                     EventQueue.invokeAndWait(new Runnable() {
@@ -30,7 +30,7 @@ class MainPanel {
                             splashScreen.dispose();
                         }
                     });
-                }catch(InterruptedException | InvocationTargetException e) {
+                } catch (InterruptedException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
@@ -44,7 +44,7 @@ class MainPanel {
         label.setOpaque(true);
         label.setForeground(Color.WHITE);
         label.setBackground(Color.BLUE);
-        label.setBorder(BorderFactory.createEmptyBorder(5,16+5,5,2));
+        label.setBorder(BorderFactory.createEmptyBorder(5, 16 + 5, 5, 2));
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Exit") {
@@ -119,10 +119,10 @@ class MainPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame();
@@ -141,18 +141,18 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if(window==null) {
+        if (window == null) {
             Object o = me.getSource();
-            if(o instanceof Window) {
-                window = (Window)o;
-            }else if(o instanceof JComponent) {
+            if (o instanceof Window) {
+                window = (Window) o;
+            } else if (o instanceof JComponent) {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window!=null) {
+        if (window != null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

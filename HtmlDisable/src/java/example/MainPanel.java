@@ -32,8 +32,8 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(2));
         box.add(button2);
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(20,5,20,5));
-        setPreferredSize(new Dimension(320,180));
+        setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
+        setPreferredSize(new Dimension(320, 180));
     }
 
     public static void main(String[] args) {
@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -12,13 +12,13 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton)e.getSource();
+                JButton b = (JButton) e.getSource();
                 int mnemonic = b.getMnemonic();
-                if(mnemonic<KeyEvent.VK_A) {
+                if (mnemonic<KeyEvent.VK_A) {
                     mnemonic = KeyEvent.VK_A;
-                }else if(mnemonic<KeyEvent.VK_K) {
+                } else if (mnemonic<KeyEvent.VK_K) {
                     mnemonic++;
-                }else{
+                } else {
                     mnemonic = 0;
                 }
                 b.setMnemonic(mnemonic);
@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
         button1.addPropertyChangeListener(new PropertyChangeListener() {
             @Override public void propertyChange(PropertyChangeEvent e) {
                 String prop = e.getPropertyName();
-                JButton b = (JButton)e.getSource();
-                if(AbstractButton.MNEMONIC_CHANGED_PROPERTY.equals(prop)) {
-                    String str = "Alt+"+KeyEvent.getKeyText(b.getMnemonic());
-                    b.setToolTipText("tooltip ("+str+")");
+                JButton b = (JButton) e.getSource();
+                if (AbstractButton.MNEMONIC_CHANGED_PROPERTY.equals(prop)) {
+                    String str = KeyEvent.getKeyText(b.getMnemonic());
+                    b.setToolTipText("tooltip (Alt+" + str + ")");
                 }
             }
         });
@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
 
         button1.addActionListener(al);
         button1.setMnemonic(KeyEvent.VK_E);
-        String str = "Alt+"+KeyEvent.getKeyText(button1.getMnemonic());
-        button1.setToolTipText("tooltip ("+str+")");
+        String str = KeyEvent.getKeyText(button1.getMnemonic());
+        button1.setToolTipText("tooltip (Alt+" + str + ")");
 
         button2.addActionListener(al);
         button2.setMnemonic(KeyEvent.VK_A);
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
 
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+        setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -93,24 +93,24 @@ class MnemonicToolTip extends JToolTip {
         setLayout(new BorderLayout());
         //LookAndFeel.installColorsAndFont(mnemonicLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
         mnemonicLabel.setForeground(Color.GRAY);
-        mnemonicLabel.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
+        mnemonicLabel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
         add(mnemonicLabel, BorderLayout.EAST);
     }
     @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        if(mnemonicLabel.isVisible()) {
+        if (mnemonicLabel.isVisible()) {
             d.width += mnemonicLabel.getPreferredSize().width;
         }
         return d;
     }
     @Override public void setComponent(JComponent c) {
-        if(c instanceof AbstractButton) {
-            AbstractButton b = (AbstractButton)c;
+        if (c instanceof AbstractButton) {
+            AbstractButton b = (AbstractButton) c;
             int mnemonic = b.getMnemonic();
-            if(mnemonic>0) {
+            if (mnemonic > 0) {
                 mnemonicLabel.setVisible(true);
-                mnemonicLabel.setText("Alt+"+KeyEvent.getKeyText(mnemonic));
-            }else{
+                mnemonicLabel.setText("Alt+" + KeyEvent.getKeyText(mnemonic));
+            } else {
                 mnemonicLabel.setVisible(false);
             }
         }

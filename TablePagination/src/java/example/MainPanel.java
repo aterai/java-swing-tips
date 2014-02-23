@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Year", "String", "Comment"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return (column==0) ? Integer.class : Object.class;
+            return (column == 0) ? Integer.class : Object.class;
         }
     };
     private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -31,60 +31,62 @@ public final class MainPanel extends JPanel {
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         table.setRowSorter(sorter);
 
-        for(int i=1;i<=2013;i++) {
-            model.addRow(Arrays.asList(i, "Test: "+i, (i%2==0)?"":"comment...").toArray());
+        for (int i = 1; i <= 2013; i++) {
+            model.addRow(Arrays.asList(i, "Test: " + i, (i % 2 == 0) ? "" : "comment...").toArray());
         }
         initLinkBox(100, 1);
-        box.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
     private void initLinkBox(final int itemsPerPage, final int currentPageIndex) {
-        //assert currentPageIndex>0;
+        //assert currentPageIndex > 0;
         sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-                int ti = currentPageIndex-1;
+                int ti = currentPageIndex - 1;
                 int ei = entry.getIdentifier();
-                return ti*itemsPerPage<=ei && ei<ti*itemsPerPage+itemsPerPage;
+                return ti * itemsPerPage <= ei && ei < ti * itemsPerPage + itemsPerPage;
             }
         });
 
-        int startPageIndex = currentPageIndex-LR_PAGE_SIZE;
-        if(startPageIndex<=0) { startPageIndex = 1; }
+        int startPageIndex = currentPageIndex - LR_PAGE_SIZE;
+        if (startPageIndex <= 0) {
+            startPageIndex = 1;
+        }
 
 //#if 0 //BUG
-        //int maxPageIndex = (model.getRowCount()/itemsPerPage)+1;
+        //int maxPageIndex = (model.getRowCount() / itemsPerPage) + 1;
 //#else
         /* "maxPageIndex" gives one blank page if the module of the division is not zero.
          *   pointed out by erServi
          * e.g. rowCount=100, maxPageIndex=100
          */
         int rowCount = model.getRowCount();
-        int v = rowCount%itemsPerPage==0 ? 0 : 1;
-        int maxPageIndex = rowCount/itemsPerPage + v;
+        int v = rowCount % itemsPerPage == 0 ? 0 : 1;
+        int maxPageIndex = rowCount / itemsPerPage + v;
 //#endif
-        int endPageIndex = currentPageIndex+LR_PAGE_SIZE-1;
-        if(endPageIndex>maxPageIndex) {
+        int endPageIndex = currentPageIndex + LR_PAGE_SIZE - 1;
+        if (endPageIndex > maxPageIndex) {
             endPageIndex = maxPageIndex;
         }
 
         box.removeAll();
-        if(startPageIndex>=endPageIndex) {
+        if (startPageIndex >= endPageIndex) {
             //if I only have one page, Y don't want to see pagination buttons
             //suggested by erServi
             return;
         }
 
         ButtonGroup bg = new ButtonGroup();
-        JRadioButton f = makePrevNextRadioButton(itemsPerPage, 1, "|<", currentPageIndex>1); box.add(f); bg.add(f);
-        JRadioButton p = makePrevNextRadioButton(itemsPerPage, currentPageIndex-1, "<", currentPageIndex>1); box.add(p); bg.add(p);
+        JRadioButton f = makePrevNextRadioButton(itemsPerPage, 1, "|<", currentPageIndex > 1); box.add(f); bg.add(f);
+        JRadioButton p = makePrevNextRadioButton(itemsPerPage, currentPageIndex - 1, "<", currentPageIndex > 1); box.add(p); bg.add(p);
         box.add(Box.createHorizontalGlue());
-        for(int i=startPageIndex;i<=endPageIndex;i++) {
+        for (int i = startPageIndex; i <= endPageIndex; i++) {
             JRadioButton c = makeRadioButton(itemsPerPage, currentPageIndex, i); box.add(c); bg.add(c);
         }
         box.add(Box.createHorizontalGlue());
-        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex+1, ">", currentPageIndex<maxPageIndex); box.add(n); bg.add(n);
+        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", currentPageIndex<maxPageIndex); box.add(n); bg.add(n);
         JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex<maxPageIndex); box.add(l); bg.add(l);
         box.revalidate();
         box.repaint();
@@ -93,15 +95,15 @@ public final class MainPanel extends JPanel {
         JRadioButton radio = new JRadioButton(String.valueOf(target)) {
             @Override protected void fireStateChanged() {
                 ButtonModel model = getModel();
-                if(model.isEnabled()) {
-                    if(model.isPressed() && model.isArmed()) {
+                if (model.isEnabled()) {
+                    if (model.isPressed() && model.isArmed()) {
                         setForeground(Color.GREEN);
-                    }else if(model.isSelected()) {
+                    } else if (model.isSelected()) {
                         setForeground(Color.RED);
-                    //}else if(isRolloverEnabled() && model.isRollover()) {
+                    //} else if (isRolloverEnabled() && model.isRollover()) {
                     //    setForeground(Color.BLUE);
                     }
-                }else{
+                } else {
                     setForeground(Color.GRAY);
                 }
                 super.fireStateChanged();
@@ -109,7 +111,7 @@ public final class MainPanel extends JPanel {
         };
         radio.setForeground(Color.BLUE);
         radio.setUI(LINKVIEW_RADIOBUTTON_UI);
-        if(target==current) {
+        if (target == current) {
             radio.setSelected(true);
         }
         radio.addActionListener(new ActionListener() {
@@ -139,10 +141,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -167,7 +169,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //     }
 //     @Override protected void installDefaults(AbstractButton b) {
 //         super.installDefaults(b);
-//         if(!defaults_initialized) {
+//         if (!defaults_initialized) {
 //             icon = null; //UIManager.getIcon(getPropertyPrefix() + "icon");
 //             defaults_initialized = true;
 //         }
@@ -180,7 +182,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
         return null;
     }
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        //AbstractButton b = (AbstractButton)c;
+        //AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -194,22 +196,22 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
         iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
         textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
 
-        if(c.isOpaque()) {
+        if (c.isOpaque()) {
             g.setColor(c.getBackground());
             g.fillRect(0, 0, size.width, size.height);
         }
 
         String text;
         AbstractButton b;
-        if(c instanceof AbstractButton) {
-            b = (AbstractButton)c;
+        if (c instanceof AbstractButton) {
+            b = (AbstractButton) c;
             text = SwingUtilities.layoutCompoundLabel(
                 b, fm, b.getText(), null, //altIcon != null ? altIcon : getDefaultIcon(),
                 b.getVerticalAlignment(),    b.getHorizontalAlignment(),
                 b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
                 viewRect, iconRect, textRect,
                 0); //b.getText() == null ? 0 : b.getIconTextGap());
-        }else{
+        } else {
             return;
         }
 
@@ -217,22 +219,22 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 //         // pointed out by Peter
 //         // -note: http://today.java.net/pub/a/today/2007/08/30/debugging-swing.html#changing-component-state-during-the-painting
 //         //b.setForeground(Color.BLUE);
-//         if(!model.isEnabled()) {
+//         if (!model.isEnabled()) {
 //             //b.setForeground(Color.GRAY);
-//         }else if(model.isPressed() && model.isArmed() || model.isSelected()) {
+//         } else if (model.isPressed() && model.isArmed() || model.isSelected()) {
 //             //b.setForeground(Color.BLACK);
-//         }else if(b.isRolloverEnabled() && model.isRollover()) {
+//         } else if (b.isRolloverEnabled() && model.isRollover()) {
 
         ButtonModel model = b.getModel();
         g.setColor(c.getForeground());
-        if(!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
-            g.drawLine(viewRect.x,                viewRect.y+viewRect.height,
-                       viewRect.x+viewRect.width, viewRect.y+viewRect.height);
+        if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
+            g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+                       viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
-        View v = (View)c.getClientProperty(BasicHTML.propertyKey);
-        if(v==null) {
+        View v = (View) c.getClientProperty(BasicHTML.propertyKey);
+        if (v == null) {
             paintText(g, c, textRect, text);
-        }else{
+        } else {
             v.paint(g, textRect);
         }
     }

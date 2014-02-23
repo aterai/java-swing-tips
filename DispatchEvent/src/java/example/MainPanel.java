@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final int DELAY = 10*1000; //10s
+    private static final int DELAY = 10 * 1000; //10s
     private final JLabel label = new JLabel("Not connected");
     private final JComboBox<String> combo = makeComboBox();
     private final JTextField textField  = new JTextField(20);
@@ -19,14 +19,14 @@ public final class MainPanel extends JPanel {
 //         final EventQueue eventQueue = new EventQueue() {
 //             @Override protected void dispatchEvent(AWTEvent e) {
 //                 super.dispatchEvent(e);
-//                 if(e instanceof InputEvent) {
-//                     if(timer!=null && timer.isRunning()) { timer.restart(); }
+//                 if (e instanceof InputEvent) {
+//                     if (timer != null && timer.isRunning()) { timer.restart(); }
 //                 }
 //             }
 //         };
         final AWTEventListener awtEvent = new AWTEventListener() {
             @Override public void eventDispatched(AWTEvent e) {
-                if(timer.isRunning()) {
+                if (timer.isRunning()) {
                     System.out.println("timer.restart()");
                     timer.restart();
                 }
@@ -55,22 +55,22 @@ public final class MainPanel extends JPanel {
         p.add(label);
         p.add(button, BorderLayout.EAST);
 
-        JPanel panel = new JPanel(new BorderLayout(5,5));
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createTitledBorder("Dummy"));
-        JPanel box = new JPanel(new BorderLayout(5,5));
+        JPanel box = new JPanel(new BorderLayout(5, 5));
         box.add(textField);
         box.add(combo, BorderLayout.EAST);
         panel.add(box, BorderLayout.NORTH);
         panel.add(new JScrollPane(new JTextArea()));
 
         add(p, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(panel);
         setPreferredSize(new Dimension(320, 180));
     }
     private void setTestConnected(boolean flag) {
         String str = flag ? "<font color='blue'>Connected" : "<font color='red'>Not connected";
-        label.setText("<html>Status: "+str);
+        label.setText("<html>Status: " + str);
         combo.setEnabled(flag);
         textField.setEnabled(flag);
         button.setEnabled(!flag);
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

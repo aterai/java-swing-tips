@@ -26,20 +26,20 @@ public final class MainPanel extends JPanel {
             //synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);
             controlsPreferredHeight = ps.height;
-            if(animator!=null) {
-                if(isHidden) {
-                    if(controls.getHeight()<controlsPreferredHeight) {
+            if (animator != null) {
+                if (isHidden) {
+                    if (controls.getHeight() < controlsPreferredHeight) {
                         controlsHeight += 5;
                     }
-                }else{
-                    if(controls.getHeight()>0) {
+                } else {
+                    if (controls.getHeight() > 0) {
                         controlsHeight -= 5;
                     }
                 }
-                if(controlsHeight<=0) {
+                if (controlsHeight<=0) {
                     controlsHeight = 0;
                     animator.stop();
-                }else if(controlsHeight>=controlsPreferredHeight) {
+                } else if (controlsHeight >= controlsPreferredHeight) {
                     controlsHeight = controlsPreferredHeight;
                     animator.stop();
                 }
@@ -54,12 +54,12 @@ public final class MainPanel extends JPanel {
             tree.clearSelection();
             rollOverPathLists.clear();
             searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
-            if(!rollOverPathLists.isEmpty()) {
+            if (!rollOverPathLists.isEmpty()) {
                 int nextIndex = 0;
                 int size = rollOverPathLists.size();
-                for(int i=0;i<size;i++) {
-                    if(rollOverPathLists.get(i).equals(selectedPath)) {
-                        nextIndex = i+1<size ? i+1 : 0;
+                for (int i = 0; i < size; i++) {
+                    if (rollOverPathLists.get(i).equals(selectedPath)) {
+                        nextIndex = i + 1<size ? i + 1 : 0;
                         break;
                     }
                 }
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
     };
     private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
         @Override public void actionPerformed(ActionEvent e) {
-            if(animator!=null && animator.isRunning()) {
+            if (animator != null && animator.isRunning()) {
                 return;
             }
-            isHidden = controls.getHeight()==0;
+            isHidden = controls.getHeight() == 0;
             animator = new Timer(5, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
                     controls.revalidate();
@@ -134,17 +134,17 @@ public final class MainPanel extends JPanel {
         return new DefaultTreeModel(root);
     }
     private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
-        TreeNode node = (TreeNode)path.getLastPathComponent();
-        if(node==null) {
+        TreeNode node = (TreeNode) path.getLastPathComponent();
+        if (node == null) {
             return;
         }
-        if(node.toString().startsWith(q)) {
+        if (node.toString().startsWith(q)) {
             rollOverPathLists.add(path);
             tree.expandPath(path.getParentPath());
         }
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
+            while (e.hasMoreElements()) {
                 searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
             }
         }
@@ -155,20 +155,20 @@ public final class MainPanel extends JPanel {
 //     public void traverse(JTree tree) {
 //         TreeModel model = tree.getModel();
 //         Object root;
-//         if(model != null) {
+//         if (model != null) {
 //             root = model.getRoot();
-//             walk(model,root);
-//         }else{
+//             walk(model, root);
+//         } else {
 //             System.out.println("Tree is empty.");
 //         }
 //     }
 //     protected void walk(TreeModel model, Object o) {
 //         int cc = model.getChildCount(o);
-//         for(int i=0; i < cc; i++) {
+//         for (int i=0; i < cc; i++) {
 //             DefaultMutableTreeNode child = (DefaultMutableTreeNode) model.getChild(o, i);
-//             if(model.isLeaf(child)) {
+//             if (model.isLeaf(child)) {
 //                 System.out.println(child);
-//             }else{
+//             } else {
 //                 System.out.println(child);
 //                 walk(model, child);
 //             }
@@ -183,10 +183,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

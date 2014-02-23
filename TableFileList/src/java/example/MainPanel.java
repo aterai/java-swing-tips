@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
 //                 int row  = table.rowAtPoint(pt);
 //                 int col  = table.columnAtPoint(pt);
 //                 int mcol = table.convertColumnIndexToModel(col);
-//                 if(mcol!=1 || row<0 || row>table.getRowCount()) { return; }
-//                 if(!isOnLabel(table, pt, row, col)) {
+//                 if (mcol != 1 || row < 0 || row > table.getRowCount()) { return; }
+//                 if (!isOnLabel(table, pt, row, col)) {
 //                     table.changeSelection(row, 0, false, false);
 //                     table.clearSelection();
 //                 }
@@ -108,10 +108,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -161,13 +161,13 @@ class TestRenderer extends JPanel implements TableCellRenderer {
         FontMetrics fm = table.getFontMetrics(table.getFont());
         int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
-        textLabel.setPreferredSize(new Dimension(swidth>cwidth ? cwidth : swidth, 10000)); //height:10000 is dummy
+        textLabel.setPreferredSize(new Dimension(swidth > cwidth ? cwidth : swidth, 10000)); //height: 10000 is dummy
 
-        if(isSelected) {
+        if (isSelected) {
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());
             iconLabel.setIcon(sicon);
-        }else{
+        } else {
             textLabel.setForeground(table.getForeground());
             textLabel.setBackground(table.getBackground());
             iconLabel.setIcon(nicon);
@@ -178,7 +178,7 @@ class TestRenderer extends JPanel implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -203,7 +203,7 @@ class TestRendererLabel extends JLabel {
     @Override public boolean isOpaque() {
         //Color back = getBackground();
         //Component p = getParent();
-        //if(p != null) {
+        //if (p != null) {
         //    p = p.getParent();
         //} // p should now be the JTable.
         //boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -211,8 +211,8 @@ class TestRendererLabel extends JLabel {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //String literal pool
-        //if(propertyName == "labelFor" || ((propertyName=="icon" || propertyName == "foreground") && oldValue != newValue)) {
-        if("labelFor".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
+        //if (propertyName == "labelFor" || ((propertyName == "icon" || propertyName == "foreground") && oldValue != newValue)) {
+        if ("labelFor".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
             //System.out.println(propertyName);
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
@@ -229,7 +229,7 @@ class TestRendererLabel extends JLabel {
 
 class MyLabel extends JLabel {
     private final Border dotBorder;
-    private final Border empBorder = BorderFactory.createEmptyBorder(2,2,2,2);
+    private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     private boolean focusflag;
 
     public MyLabel(Color color) {
@@ -252,13 +252,13 @@ class MyLabel extends JLabel {
         }
         @Override public boolean isBorderOpaque() { return true; }
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-            Graphics2D g2 = (Graphics2D)g.create();
-            g2.translate(x,y);
-            if(isFocusedBorder()) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            if (isFocusedBorder()) {
                 g2.setPaint(getLineColor());
                 BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
             }
-            //g2.translate(-x,-y);
+            //g2.translate(-x, -y);
             g2.dispose();
         }
     }
@@ -266,7 +266,7 @@ class MyLabel extends JLabel {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -275,10 +275,10 @@ class MyLabel extends JLabel {
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
 //      //String literal pool
-//      if(propertyName=="text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
+//      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
 //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(BasicHTML.propertyKey) != null)) {
-        if("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
-              || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey)!=null || "foreground".equals(propertyName))) {
+        if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
+              || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey) != null || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
@@ -310,9 +310,11 @@ class MyTable extends JTable {
         Point pt = e.getPoint();
         int row  = rowAtPoint(pt);
         int col  = columnAtPoint(pt);
-        if(convertColumnIndexToModel(col)!=0 || row<0 || row>getRowCount()) { return null; }
+        if (convertColumnIndexToModel(col) != 0 || row < 0 || row > getRowCount()) {
+            return null;
+        }
         Rectangle rect = getCellRect2(this, row, col);
-        if(rect.contains(pt)) {
+        if (rect.contains(pt)) {
             return getValueAt(row, col).toString();
         }
         return null;
@@ -323,7 +325,7 @@ class MyTable extends JTable {
     }
     class RubberBandingListener extends MouseAdapter {
         @Override public void mouseDragged(MouseEvent e) {
-            if(srcPoint==null) { srcPoint = e.getPoint(); }
+            if (srcPoint == null) { srcPoint = e.getPoint(); }
             Point destPoint = e.getPoint();
             polygon.reset();
             polygon.moveTo(srcPoint.x,  srcPoint.y);
@@ -333,8 +335,8 @@ class MyTable extends JTable {
             polygon.closePath();
             clearSelection();
             int col = convertColumnIndexToView(0);
-            for(int i:getIntersectedIndices(polygon)) {
-                addRowSelectionInterval(i,i);
+            for (int i:getIntersectedIndices(polygon)) {
+                addRowSelectionInterval(i, i);
                 changeSelection(i, col, true, true);
             }
             repaint();
@@ -344,13 +346,13 @@ class MyTable extends JTable {
             repaint();
         }
         @Override public void mousePressed(MouseEvent e) {
-            if(rowAtPoint(e.getPoint())<0) {
+            if (rowAtPoint(e.getPoint()) < 0) {
                 clearSelection();
                 repaint();
-            }else{
+            } else {
                 int index = rowAtPoint(e.getPoint());
                 Rectangle rect = getCellRect2(MyTable.this, index, convertColumnIndexToView(0));
-                if(!rect.contains(e.getPoint())) {
+                if (!rect.contains(e.getPoint())) {
                     clearSelection();
                     repaint();
                 }
@@ -375,10 +377,10 @@ class MyTable extends JTable {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(srcPoint==null) {
+        if (srcPoint == null) {
             return;
         }
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.setPaint(rcolor);
         g2d.draw(polygon);
         g2d.setComposite(ALPHA);
@@ -389,13 +391,13 @@ class MyTable extends JTable {
     private int[] getIntersectedIndices(Path2D path) {
         TableModel model = getModel();
         ArrayList<Integer> list = new ArrayList<Integer>(model.getRowCount());
-        for(int i=0;i<getRowCount();i++) {
-            if(path.intersects(getCellRect2(MyTable.this, i, convertColumnIndexToView(0)))) {
+        for (int i = 0; i < getRowCount(); i++) {
+            if (path.intersects(getCellRect2(MyTable.this, i, convertColumnIndexToView(0)))) {
                 list.add(i);
             }
         }
         int[] il = new int[list.size()];
-        for(int i=0;i<list.size();i++) {
+        for (int i = 0; i < list.size(); i++) {
             il[i] = list.get(i);
         }
         return il;
@@ -404,7 +406,7 @@ class MyTable extends JTable {
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
-        return r>g ? r>b ? new Color(r,0,0) : new Color(0,0,b)
-                   : g>b ? new Color(0,g,0) : new Color(0,0,b);
+        return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
+                     : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
     }
 }

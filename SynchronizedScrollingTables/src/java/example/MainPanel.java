@@ -12,14 +12,15 @@ public final class MainPanel extends JPanel {
     //@auther Nobuo Tamemasa
     private static final String ES = "";
     private final Object[][] data = new Object[][] {
-        {1,11,"A", ES, ES}, {2,22, ES,"B", ES},
-        {3,33, ES, ES,"C"}, {4, 1, ES, ES, ES},
-        {5,55, ES, ES, ES}, {6,66, ES, ES, ES}};
-    private final String[] columnNames = {"1","2","a","b","c"};
+        {1, 11, "A", ES,  ES}, {2, 22, ES, "B", ES},
+        {3, 33, ES,  ES, "C"}, {4, 1,  ES, ES,  ES},
+        {5, 55, ES,  ES,  ES}, {6, 66, ES, ES,  ES}
+    };
+    private final String[] columnNames = {"1", "2", "a", "b", "c"};
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int modelIndex) {
-            return modelIndex<2?Integer.class:Object.class;
+            return modelIndex < 2 ? Integer.class : Object.class;
         }
     };
     private final JTable table;
@@ -32,11 +33,11 @@ public final class MainPanel extends JPanel {
         leftTable.setRowSorter(table.getRowSorter());
         leftTable.setSelectionModel(table.getSelectionModel());
 
-        for(int i=model.getColumnCount()-1;i>=0;i--) {
-            if(i<2) {
+        for (int i = model.getColumnCount() - 1; i >= 0; i--) {
+            if (i < 2) {
                 table.removeColumn(table.getColumnModel().getColumn(i));
                 leftTable.getColumnModel().getColumn(i).setResizable(false);
-            }else{
+            } else {
                 leftTable.removeColumn(leftTable.getColumnModel().getColumn(i));
             }
         }
@@ -61,9 +62,9 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("add") {
             @Override public void actionPerformed(ActionEvent e) {
                 table.getRowSorter().setSortKeys(null);
-                for(int i=0;i<100;i++) {
+                for (int i = 0; i < 100; i++) {
                     model.addRow(new Object[] {
-                        i, i+1, "A"+i, "B"+i
+                        i, i + 1, "A" + i, "B" + i
                     });
                 }
             }
@@ -88,10 +89,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

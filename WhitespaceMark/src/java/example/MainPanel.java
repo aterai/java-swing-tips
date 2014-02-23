@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
         editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         editor.setEditorKit(new MyEditorKit());
-        editor.setText(ZSTEST+ZS_TAB_ZSTEST+TABTEST);
+        editor.setText(ZSTEST + ZS_TAB_ZSTEST + TABTEST);
 
         add(new JScrollPane(editor));
         setPreferredSize(new Dimension(320, 240));
@@ -30,10 +30,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -51,8 +51,8 @@ class MyEditorKit extends StyledEditorKit {
         FontMetrics fm = c.getFontMetrics(c.getFont());
         int tabLength = fm.charWidth('m') * 4;
         TabStop[] tabs = new TabStop[100];
-        for(int j=0;j<tabs.length;j++) {
-            tabs[j] = new TabStop((j+1)*tabLength);
+        for (int j = 0; j < tabs.length; j++) {
+            tabs[j] = new TabStop((j + 1) * tabLength);
         }
         TabSet tabSet = new TabSet(tabs);
         StyleConstants.setTabSet(attrs, tabSet);
@@ -63,8 +63,8 @@ class MyEditorKit extends StyledEditorKit {
     }
     @Override public Document createDefaultDocument() {
         Document d = super.createDefaultDocument();
-        if(d instanceof StyledDocument) {
-            ((StyledDocument)d).setParagraphAttributes(0, d.getLength(), attrs, false);
+        if (d instanceof StyledDocument) {
+            ((StyledDocument) d).setParagraphAttributes(0, d.getLength(), attrs, false);
         }
         return d;
     }
@@ -73,16 +73,16 @@ class MyEditorKit extends StyledEditorKit {
 class MyViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if(kind!=null) {
-            if(kind.equals(AbstractDocument.ContentElementName)) {
+        if (kind != null) {
+            if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new WhitespaceLabelView(elem);
-            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+            } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                 return new MyParagraphView(elem);
-            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+            } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
-            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+            } else if (kind.equals(StyleConstants.ComponentElementName)) {
                 return new ComponentView(elem);
-            }else if(kind.equals(StyleConstants.IconElementName)) {
+            } else if (kind.equals(StyleConstants.IconElementName)) {
                 return new IconView(elem);
             }
         }
@@ -100,19 +100,19 @@ class MyParagraphView extends ParagraphView {
         paintCustomParagraph(g, allocation);
     }
     private void paintCustomParagraph(Graphics g, Shape a) {
-        try{
+        try {
             Shape paragraph = modelToView(getEndOffset(), a, Position.Bias.Backward);
-            Rectangle r = (paragraph==null)?a.getBounds():paragraph.getBounds();
+            Rectangle r = (paragraph == null) ? a.getBounds() : paragraph.getBounds();
             int x = r.x;
             int y = r.y;
             int h = r.height;
             Color old = g.getColor();
             g.setColor(MARK_COLOR);
-            g.drawLine(x+1, y+h/2, x+1, y+h-4);
-            g.drawLine(x+2, y+h/2, x+2, y+h-5);
-            g.drawLine(x+3, y+h-6, x+3, y+h-6);
+            g.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
+            g.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
+            g.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
             g.setColor(old);
-        }catch(BadLocationException ex) {
+        } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
     }
@@ -126,33 +126,33 @@ class WhitespaceLabelView extends LabelView {
         super(elem);
     }
     @Override public void paint(Graphics g, Shape a) {
-        super.paint(g,a);
-        Graphics2D g2 = (Graphics2D)g.create();
+        super.paint(g, a);
+        Graphics2D g2 = (Graphics2D) g.create();
         Stroke stroke = g2.getStroke();
-        Rectangle alloc = a instanceof Rectangle ? (Rectangle)a : a.getBounds();
+        Rectangle alloc = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
         int spaceWidth = fontMetrics.stringWidth(IDEOGRAPHIC_SPACE);
         int sumOfTabs  = 0;
-        String text = getText(getStartOffset(),getEndOffset()).toString();
-        for(int i=0;i<text.length();i++) {
-            String s = text.substring(i,i+1);
-            int previousStringWidth = fontMetrics.stringWidth(text.substring(0,i)) + sumOfTabs;
-            int sx = alloc.x+previousStringWidth;
-            int sy = alloc.y+alloc.height-fontMetrics.getDescent();
-            if(IDEOGRAPHIC_SPACE.equals(s)) {
+        String text = getText(getStartOffset(), getEndOffset()).toString();
+        for (int i = 0; i < text.length(); i++) {
+            String s = text.substring(i, i + 1);
+            int previousStringWidth = fontMetrics.stringWidth(text.substring(0, i)) + sumOfTabs;
+            int sx = alloc.x + previousStringWidth;
+            int sy = alloc.y + alloc.height - fontMetrics.getDescent();
+            if (IDEOGRAPHIC_SPACE.equals(s)) {
                 g2.setStroke(DASHED);
                 g2.setPaint(MARK_COLOR);
-                g2.drawLine(sx+1, sy-1, sx+spaceWidth-2, sy-1);
-                g2.drawLine(sx+2,   sy, sx+spaceWidth-2, sy);
-            }else if("\t".equals(s)) {
-                int tabWidth = (int)getTabExpander().nextTabStop((float)sx, i)-sx;
+                g2.drawLine(sx + 1, sy - 1, sx + spaceWidth - 2, sy - 1);
+                g2.drawLine(sx + 2, sy,     sx + spaceWidth - 2, sy);
+            } else if ("\t".equals(s)) {
+                int tabWidth = (int) getTabExpander().nextTabStop((float) sx, i) - sx;
                 g2.setColor(MARK_COLOR);
-                g2.drawLine(sx+2, sy-0, sx+2+2, sy-0);
-                g2.drawLine(sx+2, sy-1, sx+2+1, sy-1);
-                g2.drawLine(sx+2, sy-2, sx+2+0, sy-2);
+                g2.drawLine(sx + 2, sy - 0, sx + 2 + 2, sy - 0);
+                g2.drawLine(sx + 2, sy - 1, sx + 2 + 1, sy - 1);
+                g2.drawLine(sx + 2, sy - 2, sx + 2 + 0, sy - 2);
                 g2.setStroke(DASHED);
-                g2.drawLine(sx+2, sy, sx+tabWidth-2, sy);
-                sumOfTabs+=tabWidth;
+                g2.drawLine(sx + 2, sy, sx + tabWidth - 2, sy);
+                sumOfTabs += tabWidth;
             }
             g2.setStroke(stroke);
             g2.dispose();

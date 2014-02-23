@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         //table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
         table.setRowHeight(START_HEIGHT);
-        for(int i=0;i<model.getRowCount();i++) {
+        for (int i = 0; i < model.getRowCount(); i++) {
             table.setRowHeight(i, END_HEIGHT);
         }
 
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New name", model.getRowCount(), false});
@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
                 int i = table.convertRowIndexToView(model.getRowCount()-1);
                 int h = START_HEIGHT;
                 @Override public void actionPerformed(ActionEvent e) {
-                    if(h<END_HEIGHT) {
+                    if (h<END_HEIGHT) {
                         table.setRowHeight(i, h++);
-                    }else{
-                        ((Timer)e.getSource()).stop();
+                    } else {
+                        ((Timer) e.getSource()).stop();
                     }
                 }
             })).start();
@@ -74,24 +74,24 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             final int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
             (new Timer(DELAY, new ActionListener() {
                 int h = END_HEIGHT;
                 @Override public void actionPerformed(ActionEvent e) {
                     h--;
-                    if(h>START_HEIGHT) {
-                        for(int i=selection.length-1;i>=0;i--) {
+                    if (h > START_HEIGHT) {
+                        for (int i = selection.length - 1; i >= 0; i--) {
                             table.setRowHeight(selection[i], h);
                         }
-                    }else{
-                        ((Timer)e.getSource()).stop();
-                        for(int i=selection.length-1;i>=0;i--) {
+                    } else {
+                        ((Timer) e.getSource()).stop();
+                        for (int i = selection.length - 1; i >= 0; i--) {
                             model.removeRow(table.convertRowIndexToModel(selection[i]));
                         }
                     }
@@ -102,14 +102,14 @@ public final class MainPanel extends JPanel {
 
 //     public void xxx_deleteActionPerformed(ActionEvent evt) {
 //         final int[] selection = table.getSelectedRows();
-//         if(selection==null || selection.length<=0) { return; }
+//         if (selection == null || selection.length<=0) { return; }
 //         (new SwingWorker<Void, Integer>() {
 //             @Override public Void doInBackground() {
 //                 int current = END_HEIGHT;
-//                 while(current>START_HEIGHT && !isCancelled()) {
-//                     try{
+//                 while (current > START_HEIGHT && !isCancelled()) {
+//                     try {
 //                         Thread.sleep(DELAY);
-//                     }catch(InterruptedException ie) {
+//                     } catch (InterruptedException ie) {
 //                         return null;
 //                     }
 //                     publish(current--);
@@ -117,14 +117,14 @@ public final class MainPanel extends JPanel {
 //                 return null;
 //             }
 //             @Override protected void process(List<Integer> chunks) {
-//                 for(Integer height: chunks) {
-//                     for(int i=selection.length-1;i>=0;i--) {
+//                 for (Integer height: chunks) {
+//                     for (int i=selection.length - 1; i >= 0; i--) {
 //                         table.setRowHeight(selection[i], height);
 //                     }
 //                 }
 //             }
 //             @Override public void done() {
-//                 for(int i=selection.length-1;i>=0;i--) {
+//                 for (int i=selection.length - 1; i >= 0; i--) {
 //                     model.removeRow(table.convertRowIndexToModel(selection[i]));
 //                 }
 //             }
@@ -154,10 +154,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

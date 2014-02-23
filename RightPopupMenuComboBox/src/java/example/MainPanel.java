@@ -18,17 +18,17 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         initComboBox(combo01);
         int g = 5;
-        JPanel p = new JPanel(new GridLayout(2,2,g,g));
+        JPanel p = new JPanel(new GridLayout(2, 2, g, g));
         p.add(combo00); p.add(new JLabel("<- default"));
         p.add(combo01); p.add(new JLabel("<- RightPopupMenuListener"));
-        setBorder(BorderFactory.createEmptyBorder(g,g,g,g));
+        setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private void initComboBox(JComboBox combo) {
-        if(combo.getUI() instanceof WindowsComboBoxUI) {
+        if (combo.getUI() instanceof WindowsComboBoxUI) {
             combo.setUI(new RightPopupWindowsComboBoxUI());
-        }else{
+        } else {
             combo.setUI(new RightPopupBasicComboBoxUI());
         }
         combo.addPopupMenuListener(new RightPopupMenuListener());
@@ -51,10 +51,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -70,11 +70,11 @@ class RightPopupMenuListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                JComboBox combo = (JComboBox)e.getSource();
+                JComboBox combo = (JComboBox) e.getSource();
                 Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
                 //Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-                if(a instanceof BasicComboPopup) {
-                    BasicComboPopup pop = (BasicComboPopup)a;
+                if (a instanceof BasicComboPopup) {
+                    BasicComboPopup pop = (BasicComboPopup) a;
                     Point p = new Point(combo.getSize().width, 0);
                     SwingUtilities.convertPointToScreen(p, combo);
                     pop.setLocation(p);
@@ -115,8 +115,8 @@ class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
 class RightPopupBasicComboBoxUI extends BasicComboBoxUI {
     @Override protected JButton createArrowButton() {
         JButton button = super.createArrowButton();
-        if(button instanceof BasicArrowButton) {
-            ((BasicArrowButton)button).setDirection(SwingConstants.EAST);
+        if (button instanceof BasicArrowButton) {
+            ((BasicArrowButton) button).setDirection(SwingConstants.EAST);
         }
         return button;
     }

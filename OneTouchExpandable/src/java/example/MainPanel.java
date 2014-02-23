@@ -33,32 +33,32 @@ public final class MainPanel extends JPanel {
         //splitPane.setDividerLocation(0);
 
         BasicService bs;
-        try{
-            bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
-        }catch(UnavailableServiceException ex) {
+        try {
+            bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+        } catch (UnavailableServiceException ex) {
             bs = null;
         }
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
-        if(bs == null) {
-            if(splitPane.getUI() instanceof BasicSplitPaneUI) {
+        if (bs == null) {
+            if (splitPane.getUI() instanceof BasicSplitPaneUI) {
                 AccessController.doPrivileged(new PrivilegedAction<Void>() {
                     @Override public Void run() {
-                        try{
+                        try {
                             //splitPane.setDividerLocation(1);
                             splitPane.setDividerLocation(0);
                             Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
                                 "setKeepHidden", new Class<?>[] {Boolean.TYPE}); //boolean.class });
                             setKeepHidden.setAccessible(true);
                             setKeepHidden.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
-                        }catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
                         return null;
                     }
                 });
             }
-        }else{
+        } else {
 //             s1.setMinimumSize(new Dimension(0, 0));
 //             s2.setMinimumSize(new Dimension(0, 0));
 //             EventQueue.invokeLater(new Runnable() {
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
 //             });
             EventQueue.invokeLater(new Runnable() {
                 @Override public void run() {
-                    Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
-                    for(Component c: divider.getComponents()) {
-                        if(c instanceof JButton) {
-                            ((JButton)c).doClick();
+                    Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+                    for (Component c: divider.getComponents()) {
+                        if (c instanceof JButton) {
+                            ((JButton) c).doClick();
                             break;
                         }
                     }
@@ -90,10 +90,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

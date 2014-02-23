@@ -22,10 +22,10 @@ public final class MainPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame f1 = new JFrame("@title@");
@@ -53,7 +53,7 @@ public final class MainPanel {
         p1.setTransferHandler(th);
         p2.setTransferHandler(th);
 
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(new JScrollPane(new JTextArea()));
         p.add(p2);
         f1.getContentPane().add(p1);
@@ -81,10 +81,10 @@ class DragPanel extends JPanel {
 
 class Handler extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-        DragPanel p = (DragPanel)e.getComponent();
+        DragPanel p = (DragPanel) e.getComponent();
         Component c = SwingUtilities.getDeepestComponentAt(p, e.getX(), e.getY());
-        if(c instanceof JLabel) {
-            p.draggingLabel = (JLabel)c;
+        if (c instanceof JLabel) {
+            p.draggingLabel = (JLabel) c;
             p.getTransferHandler().exportAsDrag(p, e, TransferHandler.MOVE);
         }
     }
@@ -115,26 +115,26 @@ class LabelTransferHandler extends TransferHandler {
         });
     }
     @Override protected Transferable createTransferable(JComponent c) {
-        System.out.println("createTransferable"+localObjectFlavor.getMimeType());
-        DragPanel p = (DragPanel)c;
+        System.out.println("createTransferable" + localObjectFlavor.getMimeType());
+        DragPanel p = (DragPanel) c;
         JLabel l = p.draggingLabel;
         DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
         String text = l.getText();
-        if(text==null) {
+        if (text == null) {
             return dh;
         }
         return new LabelTransferable(dh, localObjectFlavor, text);
     }
     @Override public boolean canImport(TransferSupport support) {
-        if(!support.isDrop()) {
+        if (!support.isDrop()) {
             return false;
         }
         return true;
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
-        if(c instanceof DragPanel) {
-            DragPanel p = (DragPanel)c;
+        if (c instanceof DragPanel) {
+            DragPanel p = (DragPanel) c;
             JLabel l = p.draggingLabel;
             label.setIcon(l.getIcon());
             label.setText(l.getText());
@@ -148,27 +148,27 @@ class LabelTransferHandler extends TransferHandler {
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
-        if(!canImport(support)) {
+        if (!canImport(support)) {
             return false;
         }
-        DragPanel target = (DragPanel)support.getComponent();
-        try{
-            DragPanel src = (DragPanel)support.getTransferable().getTransferData(localObjectFlavor);
+        DragPanel target = (DragPanel) support.getComponent();
+        try {
+            DragPanel src = (DragPanel) support.getTransferable().getTransferData(localObjectFlavor);
             JLabel l = new JLabel();
             l.setIcon(src.draggingLabel.getIcon());
             l.setText(src.draggingLabel.getText());
             target.add(l);
             target.revalidate();
             return true;
-        }catch(UnsupportedFlavorException | IOException ex) {
+        } catch (UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
         }
         return false;
     }
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         System.out.println("exportDone");
-        DragPanel src = (DragPanel)c;
-        if(action == TransferHandler.MOVE) {
+        DragPanel src = (DragPanel) c;
+        if (action == TransferHandler.MOVE) {
             src.remove(src.draggingLabel);
             src.revalidate();
             src.repaint();
@@ -189,39 +189,39 @@ class LabelTransferable implements Transferable {
     public LabelTransferable(DataHandler dh, DataFlavor localObjectFlavor, String text) {
         this.dh = dh;
         this.localObjectFlavor = localObjectFlavor;
-        this.ss = new StringSelection(text+"\n");
+        this.ss = new StringSelection(text + "\n");
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
         List<DataFlavor> list = new ArrayList<>();
-        for(DataFlavor f:ss.getTransferDataFlavors()) {
+        for (DataFlavor f:ss.getTransferDataFlavors()) {
             list.add(f);
         }
-        for(DataFlavor f:dh.getTransferDataFlavors()) {
+        for (DataFlavor f:dh.getTransferDataFlavors()) {
             list.add(f);
         }
         return list.toArray(dh.getTransferDataFlavors());
     }
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-        for(DataFlavor f: getTransferDataFlavors()) {
-            if(flavor.equals(f)) {
+        for (DataFlavor f: getTransferDataFlavors()) {
+            if (flavor.equals(f)) {
                 return true;
             }
         }
         return false;
     }
     @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-         if(flavor.equals(localObjectFlavor)) {
+         if (flavor.equals(localObjectFlavor)) {
              return dh.getTransferData(flavor);
-         }else{
+         } else {
              return ss.getTransferData(flavor);
          }
-//                 if(flavor.equals(DataFlavor.stringFlavor)) {
+//                 if (flavor.equals(DataFlavor.stringFlavor)) {
 //                     return ss.getTransferData(flavor);
-//                 }else if(flavor.equals(DataFlavor.plainTextFlavor)) {
+//                 } else if (flavor.equals(DataFlavor.plainTextFlavor)) {
 //                     return ss.getTransferData(flavor);
-//                 }else if(flavor.equals(localObjectFlavor)) {
+//                 } else if (flavor.equals(localObjectFlavor)) {
 //                     return dh.getTransferData(flavor);
-//                 }else{
+//                 } else {
 //                     throw new UnsupportedFlavorException(flavor);
 //                 }
      }

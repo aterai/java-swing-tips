@@ -13,19 +13,17 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());
-        JEditorPane editor = new JEditorPane("text/html", "<html><a href='"+MYSITE+"'>"+MYSITE+"</a>");
+        JEditorPane editor = new JEditorPane("text/html", "<html><a href='" + MYSITE + "'>" + MYSITE + "</a>");
         editor.setOpaque(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor.setEditable(false);
         editor.addHyperlinkListener(new HyperlinkListener() {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED && Desktop.isDesktopSupported()) {
-                    try{
+                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED && Desktop.isDesktopSupported()) {
+                    try {
                         Desktop.getDesktop().browse(new URI(MYSITE));
-                    }catch(IOException ioe) {
-                        ioe.printStackTrace();
-                    }catch(URISyntaxException use) {
-                        use.printStackTrace();
+                    } catch (IOException | URISyntaxException ex) {
+                        ex.printStackTrace();
                     }
                     textArea.setText(e.toString());
                 }
@@ -46,10 +44,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -61,15 +61,15 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
     private final JLabel top = new JLabel();
     private final JLabel bottom = new JLabel();
     public TwoRowsCellRenderer() {
-        super(new GridLayout(2,1,0,0));
+        super(new GridLayout(2, 1, 0, 0));
         add(top);
         add(bottom);
     }
-    @Override public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected,boolean hasFocus,int row,int column) {
-        if(isSelected) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
@@ -80,11 +80,11 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
         String second   = "";
         int columnWidth = table.getColumnModel().getColumn(column).getWidth();
         int textWidth   = 0;
-        for(int i=0; i<text.length(); i++) {
+        for (int i=0; i < text.length(); i++) {
             textWidth += fm.charWidth(text.charAt(i));
-            if(textWidth>columnWidth) {
-                first  = text.substring(0,i-1);
-                second = text.substring(i-1);
+            if (textWidth > columnWidth) {
+                first  = text.substring(0, i - 1);
+                second = text.substring(i - 1);
                 break;
             }
         }

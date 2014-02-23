@@ -19,11 +19,11 @@ public final class MainPanel extends JPanel {
         pane.setContentType("text/html");
         pane.setEditable(false);
         String bullet;
-        if(isDefault) {
+        if (isDefault) {
             bullet = "Default";
-        }else{
+        } else {
             bullet = "bullet.png";
-            HTMLEditorKit htmlEditorKit = (HTMLEditorKit)pane.getEditorKit();
+            HTMLEditorKit htmlEditorKit = (HTMLEditorKit) pane.getEditorKit();
             StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
             String u = getClass().getResource(bullet).toString();
             styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;}", u));
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
             //styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
             //styleSheet.addRule("ul li:before{content: "\u00BB";}");
         }
-        pane.setText("<html><h2>H2</h2>text<ul><li>list: "+bullet+"</li></ul></html>");
+        pane.setText("<html><h2>H2</h2>text<ul><li>list: " + bullet + "</li></ul></html>");
         return pane;
     }
     public static void main(String[] args) {
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

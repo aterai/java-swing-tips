@@ -27,11 +27,11 @@ public final class BarFactory {
 
     public BarFactory(String restr) {
         ResourceBundle res;
-        try{
+        try {
             res = ResourceBundle.getBundle(restr, new UTF8ResourceBundleControl());
-        }catch(MissingResourceException mre) {
+        } catch (MissingResourceException mre) {
             mre.printStackTrace();
-            System.err.println("resources/"+restr+" not found");
+            System.err.println("resources/" + restr + " not found");
             res = null;
             //System.exit(1);
         }
@@ -47,7 +47,7 @@ public final class BarFactory {
 
     public void initActions(Action[] actlist) {
         //Action[] actlist = getActions();
-        for(int i=0; i<actlist.length;i++) {
+        for (int i = 0; i < actlist.length; i++) {
             Action a = actlist[i];
             commands.put(a.getValue(Action.NAME), a);
         }
@@ -55,7 +55,7 @@ public final class BarFactory {
 
     public URL getResource(String key) {
         String name = getResourceString(key);
-        if(name == null) {
+        if (name == null) {
             return null;
         }
         return getClass().getResource(name);
@@ -63,9 +63,9 @@ public final class BarFactory {
 
     private String getResourceString(String nm) {
         String str;
-        try{
+        try {
             str = resources.getString(nm);
-        }catch(MissingResourceException mre) {
+        } catch (MissingResourceException mre) {
             str = null;
         }
         return str;
@@ -74,11 +74,11 @@ public final class BarFactory {
     private String[] tokenize(String input) {
         List<String> v = new ArrayList<>();
         StringTokenizer t = new StringTokenizer(input);
-        while(t.hasMoreTokens()) {
+        while (t.hasMoreTokens()) {
             v.add(t.nextToken());
         }
         String[] cmd = new String[v.size()];
-        for(int i=0;i<cmd.length;i++) {
+        for (int i = 0; i < cmd.length; i++) {
             cmd[i] = v.get(i);
         }
         return cmd;
@@ -86,19 +86,19 @@ public final class BarFactory {
 
     public JToolBar createToolbar() {
         String tmp = getResourceString("toolbar");
-        if(tmp==null) {
+        if (tmp == null) {
             return null;
         }
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
         toolbar.setFloatable(false);
         String[] toolKeys = tokenize(tmp);
-        for(int i = 0; i < toolKeys.length; i++) {
-            if(toolKeys[i].equals("-")) {
+        for (int i = 0; i < toolKeys.length; i++) {
+            if (toolKeys[i].equals("-")) {
                 toolbar.add(Box.createHorizontalStrut(5));
                 toolbar.addSeparator();
                 toolbar.add(Box.createHorizontalStrut(5));
-            }else{
+            } else {
                 toolbar.add(createTool(toolKeys[i]));
             }
         }
@@ -113,31 +113,31 @@ public final class BarFactory {
     private JButton createToolbarButton(String key) {
         URL url = getResource(key + IMAGE_SUFFIX);
         JButton b;
-        if(url==null) {
+        if (url == null) {
             b = new JButton(getResourceString(key + LABEL_SUFFIX));
-        }else{
+        } else {
             b = new JButton(new ImageIcon(url));
         }
         b.setAlignmentY(0.5f);
         b.setFocusPainted(false);
         b.setFocusable(false);
         b.setRequestFocusEnabled(false);
-        b.setMargin(new Insets(1,1,1,1));
+        b.setMargin(new Insets(1, 1, 1, 1));
 
         String astr = getResourceString(key + ACTION_SUFFIX);
-        if(astr == null) {
+        if (astr == null) {
             astr = key;
         }
         Action a = getAction(astr);
-        if(a == null) {
+        if (a == null) {
             b.setEnabled(false);
-        }else{
+        } else {
             b.setActionCommand(astr);
             b.addActionListener(a);
         }
 
         String tip = getResourceString(key + TIP_SUFFIX);
-        //if(tip != null) {
+        //if (tip != null) {
         b.setToolTipText(tip);
         //}
 
@@ -150,15 +150,15 @@ public final class BarFactory {
 //    }
 
     public JButton getToolButton(String key) {
-        return (JButton)toolButtons.get(key);
+        return (JButton) toolButtons.get(key);
     }
 
     public JMenuBar createMenubar() {
         JMenuBar mb = new JMenuBar();
         String[] menuKeys = tokenize(getResourceString("menubar"));
-        for(int i=0;i<menuKeys.length;i++) {
+        for (int i = 0; i < menuKeys.length; i++) {
             JMenu m = createMenu(menuKeys[i]);
-            //if(m != null)
+            //if (m != null)
             mb.add(m);
         }
         return mb;
@@ -169,20 +169,20 @@ public final class BarFactory {
         String mitext = getResourceString(key + LABEL_SUFFIX);
         JMenu menu = new JMenu(mitext);
         String mn = getResourceString(key + MNE_SUFFIX);
-        if(mn!=null) {
+        if (mn != null) {
             String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
-            if(tmp.length()==1) {
-                if(mitext.indexOf(tmp)<0) {
-                    menu.setText(mitext+" ("+tmp+")");
+            if (tmp.length() == 1) {
+                if (mitext.indexOf(tmp) < 0) {
+                    menu.setText(String.format("%s (%s)", mitext, tmp));
                 }
                 //byte[] bt = tmp.getBytes();
                 menu.setMnemonic((int) tmp.charAt(0));
             }
         }
-        for(int i=0;i<itemKeys.length;i++) {
-            if(itemKeys[i].equals("-")) {
+        for (int i = 0; i < itemKeys.length; i++) {
+            if (itemKeys[i].equals("-")) {
                 menu.addSeparator();
-            }else{
+            } else {
                 JMenuItem mi = createMenuItem(itemKeys[i]);
                 menu.add(mi);
             }
@@ -194,33 +194,33 @@ public final class BarFactory {
     private JMenuItem createMenuItem(String cmd) {
         String mitext = getResourceString(cmd + LABEL_SUFFIX);
         JMenuItem mi = new JMenuItem(mitext);
-        URL url = getResource(cmd+IMAGE_SUFFIX);
-        if(url!=null) {
+        URL url = getResource(cmd + IMAGE_SUFFIX);
+        if (url != null) {
             mi.setHorizontalTextPosition(JButton.RIGHT);
             mi.setIcon(new ImageIcon(url));
         }
         String astr = getResourceString(cmd + ACTION_SUFFIX);
-        if(astr == null) {
+        if (astr == null) {
             astr = cmd;
         }
         String mn = getResourceString(cmd + MNE_SUFFIX);
         //System.out.println(mn);
-        if(mn!=null) {
+        if (mn != null) {
             String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
-            if(tmp.length()==1) {
-                if(mitext.indexOf(tmp)<0) {
-                    mi.setText(mitext+" ("+tmp+")");
+            if (tmp.length() == 1) {
+                if (mitext.indexOf(tmp) < 0) {
+                    mi.setText(String.format("%s (%s)", mitext, tmp));
                 }
                 //byte[] bt = tmp.getBytes();
                 mi.setMnemonic((int) tmp.charAt(0));
-                //System.out.println(cmd+", "+tmp);
+                //System.out.println(cmd + ", " + tmp);
             }
         }
         mi.setActionCommand(astr);
         Action a = getAction(astr);
-        if(a==null) {
+        if (a == null) {
             mi.setEnabled(false);
-        }else{
+        } else {
             mi.addActionListener(a);
             //a.addPropertyChangeListener(createActionChangeListener(mi));
             mi.setEnabled(a.isEnabled());
@@ -258,29 +258,29 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control {
     }
     @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
          ResourceBundle bundle = null;
-         if("properties".equals(format)) {
+         if ("properties".equals(format)) {
              String bundleName = toBundleName(
                  Objects.requireNonNull(baseName, "baseName must not be null"),
                  Objects.requireNonNull(locale,   "locale must not be null"));
              String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
              InputStream stream = null;
              ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
-             if(reload) {
+             if (reload) {
                  URL url = cloader.getResource(resourceName);
-                 if(url != null) {
+                 if (url != null) {
                      URLConnection connection = url.openConnection();
-                     if(connection != null) {
+                     if (connection != null) {
                          connection.setUseCaches(false);
                          stream = connection.getInputStream();
                      }
                  }
-             }else{
+             } else {
                  stream = cloader.getResourceAsStream(resourceName);
              }
-             if(stream != null) {
+             if (stream != null) {
                  //BufferedInputStream bis = new BufferedInputStream(stream);
-                 try(Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
-                     bundle = new PropertyResourceBundle(r);
+                 try (Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+                      bundle = new PropertyResourceBundle(r);
                  }
              }
          }

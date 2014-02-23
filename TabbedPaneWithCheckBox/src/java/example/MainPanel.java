@@ -15,17 +15,17 @@ public final class MainPanel extends JPanel {
         cbox.setFocusPainted(false);
         cbox.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent me) {
-                JCheckBox cb = (JCheckBox)me.getComponent();
+                JCheckBox cb = (JCheckBox) me.getComponent();
                 cb.setSelected(!cb.isSelected());
             }
         });
         cbox.addItemListener(new ItemListener() {
             private final JComponent panel = new JLabel("Preferences");
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
                     tab.addTab("Preferences", panel);
                     tab.setSelectedComponent(panel);
-                }else if(e.getStateChange()==ItemEvent.DESELECTED) {
+                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                     tab.remove(panel);
                 }
             }
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -77,20 +77,20 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
         int xx = tab.getSize().width - size.width;
         Rectangle lastTab = tab.getUI().getTabBounds(tab, tab.getTabCount()-1);
         int tabEnd = lastTab.x + lastTab.width;
-        if(xx<tabEnd) {
+        if (xx<tabEnd) {
             xx = tabEnd;
         }
         rect = new Rectangle(xx, -2, size.width, size.height);
         SwingUtilities.paintComponent(g, cbox, dummy, rect);
     }
     @Override public Insets getBorderInsets(Component c) {
-        return new Insets(0,0,0,0);
+        return new Insets(0, 0, 0, 0);
     }
     @Override public boolean isBorderOpaque() {
         return true;
     }
     private void dispatchEvent(MouseEvent me) {
-        if(rect==null || !rect.contains(me.getX(), me.getY())) {
+        if (rect == null || !rect.contains(me.getX(), me.getY())) {
             return;
         }
         cbox.setBounds(rect);

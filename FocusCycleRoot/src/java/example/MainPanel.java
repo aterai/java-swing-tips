@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(1,2,5,5));
+        super(new GridLayout(1, 2, 5, 5));
 
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("left"));
@@ -57,10 +57,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

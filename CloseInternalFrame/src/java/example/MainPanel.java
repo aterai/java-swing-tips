@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final Action closeSelectedFrameAction1 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             JInternalFrame f = desktop.getSelectedFrame();
-            if(f!=null) {
+            if (f != null) {
                 desktop.getDesktopManager().closeFrame(f);
             }
         }
@@ -20,19 +20,19 @@ public final class MainPanel extends JPanel {
     private final Action closeSelectedFrameAction2 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             JInternalFrame f = desktop.getSelectedFrame();
-            if(f!=null) {
+            if (f != null) {
                 f.doDefaultCloseAction();
             }
         }
     };
     private final Action closeSelectedFrameAction3 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            try{
+            try {
                 JInternalFrame f = desktop.getSelectedFrame();
-                if(f!=null) {
+                if (f != null) {
                     f.setClosed(true);
                 }
-            }catch(java.beans.PropertyVetoException ex) {
+            } catch (java.beans.PropertyVetoException ex) {
                 ex.printStackTrace();
             }
         }
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     private final Action disposeSelectedFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             JInternalFrame f = desktop.getSelectedFrame();
-            if(f!=null) {
+            if (f != null) {
                 f.dispose();
             }
         }
@@ -50,12 +50,12 @@ public final class MainPanel extends JPanel {
             MyInternalFrame frame = new MyInternalFrame();
             //frame.setVisible(true);
             desktop.add(frame);
-            try{
+            try {
                 frame.setSelected(true);
-                if(openFrameCount%2==0) {
+                if (openFrameCount % 2 == 0) {
                     frame.setIcon(true);
                 }
-            }catch(java.beans.PropertyVetoException ex) {
+            } catch (java.beans.PropertyVetoException ex) {
                 ex.printStackTrace();
             }
         }
@@ -108,26 +108,26 @@ public final class MainPanel extends JPanel {
             super(String.format("Document #%s", ++openFrameCount), true, true, true, true);
             row += 1;
             setSize(240, 120);
-            setLocation(20*row+20*col, 20*row);
+            setLocation(20 * row + 20 * col, 20 * row);
             setVisible(true);
             EventQueue.invokeLater(new Runnable() {
                 @Override public void run() {
                     Rectangle drect = desktop.getBounds();
-                    drect.setLocation(0,0);
-                    if(!drect.contains(getBounds())) {
+                    drect.setLocation(0, 0);
+                    if (!drect.contains(getBounds())) {
                         row = 0;
                         col += 1;
                     }
                 }
             });
             addInternalFrameListener(new MyInternalFrameListener());
-            //JComponent c = (JComponent)frame.getContentPane();
+            //JComponent c = (JComponent) frame.getContentPane();
             //ActionMap am = frame.getActionMap();
             //Action a = new AbstractAction() {
             //    @Override public void actionPerformed(ActionEvent e) {
-            //        try{
+            //        try {
             //            frame.setClosed(true);
-            //        }catch(java.beans.PropertyVetoException ex) {
+            //        } catch (java.beans.PropertyVetoException ex) {
             //            ex.printStackTrace();
             //        }
             //    }
@@ -146,10 +146,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     private transient ProgressMonitor monitor;
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         textArea.setEditable(false);
 
         Box box = Box.createHorizontalBox();
@@ -28,25 +28,25 @@ public final class MainPanel extends JPanel {
 
         add(new JScrollPane(textArea));
         add(box, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
     private static Charset getCharset(URLConnection urlConnection, String defaultEncoding) {
         Charset cs = Charset.forName(defaultEncoding);
         String encoding = urlConnection.getContentEncoding();
-        if(encoding == null) {
+        if (encoding == null) {
             String contentType = urlConnection.getContentType();
-            for(String value: contentType.split(";")) {
+            for (String value: contentType.split(";")) {
                 value = value.trim();
-                if(value.toLowerCase(Locale.ENGLISH).startsWith("charset=")) {
+                if (value.toLowerCase(Locale.ENGLISH).startsWith("charset=")) {
                     encoding = value.substring("charset=".length());
                 }
             }
-            if(encoding != null) {
+            if (encoding != null) {
                 cs = Charset.forName(encoding);
             }
-        }else{
+        } else {
             cs = Charset.forName(encoding);
         }
         System.out.println(cs);
@@ -63,11 +63,11 @@ public final class MainPanel extends JPanel {
         System.out.println(path);
 
         URLConnection urlConnection = null;
-        try{
+        try {
             urlConnection = new URL(path).openConnection();
             System.out.println(urlConnection.getContentEncoding());
             System.out.println(urlConnection.getContentType());
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return urlConnection;
@@ -82,14 +82,14 @@ public final class MainPanel extends JPanel {
             textArea.setText("");
 
             URLConnection urlConnection = getURLConnection();
-            if(urlConnection==null) {
+            if (urlConnection == null) {
                 return;
             }
             Charset cs = getCharset(urlConnection, "EUC-JP");
             int length = urlConnection.getContentLength();
-            JFrame frame = (JFrame)SwingUtilities.getWindowAncestor((Component)e.getSource());
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 
-            try{
+            try {
                 InputStream is = urlConnection.getInputStream();
                 ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(frame, "Loading", is);
                 monitor = pmis.getProgressMonitor();
@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
 
                 worker = new MonitorTask(pmis, cs, length);
                 worker.execute();
-            }catch(IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
@@ -112,8 +112,8 @@ public final class MainPanel extends JPanel {
             super(pmis, cs, length);
         }
         @Override protected void process(List<Chunk> chunks) {
-            for(Chunk c: chunks) {
-                textArea.append(c.line+"\n");
+            for (Chunk c: chunks) {
+                textArea.append(c.line + "\n");
                 monitor.setNote(c.note);
             }
             textArea.setCaretPosition(textArea.getDocument().getLength());
@@ -121,12 +121,12 @@ public final class MainPanel extends JPanel {
         @Override public void done() {
             runButton.setEnabled(true);
             String text = null;
-            try{
-                if(pmis!=null) {
+            try {
+                if (pmis != null) {
                     pmis.close();
                 }
                 text = isCancelled() ? "Cancelled" : get();
-            }catch(IOException | InterruptedException | ExecutionException ex) {
+            } catch (IOException | InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();
                 text = "Exception";
             }
@@ -142,10 +142,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -179,32 +179,32 @@ class Task extends SwingWorker<String, Chunk> {
     }
     @Override public String doInBackground() {
         String ret = "Done";
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(pmis, cs));
-            Scanner scanner = new Scanner(reader)) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(pmis, cs));
+             Scanner scanner = new Scanner(reader)) {
             int i = 0;
             int size = 0;
-            while(scanner.hasNextLine()) {
-                if(i%50==0) { //Wait
+            while (scanner.hasNextLine()) {
+                if (i % 50 == 0) { //Wait
                     Thread.sleep(10);
                 }
                 i++;
                 String line = scanner.nextLine();
                 size += line.getBytes(cs).length + 1; //+1: \n
-                String note = String.format("%03d%% - %d/%d%n", 100*size/length, size, length);
+                String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
                 //System.out.println(note);
                 publish(new Chunk(line, note));
             }
-//             while((line = reader.readLine()) != null) {
-//                 if(i%50==0) { //Wait
+//             while ((line = reader.readLine()) != null) {
+//                 if (i % 50 == 0) { //Wait
 //                     Thread.sleep(10);
 //                 }
 //                 i++;
 //                 size += line.getBytes(cs).length + 1; //+1: \n
-//                 String note = String.format("%03d%% - %d/%d%n", 100*size/length, size, length);
+//                 String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
 //                 //System.out.println(note);
 //                 publish(new Chunk(line, note));
 //             }
-        }catch(InterruptedException | IOException ex) {
+        } catch (InterruptedException | IOException ex) {
             System.out.println("Exception");
             ret = "Exception";
             cancel(true);

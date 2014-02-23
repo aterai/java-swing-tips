@@ -9,16 +9,16 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super((LayoutManager)null);
+        super((LayoutManager) null);
         add(makeLabelIcon());
         setPreferredSize(new Dimension(320, 240));
     }
     private JLabel makeLabelIcon() {
         ImageIcon i = new ImageIcon(getClass().getResource("duke.gif"));
         Dimension d = new Dimension(i.getIconWidth(), i.getIconHeight());
-        final BufferedImage image = new BufferedImage(d.width,d.height,BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.createGraphics();
-        i.paintIcon(null,g,0,0);
+        i.paintIcon(null, g, 0, 0);
         g.dispose();
         final JLabel icon = new JLabel(i) {
             @Override public boolean contains(int x, int y) {
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         };
         icon.addMouseListener(l);
         icon.addMouseMotionListener(l);
-        icon.setBounds(new Rectangle(22,22,d.width,d.height));
+        icon.setBounds(new Rectangle(22, 22, d.width, d.height));
         return icon;
     }
     public static void main(String[] args) {
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

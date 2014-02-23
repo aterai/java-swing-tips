@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        DefaultCellEditor ce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
-        JTextComponent textField = (JTextComponent)ce.getComponent();
+        DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
+        JTextComponent textField = (JTextComponent) ce.getComponent();
         JPopupMenu popup = new TextComponentPopupMenu(textField);
         textField.setComponentPopupMenu(popup);
         add(new JScrollPane(table));
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -69,8 +69,8 @@ class TextComponentPopupMenu extends JPopupMenu {
         final Action pasteAction  = new DefaultEditorKit.PasteAction();
         final Action deleteAction = new AbstractAction("delete") {
             @Override public void actionPerformed(ActionEvent e) {
-                JPopupMenu pop = (JPopupMenu)e.getSource();
-                ((JTextComponent)pop.getInvoker()).replaceSelection(null);
+                JPopupMenu pop = (JPopupMenu) e.getSource();
+                ((JTextComponent) pop.getInvoker()).replaceSelection(null);
             }
         };
         tc.addAncestorListener(new AncestorListener() {
@@ -103,9 +103,9 @@ class TextComponentPopupMenu extends JPopupMenu {
                 redoAction.setEnabled(true);
             }
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                JPopupMenu pop = (JPopupMenu)e.getSource();
-                JTextComponent field = (JTextComponent)pop.getInvoker();
-                boolean flg = field.getSelectedText()!=null;
+                JPopupMenu pop = (JPopupMenu) e.getSource();
+                JTextComponent field = (JTextComponent) pop.getInvoker();
+                boolean flg = field.getSelectedText() != null;
                 cutAction.setEnabled(flg);
                 copyAction.setEnabled(flg);
                 deleteAction.setEnabled(flg);
@@ -123,9 +123,9 @@ class UndoAction extends AbstractAction {
         this.undoManager = manager;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        try{
+        try {
             undoManager.undo();
-        }catch(CannotUndoException cue) {
+        } catch (CannotUndoException cue) {
             Toolkit.getDefaultToolkit().beep();
         }
     }
@@ -138,9 +138,9 @@ class RedoAction extends AbstractAction {
         this.undoManager = manager;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        try{
+        try {
             undoManager.redo();
-        }catch(CannotRedoException cre) {
+        } catch (CannotRedoException cre) {
             Toolkit.getDefaultToolkit().beep();
         }
     }

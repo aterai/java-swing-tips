@@ -14,11 +14,11 @@ public final class MainPanel extends JPanel {
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
         JMenuBar menuBar = BAR_FACTORY.createMenubar();
-        //if(menuBar!=null)
+        //if (menuBar != null)
         menupanel.add(menuBar, BorderLayout.NORTH);
 
         JToolBar toolBar = BAR_FACTORY.createToolbar();
-        if(toolBar!=null) {
+        if (toolBar != null) {
             menupanel.add(toolBar, BorderLayout.SOUTH);
         }
         add(menupanel, BorderLayout.NORTH);
@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -93,8 +93,8 @@ class ExitAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         //exitActionPerformed();
         //saveLocation(prefs);
-        Window w = SwingUtilities.getWindowAncestor((Component)e.getSource());
-        if(w!=null) {
+        Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
+        if (w != null) {
             w.dispose();
         }
         //System.exit(0);
@@ -119,7 +119,7 @@ class VersionAction extends AbstractAction {
         super("version");
     }
     @Override public void actionPerformed(ActionEvent e) {
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent) e.getSource();
         Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
         JOptionPane.showMessageDialog(c.getRootPane(), obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
     }

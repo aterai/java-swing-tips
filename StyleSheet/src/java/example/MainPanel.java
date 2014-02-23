@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         styleSheet.addRule(".highlight {color: red; background: green}");
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         htmlEditorKit.setStyleSheet(styleSheet);
-        //HTMLDocument htmlDocument = (HTMLDocument)htmlEditorKit.createDefaultDocument();
+        //HTMLDocument htmlDocument = (HTMLDocument) htmlEditorKit.createDefaultDocument();
         JEditorPane editor = new JEditorPane();
         editor.setEditorKit(htmlEditorKit);
         //editor.setDocument(htmlDocument);
@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

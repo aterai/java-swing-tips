@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
                 return super.canDock(c, p) ? isHorizontalDockingConstraint(c, p) : false;
             }
             private boolean isHorizontalDockingConstraint(Component c, Point p) {
-                if(!c.contains(p)) { return false; }
+                if (!c.contains(p)) { return false; }
                 int iv = (toolBar.getOrientation() == JToolBar.HORIZONTAL) ? toolBar.getSize().height : toolBar.getSize().width;
                 return p.x < c.getWidth()-iv && p.x >= iv;
             }
@@ -31,14 +31,14 @@ public final class MainPanel extends JPanel {
 
         button.setFocusable(false);
         toolbar.add(new JLabel("label"));
-        toolbar.add(Box.createRigidArea(new Dimension(5,5)));
+        toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
         toolbar.add(button);
-        toolbar.add(Box.createRigidArea(new Dimension(5,5)));
+        toolbar.add(Box.createRigidArea(new Dimension(5, 5)));
         toolbar.add(combo);
         toolbar.add(Box.createGlue());
 
-        label.setText("<html>dockable: NORTH,SOUTH<br>undockable: EAST,WEST");
-        label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        label.setText("<html>dockable: NORTH, SOUTH<br>undockable: EAST, WEST");
+        label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(toolbar, BorderLayout.NORTH);
         add(label);
         setPreferredSize(new Dimension(320, 240));
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

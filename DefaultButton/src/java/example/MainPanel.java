@@ -20,11 +20,11 @@ public final class MainPanel extends JPanel {
         add(makeRadioPane(), BorderLayout.NORTH);
         add(p);
         add(makeButtonPane(), BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320,240));
+        setPreferredSize(new Dimension(320, 240));
     }
     private Box makeButtonPane() {
         Box box = Box.createHorizontalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(0,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
         box.add(b1);
         box.add(b2);
@@ -45,12 +45,12 @@ public final class MainPanel extends JPanel {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JRootPane rootPane = box.getRootPane();
-                if(rootPane!=null) {
+                if (rootPane != null) {
                     rootPane.setDefaultButton(map.get(bg.getSelection().getActionCommand()));
                 }
             }
         };
-        for(String key:map.keySet()) {
+        for (String key:map.keySet()) {
             JRadioButton r = new JRadioButton(key);
             r.setActionCommand(key); r.addActionListener(al);
             bg.add(r); box.add(r);
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

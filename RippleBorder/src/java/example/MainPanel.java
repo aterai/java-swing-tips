@@ -18,13 +18,13 @@ public final class MainPanel extends JPanel {
         box.add(makeLabel("qwerqwerqwerqwerqwerqwerqwewretwertwetrerqwerqw"));
         box.add(makeLabel("1235436873434325"));
         box.add(Box.createVerticalGlue());
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(box));
         setPreferredSize(new Dimension(320, 240));
     }
     private JLabel makeLabel(String str) {
         JLabel label = new JLabel(str);
-        label.setBorder(new RippleBorder(label,10));
+        label.setBorder(new RippleBorder(label, 10));
         return label;
     }
 
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -76,26 +76,26 @@ class RippleBorder extends EmptyBorder {
         });
     }
     @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
-        if(!animator.isRunning()) {
+        if (!animator.isRunning()) {
             super.paintBorder(comp, g, x, y, w, h);
             return;
         }
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.WHITE);
-        float a = 1.0f/count;
-        if(.12f-a > 1.0e-2) {
-            a = 0.0f;
+        float a = 1.0f / count;
+        if (.12f - a > 1.0e-2) {
+            a = 0f;
         }
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,a));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
         Insets i = getBorderInsets();
-        int xx = i.left-(int)count;
-        int yy = i.top-(int)count;
-        int ww = i.left+i.right-(int)(count*2.0f);
-        int hh = i.top+i.bottom-(int)(count*2.0f);
-        g2.setStroke(new BasicStroke(count*1.2f));
-        g2.drawRoundRect(xx, yy, w-ww, h-hh, 10, 10);
-        if(xx<0 && animator.isRunning()) {
-            count = 1.0f;
+        int xx = i.left - (int) count;
+        int yy = i.top - (int) count;
+        int ww = i.left + i.right - (int) (count * 2f);
+        int hh = i.top + i.bottom - (int) (count * 2f);
+        g2.setStroke(new BasicStroke(count * 1.2f));
+        g2.drawRoundRect(xx, yy, w - ww, h - hh, 10, 10);
+        if (xx < 0 && animator.isRunning()) {
+            count = 1f;
             animator.stop();
         }
         g2.dispose();

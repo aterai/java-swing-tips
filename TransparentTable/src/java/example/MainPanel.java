@@ -15,13 +15,13 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private TexturePaint makeImageTexture() {
         BufferedImage bi = null;
-        try{
+        try {
             bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);
         }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
     private TableModel makeTableModel() {
         String[] columnNames = {"String", "Integer", "Boolean"};
@@ -42,11 +42,11 @@ public final class MainPanel extends JPanel {
         final JTable table = new JTable(makeTableModel()) {
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component c = super.prepareEditor(editor, row, column);
-                if(c instanceof JTextField) {
-                    JTextField tf = (JTextField)c;
+                if (c instanceof JTextField) {
+                    JTextField tf = (JTextField) c;
                     tf.setOpaque(false);
-                }else if(c instanceof JCheckBox) {
-                    JCheckBox cb = (JCheckBox)c;
+                } else if (c instanceof JCheckBox) {
+                    JCheckBox cb = (JCheckBox) c;
                     cb.setBackground(getSelectionBackground());
                 }
                 return c;
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
             @Override protected JViewport createViewport() {
                 return new JViewport() {
                     @Override public void paintComponent(Graphics g) {
-                        if(texture!=null) {
-                            Graphics2D g2 = (Graphics2D)g.create();
+                        if (texture != null) {
+                            Graphics2D g2 = (Graphics2D) g.create();
                             g2.setPaint(texture);
-                            g2.fillRect(0,0,getWidth(),getHeight());
+                            g2.fillRect(0, 0, getWidth(), getHeight());
                             g2.dispose();
                         }
                         super.paintComponent(g);
@@ -82,10 +82,10 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setBackground(alphaZero);
 
         add(scroll);
-        add(new JCheckBox(new AbstractAction("setBackground(new Color(255,0,0,50))") {
-            private final Color color = new Color(255,0,0,50);
+        add(new JCheckBox(new AbstractAction("setBackground(new Color(255, 0, 0, 50))") {
+            private final Color color = new Color(255, 0, 0, 50);
             @Override public void actionPerformed(ActionEvent e) {
-                table.setBackground(((JCheckBox)e.getSource()).isSelected()?color:alphaZero);
+                table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero);
             }
         }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -99,10 +99,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -122,27 +122,27 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         setBorderPainted(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if(isSelected) {
+        if (isSelected) {
             setOpaque(true);
             setForeground(table.getSelectionForeground());
             super.setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setOpaque(false);
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
-        setSelected(value != null && ((Boolean)value).booleanValue());
-        if(hasFocus) {
+        setSelected(value != null && ((Boolean) value).booleanValue());
+        if (hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        }else{
+        } else {
             setBorder(NO_FOCUS_BORDER);
         }
         return this;
     }
     @Override protected void paintComponent(Graphics g) {
-        if(!isOpaque()) {
+        if (!isOpaque()) {
             g.setColor(getBackground());
-            g.fillRect(0,0,getWidth(),getHeight());
+            g.fillRect(0, 0, getWidth(), getHeight());
         }
         super.paintComponent(g);
     }
@@ -150,7 +150,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -159,9 +159,9 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
         //String literal pool
-        //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
         boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-        if(flag && !Objects.equals(oldValue, newValue)) {
+        if (flag && !Objects.equals(oldValue, newValue)) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

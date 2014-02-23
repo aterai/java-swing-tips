@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
     }
     private static void setDummyText(JTextPane textPane, MutableAttributeSet attr) {
         textPane.setText("12341234\nasdf fASdfasf fasdf affffFS Ddfasdf\nasdf asFasdf ");
-        try{
+        try {
             StyledDocument doc = textPane.getStyledDocument();
             doc.insertString(doc.getLength(), "134500698\n", attr);
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
 //         StyledDocument doc = new DefaultStyledDocument();
@@ -63,10 +63,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -87,20 +87,20 @@ class BottomInsetEditorKit extends StyledEditorKit {
 class BottomInsetViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if(kind!=null) {
-            if(kind.equals(AbstractDocument.ContentElementName)) {
+        if (kind != null) {
+            if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
-            }else if(kind.equals(AbstractDocument.ParagraphElementName)) {
+            } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
                 return new ParagraphView(elem) {
                     @Override protected short getBottomInset() {
                         return 5;
                     }
                 };
-            }else if(kind.equals(AbstractDocument.SectionElementName)) {
+            } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
-            }else if(kind.equals(StyleConstants.ComponentElementName)) {
+            } else if (kind.equals(StyleConstants.ComponentElementName)) {
                 return new ComponentView(elem);
-            }else if(kind.equals(StyleConstants.IconElementName)) {
+            } else if (kind.equals(StyleConstants.IconElementName)) {
                 return new IconView(elem);
             }
         }

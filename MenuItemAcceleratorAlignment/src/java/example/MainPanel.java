@@ -68,9 +68,9 @@ public final class MainPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 //System.out.println(getLocale());
-                if(getUI() instanceof com.sun.java.swing.plaf.windows.WindowsMenuItemUI) {
+                if (getUI() instanceof com.sun.java.swing.plaf.windows.WindowsMenuItemUI) {
                     setUI(new RAAWindowsMenuItemUI());
-                }else{
+                } else {
                     setUI(new RAABasicMenuItemUI());
                 }
                 //XXX: setLocale(Locale.JAPAN);
@@ -91,10 +91,10 @@ public final class MainPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -111,23 +111,23 @@ public final class MainPanel {
 final class MenuItemUIHelper {
     private MenuItemUIHelper() { /* Singleton */ }
     public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc) {
-        if(lh.getIcon() != null) {
+        if (lh.getIcon() != null) {
             Icon icon;
             ButtonModel model = lh.getMenuItem().getModel();
-            if(model.isEnabled()) {
-                if(model.isPressed() && model.isArmed()) {
+            if (model.isEnabled()) {
+                if (model.isPressed() && model.isArmed()) {
                     icon = lh.getMenuItem().getPressedIcon();
-                    if(icon == null) {
+                    if (icon == null) {
                         // Use default icon
                         icon = lh.getMenuItem().getIcon();
                     }
-                }else{
+                } else {
                     icon = lh.getMenuItem().getIcon();
                 }
-            }else{
+            } else {
                 icon = lh.getMenuItem().getDisabledIcon();
             }
-            if(icon != null) {
+            if (icon != null) {
                 icon.paintIcon(lh.getMenuItem(), g, lr.getIconRect().x, lr.getIconRect().y);
                 g.setColor(holdc);
             }
@@ -135,14 +135,14 @@ final class MenuItemUIHelper {
     }
 
     public static void paintCheckIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
-        if(lh.getCheckIcon() != null) {
+        if (lh.getCheckIcon() != null) {
             ButtonModel model = lh.getMenuItem().getModel();
-            if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
+            if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
-            }else{
+            } else {
                 g.setColor(holdc);
             }
-            if(lh.useCheckAndArrow()) {
+            if (lh.useCheckAndArrow()) {
                 lh.getCheckIcon().paintIcon(lh.getMenuItem(), g, lr.getCheckRect().x, lr.getCheckRect().y);
             }
             g.setColor(holdc);
@@ -150,28 +150,28 @@ final class MenuItemUIHelper {
     }
 
     public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledForeground, Color acceleratorForeground, Color acceleratorSelectionForeground) {
-        if(!lh.getAccText().equals("")) {
+        if (!lh.getAccText().equals("")) {
             ButtonModel model = lh.getMenuItem().getModel();
             g.setFont(lh.getAccFontMetrics().getFont());
-            if(model.isEnabled()) {
+            if (model.isEnabled()) {
                 // *** paint the accText normally
-                if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
+                if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                     g.setColor(acceleratorSelectionForeground);
-                }else{
+                } else {
                     g.setColor(acceleratorForeground);
                 }
                 sun.swing.SwingUtilities2.drawString(
                     lh.getMenuItem(), g, lh.getAccText(),
                     lh.getViewRect().x + lh.getViewRect().width - lh.getMenuItem().getIconTextGap() - lr.getAccRect().width,
                     lr.getAccRect().y  + lh.getAccFontMetrics().getAscent());
-            }else{
+            } else {
                 // *** paint the accText disabled
-                if(disabledForeground == null) {
+                if (disabledForeground == null) {
                     g.setColor(lh.getMenuItem().getBackground().brighter());
                     sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
                     g.setColor(lh.getMenuItem().getBackground().darker());
                     sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x - 1, lr.getAccRect().y + lh.getFontMetrics().getAscent() - 1);
-                }else{
+                } else {
                     g.setColor(disabledForeground);
                     sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
                 }
@@ -180,19 +180,19 @@ final class MenuItemUIHelper {
     }
 
     public static void paintArrowIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
-        if(lh.getArrowIcon() != null) {
+        if (lh.getArrowIcon() != null) {
             ButtonModel model = lh.getMenuItem().getModel();
-            if(model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
+            if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
             }
-            if(lh.useCheckAndArrow()) {
+            if (lh.useCheckAndArrow()) {
                 lh.getArrowIcon().paintIcon(lh.getMenuItem(), g, lr.getArrowRect().x, lr.getArrowRect().y);
             }
         }
     }
 
     public static void applyInsets(Rectangle rect, Insets insets) {
-        if(insets != null) {
+        if (insets != null) {
             rect.x += insets.left;
             rect.y += insets.top;
             rect.width  -= insets.right  + rect.x;
@@ -232,11 +232,11 @@ class RAAWindowsMenuItemUI extends com.sun.java.swing.plaf.windows.WindowsMenuIt
         g.setFont(holdf);
     }
     private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
-        if(!lh.getText().isEmpty()) {
-            if(lh.getHtmlView() == null) {
+        if (!lh.getText().isEmpty()) {
+            if (lh.getHtmlView() == null) {
                 // Text isn't HTML
                 paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
-            }else{
+            } else {
                 // Text is HTML
                 lh.getHtmlView().paint(g, lr.getTextRect());
             }
@@ -275,11 +275,11 @@ class RAABasicMenuItemUI extends javax.swing.plaf.basic.BasicMenuItemUI {
         g.setFont(holdf);
     }
     private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
-        if(!lh.getText().isEmpty()) {
-            if(lh.getHtmlView() == null) {
+        if (!lh.getText().isEmpty()) {
+            if (lh.getHtmlView() == null) {
                 // Text isn't HTML
                 paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
-            }else{
+            } else {
                 // Text is HTML
                 lh.getHtmlView().paint(g, lr.getTextRect());
             }

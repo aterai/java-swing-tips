@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
                 int w = getWidth() - i.left - i.right;
                 int px = 0;
                 int py = 0;
-                for(int x=0;x<w;x++) {
-                    int y = (int)Math.pow(x/A2, 2.0);
+                for (int x = 0; x < w; x++) {
+                    int y = (int) Math.pow(x / A2, 2.0);
                     g.drawLine(px, py, x, y);
                     px = x;
                     py = y;
@@ -33,23 +33,23 @@ public final class MainPanel extends JPanel {
             @Override public void layoutContainer(Container target) {
                 synchronized(target.getTreeLock()) {
                     int nmembers  = target.getComponentCount();
-                    if(nmembers<=0) {
+                    if (nmembers<=0) {
                         return;
                     }
                     Insets insets = target.getInsets();
                     int vgap = getVgap();
                     int hgap = getHgap();
-                    int rowh = (target.getHeight() - insets.top - insets.bottom - vgap*2) / nmembers;
+                    int rowh = (target.getHeight() - insets.top - insets.bottom - vgap * 2) / nmembers;
                     int x = insets.left + hgap;
                     int y = insets.top  + vgap;
-                    for(int i=0;i<nmembers;i++) {
+                    for (int i = 0; i < nmembers; i++) {
                         Component m = target.getComponent(i);
-                        if(m.isVisible()) {
+                        if (m.isVisible()) {
                             Dimension d = m.getPreferredSize();
                             m.setSize(d.width, d.height);
                             m.setLocation(x, y);
                             y += vgap + Math.min(rowh, d.height);
-                            x = (int)(A2 * Math.sqrt(y));
+                            x = (int) (A2 * Math.sqrt(y));
                         }
                     }
                 }
@@ -79,10 +79,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

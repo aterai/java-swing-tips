@@ -26,11 +26,11 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void expandTree(JTree tree) {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)tree.getModel().getRoot();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         Enumeration e = root.breadthFirstEnumeration();
-        while(e.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
-            if(node.isLeaf()) { continue; }
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+            if (node.isLeaf()) { continue; }
             int row = tree.getRowForPath(new TreePath(node.getPath()));
             tree.expandRow(row);
         }
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -70,21 +70,21 @@ class DragScrollListener extends MouseAdapter {
     @Override public void mouseDragged(MouseEvent e) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getUnwrappedParent(c);
-        if(p instanceof JViewport) {
-            JViewport vport = (JViewport)p;
+        if (p instanceof JViewport) {
+            JViewport vport = (JViewport) p;
             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             Point vp = vport.getViewPosition();
-            vp.translate(pp.x-cp.x, pp.y-cp.y);
-            ((JComponent)c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            vp.translate(pp.x - cp.x, pp.y - cp.y);
+            ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
             pp.setLocation(cp);
         }
     }
     @Override public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getUnwrappedParent(c);
-        if(p instanceof JViewport) {
+        if (p instanceof JViewport) {
             c.setCursor(hndCursor);
-            JViewport vport = (JViewport)p;
+            JViewport vport = (JViewport) p;
             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             pp.setLocation(cp);
         }

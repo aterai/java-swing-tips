@@ -39,19 +39,19 @@ public final class MainPanel extends JPanel {
         UIManager.put("Label.disabledForeground", Color.ORANGE);
         final JCheckBox cbx = new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox source = (JCheckBox)e.getSource();
+                JCheckBox source = (JCheckBox) e.getSource();
                 boolean flg = source.isSelected();
-                for(JComponent c:list) {
+                for (JComponent c:list) {
                     c.setEnabled(flg);
                 }
             }
         });
         combo2.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                if(index==-1 && !combo2.isEnabled()) {
-                    JLabel l = (JLabel)c;
-                    l.setText("<html><font color='red'>"+l.getText());
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (index == -1 && !combo2.isEnabled()) {
+                    JLabel l = (JLabel) c;
+                    l.setText("<html><font color='red'>" + l.getText());
                     //c.setForeground(Color.RED);
                 }
                 return c;
@@ -60,12 +60,12 @@ public final class MainPanel extends JPanel {
         //combo2.setEditable(true);
 
         combo3.setEditable(true);
-        JTextField editor = (JTextField)combo3.getEditor().getEditorComponent();
+        JTextField editor = (JTextField) combo3.getEditor().getEditorComponent();
         editor.setDisabledTextColor(Color.PINK);
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,15,5,5));
-        for(JComponent c:list) {
+        box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
+        for (JComponent c:list) {
             c.setEnabled(false);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             int h = c.getPreferredSize().height;
@@ -86,10 +86,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JCheckBox c = new JCheckBox("setEnabled", true);
         c.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tree.setEnabled(((JCheckBox)e.getSource()).isSelected());
+                tree.setEnabled(((JCheckBox) e.getSource()).isSelected());
             }
         });
 
@@ -30,16 +30,16 @@ public final class MainPanel extends JPanel {
 
         add(makePanel(new JScrollPane(tree), c));
         add(makePanel(new JScrollPane(textArea), b));
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     public JComponent makePanel(JComponent m, JComponent c) {
         int ir = 20; //inset.right
-        int ch = c.getPreferredSize().height/2;
+        int ch = c.getPreferredSize().height / 2;
 
-//         Border ib = BorderFactory.createMatteBorder(0,0,ch,0,Color.WHITE);
+//         Border ib = BorderFactory.createMatteBorder(0, 0, ch, 0, Color.WHITE);
 //         Border eb = BorderFactory.createEtchedBorder();
-//         Border ob = BorderFactory.createEmptyBorder(0,0,ch,0);
+//         Border ob = BorderFactory.createEmptyBorder(0, 0, ch, 0);
 //         Border bo = BorderFactory.createCompoundBorder(eb, ib);
 //         m.setBorder(BorderFactory.createCompoundBorder(ob, bo));
 
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         SpringLayout.Constraints constraints = layout.getConstraints(c);
         constraints.setConstraint(SpringLayout.EAST,  Spring.sum(x, g));
         constraints.setConstraint(SpringLayout.SOUTH, y);
-        p.setLayer(c, JLayeredPane.DEFAULT_LAYER+1);
+        p.setLayer(c, JLayeredPane.DEFAULT_LAYER + 1);
         p.add(c);
 
         constraints = layout.getConstraints(m);
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -105,8 +105,8 @@ public final class MainPanel extends JPanel {
 //         this.comp      = comp;
 //         this.container = container;
 //         this.border    = border;
-//         if(comp instanceof JComponent) {
-//             ((JComponent)comp).setOpaque(true);
+//         if (comp instanceof JComponent) {
+//             ((JComponent) comp).setOpaque(true);
 //         }
 //         container.addMouseListener(this);
 //         container.addMouseMotionListener(this);
@@ -119,11 +119,11 @@ public final class MainPanel extends JPanel {
 //     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 //         Insets borderInsets = border.getBorderInsets(c);
 //         Insets insets = getBorderInsets(c);
-//         int temp = (insets.top-borderInsets.top)/2;
-//         border.paintBorder(c, g, x, y+temp, width, height-temp);
+//         int temp = (insets.top - borderInsets.top) / 2;
+//         border.paintBorder(c, g, x, y + temp, width, height - temp);
 //         Dimension size = comp.getPreferredSize();
 //         Rectangle rect = new Rectangle(OFFSET, 0, size.width, size.height);
-//         SwingUtilities.paintComponent(g, comp, (Container)c, rect);
+//         SwingUtilities.paintComponent(g, comp, (Container) c, rect);
 //         comp.setBounds(rect);
 //     }
 //

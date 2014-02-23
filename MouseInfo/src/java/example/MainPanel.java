@@ -19,17 +19,17 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
         Box box = Box.createVerticalBox();
         box.add(absolute);
         box.add(relative);
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box);
         setPreferredSize(panelDim);
         timer = new Timer(10, this);
         addHierarchyListener(this);
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0) {
-            if(isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
+            if (isDisplayable()) {
                 timer.start();
-            }else{
+            } else {
                 timer.stop();
             }
         }
@@ -41,9 +41,9 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
     @Override public void actionPerformed(ActionEvent e) {
         PointerInfo pi = MouseInfo.getPointerInfo();
         Point pt = pi.getLocation();
-        absolute.setText("absolute:"+pt.toString());
+        absolute.setText("absolute:" + pt.toString());
         SwingUtilities.convertPointFromScreen(pt, this);
-        relative.setText("relative:"+pt.toString());
+        relative.setText("relative:" + pt.toString());
         racket.move(pt.x);
         repaint();
     }
@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -83,18 +83,18 @@ class Racket implements Serializable {
 
     public Racket(Dimension parentSize) {
         this.parentSize = parentSize;
-        centerPos = parentSize.width/2;
+        centerPos = parentSize.width / 2;
     }
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(centerPos-WIDTH/2, parentSize.height-HEIGHT, WIDTH, HEIGHT);
+        g.fillRect(centerPos - WIDTH / 2, parentSize.height - HEIGHT, WIDTH, HEIGHT);
     }
     public void move(int pos) {
         centerPos = pos;
-        if(centerPos<WIDTH/2) {
-            centerPos = WIDTH/2;
-        }else if(centerPos>parentSize.width-WIDTH/2) {
-            centerPos = parentSize.width-WIDTH/2;
+        if (centerPos < WIDTH / 2) {
+            centerPos = WIDTH / 2;
+        } else if (centerPos > parentSize.width - WIDTH / 2) {
+            centerPos = parentSize.width - WIDTH / 2;
         }
     }
 }

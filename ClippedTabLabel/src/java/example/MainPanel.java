@@ -16,16 +16,16 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        JPanel p = new JPanel(new GridLayout(2,1));
-        for(JTabbedPane t:list) {
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        for (JTabbedPane t:list) {
             p.add(t);
         }
         add(p);
         add(new JCheckBox(new AbstractAction("LEFT") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
-                for(JTabbedPane t:list) {
-                    t.setTabPlacement(c.isSelected()?JTabbedPane.LEFT:JTabbedPane.TOP);
+                JCheckBox c = (JCheckBox) e.getSource();
+                for (JTabbedPane t:list) {
+                    t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP);
                 }
             }
         }), BorderLayout.NORTH);
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -73,27 +73,27 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     private Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     private Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     @Override public void doLayout() {
-        int tabCount  = getTabCount();
-        if(tabCount==0) {
+        int tabCount = getTabCount();
+        if (tabCount == 0) {
             return;
         }
         Insets tabInsets     = getTabInsets();
@@ -114,19 +114,19 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
-        for(int i=0;i<tabCount;i++) {
-            JComponent l = (JComponent)getTabComponentAt(i);
+        for (int i = 0; i < tabCount; i++) {
+            JComponent l = (JComponent) getTabComponentAt(i);
             int v = i < gap ? 1 : 0;
             l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
         }
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        super.insertTab(title, icon, component, tip==null?title:tip, index);
+        super.insertTab(title, icon, component, tip == null ? title : tip, index);
         JLabel label = new JLabel(title, JLabel.CENTER);
         //Dimension dim = label.getPreferredSize();
         //Insets tabInsets = getTabInsets();
-        //label.setPreferredSize(new Dimension(0, dim.height+tabInsets.top+tabInsets.bottom));
+        //label.setPreferredSize(new Dimension(0, dim.height + tabInsets.top + tabInsets.bottom));
         setTabComponentAt(index, label);
     }
 }

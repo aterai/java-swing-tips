@@ -16,16 +16,16 @@ public final class MainPanel extends JPanel {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         float[] list = new float[st.countTokens()];
         int i = 0;
-        try{
-            while(st.hasMoreTokens()) {
+        try {
+            while (st.hasMoreTokens()) {
                 list[i] = Float.valueOf(st.nextToken().trim());
                 i++;
             }
-        }catch(NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(label, "Invalid input.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        if(i==0) {
+        if (i == 0) {
             list = new float[] {1f};
         }
         return list;
@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
         });
         label = new JLabel() {
             @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 super.paintComponent(g2);
-                if(dashedStroke==null) {
+                if (dashedStroke == null) {
                     dashedStroke = new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f);
                 }
                 g2.setStroke(dashedStroke);
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         };
         label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        JPanel p = new JPanel(new BorderLayout(2,2));
+        JPanel p = new JPanel(new BorderLayout(2, 2));
         p.add(field); p.add(button, BorderLayout.EAST);
         p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 
@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

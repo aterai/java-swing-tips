@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
         @Override public boolean isCellEditable(int row, int col) {
-            return (col==0)?false:!r4.isSelected();
+            return (col == 0) ? false : !r4.isSelected();
         }
     };
     private final JTable table = new JTable(model);
@@ -41,24 +41,24 @@ public final class MainPanel extends JPanel {
 
         // //System.out.println(table.getActionMap().get("startEditing"));
         //InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        //for(KeyStroke ks:im.allKeys()) {
+        //for (KeyStroke ks:im.allKeys()) {
         //    Object actionMapKey = im.get(ks);
-        //    if("startEditing".equals(actionMapKey.toString())) {
+        //    if ("startEditing".equals(actionMapKey.toString())) {
         //        System.out.println("startEditing: "+ ks.toString());
         //    }
         //}
 
-        final DefaultCellEditor ce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
+        final DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JRadioButton rb = (JRadioButton)e.getSource();
+                JRadioButton rb = (JRadioButton) e.getSource();
                 table.putClientProperty("JTable.autoStartsEdit", !rb.equals(r1) && !rb.equals(r3));
                 ce.setClickCountToStart(rb.equals(r2) || rb.equals(r3) ? Integer.MAX_VALUE : 2);
             }
         };
         r0.setSelected(true);
         Box p = Box.createVerticalBox();
-        for(AbstractButton b:Arrays.asList(r0, r1, r2, r3, r4)) {
+        for (AbstractButton b:Arrays.asList(r0, r1, r2, r3, r4)) {
             b.addActionListener(al); bg.add(b); p.add(b);
         }
         add(p, BorderLayout.NORTH);
@@ -74,10 +74,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

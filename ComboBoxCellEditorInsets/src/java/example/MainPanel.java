@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     private static JComboBox<String> makeComboBox() {
         JComboBox<String> combo = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
         combo.setEditable(true);
-        combo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8,10,8,10), combo.getBorder()));
+        combo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), combo.getBorder()));
         return combo;
     }
     public static void main(String[] args) {
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -107,8 +107,8 @@ class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        this.setBackground(isSelected?table.getSelectionBackground():table.getBackground());
-        if(value!=null) {
+        this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+        if (value != null) {
             comboBox.setSelectedItem(value);
         }
         return this;
@@ -141,14 +141,14 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         return comboBox.getSelectedItem();
     }
     @Override public boolean shouldSelectCell(EventObject anEvent) {
-        if(anEvent instanceof MouseEvent) {
-            MouseEvent e = (MouseEvent)anEvent;
+        if (anEvent instanceof MouseEvent) {
+            MouseEvent e = (MouseEvent) anEvent;
             return e.getID() != MouseEvent.MOUSE_DRAGGED;
         }
         return true;
     }
     @Override public boolean stopCellEditing() {
-        if(comboBox.isEditable()) {
+        if (comboBox.isEditable()) {
             comboBox.actionPerformed(new ActionEvent(this, 0, ""));
         }
         fireEditingStopped();
@@ -178,13 +178,13 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -193,13 +193,13 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }
@@ -210,19 +210,19 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     public ComboCellRenderer() {
         super();
         setEditable(true);
-        //setBorder(BorderFactory.createEmptyBorder(8,10,8,10));
-        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8,10,8,10), getBorder()));
+        //setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), getBorder()));
         editor = (JTextField) getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.setOpaque(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         removeAllItems();
-        if(isSelected) {
+        if (isSelected) {
             editor.setForeground(table.getSelectionForeground());
             editor.setBackground(table.getSelectionBackground());
             //button.setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             editor.setForeground(table.getForeground());
             editor.setBackground(table.getBackground());
             //button.setBackground(bg);
@@ -234,7 +234,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -242,7 +242,7 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
-        //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
         //    super.firePropertyChange(propertyName, oldValue, newValue);
         //}
     }

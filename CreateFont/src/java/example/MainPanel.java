@@ -15,16 +15,16 @@ public final class MainPanel extends JPanel {
 
         Font font    = makeFont(getClass().getResource("mona.ttf"));
         //Document doc = makeDocument(getClass().getResource("bar.utf8.txt"), "UTF-8");
-        if(font!=null) {
+        if (font != null) {
             System.out.println(font.toString());
             textpane.setFont(font.deriveFont(10.0f));
             //textpane.setDocument(doc);
         }
 
         URL url = getClass().getResource("bar.utf8.txt");
-        try(Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
-            textpane.read(reader, "text");
-        }catch(IOException ex) {
+        try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+             textpane.read(reader, "text");
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -45,19 +45,19 @@ public final class MainPanel extends JPanel {
 //     private static Font makeFont(URL url) {
 //         Font font = null;
 //         InputStream is = null;
-//         try{
+//         try {
 //             is = url.openStream();
 //             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
 //             is.close();
-//         }catch(IOException ioe) {
+//         } catch (IOException ioe) {
 //             ioe.printStackTrace();
-//         }catch(FontFormatException ffe) {
+//         } catch (FontFormatException ffe) {
 //             ffe.printStackTrace();
 //         }finally{
-//             if(is!=null) {
-//                 try{
+//             if (is != null) {
+//                 try {
 //                     is.close();
-//                 }catch(IOException ex) {
+//                 } catch (IOException ex) {
 //                     ex.printStackTrace();
 //                 }
 //             }
@@ -67,9 +67,9 @@ public final class MainPanel extends JPanel {
 
     private static Font makeFont(URL url) {
         Font font = null;
-        try(InputStream is = url.openStream()) {
+        try (InputStream is = url.openStream()) {
             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
-        }catch(IOException | FontFormatException ex) {
+        } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }
         return font;
@@ -77,18 +77,18 @@ public final class MainPanel extends JPanel {
 
 //     private static Document makeDocument(URL url, String encoding) {
 //         DefaultStyledDocument doc = new DefaultStyledDocument();
-//         try(Reader reader = new InputStreamReader(url.openStream(), encoding);
-//             Scanner scanner = new Scanner(reader)) {
-//             while(scanner.hasNextLine()) {
+//         try (Reader reader = new InputStreamReader(url.openStream(), encoding);
+//              Scanner scanner = new Scanner(reader)) {
+//             while (scanner.hasNextLine()) {
 //                 doc.insertString(doc.getLength(), String.format("%s%n", scanner.nextLine()), null);
 //             }
 // //             char[] buff = new char[4096];
 // //             int nch;
-// //             while((nch = reader.read(buff, 0, buff.length)) != -1) {
+// //             while ((nch = reader.read(buff, 0, buff.length)) != -1) {
 // //                 doc.insertString(doc.getLength(), new String(buff, 0, nch), null);
 // //             }
 //             //reader.close();
-//         }catch(IOException | BadLocationException ex) {
+//         } catch (IOException | BadLocationException ex) {
 //             ex.printStackTrace();
 //         }
 //         return doc;
@@ -102,10 +102,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

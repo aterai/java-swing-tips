@@ -11,9 +11,9 @@ public final class MainPanel extends JPanel {
 
         SpringLayout layout = new SpringLayout();
         JPanel panel = new JPanel(layout);
-        JLabel  l1 = new JLabel("label: 05%,05%,90%,55%", SwingConstants.CENTER);
-        JButton l2 = new JButton("button: 50%,65%,40%,30%");
-        //JLabel l2 = new JLabel("label: 50%,65%,40%,30%", SwingConstants.CENTER);
+        JLabel  l1 = new JLabel("label: 05%, 05%, 90%, 55%", SwingConstants.CENTER);
+        JButton l2 = new JButton("button: 50%, 65%, 40%, 30%");
+        //JLabel l2 = new JLabel("label: 50%, 65%, 40%, 30%", SwingConstants.CENTER);
 
         panel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 10));
         l1.setOpaque(true);
@@ -52,13 +52,13 @@ public final class MainPanel extends JPanel {
 //         int w = panel.getWidth()  - i.left - i.right;
 //         int h = panel.getHeight() - i.top  - i.bottom;
 //
-//         l1.setPreferredSize(new Dimension(w*90/100, h*55/100));
-//         l2.setPreferredSize(new Dimension(w*40/100, h*30/100));
+//         l1.setPreferredSize(new Dimension(w * 90/100, h * 55/100));
+//         l2.setPreferredSize(new Dimension(w * 40/100, h * 30/100));
 //
-//         layout.putConstraint(SpringLayout.WEST,  l1, w*5/100,  SpringLayout.WEST,  panel);
-//         layout.putConstraint(SpringLayout.NORTH, l1, h*5/100,  SpringLayout.NORTH, panel);
-//         layout.putConstraint(SpringLayout.WEST,  l2, w*50/100, SpringLayout.WEST,  panel);
-//         layout.putConstraint(SpringLayout.SOUTH, l2, -h*5/100, SpringLayout.SOUTH, panel);
+//         layout.putConstraint(SpringLayout.WEST,  l1, w * 5/100,  SpringLayout.WEST,  panel);
+//         layout.putConstraint(SpringLayout.NORTH, l1, h * 5/100,  SpringLayout.NORTH, panel);
+//         layout.putConstraint(SpringLayout.WEST,  l2, w * 50/100, SpringLayout.WEST,  panel);
+//         layout.putConstraint(SpringLayout.SOUTH, l2, -h * 5/100, SpringLayout.SOUTH, panel);
 //
 //         panel.setLayout(layout);
 //         panel.revalidate();
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

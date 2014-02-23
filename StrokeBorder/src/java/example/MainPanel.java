@@ -17,16 +17,16 @@ public final class MainPanel extends JPanel {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         float[] list = new float[st.countTokens()];
         int i = 0;
-        try{
-            while(st.hasMoreTokens()) {
+        try {
+            while (st.hasMoreTokens()) {
                 list[i] = Float.valueOf(st.nextToken());
                 i++;
             }
-        }catch(NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(label, "Invalid input.\n"+nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(label, "Invalid input.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        if(i==0) {
+        if (i == 0) {
             list = new float[] {1f};
         }
         return list;
@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
         button = new JButton(new AbstractAction("Change") {
             @Override public void actionPerformed(ActionEvent ae) {
                 BasicStroke dashedStroke = new BasicStroke(5.0f,
-                    ((EndCapStyle)endcapCombo.getSelectedItem()).style,
-                    ((JoinStyle)joinCombo.getSelectedItem()).style,
+                    ((EndCapStyle) endcapCombo.getSelectedItem()).style,
+                    ((JoinStyle) joinCombo.getSelectedItem()).style,
                     5.0f, getDashArray(), 0.0f);
                 label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
             }
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         p.add(field); p.add(button, BorderLayout.EAST);
         p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 
-        JPanel p1 = new JPanel(new GridLayout(2,1));
+        JPanel p1 = new JPanel(new GridLayout(2, 1));
         p1.add(endcapCombo);
         p1.add(joinCombo);
 
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel(new BorderLayout());
         p2.add(label);
-        p2.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+        p2.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         add(p, BorderLayout.NORTH);
         add(p2);
         setPreferredSize(new Dimension(320, 240));
@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         MainPanel p = new MainPanel();

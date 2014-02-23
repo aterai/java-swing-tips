@@ -26,15 +26,15 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent ae) {
                 int retvalue = fileChooser.showOpenDialog(MainPanel.this);
                 System.out.println(retvalue);
-                //if(retvalue==JFileChooser.APPROVE_OPTION) {
+                //if (retvalue == JFileChooser.APPROVE_OPTION) {
                 //    File file = fileChooser.getSelectedFile();
-                //    ((DefaultComboBoxModel)combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
+                //    ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
                 //    combo1.setSelectedIndex(0);
                 //}
             }
         }));
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -46,11 +46,11 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
 
 class PngFileFilter extends FileFilter {
     @Override public boolean accept(File file) {
-        if(file.isDirectory()) {
+        if (file.isDirectory()) {
             return true;
         }
-        if(file.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
+        if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
             return true;
         }
         return false;
@@ -80,10 +80,10 @@ class PngFileFilter extends FileFilter {
 
 class JpgFileFilter extends FileFilter {
     @Override public boolean accept(File file) {
-        if(file.isDirectory()) {
+        if (file.isDirectory()) {
             return true;
         }
-        if(file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jpg")) {
+        if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jpg")) {
             return true;
         }
         return false;

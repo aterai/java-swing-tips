@@ -9,14 +9,14 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final List<SpinnerNumberModel> list1 = Arrays.asList(
-        new SpinnerNumberModel(Byte.valueOf((byte)Byte.MAX_VALUE),
-                               Byte.valueOf((byte)0),
-                               Byte.valueOf((byte)Byte.MAX_VALUE),
-                               Byte.valueOf((byte)1)),
-        new SpinnerNumberModel(Short.valueOf((short)Short.MAX_VALUE),
-                               Short.valueOf((short)0),
-                               Short.valueOf((short)Short.MAX_VALUE),
-                               Short.valueOf((short)1)),
+        new SpinnerNumberModel(Byte.valueOf((byte) Byte.MAX_VALUE),
+                               Byte.valueOf((byte) 0),
+                               Byte.valueOf((byte) Byte.MAX_VALUE),
+                               Byte.valueOf((byte) 1)),
+        new SpinnerNumberModel(Short.valueOf((short) Short.MAX_VALUE),
+                               Short.valueOf((short) 0),
+                               Short.valueOf((short) Short.MAX_VALUE),
+                               Short.valueOf((short) 1)),
         new SpinnerNumberModel(Integer.MAX_VALUE,
                                0,
                                Integer.MAX_VALUE,
@@ -50,13 +50,13 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.add(makePanel("Byte, Short, Integer, Long", makeJSpinnerListPanel(list1)));
         box.add(makePanel("Long.valueOf",               makeJSpinnerListPanel(list2)));
-        box.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static Box makeJSpinnerListPanel(List<SpinnerNumberModel> list) {
         Box box = Box.createVerticalBox();
-        for(SpinnerNumberModel m: list) {
+        for (SpinnerNumberModel m: list) {
             box.add(new JSpinner(m));
             box.add(Box.createVerticalStrut(2));
         }
@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

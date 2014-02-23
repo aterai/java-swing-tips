@@ -40,13 +40,13 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        UIManager.put("PopupMenuUI","example.CustomPopupMenuUI");
+        UIManager.put("PopupMenuUI", "example.CustomPopupMenuUI");
         //contrib.com.jgoodies.looks.common.ShadowPopupFactory.install();
 
         JFrame frame = new JFrame("@title@");

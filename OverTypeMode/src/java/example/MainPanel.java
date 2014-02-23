@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,9 +65,9 @@ class OvertypeTextArea extends JTextArea {
     public void setOvertypeMode(boolean overtypeMode) {
         this.overtypeMode = overtypeMode;
         int pos = getCaretPosition();
-        if(isOvertypeMode()) {
+        if (isOvertypeMode()) {
             setCaret(overtypeCaret);
-        }else{
+        } else {
             setCaret(defaultCaret);
         }
         setCaretPosition(pos);
@@ -79,10 +79,10 @@ class OvertypeTextArea extends JTextArea {
     @Override public void replaceSelection(String text) {
         //  Implement overtype mode by selecting the character at the current
         //  caret position
-        if(isOvertypeMode()) {
+        if (isOvertypeMode()) {
             int pos = getCaretPosition();
-            if(getSelectedText()==null &&  pos<getDocument().getLength()) {
-                moveCaretPosition(pos+1);
+            if (getSelectedText() == null &&  pos<getDocument().getLength()) {
+                moveCaretPosition(pos + 1);
             }
         }
         super.replaceSelection(text);
@@ -94,7 +94,7 @@ class OvertypeTextArea extends JTextArea {
     @Override protected void processKeyEvent(KeyEvent e) {
         super.processKeyEvent(e);
         //  Handle release of Insert key to toggle overtype/insert mode
-        if(e.getID()==KeyEvent.KEY_RELEASED &&  e.getKeyCode()==KeyEvent.VK_INSERT) {
+        if (e.getID() == KeyEvent.KEY_RELEASED &&  e.getKeyCode() == KeyEvent.VK_INSERT) {
             setCaretPosition(getCaretPosition());  //add
             moveCaretPosition(getCaretPosition()); //add
             setOvertypeMode(!isOvertypeMode());
@@ -111,28 +111,28 @@ class OvertypeTextArea extends JTextArea {
          *  (once we determine where to paint it)
          */
         @Override public void paint(Graphics g) {
-            if(isVisible()) {
-                try{
+            if (isVisible()) {
+                try {
                     JTextComponent component = getComponent();
                     TextUI mapper = component.getUI();
                     Rectangle r = mapper.modelToView(component, getDot());
                     g.setColor(component.getCaretColor());
                     int width = g.getFontMetrics().charWidth('w');
                     // A patch for double-width CJK character >>>>
-                    if(isOvertypeMode()) {
+                    if (isOvertypeMode()) {
                         int pos = getCaretPosition();
-                        if(pos<getDocument().getLength()) {
-                            if(getSelectedText()==null) {
+                        if (pos<getDocument().getLength()) {
+                            if (getSelectedText() == null) {
                                 String str = getText(pos, 1);
                                 width = g.getFontMetrics().stringWidth(str);
-                            }else{
+                            } else {
                                 width = 0;
                             }
                         }
                     } // <<<<
                     int y = r.y + r.height - 2;
                     g.drawLine(r.x, y, r.x + width - 2, y);
-                }catch(BadLocationException e) { e.printStackTrace(); }
+                } catch (BadLocationException e) { e.printStackTrace(); }
             }
         }
 
@@ -142,7 +142,7 @@ class OvertypeTextArea extends JTextArea {
          *  consider the area for the default caret and this caret)
          */
         @Override protected synchronized void damage(Rectangle r) {
-            if(r != null) {
+            if (r != null) {
                 JTextComponent component = getComponent();
                 x = r.x;
                 y = r.y;

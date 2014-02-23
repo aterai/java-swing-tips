@@ -26,14 +26,14 @@ public final class MainPanel extends JPanel {
         addTab(t, "Preference", new ImageIcon(getClass().getResource("wi0062-32.png")), new JScrollPane(new JTree()));
         addTab(t, "Help",       new ImageIcon(getClass().getResource("wi0063-32.png")), new JScrollPane(new JTextArea()));
 
-//         t.addTab(makeTitle("Title","wi0009-32.png"), new JLabel("a"));
-//         t.addTab(makeTitle("Help", "wi0054-32.png"), new JLabel("b"));
+//         t.addTab(makeTitle("Title", "wi0009-32.png"), new JLabel("a"));
+//         t.addTab(makeTitle("Help",  "wi0054-32.png"), new JLabel("b"));
 
         add(t);
         setPreferredSize(new Dimension(320, 200));
     }
 //     private String makeTitle(String t, String p) {
-//         return "<html><center><img src='"+getClass().getResource(p)+"'/><br/>"+t;
+//         return "<html><center><img src='" + getClass().getResource(p) + "'/><br/>" + t;
 //     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -67,27 +67,27 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     private Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     private Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount  = getTabCount();
-        if(tabCount==0) {
+        if (tabCount == 0) {
             return;
         }
         Insets tabInsets     = getTabInsets();
@@ -108,19 +108,19 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
-        for(int i=0;i<tabCount;i++) {
-            JComponent l = (JComponent)getTabComponentAt(i);
+        for (int i = 0; i < tabCount; i++) {
+            JComponent l = (JComponent) getTabComponentAt(i);
             int v = i < gap ? 1 : 0;
             l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
         }
         super.doLayout();
     }
 //     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-//         super.insertTab(title, icon, component, tip==null?title:tip, index);
+//         super.insertTab(title, icon, component, tip == null ? title : tip, index);
 //         JLabel label = new JLabel(title, JLabel.CENTER);
 //         //Dimension dim = label.getPreferredSize();
 //         //Insets tabInsets = getTabInsets();
-//         //label.setPreferredSize(new Dimension(0, dim.height+tabInsets.top+tabInsets.bottom));
+//         //label.setPreferredSize(new Dimension(0, dim.height + tabInsets.top + tabInsets.bottom));
 //         setTabComponentAt(index, label);
 //     }
 }

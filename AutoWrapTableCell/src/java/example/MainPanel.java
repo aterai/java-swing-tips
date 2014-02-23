@@ -28,12 +28,12 @@ public final class MainPanel extends JPanel {
 //             private static final Color EVEN_COLOR = new Color(230, 240, 255);
 //             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                 Component c = super.prepareRenderer(tcr, row, column);
-//                 if(isRowSelected(row)) {
+//                 if (isRowSelected(row)) {
 //                     c.setForeground(getSelectionForeground());
 //                     c.setBackground(getSelectionBackground());
-//                 }else{
+//                 } else {
 //                     c.setForeground(getForeground());
-//                     c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+//                     c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
 //                 }
 //                 return c;
 //             }
@@ -48,12 +48,12 @@ public final class MainPanel extends JPanel {
 //                 initPreferredHeight();
 //             }
 //             private void initPreferredHeight() {
-//                 for(int row=0;row<getRowCount();row++) {
+//                 for (int row = 0; row < getRowCount(); row++) {
 //                     int maximum_height = 0;
-//                     for(int col=0;col<getColumnModel().getColumnCount();col++) {
+//                     for (int col = 0; col < getColumnModel().getColumnCount(); col++) {
 //                         Component c = prepareRenderer(getCellRenderer(row, col), row, col);
-//                         if(c instanceof JTextArea) {
-//                             JTextArea a = (JTextArea)c;
+//                         if (c instanceof JTextArea) {
+//                             JTextArea a = (JTextArea) c;
 //                             int h = getPreferredHeight(a); // + getIntercellSpacing().height;
 //                             maximum_height = Math.max(maximum_height, h);
 //                         }
@@ -69,14 +69,14 @@ public final class MainPanel extends JPanel {
 //                 View view = c.getUI().getRootView(c).getView(0);
 //                 float f = view.getPreferredSpan(View.Y_AXIS);
 //                 //System.out.println(f);
-//                 int preferredHeight = (int)f;
+//                 int preferredHeight = (int) f;
 //                 return preferredHeight + insets.top + insets.bottom;
 //             }
 //         };
         table.setEnabled(false);
         table.setShowGrid(false);
         table.getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
-        //table.setIntercellSpacing(new Dimension(0,0));
+        //table.setIntercellSpacing(new Dimension(0, 0));
         add(new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         setPreferredSize(new Dimension(320, 240));
@@ -90,10 +90,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -112,9 +112,9 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     public TextAreaCellRenderer() {
         super();
         setLineWrap(true);
-        setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        //setBorder(BorderFactory.createLineBorder(Color.RED,2));
-        //setMargin(new Insets(2,2,2,2));
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        //setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        //setMargin(new Insets(2, 2, 2, 2));
         //setBorder(BorderFactory.createEmptyBorder());
         setName("Table.cellRenderer");
     }
@@ -143,21 +143,21 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         //doLayout();
 
         int prefH = getPreferredSize().height;
-        while(rowColHeight.size() <= row) {
+        while (rowColHeight.size() <= row) {
             rowColHeight.add(new ArrayList<Integer>(column));
         }
         List<Integer> colHeights = rowColHeight.get(row);
-        while(colHeights.size() <= column) {
+        while (colHeights.size() <= column) {
             colHeights.add(0);
         }
         colHeights.set(column, prefH);
         int maxH = prefH;
-        for(Integer colHeight : colHeights) {
-            if(colHeight > maxH) {
+        for (Integer colHeight : colHeights) {
+            if (colHeight > maxH) {
                 maxH = colHeight;
             }
         }
-        if(table.getRowHeight(row) != maxH) {
+        if (table.getRowHeight(row) != maxH) {
             table.setRowHeight(row, maxH);
         }
     }
@@ -166,7 +166,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -174,8 +174,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //String literal pool
-        //if(propertyName=="document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
-        if("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
+        //if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+        if ("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

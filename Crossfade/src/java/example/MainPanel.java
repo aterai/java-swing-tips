@@ -41,22 +41,22 @@ public final class MainPanel extends JPanel {
             animator.start();
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D)g.create();
+            Graphics2D g2d = (Graphics2D) g.create();
             g2d.setPaint(getBackground());
             g2d.fillRect(0, 0, getWidth(), getHeight());
-            if(mode && alpha<10) {
+            if (mode && alpha < 10) {
                 alpha = alpha + 1;
-            }else if(!mode && alpha>0) {
+            } else if (!mode && alpha > 0) {
                 alpha = alpha - 1;
-            }else{
+            } else {
                 animator.stop();
             }
-            if(box.isSelected()) {
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f-alpha*0.1f));
+            if (box.isSelected()) {
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha * .1f));
             }
-            g2d.drawImage(icon1.getImage(), 0, 0, (int)icon1.getIconWidth(), (int)icon1.getIconHeight(), this);
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha*0.1f));
-            g2d.drawImage(icon2.getImage(), 0, 0, (int)icon2.getIconWidth(), (int)icon2.getIconHeight(), this);
+            g2d.drawImage(icon1.getImage(), 0, 0, (int) icon1.getIconWidth(), (int) icon1.getIconHeight(), this);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * 0.1f));
+            g2d.drawImage(icon2.getImage(), 0, 0, (int) icon2.getIconWidth(), (int) icon2.getIconHeight(), this);
             g2d.dispose();
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

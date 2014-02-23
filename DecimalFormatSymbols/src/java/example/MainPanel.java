@@ -20,17 +20,17 @@ public final class MainPanel extends JPanel {
         JCheckBox cbx = new JCheckBox(new AbstractAction("setEnabled") {
             Object old;
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                for(JSpinner c:Arrays.asList(s0,s1,s2,s3)) {
+                boolean flg = ((JCheckBox) e.getSource()).isSelected();
+                for (JSpinner c:Arrays.asList(s0, s1, s2, s3)) {
                     c.setEnabled(flg);
                 }
-                if(flg) {
-                    for(JSpinner c:Arrays.asList(s2,s3)) {
+                if (flg) {
+                    for (JSpinner c:Arrays.asList(s2, s3)) {
                         c.setValue(old);
                     }
-                }else{
+                } else {
                     old = s2.getValue();
-                    for(JSpinner c:Arrays.asList(s2,s3)) {
+                    for (JSpinner c:Arrays.asList(s2, s3)) {
                         c.setValue(Double.NaN);
                     }
                 }
@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
         });
         cbx.setSelected(true);
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,15,5,5));
-        for(JComponent c:Arrays.asList(s0,s1,s2,s3)) {
+        box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
+        for (JComponent c:Arrays.asList(s0, s1, s2, s3)) {
             c.setEnabled(true);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             int h = c.getPreferredSize().height;
@@ -82,17 +82,17 @@ public final class MainPanel extends JPanel {
         return s;
     }
     private static JFormattedTextField getJFormattedTextField(JSpinner s) {
-        JSpinner.NumberEditor editor = (JSpinner.NumberEditor)s.getEditor();
-        JFormattedTextField ftf = (JFormattedTextField)editor.getTextField();
+        JSpinner.NumberEditor editor = (JSpinner.NumberEditor) s.getEditor();
+        JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
         ftf.setColumns(8);
         return ftf;
     }
     private static DefaultFormatterFactory makeFFactory(DecimalFormatSymbols dfs) {
         DecimalFormat format = new DecimalFormat("0.00", dfs);
         NumberFormatter displayFormatter = new NumberFormatter(format);
-        ((NumberFormatter)displayFormatter).setValueClass(Double.class);
+        ((NumberFormatter) displayFormatter).setValueClass(Double.class);
         NumberFormatter editFormatter = new NumberFormatter(format);
-        ((NumberFormatter)editFormatter).setValueClass(Double.class);
+        ((NumberFormatter) editFormatter).setValueClass(Double.class);
         DefaultFormatterFactory dff = new DefaultFormatterFactory(
             displayFormatter, displayFormatter, editFormatter);
         return dff;
@@ -105,10 +105,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -27,9 +27,11 @@ public final class MainPanel extends JPanel {
 
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override public void valueChanged(ListSelectionEvent e) {
-                if(e.getValueIsAdjusting()) { return; }
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
                 int sc = table.getSelectedRowCount();
-                changeInfoPanel((sc==1)?getInfo():" ");
+                changeInfoPanel((sc == 1) ? getInfo() : " ");
             }
         });
         table.setRowSelectionAllowed(true);
@@ -46,9 +48,9 @@ public final class MainPanel extends JPanel {
     }
     private String getInfo() {
         int index = table.convertRowIndexToModel(table.getSelectedRow());
-        String  str = (String)model.getValueAt(index, 0);
-        Integer idx = (Integer)model.getValueAt(index, 1);
-        Boolean flg = (Boolean)model.getValueAt(index, 2);
+        String  str = (String) model.getValueAt(index, 0);
+        Integer idx = (Integer) model.getValueAt(index, 1);
+        Boolean flg = (Boolean) model.getValueAt(index, 2);
         return String.format("%s, %d, %s", str, idx, flg);
     }
     private void changeInfoPanel(String str) {
@@ -67,10 +69,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

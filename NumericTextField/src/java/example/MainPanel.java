@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         textField2.setText("2000");
 
         JTextField textField3 = new JTextField();
-        ((AbstractDocument)textField3.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
+        ((AbstractDocument) textField3.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
         textField3.setText("3000");
 
         JFormattedTextField textField4 = new JFormattedTextField();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         textField4.setValue(4000);
 
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-        ((JSpinner.NumberEditor)spinner.getEditor()).getFormat().setGroupingUsed(false);
+        ((JSpinner.NumberEditor) spinner.getEditor()).getFormat().setGroupingUsed(false);
         spinner.setValue(5000);
 
         Box box = Box.createVerticalBox();
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         box.add(textField4);
         box.add(Box.createVerticalStrut(10));
 
-        JPanel p = new JPanel(new BorderLayout(5,5));
+        JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createTitledBorder("Spinner"));
         p.add(new JLabel("SpinnerNumberModel"), BorderLayout.NORTH);
         p.add(spinner);
@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -89,12 +89,12 @@ public final class MainPanel extends JPanel {
 class IntegerInputVerifier extends InputVerifier {
     @Override public boolean verify(JComponent c) {
         boolean verified = false;
-        if(c instanceof JTextComponent) {
-            JTextComponent textField = (JTextComponent)c;
-            try{
+        if (c instanceof JTextComponent) {
+            JTextComponent textField = (JTextComponent) c;
+            try {
                 Integer.parseInt(textField.getText());
                 verified = true;
-            }catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 UIManager.getLookAndFeel().provideErrorFeedback(c);
                 //Toolkit.getDefaultToolkit().beep();
             }
@@ -112,14 +112,14 @@ class IntegerDocument extends PlainDocument {
         return currentValue;
     }
     @Override public void insertString(int offset, String str, AttributeSet attributes) throws BadLocationException {
-        if(str==null) {
+        if (str == null) {
             return;
-        }else{
+        } else {
             String newValue;
             int length = getLength();
-            if(length==0) {
+            if (length == 0) {
                 newValue = str;
-            }else{
+            } else {
                 String currentContent = getText(0, length);
                 StringBuffer currentBuffer = new StringBuffer(currentContent);
                 currentBuffer.insert(offset, str);
@@ -133,18 +133,18 @@ class IntegerDocument extends PlainDocument {
         int currentLength = getLength();
         String currentContent = getText(0, currentLength);
         String before = currentContent.substring(0, offset);
-        String after = currentContent.substring(length+offset, currentLength);
+        String after = currentContent.substring(length + offset, currentLength);
         String newValue = before + after;
         currentValue = checkInput(newValue, offset);
         super.remove(offset, length);
     }
     private int checkInput(String proposedValue, int offset) throws BadLocationException {
-        if(proposedValue.isEmpty()) {
+        if (proposedValue.isEmpty()) {
             return 0;
-        }else{
-            try{
+        } else {
+            try {
                 return Integer.parseInt(proposedValue);
-            }catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 BadLocationException ex = new BadLocationException(proposedValue, offset);
                 ex.initCause(e);
                 throw ex;
@@ -159,9 +159,9 @@ class IntegerDocument extends PlainDocument {
 class IntegerDocumentFilter extends DocumentFilter {
     //int currentValue = 0;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if(string == null) {
+        if (string == null) {
             return;
-        }else{
+        } else {
             replace(fb, offset, 0, string, attr);
         }
     }
@@ -173,19 +173,19 @@ class IntegerDocumentFilter extends DocumentFilter {
         int currentLength = doc.getLength();
         String currentContent = doc.getText(0, currentLength);
         String before = currentContent.substring(0, offset);
-        String after = currentContent.substring(length+offset, currentLength);
+        String after = currentContent.substring(length + offset, currentLength);
         String str = text == null ? "" : text;
         String newValue = before + str + after;
         checkInput(newValue, offset);
         fb.replace(offset, length, text, attrs);
     }
     private static int checkInput(String proposedValue, int offset) throws BadLocationException {
-        if(proposedValue.isEmpty()) {
+        if (proposedValue.isEmpty()) {
             return 0;
-        }else{
-            try{
+        } else {
+            try {
                 return Integer.parseInt(proposedValue);
-            }catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 BadLocationException ex = new BadLocationException(proposedValue, offset);
                 ex.initCause(e);
                 throw ex;
@@ -204,9 +204,9 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
     static{
         //amountDisplayFormat.setMinimumFractionDigits(0);
         //amountEditFormat.setGroupingUsed(false);
-        //try{ mf = new MaskFormatter("#######"); }catch(ParseException e) {}
+        //try { mf = new MaskFormatter("#######"); } catch (ParseException e) {}
         numberFormatter.setValueClass(Integer.class);
-        ((NumberFormat)numberFormatter.getFormat()).setGroupingUsed(false);
+        ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
     }
     public NumberFormatterFactory() {
         super(numberFormatter, numberFormatter, numberFormatter);

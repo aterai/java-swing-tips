@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightListener extends MouseAdapter {
-    private static final Color HIGHLIGHT1 = new Color(200,200,255);
-    private static final Color HIGHLIGHT2 = new Color(240,240,255);
+    private static final Color HIGHLIGHT1 = new Color(200, 200, 255);
+    private static final Color HIGHLIGHT2 = new Color(240, 240, 255);
     private int row = -1;
     private int col = -1;
     private final JTable table;
@@ -61,10 +61,10 @@ class HighlightListener extends MouseAdapter {
         this.table = table;
     }
     public Color getHighlightableCellColor(int row, int column) {
-        if(this.row==row || this.col==column) {
-            if(this.row==row && this.col==column) {
+        if (this.row == row || this.col == column) {
+            if (this.row == row && this.col == column) {
                 return HIGHLIGHT1;
-            }else{
+            } else {
                 return HIGHLIGHT2;
             }
         }
@@ -73,7 +73,7 @@ class HighlightListener extends MouseAdapter {
     private void setHighlighTableCell(Point pt) {
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
-        if(row<0 || col<0) {
+        if (row < 0 || col < 0) {
             row = -1;
             col = -1;
         }
@@ -103,9 +103,9 @@ class HighlightRenderer extends DefaultTableCellRenderer {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         Color highlight = highlighter.getHighlightableCellColor(row, column);
-        if(highlight==null) {
+        if (highlight == null) {
             setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        }else{
+        } else {
             setBackground(highlight);
         }
         return this;
@@ -122,11 +122,11 @@ class HighlightRenderer extends DefaultTableCellRenderer {
 //     }
 //     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 //         Component c = super.prepareRenderer(renderer, row, column);
-//         if(highlighter.isHighlightableCell(row, column)) {
+//         if (highlighter.isHighlightableCell(row, column)) {
 //             c.setBackground(Color.RED);
-//         }else if(isRowSelected(row)) {
+//         } else if (isRowSelected(row)) {
 //             c.setBackground(getSelectionBackground());
-//         }else{
+//         } else {
 //             c.setBackground(Color.WHITE);
 //         }
 //         return c;

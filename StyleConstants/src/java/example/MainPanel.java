@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final JButton clr = new JButton("Clear");
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         ok.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 append("Test test test test", true);
@@ -55,14 +55,14 @@ public final class MainPanel extends JPanel {
 
         add(scroll);
         add(box, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
 //     private static final String SEPARATOR = "\n";
 //     private void append_(String str, boolean flg) {
 //         SimpleAttributeSet sas = null;
-//         if(!flg) {
+//         if (!flg) {
 //             //sas = new SimpleAttributeSet(jtp.getCharacterAttributes());
 //             sas = new SimpleAttributeSet();
 //             StyleConstants.setForeground(sas, Color.RED);
@@ -71,18 +71,18 @@ public final class MainPanel extends JPanel {
 //             //StyleConstants.setFontSize(sas, 32);
 //             //StyleConstants.setForeground(sas, Color.GREEN);
 //         }
-//         try{
+//         try {
 //             Document doc = jtp.getDocument();
-//             doc.insertString(doc.getLength(), str+SEPARATOR, sas);
+//             doc.insertString(doc.getLength(), str + SEPARATOR, sas);
 //             jtp.setCaretPosition(doc.getLength());
-//         }catch(BadLocationException e) { e.printStackTrace(); }
+//         } catch (BadLocationException e) { e.printStackTrace(); }
 //     }
     private void append(String str, boolean flg) {
-        String style = flg?"regular":"error";
+        String style = flg ? "regular" : "error";
         StyledDocument doc = jtp.getStyledDocument();
-        try{
-            doc.insertString(doc.getLength(), str+"\n", doc.getStyle(style));
-        }catch(BadLocationException e) {
+        try {
+            doc.insertString(doc.getLength(), str + "\n", doc.getStyle(style));
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -95,10 +95,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

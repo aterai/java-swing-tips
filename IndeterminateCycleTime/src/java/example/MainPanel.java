@@ -26,14 +26,14 @@ public final class MainPanel extends JPanel {
         box.add(new JButton(new AbstractAction("UIManager.put") {
             @Override public void actionPerformed(ActionEvent e) {
                 progressBar.setIndeterminate(false);
-                UIManager.put("ProgressBar.repaintInterval", (Integer)repaintIntervalSpinner.getValue());
-                UIManager.put("ProgressBar.cycleTime", (Integer)cycleTimeSpinner.getValue());
+                UIManager.put("ProgressBar.repaintInterval", (Integer) repaintIntervalSpinner.getValue());
+                UIManager.put("ProgressBar.cycleTime", (Integer) cycleTimeSpinner.getValue());
                 progressBar.setIndeterminate(true);
             }
         }));
 
-        JPanel sp = new JPanel(new GridLayout(3,2,5,5));
-        sp.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel sp = new JPanel(new GridLayout(3, 2, 5, 5));
+        sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         sp.add(new JLabel("ProgressBar.cycleTime:", JLabel.RIGHT));
         sp.add(cycleTimeSpinner);
         sp.add(new JLabel("ProgressBar.repaintInterval:", JLabel.RIGHT));
@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

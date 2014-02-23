@@ -9,8 +9,8 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
-    private final JSlider slider1 = new JSlider(JSlider.VERTICAL,0,1000,500);
-    private final JSlider slider2 = new JSlider(0,1000,500);
+    private final JSlider slider1 = new JSlider(JSlider.VERTICAL, 0, 1000, 500);
+    private final JSlider slider2 = new JSlider(0, 1000, 500);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -18,28 +18,28 @@ public final class MainPanel extends JPanel {
         setSilderUI(slider2);
 
         Box box1 = Box.createHorizontalBox();
-        box1.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        box1.add(new JSlider(JSlider.VERTICAL,0,1000,100));
+        box1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        box1.add(new JSlider(JSlider.VERTICAL, 0, 1000, 100));
         box1.add(Box.createHorizontalStrut(20));
         box1.add(slider1);
         box1.add(Box.createHorizontalGlue());
 
         Box box2 = Box.createVerticalBox();
-        box2.setBorder(BorderFactory.createEmptyBorder(20,0,20,20));
-        box2.add(makeTitledPanel("Default", new JSlider(0,1000,100)));
+        box2.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 20));
+        box2.add(makeTitledPanel("Default", new JSlider(0, 1000, 100)));
         box2.add(Box.createVerticalStrut(20));
         box2.add(makeTitledPanel("Jump to clicked position", slider2));
         box2.add(Box.createVerticalGlue());
 
         add(box1, BorderLayout.WEST);
         add(box2);
-        //setBorder(BorderFactory.createEmptyBorder(5,20,5,10));
+        //setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 10));
         setPreferredSize(new Dimension(320, 240));
     }
     private static void setSilderUI(JSlider slider) {
-        if(slider.getUI() instanceof WindowsSliderUI) {
+        if (slider.getUI() instanceof WindowsSliderUI) {
             slider.setUI(new WindowsJumpToClickedPositionSliderUI(slider));
-        }else{
+        } else {
             slider.setUI(new MetalJumpToClickedPositionSliderUI());
         }
 //         slider.setSnapToTicks(false);
@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -84,9 +84,9 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
 //     //TEST:
 //     protected void scrollDueToClickInTrack(int direction) {
 //         int value = slider.getValue();
-//         if(slider.getOrientation() == JSlider.HORIZONTAL) {
+//         if (slider.getOrientation() == JSlider.HORIZONTAL) {
 //             value = this.valueForXPosition(slider.getMousePosition().x);
-//         }else if(slider.getOrientation() == JSlider.VERTICAL) {
+//         } else if (slider.getOrientation() == JSlider.VERTICAL) {
 //             value = this.valueForYPosition(slider.getMousePosition().y);
 //         }
 //         slider.setValue(value);
@@ -94,7 +94,7 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
     protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getComponent();
+                JSlider slider = (JSlider) e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
@@ -119,7 +119,7 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
     protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider)e.getComponent();
+                JSlider slider = (JSlider) e.getComponent();
                 switch(slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));

@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -71,60 +71,60 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
         TableCellRenderer tcr = tbl.getTableHeader().getDefaultRenderer();
-        boolean f = row==rollOverRowIndex;
-        JLabel l = (JLabel)tcr.getTableCellRendererComponent(tbl, val, isS, f?f:hasF, -1, -1);
-        if(tcr.getClass().getName().indexOf("XPDefaultRenderer")>=0) {
+        boolean f = row == rollOverRowIndex;
+        JLabel l = (JLabel) tcr.getTableCellRendererComponent(tbl, val, isS, f ? f : hasF, -1, -1);
+        if (tcr.getClass().getName().indexOf("XPDefaultRenderer") >= 0) {
             l.setOpaque(!f);
             this.setIcon(new ComponentIcon(l));
             return this;
-        }else{
+        } else {
             return l;
         }
     }
     class RollOverListener extends MouseAdapter {
 //         @Override public void mouseMoved(MouseEvent e) {
-//             JTable table = (JTable)e.getSource();
+//             JTable table = (JTable) e.getSource();
 //             Point pt = e.getPoint();
 //             int column = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-//             rollOverRowIndex = (column==0)?table.rowAtPoint(pt):-1;
+//             rollOverRowIndex = (column == 0) ? table.rowAtPoint(pt) : -1;
 //             table.repaint();
 //         }
 //         @Override public void mouseExited(MouseEvent e) {
-//             JTable table = (JTable)e.getSource();
+//             JTable table = (JTable) e.getSource();
 //             rollOverRowIndex = -1;
 //             table.repaint();
 //         }
         @Override public void mouseMoved(MouseEvent e) {
-            JTable table = (JTable)e.getComponent();
+            JTable table = (JTable) e.getComponent();
             Point pt = e.getPoint();
             int col = table.columnAtPoint(pt);
             int column = table.convertColumnIndexToModel(col);
-            if(column!=0) { return; }
+            if (column!=0) { return; }
 
             int prevRow = rollOverRowIndex;
             rollOverRowIndex = table.rowAtPoint(pt);
-            if(rollOverRowIndex == prevRow) { return; }
+            if (rollOverRowIndex == prevRow) { return; }
             Rectangle repaintRect;
-            if(rollOverRowIndex >= 0) {
+            if (rollOverRowIndex >= 0) {
                 Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
-                if(prevRow >= 0) {
+                if (prevRow >= 0) {
                     repaintRect = r.union(table.getCellRect(prevRow, col, false));
-                }else{
+                } else {
                     repaintRect = r;
                 }
-            }else{
+            } else {
                 repaintRect = table.getCellRect(prevRow, col, false);
             }
             table.repaint(repaintRect);
         }
         @Override public void mouseExited(MouseEvent e) {
-            JTable table = (JTable)e.getComponent();
+            JTable table = (JTable) e.getComponent();
             Point pt = e.getPoint();
             int col = table.columnAtPoint(pt);
             int column = table.convertColumnIndexToModel(col);
-            if(column!=0) { return; }
+            if (column!=0) { return; }
 
-            if(rollOverRowIndex >= 0) {
+            if (rollOverRowIndex >= 0) {
                 table.repaint(table.getCellRect(rollOverRowIndex, col, false));
             }
             rollOverRowIndex = -1;

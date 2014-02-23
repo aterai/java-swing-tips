@@ -32,12 +32,12 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
     @Override public void addEditor() {
         removeEditor();
         ComboBoxEditor cbe = comboBox.getEditor();
-        if(cbe != null) {
+        if (cbe != null) {
             editor = cbe.getEditorComponent();
-            if(editor != null) {
+            if (editor != null) {
                 configureEditor();
                 comboBox.add(editor);
-                if(comboBox.isFocusOwner()) {
+                if (comboBox.isFocusOwner()) {
                     // Switch focus to the editor component
                     editor.requestFocusInWindow();
                 }
@@ -62,7 +62,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         handler2 = null;
     }
     @Override protected MouseListener createListMouseListener() {
-        if(handler2==null) {
+        if (handler2 == null) {
             handler2 = new Handler2();
         }
         return handler2;
@@ -73,22 +73,22 @@ class BasicComboPopup2 extends BasicComboPopup {
         @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
         @Override public void mousePressed(MouseEvent e) { /* not needed */ }
         @Override public void mouseReleased(MouseEvent e) {
-            if(e.getSource() == list) {
-                if(list.getModel().getSize() > 0) {
+            if (e.getSource() == list) {
+                if (list.getModel().getSize() > 0) {
                     // <ins>
-                    if(!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
+                    if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
                         return;
                     }
                     // </ins>
                     // JList mouse listener
-                    if(comboBox.getSelectedIndex() == list.getSelectedIndex()) {
+                    if (comboBox.getSelectedIndex() == list.getSelectedIndex()) {
                         comboBox.getEditor().setItem(list.getSelectedValue());
                     }
                     comboBox.setSelectedIndex(list.getSelectedIndex());
                 }
                 comboBox.setPopupVisible(false);
                 // workaround for cancelling an edited item (bug 4530953)
-                if(comboBox.isEditable() && comboBox.getEditor() != null) {
+                if (comboBox.isEditable() && comboBox.getEditor() != null) {
                     comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
                 }
             }

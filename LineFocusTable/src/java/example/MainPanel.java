@@ -37,11 +37,11 @@ public final class MainPanel extends JPanel {
     private final JTable table;
     public MainPanel() {
         super(new BorderLayout());
-        UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
+        UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2, 2, 2, 2));
         table = new LineFocusTable(model);
 
         //TableColumnModel columns = table.getColumnModel();
-        //for(int i=0;i<columns.getColumnCount();i++) {
+        //for (int i = 0; i < columns.getColumnCount(); i++) {
         //    columns.getColumn(i).setCellRenderer(new TestRenderer());
         //}
 
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     }
     class TestCreateAction extends AbstractAction {
         public TestCreateAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", 0, true});
@@ -68,21 +68,21 @@ public final class MainPanel extends JPanel {
     }
     class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            for(int i=selection.length-1;i>=0;i--) {
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
     }
     class ClearAction extends AbstractAction {
         public ClearAction(String label, Icon icon) {
-            super(label,icon);
+            super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
             table.clearSelection();
@@ -112,10 +112,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -128,22 +128,22 @@ public final class MainPanel extends JPanel {
 }
 
 // class TestRenderer extends DefaultTableCellRenderer {
-//     private static final DotBorder dotBorder = new DotBorder(2,2,2,2);
-//     private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
+//     private static final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
+//     private static final Border emptyBorder  = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//         Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
-//         if(c instanceof JComponent) {
+//         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//         if (c instanceof JComponent) {
 //             int lsi = table.getSelectionModel().getLeadSelectionIndex();
-//             ((JComponent)c).setBorder(row==lsi?dotBorder:emptyBorder);
-//             dotBorder.setLastCellFlag(row==lsi&&column==table.getColumnCount()-1);
+//             ((JComponent) c).setBorder(row == lsi ? dotBorder : emptyBorder);
+//             dotBorder.setLastCellFlag(row == lsi && column == table.getColumnCount() - 1);
 //         }
 //         return c;
 //     }
 // }
 
 class LineFocusTable extends JTable {
-    private final DotBorder dotBorder = new DotBorder(2,2,2,2);
-    private final Border emptyBorder  = BorderFactory.createEmptyBorder(2,2,2,2);
+    private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
+    private final Border emptyBorder  = BorderFactory.createEmptyBorder(2, 2, 2, 2);
     public LineFocusTable(DefaultTableModel model) {
         super(model);
     }
@@ -159,10 +159,10 @@ class LineFocusTable extends JTable {
     }
     private void updateRenderer() {
         TableModel m = getModel();
-        for(int i=0;i<m.getColumnCount();i++) {
+        for (int i = 0; i < m.getColumnCount(); i++) {
             TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-            if(r instanceof JComponent) {
-                ((JComponent)r).updateUI();
+            if (r instanceof JComponent) {
+                ((JComponent) r).updateUI();
             }
         }
     }
@@ -173,24 +173,24 @@ class LineFocusTable extends JTable {
         checkBox.setOpaque(true);
         checkBox.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                JCheckBox cb = (JCheckBox)e.getComponent();
+                JCheckBox cb = (JCheckBox) e.getComponent();
                 ButtonModel m = cb.getModel();
-                if(m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
-                    if(getEditingRow()%2==0) {
+                if (m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
+                    if (getEditingRow() % 2 == 0) {
                         cb.setOpaque(false);
                         //cb.setBackground(getBackground());
-                    }else{
+                    } else {
                         cb.setOpaque(true);
                         cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
                     }
-                }else{
+                } else {
                     cb.setBackground(getSelectionBackground());
                     cb.setOpaque(true);
                 }
             }
             @Override public void mouseExited(MouseEvent e) {
                 //in order to drag table row selection
-                if(isEditing() && !getCellEditor().stopCellEditing()) {
+                if (isEditing() && !getCellEditor().stopCellEditing()) {
                     getCellEditor().cancelCellEditing();
                 }
             }
@@ -199,35 +199,35 @@ class LineFocusTable extends JTable {
     }
     private void updateBorderType(DotBorder border, int column) {
         border.type = EnumSet.noneOf(Type.class);
-        if(column==0) {
+        if (column == 0) {
             border.type.add(Type.START);
         }
-        if(column==getColumnCount()-1) {
+        if (column == getColumnCount() - 1) {
             border.type.add(Type.END);
         }
     }
     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
-        if(c instanceof JCheckBox) {
-            JCheckBox b = (JCheckBox)c;
+        if (c instanceof JCheckBox) {
+            JCheckBox b = (JCheckBox) c;
             b.setBorderPainted(true);
         }
-        if(row==getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
-            ((JComponent)c).setBorder(dotBorder);
+        if (row == getSelectionModel().getLeadSelectionIndex()) { //isRowSelected(row)) {
+            ((JComponent) c).setBorder(dotBorder);
             updateBorderType(dotBorder, column);
-        }else{
-            ((JComponent)c).setBorder(emptyBorder);
+        } else {
+            ((JComponent) c).setBorder(emptyBorder);
         }
         return c;
     }
     @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
-        if(c instanceof JCheckBox) {
-            JCheckBox b = (JCheckBox)c;
+        if (c instanceof JCheckBox) {
+            JCheckBox b = (JCheckBox) c;
             //System.out.println(b.getBorder());
             b.setBorder(dotBorder);
             updateBorderType(dotBorder, column);
-            //updateBorderType((DotBorder)b.getBorder(), column);
+            //updateBorderType((DotBorder) b.getBorder(), column);
             //b.setBorderPainted(true);
             //b.setBackground(getSelectionBackground());
         }
@@ -241,7 +241,7 @@ class DotBorder extends EmptyBorder {
     private static final BasicStroke DASHED = new BasicStroke(
         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
         10.0f, new float[] {1.0f}, 0.0f);
-    private static final Color DOT_COLOR = new Color(200,150,150);
+    private static final Color DOT_COLOR = new Color(200, 150, 150);
     public EnumSet<Type> type = EnumSet.noneOf(Type.class);
 
     public DotBorder(int top, int left, int bottom, int right) {
@@ -251,24 +251,24 @@ class DotBorder extends EmptyBorder {
         return true;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D)g.create();
-        g2.translate(x,y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
         g2.setPaint(DOT_COLOR);
         g2.setStroke(DASHED);
-        if(type.contains(Type.START)) {
-            g2.drawLine(0,0,0,h);
+        if (type.contains(Type.START)) {
+            g2.drawLine(0, 0, 0, h);
         }
-        if(type.contains(Type.END)) {
-            g2.drawLine(w-1,0,w-1,h);
+        if (type.contains(Type.END)) {
+            g2.drawLine(w - 1, 0, w - 1, h);
         }
-        if(c.getBounds().x%2==0) {
-            g2.drawLine(0,0,w,0);
-            g2.drawLine(0,h-1,w,h-1);
-        }else{
-            g2.drawLine(1,0,w,0);
-            g2.drawLine(1,h-1,w,h-1);
+        if (c.getBounds().x % 2 == 0) {
+            g2.drawLine(0, 0, w, 0);
+            g2.drawLine(0, h - 1, w, h - 1);
+        } else {
+            g2.drawLine(1, 0, w, 0);
+            g2.drawLine(1, h - 1, w, h - 1);
         }
-        //g2.translate(-x,-y);
+        //g2.translate(-x, -y);
         g2.dispose();
     }
 }
@@ -290,28 +290,28 @@ class DotBorder extends EmptyBorder {
 //     }
 //   };
 //   public JComponent makeUI() {
-//     UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2,2,2,2));
+//     UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2, 2, 2, 2));
 //     JTable table = new JTable(model) {
-//       private final DotBorder dotBorder = new DotBorder(2,2,2,2);
+//       private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
 //       private void updateBorderType(DotBorder border, boolean isLeadRow, int column) {
 //         border.type = EnumSet.noneOf(DotBorder.Type.class);
-//         if(isLeadRow) {
+//         if (isLeadRow) {
 //           border.type.add(DotBorder.Type.LEAD);
-//           if(column==0) { border.type.add(DotBorder.Type.WEST); }
-//           if(column==getColumnCount()-1) { border.type.add(DotBorder.Type.EAST); }
+//           if (column == 0) { border.type.add(DotBorder.Type.WEST); }
+//           if (column == getColumnCount()-1) { border.type.add(DotBorder.Type.EAST); }
 //         }
 //       }
 //       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-//         JComponent c = (JComponent)super.prepareRenderer(tcr, row, column);
+//         JComponent c = (JComponent) super.prepareRenderer(tcr, row, column);
 //         c.setBorder(dotBorder);
-//         updateBorderType(dotBorder, row==getSelectionModel().getLeadSelectionIndex(), column);
+//         updateBorderType(dotBorder, row == getSelectionModel().getLeadSelectionIndex(), column);
 //         return c;
 //       }
 //       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
 //         Component c = super.prepareEditor(editor, row, column);
-//         if(c instanceof JCheckBox) {
-//           JCheckBox b = (JCheckBox)c;
-//           updateBorderType((DotBorder)b.getBorder(), true, column);
+//         if (c instanceof JCheckBox) {
+//           JCheckBox b = (JCheckBox) c;
+//           updateBorderType((DotBorder) b.getBorder(), true, column);
 //           b.setBorderPainted(true);
 //           b.setBackground(getSelectionBackground());
 //         }
@@ -346,7 +346,7 @@ class DotBorder extends EmptyBorder {
 //   private static final BasicStroke dashed = new BasicStroke(
 //     1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
 //     10.0f, (new float[] {1.0f}), 0.0f);
-//   private static final Color DOT_COLOR = new Color(200,150,150);
+//   private static final Color DOT_COLOR = new Color(200, 150, 150);
 //   public DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);
 //   }
@@ -355,26 +355,26 @@ class DotBorder extends EmptyBorder {
 //   }
 //   @Override public void paintBorder(
 //     Component c, Graphics g, int x, int y, int w, int h) {
-//     Graphics2D g2 = (Graphics2D)g.create();
-//     g2.translate(x,y);
+//     Graphics2D g2 = (Graphics2D) g.create();
+//     g2.translate(x, y);
 //     g2.setPaint(DOT_COLOR);
 //     g2.setStroke(dashed);
-//     if(type.contains(Type.WEST)) {
-//       g2.drawLine(0,0,0,h);
+//     if (type.contains(Type.WEST)) {
+//       g2.drawLine(0, 0, 0, h);
 //     }
-//     if(type.contains(Type.EAST)) {
-//       g2.drawLine(w-1,0,w-1,h);
+//     if (type.contains(Type.EAST)) {
+//       g2.drawLine(w - 1, 0, w - 1, h);
 //     }
-//     if(type.contains(Type.LEAD)) {
-//       if(c.getBounds().x%2==0) {
-//         g2.drawLine(0,0,w,0);
-//         g2.drawLine(0,h-1,w,h-1);
-//       }else{
-//         g2.drawLine(1,0,w,0);
-//         g2.drawLine(1,h-1,w,h-1);
+//     if (type.contains(Type.LEAD)) {
+//       if (c.getBounds().x % 2 == 0) {
+//         g2.drawLine(0, 0, w, 0);
+//         g2.drawLine(0, h - 1, w, h - 1);
+//       } else {
+//         g2.drawLine(1, 0, w, 0);
+//         g2.drawLine(1, h - 1, w, h - 1);
 //       }
 //     }
-//     //g2.translate(-x,-y);
+//     //g2.translate(-x, -y);
 //     g2.dispose();
 //   }
 // }

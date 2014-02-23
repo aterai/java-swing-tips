@@ -74,15 +74,15 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         removeMouseMotionListener(handler);
         super.updateUI();
         eventListenerList = new EventListenerList();
-        if(handler == null) {
+        if (handler == null) {
             handler = new CloseableTabIconHandler();
         }
         addMouseListener(handler);
         addMouseMotionListener(handler);
 
-        if(getUI() instanceof WindowsTabbedPaneUI) {
+        if (getUI() instanceof WindowsTabbedPaneUI) {
             setUI(new CloseableWindowsTabbedPaneUI());
-        }else{
+        } else {
             setUI(new CloseableTabbedPaneUI());
         }
     }
@@ -108,10 +108,10 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         //addTab(title, component, null);
         super.addTab(title, new CloseTabIcon(null), component);
 
-        if(headerViewport == null) {
-            for(Component c: getComponents()) {
-                if("TabbedPane.scrollableViewport".equals(c.getName())) {
-                    headerViewport = (JViewport)c;
+        if (headerViewport == null) {
+            for (Component c: getComponents()) {
+                if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+                    headerViewport = (JViewport) c;
                     break;
                 }
             }
@@ -126,27 +126,27 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
 //      */
 //     public void addTab(String title, Component component, Icon extraIcon) {
 // //         boolean doPaintCloseIcon = true;
-// //         if(component instanceof JComponent) {
-// //             Object prop = ((JComponent)component).getClientProperty("isClosable");
-// //             if(prop != null) {
-// //                 doPaintCloseIcon = ((Boolean)prop).booleanValue();
+// //         if (component instanceof JComponent) {
+// //             Object prop = ((JComponent) component).getClientProperty("isClosable");
+// //             if (prop != null) {
+// //                 doPaintCloseIcon = ((Boolean) prop).booleanValue();
 // //             }
 // //         }
 // //
 // //         super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
 //         super.addTab(title, new CloseTabIcon(extraIcon), component);
 //
-//         if(headerViewport == null) {
-//             //for(Component c : getComponents()) {
-//             //    if("TabbedPane.scrollableViewport".equals(c.getName()))
+//         if (headerViewport == null) {
+//             //for (Component c : getComponents()) {
+//             //    if ("TabbedPane.scrollableViewport".equals(c.getName()))
 //             //      headerViewport = (JViewport) c;
 //             //}
 //
 //             Component[] list = getComponents();
-//             for(int i=0;i<list.length;i++) {
+//             for (int i = 0; i < list.length; i++) {
 //                 Component c = list[i];
-//                 if("TabbedPane.scrollableViewport".equals(c.getName())) {
-//                     headerViewport = (JViewport)c;
+//                 if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+//                     headerViewport = (JViewport) c;
 //                 }
 //             }
 //         }
@@ -175,7 +175,7 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
      * no listeners have been added
      */
     public CloseableTabbedPaneListener[] getCloseableTabbedPaneListener() {
-        return (CloseableTabbedPaneListener[])eventListenerList.getListeners(CloseableTabbedPaneListener.class);
+        return (CloseableTabbedPaneListener[]) eventListenerList.getListeners(CloseableTabbedPaneListener.class);
     }
 
     /**
@@ -188,10 +188,10 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         boolean closeit = true;
         // Guaranteed to return a non-null array
         Object[] listeners = eventListenerList.getListenerList();
-        //for(Object i : listeners) {
-        for(int j=0;j<listeners.length;j++) {
+        //for (Object i : listeners) {
+        for (int j = 0; j < listeners.length; j++) {
             Object i = listeners[j];
-            if(i instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) i).closeTab(tabIndexToClose)) {
+            if (i instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) i).closeTab(tabIndexToClose)) {
                 closeit = false;
                 break;
             }
@@ -219,18 +219,18 @@ class CloseableTabIconHandler extends MouseAdapter {
      */
     @Override public void mouseClicked(MouseEvent e) {
         Component c = e.getComponent();
-        if(!(c instanceof CloseableTabbedPane)) {
+        if (!(c instanceof CloseableTabbedPane)) {
             return;
         }
-        CloseableTabbedPane tabbedPane = (CloseableTabbedPane)c;
+        CloseableTabbedPane tabbedPane = (CloseableTabbedPane) c;
         CloseTabIcon icon = getCloseTabIcon(tabbedPane, e.getPoint());
-        if(icon == null) {
+        if (icon == null) {
             return;
         }
-        if(isCloseTabIconRollover(tabbedPane, icon, e)) {
+        if (isCloseTabIconRollover(tabbedPane, icon, e)) {
             int selIndex = tabbedPane.getSelectedIndex();
-            if(tabbedPane.fireCloseTab(selIndex)) {
-                if(selIndex > 0) {
+            if (tabbedPane.fireCloseTab(selIndex)) {
+                if (selIndex > 0) {
                     // to prevent uncatchable null-pointers
                     Rectangle rec = tabbedPane.getUI().getTabBounds(tabbedPane, selIndex - 1);
                     MouseEvent event = new MouseEvent(e.getComponent(),
@@ -247,11 +247,11 @@ class CloseableTabIconHandler extends MouseAdapter {
                 //the tab is being closed
                 //removeTabAt(tabNumber);
                 tabbedPane.remove(selIndex);
-            }else{
+            } else {
                 icon.mouseover = false;
                 icon.mousepressed = false;
             }
-        }else{
+        } else {
             icon.mouseover = false;
         }
         tabbedPane.repaint(drawRect);
@@ -263,13 +263,13 @@ class CloseableTabIconHandler extends MouseAdapter {
      */
     @Override public void mouseExited(MouseEvent e) {
         Component c = e.getComponent();
-        if(!(c instanceof CloseableTabbedPane)) {
+        if (!(c instanceof CloseableTabbedPane)) {
             return;
         }
-        CloseableTabbedPane tabbedPane = (CloseableTabbedPane)c;
-        for(int i=0; i<tabbedPane.getTabCount(); i++) {
-            CloseTabIcon icon = (CloseTabIcon)tabbedPane.getIconAt(i);
-            if(icon != null) {
+        CloseableTabbedPane tabbedPane = (CloseableTabbedPane) c;
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            CloseTabIcon icon = (CloseTabIcon) tabbedPane.getIconAt(i);
+            if (icon != null) {
                 icon.mouseover = false;
             }
         }
@@ -282,12 +282,12 @@ class CloseableTabIconHandler extends MouseAdapter {
      */
     @Override public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
-        if(!(c instanceof CloseableTabbedPane)) {
+        if (!(c instanceof CloseableTabbedPane)) {
             return;
         }
-        CloseableTabbedPane tabbedPane = (CloseableTabbedPane)c;
+        CloseableTabbedPane tabbedPane = (CloseableTabbedPane) c;
         CloseTabIcon icon = getCloseTabIcon(tabbedPane, e.getPoint());
-        if(icon != null) {
+        if (icon != null) {
             Rectangle rect = icon.getBounds();
             Point pos = tabbedPane.headerViewport == null ? new Point() : tabbedPane.headerViewport.getViewPosition();
             drawRect.setBounds(rect.x - pos.x, rect.y - pos.y, rect.width, rect.height);
@@ -310,16 +310,16 @@ class CloseableTabIconHandler extends MouseAdapter {
      */
     @Override public void mouseDragged(MouseEvent e) {
         Component c = e.getComponent();
-        if(!(c instanceof CloseableTabbedPane)) {
+        if (!(c instanceof CloseableTabbedPane)) {
             return;
         }
-        CloseableTabbedPane tabbedPane = (CloseableTabbedPane)c;
+        CloseableTabbedPane tabbedPane = (CloseableTabbedPane) c;
         CloseTabIcon icon = getCloseTabIcon(tabbedPane, e.getPoint());
-        if(icon != null) {
-            if(isCloseTabIconRollover(tabbedPane, icon, e)) {
+        if (icon != null) {
+            if (isCloseTabIconRollover(tabbedPane, icon, e)) {
                 icon.mouseover = true;
                 icon.mousepressed = e.getModifiers() == e.BUTTON1_MASK;
-            }else{
+            } else {
                 icon.mouseover = false;
             }
             tabbedPane.repaint(drawRect);
@@ -333,16 +333,16 @@ class CloseableTabIconHandler extends MouseAdapter {
      */
     @Override public void mouseMoved(MouseEvent e) {
         Component c = e.getComponent();
-        if(!(c instanceof CloseableTabbedPane)) {
+        if (!(c instanceof CloseableTabbedPane)) {
             return;
         }
-        CloseableTabbedPane tabbedPane = (CloseableTabbedPane)c;
+        CloseableTabbedPane tabbedPane = (CloseableTabbedPane) c;
         CloseTabIcon icon = getCloseTabIcon(tabbedPane, e.getPoint());
-        if(icon != null) {
-            if(isCloseTabIconRollover(tabbedPane, icon, e)) {
+        if (icon != null) {
+            if (isCloseTabIconRollover(tabbedPane, icon, e)) {
                 icon.mouseover = true;
                 icon.mousepressed = e.getModifiers() == e.BUTTON1_MASK;
-            }else{
+            } else {
                 icon.mouseover = false;
             }
             tabbedPane.repaint(drawRect);
@@ -352,10 +352,10 @@ class CloseableTabIconHandler extends MouseAdapter {
     private CloseTabIcon getCloseTabIcon(CloseableTabbedPane tabbedPane, Point pt) {
         //int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
         int tabNumber = tabbedPane.indexAtLocation(pt.x, pt.y);
-        if(tabNumber < 0) {
+        if (tabNumber < 0) {
             return null;
-        }else{
-            return (CloseTabIcon)tabbedPane.getIconAt(tabNumber);
+        } else {
+            return (CloseTabIcon) tabbedPane.getIconAt(tabNumber);
         }
     }
 }
@@ -422,63 +422,63 @@ class CloseTabIcon implements Icon {
      */
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         //boolean doPaintCloseIcon = true;
-        //// try{
+        //// try {
         ////     JComponent.putClientProperty("isClosable", new Boolean(false));
-        //if(c instanceof JTabbedPane) {
-        //    JTabbedPane tabbedpane = (JTabbedPane)c;
+        //if (c instanceof JTabbedPane) {
+        //    JTabbedPane tabbedpane = (JTabbedPane) c;
         //    int tabNumber = tabbedpane.getUI().tabForCoordinate(tabbedpane, x, y);
         //    JComponent curPanel = (JComponent) tabbedpane.getComponentAt(tabNumber);
         //    Object prop = curPanel.getClientProperty("isClosable");
-        //    if(prop != null) {
-        //        doPaintCloseIcon = ((Boolean)prop).booleanValue();
+        //    if (prop != null) {
+        //        doPaintCloseIcon = ((Boolean) prop).booleanValue();
         //    }
         //}
-        ////}catch(Exception ignored) {
+        ////} catch (Exception ignored) {
         ////    /*Could probably be a ClassCastException*/
         ////    ignored.printStackTrace();
         ////}
-        //if(doPaintCloseIcon) {
+        //if (doPaintCloseIcon) {
         xpos = x;
         ypos = y;
         int yp = y + 2; //+2: baseline?
 
-        //if(normalCloseIcon != null && !mouseover) {
+        //if (normalCloseIcon != null && !mouseover) {
         //    normalCloseIcon.paintIcon(c, g, x, yp);
-        //}else if(hooverCloseIcon != null && mouseover && !mousepressed) {
+        //} else if (hooverCloseIcon != null && mouseover && !mousepressed) {
         //    hooverCloseIcon.paintIcon(c, g, x, yp);
-        //}else if(pressedCloseIcon != null && mousepressed) {
+        //} else if (pressedCloseIcon != null && mousepressed) {
         //    pressedCloseIcon.paintIcon(c, g, x, yp);
-        //}else{
+        //} else {
         //yp++;
 
         //Color col = g.getColor();
 
-        Graphics2D g2 = (Graphics2D)g.create();
-        if(mousepressed && mouseover) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        if (mousepressed && mouseover) {
             g2.setColor(Color.WHITE);
-            g2.fillRect(x+1, yp+1, 12, 13);
+            g2.fillRect(x + 1, yp + 1, 12, 13);
         }
 
         g2.setColor(mouseover ? Color.ORANGE : Color.BLACK);
         //g2.setColor(Color.BLACK);
-        g2.drawLine(x+1,  yp,    x+12, yp);
-        g2.drawLine(x+1,  yp+13, x+12, yp+13);
-        g2.drawLine(x,    yp+1,  x,    yp+12);
-        g2.drawLine(x+13, yp+1,  x+13, yp+12);
-        g2.drawLine(x+3,  yp+3,  x+10, yp+10);
+        g2.drawLine(x + 1,  yp,      x + 12, yp);
+        g2.drawLine(x + 1,  yp + 13, x + 12, yp + 13);
+        g2.drawLine(x,      yp + 1,  x,      yp + 12);
+        g2.drawLine(x + 13, yp + 1,  x + 13, yp + 12);
+        g2.drawLine(x + 3,  yp + 3,  x + 10, yp + 10);
 
-//         if(mouseover) {
+//         if (mouseover) {
 //             g.setColor(Color.GRAY);
 //         }
-        g2.drawLine(x+3,  yp+4, x+9,  yp+10);
-        g2.drawLine(x+4,  yp+3, x+10, yp+9);
-        g2.drawLine(x+10, yp+3, x+3,  yp+10);
-        g2.drawLine(x+10, yp+4, x+4,  yp+10);
-        g2.drawLine(x+9,  yp+3, x+3,  yp+9);
+        g2.drawLine(x + 3,  yp + 4, x + 9,  yp + 10);
+        g2.drawLine(x + 4,  yp + 3, x + 10, yp + 9);
+        g2.drawLine(x + 10, yp + 3, x + 3,  yp + 10);
+        g2.drawLine(x + 10, yp + 4, x + 4,  yp + 10);
+        g2.drawLine(x + 9,  yp + 3, x + 3,  yp + 9);
         g2.dispose();
 //         g.setColor(col);
-        //        if(fileIcon != null) {
-        //            fileIcon.paintIcon(c, g, x+width, yp);
+        //        if (fileIcon != null) {
+        //            fileIcon.paintIcon(c, g, x + width, yp);
         //        }
         //    }
         //}
@@ -573,7 +573,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         iconRect.setLocation(0, 0);
 
         javax.swing.text.View v = getTextViewForTab(tabIndex);
-        if(v != null) {
+        if (v != null) {
             tabPane.putClientProperty(HTML, v);
         }
 
@@ -649,7 +649,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         iconRect.setLocation(0, 0);
 
         javax.swing.text.View v = getTextViewForTab(tabIndex);
-        if(v != null) {
+        if (v != null) {
             tabPane.putClientProperty(HTML, v);
         }
 

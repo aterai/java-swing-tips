@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     private final JProgressBar progress03 = new JProgressBar(model);
     private final JProgressBar progress04 = new JProgressBar(model);
     private final BlockedColorLayerUI layerUI = new BlockedColorLayerUI();
-    private final JPanel p = new JPanel(new GridLayout(2,1));
+    private final JPanel p = new JPanel(new GridLayout(2, 1));
     private SwingWorker<String, Void> worker;
 
     public MainPanel() {
@@ -35,8 +35,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalGlue());
         box.add(new JCheckBox(new AbstractAction("Turn the progress bar red") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean b = ((JCheckBox)e.getSource()).isSelected();
-                progress02.setForeground(b? new Color(255,0,0,100) : progress01.getForeground());
+                boolean b = ((JCheckBox) e.getSource()).isSelected();
+                progress02.setForeground(b ? new Color(255, 0, 0, 100) : progress01.getForeground());
                 layerUI.isPreventing = b;
                 p.repaint();
             }
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalStrut(2));
         box.add(new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {
-                if(worker!=null && !worker.isDone()) {
+                if (worker != null && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = new Task();
@@ -57,12 +57,12 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         addHierarchyListener(this);
         add(p);
         add(box, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void hierarchyChanged(HierarchyEvent he) {
-        JComponent c = (JComponent)he.getComponent();
-        if((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker!=null) {
+        JComponent c = (JComponent) he.getComponent();
+        if ((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker != null) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         c.insets  = new Insets(5, 5, 5, 5);
         c.weightx = 1.0;
         c.gridy   = 0;
-        for(JComponent cmp:list) {
+        for (JComponent cmp:list) {
             p.add(cmp, c);
             c.gridy++;
         }
@@ -90,10 +90,10 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -113,13 +113,13 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
     private int prevh = -1;
 
     @Override public void paint(Graphics g, JComponent c) {
-        if(isPreventing && c instanceof JLayer) {
-            JLayer jlayer = (JLayer)c;
-            JProgressBar progress = (JProgressBar)jlayer.getView();
+        if (isPreventing && c instanceof JLayer) {
+            JLayer jlayer = (JLayer) c;
+            JProgressBar progress = (JProgressBar) jlayer.getView();
             int w = progress.getSize().width;
             int h = progress.getSize().height;
 
-            if(bi==null || w!=prevw || h!=prevh) {
+            if (bi == null || w != prevw || h != prevh) {
                 bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             }
             prevw = w;
@@ -131,7 +131,7 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
 
             Image image = c.createImage(new FilteredImageSource(bi.getSource(), new RedGreenChannelSwapFilter()));
             g.drawImage(image, 0, 0, c);
-        }else{
+        } else {
             super.paint(g, c);
         }
     }
@@ -139,10 +139,10 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
 
 class RedGreenChannelSwapFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int)((argb >> 16) & 0xff);
-        int g = (int)((argb >>  8) & 0xff);
-        int b = (int)((argb)       & 0xff);
-        return (argb & 0xff000000) | (g<<16) | (r<<8) | (b);
+        int r = (int) ((argb >> 16) & 0xff);
+        int g = (int) ((argb >>  8) & 0xff);
+        int b = (int) ((argb)       & 0xff);
+        return (argb & 0xff000000) | (g << 16) | (r << 8) | (b);
     }
 }
 
@@ -150,10 +150,10 @@ class Task extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 100;
-        while(current<=lengthOfTask && !isCancelled()) {
+        while (current<=lengthOfTask && !isCancelled()) {
             try { // dummy task
                 Thread.sleep(50);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return "Interrupted";
             }
             setProgress(100 * current / lengthOfTask);
@@ -171,9 +171,9 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
         String strPropertyName = evt.getPropertyName();
-        if("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer)evt.getNewValue();
+            int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
         }
     }

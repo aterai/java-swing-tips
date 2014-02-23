@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
         //table.setFocusable(false);
         table.setFillsViewportHeight(true);
         table.setShowVerticalLines(false);
-        table.setIntercellSpacing(new Dimension(0,1));
+        table.setIntercellSpacing(new Dimension(0, 1));
         table.setRowHeight(56);
-        for(int i=0; i<table.getColumnModel().getColumnCount(); i++) {
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             TableColumn c = table.getColumnModel().getColumn(i);
             c.setCellRenderer(new ColumnSpanningCellRenderer());
             c.setMinWidth(50);
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -74,7 +74,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
     private final JScrollPane scroll = new JScrollPane();
 
     public ColumnSpanningCellRenderer() {
-        super(new BorderLayout(0,0));
+        super(new BorderLayout(0, 0));
 
         scroll.setViewportView(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -85,17 +85,17 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         scroll.getViewport().setOpaque(false);
 
         textArea.setBorder(BorderFactory.createEmptyBorder());
-        textArea.setMargin(new Insets(0,0,0,0));
+        textArea.setMargin(new Insets(0, 0, 0, 0));
         textArea.setForeground(Color.RED);
         textArea.setEditable(false);
         textArea.setFocusable(false);
         textArea.setOpaque(false);
 
-        iconLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         iconLabel.setOpaque(false);
 
         Border b1 = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-        Border b2 = BorderFactory.createMatteBorder(0,0,1,1,Color.GRAY);
+        Border b2 = BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY);
         label.setBorder(BorderFactory.createCompoundBorder(b2, b1));
 
         setBackground(textArea.getBackground());
@@ -105,16 +105,16 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Test test;
-        if(value instanceof Test) {
-            test = (Test)value;
+        if (value instanceof Test) {
+            test = (Test) value;
             add(iconLabel, BorderLayout.WEST);
-        }else{
+        } else {
             String title = Objects.toString(value, "");
             int mrow = table.convertRowIndexToModel(row);
-            Test t = (Test)table.getModel().getValueAt(mrow, 0);
-            if(t==null) {
+            Test t = (Test) table.getModel().getValueAt(mrow, 0);
+            if (t == null) {
                 test = new Test(title, null, "");
-            }else{
+            } else {
                 test = new Test(title, t.icon, t.text);
             }
             remove(iconLabel);
@@ -125,22 +125,22 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
 
         Rectangle cr = table.getCellRect(row, column, false);
 /*/ //Flickering on first visible row ?
-        if(column==0) {
+        if (column == 0) {
             cr.x = 0;
             cr.width -= iconLabel.getPreferredSize().width;
-        }else{
+        } else {
             cr.x -= iconLabel.getPreferredSize().width;
         }
         textArea.scrollRectToVisible(cr);
 /*/
-        if(column!=0) {
+        if (column != 0) {
             cr.x -= iconLabel.getPreferredSize().width;
         }
         scroll.getViewport().setViewPosition(cr.getLocation());
 //*/
-        if(isSelected) {
+        if (isSelected) {
             setBackground(Color.ORANGE);
-        }else{
+        } else {
             setBackground(Color.WHITE);
         }
         return this;

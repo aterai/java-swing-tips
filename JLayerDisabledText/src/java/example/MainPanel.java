@@ -20,11 +20,11 @@ public final class MainPanel extends JPanel {
         final DisableInputLayerUI layerUI = new DisableInputLayerUI();
         JCheckBox check = new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean isSelected = ((JCheckBox)e.getSource()).isSelected();
+                boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
                 button1.setEnabled(isSelected);
 
                 button2.setEnabled(isSelected);
-                button2.setForeground(isSelected?Color.BLACK:Color.RED);
+                button2.setForeground(isSelected ? Color.BLACK : Color.RED);
 
                 layerUI.setLocked(!isSelected);
             }
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JMenuBar mb = new JMenuBar();
@@ -94,9 +94,9 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 
     @Override public void installUI(JComponent c) {
         super.installUI(c);
-        if(c instanceof JLayer) {
-            JLayer jlayer = (JLayer)c;
-            if(DEBUG_POPUP_BLOCK) {
+        if (c instanceof JLayer) {
+            JLayer jlayer = (JLayer) c;
+            if (DEBUG_POPUP_BLOCK) {
                 jlayer.getGlassPane().addMouseListener(dummyMouseListener);
                 jlayer.getGlassPane().addKeyListener(dummyKeyListener);
             }
@@ -106,10 +106,10 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         }
     }
     @Override public void uninstallUI(JComponent c) {
-        if(c instanceof JLayer) {
-            JLayer jlayer = (JLayer)c;
+        if (c instanceof JLayer) {
+            JLayer jlayer = (JLayer) c;
             jlayer.setLayerEventMask(0);
-            if(DEBUG_POPUP_BLOCK) {
+            if (DEBUG_POPUP_BLOCK) {
                 jlayer.getGlassPane().removeMouseListener(dummyMouseListener);
                 jlayer.getGlassPane().removeKeyListener(dummyKeyListener);
             }
@@ -126,24 +126,24 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         System.out.println("processFocusEvent");
     }
     @Override public void eventDispatched(AWTEvent e, JLayer<? extends JComponent> l) {
-        if(isBlocking && e instanceof InputEvent) {
-            ((InputEvent)e).consume();
+        if (isBlocking && e instanceof InputEvent) {
+            ((InputEvent) e).consume();
         }
     }
     private static final String CMD_BLOCKING = "lock";
     public void setLocked(boolean flag) {
         boolean oldv = isBlocking;
         isBlocking = flag;
-        firePropertyChange(CMD_BLOCKING,oldv,isBlocking);
+        firePropertyChange(CMD_BLOCKING, oldv, isBlocking);
     }
     @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends JComponent> l) {
         String cmd = pce.getPropertyName();
-        if(CMD_BLOCKING.equals(cmd)) {
-            JButton b = (JButton)l.getView();
+        if (CMD_BLOCKING.equals(cmd)) {
+            JButton b = (JButton) l.getView();
             b.setFocusable(!isBlocking);
-            b.setMnemonic(isBlocking?0:b.getText().charAt(0));
-            b.setForeground(isBlocking?Color.RED:Color.BLACK);
-            l.getGlassPane().setVisible((Boolean)pce.getNewValue());
+            b.setMnemonic(isBlocking ? 0 : b.getText().charAt(0));
+            b.setForeground(isBlocking ? Color.RED : Color.BLACK);
+            l.getGlassPane().setVisible((Boolean) pce.getNewValue());
         }
     }
 }
@@ -174,13 +174,13 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 //     boolean oldVisible = isVisible();
 //     super.setVisible(isVisible);
 //     JRootPane rootPane = SwingUtilities.getRootPane(this);
-//     if(rootPane!=null && isVisible()!=oldVisible) {
+//     if (rootPane != null && isVisible() != oldVisible) {
 //       rootPane.getLayeredPane().setVisible(!isVisible);
 //     }
 //   }
 //   @Override public void paintComponent(Graphics g) {
 //     JRootPane rootPane = SwingUtilities.getRootPane(this);
-//     if(rootPane!=null) {
+//     if (rootPane != null) {
 //       // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/
 //       // it is important to call print() instead of paint() here
 //       // because print() doesn't affect the frame's double buffer
@@ -193,29 +193,29 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 // class PrintGlassPane extends JPanel {
 //     //TexturePaint texture = TextureFactory.createCheckerTexture(4);
 //     public PrintGlassPane() {
-//         super((LayoutManager)null);
+//         super((LayoutManager) null);
 //         setOpaque(false);
 //     }
 //     @Override public void setVisible(boolean isVisible) {
 //         boolean oldVisible = isVisible();
 //         super.setVisible(isVisible);
 //         JRootPane rootPane = SwingUtilities.getRootPane(this);
-//         if(rootPane!=null && isVisible()!=oldVisible) {
+//         if (rootPane != null && isVisible() != oldVisible) {
 //             rootPane.getLayeredPane().setVisible(!isVisible);
 //         }
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
 //         JRootPane rootPane = SwingUtilities.getRootPane(this);
-//         if(rootPane!=null) {
+//         if (rootPane != null) {
 //             //http://weblogs.java.net/blog/alexfromsun/archive/2008/01/
 //             // it is important to call print() instead of paint() here
 //             // because print() doesn't affect the frame's double buffer
 //             rootPane.getLayeredPane().print(g);
 //         }
-//         //     Graphics2D g2 = (Graphics2D)g.create();
+//         //     Graphics2D g2 = (Graphics2D) g.create();
 //         //     g2.setPaint(texture);
-//         //     g2.fillRect(0,0,getWidth(),getHeight());
+//         //     g2.fillRect(0, 0, getWidth(), getHeight());
 //         //     g2.dispose();
 //     }
 // }
@@ -227,7 +227,7 @@ final class LookAndFeelUtil {
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
@@ -239,10 +239,10 @@ final class LookAndFeelUtil {
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
+                try {
                     setLookAndFeel(m.getActionCommand());
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -254,7 +254,7 @@ final class LookAndFeelUtil {
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
@@ -262,7 +262,7 @@ final class LookAndFeelUtil {
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

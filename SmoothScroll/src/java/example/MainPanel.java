@@ -17,13 +17,13 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         StringBuilder sb = new StringBuilder();
         String dummyStr = "aaaaaaaaaaaaa\n";
-        for(int i=0;i<2000;i++) {
+        for (int i = 0; i < 2000; i++) {
             sb.append(dummyStr);
         }
         textArea.setText(sb.toString());
 
         scroll.setRowHeaderView(new LineNumberView(textArea));
-        textArea.setBorder(BorderFactory.createEmptyBorder(0,2,0,0));
+        textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
         textArea.setEditable(false);
 
         JButton button = new JButton(new AbstractAction("Goto Line") {
@@ -46,32 +46,32 @@ public final class MainPanel extends JPanel {
         Document doc = textArea.getDocument();
         Element root = doc.getDefaultRootElement();
         int ln = getDestLineNumber(textField, root);
-//         if(ln<0) {
+//         if (ln < 0) {
 //             Toolkit.getDefaultToolkit().beep();
 //             return;
 //         }
-        try{
-            final Element elem = root.getElement(ln-1);
+        try {
+            final Element elem = root.getElement(ln - 1);
             final Rectangle dest = textArea.modelToView(elem.getStartOffset());
             final Rectangle current = scroll.getViewport().getViewRect();
             new Timer(20, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
-                    Timer animator = (Timer)e.getSource();
-                    if(dest.y < current.y && animator.isRunning()) {
-                        int d = Math.max(1, (current.y-dest.y)/2);
+                    Timer animator = (Timer) e.getSource();
+                    if (dest.y < current.y && animator.isRunning()) {
+                        int d = Math.max(1, (current.y - dest.y) / 2);
                         current.y = current.y - d;
                         textArea.scrollRectToVisible(current);
-                    }else if(dest.y > current.y && animator.isRunning()) {
-                        int d = Math.max(1, (dest.y-current.y)/2);
+                    } else if (dest.y > current.y && animator.isRunning()) {
+                        int d = Math.max(1, (dest.y - current.y) / 2);
                         current.y = current.y + d;
                         textArea.scrollRectToVisible(current);
-                    }else{
+                    } else {
                         textArea.setCaretPosition(elem.getStartOffset());
                         animator.stop();
                     }
                 }
             }).start();
-        }catch(BadLocationException ble) {
+        } catch (BadLocationException ble) {
             Toolkit.getDefaultToolkit().beep();
         }
     }
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     private static int getDestLineNumber(JTextField textField, Element root) {
         int lineNumber = Integer.parseInt(textField.getText().trim());
         return Math.max(1, Math.min(root.getElementCount(), lineNumber));
-//         }catch(NumberFormatException nfe) {
+//         } catch (NumberFormatException nfe) {
 //             //nfe.printStackTrace();
 //             lineNumber = -1;
 //         }
@@ -94,10 +94,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -181,7 +181,7 @@ class LineNumberView extends JComponent {
         int end   = getLineAtPoint(base + clip.height);
         int y     = start * fontHeight;
         int rmg   = getBorder().getBorderInsets(this).right;
-        for(int i=start;i<=end;i++) {
+        for (int i = start; i <= end; i++) {
             String text = String.valueOf(i + 1);
             int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
             y += fontAscent;

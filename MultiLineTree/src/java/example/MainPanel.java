@@ -11,7 +11,7 @@ import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(1,2));
+        super(new GridLayout(1, 2));
 
         JTree tree = makeTree(getDefaultTreeModel2());
         tree.setCellRenderer(new MultiLineCellRenderer());
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     private static JTree makeTree(TreeModel model) {
         JTree tree = new JTree(model);
         tree.setRowHeight(0);
-        for(int i=0;i<tree.getRowCount();i++) {
+        for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
         return tree;
@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -118,8 +118,8 @@ class LeafTreeCellEditor extends DefaultTreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         boolean b = super.isCellEditable(e);
         Object o = tree.getLastSelectedPathComponent();
-        if(b && o instanceof TreeNode) {
-            b = ((TreeNode)o).isLeaf();
+        if (b && o instanceof TreeNode) {
+            b = ((TreeNode) o).isLeaf();
         }
         return b;
     }
@@ -138,30 +138,30 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         text.setFont(icon.getFont());
         text.setBorder(BorderFactory.createEmptyBorder());
         icon.setOpaque(true);
-        icon.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
+        icon.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 2));
         icon.setVerticalAlignment(JLabel.TOP);
         setOpaque(false);
-        setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         add(icon, BorderLayout.WEST);
         add(text);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         //String stringValue = tree.convertValueToText(value, isSelected, expanded, leaf, row, hasFocus);
         //setText(stringValue);
-        JLabel l = (JLabel)renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         //setEnabled(tree.isEnabled());
         Color bColor;
         Color fColor;
-        if(isSelected) {
+        if (isSelected) {
             bColor = renderer.getBackgroundSelectionColor();
             fColor = renderer.getTextSelectionColor();
-        }else{
+        } else {
             bColor = renderer.getBackgroundNonSelectionColor();
             fColor = renderer.getTextNonSelectionColor();
-            if(bColor == null) {
+            if (bColor == null) {
                 bColor = renderer.getBackground();
             }
-            if(fColor == null) {
+            if (fColor == null) {
                 fColor = renderer.getForeground();
             }
         }
@@ -169,7 +169,7 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         text.setText(l.getText());
         text.setForeground(fColor);
         text.setBackground(bColor);
-        //text.setBorder(hasFocus?renderer.getBorder():emptyBorder);
+        //text.setBorder(hasFocus ? renderer.getBorder() : emptyBorder);
 
         icon.setIcon(l.getIcon());
         icon.setBackground(bColor);
@@ -184,7 +184,7 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
 class CellTextArea extends JTextArea {
     private Dimension preferredSize;
     @Override public void setPreferredSize(Dimension d) {
-        if(d != null) {
+        if (d != null) {
             preferredSize = d;
         }
     }
@@ -197,36 +197,36 @@ class CellTextArea extends JTextArea {
         FontMetrics fm = getFontMetrics(getFont());
         int maxWidth = 0;
         int lineCounter = 0;
-        try(BufferedReader br = new BufferedReader(new StringReader(str));
-            Scanner sc = new Scanner(br)) {
-            while(sc.hasNextLine()) {
+        try (BufferedReader br = new BufferedReader(new StringReader(str));
+             Scanner sc = new Scanner(br)) {
+            while (sc.hasNextLine()) {
                 int w = SwingUtilities.computeStringWidth(fm, sc.nextLine());
                 maxWidth = Math.max(maxWidth, w);
                 lineCounter++;
             }
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         lineCounter = Math.max(lineCounter, 1);
         int height = fm.getHeight() * lineCounter;
 //         int lines = 0;
-//         try(BufferedReader br = new BufferedReader(new StringReader(str))) {
+//         try (BufferedReader br = new BufferedReader(new StringReader(str))) {
 //             String line;
-//             while((line = br.readLine()) != null) {
+//             while ((line = br.readLine()) != null) {
 //                 int width = SwingUtilities.computeStringWidth(fm, line);
-//                 if(maxWidth < width) {
+//                 if (maxWidth < width) {
 //                     maxWidth = width;
 //                 }
 //                 lines++;
 //                 line = br.readLine();
 //             }
-//         }catch(IOException ex) {
+//         } catch (IOException ex) {
 //             ex.printStackTrace();
 //         }
 //         lines = lines < 1 ? 1 : lines;
 //         int height = fm.getHeight() * lines;
         Insets i = getInsets();
-        setPreferredSize(new Dimension(maxWidth + i.left+i.right, height+i.top+i.bottom));
+        setPreferredSize(new Dimension(maxWidth + i.left + i.right, height + i.top + i.bottom));
         super.setText(str);
     }
 }
@@ -247,21 +247,21 @@ class CellTextArea2 extends JTextArea {
         Element root   = doc.getDefaultRootElement();
         int lineCount  = root.getElementCount(); //= root.getElementIndex(doc.getLength());
         int maxWidth   = 10;
-        try{
-            for(int i = 0; i < lineCount; i++) {
+        try {
+            for (int i = 0; i < lineCount; i++) {
                 Element e = root.getElement(i);
                 int rangeStart = e.getStartOffset();
                 int rangeEnd = e.getEndOffset();
                 String line = doc.getText(rangeStart, rangeEnd - rangeStart);
                 int width = fm.stringWidth(line);
-                if(maxWidth < width) {
+                if (maxWidth < width) {
                     maxWidth = width;
                 }
             }
-        }catch(BadLocationException ex) {
+        } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
         setRows(lineCount);
-        setColumns(1+maxWidth/getColumnWidth());
+        setColumns(1 + maxWidth / getColumnWidth());
     }
 }

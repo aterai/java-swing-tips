@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -42,7 +42,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
     private int yy;
     private final JToolBar toolBox = new JToolBar() {
         @Override protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());
             g2.dispose();
@@ -53,9 +53,9 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         super(image);
         toolBox.setFloatable(false);
         toolBox.setOpaque(false);
-        toolBox.setBackground(new Color(0,0,0,0));
+        toolBox.setBackground(new Color(0, 0, 0, 0));
         toolBox.setForeground(Color.WHITE);
-        toolBox.setBorder(BorderFactory.createEmptyBorder(2,4,4,4));
+        toolBox.setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
 
         //toolBox.setLayout(new BoxLayout(toolBox, BoxLayout.X_AXIS));
         toolBox.add(Box.createGlue());
@@ -66,21 +66,21 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         toolBox.addMouseListener(new ParentDispatchMouseListener());
 
         setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(222,222,222)),
+            BorderFactory.createLineBorder(new Color(222, 222, 222)),
             BorderFactory.createLineBorder(Color.WHITE, 4)));
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
                 int ncomponents = parent.getComponentCount();
-                if(ncomponents == 0) {
+                if (ncomponents == 0) {
                     return;
                 }
                 int width = parent.getWidth(); // - insets.left - insets.right;
                 int height = parent.getHeight(); // - insets.left - insets.right;
                 int x = 0; //insets.left; int y = insets.top;
-                //for(int i=0;i<ncomponents;i++) {
+                //for (int i = 0; i < ncomponents; i++) {
                 Component c = parent.getComponent(0); //= toolBox;
-                c.setBounds(x, height-yy, width, c.getPreferredSize().height);
+                c.setBounds(x, height - yy, width, c.getPreferredSize().height);
                 //}
             }
         });
@@ -92,16 +92,16 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         private static final int DELAY = 8;
         private int count;
         @Override public void mouseEntered(MouseEvent e) {
-            if(animator!=null && animator.isRunning() || yy==toolBox.getPreferredSize().height) {
+            if (animator != null && animator.isRunning() || yy == toolBox.getPreferredSize().height) {
                 return;
             }
-            final double h = (double)toolBox.getPreferredSize().height;
+            final double h = (double) toolBox.getPreferredSize().height;
             animator = new Timer(DELAY, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
-                    double a = AnimationUtil.easeInOut(++count/h);
-                    yy = (int)(.5d+a*h);
-                    toolBox.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
-                    if(yy>=toolBox.getPreferredSize().height) {
+                    double a = AnimationUtil.easeInOut(++count / h);
+                    yy = (int) (.5d + a * h);
+                    toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                    if (yy >= toolBox.getPreferredSize().height) {
                         yy = toolBox.getPreferredSize().height;
                         animator.stop();
                     }
@@ -112,16 +112,16 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
             animator.start();
         }
         @Override public void mouseExited(MouseEvent e) {
-            if(animator!=null && animator.isRunning() || contains(e.getPoint()) && yy==toolBox.getPreferredSize().height) {
+            if (animator != null && animator.isRunning() || contains(e.getPoint()) && yy == toolBox.getPreferredSize().height) {
                 return;
             }
-            final double h = (double)toolBox.getPreferredSize().height;
+            final double h = (double) toolBox.getPreferredSize().height;
             animator = new Timer(DELAY, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
-                    double a = AnimationUtil.easeInOut(--count/h);
-                    yy = (int)(.5d+a*h);
-                    toolBox.setBackground(new Color(0f,0f,0f,(float)(0.6*a)));
-                    if(yy<=0) {
+                    double a = AnimationUtil.easeInOut(--count / h);
+                    yy = (int) (.5 + a * h);
+                    toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                    if (yy <= 0) {
                         yy = 0;
                         animator.stop();
                     }
@@ -133,22 +133,22 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !isDisplayable()) {
             animator.stop();
         }
     }
     private JButton makeToolButton(String name) {
         ImageIcon icon = new ImageIcon(getClass().getResource(name));
         JButton b = new JButton();
-        b.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        b.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 //         b.addChangeListener(new javax.swing.event.ChangeListener() {
 //             @Override public void stateChanged(ChangeEvent e) {
-//                 JButton button = (JButton)e.getSource();
+//                 JButton button = (JButton) e.getSource();
 //                 ButtonModel model = button.getModel();
-//                 if(button.isRolloverEnabled() && model.isRollover()) {
-//                     button.setBorder(BorderFactory.createLineBorder(Color.WHITE,1));
-//                 }else{
-//                     button.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+//                 if (button.isRolloverEnabled() && model.isRollover()) {
+//                     button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+//                 } else {
+//                     button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 //                 }
 //             }
 //         });
@@ -184,7 +184,7 @@ class ParentDispatchMouseListener extends MouseAdapter {
     private void dispatchMouseEvent(MouseEvent e) {
         Component src = e.getComponent();
         Component tgt = SwingUtilities.getUnwrappedParent(src);
-        if(tgt!=null) {
+        if (tgt != null) {
             tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
         }
     }
@@ -200,22 +200,22 @@ final class AnimationUtil {
         return Math.pow(t, N);
     }
     public static double easeOut(double t) {
-        return Math.pow(t-1d, N) + 1d;
+        return Math.pow(t - 1d, N) + 1d;
     }
     public static double easeInOut(double t) {
 /*/
-        if(t<0.5d) {
-            return 0.5d*Math.pow(t*2d, N);
-        }else{
-            return 0.5d*(Math.pow(t*2d-2d, N) + 2d);
+        if (t < .5) {
+            return .5 * Math.pow(t * 2d, N);
+        } else {
+            return .5 * (Math.pow(t * 2d - 2d, N) + 2d);
         }
     }
 /*/
         double ret;
-        if(t < .5) {
-            ret = .5*intpow(t*2d, N);
-        }else{
-            ret = .5*(intpow(t*2d-2d, N) + 2d);
+        if (t < .5) {
+            ret = .5 * intpow(t * 2d, N);
+        } else {
+            ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
         }
         return ret;
     }
@@ -225,14 +225,14 @@ final class AnimationUtil {
     //http://www.osix.net/modules/article/?id=696
     public static double intpow(double da, int ib) {
         int b = ib;
-        if(b < 0) {
+        if (b < 0) {
             //return d / intpow(a, -b);
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;
         double d = 1.0;
-        for(; b > 0; a *= a, b >>>= 1) {
-            if((b & 1) != 0) {
+        for (; b > 0; a *= a, b >>>= 1) {
+            if ((b & 1) != 0) {
                 d *= a;
             }
         }

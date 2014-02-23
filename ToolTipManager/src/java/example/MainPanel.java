@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         p.add(label1);
         p.add(field);
         p.add(button);
-        p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("ToolTip Test"));
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

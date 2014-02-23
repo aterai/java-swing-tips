@@ -12,13 +12,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(1,2,10,0));
+        JPanel p = new JPanel(new GridLayout(1, 2, 10, 0));
         TransferHandler h = new ListItemTransferHandler();
         p.setBorder(BorderFactory.createTitledBorder("Drag & Drop between JLists"));
         p.add(new JScrollPane(makeList(h)));
         p.add(new JScrollPane(makeList(h)));
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                ((JLabel)c).setForeground((Color)value);
+                ((JLabel) c).setForeground((Color) value);
                 return c;
             }
         });
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -92,7 +92,7 @@ class ListItemTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
-        source = (JList)c;
+        source = (JList) c;
         indices = source.getSelectedIndices();
         @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
@@ -105,34 +105,34 @@ class ListItemTransferHandler extends TransferHandler {
     }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferSupport info) {
-        if(!canImport(info)) {
+        if (!canImport(info)) {
             return false;
         }
         TransferHandler.DropLocation tdl = info.getDropLocation();
-        if(!(tdl instanceof JList.DropLocation)) {
+        if (!(tdl instanceof JList.DropLocation)) {
             return false;
         }
-        JList.DropLocation dl = (JList.DropLocation)tdl;
-        JList target = (JList)info.getComponent();
-        DefaultListModel listModel = (DefaultListModel)target.getModel();
+        JList.DropLocation dl = (JList.DropLocation) tdl;
+        JList target = (JList) info.getComponent();
+        DefaultListModel listModel = (DefaultListModel) target.getModel();
         int index = dl.getIndex();
         //boolean insert = dl.isInsert();
         int max = listModel.getSize();
-        if(index<0 || index>max) {
+        if (index < 0 || index > max) {
             index = max;
         }
         addIndex = index;
 
-        try{
-            Object[] values = (Object[])info.getTransferable().getTransferData(localObjectFlavor);
-            for(int i=0;i<values.length;i++) {
+        try {
+            Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            for (int i = 0; i < values.length; i++) {
                 int idx = index++;
                 listModel.add(idx, values[i]);
                 target.addSelectionInterval(idx, idx);
             }
             addCount = target.equals(source) ? values.length : 0;
             return true;
-        }catch(UnsupportedFlavorException | IOException ex) {
+        } catch (UnsupportedFlavorException | IOException ex) {
             ex.printStackTrace();
         }
         return false;
@@ -141,20 +141,20 @@ class ListItemTransferHandler extends TransferHandler {
         cleanup(c, action == MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
-        if(remove && indices != null) {
+        if (remove && indices != null) {
             //If we are moving items around in the same list, we
             //need to adjust the indices accordingly, since those
             //after the insertion point have moved.
-            if(addCount > 0) {
-                for(int i=0;i<indices.length;i++) {
-                    if(indices[i]>=addIndex) {
+            if (addCount > 0) {
+                for (int i = 0; i < indices.length; i++) {
+                    if (indices[i] >= addIndex) {
                         indices[i] += addCount;
                     }
                 }
             }
-            JList source = (JList)c;
-            DefaultListModel model  = (DefaultListModel)source.getModel();
-            for(int i=indices.length-1;i>=0;i--) {
+            JList source = (JList) c;
+            DefaultListModel model  = (DefaultListModel) source.getModel();
+            for (int i = indices.length - 1; i >= 0; i--) {
                 model.remove(indices[i]);
             }
         }

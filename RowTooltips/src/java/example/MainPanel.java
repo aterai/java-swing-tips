@@ -22,16 +22,16 @@ public final class MainPanel extends JPanel {
         @Override public String getToolTipText(MouseEvent e) {
             int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
             TableModel m = getModel();
-            return String.format("<html>%s<br>%d<br>%s</html>", m.getValueAt(row, 0), (Integer)m.getValueAt(row, 1), m.getValueAt(row, 2));
+            return String.format("<html>%s<br>%d<br>%s</html>", m.getValueAt(row, 0), (Integer) m.getValueAt(row, 1), m.getValueAt(row, 2));
         }
 //         public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //             Component c = super.prepareRenderer(tcr, row, column);
-//             if(c instanceof JComponent) {
+//             if (c instanceof JComponent) {
 //                 int mr = convertRowIndexToModel(row);
 //                 int mc = convertColumnIndexToModel(column);
 //                 Object o = getModel().getValueAt(mr, mc);
 //                 String s = Objects.toString(o, "");
-//                 ((JComponent)c).setToolTipText(s.isEmpty()?null:s);
+//                 ((JComponent) c).setToolTipText(s.isEmpty() ? null : s);
 //             }
 //             return c;
 //         }
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

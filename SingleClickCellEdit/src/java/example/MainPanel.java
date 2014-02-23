@@ -41,17 +41,17 @@ public final class MainPanel extends JPanel {
 //         col.setMaxWidth(50);
 //         col.setResizable(false);
 
-        final DefaultTableCellRenderer defalutRenderer = (DefaultTableCellRenderer)table.getDefaultRenderer(Object.class);
+        final DefaultTableCellRenderer defalutRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(Object.class);
         final UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
-        final DefaultCellEditor ce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
+        final DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
         modelCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                if(modelCheck.isSelected()) {
+                if (modelCheck.isSelected()) {
                     table.setDefaultRenderer(Object.class, underlineRenderer);
                     table.addMouseListener(underlineRenderer);
                     table.addMouseMotionListener(underlineRenderer);
                     ce.setClickCountToStart(1);
-                }else{
+                } else {
                     table.setDefaultRenderer(Object.class, defalutRenderer);
                     table.removeMouseListener(underlineRenderer);
                     table.removeMouseMotionListener(underlineRenderer);
@@ -74,10 +74,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -94,20 +94,20 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
     private int col = -1;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if(!table.isEditing() && this.row==row && this.col==column) {
-            setText("<html><u>"+value.toString());
-        }else{
+        if (!table.isEditing() && this.row == row && this.col == column) {
+            setText("<html><u>" + value.toString());
+        } else {
             setText(value.toString());
         }
         //setForeground(table.getForeground());
         return this;
     }
     @Override public void mouseMoved(MouseEvent e) {
-        JTable table = (JTable)e.getComponent();
+        JTable table = (JTable) e.getComponent();
         Point pt = e.getPoint();
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
-        if(row<0 || col<0) {
+        if (row < 0 || col < 0) {
             row = -1;
             col = -1;
         }

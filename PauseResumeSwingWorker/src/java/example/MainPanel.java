@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     private transient Task worker;
 
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         area.setEditable(false);
         pauseButton.setEnabled(false);
         canButton.setEnabled(false);
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private class RunAction extends AbstractAction {
@@ -62,24 +62,24 @@ public final class MainPanel extends JPanel {
     private class ProgressTask extends Task {
         @Override protected void process(List<Progress> chunks) {
             //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-            if(!isDisplayable()) {
+            if (!isDisplayable()) {
                 System.out.println("process: DISPOSE_ON_CLOSE");
                 cancel(true);
                 return;
             }
-            for(Progress s: chunks) {
+            for (Progress s: chunks) {
                 switch(s.component) {
-                  case TOTAL: bar1.setValue((Integer)s.value); break;
-                  case FILE:  bar2.setValue((Integer)s.value); break;
-                  case LOG:   area.append((String)s.value);    break;
+                  case TOTAL: bar1.setValue((Integer) s.value); break;
+                  case FILE:  bar2.setValue((Integer) s.value); break;
+                  case LOG:   area.append((String) s.value);    break;
                   case PAUSE: {
-                      if((Boolean)s.value) {
+                      if ((Boolean) s.value) {
                           area.append("*");
-                      }else{
-                          try{
+                      } else {
+                          try {
                               Document doc = area.getDocument();
                               doc.remove(area.getDocument().getLength()-1, 1);
-                          }catch(BadLocationException ex) {
+                          } catch (BadLocationException ex) {
                               ex.printStackTrace();
                           }
                       }
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
             }
         }
         @Override public void done() {
-            if(!isDisplayable()) {
+            if (!isDisplayable()) {
                 System.out.println("done: DISPOSE_ON_CLOSE");
                 cancel(true);
                 return;
@@ -102,9 +102,9 @@ public final class MainPanel extends JPanel {
             pauseButton.setEnabled(false);
             statusPanel.removeAll();
             statusPanel.revalidate();
-            try{
+            try {
                 area.append(String.format("%n%s%n", isCancelled() ? "Cancelled" : get()));
-            }catch(InterruptedException | ExecutionException ex) {
+            } catch (InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();
                 area.append(String.format("%n%s%n", "Exception"));
             }
@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if(worker!=null && !worker.isDone()) {
+            if (worker != null && !worker.isDone()) {
                 worker.cancel(true);
             }
             worker = null;
@@ -129,14 +129,14 @@ public final class MainPanel extends JPanel {
             super("pause");
         }
         @Override public void actionPerformed(ActionEvent e) {
-            JButton b = (JButton)e.getSource();
-            String pause = (String)getValue(Action.NAME);
-            if(worker==null) {
+            JButton b = (JButton) e.getSource();
+            String pause = (String) getValue(Action.NAME);
+            if (worker == null) {
                 b.setText(pause);
-            }else{
-                if(worker.isCancelled() || worker.isPaused) {
+            } else {
+                if (worker.isCancelled() || worker.isPaused) {
                     b.setText(pause);
-                }else{
+                } else {
                     b.setText("resume");
                 }
                 worker.isPaused ^= true;
@@ -156,10 +156,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -193,11 +193,11 @@ class Task extends SwingWorker<String, Progress> {
         int lengthOfTask = 12; //filelist.size();
         publish(new Progress(Component.LOG, "Length Of Task: " + lengthOfTask));
         publish(new Progress(Component.LOG, "\n------------------------------\n"));
-        while(current<lengthOfTask && !isCancelled()) {
+        while (current<lengthOfTask && !isCancelled()) {
             publish(new Progress(Component.LOG, "*"));
-            try{
+            try {
                 convertFileToSomething();
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return "Interrupted";
             }
             publish(new Progress(Component.TOTAL, 100 * current / lengthOfTask));
@@ -209,12 +209,12 @@ class Task extends SwingWorker<String, Progress> {
     private void convertFileToSomething() throws InterruptedException {
         boolean blinking = false;
         int current = 0;
-        int lengthOfTask = 10+r.nextInt(50); //long lengthOfTask = file.length();
-        while(current<=lengthOfTask && !isCancelled()) {
-            if(isPaused) {
-                try{
+        int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
+        while (current<=lengthOfTask && !isCancelled()) {
+            if (isPaused) {
+                try {
                     Thread.sleep(500);
-                }catch(InterruptedException ie) {
+                } catch (InterruptedException ie) {
                     return;
                 }
                 publish(new Progress(Component.PAUSE, blinking));
@@ -223,7 +223,7 @@ class Task extends SwingWorker<String, Progress> {
             }
             int iv = 100 * current / lengthOfTask;
             Thread.sleep(20); // dummy
-            publish(new Progress(Component.FILE, iv+1));
+            publish(new Progress(Component.FILE, iv + 1));
             current++;
         }
     }
@@ -237,7 +237,7 @@ class Task extends SwingWorker<String, Progress> {
 //     private SwingWorker<String, String> worker;
 //
 //     public MainPanel() {
-//         super(new BorderLayout(5,5));
+//         super(new BorderLayout(5, 5));
 //         area.setEditable(false);
 //         Box box = Box.createHorizontalBox();
 //         box.add(Box.createHorizontalGlue());
@@ -247,7 +247,7 @@ class Task extends SwingWorker<String, Progress> {
 //         add(new JScrollPane(area));
 //         add(box, BorderLayout.NORTH);
 //         add(statusPanel, BorderLayout.SOUTH);
-//         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+//         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 //         setPreferredSize(new Dimension(320, 240));
 //     }
 //
@@ -275,13 +275,13 @@ class Task extends SwingWorker<String, Progress> {
 //                     publish("Length Of Task: " + lengthOfTask);
 //                     publish("\n------------------------------\n");
 //                     setProgress(0);
-//                     while(current<lengthOfTask && !isCancelled()) {
-//                         if(!bar1.isDisplayable()) {
+//                     while (current<lengthOfTask && !isCancelled()) {
+//                         if (!bar1.isDisplayable()) {
 //                             return "Disposed";
 //                         }
-//                         try{
+//                         try {
 //                             convertFileToSomething();
-//                         }catch(InterruptedException ie) {
+//                         } catch (InterruptedException ie) {
 //                             return "Interrupted";
 //                         }
 //                         publish("*");
@@ -294,17 +294,17 @@ class Task extends SwingWorker<String, Progress> {
 //                 private final Random r = new Random();
 //                 private void convertFileToSomething() throws InterruptedException {
 //                     int current = 0;
-//                     int lengthOfTask = 10+r.nextInt(50); //long lengthOfTask = file.length();
-//                     while(current<=lengthOfTask && !isCancelled()) {
+//                     int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
+//                     while (current<=lengthOfTask && !isCancelled()) {
 //                         int iv = 100 * current / lengthOfTask;
 //                         Thread.sleep(20); // dummy
-//                         firePropertyChange("progress2", iv, iv+1);
+//                         firePropertyChange("progress2", iv, iv + 1);
 //                         current++;
 //                     }
 //                 }
 //                 @Override protected void process(List<String> chunks) {
 //                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-//                     for(String message: chunks) {
+//                     for (String message: chunks) {
 //                         appendLine(message);
 //                     }
 //                 }
@@ -316,12 +316,12 @@ class Task extends SwingWorker<String, Progress> {
 //                     statusPanel.remove(bar2);
 //                     statusPanel.revalidate();
 //                     String text = null;
-//                     if(isCancelled()) {
+//                     if (isCancelled()) {
 //                         text = "Cancelled";
-//                     }else{
-//                         try{
+//                     } else {
+//                         try {
 //                             text = get();
-//                         }catch(Exception ex) {
+//                         } catch (Exception ex) {
 //                             ex.printStackTrace();
 //                             text = "Exception";
 //                         }
@@ -340,7 +340,7 @@ class Task extends SwingWorker<String, Progress> {
 //             super("cancel");
 //         }
 //         @Override public void actionPerformed(ActionEvent evt) {
-//             if(worker!=null && !worker.isDone()) {
+//             if (worker != null && !worker.isDone()) {
 //                 worker.cancel(true);
 //             }
 //             worker = null;
@@ -359,9 +359,9 @@ class Task extends SwingWorker<String, Progress> {
 //         });
 //     }
 //     public static void createAndShowGUI() {
-//         try{
+//         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(Exception e) {
+//         } catch (Exception e) {
 //             e.printStackTrace();
 //         }
 //         JFrame frame = new JFrame("@title@");
@@ -382,9 +382,9 @@ class Task extends SwingWorker<String, Progress> {
 //     }
 //     @Override public void propertyChange(PropertyChangeEvent e) {
 //         String strPropertyName = e.getPropertyName();
-//         if("progress".equals(strPropertyName)) {
+//         if ("progress".equals(strPropertyName)) {
 //             progressBar.setIndeterminate(false);
-//             int progress = (Integer)e.getNewValue();
+//             int progress = (Integer) e.getNewValue();
 //             progressBar.setValue(progress);
 //         }
 //     }
@@ -397,8 +397,8 @@ class Task extends SwingWorker<String, Progress> {
 //     }
 //     @Override public void propertyChange(PropertyChangeEvent e) {
 //         String strPropertyName = e.getPropertyName();
-//         if("progress2".equals(strPropertyName)) {
-//             int progress = (Integer)e.getNewValue();
+//         if ("progress2".equals(strPropertyName)) {
+//             int progress = (Integer) e.getNewValue();
 //             progressBar.setValue(progress);
 //         }
 //     }

@@ -28,13 +28,13 @@ public final class MainPanel extends JPanel {
         list.setCellRenderer(new DefaultListCellRenderer() {
             private final Color ec = new Color(240, 240, 240);
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                if(isSelected) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (isSelected) {
                     setForeground(list.getSelectionForeground());
                     setBackground(list.getSelectionBackground());
-                }else{
+                } else {
                     setForeground(list.getForeground());
-                    setBackground(index%2==0 ? ec : list.getBackground());
+                    setBackground(index % 2 == 0 ? ec : list.getBackground());
                 }
                 return this;
             }
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
-    private static final Color LINE_COLOR = new Color(100,100,255);
+    private static final Color LINE_COLOR = new Color(100, 100, 255);
     private static final String NAME = "test";
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private final Rectangle2D targetLine = new Rectangle2D.Float();
@@ -76,12 +76,12 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
         //DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         //DragSource dragSource = new DragSource();
-        new DragSource().createDefaultDragGestureRecognizer((Component)this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener)this);
+        new DragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(targetIndex>=0) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (targetIndex >= 0) {
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(LINE_COLOR);
             g2.fill(targetLine);
             g2.dispose();
@@ -89,37 +89,37 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     }
     private void initTargetLine(Point p) {
         Rectangle2D testArea = new Rectangle2D.Float();
-        int cellHeight = (int) getCellBounds(0,0).getHeight();
-        int lineWidht  = (int) getCellBounds(0,0).getWidth();
+        int cellHeight = (int) getCellBounds(0, 0).getHeight();
+        int lineWidht  = (int) getCellBounds(0, 0).getWidth();
         int lineHeight = 2;
         int modelSize  = getModel().getSize();
         targetIndex = -1;
-        for(int i=0;i<modelSize;i++) {
-            testArea.setRect(0, cellHeight*i-cellHeight/2, lineWidht, cellHeight);
-            if(testArea.contains(p)) {
+        for (int i = 0; i < modelSize; i++) {
+            testArea.setRect(0, cellHeight * i - cellHeight / 2, lineWidht, cellHeight);
+            if (testArea.contains(p)) {
                 targetIndex = i;
-                targetLine.setRect(0, i*cellHeight, lineWidht, lineHeight);
+                targetLine.setRect(0, i * cellHeight, lineWidht, lineHeight);
                 break;
             }
         }
-        if(targetIndex<0) {
+        if (targetIndex < 0) {
             targetIndex = modelSize;
-            targetLine.setRect(0, targetIndex*cellHeight-lineHeight, lineWidht, lineHeight);
+            targetLine.setRect(0, targetIndex * cellHeight - lineHeight, lineWidht, lineHeight);
         }
     }
 
     // Interface: DragGestureListener
     @Override public void dragGestureRecognized(DragGestureEvent e) {
-        if(getSelectedIndices().length>1) {
+        if (getSelectedIndices().length > 1) {
             return;
         }
         draggedIndex = locationToIndex(e.getDragOrigin());
-        if(draggedIndex<0) {
+        if (draggedIndex < 0) {
             return;
         }
-        try{
-            e.startDrag(DragSource.DefaultMoveDrop, (Transferable)this, new ListDragSourceListener());
-        }catch(InvalidDnDOperationException idoe) {
+        try {
+            e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, new ListDragSourceListener());
+        } catch (InvalidDnDOperationException idoe) {
             idoe.printStackTrace();
         }
     }
@@ -144,16 +144,16 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
             repaint();
         }
         @Override public void dragEnter(DropTargetDragEvent e) {
-            if(isDragAcceptable(e)) {
+            if (isDragAcceptable(e)) {
                 e.acceptDrag(e.getDropAction());
-            }else{
+            } else {
                 e.rejectDrag();
             }
         }
         @Override public void dragOver(final DropTargetDragEvent e) {
-            if(isDragAcceptable(e)) {
+            if (isDragAcceptable(e)) {
                 e.acceptDrag(e.getDropAction());
-            }else{
+            } else {
                 e.rejectDrag();
                 return;
             }
@@ -161,36 +161,36 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
             repaint();
         }
         @Override public void dropActionChanged(DropTargetDragEvent e) {
-            // if(isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
+            // if (isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
             // else e.rejectDrag();
         }
         @SuppressWarnings("unchecked")
         @Override public void drop(DropTargetDropEvent e) {
-            DefaultListModel model = (DefaultListModel)getModel();
+            DefaultListModel model = (DefaultListModel) getModel();
 //             Transferable t = e.getTransferable();
 //             DataFlavor[] f = t.getTransferDataFlavors();
-//             try{
+//             try {
 //                 Component comp = (Component) t.getTransferData(f[0]);
-//             }catch(UnsupportedFlavorException ex) {
+//             } catch (UnsupportedFlavorException ex) {
 //                     e.dropComplete(false);
-//             }catch(IOException ie) {
+//             } catch (IOException ie) {
 //                 e.dropComplete(false);
 //             }
-            if(isDropAcceptable(e)) {
+            if (isDropAcceptable(e)) {
                 Object str = model.getElementAt(draggedIndex);
-                if(targetIndex==draggedIndex) {
+                if (targetIndex == draggedIndex) {
                     setSelectedIndex(targetIndex);
-                }else if(targetIndex<draggedIndex) {
+                } else if (targetIndex < draggedIndex) {
                     model.removeElementAt(draggedIndex);
                     model.insertElementAt(str, targetIndex);
                     setSelectedIndex(targetIndex);
-                }else{
+                } else {
                     model.insertElementAt(str, targetIndex);
                     model.removeElementAt(draggedIndex);
-                    setSelectedIndex(targetIndex-1);
+                    setSelectedIndex(targetIndex - 1);
                 }
                 e.dropComplete(true);
-            }else{
+            } else {
                 e.dropComplete(false);
             }
             e.dropComplete(false);

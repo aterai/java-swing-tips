@@ -42,12 +42,12 @@ public final class MainPanel extends JPanel {
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel(new GridLayout(1, size, 0, 0));
         Color color = new Color(cc);
-        for(int i=0; i<size;i++) {
+        for (int i = 0; i < size; i++) {
             JRadioButton r = list.get(i);
             r.setBackground(color);
-            if(round) {
+            if (round) {
                 r.setIcon(new ToggleButtonBarCellIcon());
-            }else{
+            } else {
                 r.setIcon(new CellIcon());
             }
             bg.add(r);
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -82,15 +82,15 @@ public final class MainPanel extends JPanel {
 class CellIcon implements Icon {
     //http://weboook.blog22.fc2.com/blog-entry-342.html
     //Webpark 2012.11.15
-    private static final Color TL = new Color(1f,1f,1f,.2f);
-    private static final Color BR = new Color(0f,0f,0f,.2f);
-    private static final Color ST = new Color(1f,1f,1f,.4f);
-    private static final Color SB = new Color(1f,1f,1f,.1f);
+    private static final Color TL = new Color(1f, 1f, 1f, .2f);
+    private static final Color BR = new Color(0f, 0f, 0f, .2f);
+    private static final Color ST = new Color(1f, 1f, 1f, .4f);
+    private static final Color SB = new Color(1f, 1f, 1f, .1f);
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int w = c.getWidth();
         int h = c.getHeight();
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2.setPaint(c.getBackground());
@@ -98,20 +98,20 @@ class CellIcon implements Icon {
 
         Color ssc = TL;
         Color bgc = BR;
-        if(c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton)c).getModel();
-            if(m.isSelected() || m.isRollover()) {
+        if (c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton) c).getModel();
+            if (m.isSelected() || m.isRollover()) {
                 ssc = ST;
                 bgc = SB;
             }
         }
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y+h, bgc, true));
+        g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fillRect(x, y, w, h);
 
         g2.setPaint(TL);
         g2.fillRect(x, y, 1, h);
         g2.setPaint(BR);
-        g2.fillRect(x+w, y, 1, h);
+        g2.fillRect(x + w, y, 1, h);
 
         g2.dispose();
     }
@@ -124,25 +124,25 @@ class CellIcon implements Icon {
 }
 
 class ToggleButtonBarCellIcon implements Icon {
-    private static final Color TL = new Color(1f,1f,1f,.2f);
-    private static final Color BR = new Color(0f,0f,0f,.2f);
-    private static final Color ST = new Color(1f,1f,1f,.4f);
-    private static final Color SB = new Color(1f,1f,1f,.1f);
+    private static final Color TL = new Color(1f, 1f, 1f, .2f);
+    private static final Color BR = new Color(0f, 0f, 0f, .2f);
+    private static final Color ST = new Color(1f, 1f, 1f, .4f);
+    private static final Color SB = new Color(1f, 1f, 1f, .1f);
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
-        if(parent==null) {
+        if (parent == null) {
             return;
         }
         int r = 8;
         int w = c.getWidth();
         int h = c.getHeight();
 
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Path2D.Float p = new Path2D.Float();
 
-        if(c==parent.getComponent(0)) {
+        if (c == parent.getComponent(0)) {
             //:first-child
             p.moveTo(x, y + r);
             p.quadTo(x, y, x + r, y);
@@ -150,15 +150,15 @@ class ToggleButtonBarCellIcon implements Icon {
             p.lineTo(x + w, y + h);
             p.lineTo(x + r, y + h);
             p.quadTo(x, y + h, x, y + h - r);
-        }else if(c==parent.getComponent(parent.getComponentCount()-1)) {
+        } else if (c == parent.getComponent(parent.getComponentCount() - 1)) {
             //:last-child
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);
             p.quadTo(x + w, y, x + w, y + r);
             p.lineTo(x + w, y + h - r);
-            p.quadTo(x + w, y + h, x + w -r, y + h);
+            p.quadTo(x + w, y + h, x + w - r, y + h);
             p.lineTo(x, y + h);
-        }else{
+        } else {
             p.moveTo(x, y);
             p.lineTo(x + w, y);
             p.lineTo(x + w, y + h);
@@ -172,14 +172,14 @@ class ToggleButtonBarCellIcon implements Icon {
 
         Color ssc = TL;
         Color bgc = BR;
-        if(c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton)c).getModel();
-            if(m.isSelected() || m.isRollover()) {
+        if (c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton) c).getModel();
+            if (m.isSelected() || m.isRollover()) {
                 ssc = ST;
                 bgc = SB;
             }
         }
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y+h, bgc, true));
+        g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fill(area);
 
         g2.setPaint(BR);

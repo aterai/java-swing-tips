@@ -22,15 +22,15 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-//         if(tabbedPane.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
+//         if (tabbedPane.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
 //             tabbedPane.setUI(new com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI() {
 //                 @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
 //                     int defaultWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
 //                     int selectedIndex  = tabPane.getSelectedIndex();
 //                     boolean isSelected = selectedIndex == tabIndex;
-//                     if(isSelected) {
+//                     if (isSelected) {
 //                         return defaultWidth + 100;
-//                     }else{
+//                     } else {
 //                         return defaultWidth;
 //                     }
 //                 }
@@ -44,15 +44,15 @@ public final class MainPanel extends JPanel {
 // //                     //Rectangle tabRect  = rects[tabIndex];
 // //                     int selectedIndex  = tabPane.getSelectedIndex();
 // //                     boolean isSelected = selectedIndex == tabIndex;
-// //                     if(isSelected) {
+// //                     if (isSelected) {
 // //                         //JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT
 // //                         rects[tabIndex].width += 16;
 // //                     }
-// //                     super.paintTab(g,tabPlacement,rects,tabIndex,iconRect,textRect);
+// //                     super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
 // //                 }
 //             });
 //         }
-        for(String str: icons) {
+        for (String str: icons) {
             tabbedPane.addTab(str, new ImageIcon(getClass().getResource(str)), new JLabel(str), str);
         }
         tabbedPane.setComponentPopupMenu(new TabTitleRenamePopupMenu());
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -85,8 +85,8 @@ public final class MainPanel extends JPanel {
 class TabTitleRenamePopupMenu extends JPopupMenu {
     private final JCheckBoxMenuItem pinTabMenuItem = new JCheckBoxMenuItem(new AbstractAction("pin tab") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTabbedPane t = (JTabbedPane)getInvoker();
-            JCheckBoxMenuItem check = (JCheckBoxMenuItem)e.getSource();
+            JTabbedPane t = (JTabbedPane) getInvoker();
+            JCheckBoxMenuItem check = (JCheckBoxMenuItem) e.getSource();
             int idx       = t.getSelectedIndex();
             Component cmp = t.getComponentAt(idx);
             Component tab = t.getTabComponentAt(idx);
@@ -99,30 +99,30 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
             t.setTabComponentAt(i, tab);
             t.setEnabledAt(i, flg);
-            if(flg) {
+            if (flg) {
                 t.setSelectedIndex(i);
             }
 
-            //JComponent c = (JComponent)t.getTabComponentAt(idx);
+            //JComponent c = (JComponent) t.getTabComponentAt(idx);
             //c.revalidate();
         }
         private int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
             int i;
-            if(dir) {
-                for(i=0;i<idx;i++) {
+            if (dir) {
+                for (i = 0; i < idx; i++) {
                     String s = t.getTitleAt(i);
-                    if(s==null || s.isEmpty()) {
+                    if (s == null || s.isEmpty()) {
                         continue;
-                    }else{
+                    } else {
                         break;
                     }
                 }
-            }else{
-                for(i=t.getTabCount()-1;i>idx;i--) {
+            } else {
+                for (i = t.getTabCount() - 1; i > idx; i--) {
                     String s = t.getTitleAt(i);
-                    if(s==null || s.isEmpty()) {
+                    if (s == null || s.isEmpty()) {
                         break;
-                    }else{
+                    } else {
                         continue;
                     }
                 }
@@ -132,7 +132,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
     });
 //     private final Action newTabAction = new AbstractAction("new tab") {
 //         @Override public void actionPerformed(ActionEvent evt) {
-//             JTabbedPane t = (JTabbedPane)getInvoker();
+//             JTabbedPane t = (JTabbedPane) getInvoker();
 //             int count = t.getTabCount();
 //             String title = "Tab " + count;
 //             t.add(title, new JLabel(title));
@@ -141,11 +141,11 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     };
     private final Action closeAllAction = new AbstractAction("close all") {
         @Override public void actionPerformed(ActionEvent evt) {
-            JTabbedPane t = (JTabbedPane)getInvoker();
+            JTabbedPane t = (JTabbedPane) getInvoker();
             //t.removeAll();
-            for(int i=t.getTabCount()-1;i>=0;i--) {
+            for (int i = t.getTabCount() - 1; i >= 0; i--) {
                 String s = t.getTitleAt(i);
-                if(s!=null && s.length()>0) {
+                if (s != null && s.length() > 0) {
                     t.removeTabAt(i);
                 }
             }
@@ -159,19 +159,19 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
     }
     private static boolean isPinTab(JTabbedPane t, int x, int y) {
         int i = t.indexAtLocation(x, y);
-        if(i>=0 && i==t.getSelectedIndex()) {
+        if (i >= 0 && i == t.getSelectedIndex()) {
             String s = t.getTitleAt(i);
-            if(s==null || s.length()==0) {
+            if (s == null || s.length() == 0) {
                 return true;
             }
         }
         return false;
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTabbedPane) {
-            JTabbedPane t = (JTabbedPane)c;
-            pinTabMenuItem.setEnabled(t.indexAtLocation(x, y)>=0);
-            pinTabMenuItem.setSelected(isPinTab(t,x,y));
+        if (c instanceof JTabbedPane) {
+            JTabbedPane t = (JTabbedPane) c;
+            pinTabMenuItem.setEnabled(t.indexAtLocation(x, y) >= 0);
+            pinTabMenuItem.setSelected(isPinTab(t, x, y));
             super.show(c, x, y);
         }
     }

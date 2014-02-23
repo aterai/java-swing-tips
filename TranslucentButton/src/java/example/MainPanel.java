@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 
         BufferedImage bi = getFilteredImage(getClass().getResource("test.jpg"));
         setBorder(new CentredBackgroundBorder(bi));
-        //setBackground(new Color(50,50,50));
+        //setBackground(new Color(50, 50, 50));
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -101,16 +101,16 @@ public final class MainPanel extends JPanel {
 
     private static BufferedImage getFilteredImage(URL url) {
         BufferedImage image;
-        try{
+        try {
             image = ImageIO.read(url);
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for(int i=0;i<256;i++) {
-            b[i] = (byte)(i*0.5);
+        for (int i = 0; i < 256; i++) {
+            b[i] = (byte) (i * .5);
         }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
         op.filter(image, dest);
@@ -119,22 +119,24 @@ public final class MainPanel extends JPanel {
 
     private static TexturePaint makeCheckerTexture() {
         int cs = 6;
-        int sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
+        int sz = cs * cs;
+        BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
-        g2.setPaint(new Color(120,120,120));
-        g2.fillRect(0,0,sz,sz);
-        g2.setPaint(new Color(200,200,200,20));
-        for(int i=0;i*cs<sz;i++) {
-            for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
+        g2.setPaint(new Color(120, 120, 120));
+        g2.fillRect(0, 0, sz, sz);
+        g2.setPaint(new Color(200, 200, 200, 20));
+        for (int i = 0; i * cs < sz; i++) {
+            for (int j = 0; j * cs < sz; j++) {
+                if ((i + j) % 2 == 0) {
+                    g2.fillRect(i * cs, j * cs, cs, cs);
+                }
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0,0,sz,sz));
+        return new TexturePaint(img, new Rectangle(0, 0, sz, sz));
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
@@ -143,10 +145,10 @@ public final class MainPanel extends JPanel {
 }
 
 class TranslucentButton extends JButton {
-    private static final Color TL = new Color(1f,1f,1f,.2f);
-    private static final Color BR = new Color(0f,0f,0f,.4f);
-    private static final Color ST = new Color(1f,1f,1f,.2f);
-    private static final Color SB = new Color(1f,1f,1f,.1f);
+    private static final Color TL = new Color(1f, 1f, 1f, .2f);
+    private static final Color BR = new Color(0f, 0f, 0f, .4f);
+    private static final Color ST = new Color(1f, 1f, 1f, .2f);
+    private static final Color SB = new Color(1f, 1f, 1f, .1f);
     private static final int R = 8;
     public TranslucentButton(String text) {
         super(text);
@@ -167,20 +169,20 @@ class TranslucentButton extends JButton {
         int y = 0;
         int w = getWidth();
         int h = getHeight();
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Shape area = new RoundRectangle2D.Float(x, y, w-1, h-1, R, R);
+        Shape area = new RoundRectangle2D.Float(x, y, w - 1, h - 1, R, R);
         Color ssc = TL;
         Color bgc = BR;
         ButtonModel m = getModel();
-        if(m.isPressed()) {
+        if (m.isPressed()) {
             ssc = SB;
             bgc = ST;
-        }else if(m.isRollover()) {
+        } else if (m.isRollover()) {
             ssc = ST;
             bgc = SB;
         }
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y+h, bgc, true));
+        g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fill(area);
         g2.setPaint(BR);
         g2.draw(area);
@@ -190,31 +192,31 @@ class TranslucentButton extends JButton {
 }
 
 class TranslucentButtonIcon implements Icon {
-    private static final Color TL = new Color(1f,1f,1f,.2f);
-    private static final Color BR = new Color(0f,0f,0f,.4f);
-    private static final Color ST = new Color(1f,1f,1f,.2f);
-    private static final Color SB = new Color(1f,1f,1f,.1f);
+    private static final Color TL = new Color(1f, 1f, 1f, .2f);
+    private static final Color BR = new Color(0f, 0f, 0f, .4f);
+    private static final Color ST = new Color(1f, 1f, 1f, .2f);
+    private static final Color SB = new Color(1f, 1f, 1f, .1f);
     private static final int R = 8;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         int w = c.getWidth();
         int h = c.getHeight();
 
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Shape area = new RoundRectangle2D.Float(x, y, w-1, h-1, R, R);
+        Shape area = new RoundRectangle2D.Float(x, y, w - 1, h - 1, R, R);
         Color ssc = TL;
         Color bgc = BR;
-        if(c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton)c).getModel();
-            if(m.isPressed()) {
+        if (c instanceof AbstractButton) {
+            ButtonModel m = ((AbstractButton) c).getModel();
+            if (m.isPressed()) {
                 ssc = SB;
                 bgc = ST;
-            }else if(m.isRollover()) {
+            } else if (m.isRollover()) {
                 ssc = ST;
                 bgc = SB;
             }
         }
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y+h, bgc, true));
+        g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fill(area);
         g2.setPaint(BR);
         g2.draw(area);
@@ -237,9 +239,9 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = x + (width-image.getWidth())/2;
-        int cy = y + (height-image.getHeight())/2;
-        Graphics2D g2 = (Graphics2D)g.create();
+        int cx = x + (width - image.getWidth()) / 2;
+        int cy = y + (height - image.getHeight()) / 2;
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
         g2.dispose();
     }

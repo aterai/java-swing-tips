@@ -62,13 +62,13 @@ public final class MainPanel extends JPanel {
     private void fireDocumentChangeEvent() {
         field.setBackground(Color.WHITE);
         String pattern = field.getText().trim();
-        if(pattern.isEmpty()) {
+        if (pattern.isEmpty()) {
             sorter.setRowFilter(null);
             renderer.setPattern("");
-        }else if(renderer.setPattern(pattern)) {
-            try{
+        } else if (renderer.setPattern(pattern)) {
+            try {
                 sorter.setRowFilter(RowFilter.regexFilter(pattern));
-            }catch(PatternSyntaxException ex) {
+            } catch (PatternSyntaxException ex) {
                 field.setBackground(WARNING_COLOR);
             }
         }
@@ -83,10 +83,10 @@ public final class MainPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -105,9 +105,9 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
     private String prev;
 
     public boolean setPattern(String str) {
-        if(str==null || str.equals(pattern)) {
+        if (str == null || str.equals(pattern)) {
             return false;
-        }else{
+        } else {
             prev = pattern;
             pattern = str;
             return true;
@@ -127,14 +127,14 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
         highlighter.removeAllHighlights();
         setText(txt);
         setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
-        if(pattern!=null && !pattern.isEmpty() && !pattern.equals(prev)) {
+        if (pattern != null && !pattern.isEmpty() && !pattern.equals(prev)) {
             Matcher matcher = Pattern.compile(pattern).matcher(txt);
-            if(matcher.find()) {
+            if (matcher.find()) {
                 int start = matcher.start();
                 int end   = matcher.end();
-                try{
+                try {
                     highlighter.addHighlight(start, end, highlightPainter);
-                }catch(BadLocationException e) {
+                } catch (BadLocationException e) {
                     e.printStackTrace();
                 }
             }

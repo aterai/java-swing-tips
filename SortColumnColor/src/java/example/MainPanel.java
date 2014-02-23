@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,24 +65,24 @@ class SortingColumnColorTable extends JTable {
     }
     @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
-        if(isRowSelected(row)) {
+        if (isRowSelected(row)) {
             c.setForeground(getSelectionForeground());
             c.setBackground(getSelectionBackground());
-        }else{
+        } else {
             c.setForeground(getForeground());
-            c.setBackground(isSortingColumn(column)?EVEN_COLOR:getBackground());
+            c.setBackground(isSortingColumn(column) ? EVEN_COLOR : getBackground());
         }
         return c;
     }
     private boolean isSortingColumn(int column) {
         RowSorter sorter = getRowSorter();
-        if(sorter!=null) {
+        if (sorter != null) {
             List list = sorter.getSortKeys();
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 return false;
             }
-            RowSorter.SortKey key0 = (RowSorter.SortKey)list.get(0);
-            if(column==convertColumnIndexToView(key0.getColumn())) {
+            RowSorter.SortKey key0 = (RowSorter.SortKey) list.get(0);
+            if (column == convertColumnIndexToView(key0.getColumn())) {
                 return true;
             }
         }

@@ -8,21 +8,21 @@ import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
 
-        JSlider slider1 = new JSlider(0,100,0);
+        JSlider slider1 = new JSlider(0, 100, 0);
         slider1.setUI(new TriSliderUI());
         slider1.setMajorTickSpacing(10);
         slider1.setMinorTickSpacing(5);
         slider1.setPaintTicks(true);
         slider1.setPaintLabels(true);
 
-        JSlider slider2 = new JSlider(0,100,0);
+        JSlider slider2 = new JSlider(0, 100, 0);
         slider2.setUI(new MetalSliderUI() {
             @Override protected void paintHorizontalLabel(Graphics g, int v, Component l) {
-                JLabel lbl = (JLabel)l;
+                JLabel lbl = (JLabel) l;
                 lbl.setForeground(Color.GREEN);
-                super.paintHorizontalLabel(g,v,lbl);
+                super.paintHorizontalLabel(g, v, lbl);
             }
         });
         //slider2.setBackground(Color.BLACK);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         box.add(makeTitledPanel("HorizontalLabelColor", slider2));
         box.add(Box.createVerticalGlue());
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitledPanel(String title, JComponent c) {
@@ -57,9 +57,9 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try{
+//         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(Exception e) {
+//         } catch (Exception e) {
 //             e.printStackTrace();
 //         }
         JFrame frame = new JFrame("@title@");
@@ -73,10 +73,10 @@ public final class MainPanel extends JPanel {
 
 class TriSliderUI extends MetalSliderUI {
     @Override public void paintThumb(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Rectangle thumb = thumbRect;
-        g2.fillOval(thumbRect.x,thumbRect.y,thumbRect.width,thumbRect.height);
+        g2.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
         g2.dispose();
     }
     @Override public void paintTrack(Graphics g) {
@@ -84,8 +84,8 @@ class TriSliderUI extends MetalSliderUI {
         int cw;
         //int pad;
         Rectangle trackBounds = trackRect;
-        if(slider.getOrientation() == JSlider.HORIZONTAL) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+            Graphics2D g2 = (Graphics2D) g.create();
             //pad = trackBuffer;
             //cx = pad;
             cy = -2 + trackBounds.height / 2;
@@ -96,7 +96,7 @@ class TriSliderUI extends MetalSliderUI {
 
             //g2.setPaint(new GradientPaint(0, 0, getShadowColor(), cw, 0, getHighlightColor(), true));
             g2.setPaint(Color.GRAY);
-            g2.fillRect(0,-cy,cw,cy*2);
+            g2.fillRect(0, -cy, cw, cy * 2);
 
             int trackLeft = 0;
             int trackRight = 0;
@@ -118,16 +118,16 @@ class TriSliderUI extends MetalSliderUI {
             //fillTop = !slider.isEnabled() ? trackTop : trackTop + 1;
             //fillBottom = !slider.isEnabled() ? trackBottom - 1 : trackBottom - 2;
 
-            if(drawInverted()) {
+            if (drawInverted()) {
                 fillLeft = middleOfThumb;
                 fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-            }else{
+            } else {
                 fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
                 fillRight = middleOfThumb;
             }
 
-            g2.setPaint(new GradientPaint(0, 0, new Color(0,100,100), cw, 0, new Color(0,255,100), true));
-            g2.fillRect(0,-cy,fillRight-fillLeft,cy*2);
+            g2.setPaint(new GradientPaint(0, 0, new Color(0, 100, 100), cw, 0, new Color(0, 255, 100), true));
+            g2.fillRect(0, -cy, fillRight - fillLeft, cy * 2);
 
             g2.setPaint(slider.getBackground());
             Polygon polygon = new Polygon();
@@ -138,12 +138,12 @@ class TriSliderUI extends MetalSliderUI {
             polygon.reset();
 
             g2.setPaint(Color.WHITE);
-            g2.drawLine(0, cy, cw-1, cy);
+            g2.drawLine(0, cy, cw - 1, cy);
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g2.translate(-trackBounds.x, -(trackBounds.y + cy));
             g2.dispose();
-        }else{
+        } else {
             super.paintTrack(g);
         }
     }
@@ -155,15 +155,15 @@ class TriSliderUI extends MetalSliderUI {
 //         }
 
 // pulbic JSlider makeSlider() {
-//   JSlider slider = new JSlider(0,100);
+//   JSlider slider = new JSlider(0, 100);
 //   slider.setMajorTickSpacing(10);
 //   slider.setMinorTickSpacing(5);
 //   //slider.setPaintTicks(true);
 //   slider.setPaintLabels(true);
 //   Dictionary dictionary = slider.getLabelTable();
-//   if(dictionary != null) {
+//   if (dictionary != null) {
 //     Enumeration elements = dictionary.elements();
-//     while(elements.hasMoreElements()) {
+//     while (elements.hasMoreElements()) {
 //       JLabel label = (JLabel) elements.nextElement();
 //       label.setIcon(new TickIcon());
 //       label.setIconTextGap(0);
@@ -178,9 +178,9 @@ class TriSliderUI extends MetalSliderUI {
 // class TickIcon implements Icon {
 //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //     g.setColor(Color.GREEN);
-//     g.drawLine(x+2, y-1, x+2, y+1);
-//     g.drawLine(x+1, y+0, x+3, y+0);
-//     g.drawLine(x+0, y+1, x+4, y+1);
+//     g.drawLine(x + 2, y - 1, x + 2, y + 1);
+//     g.drawLine(x + 1, y + 0, x + 3, y + 0);
+//     g.drawLine(x + 0, y + 1, x + 4, y + 1);
 //   }
 //   @Override public int getIconWidth()  { return 5; }
 //   @Override public int getIconHeight() { return 3; }

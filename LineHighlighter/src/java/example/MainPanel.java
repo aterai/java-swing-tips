@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final HighlightCursorTextArea textArea= new HighlightCursorTextArea();
     public MainPanel() {
         super(new BorderLayout());
-        textArea.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         textArea.setText("Highlight Cursor Test\n\naaaaaaaaaaaasdfasdfasdfasdfsadffasdfas");
 
         check.addActionListener(new ActionListener() {
@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -52,14 +52,14 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightCursorTextArea extends JTextArea {
-    private static final Color LINE_COLOR = new Color(250,250,220);
+    private static final Color LINE_COLOR = new Color(250, 250, 220);
     private final DefaultCaret caret;
     public HighlightCursorTextArea() {
         super();
         setOpaque(false);
         caret = new DefaultCaret() {
             @Override protected synchronized void damage(Rectangle r) {
-                if(r!=null) {
+                if (r != null) {
                     JTextComponent c = getComponent();
                     x = 0;
                     y = r.y;
@@ -73,12 +73,12 @@ class HighlightCursorTextArea extends JTextArea {
         setCaret(caret);
     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         Insets i = getInsets();
         int h = caret.height;
         int y = caret.y;
         g2.setPaint(LINE_COLOR);
-        g2.fillRect(i.left, y, getSize().width-i.left-i.right, h);
+        g2.fillRect(i.left, y, getSize().width - i.left - i.right, h);
         g2.dispose();
         super.paintComponent(g);
     }

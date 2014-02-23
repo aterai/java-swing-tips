@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     private final JTable table  = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
-        JLabel r = (JLabel)table.getDefaultRenderer(Date.class);
+        JLabel r = (JLabel) table.getDefaultRenderer(Date.class);
         r.setHorizontalAlignment(JLabel.LEFT);
         table.setDefaultEditor(Date.class, new SpinnerCellEditor());
         //table.setShowGrid(false);
@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -91,12 +91,12 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
                 });
             }
         });
-        setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     private void setArrowButtonEnabled(boolean flag) {
-        for(Component c: getComponents()) {
-            if(c instanceof JButton) {
-                ((JButton)c).setEnabled(flag);
+        for (Component c: getComponents()) {
+            if (c instanceof JButton) {
+                ((JButton) c).setEnabled(flag);
             }
         }
     }
@@ -118,9 +118,9 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         return true;
     }
     @Override public boolean stopCellEditing() {
-        try{
+        try {
             commitEdit();
-        }catch(ParseException pe) {
+        } catch (ParseException pe) {
             Toolkit.getDefaultToolkit().beep();
             return false;
 //             // Edited value is invalid, spinner.getValue() will return
@@ -147,11 +147,13 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -160,11 +162,13 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }

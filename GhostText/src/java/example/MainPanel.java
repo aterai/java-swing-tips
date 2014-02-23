@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         field2.addFocusListener(new PlaceholderFocusListener(field2));
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("E-mail", field1));
         box.add(Box.createVerticalStrut(5));
         box.add(makePanel("Search", field2));
@@ -38,10 +38,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -61,15 +61,15 @@ class PlaceholderFocusListener implements FocusListener {
         tf.setForeground(INACTIVE);
     }
     @Override public void focusGained(FocusEvent e) {
-        JTextComponent tf = (JTextComponent)e.getComponent();
-        if(hintMessage.equals(tf.getText()) && INACTIVE.equals(tf.getForeground())) {
+        JTextComponent tf = (JTextComponent) e.getComponent();
+        if (hintMessage.equals(tf.getText()) && INACTIVE.equals(tf.getForeground())) {
             tf.setForeground(UIManager.getColor("TextField.foreground"));
             tf.setText("");
         }
     }
     @Override public void focusLost(FocusEvent e) {
-        JTextComponent tf = (JTextComponent)e.getComponent();
-        if("".equals(tf.getText().trim())) {
+        JTextComponent tf = (JTextComponent) e.getComponent();
+        if ("".equals(tf.getText().trim())) {
             tf.setForeground(INACTIVE);
             tf.setText(hintMessage);
         }

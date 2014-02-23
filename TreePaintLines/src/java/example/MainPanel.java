@@ -12,16 +12,16 @@ public final class MainPanel extends JPanel {
         UIManager.put("Tree.paintLines", Boolean.FALSE);
 
         final JTree tree = new JTree();
-        for(int i=0;i<tree.getRowCount();i++) {
+        for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
 
         add(new JCheckBox(new AbstractAction("Tree.paintLines") {
             @Override public void actionPerformed(ActionEvent e) {
-                UIManager.put("Tree.paintLines", ((JCheckBox)e.getSource()).isSelected());
-//                 if(((JCheckBox)e.getSource()).isSelected()) {
+                UIManager.put("Tree.paintLines", ((JCheckBox) e.getSource()).isSelected());
+//                 if (((JCheckBox) e.getSource()).isSelected()) {
 //                     UIManager.put("Tree.paintLines", Boolean.TRUE);
-//                 }else{
+//                 } else {
 //                     UIManager.put("Tree.paintLines", Boolean.FALSE);
 //                 }
                 tree.updateUI();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
             }
         }), BorderLayout.NORTH);
 
-        JPanel p = new JPanel(new GridLayout(1,2));
+        JPanel p = new JPanel(new GridLayout(1, 2));
         p.add(new JScrollPane(tree));
         p.add(new JScrollPane(new JTree()));
         add(p);
@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

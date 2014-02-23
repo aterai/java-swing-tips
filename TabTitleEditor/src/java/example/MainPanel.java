@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -68,12 +68,12 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
         });
         editor.addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     renameTabTitle();
-                }else if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     cancelEditing();
-                }else{
-                    editor.setPreferredSize(editor.getText().length()>len ? null : dim);
+                } else {
+                    editor.setPreferredSize(editor.getText().length() > len ? null : dim);
                     tabbedPane.revalidate();
                 }
             }
@@ -91,9 +91,9 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     }
     @Override public void mouseClicked(MouseEvent me) {
         Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
-        if(rect!=null && rect.contains(me.getPoint()) && me.getClickCount()==2) {
+        if (rect != null && rect.contains(me.getPoint()) && me.getClickCount() == 2) {
             startEditing();
-        }else{
+        } else {
             renameTabTitle();
         }
     }
@@ -110,7 +110,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
         editor.setMinimumSize(dim);
     }
     private void cancelEditing() {
-        if(editingIdx>=0) {
+        if (editingIdx >= 0) {
             tabbedPane.setTabComponentAt(editingIdx, tabComponent);
             editor.setVisible(false);
             editingIdx = -1;
@@ -122,7 +122,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener {
     }
     private void renameTabTitle() {
         String title = editor.getText().trim();
-        if(editingIdx>=0 && !title.isEmpty()) {
+        if (editingIdx >= 0 && !title.isEmpty()) {
             tabbedPane.setTitleAt(editingIdx, title);
         }
         cancelEditing();

@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         l3.setBorder(new ComponentTitledBorder(b, l3, BorderFactory.createEtchedBorder()));
 
         add(l1); add(l2); add(l3);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -65,8 +65,8 @@ class ComponentTitledBorder implements Border, MouseListener, MouseMotionListene
     public ComponentTitledBorder(Component comp, JComponent container, Border border) {
         this.comp      = comp;
         this.border    = border;
-        if(comp instanceof JComponent) {
-            ((JComponent)comp).setOpaque(true);
+        if (comp instanceof JComponent) {
+            ((JComponent) comp).setOpaque(true);
         }
         container.addMouseListener(this);
         container.addMouseMotionListener(this);
@@ -77,14 +77,14 @@ class ComponentTitledBorder implements Border, MouseListener, MouseMotionListene
     }
 
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        if(c instanceof Container) {
+        if (c instanceof Container) {
             Insets borderInsets = border.getBorderInsets(c);
             Insets insets = getBorderInsets(c);
-            int temp = (insets.top-borderInsets.top)/2;
-            border.paintBorder(c, g, x, y+temp, width, height-temp);
+            int temp = (insets.top - borderInsets.top) / 2;
+            border.paintBorder(c, g, x, y + temp, width, height - temp);
             Dimension size = comp.getPreferredSize();
             Rectangle rect = new Rectangle(OFFSET, 0, size.width, size.height);
-            SwingUtilities.paintComponent(g, comp, (Container)c, rect);
+            SwingUtilities.paintComponent(g, comp, (Container) c, rect);
             comp.setBounds(rect);
         }
     }

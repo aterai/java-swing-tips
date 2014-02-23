@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(25, 25));
         panel.add(p1, BorderLayout.NORTH);
         panel.add(p2, BorderLayout.SOUTH);
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -46,8 +46,8 @@ public final class MainPanel extends JPanel {
                 final ListCellRenderer<? super String> r = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-                        JComponent c = (JComponent)r.getListCellRendererComponent(list, value, index, false, false);
-                        c.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
+                        JComponent c = (JComponent) r.getListCellRendererComponent(list, value, index, false, false);
+                        c.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
                         return c;
                     }
                 });
@@ -86,11 +86,11 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 super.updateUI();
                 Border buttonBorder = UIManager.getBorder("Spinner.arrowButtonBorder");
-                if(buttonBorder instanceof UIResource) {
+                if (buttonBorder instanceof UIResource) {
                     // Wrap the border to avoid having the UIResource be replaced by
                     // the ButtonUI. This is the opposite of using BorderUIResource.
                     setBorder(new CompoundBorder(buttonBorder, null));
-                }else{
+                } else {
                     setBorder(buttonBorder);
                 }
                 setInheritsPopupMenu(true);
@@ -105,10 +105,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -128,10 +128,10 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
         return button;
     }
     @Override public void setPopupVisible(JComboBox c, boolean v) {
-        System.out.println("setPopupVisible: "+v);
-        if(v) {
+        System.out.println("setPopupVisible: " + v);
+        if (v) {
             popup.show();
-        }else{
+        } else {
             popup.hide();
         }
     }

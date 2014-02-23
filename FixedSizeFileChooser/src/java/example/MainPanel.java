@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("JFileChooser setResizable"));
         p1.add(new JButton(new DefaultFileChooserAction()));
@@ -31,10 +31,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -52,7 +52,7 @@ class DefaultFileChooserAction extends AbstractAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent) e.getSource();
         int retvalue = fileChooser.showOpenDialog(c.getRootPane());
         System.out.println(retvalue);
     }
@@ -70,7 +70,7 @@ class FixedSizeFileChooserAction extends AbstractAction {
                  return dialog;
              }
         };
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent) e.getSource();
         int retvalue = fileChooser.showOpenDialog(c.getRootPane());
         System.out.println(retvalue);
     }
@@ -88,7 +88,7 @@ class MinimumSizeFileChooserAction extends AbstractAction {
                  return dialog;
              }
         };
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent) e.getSource();
         int retvalue = fileChooser.showOpenDialog(c.getRootPane());
         System.out.println(retvalue);
     }
@@ -108,13 +108,13 @@ class MinimumSizeFileChooserAction extends AbstractAction {
 //                          int mh = 480;
 //                          int fw = dialog.getSize().width;
 //                          int fh = dialog.getSize().height;
-//                          dialog.setSize(mw>fw?mw:fw, mh>fh?mh:fh);
+//                          dialog.setSize(mw > fw ? mw : fw, mh > fh ? mh : fh);
 //                      }
 //                  });
 //                  return dialog;
 //              }
 //         };
-//         JComponent c = (JComponent)e.getSource();
+//         JComponent c = (JComponent) e.getSource();
 //         int retvalue = fileChooser.showOpenDialog(c.getRootPane());
 //         System.out.println(retvalue);
 //     }

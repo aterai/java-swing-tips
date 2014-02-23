@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
     private static JComponent makeSystemColor(Color color, String text) {
-        JTextField field = new JTextField(text+": RGB("+ color.getRGB() +")");
+        JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xffffff));
         field.setEditable(false);
         JLabel c = new JLabel();
         c.setPreferredSize(new Dimension(20, 0));
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try{
+//         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(ClassNotFoundException | InstantiationException |
-//                IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//         } catch (ClassNotFoundException | InstantiationException |
+//                  IllegalAccessException | UnsupportedLookAndFeelException ex) {
 //             ex.printStackTrace();
 //         }
         JMenuBar menuBar = new JMenuBar();
@@ -119,11 +119,11 @@ final class LookAndFeelUtil {
         return mi;
     }
     private static boolean isAvailableLookAndFeel(String laf) {
-        try{
+        try {
             Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
+            LookAndFeel newLAF = (LookAndFeel) lnfClass.newInstance();
             return newLAF.isSupportedLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             return false;
         }
     }
@@ -138,21 +138,21 @@ final class LookAndFeelUtil {
         }
     }
     private static void setLookAndFeel(String laf) {
-        if(currentLookAndFeel.equals(laf)) {
+        if (currentLookAndFeel.equals(laf)) {
             return;
         }
         currentLookAndFeel = laf;
-        try{
+        try {
             UIManager.setLookAndFeel(currentLookAndFeel);
             updateLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + currentLookAndFeel);
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window : Frame.getWindows()) {
+        for (Window window : Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

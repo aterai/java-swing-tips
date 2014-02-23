@@ -64,9 +64,9 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JToggleButton(new AbstractAction("setEnabled(false)") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean f = ((AbstractButton)e.getSource()).isSelected();
+                boolean f = ((AbstractButton) e.getSource()).isSelected();
                 f ^= true;
-                for(JButton b: list) {
+                for (JButton b: list) {
                     b.setEnabled(f);
                 }
             }
@@ -81,10 +81,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -113,15 +113,15 @@ class BlurJButton extends JButton {
         //System.out.println(op.getEdgeCondition());
     }
     @Override protected void paintComponent(Graphics g) {
-        if(isEnabled()) {
+        if (isEnabled()) {
             super.paintComponent(g);
-        }else{
-            if(buf==null || iw!=getWidth() || ih!=getHeight()) {
+        } else {
+            if (buf == null || iw != getWidth() || ih != getHeight()) {
                 iw = getWidth();
                 ih = getHeight();
                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
             }
-            Graphics2D g2 = (Graphics2D)buf.getGraphics();
+            Graphics2D g2 = (Graphics2D) buf.getGraphics();
             super.paintComponent(g2);
             g2.dispose();
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
@@ -143,15 +143,15 @@ class BlurButton extends JButton {
         //System.out.println(op.getEdgeCondition());
     }
     @Override protected void paintComponent(Graphics g) {
-        if(isEnabled()) {
+        if (isEnabled()) {
             super.paintComponent(g);
-        }else{
-            if(buf==null || iw!=getWidth() || ih!=getHeight()) {
+        } else {
+            if (buf == null || iw != getWidth() || ih != getHeight()) {
                 iw = getWidth();
                 ih = getHeight();
                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
             }
-            Graphics2D g2 = (Graphics2D)buf.getGraphics();
+            Graphics2D g2 = (Graphics2D) buf.getGraphics();
             super.paintComponent(g2);
             g2.dispose();
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);

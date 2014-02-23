@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         box1.add(new WavyLineSeparator(SwingConstants.VERTICAL));
         box1.add(new JLabel("123a2adfasdfa1sdf"));
         box1.add(Box.createHorizontalGlue());
-        box1.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+        box1.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         Box box2 = Box.createVerticalBox();
         box2.add(new JLabel("asdfasdfas"));
@@ -25,11 +25,11 @@ public final class MainPanel extends JPanel {
         box2.add(new JLabel("asdfasdfas"));
         box2.add(new JLabel("1235436873434325"));
         box2.add(Box.createVerticalGlue());
-        box2.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+        box2.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         add(box1, BorderLayout.NORTH);
         add(box2);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -64,10 +64,10 @@ class WavyLineSeparator extends JSeparator {
     }
     public WavyLineSeparator(int orientation) {
         super(orientation);
-        if(orientation==HORIZONTAL) {
-            setBorder(BorderFactory.createEmptyBorder(2,1,2,1));
-        }else{
-            setBorder(BorderFactory.createEmptyBorder(1,2,1,2));
+        if (orientation == HORIZONTAL) {
+            setBorder(BorderFactory.createEmptyBorder(2, 1, 2, 1));
+        } else {
+            setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
         }
     }
     @Override public void paintComponent(Graphics g) {
@@ -75,22 +75,22 @@ class WavyLineSeparator extends JSeparator {
         //g.setClip(0, 0, getWidth(), getHeight());
         int pos;
         Insets i = getInsets();
-        if(getOrientation()==HORIZONTAL) {
-            for(pos=i.left;getWidth()-pos>0;pos+=WAVY_HLINE.getIconWidth()) {
+        if (getOrientation() == HORIZONTAL) {
+            for (pos = i.left; getWidth() - pos > 0; pos += WAVY_HLINE.getIconWidth()) {
                 WAVY_HLINE.paintIcon(this, g, pos, i.top);
             }
-        }else{
-            for(pos=i.top;getHeight()-pos>0;pos+=WAVY_VLINE.getIconHeight()) {
+        } else {
+            for (pos = i.top; getHeight() - pos > 0; pos += WAVY_VLINE.getIconHeight()) {
                 WAVY_VLINE.paintIcon(this, g, i.left, pos);
             }
         }
     }
     @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
-        if(getOrientation()==HORIZONTAL) {
-            return new Dimension(30, ICONWIDTH+i.top+i.bottom);
-        }else{
-            return new Dimension(ICONWIDTH+i.left+i.right, 30);
+        if (getOrientation() == HORIZONTAL) {
+            return new Dimension(30, ICONWIDTH + i.top + i.bottom);
+        } else {
+            return new Dimension(ICONWIDTH + i.left + i.right, 30);
         }
     }
     static class WavyLineIcon implements Icon {
@@ -103,14 +103,14 @@ class WavyLineSeparator extends JSeparator {
             this.orientation = orientation;
         }
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            Graphics2D g2 = (Graphics2D)g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             AffineTransform oldTransform = g2.getTransform();
             g2.setPaint(sfc);
-            if(orientation==VERTICAL) {
-                g2.translate(x+getIconWidth(), y);
-                g2.rotate(Math.PI/2);
-            }else{
-                g2.translate(x,y);
+            if (orientation == VERTICAL) {
+                g2.translate(x + getIconWidth(), y);
+                g2.rotate(Math.PI / 2);
+            } else {
+                g2.translate(x, y);
             }
             g2.drawLine(0, 2, 0, 2);
             g2.drawLine(1, 1, 1, 1);
@@ -121,10 +121,10 @@ class WavyLineSeparator extends JSeparator {
             g2.dispose();
         }
         @Override public int getIconWidth()  {
-            return (orientation==HORIZONTAL)?ICONWIDTH*2:ICONWIDTH;
+            return (orientation == HORIZONTAL) ? ICONWIDTH * 2 : ICONWIDTH;
         }
         @Override public int getIconHeight() {
-            return (orientation==HORIZONTAL)?ICONWIDTH:ICONWIDTH*2;
+            return (orientation == HORIZONTAL) ? ICONWIDTH : ICONWIDTH * 2;
         }
     }
 }

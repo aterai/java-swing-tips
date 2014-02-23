@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
                 button.setEnabled(false);
                 new Task() {
                     @Override public void done() {
-                        if(!isDisplayable()) {
+                        if (!isDisplayable()) {
                             System.out.println("done: DISPOSE_ON_CLOSE");
                             cancel(true);
                             return;
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
             }
         });
         Box box = Box.createHorizontalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JButton b = new JButton("Button&Mnemonic");
         b.setMnemonic(KeyEvent.VK_B);
@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -74,9 +74,9 @@ public final class MainPanel extends JPanel {
 
 class Task extends SwingWorker<String, Void> {
     @Override public String doInBackground() {
-        try{
+        try {
             Thread.sleep(5000);
-        }catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
         return "Done";
@@ -93,13 +93,13 @@ class LockingGlassPane extends JComponent {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
         JRootPane rootPane = getRootPane();
-        if(rootPane!=null && isVisible()!=oldVisible) {
+        if (rootPane != null && isVisible() != oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
     @Override public void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
-        if(rootPane!=null) {
+        if (rootPane != null) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
             // it is important to call print() instead of paint() here
             // because print() doesn't affect the frame's double buffer

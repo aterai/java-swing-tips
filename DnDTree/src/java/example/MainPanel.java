@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         DefaultTreeModel model = makeModel();
         DnDTree tree = new DnDTree();
         tree.setModel(model);
-        for(int i=0;i<tree.getRowCount();i++) {
+        for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
         add(new JScrollPane(tree));
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -82,10 +82,10 @@ class DnDTree extends JTree {
             //System.out.println("dragGestureRecognized");
             Point pt = dge.getDragOrigin();
             TreePath path = getPathForLocation(pt.x, pt.y);
-            if(path==null || path.getParentPath()==null) {
+            if (path == null || path.getParentPath() == null) {
                 return;
             }
-            //System.out.println("start "+path.toString());
+            //System.out.println("start " + path.toString());
             draggedNode = (TreeNode) path.getLastPathComponent();
             Transferable trans = new RJLTransferable(draggedNode);
             new DragSource().startDrag(dge, Cursor.getDefaultCursor(), trans, new NodeDragSourceListener());
@@ -99,7 +99,7 @@ class DnDTree extends JTree {
         @Override public void dragOver(DropTargetDragEvent dtde) {
             DataFlavor[] f = dtde.getCurrentDataFlavors();
             boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(RJLTransferable.NAME);
-            if(!isDataFlavorSupported) {
+            if (!isDataFlavorSupported) {
                 //サポートされていないDataFlavorである(例えばデスクトップからファイルなど)
                 rejectDrag(dtde);
                 return;
@@ -108,33 +108,33 @@ class DnDTree extends JTree {
             // figure out which cell it's over, no drag to self
             Point pt = dtde.getLocation();
             TreePath path = getPathForLocation(pt.x, pt.y);
-            if(path==null) {
+            if (path == null) {
                 //ノード以外の場所である(例えばJTreeの余白など)
                 rejectDrag(dtde);
                 return;
             }
             //Object draggingObject;
-            //if(!isWebStart()) {
-            //    try{
+            //if (!isWebStart()) {
+            //    try {
             //        draggingObject = dtde.getTransferable().getTransferData(LOCAL_OBJECT_FLAVOR);
-            //    }catch(Exception ex) {
+            //    } catch (Exception ex) {
             //        rejectDrag(dtde);
             //        return;
             //    }
-            //}else{
+            //} else {
             //    draggingObject = getSelectionPath().getLastPathComponent();
             //}
             Object draggingObject             = getSelectionPath().getLastPathComponent();
             MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
             DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-            while(parentNode!=null) {
-                if(draggingNode.equals(parentNode)) {
+            while (parentNode != null) {
+                if (draggingNode.equals(parentNode)) {
                     //親ノードを子ノードにドロップしようとしている
                     rejectDrag(dtde);
                     return;
                 }
-                parentNode = (DefaultMutableTreeNode)parentNode.getParent();
+                parentNode = (DefaultMutableTreeNode) parentNode.getParent();
             }
             //dropTargetNode は、描画用(Rectangle2D、Line)のflag
             dropTargetNode = targetNode; //(TreeNode) path.getLastPathComponent();
@@ -143,40 +143,40 @@ class DnDTree extends JTree {
         }
         @Override public void drop(DropTargetDropEvent dtde) {
             //System.out.println("drop");
-            //if(!isWebStart()) {
-            //    try{
+            //if (!isWebStart()) {
+            //    try {
             //        draggingObject = dtde.getTransferable().getTransferData(LOCAL_OBJECT_FLAVOR);
-            //    }catch(Exception ex) {
+            //    } catch (Exception ex) {
             //        rejectDrag(dtde);
             //        return;
             //    }
-            //}else{
+            //} else {
             //    draggingObject = getSelectionPath().getLastPathComponent();
             //}
             Object draggingObject  = getSelectionPath().getLastPathComponent();
             Point pt = dtde.getLocation();
             TreePath path = getPathForLocation(pt.x, pt.y);
-            if(path==null || !(draggingObject instanceof MutableTreeNode)) {
+            if (path == null || !(draggingObject instanceof MutableTreeNode)) {
                 dtde.dropComplete(false);
                 return;
             }
             //System.out.println("drop path is " + path);
             MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
             DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if(targetNode.equals(draggingNode)) {
+            if (targetNode.equals(draggingNode)) {
                 //自分を自分にはドロップ不可
                 dtde.dropComplete(false);
                 return;
             }
             dtde.acceptDrop(DnDConstants.ACTION_MOVE);
 
-            DefaultTreeModel model = (DefaultTreeModel)getModel();
+            DefaultTreeModel model = (DefaultTreeModel) getModel();
             model.removeNodeFromParent(draggingNode);
 
             DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-            if(parentNode!=null && targetNode.isLeaf()) {
+            if (parentNode != null && targetNode.isLeaf()) {
                 model.insertNodeInto(draggingNode, parentNode, parentNode.getIndex(targetNode));
-            }else{
+            } else {
                 model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
             }
             dtde.dropComplete(true);
@@ -196,20 +196,20 @@ class DnDTree extends JTree {
         private boolean isTargetNode;
         private boolean isTargetNodeLeaf;
         @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean isExpanded, boolean isLeaf, int row, boolean hasFocus) {
-            if(value instanceof TreeNode) {
+            if (value instanceof TreeNode) {
                 isTargetNode     = value.equals(dropTargetNode);
-                isTargetNodeLeaf = isTargetNode && ((TreeNode)value).isLeaf();
+                isTargetNodeLeaf = isTargetNode && ((TreeNode) value).isLeaf();
             }
             return super.getTreeCellRendererComponent(tree, value, isSelected, isExpanded, isLeaf, row, hasFocus);
         }
         @Override public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if(isTargetNode) {
+            if (isTargetNode) {
                 g.setColor(Color.BLACK);
-                if(isTargetNodeLeaf) {
+                if (isTargetNodeLeaf) {
                     g.drawLine(0, 0, getSize().width, 0);
-                }else{
-                    g.drawRect(0, 0, getSize().width-1, getSize().height-1);
+                } else {
+                    g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
                 }
             }
         }
@@ -225,9 +225,9 @@ class RJLTransferable implements Transferable {
         object = o;
     }
     @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
-         if(isDataFlavorSupported(df)) {
+         if (isDataFlavorSupported(df)) {
              return object;
-         }else{
+         } else {
              throw new UnsupportedFlavorException(df);
          }
      }

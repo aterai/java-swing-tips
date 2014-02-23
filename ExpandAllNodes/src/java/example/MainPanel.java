@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         //tree.setModel(makeModel());
 
-        JPanel p = new JPanel(new GridLayout(0,1,2,2));
+        JPanel p = new JPanel(new GridLayout(0, 1, 2, 2));
         p.add(new JButton(new AbstractAction("expand A") {
             @Override public void actionPerformed(ActionEvent e) {
                 expandAll(tree);
@@ -27,14 +27,14 @@ public final class MainPanel extends JPanel {
         }));
         p.add(new JButton(new AbstractAction("expand B") {
             @Override public void actionPerformed(ActionEvent e) {
-                TreeNode root = (TreeNode)tree.getModel().getRoot();
+                TreeNode root = (TreeNode) tree.getModel().getRoot();
                 visitAll(tree, new TreePath(root), true);
                 //expandAPath(new TreePath(root));
             }
         }));
         p.add(new JButton(new AbstractAction("collapse B") {
             @Override public void actionPerformed(ActionEvent e) {
-                TreeNode root = (TreeNode)tree.getModel().getRoot();
+                TreeNode root = (TreeNode) tree.getModel().getRoot();
                 visitAll(tree, new TreePath(root), false);
             }
         }));
@@ -67,18 +67,18 @@ public final class MainPanel extends JPanel {
     //Expanding or Collapsing All Nodes in a JTree Component (Java Developers Almanac Example)
     //http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
     private void visitAll(JTree tree, TreePath parent, boolean expand) {
-        TreeNode node = (TreeNode)parent.getLastPathComponent();
-        if(!node.isLeaf() && node.getChildCount()>=0) {
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        if (!node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
-            while(e.hasMoreElements()) {
-                TreeNode n = (TreeNode)e.nextElement();
+            while (e.hasMoreElements()) {
+                TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 visitAll(tree, path, expand);
             }
         }
-        if(expand) {
+        if (expand) {
             tree.expandPath(parent);
-        }else{
+        } else {
             tree.collapsePath(parent);
         }
     }
@@ -87,14 +87,14 @@ public final class MainPanel extends JPanel {
     //http://www.rgagnon.com/javadetails/java-0210.html
     private void expandAll(JTree tree) {
         int row = 0;
-        while(row<tree.getRowCount()) {
+        while (row<tree.getRowCount()) {
             tree.expandRow(row);
             row++;
         }
     }
     private void collapseAll(JTree tree) {
         int row = tree.getRowCount()-1;
-        while(row>=0) {
+        while (row >= 0) {
             tree.collapseRow(row);
             row--;
         }
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
 //     private void expandAPath(TreePath p) {
 //         tree.expandPath(p);
 //         DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
-//         for(int i=0;i<n.getChildCount();i++) {
+//         for (int i = 0; i < n.getChildCount(); i++) {
 //             TreePath path = p.pathByAddingChild(n.getChildAt(i));
 //             expandAPath(path);
 //         }
@@ -116,10 +116,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -7,8 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_BGCOLOR = new Color(225,255,225);
-    private static final Color ODD_BGCOLOR  = new Color(255,255,255);
+    private static final Color EVEN_BGCOLOR = new Color(225, 255, 225);
+    private static final Color ODD_BGCOLOR  = new Color(255, 255, 255);
     private final JComboBox<String> combo01 = makeComboBox();
     private final JComboBox<String> combo02 = makeComboBox();
 
@@ -20,11 +20,11 @@ public final class MainPanel extends JPanel {
 //                 return new MetalPropertyChangeListener() {
 //                     @Override public void propertyChange(PropertyChangeEvent e) {
 //                         String propertyName = e.getPropertyName();
-//                         if(propertyName=="background") {
-//                             Color color = (Color)e.getNewValue();
+//                         if (propertyName == "background") {
+//                             Color color = (Color) e.getNewValue();
 //                             //arrowButton.setBackground(color);
 //                             listBox.setBackground(color);
-//                         }else{
+//                         } else {
 //                             super.propertyChange(e);
 //                         }
 //                     }
@@ -41,13 +41,13 @@ public final class MainPanel extends JPanel {
         combo02.setSelectedIndex(0);
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("setEditable(false)", combo01));
         box.add(Box.createVerticalStrut(5));
         box.add(makePanel("setEditable(true)",  combo02));
 
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320,200));
+        setPreferredSize(new Dimension(320, 200));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -56,13 +56,13 @@ public final class MainPanel extends JPanel {
         return p;
     }
     private static Color getAlternateRowColor(int index) {
-        return (index%2==0) ? EVEN_BGCOLOR : ODD_BGCOLOR;
+        return (index % 2 == 0) ? EVEN_BGCOLOR : ODD_BGCOLOR;
     }
     private static class AlternateRowColorListCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel cmp = (JLabel)super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+            JLabel cmp = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             cmp.setOpaque(true);
-            if(!isSelected) {
+            if (!isSelected) {
                 cmp.setBackground(getAlternateRowColor(index));
             }
             return cmp;
@@ -81,15 +81,15 @@ public final class MainPanel extends JPanel {
         combo.setRenderer(new AlternateRowColorListCellRenderer());
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) {
+                if (e.getStateChange() != ItemEvent.SELECTED) {
                     return;
                 }
-                JComboBox cb = (JComboBox)e.getSource();
+                JComboBox cb = (JComboBox) e.getSource();
                 Color rc = getAlternateRowColor(cb.getSelectedIndex());
-                if(cb.isEditable()) {
-                    JTextField field = (JTextField)cb.getEditor().getEditorComponent();
+                if (cb.isEditable()) {
+                    JTextField field = (JTextField) cb.getEditor().getEditorComponent();
                     field.setBackground(rc);
-                }else{
+                } else {
                     cb.setBackground(rc);
                 }
             }
@@ -104,10 +104,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

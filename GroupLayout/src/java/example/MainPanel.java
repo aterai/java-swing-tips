@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     private final JLabel label4  = new JLabel("GridBagLayout:");
 
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
 
         //GroupLayout
         JPanel p1 = new JPanel();
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
         //GridBagLayout
         JPanel p2 = new JPanel(new GridBagLayout());
-        Border inside  = BorderFactory.createEmptyBorder(10,5+2,10,10+2);
+        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("GridBagLayout");
         p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

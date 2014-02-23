@@ -23,9 +23,9 @@ public final class MainPanel extends JPanel {
         editor1.setEditorKit(htmlEditorKit);
 
         final URL url = getClass().getResource("SurrogatePair.html");
-        try(Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
             editor1.read(reader, "html");
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             editor1.setText("<html><p>(&#xD85B;&#xDE40;) (&#x26E40;)<br />(&#xD842;&#xDF9F;) (&#x00020B9F;)</p></html>");
         }
 
@@ -34,21 +34,21 @@ public final class MainPanel extends JPanel {
         editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor2.setText("(\uD85B\uDE40) (\u26E40)\n(\uD842\uDF9F) (\u20B9F)");
 
-        JPanel p = new JPanel(new GridLayout(0,1));
+        JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(makeTitledPane(editor1, "Numeric character reference"));
         p.add(makeTitledPane(editor2, "Unicode escapes"));
 
         add(new JButton(new AbstractAction("browse: SurrogatePair.html") {
             @Override public void actionPerformed(ActionEvent e) {
                 BasicService bs = null;
-                try{
-                    bs = (BasicService)ServiceManager.lookup("javax.jnlp.BasicService");
-                }catch(UnavailableServiceException t) {
+                try {
+                    bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+                } catch (UnavailableServiceException t) {
                     bs = null;
                 }
-                if(bs==null) {
+                if (bs == null) {
                     browseCacheFile(url);
-                }else{
+                } else {
                     bs.showDocument(url);
                 }
             }
@@ -57,29 +57,29 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void browseCacheFile(URL url) {
-        if(Desktop.isDesktopSupported()) {
-            try(InputStream in = new BufferedInputStream(url.openStream())) {
+        if (Desktop.isDesktopSupported()) {
+            try (InputStream in = new BufferedInputStream(url.openStream())) {
                 Path path = Files.createTempFile("_tmp", ".html");
                 path.toFile().deleteOnExit();
                 Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
                 Desktop.getDesktop().browse(path.toUri());
-            }catch(IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
-//             try{
+//             try {
 //                 File tmp = File.createTempFile("_tmp", ".html");
 //                 tmp.deleteOnExit();
-//                 try(InputStream in = new BufferedInputStream(url.openStream());
-//                     OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
+//                 try (InputStream in = new BufferedInputStream(url.openStream());
+//                      OutputStream out = new BufferedOutputStream(new FileOutputStream(tmp))) {
 //                     byte buf[] = new byte[256];
 //                     int len;
-//                     while((len = in.read(buf)) != -1) {
+//                     while ((len = in.read(buf)) != -1) {
 //                         out.write(buf, 0, len);
 //                     }
 //                     out.flush();
 //                     Desktop.getDesktop().browse(tmp.toURI());
 //                 }
-//             }catch(IOException ex) {
+//             } catch (IOException ex) {
 //                 ex.printStackTrace();
 //             }
         }
@@ -97,10 +97,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

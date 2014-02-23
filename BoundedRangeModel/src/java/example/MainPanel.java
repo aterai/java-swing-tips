@@ -15,7 +15,7 @@ import javax.swing.text.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color THUMB_COLOR  = new Color(0,0,255,50);
+    private static final Color THUMB_COLOR  = new Color(0, 0, 255, 50);
     private static final String PATTERN     = "Swing";
     private final List<Integer> highlighter = new ArrayList<>();
     private final DefaultTableModel model   = new DefaultTableModel(0, 2) {
@@ -30,8 +30,8 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        for(int i = 0; i < 100; i++) {
-            boolean flag = i % 19 == 0 || i % 17==0;
+        for (int i = 0; i < 100; i++) {
+            boolean flag = i % 19 == 0 || i % 17 == 0;
             String str = flag ? PATTERN : "aaaaa";
             model.addRow(new Object[] {str, ""});
         }
@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
                 JTable table, Object value,
                 boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if(highlighter.contains(row)) {
+                if (highlighter.contains(row)) {
                     setBackground(Color.YELLOW);
                 } else {
-                    setBackground(isSelected?table.getSelectionBackground():table.getBackground());
+                    setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
                 }
                 return this;
             }
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
         box.add(new JToggleButton(new AbstractAction("highlight") {
             @Override public void actionPerformed(ActionEvent e) {
                 highlighter.clear();
-                if(((JToggleButton)e.getSource()).isSelected()) {
+                if (((JToggleButton) e.getSource()).isSelected()) {
                     updateHighlighter();
                 }
                 label.getRootPane().repaint();
@@ -83,9 +83,9 @@ public final class MainPanel extends JPanel {
     class HighlightBarHandler extends MouseAdapter {
         private void processMouseEvent(MouseEvent e) {
             Point pt = e.getPoint();
-            Component c = (Component)e.getComponent();
+            Component c = (Component) e.getComponent();
             BoundedRangeModel m = scrollbar.getModel();
-            int iv = (int)(.5 - m.getExtent() * 0.5 + pt.y * (m.getMaximum()-m.getMinimum()) / (double)c.getHeight());
+            int iv = (int) (.5 - m.getExtent() * .5 + pt.y * (m.getMaximum() - m.getMinimum()) / (double) c.getHeight());
             m.setValue(iv);
         }
         @Override public void mousePressed(MouseEvent e) {
@@ -96,20 +96,20 @@ public final class MainPanel extends JPanel {
         }
     }
     private void updateHighlighter() {
-        for(int i=0; i<table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount(); i++) {
             Object o = table.getValueAt(i, 0);
-            if(o instanceof String && PATTERN.equals(o)) {
+            if (o instanceof String && PATTERN.equals(o)) {
                 highlighter.add(i);
             }
         }
     }
     private class HighlightIcon implements Icon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, table));
+            JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, table));
             Rectangle vrect = vport.getBounds();
             Rectangle trect = table.getBounds();
             Rectangle crect = SwingUtilities.calculateInnerArea(label, label.getBounds());
-            //Insets insets   = ((JComponent)c).getInsets();
+            //Insets insets   = ((JComponent) c).getInsets();
             //Insets insets   = label.getInsets();
 
             //paint Background
@@ -121,21 +121,21 @@ public final class MainPanel extends JPanel {
             AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
             //paint Highlight
             g.setColor(Color.YELLOW);
-            for(Integer viewIndex: highlighter) {
+            for (Integer viewIndex: highlighter) {
                 Rectangle r = table.getCellRect(viewIndex, 0, true);
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = Math.max(2, s.height-2);
-                g.fillRect(x, crect.y+s.y, getIconWidth(), h);
+                int h = Math.max(2, s.height - 2);
+                g.fillRect(x, crect.y + s.y, getIconWidth(), h);
             }
             //paint Thumb
-            if(scrollbar.isVisible()) {
+            if (scrollbar.isVisible()) {
                 Rectangle thumbRect = new Rectangle(vrect);
                 thumbRect.y = vport.getViewPosition().y;
                 g.setColor(THUMB_COLOR);
                 Rectangle r = at.createTransformedShape(thumbRect).getBounds();
-                g.fillRect(x, crect.y+r.y, getIconWidth(), r.height);
+                g.fillRect(x, crect.y + r.y, getIconWidth(), r.height);
                 g.setColor(THUMB_COLOR.darker());
-                g.drawRect(x, crect.y+r.y, getIconWidth()-1, r.height-1);
+                g.drawRect(x, crect.y + r.y, getIconWidth() - 1, r.height - 1);
             }
         }
         @Override public int getIconWidth() {
@@ -153,10 +153,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

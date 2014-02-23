@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new BorderLayout(5,5));
+        super(new BorderLayout(5, 5));
         Box box = Box.createVerticalBox();
         box.add(Box.createVerticalStrut(5));
         box.add(makeTitledPanel("Default", makeSlider(false)));
@@ -16,24 +16,24 @@ public final class MainPanel extends JPanel {
         box.add(makeTitledPanel("Triangle Tick", makeSlider(true)));
         box.add(Box.createVerticalGlue());
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 200));
     }
 
     private JSlider makeSlider(boolean icon) {
-        JSlider slider = new JSlider(0,100);
+        JSlider slider = new JSlider(0, 100);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(5);
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
-        if(icon) {
+        if (icon) {
             Dictionary dictionary = slider.getLabelTable();
-            if(dictionary != null) {
+            if (dictionary != null) {
                 Enumeration elements = dictionary.elements();
                 Icon tick = new TickIcon();
-                while(elements.hasMoreElements()) {
+                while (elements.hasMoreElements()) {
                     JLabel label = (JLabel) elements.nextElement();
-                    label.setBorder(BorderFactory.createEmptyBorder(1,0,0,0));
+                    label.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
                     label.setIcon(tick);
                     label.setIconTextGap(0);
                     label.setVerticalAlignment(SwingConstants.TOP);
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
                     label.setForeground(Color.RED);
                 }
             }
-        }else{
+        } else {
             slider.setPaintTicks(true);
             slider.setForeground(Color.BLUE);
         }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -83,9 +83,9 @@ public final class MainPanel extends JPanel {
 class TickIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.setColor(Color.BLUE);
-        g.drawLine(x+2, y+0, x+2, y+2);
-        g.drawLine(x+1, y+1, x+3, y+1);
-        g.drawLine(x+0, y+2, x+4, y+2);
+        g.drawLine(x + 2, y + 0, x + 2, y + 2);
+        g.drawLine(x + 1, y + 1, x + 3, y + 1);
+        g.drawLine(x + 0, y + 2, x + 4, y + 2);
     }
     @Override public int getIconWidth()  { return 5; }
     @Override public int getIconHeight() { return 3; }

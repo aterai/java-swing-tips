@@ -15,14 +15,14 @@ public final class MainPanel extends JPanel {
         fileChooser = new JFileChooser() {
             @Override public void approveSelection() {
                 File f = getSelectedFile();
-                if(f.exists() && getDialogType() == SAVE_DIALOG) {
+                if (f.exists() && getDialogType() == SAVE_DIALOG) {
                     //@see https://forums.oracle.com/thread/1391852 How to react on events fired by a JFileChooser?
                     //@see http://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
                     //String m = "Replace file: " + f.getAbsolutePath() + "?";
                     //String m = "The file exists, overwrite?";
                     String m = String.format("<html>%s already exists.<br>Do you want to replace it?", f.getAbsolutePath());
                     int rv = JOptionPane.showConfirmDialog(this, m, "Save As", JOptionPane.YES_NO_OPTION);
-                    if(rv!=JOptionPane.YES_OPTION) {
+                    if (rv!=JOptionPane.YES_OPTION) {
                         return;
                     }
                 }
@@ -33,14 +33,14 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("Override JFileChooser#approveSelection()") {
             @Override public void actionPerformed(ActionEvent e) {
                 int retvalue = fileChooser.showSaveDialog(p);
-                if(retvalue==JFileChooser.APPROVE_OPTION) {
+                if (retvalue == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     System.out.println(file);
                 }
             }
         }));
         add(p);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(320, 200));
     }
     public static void main(String[] args) {
@@ -51,10 +51,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

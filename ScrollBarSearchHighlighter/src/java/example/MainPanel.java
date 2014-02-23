@@ -42,20 +42,20 @@ public final class MainPanel extends JPanel {
 //     };
     private final JCheckBox check      = new JCheckBox(new AbstractAction("LineWrap") {
         @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox)e.getSource();
+            JCheckBox c = (JCheckBox) e.getSource();
             textArea.setLineWrap(c.isSelected());
         }
     });
     public MainPanel() {
         super(new BorderLayout());
         textArea.setEditable(false);
-        textArea.setText(INITTXT+INITTXT+INITTXT);
+        textArea.setText(INITTXT + INITTXT + INITTXT);
 
         scrollbar.setUnitIncrement(10);
 
-        if(scrollbar.getUI() instanceof WindowsScrollBarUI) {
+        if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
             scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
-        }else{
+        } else {
             scrollbar.setUI(new MetalHighlightScrollBarUI(textArea));
         }
 
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         /*
         // Bug ID: JDK-6826074 JScrollPane does not revalidate the component hierarchy after scrolling
         // http://bugs.sun.com/view_bug.do?bug_id=6826074
-        // Affected Versions: 6u12,6u16,7
+        // Affected Versions: 6u12, 6u16, 7
         // Fixed Versions: 7 (b134)
         JViewport vp = new JViewport() {
             @Override public void setViewPosition(Point p) {
@@ -102,17 +102,17 @@ public final class MainPanel extends JPanel {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
         Document doc = jtc.getDocument();
-        try{
+        try {
             String text = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(pattern).matcher(text);
             int pos = 0;
-            while(matcher.find(pos)) {
+            while (matcher.find(pos)) {
                 int start = matcher.start();
                 int end   = matcher.end();
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
         repaint();
@@ -125,10 +125,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -141,7 +141,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HighlightIcon implements Icon {
-    private static final Color THUMB_COLOR = new Color(0,0,255,50);
+    private static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
     private final Rectangle thumbRect = new Rectangle();
     private final JTextComponent textArea;
     private final JScrollBar scrollbar;
@@ -156,32 +156,32 @@ class HighlightIcon implements Icon {
         //double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
         int itop = scrollbar.getInsets().top;
         BoundedRangeModel range = scrollbar.getModel();
-        double sy = range.getExtent() / (double)(range.getMaximum() - range.getMinimum());
+        double sy = range.getExtent() / (double) (range.getMaximum() - range.getMinimum());
         AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
         Highlighter highlighter = textArea.getHighlighter();
 
         //paint Highlight
         g.setColor(Color.RED);
-        try{
-            for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+        try {
+            for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = 2; //Math.max(2, s.height-2);
-                g.fillRect(x, y+itop+s.y, getIconWidth(), h);
+                int h = 2; //Math.max(2, s.height - 2);
+                g.fillRect(x, y + itop + s.y, getIconWidth(), h);
             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
 
         //paint Thumb
-        if(scrollbar.isVisible()) {
-            //JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+        if (scrollbar.isVisible()) {
+            //JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
             //Rectangle thumbRect = vport.getBounds();
             thumbRect.height = range.getExtent();
             thumbRect.y = range.getValue(); //vport.getViewPosition().y;
             g.setColor(THUMB_COLOR);
             Rectangle s = at.createTransformedShape(thumbRect).getBounds();
-            g.fillRect(x, y+itop+s.y, getIconWidth(), s.height);
+            g.fillRect(x, y + itop + s.y, getIconWidth(), s.height);
         }
     }
     @Override public int getIconWidth() {
@@ -189,7 +189,7 @@ class HighlightIcon implements Icon {
     }
     @Override public int getIconHeight() {
         //return scrollbar.getHeight();
-        JViewport vport = Objects.requireNonNull((JViewport)SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
+        JViewport vport = Objects.requireNonNull((JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
         return vport.getHeight();
     }
 }
@@ -208,14 +208,14 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
         AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
         Highlighter highlighter = textArea.getHighlighter();
         g.setColor(Color.YELLOW);
-        try{
-            for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+        try {
+            for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = 2; //Math.max(2, s.height-2);
-                g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
+                int h = 2; //Math.max(2, s.height - 2);
+                g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -235,14 +235,14 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
         AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
         Highlighter highlighter = textArea.getHighlighter();
         g.setColor(Color.YELLOW);
-        try{
-            for(Highlighter.Highlight hh: highlighter.getHighlights()) {
+        try {
+            for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
-                int h = 2; //Math.max(2, s.height-2);
-                g.fillRect(trackBounds.x, trackBounds.y+s.y, trackBounds.width, h);
+                int h = 2; //Math.max(2, s.height - 2);
+                g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }

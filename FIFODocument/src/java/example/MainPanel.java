@@ -14,12 +14,12 @@ public final class MainPanel extends JPanel {
     private final Timer timer = new Timer(200, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             String s = new Date().toString();
-            jta.append(jta.getDocument().getLength()>0 ? "\n"+s : s);
+            jta.append(jta.getDocument().getLength() > 0 ? "\n" + s : s);
         }
     });
     private final JButton start = new JButton(new AbstractAction("Start") {
         @Override public void actionPerformed(ActionEvent e) {
-            if(!timer.isRunning()) {
+            if (!timer.isRunning()) {
                 timer.start();
             }
         }
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !isDisplayable()) {
                     timer.stop();
                 }
             }
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -92,7 +92,7 @@ class FIFODocumentListener implements DocumentListener {
     @Override public void insertUpdate(DocumentEvent e) {
         final Document doc = e.getDocument();
         final Element root = doc.getDefaultRootElement();
-        if(root.getElementCount()<=MAX_LINES) {
+        if (root.getElementCount()<=MAX_LINES) {
             return;
         }
         EventQueue.invokeLater(new Runnable() {
@@ -104,9 +104,9 @@ class FIFODocumentListener implements DocumentListener {
     }
     private static void removeLines(Document doc, Element root) {
         Element fl = root.getElement(0);
-        try{
+        try {
             doc.remove(0, fl.getEndOffset());
-        }catch(BadLocationException ble) {
+        } catch (BadLocationException ble) {
             ble.printStackTrace();
         }
     }

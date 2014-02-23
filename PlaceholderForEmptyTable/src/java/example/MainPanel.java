@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor.addHyperlinkListener(new HyperlinkListener() {
             @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if(e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
+                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                     Toolkit.getDefaultToolkit().beep();
                 }
             }
@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
 
         model.addTableModelListener(new TableModelListener() {
             @Override public void tableChanged(TableModelEvent e) {
-                DefaultTableModel model = (DefaultTableModel)e.getSource();
-                editor.setVisible(model.getRowCount()==0);
+                DefaultTableModel model = (DefaultTableModel) e.getSource();
+                editor.setVisible(model.getRowCount() == 0);
             }
         });
 
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -77,8 +77,8 @@ public final class MainPanel extends JPanel {
 class TablePopupMenu extends JPopupMenu {
     private final Action addAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTable table = (JTable)getInvoker();
-            DefaultTableModel model = (DefaultTableModel)table.getModel();
+            JTable table = (JTable) getInvoker();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.addRow(new Object[] {0, "aaa", Boolean.FALSE});
             Rectangle rect = table.getCellRect(model.getRowCount()-1, 0, true);
             table.scrollRectToVisible(rect);
@@ -86,13 +86,13 @@ class TablePopupMenu extends JPopupMenu {
     };
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
-            JTable table = (JTable)getInvoker();
+            JTable table = (JTable) getInvoker();
             int[] selection = table.getSelectedRows();
-            if(selection.length == 0) {
+            if (selection.length == 0) {
                 return;
             }
-            DefaultTableModel model = (DefaultTableModel)table.getModel();
-            for(int i=selection.length-1;i>=0;i--) {
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            for (int i=selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
             }
         }
@@ -104,10 +104,10 @@ class TablePopupMenu extends JPopupMenu {
         add(deleteAction);
     }
     @Override public void show(Component c, int x, int y) {
-        if(c instanceof JTable) {
-            JTable table = (JTable)c;
+        if (c instanceof JTable) {
+            JTable table = (JTable) c;
             int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l.length>0);
+            deleteAction.setEnabled(l.length > 0);
             super.show(c, x, y);
         }
     }

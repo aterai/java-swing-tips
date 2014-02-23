@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
         }
         @Override public void updateUI() {
             super.updateUI();
-            if(getUI() instanceof WindowsTabbedPaneUI) {
+            if (getUI() instanceof WindowsTabbedPaneUI) {
                 setUI(new WindowsClippedTitleTabbedPaneUI());
-            }else{
+            } else {
                 setUI(new BasicClippedTitleTabbedPaneUI());
             }
         }
@@ -32,15 +32,15 @@ public final class MainPanel extends JPanel {
         final List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTab(new JTabbedPane()),
             makeTestTab(tabbedPane));
-        JPanel p = new JPanel(new GridLayout(2,1));
-        for(JTabbedPane t:list) {
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        for (JTabbedPane t:list) {
             p.add(t);
         }
         add(new JCheckBox(new AbstractAction("LEFT") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox)e.getSource();
-                for(JTabbedPane t:list) {
-                    t.setTabPlacement(c.isSelected()?JTabbedPane.LEFT:JTabbedPane.TOP);
+                JCheckBox c = (JCheckBox) e.getSource();
+                for (JTabbedPane t:list) {
+                    t.setTabPlacement(c.isSelected() ? JTabbedPane.LEFT : JTabbedPane.TOP);
                 }
             }
         }), BorderLayout.NORTH);
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -90,9 +90,9 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
         int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
         switch(tabPlacement) {
           case LEFT: case RIGHT:
-            return (int)(width/4);
+            return (int) (width / 4);
           case BOTTOM: case TOP: default:
-            return (int)(width/tabPane.getTabCount());
+            return (int) (width / tabPane.getTabCount());
         }
     }
     @Override protected void paintText(Graphics g, int tabPlacement,
@@ -101,15 +101,15 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
                                        boolean isSelected) {
         int fw = (int) font.getSize();
         Rectangle tabRect = rects[tabIndex];
-        Rectangle rect = new Rectangle(textRect.x+fw/2, textRect.y, tabRect.width-fw, textRect.height);
+        Rectangle rect = new Rectangle(textRect.x + fw / 2, textRect.y, tabRect.width - fw, textRect.height);
         String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
                                                                 SwingUtilities.CENTER, SwingUtilities.CENTER,
                                                                 SwingUtilities.CENTER, SwingUtilities.TRAILING,
                                                                 rect, new Rectangle(), rect, 0);
-        if(title.equals(clippedText)) {
+        if (title.equals(clippedText)) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
-        }else{
-            rect = new Rectangle(textRect.x+fw/2, textRect.y, tabRect.width-fw, textRect.height);
+        } else {
+            rect = new Rectangle(textRect.x + fw / 2, textRect.y, tabRect.width - fw, textRect.height);
             super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
         }
     }
@@ -126,9 +126,9 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
         int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
         switch(tabPlacement) {
           case LEFT: case RIGHT:
-            return (int)(width/4);
+            return (int) (width / 4);
           case BOTTOM: case TOP: default:
-            return (int)(width/tabPane.getTabCount());
+            return (int) (width / tabPane.getTabCount());
         }
     }
     @Override protected void paintText(Graphics g, int tabPlacement,
@@ -136,15 +136,15 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
                                        String title, Rectangle textRect,
                                        boolean isSelected) {
         Rectangle tabRect = rects[tabIndex];
-        Rectangle rect = new Rectangle(textRect.x+tabInsets.left, textRect.y, tabRect.width-tabInsets.left-tabInsets.right, textRect.height);
+        Rectangle rect = new Rectangle(textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
         String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
                                                                 SwingUtilities.CENTER, SwingUtilities.CENTER,
                                                                 SwingUtilities.CENTER, SwingUtilities.TRAILING,
                                                                 rect, new Rectangle(), rect, 0);
-        if(title.equals(clippedText)) {
+        if (title.equals(clippedText)) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
-        }else{
-            rect = new Rectangle(textRect.x+tabInsets.left, textRect.y, tabRect.width-tabInsets.left-tabInsets.right, textRect.height);
+        } else {
+            rect = new Rectangle(textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
             super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, rect, isSelected);
         }
     }

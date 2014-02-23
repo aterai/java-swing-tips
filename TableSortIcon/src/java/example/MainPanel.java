@@ -33,16 +33,16 @@ public final class MainPanel extends JPanel {
         final JRadioButton r2 = new JRadioButton("Cumstom");
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JRadioButton r = (JRadioButton)e.getSource();
+                JRadioButton r = (JRadioButton) e.getSource();
                 Icon ascending  = null;
                 Icon descending = null;
-                if(r.equals(r0)) {
+                if (r.equals(r0)) {
                     ascending  = UIManager.getIcon("Table.ascendingSortIcon");
                     descending = UIManager.getIcon("Table.descendingSortIcon");
-                }else if(r.equals(r1)) {
+                } else if (r.equals(r1)) {
                     ascending  = new IconUIResource(EMPTY_ICON);
                     descending = new IconUIResource(EMPTY_ICON);
-                }else{
+                } else {
                     ascending  = new IconUIResource(customAscendingSortIcon);
                     descending = new IconUIResource(customDescendingSortIcon);
                 }
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
             }
         };
         Box box1 = Box.createHorizontalBox();
-        box1.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        box1.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         ButtonGroup bg = new ButtonGroup();
         box1.add(new JLabel("Table Sort Icon: "));
-        for(JRadioButton rb: Arrays.asList(r0, r1, r2)) {
+        for (JRadioButton rb: Arrays.asList(r0, r1, r2)) {
             box1.add(rb);
             box1.add(Box.createHorizontalStrut(5));
             bg.add(rb);
@@ -87,10 +87,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

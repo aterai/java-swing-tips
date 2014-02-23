@@ -46,29 +46,29 @@ public final class MainPanel extends JPanel {
     }
     private void updateFont(Font font) {
         FontUIResource fontUIResource = new FontUIResource(font);
-        for(Object o: UIManager.getLookAndFeelDefaults().keySet()) {
-            if(o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
+        for (Object o: UIManager.getLookAndFeelDefaults().keySet()) {
+            if (o.toString().toLowerCase(Locale.ENGLISH).endsWith("font")) {
                 UIManager.put(o, fontUIResource);
             }
         }
         recursiveUpdateUI(this); //SwingUtilities.updateComponentTreeUI(this);
         //Container c = getTopLevelAncestor();
-        //if(c!=null && c instanceof Window) {
-        //    ((Window)c).pack();
+        //if (c != null && c instanceof Window) {
+        //    ((Window) c).pack();
         //}
         Window window = SwingUtilities.getWindowAncestor(this);
-        if(window != null) {
+        if (window != null) {
             window.pack();
         }
     }
     private void recursiveUpdateUI(JComponent p) {
-        for(Component c: p.getComponents()) {
-            if(c instanceof JToolBar) {
+        for (Component c: p.getComponents()) {
+            if (c instanceof JToolBar) {
                 continue;
-            }else if(c instanceof JComponent) {
-                JComponent jc = (JComponent)c;
+            } else if (c instanceof JComponent) {
+                JComponent jc = (JComponent) c;
                 jc.updateUI();
-                if(jc.getComponentCount()>0) {
+                if (jc.getComponentCount() > 0) {
                     recursiveUpdateUI(jc);
                 }
             }
@@ -110,10 +110,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

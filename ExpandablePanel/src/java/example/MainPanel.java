@@ -16,14 +16,14 @@ public final class MainPanel extends JPanel {
     private final List<AbstractExpansionPanel> panelList = makeList();
     private final transient ExpansionListener rl = new ExpansionListener() {
         @Override public void expansionStateChanged(ExpansionEvent e) {
-            initComps(panelList, (JComponent)e.getSource());
+            initComps(panelList, (JComponent) e.getSource());
         }
     };
 
     public MainPanel() {
         super(new BorderLayout());
         JPanel panel = new JPanel(new BorderLayout());
-        for(AbstractExpansionPanel exp: panelList) {
+        for (AbstractExpansionPanel exp: panelList) {
             northBox.add(exp);
             exp.addExpansionListener(rl);
         }
@@ -44,16 +44,16 @@ public final class MainPanel extends JPanel {
         northBox.removeAll();
         southBox.removeAll();
         boolean insertSouth = false;
-        for(AbstractExpansionPanel exp: list) {
-            if(source.equals(exp) && exp.isSelected()) {
+        for (AbstractExpansionPanel exp: list) {
+            if (source.equals(exp) && exp.isSelected()) {
                 centerBox.add(exp);
                 insertSouth = true;
                 continue;
             }
             exp.setSelected(false);
-            if(insertSouth) {
+            if (insertSouth) {
                 southBox.add(exp);
-            }else{
+            } else {
                 northBox.add(exp);
             }
         }
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
                 public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-                    for(int i=0;i<16;i++) {
+                    for (int i = 0; i < 16; i++) {
                         p.add(new JLabel(String.format("%02d", i)));
                     }
                     return p;
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     ButtonGroup bg = new ButtonGroup();
-                    for(JRadioButton b: Arrays.<JRadioButton>asList(
+                    for (JRadioButton b: Arrays.<JRadioButton>asList(
                         new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc"))) {
                         p.add(b); bg.add(b); b.setSelected(true);
                     }
@@ -103,10 +103,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -145,9 +145,9 @@ abstract class AbstractExpansionPanel extends JPanel {
 
     public void setSelected(boolean flg) {
         openFlag = flg;
-        if(openFlag) {
+        if (openFlag) {
             add(scroll);
-        }else{
+        } else {
             remove(scroll);
         }
     }
@@ -169,13 +169,13 @@ abstract class AbstractExpansionPanel extends JPanel {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==ExpansionListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ExpansionListener.class) {
                 // Lazily create the event:
-                if(expansionEvent == null) {
+                if (expansionEvent == null) {
                     expansionEvent = new ExpansionEvent(this);
                 }
-                ((ExpansionListener)listeners[i+1]).expansionStateChanged(expansionEvent);
+                ((ExpansionListener) listeners[i + 1]).expansionStateChanged(expansionEvent);
             }
         }
     }

@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         DefaultListModel<String> model = new DefaultListModel<>();
-        for(String t: Arrays.asList("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee")) {
+        for (String t: Arrays.asList("aa", "bbbbbbbbbbbbb", "ccc", "dddddddddddddddd", "eeeeeee")) {
             model.addElement(t);
         }
         JList<String> list = new LinkCellList<>(model);
@@ -27,10 +27,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -60,19 +60,19 @@ class LinkCellList<E> extends JList<E> {
     @Override protected void processMouseMotionEvent(MouseEvent e) {
         Point pt = e.getPoint();
         int i = locationToIndex(pt);
-        E s = ((ListModel<E>)getModel()).getElementAt(i);
+        E s = ((ListModel<E>) getModel()).getElementAt(i);
         Component c = getCellRenderer().getListCellRendererComponent(this, s, i, false, false);
         Rectangle r = getCellBounds(i, i);
         c.setBounds(r);
-        if(prevIndex!=i) {
+        if (prevIndex != i) {
             c.doLayout();
         }
         prevIndex = i;
         pt.translate(-r.x, -r.y);
         Component cmp = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-        if(cmp == null) {
+        if (cmp == null) {
             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        }else{
+        } else {
             setCursor(cmp.getCursor());
         }
     }
@@ -94,14 +94,14 @@ class LinkCellRenderer<E> implements ListCellRenderer<E> {
         check.setOpaque(false);
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, final int index, boolean isSelected, boolean cellHasFocus) {
-        if(isSelected) {
+        if (isSelected) {
             p.setBackground(list.getSelectionBackground());
             p.setForeground(list.getSelectionForeground());
-        }else{
+        } else {
             p.setBackground(list.getBackground());
             p.setForeground(list.getForeground());
         }
-        label.setText("<html><a href=''>"+value);
+        label.setText("<html><a href=''>" + value);
         return p;
     }
 }

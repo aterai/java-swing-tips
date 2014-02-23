@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         super();
         lbl1.setPreferredSize(new Dimension(1200, 600));
         lbl2.setPreferredSize(new Dimension(600, 1200));
-        setLayout(new GridLayout(2,1));
+        setLayout(new GridLayout(2, 1));
         add(sp1);
         add(sp2);
 
@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
             @Override public void stateChanged(ChangeEvent e) {
                 JViewport src = null;
                 JViewport tgt = null;
-                if(e.getSource()==sp1.getViewport()) {
+                if (e.getSource() == sp1.getViewport()) {
                     src = sp1.getViewport();
                     tgt = sp2.getViewport();
-                }else if(e.getSource()==sp2.getViewport()) {
+                } else if (e.getSource() == sp2.getViewport()) {
                     src = sp2.getViewport();
                     tgt = sp1.getViewport();
                 }
-                if(adjflg || tgt==null || src==null) { return; }
+                if (adjflg || tgt == null || src == null) { return; }
                 adjflg = true;
                 Dimension dim1 = src.getViewSize();
                 Dimension siz1 = src.getSize();
@@ -41,9 +41,9 @@ public final class MainPanel extends JPanel {
                 //Point     pnt2 = tgt.getViewPosition();
                 double d;
                 d = pnt1.getY()/(dim1.getHeight()-siz1.getHeight())*(dim2.getHeight()-siz2.getHeight());
-                pnt1.y = (int)d;
+                pnt1.y = (int) d;
                 d = pnt1.getX()/(dim1.getWidth()-siz1.getWidth())*(dim2.getWidth()-siz2.getWidth());
-                pnt1.x = (int)d;
+                pnt1.x = (int) d;
                 tgt.setViewPosition(pnt1);
                 adjflg = false;
             }
@@ -56,11 +56,11 @@ public final class MainPanel extends JPanel {
 //         lbl2.setPreferredSize(new Dimension(1200, 600));
 //         Dimension d1 = lbl1.getPreferredSize();
 //         Dimension d2 = lbl2.getPreferredSize();
-//         if(d1.width==d2.width) {
+//         if (d1.width == d2.width) {
 //             BoundedRangeModel m = sp1.getHorizontalScrollBar().getModel();
 //             sp2.getHorizontalScrollBar().setModel(m);
 //         }
-//         if(d1.height==d2.height) {
+//         if (d1.height == d2.height) {
 //             BoundedRangeModel m = sp1.getVerticalScrollBar().getModel();
 //             sp2.getVerticalScrollBar().setModel(m);
 //         }
@@ -75,10 +75,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

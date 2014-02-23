@@ -20,10 +20,10 @@ public final class MainPanel extends JPanel {
             }
         };
         Insets m = field1.getMargin();
-        field1.setMargin(new Insets(m.top,m.left+w,m.bottom,m.right));
+        field1.setMargin(new Insets(m.top, m.left + w, m.bottom, m.right));
         label1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         label1.setBorder(BorderFactory.createEmptyBorder());
-        label1.setBounds(m.left,m.top,w,h);
+        label1.setBounds(m.left, m.top, w, h);
 
         final JLabel label2 = new JLabel(image);
         label2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
             }
         };
         m = field2.getMargin();
-        field2.setMargin(new Insets(m.top+2,m.left,m.bottom,m.right+w));
+        field2.setMargin(new Insets(m.top + 2, m.left, m.bottom, m.right + w));
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("Default", new JTextField("aaaaaaaaaaaa")));
         box.add(Box.createVerticalStrut(5));
         box.add(makePanel("add Image(JLabel)", field1));
@@ -70,10 +70,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

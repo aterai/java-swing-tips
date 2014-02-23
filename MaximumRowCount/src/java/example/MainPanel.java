@@ -13,20 +13,20 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         spinner.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JSpinner source = (JSpinner)e.getSource();
-                Integer newValue = (Integer)source.getValue();
+                JSpinner source = (JSpinner) e.getSource();
+                Integer newValue = (Integer) source.getValue();
                 comboBox.setMaximumRowCount(newValue);
             }
         });
 
         Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         box.add(makePanel("JComboBox#setMaximumRowCount:", spinner));
         box.add(Box.createVerticalStrut(10));
         box.add(comboBox);
 
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320,240));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
     }
     private static DefaultComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        for(int i=0;i<100;i++) {
-            model.addElement("Item"+i);
+        for (int i = 0; i < 100; i++) {
+            model.addElement("Item" + i);
         }
         return model;
     }
@@ -49,10 +49,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

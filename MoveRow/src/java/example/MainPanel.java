@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -106,20 +106,20 @@ class TablePopupMenu extends JPopupMenu {
         int count   = table.getSelectedRowCount();
         int[] l     = table.getSelectedRows();
         boolean flg = true;
-        for(int i=0;i<l.length;i++) {
-            if(l[i]==row) {
+        for (int i = 0; i < l.length; i++) {
+            if (l[i] == row) {
                 flg = false;
                 break;
             }
         }
-        if(row>0 && flg) {
+        if (row > 0 && flg) {
             table.setRowSelectionInterval(row, row);
         }
 
-        createAction.setEnabled(count<=1);
-        deleteAction.setEnabled(row>=0);
-        upAction.setEnabled(count>0);
-        downAction.setEnabled(count>0);
+        createAction.setEnabled(count <= 1);
+        deleteAction.setEnabled(row >= 0);
+        upAction.setEnabled(count > 0);
+        downAction.setEnabled(count > 0);
 
         super.show(c, x, y);
     }
@@ -132,10 +132,10 @@ class TestCreateAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(table.isEditing()) {
+        if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();
         }
-        TestModel model = (TestModel)table.getModel();
+        TestModel model = (TestModel) table.getModel();
         model.addTest(new Test("New row", ""));
         Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
         table.scrollRectToVisible(r);
@@ -149,15 +149,15 @@ class DeleteAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(table.isEditing()) {
+        if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();
         }
         int[] selection = table.getSelectedRows();
-        if(selection.length == 0) {
+        if (selection.length == 0) {
             return;
         }
-        TestModel model = (TestModel)table.getModel();
-        for(int i=selection.length-1;i>=0;i--) {
+        TestModel model = (TestModel) table.getModel();
+        for (int i=selection.length - 1; i >= 0; i--) {
             //Test ixsc = model.getTest(selection[i]);
             model.removeRow(selection[i]);
         }
@@ -171,25 +171,25 @@ class UpAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(table.isEditing()) {
+        if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();
         }
         int[] pos = table.getSelectedRows();
-        if(pos.length == 0) {
+        if (pos.length == 0) {
             return;
         }
-        TestModel model = (TestModel)table.getModel();
-        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
-            if(pos[0]==0) {
+        TestModel model = (TestModel) table.getModel();
+        if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+            if (pos[0] == 0) {
                 return;
             }
-            model.moveRow(pos[0], pos[pos.length-1], pos[0]-1);
-            table.setRowSelectionInterval(pos[0]-1, pos[pos.length-1]-1);
-        }else{
-            model.moveRow(pos[0], pos[pos.length-1], 0);
-            table.setRowSelectionInterval(0, pos.length-1);
+            model.moveRow(pos[0], pos[pos.length - 1], pos[0] - 1);
+            table.setRowSelectionInterval(pos[0] - 1, pos[pos.length - 1] - 1);
+        } else {
+            model.moveRow(pos[0], pos[pos.length - 1], 0);
+            table.setRowSelectionInterval(0, pos.length - 1);
         }
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+        Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
         table.scrollRectToVisible(r);
     }
 }
@@ -201,25 +201,25 @@ class DownAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(table.isEditing()) {
+        if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();
         }
         int[] pos = table.getSelectedRows();
-        if(pos.length == 0) {
+        if (pos.length == 0) {
             return;
         }
-        TestModel model = (TestModel)table.getModel();
-        if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
-            if(pos[pos.length-1]==model.getRowCount()-1) {
+        TestModel model = (TestModel) table.getModel();
+        if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+            if (pos[pos.length - 1] == model.getRowCount() - 1) {
                 return;
             }
-            model.moveRow(pos[0], pos[pos.length-1], pos[0]+1);
-            table.setRowSelectionInterval(pos[0]+1, pos[pos.length-1]+1);
-        }else{
-            model.moveRow(pos[0], pos[pos.length-1], model.getRowCount()-pos.length);
-            table.setRowSelectionInterval(model.getRowCount()-pos.length, model.getRowCount()-1);
+            model.moveRow(pos[0], pos[pos.length - 1], pos[0] + 1);
+            table.setRowSelectionInterval(pos[0] + 1, pos[pos.length - 1] + 1);
+        } else {
+            model.moveRow(pos[0], pos[pos.length - 1], model.getRowCount() - pos.length);
+            table.setRowSelectionInterval(model.getRowCount() - pos.length, model.getRowCount() - 1);
         }
-        Rectangle r = table.getCellRect(model.getRowCount()-1, 0, true);
+        Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
         table.scrollRectToVisible(r);
     }
 }
@@ -231,26 +231,26 @@ class InitAction extends AbstractAction {
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if(table.isEditing()) {
+        if (table.isEditing()) {
             table.getCellEditor().stopCellEditing();
         }
         int row = table.getRowCount();
-        if(row<=0) {
+        if (row<=0) {
             return;
         }
-        TestModel model = (TestModel)table.getModel();
+        TestModel model = (TestModel) table.getModel();
         TestModel nmodel = new TestModel();
         Vector dv = model.getDataVector();
-        for(int i=0;i<row;i++) {
+        for (int i = 0; i < row; i++) {
             //Test test = model.getTest(i);
-            Vector v = (Vector)dv.elementAt(i);
-            //new Test((String)v.elementAt(1), (String)v.elementAt(2));
-            nmodel.addTest(new Test((String)v.elementAt(1), (String)v.elementAt(2)));
+            Vector v = (Vector) dv.elementAt(i);
+            //new Test((String) v.elementAt(1), (String) v.elementAt(2));
+            nmodel.addTest(new Test((String) v.elementAt(1), (String) v.elementAt(2)));
         }
         JTableHeader h = table.getTableHeader();
         TableCellRenderer tcr = h.getDefaultRenderer();
-        if(tcr instanceof SortButtonRenderer) {
-            SortButtonRenderer sbr = (SortButtonRenderer)tcr;
+        if (tcr instanceof SortButtonRenderer) {
+            SortButtonRenderer sbr = (SortButtonRenderer) tcr;
             sbr.setPressedColumn(-1);
             sbr.setSelectedColumn(-1);
         }

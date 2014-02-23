@@ -14,10 +14,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         //Insets
-        //UIManager.put("TabbedPane.tabInsets",            new Insets(8,8,8,8));
-        //UIManager.put("TabbedPane.tabAreaInsets",        new Insets(8,8,8,8));
-        //UIManager.put("TabbedPane.contentBorderInsets",  new Insets(8,8,8,8));
-        //UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(8,8,8,8));
+        //UIManager.put("TabbedPane.tabInsets",            new Insets(8, 8, 8, 8));
+        //UIManager.put("TabbedPane.tabAreaInsets",        new Insets(8, 8, 8, 8));
+        //UIManager.put("TabbedPane.contentBorderInsets",  new Insets(8, 8, 8, 8));
+        //UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(8, 8, 8, 8));
 
         //Color
         //UIManager.put("TabbedPane.shadow",                Color.GRAY);
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         map.put("TabbedPane.selected",              Color.WHITE);
         map.put("TabbedPane.selectHighlight",       Color.WHITE);
         map.put("TabbedPane.borderHightlightColor", Color.WHITE);
-        for(Map.Entry<String,Color> entry: map.entrySet()) {
+        for (Map.Entry<String, Color> entry: map.entrySet()) {
             UIManager.put(entry.getKey(), entry.getValue());
         }
 
@@ -74,19 +74,19 @@ public final class MainPanel extends JPanel {
 
         opaque.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                tabs.setOpaque(((JCheckBox)e.getSource()).isSelected());
+                tabs.setOpaque(((JCheckBox) e.getSource()).isSelected());
                 tabs.repaint();
             }
         });
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()!=ItemEvent.SELECTED) {
+                if (e.getStateChange() != ItemEvent.SELECTED) {
                     return;
                 }
-                for(Map.Entry<String,Color> entry: map.entrySet()) {
+                for (Map.Entry<String, Color> entry: map.entrySet()) {
                     UIManager.put(entry.getKey(), entry.getValue());
                 }
-                if(combo.getSelectedIndex()>0) {
+                if (combo.getSelectedIndex() > 0) {
                     UIManager.put(combo.getSelectedItem(), Color.GREEN);
                 }
                 //SwingUtilities.updateComponentTreeUI(tabs);
@@ -114,20 +114,22 @@ public final class MainPanel extends JPanel {
         tabs.setOpaque(true);
         tabs.addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane t = (JTabbedPane)e.getSource();
+                JTabbedPane t = (JTabbedPane) e.getSource();
                 int si = t.getSelectedIndex();
-                for(int i=0;i<t.getTabCount();i++) {
-                    t.setForegroundAt(i, (i==si)?Color.BLACK:Color.WHITE);
+                for (int i = 0; i < t.getTabCount(); i++) {
+                    t.setForegroundAt(i, (i == si) ? Color.BLACK : Color.WHITE);
                 }
             }
         });
         tabs.addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane t = (JTabbedPane)e.getComponent();
+                JTabbedPane t = (JTabbedPane) e.getComponent();
                 int si = t.getSelectedIndex();
                 int tgt = t.indexAtLocation(e.getX(), e.getY());
-                for(int i=0;i<t.getTabCount();i++) {
-                    if(i!=si) { t.setForegroundAt(i, (i==tgt)?Color.ORANGE:Color.WHITE); }
+                for (int i = 0; i < t.getTabCount(); i++) {
+                    if (i != si) {
+                        t.setForegroundAt(i, (i == tgt) ? Color.ORANGE : Color.WHITE);
+                    }
                 }
             }
         });
@@ -137,7 +139,7 @@ public final class MainPanel extends JPanel {
     private static JComboBox<String> makeComboBox(Map<String, Color> map) {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("gray-white");
-        for(Map.Entry<String, Color> entry: map.entrySet()) {
+        for (Map.Entry<String, Color> entry: map.entrySet()) {
             model.addElement(entry.getKey());
         }
         return new JComboBox<String>(model);
@@ -151,9 +153,9 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try{
+//         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(Exception e) {
+//         } catch (Exception e) {
 //             e.printStackTrace();
 //         }
         JFrame frame = new JFrame("@title@");

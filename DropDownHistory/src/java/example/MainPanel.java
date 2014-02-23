@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         textArea.setText(INIT_TXT);
         textArea.setLineWrap(true);
         textArea.setEditable(false);
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
 //         combo.addItemListener(new ItemListener() {
 //             private boolean adj = false;
 //             @Override public void itemStateChanged(ItemEvent e) {
-//             //    if(combo.isPopupVisible()) { return; }
-//                 if(!adj && e.getStateChange()==ItemEvent.SELECTED) {
+//             //    if (combo.isPopupVisible()) { return; }
+//                 if (!adj && e.getStateChange() == ItemEvent.SELECTED) {
 //                     adj = true;
 //                     searchActionPerformed();
 //                     adj = false;
@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
 //             }
 //         });
 
-        JPanel p = new JPanel(new BorderLayout(5,5));
-        p.setBorder(BorderFactory.createEmptyBorder(0,5,5,0));
+        JPanel p = new JPanel(new BorderLayout(5, 5));
+        p.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
         p.add(new JLabel("Search History:"), BorderLayout.WEST);
         p.add(combo);
         p.add(searchButton, BorderLayout.EAST);
@@ -70,15 +70,15 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     public static boolean addItem(JComboBox<String> combo, String str, int max) {
-        //if(str==null || str.trim().length()==0) { return false; }
-        if(str==null || str.length()==0) {
+        //if (str == null || str.trim().length() == 0) { return false; }
+        if (str == null || str.length() == 0) {
             return false;
         }
         combo.setVisible(false);
-        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)combo.getModel();
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) combo.getModel();
         model.removeElement(str);
         model.insertElementAt(str, 0);
-        if(model.getSize()>max) {
+        if (model.getSize() > max) {
             model.removeElementAt(max);
         }
         combo.setSelectedIndex(0);
@@ -86,12 +86,12 @@ public final class MainPanel extends JPanel {
         return true;
     }
     private void searchActionPerformed() {
-        String pattern = (String)combo.getEditor().getItem();
-        if(addItem(combo, pattern, 4)) {
+        String pattern = (String) combo.getEditor().getItem();
+        if (addItem(combo, pattern, 4)) {
             //pattern = pattern.trim();
             //combo.getEditor().setItem(pattern);
             setHighlight(textArea, pattern);
-        }else{
+        } else {
             //combo.getEditor().setItem("");
             textArea.getHighlighter().removeAllHighlights();
         }
@@ -99,20 +99,20 @@ public final class MainPanel extends JPanel {
     public void setHighlight(JTextComponent jtc, String pattern) {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
-        try{
+        try {
             Document doc = jtc.getDocument();
             String text = doc.getText(0, doc.getLength());
             Matcher matcher = Pattern.compile(pattern).matcher(text);
             int pos = 0;
-            while(matcher.find(pos)) {
+            while (matcher.find(pos)) {
                 pos = matcher.end();
                 highlighter.addHighlight(matcher.start(), pos, highlightPainter);
             }
-//             while((pos = text.indexOf(pattern, pos)) >= 0) {
-//                 highlighter.addHighlight(pos, pos+pattern.length(), highlightPainter);
+//             while ((pos = text.indexOf(pattern, pos)) >= 0) {
+//                 highlighter.addHighlight(pos, pos + pattern.length(), highlightPainter);
 //                 pos += pattern.length();
 //             }
-        }catch(BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -125,10 +125,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

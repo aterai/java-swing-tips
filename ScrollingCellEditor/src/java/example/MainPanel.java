@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -70,7 +70,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         //scroll.setViewportBorder(BorderFactory.createEmptyBorder());
 
         setLineWrap(true);
-        setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
+        setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 
         KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_MASK);
         getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
@@ -97,17 +97,17 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         return scroll;
     }
     @Override public boolean isCellEditable(final EventObject e) {
-        if(e instanceof MouseEvent) {
-            return ((MouseEvent)e).getClickCount() >= 2;
+        if (e instanceof MouseEvent) {
+            return ((MouseEvent) e).getClickCount() >= 2;
         }
         System.out.println("isCellEditable");
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                if(e instanceof KeyEvent) {
-                    KeyEvent ke = (KeyEvent)e;
+                if (e instanceof KeyEvent) {
+                    KeyEvent ke = (KeyEvent) e;
                     char kc = ke.getKeyChar();
-                    if(Character.isUnicodeIdentifierStart(kc)) {
-                        setText(getText()+kc);
+                    if (Character.isUnicodeIdentifierStart(kc)) {
+                        setText(getText() + kc);
                         System.out.println("invokeLater: isCellEditable");
                     }
                 }
@@ -143,11 +143,13 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -156,11 +158,13 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) { changeEvent = new ChangeEvent(this); }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }
@@ -170,14 +174,14 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     TextAreaCellRenderer() {
         super();
         setLineWrap(true);
-        setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
+        setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
         //setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if(isSelected) {
+        if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
-        }else{
+        } else {
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
@@ -189,7 +193,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -197,8 +201,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //String literal pool
-        //if(propertyName=="document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
-        if("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
+        //if (propertyName == "document" || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
+        if ("document".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

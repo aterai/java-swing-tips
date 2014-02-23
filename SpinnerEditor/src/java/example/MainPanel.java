@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         //UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
-        JTextField field = ((JSpinner.NumberEditor)spinner.getEditor()).getTextField();
+        JTextField field = ((JSpinner.NumberEditor) spinner.getEditor()).getTextField();
         field.setEditable(false);
         field.setBackground(UIManager.getColor("FormattedTextField.background"));
 
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         box.add(makePanel("field.setEnabled(false)", spinner));
 
         add(box, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 200));
     }
     private static JPanel makePanel(String title, JComponent c) {
@@ -42,10 +42,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

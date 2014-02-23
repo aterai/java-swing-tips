@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(1,2));
+        super(new GridLayout(1, 2));
         add(new LineSplittingLabel("ABC"));
         add(new TricoloreLabel("DEF"));
         setPreferredSize(new Dimension(320, 240));
@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -50,18 +50,18 @@ class TricoloreLabel extends JComponent {
         int w = getWidth();
         int h = getHeight();
         g.setColor(Color.WHITE);
-        g.fillRect(0,0,w,h);
+        g.fillRect(0, 0, w, h);
 
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Rectangle2D b = gv.getVisualBounds();
-        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth()/2d, b.getY() + b.getHeight()/2d);
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w/2d - p.getX(), h/2d - p.getY());
+        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - p.getX(), h / 2d - p.getY());
 
         double d = b.getHeight()/3;
         Rectangle2D.Double clip  = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
         Rectangle2D.Double clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), d);
-        Rectangle2D.Double clip2 = new Rectangle2D.Double(b.getX(), b.getY()+2*d, b.getWidth(), d);
+        Rectangle2D.Double clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2 * d, b.getWidth(), d);
 
         Shape s = toCenterAT.createTransformedShape(gv.getOutline());
 
@@ -93,18 +93,18 @@ class LineSplittingLabel extends JComponent {
         int w = getWidth();
         int h = getHeight();
         g.setColor(Color.WHITE);
-        g.fillRect(0,0,w,h);
+        g.fillRect(0, 0, w, h);
 
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Rectangle2D b = shape.getBounds();
-        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth()/2d, b.getY() + b.getHeight()/2d);
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w/2d - p.getX(), h/2d - p.getY());
+        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - p.getX(), h / 2d - p.getY());
 
         Shape s = toCenterAT.createTransformedShape(shape);
         g2.setPaint(Color.BLACK);
         g2.fill(s);
-        Rectangle2D.Double clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight()/2);
+        Rectangle2D.Double clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2);
         g2.setClip(toCenterAT.createTransformedShape(clip));
         g2.setPaint(Color.RED);
         g2.fill(s);

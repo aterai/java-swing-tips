@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         }
 //         @Override protected void paintComponent(Graphics g) {
 //             super.paintComponent(g);
-//             Graphics2D g2 = (Graphics2D)g.create();
+//             Graphics2D g2 = (Graphics2D) g.create();
 //             g2.setPaint(new Color(100, 100, 100, 100));
 //             g2.fillRect(0, 0, getWidth(), getHeight());
 //             g2.dispose();
@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         PopupFactory.setSharedInstance(new TranslucentPopupFactory());
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
                     //private final TexturePaint texture = makeCheckerTexture();
                     @Override protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
-                        Graphics2D g2 = (Graphics2D)g.create();
+                        Graphics2D g2 = (Graphics2D) g.create();
                         g2.setPaint(TEXTURE);
                         g2.fillRect(0, 0, getWidth(), getHeight());
                         g2.dispose();
@@ -76,8 +76,8 @@ public final class MainPanel extends JPanel {
         //frame.getLayeredPane().setBackground(Color.GREEN);
         //frame.getContentPane().setBackground(Color.RED);
         Container contentPane = frame.getContentPane();
-        if(contentPane instanceof JComponent) {
-            ((JComponent)contentPane).setOpaque(false);
+        if (contentPane instanceof JComponent) {
+            ((JComponent) contentPane).setOpaque(false);
         }
         frame.setJMenuBar(ImageUtil.createMenubar());
         frame.getContentPane().add(new MainPanel());
@@ -98,30 +98,30 @@ public final class MainPanel extends JPanel {
 final class ImageUtil {
     private ImageUtil() { /* Singleton */ }
     public static JMenuBar createMenubar() {
-        UIManager.put("Menu.background", new Color(200,0,0,0));
-        UIManager.put("Menu.selectionBackground", new Color(100,100,255,100));
-        UIManager.put("Menu.selectionForeground", new Color(200,200,200));
+        UIManager.put("Menu.background", new Color(200, 0, 0, 0));
+        UIManager.put("Menu.selectionBackground", new Color(100, 100, 255, 100));
+        UIManager.put("Menu.selectionForeground", new Color(200, 200, 200));
         UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.TRUE);
         JMenuBar mb = new JMenuBar() {
             @Override protected void paintComponent(Graphics g) {
                 //super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(new Color(100, 100, 100, 100));
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.dispose();
             }
         };
         mb.setOpaque(false);
-        for(String key: new String[] {"File", "Edit", "Help"}) {
+        for (String key: new String[] {"File", "Edit", "Help"}) {
             JMenu m = createMenu(key);
-            //if(m != null)
+            //if (m != null)
             mb.add(m);
         }
         return mb;
     }
     public static JMenu createMenu(String key) {
         JMenu menu = new TransparentMenu(key);
-        menu.setForeground(new Color(200,200,200));
+        menu.setForeground(new Color(200, 200, 200));
         menu.setOpaque(false); // Motif lnf
         JMenu sub = new TransparentMenu("Submenu");
         sub.add(new JMenuItem("JMenuItem"));
@@ -133,16 +133,16 @@ final class ImageUtil {
     }
     public static BufferedImage getFilteredImage(URL url) {
         BufferedImage image;
-        try{
+        try {
             image = ImageIO.read(url);
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for(int i=0;i<256;i++) {
-            b[i] = (byte)(i*0.5);
+        for (int i = 0; i < 256; i++) {
+            b[i] = (byte) (i * 0.5);
         }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
         op.filter(image, dest);
@@ -150,19 +150,21 @@ final class ImageUtil {
     }
     public static TexturePaint makeCheckerTexture() {
         int cs = 6;
-        int sz = cs*cs;
-        BufferedImage img = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
+        int sz = cs * cs;
+        BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
-        g2.setPaint(new Color(120,120,120));
-        g2.fillRect(0,0,sz,sz);
-        g2.setPaint(new Color(200,200,200,20));
-        for(int i=0;i*cs<sz;i++) {
-            for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) { g2.fillRect(i*cs, j*cs, cs, cs); }
+        g2.setPaint(new Color(120, 120, 120));
+        g2.fillRect(0, 0, sz, sz);
+        g2.setPaint(new Color(200, 200, 200, 20));
+        for (int i = 0; i * cs < sz; i++) {
+            for (int j = 0; j * cs < sz; j++) {
+                if ((i + j) % 2 == 0) {
+                    g2.fillRect(i * cs, j * cs, cs, cs);
+                }
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0,0,sz,sz));
+        return new TexturePaint(img, new Rectangle(0, 0, sz, sz));
     }
 }
 
@@ -173,7 +175,7 @@ class TranslucentTexturePanel extends JPanel {
         this.texture = texture;
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));
         g2.fillRect(0, 0, getWidth(), getHeight());
@@ -190,9 +192,9 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = x + (width-image.getWidth())/2;
-        int cy = y + (height-image.getHeight())/2;
-        Graphics2D g2 = (Graphics2D)g.create();
+        int cx = x + (width - image.getWidth()) / 2;
+        int cy = y + (height - image.getHeight()) / 2;
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
         g2.dispose();
     }
@@ -206,15 +208,15 @@ class CentredBackgroundBorder implements Border {
 
 //http://terai.xrea.jp/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
-    private static final Color POPUP_BACK = new Color(250,250,250,100);
-    private static final Color POPUP_LEFT = new Color(230,230,230,100);
+    private static final Color POPUP_BACK = new Color(250, 250, 250, 100);
+    private static final Color POPUP_LEFT = new Color(230, 230, 230, 100);
     private static final int LEFT_WIDTH = 24;
     @Override public boolean isOpaque() {
         return false;
     }
     @Override public Component add(Component c) {
-        if(c instanceof JComponent) {
-            ((JComponent)c).setOpaque(false);
+        if (c instanceof JComponent) {
+            ((JComponent) c).setOpaque(false);
         }
         return c;
     }
@@ -227,11 +229,11 @@ class TranslucentPopupMenu extends JPopupMenu {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
 //                 Window p = SwingUtilities.getWindowAncestor(TranslucentPopupMenu.this);
-//                 if(p!=null && p instanceof JWindow) {
+//                 if (p != null && p instanceof JWindow) {
 //                     System.out.println("Heavy weight");
-//                     JWindow w = (JWindow)p;
+//                     JWindow w = (JWindow) p;
 //                     w.setBackground(ALPHA_ZERO);
-//                 }else{
+//                 } else {
 //                     System.out.println("Light weight");
 //                 }
 //             }
@@ -239,11 +241,11 @@ class TranslucentPopupMenu extends JPopupMenu {
 //         super.show(c, x, y);
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(POPUP_LEFT);
-        g2.fillRect(0,0,LEFT_WIDTH,getHeight());
+        g2.fillRect(0, 0, LEFT_WIDTH, getHeight());
         g2.setPaint(POPUP_BACK);
-        g2.fillRect(LEFT_WIDTH,0,getWidth(),getHeight());
+        g2.fillRect(LEFT_WIDTH, 0, getWidth(), getHeight());
         g2.dispose();
     }
 }
@@ -257,7 +259,7 @@ class TransparentMenu extends JMenu {
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
     // http://bugs.sun.com/view_bug.do?bug_id=4688783
     private void ensurePopupMenuCreated() {
-        if(popupMenu == null) {
+        if (popupMenu == null) {
             this.popupMenu = new TranslucentPopupMenu();
             popupMenu.setInvoker(this);
             popupListener = createWinListener(popupMenu);
@@ -274,8 +276,8 @@ class TransparentMenu extends JMenu {
     }
     @Override public Component add(Component c) {
         ensurePopupMenuCreated();
-        if(c instanceof JComponent) {
-            ((JComponent)c).setOpaque(false);
+        if (c instanceof JComponent) {
+            ((JComponent) c).setOpaque(false);
         }
         popupMenu.add(c);
         return c;
@@ -285,14 +287,14 @@ class TransparentMenu extends JMenu {
         popupMenu.addSeparator();
     }
     @Override public void insert(String s, int pos) {
-        if(pos < 0) {
+        if (pos < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();
         popupMenu.insert(new JMenuItem(s), pos);
     }
     @Override public JMenuItem insert(JMenuItem mi, int pos) {
-        if(pos < 0) {
+        if (pos < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();
@@ -300,7 +302,7 @@ class TransparentMenu extends JMenu {
         return mi;
     }
     @Override public void insertSeparator(int index) {
-        if(index < 0) {
+        if (index < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();

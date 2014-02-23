@@ -14,14 +14,14 @@ public final class MainPanel extends JPanel {
             @Override public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 FontMetrics fm = getFontMetrics(getFont());
-                int stringWidth = fm.stringWidth(TEXT)+10;
-                int x = getSize().width-stringWidth;
+                int stringWidth = fm.stringWidth(TEXT) + 10;
+                int x = getSize().width - stringWidth;
                 Rectangle lastTab = getUI().getTabBounds(this, getTabCount()-1);
                 int tabEnd = lastTab.x + lastTab.width;
-                if(x<tabEnd) {
+                if (x<tabEnd) {
                     x = tabEnd;
                 }
-                g.drawString(TEXT, x+5, 18);
+                g.drawString(TEXT, x + 5, 18);
             }
         };
         tab.addTab("title1", new JLabel("tab1"));
@@ -38,10 +38,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -10,12 +10,12 @@ import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         JTree tree1 = new JTree() {
             @Override public String getToolTipText(MouseEvent e) {
                 Object o = null;
                 TreePath path = getPathForLocation(e.getX(), e.getY());
-                if(path!=null) {
+                if (path != null) {
                     o = path.getLastPathComponent();
                 }
                 return Objects.toString(o, "getToolTipText");
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 // //                 drawDashedFocusIndicator = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
 // //                 fillBackground = sun.swing.DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
 //                 Insets margins = sun.swing.DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
-//                 if(margins != null) {
+//                 if (margins != null) {
 //                     setBorder(BorderFactory.createEmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
 //                 }
 //             }
@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
 //                 init();
 //             }
             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-                c.setToolTipText((value==null)?null:"TreeCellRenderer: "+value.toString());
+                JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+                c.setToolTipText((value == null) ? null : "TreeCellRenderer: " + value.toString());
                 return c;
             }
         });
@@ -74,10 +74,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

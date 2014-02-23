@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         add(new TextLayoutPanel());
         add(new GlyphVectorPanel());
         setPreferredSize(new Dimension(320, 240));
@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -41,7 +41,7 @@ class TextLayoutPanel extends JComponent {
     private static final String TEXT = "abcdefthijklmnopqrstuvwxyz";
     private static final TextLayout TEXT_LAYOUT = new TextLayout(TEXT, new Font(Font.SERIF, Font.ITALIC, 64), new FontRenderContext(null, true, true));
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         float baseline = getHeight()/2f;
 
@@ -61,7 +61,7 @@ class TextLayoutPanel extends JComponent {
         g2.draw(new Line2D.Float(0, leading, w, leading));
 
         g2.setPaint(Color.CYAN);
-        float xheight = baseline - (float)TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
+        float xheight = baseline - (float) TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
         g2.draw(new Line2D.Float(0, xheight, w, xheight));
 
         g2.setPaint(Color.BLACK);
@@ -78,7 +78,7 @@ class GlyphVectorPanel extends JComponent {
     private final LineMetrics lm = font.getLineMetrics(TEXT, FRC);
 
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         float baseline = getHeight()/2f;
 
@@ -98,7 +98,7 @@ class GlyphVectorPanel extends JComponent {
         g2.draw(new Line2D.Float(0, leading, w, leading));
 
         g2.setPaint(Color.CYAN);
-        float xheight = baseline - (float)gv.getGlyphMetrics(23).getBounds2D().getHeight();
+        float xheight = baseline - (float) gv.getGlyphMetrics(23).getBounds2D().getHeight();
         g2.draw(new Line2D.Float(0, xheight, w, xheight));
 
         g2.setPaint(Color.BLACK);

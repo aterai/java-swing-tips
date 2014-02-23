@@ -30,8 +30,8 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         Border in  = BorderFactory.createMatteBorder(1, 1, 0, 1, Color.RED);
         b.setBorder(BorderFactory.createCompoundBorder(out, in));
         //b.setForeground(Color.GREEN);
-        if(b instanceof TabButton) {
-            TabButton tabViewButton = (TabButton)b;
+        if (b instanceof TabButton) {
+            TabButton tabViewButton = (TabButton) b;
             tabViewButton.setTextColor(new Color(100, 100, 100));
             tabViewButton.setPressedTextColor(Color.GRAY);
             tabViewButton.setRolloverTextColor(Color.BLACK);
@@ -46,10 +46,10 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 //     @Override public void installDefaults() {}
 
     @Override public synchronized void paint(Graphics g, JComponent c) {
-        if(!(c instanceof AbstractButton)) {
+        if (!(c instanceof AbstractButton)) {
             return;
         }
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = c.getFontMetrics(f);
@@ -74,39 +74,39 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         g.fillRect(0, 0, size.width, size.height);
 
         ButtonModel model = b.getModel();
-        if(model.isSelected() || model.isArmed()) {
+        if (model.isSelected() || model.isArmed()) {
             g.setColor(Color.WHITE);
-        }else{
-            g.setColor(new Color(220,220,220));
+        } else {
+            g.setColor(new Color(220, 220, 220));
         }
         g.fillRect(viewRect.x, viewRect.y,
-                   viewRect.x+viewRect.width, viewRect.y+viewRect.height);
+                   viewRect.x + viewRect.width, viewRect.y + viewRect.height);
 
-        Color color = new Color(255,120,40);
-        if(model.isSelected()) {
+        Color color = new Color(255, 120, 40);
+        if (model.isSelected()) {
             g.setColor(color);
-            g.drawLine(viewRect.x+1, viewRect.y-2, viewRect.x+viewRect.width-1, viewRect.y-2);
+            g.drawLine(viewRect.x + 1, viewRect.y - 2, viewRect.x + viewRect.width - 1, viewRect.y - 2);
             g.setColor(color.brighter());
-            g.drawLine(viewRect.x+0, viewRect.y-1, viewRect.x+viewRect.width-0, viewRect.y-1);
+            g.drawLine(viewRect.x + 0, viewRect.y - 1, viewRect.x + viewRect.width - 0, viewRect.y - 1);
             g.setColor(color);
-            g.drawLine(viewRect.x+0, viewRect.y-0, viewRect.x+viewRect.width-0, viewRect.y-0);
-        }else if(model.isRollover()) {
+            g.drawLine(viewRect.x + 0, viewRect.y - 0, viewRect.x + viewRect.width - 0, viewRect.y - 0);
+        } else if (model.isRollover()) {
             g.setColor(color);
-            g.drawLine(viewRect.x+1, viewRect.y+0, viewRect.x+viewRect.width-1, viewRect.y+0);
+            g.drawLine(viewRect.x + 1, viewRect.y + 0, viewRect.x + viewRect.width - 1, viewRect.y + 0);
             g.setColor(color.brighter());
-            g.drawLine(viewRect.x+0, viewRect.y+1, viewRect.x+viewRect.width-0, viewRect.y+1);
+            g.drawLine(viewRect.x + 0, viewRect.y + 1, viewRect.x + viewRect.width - 0, viewRect.y + 1);
             g.setColor(color);
-            g.drawLine(viewRect.x+0, viewRect.y+2, viewRect.x+viewRect.width-0, viewRect.y+2);
+            g.drawLine(viewRect.x + 0, viewRect.y + 2, viewRect.x + viewRect.width - 0, viewRect.y + 2);
         }
-        View v = (View)c.getClientProperty(BasicHTML.propertyKey);
-        if(v==null) {
-            if(model.isSelected()) {
+        View v = (View) c.getClientProperty(BasicHTML.propertyKey);
+        if (v == null) {
+            if (model.isSelected()) {
                 textRect.y -= 2;
                 textRect.x -= 1;
             }
             textRect.x += 4;
             paintText(g, b, textRect, text);
-        }else{
+        } else {
             v.paint(g, textRect);
         }
     }

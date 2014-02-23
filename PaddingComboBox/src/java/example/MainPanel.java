@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
     private void layoutComboBoxPanel(JPanel p2, List<JComboBox> list) {
         p2.removeAll();
         p2.setLayout(new GridBagLayout());
-        Border inside  = BorderFactory.createEmptyBorder(10,5+2,10,10+2);
+        Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("JComboBox Padding Test");
         p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
-        for(int i=0;i<list.size();i++) {
+        for (int i = 0; i < list.size(); i++) {
             GridBagConstraints c = new GridBagConstraints();
             c.gridheight = 1;
             c.gridx   = 0;
@@ -54,13 +54,13 @@ public final class MainPanel extends JPanel {
     }
 
     private List<JComboBox> initComboBoxes(boolean isColor) {
-//         if(uiCheck.isSelected()) {
+//         if (uiCheck.isSelected()) {
 //             // Bug ID: JDK-7158712 Synth Property "ComboBox.popupInsets" is ignored
 //             // http://bugs.sun.com/view_bug.do?bug_id=7158712
-//             UIManager.put("ComboBox.padding", new javax.swing.plaf.InsetsUIResource(1,15,1,1));
+//             UIManager.put("ComboBox.padding", new javax.swing.plaf.InsetsUIResource(1, 15, 1, 1));
 //         }
         List<JComboBox> list = new ArrayList<>();
-        for(int i=0;i<7;i++) {
+        for (int i = 0; i < 7; i++) {
             list.add(makeComboBox());
         }
         JComboBox combo;
@@ -74,32 +74,32 @@ public final class MainPanel extends JPanel {
         // ---- 01 ----
         combo = list.get(1);
         combo.setEditable(true);
-        editor = (JTextField)combo.getEditor().getEditorComponent();
+        editor = (JTextField) combo.getEditor().getEditorComponent();
         editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), getPaddingBorder(isColor)));
         combo.setToolTipText("editor.setBorder(BorderFactory.createCompoundBorder(editor.getBorder(), padding));");
 
         // ---- 02 ----
         combo = list.get(2);
         combo.setEditable(true);
-        editor = (JTextField)combo.getEditor().getEditorComponent();
+        editor = (JTextField) combo.getEditor().getEditorComponent();
         editor.setBorder(getPaddingBorder(isColor));
         combo.setToolTipText("editor.setBorder(padding);");
 
         // ---- 03 ----
         combo = list.get(3);
         combo.setEditable(true);
-        editor = (JTextField)combo.getEditor().getEditorComponent();
+        editor = (JTextField) combo.getEditor().getEditorComponent();
         Insets i = editor.getInsets();
-        editor.setMargin(new Insets(i.top,i.left+5,i.bottom,i.right));
-        combo.setToolTipText("Insets i = editor.getInsets(); editor.setMargin(new Insets(i.top,i.left+5,i.bottom,i.right));");
+        editor.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));
+        combo.setToolTipText("Insets i = editor.getInsets(); editor.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));");
 
         // ---- 04 ----
         combo = list.get(4);
         combo.setEditable(true);
-        editor = (JTextField)combo.getEditor().getEditorComponent();
+        editor = (JTextField) combo.getEditor().getEditorComponent();
         Insets m = editor.getMargin();
-        editor.setMargin(new Insets(m.top,m.left+5,m.bottom,m.right));
-        combo.setToolTipText("Insets m = editor.getMargin(); editor.setMargin(new Insets(m.top,m.left+5,m.bottom,m.right));");
+        editor.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));
+        combo.setToolTipText("Insets m = editor.getMargin(); editor.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));");
 
         // ---- 05 ----
         combo = list.get(5);
@@ -113,12 +113,12 @@ public final class MainPanel extends JPanel {
         combo.setBorder(BorderFactory.createCompoundBorder(getPaddingBorder(isColor), combo.getBorder()));
         combo.setToolTipText("combo.setBorder(BorderFactory.createCompoundBorder(padding, combo.getBorder()));");
 
-        if(isColor) {
-            Color c = new Color(.8f,1f,.8f);
-            for(JComboBox cb:list) {
+        if (isColor) {
+            Color c = new Color(.8f, 1f, .8f);
+            for (JComboBox cb: list) {
                 cb.setOpaque(true);
                 cb.setBackground(c);
-                editor = (JTextField)cb.getEditor().getEditorComponent();
+                editor = (JTextField) cb.getEditor().getEditorComponent();
                 editor.setOpaque(true);
                 editor.setBackground(c);
             }
@@ -127,8 +127,8 @@ public final class MainPanel extends JPanel {
     }
 
     private static Border getPaddingBorder(boolean isColor) {
-        return isColor ? BorderFactory.createMatteBorder(0,5,0,0,new Color(1f,.8f,.8f,.5f))
-                       : BorderFactory.createEmptyBorder(0,5,0,0);
+        return isColor ? BorderFactory.createMatteBorder(0, 5, 0, 0, new Color(1f, .8f, .8f, .5f))
+                       : BorderFactory.createEmptyBorder(0, 5, 0, 0);
     }
 
     private static JComboBox<String> makeComboBox() {
@@ -146,13 +146,13 @@ public final class MainPanel extends JPanel {
                 final ListCellRenderer<? super String> lcr = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
                     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
-                        JLabel l = (JLabel)lcr.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+                        JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
                         l.setBorder(getPaddingBorder(false));
                         return l;
                     }
                 });
-                //???: UIManager.put("ComboBox.editorBorder", BorderFactory.createEmptyBorder(0,5,0,0));
-                //???: ((JLabel)lcr).setBorder(getPaddingBorder(false));
+                //???: UIManager.put("ComboBox.editorBorder", BorderFactory.createEmptyBorder(0, 5, 0, 0));
+                //???: ((JLabel) lcr).setBorder(getPaddingBorder(false));
             }
         };
         return combo;
@@ -165,10 +165,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JMenuBar mb = new JMenuBar();
@@ -191,7 +191,7 @@ final class LookAndFeelUtil {
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
@@ -203,10 +203,10 @@ final class LookAndFeelUtil {
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
+                try {
                     setLookAndFeel(m.getActionCommand());
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -218,7 +218,7 @@ final class LookAndFeelUtil {
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
@@ -226,7 +226,7 @@ final class LookAndFeelUtil {
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

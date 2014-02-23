@@ -21,15 +21,15 @@ public final class MainPanel extends JPanel {
         viewport = new JViewport() {
             private boolean flag;
             @Override public void revalidate() {
-                if(!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
+                if (!HEAVYWEIGHT_LIGHTWEIGHT_MIXING && flag) {
                     return;
                 }
                 super.revalidate();
             }
             @Override public void setViewPosition(Point p) {
-                if(HEAVYWEIGHT_LIGHTWEIGHT_MIXING) {
+                if (HEAVYWEIGHT_LIGHTWEIGHT_MIXING) {
                     super.setViewPosition(p);
-                }else{
+                } else {
                     flag = true;
                     super.setViewPosition(p);
                     flag = false;
@@ -45,14 +45,14 @@ public final class MainPanel extends JPanel {
 
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                if(e.getSource()==r1) {
+                if (e.getSource() == r1) {
                     viewport.removeMouseListener(l2);
                     viewport.removeMouseMotionListener(l2);
                     viewport.removeHierarchyListener(l2);
                     viewport.addMouseMotionListener(l1);
                     viewport.addMouseListener(l1);
                     viewport.addHierarchyListener(l1);
-                }else{
+                } else {
                     viewport.removeMouseListener(l1);
                     viewport.removeMouseMotionListener(l1);
                     viewport.removeHierarchyListener(l1);
@@ -84,10 +84,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -118,14 +118,14 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
         this.dc = comp.getCursor();
         this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JViewport vport = (JViewport)SwingUtilities.getUnwrappedParent(label);
+                JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
                 Point vp = vport.getViewPosition();
                 vp.translate(-delta.x, -delta.y);
                 label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
                 //System.out.println(delta);
-                if(Math.abs(delta.x)>0 || Math.abs(delta.y)>0) {
-                    delta.setLocation((int)(delta.x*D), (int)(delta.y*D));
-                }else{
+                if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+                    delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
+                } else {
                     scroller.stop();
                 }
             }
@@ -138,10 +138,10 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
-        JViewport vport = (JViewport)e.getComponent(); //label.getParent();
-        Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport,0,0,label);
-        vp.translate(startPt.x-pt.x, startPt.y-pt.y);
-        delta.setLocation(SPEED*(pt.x-startPt.x), SPEED*(pt.y-startPt.y));
+        JViewport vport = (JViewport) e.getComponent(); //label.getParent();
+        Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
+        vp.translate(startPt.x - pt.x, startPt.y - pt.y);
+        delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
         label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
         startPt.setLocation(pt);
     }
@@ -151,7 +151,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         Component c = e.getComponent();
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
             scroller.stop();
         }
     }
@@ -168,23 +168,23 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Timer inside = new Timer(DELAY, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
-            JViewport vport = (JViewport)SwingUtilities.getUnwrappedParent(label);
+            JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
             Point vp = vport.getViewPosition();
             //System.out.format("s: %s, %s%n", delta, vp);
             vp.translate(-delta.x, -delta.y);
             vport.setViewPosition(vp);
-            if(Math.abs(delta.x)>0 || Math.abs(delta.y)>0) {
-                delta.setLocation((int)(delta.x*D), (int)(delta.y*D));
+            if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+                delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
                 //Outside
-                if(vp.x<0 || vp.x+vport.getWidth()-label.getWidth()>0) {
-                    delta.x = (int)(delta.x*D);
+                if (vp.x < 0 || vp.x + vport.getWidth() - label.getWidth() > 0) {
+                    delta.x = (int) (delta.x * D);
                 }
-                if(vp.y<0 || vp.y+vport.getHeight()-label.getHeight()>0) {
-                    delta.y = (int)(delta.y*D);
+                if (vp.y < 0 || vp.y + vport.getHeight() - label.getHeight() > 0) {
+                    delta.y = (int) (delta.y * D);
                 }
-            }else{
+            } else {
                 inside.stop();
-                if(!isInside(vport, label)) {
+                if (!isInside(vport, label)) {
                     outside.start();
                 }
             }
@@ -192,23 +192,23 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     });
     private final Timer outside = new Timer(DELAY, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
-            JViewport vport = (JViewport)SwingUtilities.getUnwrappedParent(label);
+            JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
             Point vp = vport.getViewPosition();
             //System.out.format("r: %s%n", vp);
-            if(vp.x<0) {
-                vp.x = (int)(vp.x*D);
+            if (vp.x < 0) {
+                vp.x = (int) (vp.x * D);
             }
-            if(vp.y<0) {
-                vp.y = (int)(vp.y*D);
+            if (vp.y < 0) {
+                vp.y = (int) (vp.y * D);
             }
-            if(vp.x+vport.getWidth()-label.getWidth()>0) {
-                vp.x = (int) (vp.x - (vp.x+vport.getWidth()-label.getWidth())*(1.0-D));
+            if (vp.x + vport.getWidth() - label.getWidth() > 0) {
+                vp.x = (int) (vp.x - (vp.x + vport.getWidth()-label.getWidth()) * (1.0 - D));
             }
-            if(vp.y+vport.getHeight()>label.getHeight()) {
-                vp.y = (int) (vp.y - (vp.y+vport.getHeight()-label.getHeight())*(1.0-D));
+            if (vp.y + vport.getHeight() > label.getHeight()) {
+                vp.y = (int) (vp.y - (vp.y + vport.getHeight() - label.getHeight()) * (1.0 - D));
             }
             vport.setViewPosition(vp);
-            if(isInside(vport, label)) {
+            if (isInside(vport, label)) {
                 outside.stop();
             }
         }
@@ -216,8 +216,8 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
 
     private static boolean isInside(JViewport vport, JComponent comp) {
         Point vp = vport.getViewPosition();
-        return vp.x>=0 && vp.x+vport.getWidth() -comp.getWidth() <=0
-            && vp.y>=0 && vp.y+vport.getHeight()-comp.getHeight()<=0;
+        return vp.x >= 0 && vp.x + vport.getWidth()  - comp.getWidth()  <= 0
+            && vp.y >= 0 && vp.y + vport.getHeight() - comp.getHeight() <= 0;
     }
     public KineticScrollingListener2(JComponent comp) {
         super();
@@ -232,25 +232,25 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
-        JViewport vport = (JViewport)SwingUtilities.getUnwrappedParent(label);
+        JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
         Point vp = vport.getViewPosition();
-        vp.translate(startPt.x-pt.x, startPt.y-pt.y);
+        vp.translate(startPt.x - pt.x, startPt.y - pt.y);
         vport.setViewPosition(vp);
-        delta.setLocation(SPEED*(pt.x-startPt.x), SPEED*(pt.y-startPt.y));
+        delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
         startPt.setLocation(pt);
     }
     @Override public void mouseReleased(MouseEvent e) {
         e.getComponent().setCursor(dc);
-        JViewport vport = (JViewport)SwingUtilities.getUnwrappedParent(label);
-        if(isInside(vport, label)) {
+        JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+        if (isInside(vport, label)) {
             inside.start();
-        }else{
+        } else {
             outside.start();
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         Component c = e.getComponent();
-        if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && !c.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
             inside.stop();
             outside.stop();
         }

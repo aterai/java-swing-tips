@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     }
     private static JMenu createMenu(String key) {
         JMenu menu = new JMenu(key);
-        for(String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
+        for (String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
             JMenuItem m = new JMenuItem(k);
             m.setEnabled(false);
             menu.add(m);
@@ -65,9 +65,9 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-//         try{
+//         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         }catch(Exception e) {
+//         } catch (Exception e) {
 //             e.printStackTrace();
 //         }
         JFrame frame = new JFrame("@title@");
@@ -85,25 +85,25 @@ class ExitAction extends AbstractAction {
         super("Exit");
     }
     @Override public void actionPerformed(ActionEvent e) {
-        JComponent c = (JComponent)e.getSource();
+        JComponent c = (JComponent) e.getSource();
         Window window = null;
         Container parent = c.getParent();
-        if(parent instanceof JPopupMenu) {
-            JPopupMenu popup = (JPopupMenu)parent;
-            JComponent invoker = (JComponent)popup.getInvoker();
+        if (parent instanceof JPopupMenu) {
+            JPopupMenu popup = (JPopupMenu) parent;
+            JComponent invoker = (JComponent) popup.getInvoker();
             window = SwingUtilities.getWindowAncestor(invoker);
-        }else if(parent instanceof JToolBar) {
-            JToolBar toolbar = (JToolBar)parent;
-            if(((BasicToolBarUI)toolbar.getUI()).isFloating()) {
+        } else if (parent instanceof JToolBar) {
+            JToolBar toolbar = (JToolBar) parent;
+            if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
                 window = SwingUtilities.getWindowAncestor(toolbar).getOwner();
-            }else{
+            } else {
                 window = SwingUtilities.getWindowAncestor(toolbar);
             }
-        }else{
+        } else {
             Component invoker = c.getParent();
             window = SwingUtilities.getWindowAncestor(invoker);
         }
-        if(window!=null) {
+        if (window != null) {
             //window.dispose();
             window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
         }
@@ -127,7 +127,7 @@ final class LookAndFeelUtil {
     public static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
     public static JCheckBox disabledAreNavigableCheck = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
         @Override public void actionPerformed(ActionEvent e) {
-            Boolean b = ((JCheckBox)e.getSource()).isSelected();
+            Boolean b = ((JCheckBox) e.getSource()).isSelected();
             UIManager.put(DISABLED_ARE_NAVIGABLE, b);
         }
     });
@@ -154,11 +154,11 @@ final class LookAndFeelUtil {
         return mi;
     }
     private static boolean isAvailableLookAndFeel(String laf) {
-        try{
+        try {
             Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
+            LookAndFeel newLAF = (LookAndFeel) lnfClass.newInstance();
             return newLAF.isSupportedLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             return false;
         }
     }
@@ -173,15 +173,15 @@ final class LookAndFeelUtil {
         }
     }
     private static void setLookAndFeel(String laf) {
-        if(currentLookAndFeel.equals(laf)) {
+        if (currentLookAndFeel.equals(laf)) {
             return;
         }
         currentLookAndFeel = laf;
-        try{
+        try {
             UIManager.setLookAndFeel(currentLookAndFeel);
             updateLookAndFeel();
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + currentLookAndFeel);
         }
@@ -192,7 +192,7 @@ final class LookAndFeelUtil {
         disabledAreNavigableCheck.setSelected(b);
     }
     private static void updateLookAndFeel() {
-        for(Window window : Frame.getWindows()) {
+        for (Window window : Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

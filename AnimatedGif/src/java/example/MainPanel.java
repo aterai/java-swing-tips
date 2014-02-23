@@ -16,14 +16,14 @@ public final class MainPanel extends JPanel {
             "do_not_dispose",
             "restore_to_background_color",
             "restore_to_previous");
-        for(String s:list) {
-            Icon i = new ImageIcon(getClass().getResource(s+".gif"));
+        for (String s:list) {
+            Icon i = new ImageIcon(getClass().getResource(s + ".gif"));
             box.add(new JLabel(s, i, JLabel.LEFT));
             box.add(Box.createVerticalStrut(20));
         }
         box.add(Box.createVerticalGlue());
         add(box);
-        setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+        setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

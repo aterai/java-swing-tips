@@ -19,10 +19,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame1 = new JFrame("@title@");
@@ -68,13 +68,13 @@ class DockingListener implements ComponentListener {
         positionFrames(e);
     }
     private void positionFrames(ComponentEvent e) {
-        if(e.getComponent().equals(frame1)) {
+        if (e.getComponent().equals(frame1)) {
             int x = frame1.getBounds().x; // + frame1.getBounds().width;
             int y = frame1.getBounds().y + frame1.getBounds().height;
             frame2.removeComponentListener(this);
             frame2.setLocation(x, y);
             frame2.addComponentListener(this);
-        }else{
+        } else {
             int x = frame2.getBounds().x; // - frame1.getBounds().width;
             int y = frame2.getBounds().y - frame1.getBounds().height;
             frame1.removeComponentListener(this);

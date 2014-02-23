@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
         public NewTabAction(String label) {
             super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
-            JComponent c = (count%2==0)?new JTree():new JLabel("Tab"+count);
-            tab.addTab("Title"+count, c);
+        @Override public void actionPerformed(ActionEvent e) {
+            JComponent c = (count % 2 == 0) ? new JTree() : new JLabel("Tab" + count);
+            tab.addTab("Title" + count, c);
             tab.setSelectedIndex(tab.getTabCount()-1);
             count++;
         }
@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -82,20 +82,20 @@ class ProgressJTabbedPane extends JTabbedPane {
         int w = Math.max(80, dim.width);
         label.setPreferredSize(new Dimension(w, dim.height));
         Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
-        bar.setPreferredSize(new Dimension(w, dim.height-tabInsets.top-1));
+        bar.setPreferredSize(new Dimension(w, dim.height - tabInsets.top-1));
         //bar.setString(title);
         //bar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
         setTabComponentAt(currentIndex, bar);
         SwingWorker<String, Integer> worker = new Task() {
             @Override protected void process(List<Integer> dummy) {
-                if(!isDisplayable()) {
+                if (!isDisplayable()) {
                     System.out.println("process: DISPOSE_ON_CLOSE");
                     cancel(true);
                     return;
                 }
             }
             @Override public void done() {
-                if(!isDisplayable()) {
+                if (!isDisplayable()) {
                     System.out.println("done: DISPOSE_ON_CLOSE");
                     cancel(true);
                     return;
@@ -103,9 +103,9 @@ class ProgressJTabbedPane extends JTabbedPane {
                 setTabComponentAt(currentIndex, label);
                 setComponentAt(currentIndex, content);
                 String txt = null;
-                try{
+                try {
                     txt = get();
-                }catch(InterruptedException | ExecutionException ex) {
+                } catch (InterruptedException | ExecutionException ex) {
                     txt = "Exception";
                 }
                 System.out.println(txt);
@@ -121,10 +121,10 @@ class Task extends SwingWorker<String, Integer> {
     @Override public String doInBackground() {
         int current = 0;
         int lengthOfTask = 120;
-        while(current<lengthOfTask) {
-            try{
+        while (current<lengthOfTask) {
+            try {
                 Thread.sleep(20);
-            }catch(InterruptedException ie) {
+            } catch (InterruptedException ie) {
                 return "Interrupted";
             }
             current++;
@@ -144,9 +144,9 @@ class ProgressListener implements PropertyChangeListener {
     }
     @Override public void propertyChange(PropertyChangeEvent evt) {
         String strPropertyName = evt.getPropertyName();
-        if("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer)evt.getNewValue();
+            int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
         }
     }

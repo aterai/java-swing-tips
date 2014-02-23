@@ -15,9 +15,9 @@ public final class MainPanel extends JPanel {
     private final JScrollBar hBar = scroll.getHorizontalScrollBar();
     private final JScrollBar vsb = new JScrollBar(JScrollBar.VERTICAL) {
         @Override public boolean isVisible() {
-            if(isPressed) {
+            if (isPressed) {
                 return false;
-            }else{
+            } else {
                 return super.isVisible();
             }
         }
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         MouseAdapter ml = new DragScrollListener();
         label.addMouseMotionListener(ml);
         label.addMouseListener(ml);
-        for(JScrollBar sb:Arrays.asList(vsb, hsb, vBar, hBar)) {
+        for (JScrollBar sb:Arrays.asList(vsb, hsb, vBar, hBar)) {
             sb.setUnitIncrement(25);
         }
 
@@ -63,24 +63,24 @@ public final class MainPanel extends JPanel {
 
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                if(r2.isSelected()) {
+                if (r2.isSelected()) {
                     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
                     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                }else{
+                } else {
                     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                    scroll.setVerticalScrollBar(r0.isSelected()?vsb:vBar);
-                    scroll.setHorizontalScrollBar(r0.isSelected()?hsb:hBar);
+                    scroll.setVerticalScrollBar(r0.isSelected() ? vsb : vBar);
+                    scroll.setHorizontalScrollBar(r0.isSelected() ? hsb : hBar);
                 }
             }
         };
         ButtonGroup bg = new ButtonGroup();
-        for(AbstractButton b:Arrays.asList(r0, r1, r2)) {
+        for (AbstractButton b:Arrays.asList(r0, r1, r2)) {
             b.addActionListener(al); bg.add(b);
         }
 
         Box b = Box.createHorizontalBox();
-        JPanel p = new JPanel(new GridLayout(2,1));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         b.add(r1); b.add(r2);
         p.add(r0); p.add(b);
 
@@ -106,10 +106,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -128,21 +128,21 @@ class DragScrollListener extends MouseAdapter {
     @Override public void mouseDragged(MouseEvent e) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getUnwrappedParent(c);
-        if(p instanceof JViewport) {
-            JViewport vport = (JViewport)p;
+        if (p instanceof JViewport) {
+            JViewport vport = (JViewport) p;
             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             Point vp = vport.getViewPosition();
-            vp.translate(pp.x-cp.x, pp.y-cp.y);
-            ((JComponent)c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            vp.translate(pp.x - cp.x, pp.y - cp.y);
+            ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
             pp.setLocation(cp);
         }
     }
     @Override public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getUnwrappedParent(c);
-        if(p instanceof JViewport) {
+        if (p instanceof JViewport) {
             c.setCursor(hndCursor);
-            JViewport vport = (JViewport)p;
+            JViewport vport = (JViewport) p;
             Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
             pp.setLocation(cp);
         }

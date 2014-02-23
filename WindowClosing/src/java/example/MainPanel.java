@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -92,9 +92,9 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
     //ActionListener
     @Override public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
-        if(CMD_EXIT.equals(cmd)) {
+        if (CMD_EXIT.equals(cmd)) {
             maybeExit();
-        }else if(CMD_SAVE.equals(cmd)) {
+        } else if (CMD_SAVE.equals(cmd)) {
             fireUnsavedFlagChangeEvent(false);
         }
     }
@@ -111,7 +111,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
     }
 
     private void maybeExit() {
-        if(title.equals(frame.getTitle())) {
+        if (title.equals(frame.getTitle())) {
             System.out.println("The document has already been saved, exit without doing anything.");
             frame.dispose();
             return;
@@ -123,19 +123,19 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
         int retValue = JOptionPane.showOptionDialog(
             frame, "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue</html>",
             "Exit Options", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-        if(retValue==JOptionPane.YES_OPTION) {
+        if (retValue == JOptionPane.YES_OPTION) {
             System.out.println("exit");
             //boolean ret = dummyDocumentSaveMethod();
-            //if(ret) { //saved and exit
+            //if (ret) { //saved and exit
             //    frame.dispose();
-            //}else{ //error and cancel exit
+            //} else { //error and cancel exit
             //    return;
             //}
             frame.dispose();
-        }else if(retValue==JOptionPane.NO_OPTION) {
+        } else if (retValue == JOptionPane.NO_OPTION) {
             System.out.println("Exit without save");
             frame.dispose();
-        }else if(retValue==JOptionPane.CANCEL_OPTION) {
+        } else if (retValue == JOptionPane.CANCEL_OPTION) {
             System.out.println("Cancel exit");
         }
     }
@@ -150,7 +150,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
 
     private void fireUnsavedFlagChangeEvent(boolean unsaved) {
         frame.setTitle(String.format("%s%s", unsaved ? "* " : "", title));
-        for(JComponent c: list) {
+        for (JComponent c: list) {
             c.setEnabled(unsaved);
         }
     }

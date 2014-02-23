@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         URL url = getClass().getResource("9-0.gif");
         BufferedImage bi = null;
-        try{
+        try {
             bi = ImageIO.read(url);
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
             return;
         }
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         JButton button = new JButton(icon9) {
             @Override protected void fireStateChanged() {
                 ButtonModel m = getModel();
-                if(isRolloverEnabled() && m.isRollover()) {
+                if (isRolloverEnabled() && m.isRollover()) {
                     textArea.append("JButton: Rollover, Image: flush\n");
                     animatedIcon.getImage().flush();
                 }
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         button.setRolloverIcon(animatedIcon);
         button.setPressedIcon(new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setColor(Color.BLACK);
                 g2.fillRect(x, y, getIconWidth(), getIconHeight());
                 g2.dispose();
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
             return Integer.class; //getValueAt(0, column).getClass();
         }
         @Override public boolean isCellEditable(int row, int column) {
-            return row>0 && row!=model.getRowCount()-1;
+            return row > 0 && row != model.getRowCount() - 1;
         }
     };
     public MainPanel() {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     }
     private JTable makeTable() {
         final JTable table = new JTable(model);
-        final RowFilter<TableModel,Integer> filter = new RowFilter<TableModel,Integer>() {
+        final RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
             @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                 return 0 != table.convertRowIndexToView(entry.getIdentifier());
             }
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
 
         model.addTableModelListener(new TableModelListener() {
             @Override public void tableChanged(TableModelEvent e) {
-                if(e.getType()==TableModelEvent.UPDATE) {
+                if (e.getType() == TableModelEvent.UPDATE) {
                     table.repaint();
                 }
             }
@@ -58,12 +58,12 @@ public final class MainPanel extends JPanel {
         TableCellRenderer renderer = new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel l;
-                if(row==model.getRowCount()-2) {
+                if (row == model.getRowCount() - 2) {
                     int i = getSum(table.convertColumnIndexToModel(column));
-                    l = (JLabel)super.getTableCellRendererComponent(table, i, isSelected, hasFocus, row, column);
+                    l = (JLabel) super.getTableCellRendererComponent(table, i, isSelected, hasFocus, row, column);
                     l.setBackground(Color.ORANGE);
-                }else{
-                    l = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                } else {
+                    l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     l.setBackground(Color.WHITE);
                 }
                 l.setForeground(Color.BLACK);
@@ -71,15 +71,15 @@ public final class MainPanel extends JPanel {
             }
         };
         TableColumnModel cm = table.getColumnModel();
-        for(int i=0;i<cm.getColumnCount();i++) {
+        for (int i = 0; i < cm.getColumnCount(); i++) {
             cm.getColumn(i).setCellRenderer(renderer);
         }
         return table;
     }
     private int getSum(int column) {
         int counter = 0;
-        for(int i=1;i<model.getRowCount()-1;i++) {
-            counter += (Integer)model.getValueAt(i,column);
+        for (int i = 1; i < model.getRowCount() - 1; i++) {
+            counter += (Integer) model.getValueAt(i, column);
         }
         return counter;
     }
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

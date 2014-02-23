@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
     private final List<JCheckBox> clist = Arrays.asList(
         new JCheckBox(new AbstractAction("setFocusPainted") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                for(JButton b:list) {
+                boolean flg = ((JCheckBox) e.getSource()).isSelected();
+                for (JButton b:list) {
                     b.setFocusPainted(flg);
                 }
                 p.revalidate();
@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         }),
         new JCheckBox(new AbstractAction("setBorderPainted") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                for(JButton b:list) {
+                boolean flg = ((JCheckBox) e.getSource()).isSelected();
+                for (JButton b:list) {
                     b.setBorderPainted(flg);
                 }
                 p.revalidate();
@@ -35,8 +35,8 @@ public final class MainPanel extends JPanel {
         }),
         new JCheckBox(new AbstractAction("setContentAreaFilled") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                for(JButton b:list) {
+                boolean flg = ((JCheckBox) e.getSource()).isSelected();
+                for (JButton b:list) {
                     b.setContentAreaFilled(flg);
                 }
                 p.revalidate();
@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
         }),
         new JCheckBox(new AbstractAction("setRolloverEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flg = ((JCheckBox)e.getSource()).isSelected();
-                for(JButton b:list) {
+                boolean flg = ((JCheckBox) e.getSource()).isSelected();
+                for (JButton b:list) {
                     b.setRolloverEnabled(flg);
                 }
                 p.revalidate();
@@ -53,9 +53,9 @@ public final class MainPanel extends JPanel {
         })
         //new JCheckBox(new AbstractAction("setBorder(null:BorderFactory.createLineBorder)") {
         //    @Override public void actionPerformed(ActionEvent e) {
-        //        boolean flg = ((JCheckBox)e.getSource()).isSelected();
-        //        Border border = (flg)?BorderFactory.createLineBorder(Color.RED, 5):null;
-        //        for(JButton b:list) b.setBorder(border);
+        //        boolean flg = ((JCheckBox) e.getSource()).isSelected();
+        //        Border border = flg ? BorderFactory.createLineBorder(Color.RED, 5) : null;
+        //        for (JButton b:list) b.setBorder(border);
         //        p.revalidate();
         //    }
         //}),
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
         Box box = Box.createVerticalBox();
-        for(JCheckBox c:clist) {
+        for (JCheckBox c:clist) {
             c.setSelected(true);
             box.add(c);
         }
@@ -103,10 +103,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JMenuBar mb = new JMenuBar();
@@ -129,7 +129,7 @@ final class LookAndFeelUtil {
     public static JMenu createLookAndFeelMenu() {
         JMenu menu = new JMenu("LookAndFeel");
         ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
-        for(UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
             menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
         return menu;
@@ -141,10 +141,10 @@ final class LookAndFeelUtil {
         lafItem.setAction(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
-                try{
+                try {
                     setLookAndFeel(m.getActionCommand());
-                }catch(ClassNotFoundException | InstantiationException |
-                       IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -156,7 +156,7 @@ final class LookAndFeelUtil {
     }
     private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-        if(!oldLookAndFeel.equals(lookAndFeel)) {
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
             UIManager.setLookAndFeel(lookAndFeel);
             LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
@@ -164,7 +164,7 @@ final class LookAndFeelUtil {
         }
     }
     private static void updateLookAndFeel() {
-        for(Window window: Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

@@ -19,9 +19,9 @@ public final class MainPanel extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g.create();
-        g2.setPaint(new GradientPaint(50, 0, new Color(200,200,200),
-                                       getWidth(), getHeight(), new Color(100,100,100), true));
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(new GradientPaint(50, 0, new Color(200, 200, 200),
+                                       getWidth(), getHeight(), new Color(100, 100, 100), true));
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
         di.paint(g, this);
@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 class DraggableImageMouseListener extends MouseAdapter {
     private static final Color HOVER_COLOR = new Color(100, 255, 200, 100);
     private static final int IR = 40;
-    private static final int OR = IR*3;
+    private static final int OR = IR * 3;
     private static final BasicStroke BORDER_STROKE = new BasicStroke(4.0f);
     private final RoundRectangle2D.Double border;
     private final Ellipse2D.Double inner = new Ellipse2D.Double(0, 0, IR, IR);
@@ -70,16 +70,16 @@ class DraggableImageMouseListener extends MouseAdapter {
         image   = ii.getImage();
         width   = ii.getIconWidth();
         height  = ii.getIconHeight();
-        centerX = width/2.0;
-        centerY = height/2.0;
-        inner.x = x+centerX-IR/2;
-        inner.y = y+centerY-IR/2;
-        outer.x = x+centerX-OR/2;
-        outer.y = y+centerY-OR/2;
+        centerX = width / 2.0;
+        centerY = height / 2.0;
+        inner.x = x + centerX - IR / 2;
+        inner.y = y + centerY - IR / 2;
+        outer.x = x + centerX - OR / 2;
+        outer.y = y + centerY - OR / 2;
         border  = new RoundRectangle2D.Double(0, 0, width, height, 10.0, 10.0);
     }
     public void paint(Graphics g, ImageObserver ior) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         AffineTransform at = AffineTransform.getTranslateInstance(x, y);
@@ -87,17 +87,17 @@ class DraggableImageMouseListener extends MouseAdapter {
 
         g2d.setPaint(Color.WHITE);
         g2d.setStroke(BORDER_STROKE);
-        Shape s = new Rectangle2D.Double(border.x-2,border.y-2,border.width+4,border.height+20);
+        Shape s = new Rectangle2D.Double(border.x - 2, border.y - 2, border.width + 4, border.height + 20);
         g2d.fill(at.createTransformedShape(s));
         g2d.draw(at.createTransformedShape(s));
 
         g2d.drawImage(image, at, ior);
-        if(rotatorHover) {
+        if (rotatorHover) {
             Area donut = new Area(outer);
             donut.subtract(new Area(inner));
             g2d.setPaint(HOVER_COLOR);
             g2d.fill(donut);
-        }else if(moverHover) {
+        } else if (moverHover) {
             g2d.setPaint(HOVER_COLOR);
             g2d.fill(inner);
         }
@@ -107,12 +107,12 @@ class DraggableImageMouseListener extends MouseAdapter {
         g2d.dispose();
     }
     @Override public void mouseMoved(MouseEvent e) {
-        if(outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
+        if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
             moverHover = false; rotatorHover = true;
-        }else if(inner.contains(e.getX(), e.getY())) {
+        } else if (inner.contains(e.getX(), e.getY())) {
             moverHover = true;
             rotatorHover = false;
-        }else{
+        } else {
             moverHover = false;
             rotatorHover = false;
         }
@@ -124,11 +124,11 @@ class DraggableImageMouseListener extends MouseAdapter {
         e.getComponent().repaint();
     }
     @Override public void mousePressed(MouseEvent e) {
-        if(outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
+        if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
             rotatorHover = true;
-            startA = radian - Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
+            startA = radian - Math.atan2(e.getY() - y - centerY, e.getX() - x - centerX);
             e.getComponent().repaint();
-        }else if(inner.contains(e.getX(), e.getY())) {
+        } else if (inner.contains(e.getX(), e.getY())) {
             moverHover = true;
             startX = e.getX();
             startY = e.getY();
@@ -136,16 +136,16 @@ class DraggableImageMouseListener extends MouseAdapter {
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if(rotatorHover) {
-            radian = startA + Math.atan2(e.getY()-y-centerY, e.getX()-x-centerX);
+        if (rotatorHover) {
+            radian = startA + Math.atan2(e.getY() - y - centerY, e.getX() - x - centerX);
             e.getComponent().repaint();
-        }else if(moverHover) {
+        } else if (moverHover) {
             x += e.getX() - startX;
             y += e.getY() - startY;
-            inner.x = x+centerX-IR/2;
-            inner.y = y+centerY-IR/2;
-            outer.x = x+centerX-OR/2;
-            outer.y = y+centerY-OR/2;
+            inner.x = x + centerX - IR / 2;
+            inner.y = y + centerY - IR / 2;
+            outer.x = x + centerX - OR / 2;
+            outer.y = y + centerY - OR / 2;
             startX = e.getX();
             startY = e.getY();
             e.getComponent().repaint();

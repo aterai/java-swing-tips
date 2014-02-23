@@ -46,11 +46,11 @@ public final class MainPanel extends JPanel {
 
     private static JPanel makeSystemColorPanel(Color color, String text) {
         JPanel p = new JPanel(new BorderLayout());
-        JTextField jtext = new JTextField(text+": 0x"+Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH));
+        JTextField jtext = new JTextField(text + ": 0x" + Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH));
         jtext.setEditable(false);
         p.add(jtext);
         JLabel l = new JLabel();
-        l.setPreferredSize(new Dimension(32,0));
+        l.setPreferredSize(new Dimension(32, 0));
         l.setOpaque(true);
         l.setBackground(color);
         p.add(l, BorderLayout.EAST);
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

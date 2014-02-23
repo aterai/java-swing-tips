@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final MyComboBox combo = makeComboBox();
-    private final JTextField field = new JTextField("1,2,5");
+    private final JTextField field = new JTextField("1, 2, 5");
     public MainPanel() {
         super(new BorderLayout());
 
@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         }));
         add(box, BorderLayout.SOUTH);
         add(combo, BorderLayout.NORTH);
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -47,13 +47,13 @@ public final class MainPanel extends JPanel {
     private Set<Integer> getDisableIndexFromTextField() {
         StringTokenizer st = new StringTokenizer(field.getText(), ",");
         Set<Integer> set = new HashSet<>();
-        try{
-            while(st.hasMoreTokens()) {
+        try {
+            while (st.hasMoreTokens()) {
                 set.add(Integer.valueOf(st.nextToken().trim()));
             }
-        }catch(NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n"+nfe.getMessage(),
+            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(),
                                           "Error", JOptionPane.ERROR_MESSAGE);
         }
         return set;
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -91,11 +91,11 @@ class MyComboBox extends JComboBox<String> {
         setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
-                if(disableIndexSet.contains(index)) {
-                    c = super.getListCellRendererComponent(list,value,index,false,false);
+                if (disableIndexSet.contains(index)) {
+                    c = super.getListCellRendererComponent(list, value, index, false, false);
                     c.setEnabled(false);
-                }else{
-                    c = super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                } else {
+                    c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                     c.setEnabled(true);
                 }
                 return c;
@@ -104,8 +104,8 @@ class MyComboBox extends JComboBox<String> {
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int si = getSelectedIndex();
-                for(int i = si-1;i>=0;i--) {
-                    if(!disableIndexSet.contains(i)) {
+                for (int i = si - 1; i >= 0; i--) {
+                    if (!disableIndexSet.contains(i)) {
                         setSelectedIndex(i);
                         break;
                     }
@@ -115,8 +115,8 @@ class MyComboBox extends JComboBox<String> {
         Action down = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int si = getSelectedIndex();
-                for(int i = si+1;i<getModel().getSize();i++) {
-                    if(!disableIndexSet.contains(i)) {
+                for (int i = si + 1; i < getModel().getSize(); i++) {
+                    if (!disableIndexSet.contains(i)) {
                         setSelectedIndex(i);
                         break;
                     }
@@ -134,21 +134,21 @@ class MyComboBox extends JComboBox<String> {
     }
     public void setDisableIndex(Set<Integer> set) {
         disableIndexSet.clear();
-        for(Integer i:set) {
+        for (Integer i:set) {
             disableIndexSet.add(i);
         }
     }
     @Override public void setPopupVisible(boolean v) {
-        if(!v && isDisableIndex) {
+        if (!v && isDisableIndex) {
             isDisableIndex = false;
-        }else{
+        } else {
             super.setPopupVisible(v);
         }
     }
     @Override public void setSelectedIndex(int index) {
-        if(disableIndexSet.contains(index)) {
+        if (disableIndexSet.contains(index)) {
             isDisableIndex = true;
-        }else{
+        } else {
             //isDisableIndex = false;
             super.setSelectedIndex(index);
         }

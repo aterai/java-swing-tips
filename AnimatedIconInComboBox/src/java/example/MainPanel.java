@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
         JComboBox<ImageIcon> combo2 = new JComboBox<>();
         combo2.setModel(new DefaultComboBoxModel<ImageIcon>(new ImageIcon[] {new ImageIcon(url1), makeImageIcon(url2, combo2, 1)}));
 
-        JPanel p = new JPanel(new GridLayout(4,1,5,5));
-        setBorder(BorderFactory.createEmptyBorder(5,20,5,20));
+        JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
+        setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         p.add(new JLabel("Default ImageIcon"));
         p.add(combo1);
         p.add(new JLabel("ImageIcon#setImageObserver(ImageObserver)"));
@@ -32,17 +32,17 @@ public final class MainPanel extends JPanel {
         icon.setImageObserver(new ImageObserver() {
             //@see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
             @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-                if(combo.isShowing() && (infoflags & (FRAMEBITS|ALLBITS)) != 0) {
-                    if(combo.getSelectedIndex()==row) {
+                if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
+                    if (combo.getSelectedIndex() == row) {
                         combo.repaint();
                     }
-                    BasicComboPopup p = (BasicComboPopup)combo.getAccessibleContext().getAccessibleChild(0);
+                    BasicComboPopup p = (BasicComboPopup) combo.getAccessibleContext().getAccessibleChild(0);
                     JList list = p.getList();
-                    if(list.isShowing()) {
+                    if (list.isShowing()) {
                         list.repaint(list.getCellBounds(row, row));
                     }
                 }
-                return (infoflags & (ALLBITS|ABORT)) == 0;
+                return (infoflags & (ALLBITS | ABORT)) == 0;
             }
         });
         return icon;
@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

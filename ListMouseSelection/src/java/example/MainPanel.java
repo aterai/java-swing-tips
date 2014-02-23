@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(1,3));
+        super(new GridLayout(1, 3));
         add(makeTitledPanel("Default", new JList<String>(makeModel())));
         add(makeTitledPanel("MouseEvent", new SingleMouseClickSelectList<String>(makeModel())));
         add(makeTitledPanel("SelectionInterval", new SingleClickSelectList<String>(makeModel())));
@@ -37,10 +37,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -67,12 +67,12 @@ class SingleMouseClickSelectList<E> extends JList<E> {
         super.processMouseMotionEvent(convertMouseEvent(e));
     }
     @Override protected void processMouseEvent(MouseEvent e) {
-        if(e.getID()==MouseEvent.MOUSE_ENTERED || e.getID()==MouseEvent.MOUSE_EXITED) {
+        if (e.getID() == MouseEvent.MOUSE_ENTERED || e.getID() == MouseEvent.MOUSE_EXITED) {
             super.processMouseEvent(e);
-        }else{
-            if(getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
+        } else {
+            if (getCellBounds(0, getModel().getSize()-1).contains(e.getPoint())) {
                 super.processMouseEvent(convertMouseEvent(e));
-            }else{
+            } else {
                 e.consume();
                 requestFocusInWindow();
             }
@@ -107,20 +107,20 @@ class ClearSelectionListener extends MouseAdapter {
         list.getSelectionModel().setLeadSelectionIndex(-1);
     }
     private static boolean contains(JList list, Point pt) {
-        for(int i=0;i<list.getModel().getSize();i++) {
+        for (int i = 0; i < list.getModel().getSize(); i++) {
             Rectangle r = list.getCellBounds(i, i);
-            if(r.contains(pt)) {
+            if (r.contains(pt)) {
                 return true;
             }
         }
         return false;
     }
     @Override public void mousePressed(MouseEvent e) {
-        JList list = (JList)e.getComponent();
+        JList list = (JList) e.getComponent();
         startOutside = contains(list, e.getPoint());
         startOutside ^= true;
         startIndex = list.locationToIndex(e.getPoint());
-        if(startOutside) {
+        if (startOutside) {
             clearSelectionAndFocus(list);
         }
     }
@@ -131,17 +131,17 @@ class ClearSelectionListener extends MouseAdapter {
         startIndex = -1;
     }
     @Override public void mouseDragged(MouseEvent e) {
-        JList list = (JList)e.getComponent();
-        if(!isDragging && startIndex == list.locationToIndex(e.getPoint())) {
+        JList list = (JList) e.getComponent();
+        if (!isDragging && startIndex == list.locationToIndex(e.getPoint())) {
             isCellInsideDragging = true;
-        }else{
+        } else {
             isDragging = true;
             isCellInsideDragging = false;
         }
-        if(contains(list, e.getPoint())) {
+        if (contains(list, e.getPoint())) {
             startOutside = false;
             isDragging = true;
-        }else if(startOutside) {
+        } else if (startOutside) {
             clearSelectionAndFocus(list);
         }
     }
@@ -160,25 +160,25 @@ class SingleClickSelectList<E> extends JList<E> {
         setSelectionForeground(null);
         setSelectionBackground(null);
         super.updateUI();
-        if(listener==null) {
+        if (listener == null) {
             listener = new ClearSelectionListener();
         }
         addMouseListener(listener);
         addMouseMotionListener(listener);
     }
     @Override public void setSelectionInterval(int anchor, int lead) {
-        if(anchor==lead && lead>=0 && anchor>=0 && listener!=null) {
-            if(listener.isDragging) {
+        if (anchor == lead && lead >= 0 && anchor >= 0 && listener != null) {
+            if (listener.isDragging) {
                 addSelectionInterval(anchor, anchor);
-            }else if(!listener.isCellInsideDragging) {
-                if(isSelectedIndex(anchor)) {
+            } else if (!listener.isCellInsideDragging) {
+                if (isSelectedIndex(anchor)) {
                     removeSelectionInterval(anchor, anchor);
-                }else{
+                } else {
                     addSelectionInterval(anchor, anchor);
                 }
                 listener.isCellInsideDragging = true;
             }
-        }else{
+        } else {
             super.setSelectionInterval(anchor, lead);
         }
     }

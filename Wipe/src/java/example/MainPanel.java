@@ -46,16 +46,16 @@ public final class MainPanel extends JPanel {
         @Override public void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
-            if(mode) {
-                if(ww < icon.getIconWidth()) {
+            if (mode) {
+                if (ww < icon.getIconWidth()) {
                     ww += 10;
-                }else{
+                } else {
                     animator.stop();
                 }
-            }else{
-                if(ww > 0) {
+            } else {
+                if (ww > 0) {
                     ww -= 10;
-                }else{
+                } else {
                     animator.stop();
                 }
             }
@@ -75,10 +75,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

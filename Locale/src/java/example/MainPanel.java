@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {
         super(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         //Locale.setDefault(new Locale("en", "US"));
         //Locale defaultLocale = JFileChooser.getDefaultLocale();
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         panel.add(combo);
         panel.add(new JButton(new AbstractAction("<-") {
             @Override public void actionPerformed(ActionEvent e) {
-                fileChooser.setLocale((Locale)combo.getSelectedItem());
+                fileChooser.setLocale((Locale) combo.getSelectedItem());
                 SwingUtilities.updateComponentTreeUI(fileChooser); //fileChooser.updateUI();
                 int retvalue = fileChooser.showOpenDialog(panel);
                 System.out.println(retvalue);
@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 //     private static void printLocale(JFileChooser fileChooser) {
-//         System.out.println("Locale: "+fileChooser.getLocale());
-//         System.out.println("DefaultLocale: "+fileChooser.getDefaultLocale());
+//         System.out.println("Locale: " + fileChooser.getLocale());
+//         System.out.println("DefaultLocale: " + fileChooser.getDefaultLocale());
 //     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -70,10 +70,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
-            return column==2;
+            return column == 2;
         }
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
             Component c = super.prepareEditor(editor, row, column);
-            if(c instanceof JComponent) {
-                ((JComponent)c).setOpaque(false);
+            if (c instanceof JComponent) {
+                ((JComponent) c).setOpaque(false);
             }
             return c;
         }
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         JCheckBox checkBox = new JCheckBox() {
             @Override public void paintComponent(Graphics g) {
                 g.setColor(new Color(0, 0, 100, 50));
-                g.fillRect(0,0,getWidth(),getHeight());
+                g.fillRect(0, 0, getWidth(), getHeight());
                 super.paintComponent(g);
             }
         };
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
 
         DefaultTableCellRenderer l = new DefaultTableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JComponent c = (JComponent)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
                 return c;
             }
@@ -76,8 +76,8 @@ public final class MainPanel extends JPanel {
 
         JScrollPane scroll = new JScrollPane(table) {
             @Override public void paintComponent(Graphics g) {
-                if(TEXTURE!=null) {
-                    Graphics2D g2 = (Graphics2D)g.create();
+                if (TEXTURE!=null) {
+                    Graphics2D g2 = (Graphics2D) g.create();
                     g2.setPaint(TEXTURE);
                     g2.fillRect(0, 0, getWidth(), getHeight());
                     g2.dispose();
@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
         add(new JCheckBox(new AbstractAction("setBackground(new Color(255, 0, 0, 50))") {
             private final Color color = new Color(255, 0, 0, 50);
             @Override public void actionPerformed(ActionEvent e) {
-                table.setBackground(((JCheckBox)e.getSource()).isSelected() ? color : alphaZero);
+                table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero);
             }
         }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -116,13 +116,13 @@ public final class MainPanel extends JPanel {
 
     private static TexturePaint makeImageTexture(URL url) {
         BufferedImage bi = null;
-        try{
+        try {
             bi = ImageIO.read(url);
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);
         }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
 
     public static void main(String[] args) {
@@ -133,10 +133,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -172,29 +172,29 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         setBorderPainted(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if(isSelected) {
+        if (isSelected) {
             //setOpaque(true);
             setOpaque(false);
             setForeground(table.getSelectionForeground());
             //super.setBackground(table.getSelectionBackground());
             super.setBackground(SELECTION_BACKGROUND);
-        }else{
+        } else {
             setOpaque(false);
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
-        setSelected(value != null && ((Boolean)value).booleanValue());
-        if(hasFocus) {
+        setSelected(value != null && ((Boolean) value).booleanValue());
+        if (hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        }else{
+        } else {
             setBorder(NO_FOCUS_BORDER);
         }
         return this;
     }
     @Override protected void paintComponent(Graphics g) {
-        if(!isOpaque()) {
+        if (!isOpaque()) {
             g.setColor(getBackground());
-            g.fillRect(0,0,getWidth(),getHeight());
+            g.fillRect(0, 0, getWidth(), getHeight());
         }
         super.paintComponent(g);
     }
@@ -202,7 +202,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if(p != null) {
+        if (p != null) {
             p = p.getParent();
         } // p should now be the JTable.
         boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
@@ -211,9 +211,9 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
         //String literal pool
-        //if((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+        //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
         boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-        if(flag && !Objects.equals(oldValue, newValue)) {
+        if (flag && !Objects.equals(oldValue, newValue)) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }

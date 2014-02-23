@@ -23,28 +23,28 @@ public final class MainPanel extends JPanel {
     }
 //     private static final IAppInstanceCounter counter = new JVMDescriptorInstanceCounter();
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-//         if(counter.getInstanceCount()>1) {
+//         if (counter.getInstanceCount() > 1) {
 //             JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
 //             return;
 //         }
 
         // Java Swing Hacks #68
         ServerSocket socket = null;
-        try{
+        try {
             socket = new ServerSocket(38765);
-        }catch(IOException e) {
+        } catch (IOException e) {
             socket = null;
         }
-        if(socket==null) {
+        if (socket == null) {
             //String stag = "<html><center><br /><br /><br /><br /><br />";
             //String etag = "<br /><br /><br /><br /><br /><br /></center>";
-            //JOptionPane.showMessageDialog(null, stag+"An instance of the application is already running..."+etag);
+            //JOptionPane.showMessageDialog(null, stag + "An instance of the application is already running..." + etag);
             //System.exit(0);
             JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
             return;
@@ -91,8 +91,8 @@ public final class MainPanel extends JPanel {
 // final class FinderUtil {
 //     public static final <T> List<T> findAll(List<T> list, IPredicate<T> match) {
 //         List<T> temp = new ArrayList<T>();
-//         for(T t : list) {
-//             if(match.evaluate(t)) {
+//         for (T t : list) {
+//             if (match.evaluate(t)) {
 //                 temp.add(t);
 //             }
 //         }

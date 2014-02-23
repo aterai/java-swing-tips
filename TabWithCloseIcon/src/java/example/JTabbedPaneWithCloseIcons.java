@@ -22,11 +22,11 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
     }
     private void tabClicked(MouseEvent e) {
         int index = getUI().tabForCoordinate(this, e.getX(), e.getY());
-        if(index<0) {
+        if (index < 0) {
             return;
         }
-        Rectangle rect = ((SimpleCloseTabIcon)getIconAt(index)).getBounds();
-        if(rect.contains(e.getX(), e.getY())) {
+        Rectangle rect = ((SimpleCloseTabIcon) getIconAt(index)).getBounds();
+        if (rect.contains(e.getX(), e.getY())) {
             removeTabAt(index);
         }
     }
@@ -54,20 +54,20 @@ class SimpleCloseTabIcon implements Icon {
         g.setColor(Color.BLACK);
 
         int yp = y + 2;
-        g.drawLine(x+1,  yp,    x+12, yp);
-        g.drawLine(x+1,  yp+13, x+12, yp+13);
-        g.drawLine(x,    yp+1,  x,    yp+12);
-        g.drawLine(x+13, yp+1,  x+13, yp+12);
-        g.drawLine(x+3,  yp+3,  x+10, yp+10);
-        g.drawLine(x+3,  yp+4,  x+9,  yp+10);
-        g.drawLine(x+4,  yp+3,  x+10, yp+9);
-        g.drawLine(x+10, yp+3,  x+3,  yp+10);
-        g.drawLine(x+10, yp+4,  x+4,  yp+10);
-        g.drawLine(x+9,  yp+3,  x+3,  yp+9);
+        g.drawLine(x + 1,  yp,      x + 12, yp);
+        g.drawLine(x + 1,  yp + 13, x + 12, yp + 13);
+        g.drawLine(x,      yp + 1,  x,      yp + 12);
+        g.drawLine(x + 13, yp + 1,  x + 13, yp + 12);
+        g.drawLine(x + 3,  yp + 3,  x + 10, yp + 10);
+        g.drawLine(x + 3,  yp + 4,  x + 9,  yp + 10);
+        g.drawLine(x + 4,  yp + 3,  x + 10, yp + 9);
+        g.drawLine(x + 10, yp + 3,  x + 3,  yp + 10);
+        g.drawLine(x + 10, yp + 4,  x + 4,  yp + 10);
+        g.drawLine(x + 9,  yp + 3,  x + 3,  yp + 9);
 
         g.setColor(col);
-        if(fileIcon != null) {
-            fileIcon.paintIcon(c, g, x+dim.width, yp);
+        if (fileIcon != null) {
+            fileIcon.paintIcon(c, g, x + dim.width, yp);
         }
     }
     @Override public int getIconWidth() {

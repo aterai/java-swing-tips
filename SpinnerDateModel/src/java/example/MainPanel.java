@@ -10,7 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
     public MainPanel() {
-        super(new GridLayout(3,1));
+        super(new GridLayout(3, 1));
 
         Date date = new Date();
         JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         int i = DATE_FORMAT_PATTERN.lastIndexOf("dd");
-                        editor.getTextField().select(i, i+2);
+                        editor.getTextField().select(i, i + 2);
                     }
                 });
             }
@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
 
         add(makeTitlePanel(spinner1, "Calendar.DAY_OF_MONTH"));
         add(makeTitlePanel(spinner2, "min: set(Calendar.HOUR_OF_DAY, 0)"));
-        add(makeTitlePanel(spinner3, "JSpinner.DateEditor+FocusListener"));
-        setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
+        add(makeTitlePanel(spinner3, "JSpinner.DateEditor + FocusListener"));
+        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
@@ -67,10 +67,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

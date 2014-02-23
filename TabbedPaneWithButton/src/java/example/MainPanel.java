@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
                 tabs.addTab("qwerqwer", new JLabel("yetyet"));
             }
         });
-        //b.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+        //b.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         //UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets(b));
 
         tabs = new ClippedTitleTabbedPane() {
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
                 super.updateUI();
                 setAlignmentX(0.0f);
                 setAlignmentY(0.0f);
-                b.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+                b.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
                 b.setAlignmentX(0.0f);
                 b.setAlignmentY(0.0f);
                 tabAreaInsets = getTabAreaInsets();
@@ -66,9 +66,9 @@ public final class MainPanel extends JPanel {
     }
     public Insets getButtonPaddingTabAreaInsets(JButton b, Insets ti, Insets ai) {
         FontMetrics fm = b.getFontMetrics(b.getFont());
-        int tih = b.getPreferredSize().height-fm.getHeight()-ti.top-ti.bottom-ai.bottom;
-        return new Insets(Math.max(ai.top, tih), b.getPreferredSize().width+ai.left, ai.bottom, ai.right);
-        //NO EFFECT?: return new javax.swing.plaf.InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width+ai.left, ai.bottom, ai.right);
+        int tih = b.getPreferredSize().height - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
+        return new Insets(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
+        //NO EFFECT?: return new javax.swing.plaf.InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -78,10 +78,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -120,27 +120,27 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     protected Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     protected Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if(insets==null) {
+        if (insets == null) {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        }else{
+        } else {
             return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount  = getTabCount();
-        if(tabCount==0) {
+        if (tabCount == 0) {
             return;
         }
         Insets tabInsets     = getTabInsets();
@@ -159,25 +159,25 @@ class ClippedTitleTabbedPane extends JTabbedPane {
             tabWidth = areaWidth / tabCount;
             gap = areaWidth - tabWidth * tabCount;
         }
-        if(tabWidth>80) {
+        if (tabWidth > 80) {
             tabWidth = 80;
             gap = 0;
         }
         // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
         tabWidth = tabWidth - tabInsets.left - tabInsets.right - 3;
-        for(int i=0;i<tabCount;i++) {
-            JComponent l = (JComponent)getTabComponentAt(i);
+        for (int i = 0; i < tabCount; i++) {
+            JComponent l = (JComponent) getTabComponentAt(i);
             int v = i < gap ? 1 : 0;
             l.setPreferredSize(new Dimension(tabWidth + v, l.getPreferredSize().height));
         }
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        super.insertTab(title, icon, component, tip==null?title:tip, index);
+        super.insertTab(title, icon, component, tip == null ? title : tip, index);
         JLabel label = new JLabel(title, JLabel.CENTER);
         //Dimension dim = label.getPreferredSize();
         //Insets tabInsets = getTabInsets();
-        //label.setPreferredSize(new Dimension(0, dim.height+tabInsets.top+tabInsets.bottom));
+        //label.setPreferredSize(new Dimension(0, dim.height + tabInsets.top + tabInsets.bottom));
         setTabComponentAt(index, label);
     }
 }

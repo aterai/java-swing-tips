@@ -9,11 +9,11 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
-        super(new GridLayout(2,1));
+        super(new GridLayout(2, 1));
         JTextField tf = new JTextField(12);
 
-        ((AbstractDocument)tf.getDocument()).setDocumentFilter(new SizeFilter());
-        //((AbstractDocument)tf.getDocument()).setDocumentFilter(new DocumentSizeFilter(5));
+        ((AbstractDocument) tf.getDocument()).setDocumentFilter(new SizeFilter());
+        //((AbstractDocument) tf.getDocument()).setDocumentFilter(new DocumentSizeFilter(5));
 
         ActionMap am = tf.getActionMap();
 
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
 
         add(makeTitlePanel(new JTextField(), "Defalut"));
         add(makeTitlePanel(tf, "Override delete-previous, delete-next beep"));
-        setBorder(BorderFactory.createEmptyBorder(10,5,10,5));
+        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -69,19 +69,19 @@ class SilentDeleteTextAction extends TextAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JTextComponent target = getTextComponent(e);
-        if(target != null && target.isEditable()) {
+        if (target != null && target.isEditable()) {
             Caret caret = target.getCaret();
             int dot  = caret.getDot();
             int mark = caret.getMark();
-            if(DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
+            if (DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
                 //@see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
-                if(dot==0 && mark==0) {
+                if (dot == 0 && mark == 0) {
                     return;
                 }
-            }else{
+            } else {
                 //@see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
                 Document doc = target.getDocument();
-                if(dot==mark && doc.getLength()==dot) {
+                if (dot == mark && doc.getLength() == dot) {
                     return;
                 }
             }
@@ -94,7 +94,7 @@ class SizeFilter extends DocumentFilter {
     private static final int MAX = 5;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
         int len = fb.getDocument().getLength();
-        if(len+string.length()>MAX) {
+        if (len + string.length() > MAX) {
             Toolkit.getDefaultToolkit().beep();
             return;
         }
@@ -103,9 +103,9 @@ class SizeFilter extends DocumentFilter {
     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
         fb.remove(offset, length);
     }
-    @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)throws BadLocationException {
+    @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         int len = fb.getDocument().getLength();
-        if(len-length+text.length()>MAX) {
+        if (len - length + text.length() > MAX) {
             Toolkit.getDefaultToolkit().beep();
             return;
         }
@@ -127,9 +127,9 @@ class SizeFilter extends DocumentFilter {
 //         //the contents too long. Another option would be
 //         //to truncate the inserted string so the contents
 //         //would be exactly maxCharacters in length.
-//         if((fb.getDocument().getLength() + str.length()) <= maxCharacters) {
+//         if ((fb.getDocument().getLength() + str.length()) <= maxCharacters) {
 //             super.insertString(fb, offs, str, a);
-//         }else{
+//         } else {
 //             Toolkit.getDefaultToolkit().beep();
 //         }
 //     }
@@ -138,9 +138,9 @@ class SizeFilter extends DocumentFilter {
 //         //the contents too long. Another option would be
 //         //to truncate the replacement string so the contents
 //         //would be exactly maxCharacters in length.
-//         if((fb.getDocument().getLength() + str.length() - length) <= maxCharacters) {
+//         if ((fb.getDocument().getLength() + str.length() - length) <= maxCharacters) {
 //             super.replace(fb, offs, length, str, a);
-//         }else{
+//         } else {
 //             Toolkit.getDefaultToolkit().beep();
 //         }
 //     }

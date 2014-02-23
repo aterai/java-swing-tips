@@ -27,12 +27,12 @@ public final class MainPanel extends JPanel {
         //attrs.put(TextAttribute.SIZE, 32);
         //attrs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
         //textField.setFont(font.deriveFont(attrs));
-        //textField.setMargin(new Insets(4,2,4,2));
+        //textField.setMargin(new Insets(4, 2, 4, 2));
 
         comboBox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
-                    Object style = ((UnderlineStyle)comboBox.getSelectedItem()).style;
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Object style = ((UnderlineStyle) comboBox.getSelectedItem()).style;
                     initUnderline(textField0, style);
                     initUnderline(textField1, style);
                     initUnderline(textField2, style);
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

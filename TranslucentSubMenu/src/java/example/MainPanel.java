@@ -30,9 +30,9 @@ public final class MainPanel extends JPanel {
     private JMenuBar createMenubar() {
         JMenuBar mb = new JMenuBar();
         String[] menuKeys = {"File", "Edit", "Help"};
-        for(String key: menuKeys) {
+        for (String key: menuKeys) {
             JMenu m = createMenu(key);
-            //if(m != null)
+            //if (m != null)
             mb.add(m);
         }
         return mb;
@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         PopupFactory.setSharedInstance(new TranslucentPopupFactory());
@@ -74,15 +74,15 @@ public final class MainPanel extends JPanel {
 
 //http://terai.xrea.jp/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
-    private static final Color POPUP_BACK = new Color(250,250,250,200);
-    private static final Color POPUP_LEFT = new Color(230,230,230,200);
+    private static final Color POPUP_BACK = new Color(250, 250, 250, 200);
+    private static final Color POPUP_LEFT = new Color(230, 230, 230, 200);
     private static final int LEFT_WIDTH = 24;
     @Override public boolean isOpaque() {
         return false;
     }
     @Override public Component add(Component c) {
-        if(c instanceof JComponent) {
-            ((JComponent)c).setOpaque(false);
+        if (c instanceof JComponent) {
+            ((JComponent) c).setOpaque(false);
         }
         return c;
     }
@@ -95,11 +95,11 @@ class TranslucentPopupMenu extends JPopupMenu {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
 //                 Window p = SwingUtilities.getWindowAncestor(TranslucentPopupMenu.this);
-//                 if(p!=null && p instanceof JWindow) {
+//                 if (p != null && p instanceof JWindow) {
 //                     System.out.println("Heavy weight");
-//                     JWindow w = (JWindow)p;
+//                     JWindow w = (JWindow) p;
 //                     w.setBackground(ALPHA_ZERO);
-//                 }else{
+//                 } else {
 //                     System.out.println("Light weight");
 //                 }
 //             }
@@ -107,11 +107,11 @@ class TranslucentPopupMenu extends JPopupMenu {
 //         super.show(c, x, y);
 //     }
     @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(POPUP_LEFT);
-        g2.fillRect(0,0,LEFT_WIDTH,getHeight());
+        g2.fillRect(0, 0, LEFT_WIDTH, getHeight());
         g2.setPaint(POPUP_BACK);
-        g2.fillRect(LEFT_WIDTH,0,getWidth(),getHeight());
+        g2.fillRect(LEFT_WIDTH, 0, getWidth(), getHeight());
         g2.dispose();
     }
 }
@@ -125,7 +125,7 @@ class TransparentMenu extends JMenu {
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
     // http://bugs.sun.com/view_bug.do?bug_id=4688783
     private void ensurePopupMenuCreated() {
-        if(popupMenu == null) {
+        if (popupMenu == null) {
             this.popupMenu = new TranslucentPopupMenu();
             popupMenu.setInvoker(this);
             popupListener = createWinListener(popupMenu);
@@ -142,8 +142,8 @@ class TransparentMenu extends JMenu {
     }
     @Override public Component add(Component c) {
         ensurePopupMenuCreated();
-        if(c instanceof JComponent) {
-            ((JComponent)c).setOpaque(false);
+        if (c instanceof JComponent) {
+            ((JComponent) c).setOpaque(false);
         }
         popupMenu.add(c);
         return c;
@@ -153,14 +153,14 @@ class TransparentMenu extends JMenu {
         popupMenu.addSeparator();
     }
     @Override public void insert(String s, int pos) {
-        if(pos < 0) {
+        if (pos < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();
         popupMenu.insert(new JMenuItem(s), pos);
     }
     @Override public JMenuItem insert(JMenuItem mi, int pos) {
-        if(pos < 0) {
+        if (pos < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();
@@ -168,7 +168,7 @@ class TransparentMenu extends JMenu {
         return mi;
     }
     @Override public void insertSeparator(int index) {
-        if(index < 0) {
+        if (index < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
         ensurePopupMenuCreated();

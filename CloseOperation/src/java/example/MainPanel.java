@@ -9,16 +9,16 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static int number;
     public static JFrame createFrame(String title) {
-        JFrame frame = new JFrame((title==null)?"Frame #"+number:title);
+        JFrame frame = new JFrame((title == null) ? "Frame #" + number : title);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         number++;
         frame.addWindowListener(new WindowAdapter() {
             @Override public void windowClosing(WindowEvent e) {
                 number--;
-                if(number==0) {
+                if (number == 0) {
                     Window w = e.getWindow();
-                    if(w instanceof JFrame) {
-                        ((JFrame)w).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    if (w instanceof JFrame) {
+                        ((JFrame) w).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     }
                 }
             }
@@ -30,13 +30,13 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("New Frame") {
             @Override public void actionPerformed(final ActionEvent ae) {
-                JButton button = (JButton)ae.getSource();
+                JButton button = (JButton) ae.getSource();
                 JFrame frame   = createFrame(null);
                 frame.getContentPane().add(new MainPanel());
                 frame.pack();
-                JFrame parent = (JFrame)SwingUtilities.getWindowAncestor(button);
+                JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(button);
                 Point pt = parent.getLocation();
-                frame.setLocation(pt.x, pt.y+frame.getSize().height);
+                frame.setLocation(pt.x, pt.y + frame.getSize().height);
                 //frame.setLocationByPlatform(true);
                 frame.setVisible(true);
             }
@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = createFrame("@title@"); //new JFrame("@title@");

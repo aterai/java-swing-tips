@@ -21,21 +21,21 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model) {
         @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-            //System.out.println("key: "+ks.toString());
+            //System.out.println("key: " + ks.toString());
             boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
-            if(!check.isSelected()) {
+            if (!check.isSelected()) {
                 return retValue;
             }
-            if(isTabOrEnterKey(ks)) {
+            if (isTabOrEnterKey(ks)) {
                 System.out.println("tab or enter typed");
                 return retValue;
             }
-            if(getInputContext().isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
+            if (getInputContext().isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
                 int selectedRow = getSelectedRow();
                 int selectedColumn = getSelectedColumn();
-                if(selectedRow!=-1 && selectedColumn!=-1) {
+                if (selectedRow != -1 && selectedColumn != -1) {
                     boolean dummy = editCellAt(selectedRow, selectedColumn);
-                    System.out.println("editCellAt: "+dummy);
+                    System.out.println("editCellAt: " + dummy);
                 }
             }
             return retValue;
@@ -64,10 +64,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

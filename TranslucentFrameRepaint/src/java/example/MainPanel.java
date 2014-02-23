@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             label.setText(df.format(new Date()));
             Container parent = SwingUtilities.getUnwrappedParent(label);
-            if(parent!=null && parent.isOpaque()) {
+            if (parent != null && parent.isOpaque()) {
                 repaintWindowAncestor(label);
             }
         }
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     private void repaintWindowAncestor(JComponent c) {
         JRootPane root = c.getRootPane();
-        if(root==null) {
+        if (root == null) {
             return;
         }
         Rectangle r = SwingUtilities.convertRectangle(c, c.getBounds(), root);
@@ -38,16 +38,16 @@ public final class MainPanel extends JPanel {
     }
 //     private void repaintWindowAncestor(Component c) {
 //         Window w = SwingUtilities.getWindowAncestor(c);
-//         if(w instanceof JFrame) {
-//             JFrame f = (JFrame)w;
-//             JComponent cp = (JComponent)f.getContentPane();
+//         if (w instanceof JFrame) {
+//             JFrame f = (JFrame) w;
+//             JComponent cp = (JComponent) f.getContentPane();
 //             //cp.repaint();
 //             Rectangle r = c.getBounds();
 //             r = SwingUtilities.convertRectangle(c, r, cp);
 //             cp.repaint(r.x, r.y, r.width, r.height);
 //             //r = SwingUtilities.convertRectangle(c, r, f);
 //             //f.repaint(r.x, r.y, r.width, r.height);
-//         }else{
+//         } else {
 //             c.repaint();
 //         }
 //     }
@@ -57,8 +57,8 @@ public final class MainPanel extends JPanel {
         tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
-                    TexturePaints t = (TexturePaints)e.getItem();
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    TexturePaints t = (TexturePaints) e.getItem();
                     tp.setTexturePaint(t.getTexturePaint());
                     repaintWindowAncestor(tp);
                 }
@@ -67,23 +67,23 @@ public final class MainPanel extends JPanel {
         JToggleButton button = new JToggleButton(new AbstractAction("timer") {
             private JFrame digitalClock;
             @Override public void actionPerformed(ActionEvent e) {
-                if(digitalClock==null) {
+                if (digitalClock == null) {
                     digitalClock = new JFrame();
                     digitalClock.setUndecorated(true);
                     //digitalClock.setAlwaysOnTop(true);
                     //com.sun.awt.AWTUtilities.setWindowOpaque(digitalClock, false); //JDK 1.6.0
-                    digitalClock.setBackground(new Color(0,0,0,0)); //JDK 1.7.0
+                    digitalClock.setBackground(new Color(0, 0, 0, 0)); //JDK 1.7.0
                     digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                     digitalClock.getContentPane().add(tp);
                     digitalClock.pack();
                     digitalClock.setLocationRelativeTo(null);
                 }
-                if(((AbstractButton)e.getSource()).isSelected()) {
-                    TexturePaints t = (TexturePaints)combo.getSelectedItem();
+                if (((AbstractButton) e.getSource()).isSelected()) {
+                    TexturePaints t = (TexturePaints) combo.getSelectedItem();
                     tp.setTexturePaint(t.getTexturePaint());
                     timer.start();
                     digitalClock.setVisible(true);
-                }else{
+                } else {
                     timer.stop();
                     digitalClock.setVisible(false);
                 }
@@ -104,10 +104,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -130,11 +130,11 @@ class TexturePanel extends JPanel {
     public void setTexturePaint(TexturePaint texture) {
         this.texture = texture;
         //setOpaque(false);
-        setOpaque(texture==null);
+        setOpaque(texture == null);
     }
     @Override public void paintComponent(Graphics g) {
-        if(texture!=null) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        if (texture != null) {
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(texture);
             g2.fillRect(0, 0, getWidth(), getHeight());
             g2.dispose();
@@ -144,7 +144,7 @@ class TexturePanel extends JPanel {
 }
 
 enum TexturePaints {
-    Null    (null, "Color(.5f,.8f,.5f,.5f)"),
+    Null    (null, "Color(.5f, .8f, .5f, .5f)"),
     Image   (TextureUtil.makeImageTexture(), "Image TexturePaint"),
     Checker (TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
     private final String description;
@@ -165,32 +165,32 @@ final class TextureUtil {
     private TextureUtil() { /* Singleton */ }
     public static TexturePaint makeImageTexture() {
         BufferedImage bi = null;
-        try{
+        try {
             //http://www.viva-edo.com/komon/edokomon.html
             bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
-        }catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);
         }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(),bi.getHeight()));
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
 
     public static TexturePaint makeCheckerTexture() {
         int cs = 6;
-        int sz = cs*cs;
-        BufferedImage bi = new BufferedImage(sz,sz,BufferedImage.TYPE_INT_ARGB);
+        int sz = cs * cs;
+        BufferedImage bi = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bi.createGraphics();
-        g2.setPaint(new Color(200,150,100,50));
-        g2.fillRect(0,0,sz,sz);
-        for(int i=0;i*cs<sz;i++) {
-            for(int j=0;j*cs<sz;j++) {
-                if((i+j)%2==0) {
-                    g2.fillRect(i*cs, j*cs, cs, cs);
+        g2.setPaint(new Color(200, 150, 100, 50));
+        g2.fillRect(0, 0, sz, sz);
+        for (int i = 0; i * cs < sz; i++) {
+            for (int j = 0; j * cs < sz; j++) {
+                if ((i + j) % 2 == 0) {
+                    g2.fillRect(i * cs, j * cs, cs, cs);
                 }
             }
         }
         g2.dispose();
-        return new TexturePaint(bi, new Rectangle(0,0,sz,sz));
+        return new TexturePaint(bi, new Rectangle(0, 0, sz, sz));
     }
 
     public static TexturePanel makeTexturePanel(JLabel label, URL url) {
@@ -198,13 +198,13 @@ final class TextureUtil {
         //Digital display font: Copyright (c) Yourname, Inc.
         Font font = makeFont(url);
         label.setFont(font.deriveFont(80.0f));
-        label.setBackground(new Color(0,0,0,0));
+        label.setBackground(new Color(0, 0, 0, 0));
         label.setOpaque(false);
-        TexturePanel p = new TexturePanel(new BorderLayout(8,8));
+        TexturePanel p = new TexturePanel(new BorderLayout(8, 8));
         p.add(label);
         p.add(new JLabel("Digital display fonts by Yourname, Inc."), BorderLayout.NORTH);
-        p.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
-        p.setBackground(new Color(.5f,.8f,.5f,.5f));
+        p.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        p.setBackground(new Color(.5f, .8f, .5f, .5f));
         DragWindowListener dwl = new DragWindowListener();
         p.addMouseListener(dwl);
         p.addMouseMotionListener(dwl);
@@ -213,9 +213,9 @@ final class TextureUtil {
 
     private static Font makeFont(URL url) {
         Font font = null;
-        try(InputStream is = url.openStream()) {
+        try (InputStream is = url.openStream()) {
             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
-        }catch(IOException | FontFormatException ex) {
+        } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }
         return font;
@@ -226,18 +226,18 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if(window==null) {
+        if (window == null) {
             Object o = me.getSource();
-            if(o instanceof Window) {
-                window = (Window)o;
-            }else if(o instanceof JComponent) {
+            if (o instanceof Window) {
+                window = (Window) o;
+            } else if (o instanceof JComponent) {
                 window = SwingUtilities.windowForComponent(me.getComponent());
             }
         }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if(window!=null) {
+        if (window != null) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

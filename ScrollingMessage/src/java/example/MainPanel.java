@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -51,7 +51,7 @@ class MarqueePanel extends JComponent implements ActionListener {
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 Component c = e.getComponent();
-                if((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED)!=0 && animator!=null && !c.isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !c.isDisplayable()) {
                     animator.stop();
                 }
             }
@@ -65,11 +65,11 @@ class MarqueePanel extends JComponent implements ActionListener {
         lm = font.getLineMetrics(text, frc);
 
         GlyphMetrics xgm = gv.getGlyphMetrics(23);
-        xheight = (float)xgm.getBounds2D().getHeight();
+        xheight = (float) xgm.getBounds2D().getHeight();
         animator.start();
     }
     @Override public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int w = getWidth();
@@ -98,7 +98,7 @@ class MarqueePanel extends JComponent implements ActionListener {
         g2.dispose();
     }
     @Override public void actionPerformed(ActionEvent e) {
-        xx = getWidth()+gv.getVisualBounds().getWidth()-xx > 0 ? xx+2f : 0f;
+        xx = getWidth() + gv.getVisualBounds().getWidth()-xx > 0 ? xx + 2f : 0f;
         baseline = getHeight()/2f;
         repaint();
     }

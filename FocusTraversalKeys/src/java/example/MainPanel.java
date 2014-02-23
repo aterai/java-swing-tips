@@ -12,15 +12,15 @@ public final class MainPanel extends JPanel {
     private final JTextArea textarea = new JTextArea();
     private final JButton button = new JButton(new AbstractAction("showOptionDialog") {
         @Override public void actionPerformed(ActionEvent e) {
-            JComponent c = (JComponent)e.getSource();
+            JComponent c = (JComponent) e.getSource();
             String info = "<html>FORWARD_TRAVERSAL_KEYS : TAB, RIGHT, DOWN"
                         + "<br>BACKWARD_TRAVERSAL_KEYS: SHIFT+TAB, LEFT, UP</html>";
             int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), info);
-            if(retValue==JOptionPane.YES_OPTION) {
+            if (retValue == JOptionPane.YES_OPTION) {
                 System.out.println("YES_OPTION");
-            }else if(retValue==JOptionPane.NO_OPTION) {
+            } else if (retValue == JOptionPane.NO_OPTION) {
                 System.out.println("NO_OPTION");
-            }else if(retValue==JOptionPane.CANCEL_OPTION) {
+            } else if (retValue == JOptionPane.CANCEL_OPTION) {
                 System.out.println("CANCEL_OPTION");
             }
         }
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 //     public static int showOptionDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) throws HeadlessException {
 //         JOptionPane pane = new JOptionPane(message, messageType, optionType, icon, options, initialValue);
 //         pane.setInitialValue(initialValue);
-//         pane.setComponentOrientation(((parentComponent==null)?JOptionPane.getRootFrame():parentComponent).getComponentOrientation());
+//         pane.setComponentOrientation(((parentComponent == null) ? JOptionPane.getRootFrame() : parentComponent).getComponentOrientation());
 //
 //         //int style = JOptionPane.styleFromMessageType(messageType);
 //         //JDialog dialog = pane.createDialog(parentComponent, title, style);
@@ -89,16 +89,16 @@ public final class MainPanel extends JPanel {
 //         dialog.dispose();
 //
 //         Object selectedValue = pane.getValue();
-//         if(selectedValue == null)
+//         if (selectedValue == null)
 //             return JOptionPane.CLOSED_OPTION;
-//         if(options == null) {
-//             if(selectedValue instanceof Integer)
-//               return ((Integer)selectedValue).intValue();
+//         if (options == null) {
+//             if (selectedValue instanceof Integer)
+//               return ((Integer) selectedValue).intValue();
 //             return JOptionPane.CLOSED_OPTION;
 //         }
-//         for(int counter = 0, maxCounter = options.length;
+//         for (int counter = 0, maxCounter = options.length;
 //             counter < maxCounter; counter++) {
-//             if(options[counter].equals(selectedValue))
+//             if (options[counter].equals(selectedValue))
 //               return counter;
 //         }
 //         return JOptionPane.CLOSED_OPTION;
@@ -112,10 +112,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

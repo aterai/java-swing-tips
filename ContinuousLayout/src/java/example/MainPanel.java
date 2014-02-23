@@ -33,11 +33,11 @@ public final class MainPanel extends JPanel {
 
         PropertyChangeListener pcl = new PropertyChangeListener() {
             @Override public void propertyChange(PropertyChangeEvent e) {
-                if(JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(e.getPropertyName())) {
-                    JSplitPane source = (JSplitPane)e.getSource();
-                    int location = ((Integer)e.getNewValue()).intValue();
+                if (JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(e.getPropertyName())) {
+                    JSplitPane source = (JSplitPane) e.getSource();
+                    int location = ((Integer) e.getNewValue()).intValue();
                     JSplitPane target = Objects.equals(source, leftPane) ? rightPane : leftPane;
-                    if(location != target.getDividerLocation()) {
+                    if (location != target.getDividerLocation()) {
                         target.setDividerLocation(location);
                     }
                 }
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
         add(new JCheckBox(new AbstractAction("setContinuousLayout") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flag = ((JCheckBox)e.getSource()).isSelected();
+                boolean flag = ((JCheckBox) e.getSource()).isSelected();
                 leftPane.setContinuousLayout(flag);
                 rightPane.setContinuousLayout(flag);
                 centerPane.setContinuousLayout(flag);
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

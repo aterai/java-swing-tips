@@ -11,31 +11,31 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final ImageIcon orgImage;
     public MainPanel() {
-        super(new GridLayout(0,1));
+        super(new GridLayout(0, 1));
         orgImage = new ImageIcon(getClass().getResource("i03-10.gif"));
 
-        JPanel p1 = new JPanel(new GridLayout(1,2));
+        JPanel p1 = new JPanel(new GridLayout(1, 2));
         p1.add(makeLabel(makeGrayImageIcon1(orgImage.getImage()), "ColorConvertOp"));
         p1.add(makeLabel(makeGrayImageIcon2(orgImage.getImage()), "TYPE_BYTE_GRAY"));
         add(p1);
         add(makeLabel(makeGrayImageIcon3(orgImage.getImage()), "GrayFilter.createDisabledImage"));
-        JPanel p3 = new JPanel(new GridLayout(1,2));
-        p3.add(makeLabel(makeGrayImageIcon4(orgImage.getImage()), "GrayFilter(true,50)"));
+        JPanel p3 = new JPanel(new GridLayout(1, 2));
+        p3.add(makeLabel(makeGrayImageIcon4(orgImage.getImage()), "GrayFilter(true, 50)"));
         p3.add(makeLabel(makeGrayImageIcon5(orgImage.getImage()), "GrayImageFilter"));
         add(p3);
 
         p1.setBackground(Color.WHITE);
         p3.setBackground(Color.WHITE);
         setBackground(Color.WHITE);
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        setPreferredSize(new Dimension(320,240));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JLabel makeLabel(final ImageIcon image, String str) {
         JLabel label = new JLabel(str, image, JLabel.LEFT);
         label.addMouseListener(new MouseAdapter() {
             private boolean flag;
             @Override public void mouseClicked(MouseEvent e) {
-                JLabel l = (JLabel)e.getComponent();
+                JLabel l = (JLabel) e.getComponent();
                 l.setIcon(flag ? image : orgImage);
                 flag ^= true;
             }
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 
     private ImageIcon makeGrayImageIcon4(Image img) {
         //GrayFilter2
-        ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true,50));
+        ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true, 50));
         return new ImageIcon(createImage(ip));
     }
 
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -115,8 +115,8 @@ class GrayImageFilter extends RGBImageFilter {
         int r = (argb >> 16) & 0xff;
         int g = (argb >>  8) & 0xff;
         int b = (argb)       & 0xff;
-        int m = (2*r+4*g+b)/7; //NTSC Coefficients
-        //return new Color(m,m,m,a).getRGB();
-        return (argb & 0xff000000) | (m<<16) | (m<<8) | (m);
+        int m = (2 * r + 4 * g + b) / 7; //NTSC Coefficients
+        //return new Color(m, m, m, a).getRGB();
+        return (argb & 0xff000000) | (m << 16) | (m << 8) | (m);
     }
 }

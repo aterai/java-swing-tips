@@ -46,29 +46,29 @@ public final class MainPanel extends JPanel {
 
         visitAll(bar, new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                if(check.isSelected()) {
-                    ((AbstractButton)e.getComponent()).doClick();
+                if (check.isSelected()) {
+                    ((AbstractButton) e.getComponent()).doClick();
                 }
             }
             @Override public void mouseEntered(MouseEvent e) {
-                if(check.isSelected()) {
-                    ((AbstractButton)e.getComponent()).doClick();
+                if (check.isSelected()) {
+                    ((AbstractButton) e.getComponent()).doClick();
                 }
             }
         });
         return bar;
     }
     private static void visitAll(Container p, MouseListener l) {
-        for(Component comp: p.getComponents()) {
-            if(comp instanceof JMenu) {
-                ((JMenu)comp).addMouseListener(l);
+        for (Component comp: p.getComponents()) {
+            if (comp instanceof JMenu) {
+                ((JMenu) comp).addMouseListener(l);
             }
-//             if(comp instanceof Container) {
-//                 Container c = (Container)comp;
-//                 if(c.getComponentCount()>0) {
+//             if (comp instanceof Container) {
+//                 Container c = (Container) comp;
+//                 if (c.getComponentCount() > 0) {
 //                     visitAll(c, l);
 //                 }
-//                 if(c instanceof JMenu) {
+//                 if (c instanceof JMenu) {
 //                     c.addMouseListener(l);
 //                 }
 //             }
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         MainPanel mainPanel = new MainPanel();

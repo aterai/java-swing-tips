@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -73,20 +73,20 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
     }
     private static class MyPasswordView extends PasswordView {
         @Override protected int drawEchoCharacter(Graphics g, int x, int y, char c) {
-//             Graphics2D g2d = (Graphics2D)g.create();
+//             Graphics2D g2d = (Graphics2D) g.create();
 //             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 //                                  RenderingHints.VALUE_ANTIALIAS_ON);
 //             FontMetrics fm = g2d.getFontMetrics();
 //             int r = fm.charWidth(c)-4;
 //             //g2d.setPaint(Color.GRAY);
-//             g2d.drawRect(x+2, y+4-fm.getAscent(), r, r);
+//             g2d.drawRect(x + 2, y + 4 - fm.getAscent(), r, r);
 //             //g2d.setPaint(Color.GRAY.brighter());
-//             g2d.fillOval(x+2, y+4-fm.getAscent(), r, r);
+//             g2d.fillOval(x + 2, y + 4 - fm.getAscent(), r, r);
 //             g2d.dispose();
 //             return x + fm.charWidth(c);
 
             FontMetrics fm = g.getFontMetrics();
-            ICON.paintIcon(null, g, x, y-fm.getAscent());
+            ICON.paintIcon(null, g, x, y - fm.getAscent());
             return x + ICON.getIconWidth(); //fm.charWidth(c);
         }
         public MyPasswordView(Element element) {
@@ -104,16 +104,16 @@ class StarIcon implements Icon {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
         double agl = 0.0;
-        double add = 2*Math.PI/(vc*2);
+        double add = 2 * Math.PI / (vc * 2);
         Path2D.Double p = new Path2D.Double();
-        p.moveTo(or*1, or*0);
-        for(int i=0;i<vc*2-1;i++) {
-            agl+=add;
-            int r = i%2==0?ir:or;
-            p.lineTo(r*Math.cos(agl), r*Math.sin(agl));
+        p.moveTo(or * 1, or * 0);
+        for (int i = 0; i < vc * 2 - 1; i++) {
+            agl += add;
+            int r = i % 2 == 0 ? ir : or;
+            p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
         }
         p.closePath();
-        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI/2, or, 0);
+        AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, or, 0);
         return new Path2D.Double(p, at);
     }
     @Override public int getIconWidth() {
@@ -123,7 +123,7 @@ class StarIcon implements Icon {
         return star.getBounds().height;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.translate(x, y);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setPaint(Color.PINK);

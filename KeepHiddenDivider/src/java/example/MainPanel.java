@@ -55,9 +55,9 @@ public final class MainPanel extends JPanel {
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
 
-        Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
-        JPanel north = new JPanel(new GridLayout(0,2,5,5));
-        north.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+        JPanel north = new JPanel(new GridLayout(0, 2, 5, 5));
+        north.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         north.add(new JButton(new AbstractAction("Min:DividerLocation") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -67,28 +67,28 @@ public final class MainPanel extends JPanel {
         north.add(new JButton(new AbstractAction("Max:DividerLocation") {
             @Override public void actionPerformed(ActionEvent e) {
                 Insets i = splitPane.getInsets();
-                if(splitPane.getOrientation()==JSplitPane.VERTICAL_SPLIT) {
-                    int v = i==null ? 0 : i.bottom;
+                if (splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT) {
+                    int v = i == null ? 0 : i.bottom;
                     splitPane.setDividerLocation(splitPane.getHeight() - v);
-                }else{
-                    int v = i==null ? 0 : i.right;
+                } else {
+                    int v = i == null ? 0 : i.right;
                     splitPane.setDividerLocation(splitPane.getWidth() - v);
                 }
 //                 int lastLoc    = splitPane.getLastDividerLocation();
 //                 int currentLoc = splitPane.getDividerLocation();
 //                 int newLoc;
-//                 BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI)splitPane.getUI();
-//                 Container divider = ((BasicSplitPaneUI)splitPane.getUI()).getDivider();
+//                 BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI) splitPane.getUI();
+//                 Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
 //
-//                 if(currentLoc == insets.top) {
+//                 if (currentLoc == insets.top) {
 //                     int maxLoc = splitPane.getMaximumDividerLocation();
 //                     newLoc = Math.min(lastLoc, maxLoc);
 //                     //splitPaneUI.setKeepHidden(false);
-//                 }else{
+//                 } else {
 //                     newLoc = splitPane.getHeight() - divider.getHeight() - insets.top;
 //                     //splitPaneUI.setKeepHidden(true);
 //                 }
-//                 if(currentLoc != newLoc) {
+//                 if (currentLoc != newLoc) {
 //                     splitPane.setDividerLocation(newLoc);
 //                     splitPane.setLastDividerLocation(currentLoc);
 //                 }
@@ -111,12 +111,12 @@ public final class MainPanel extends JPanel {
     private static void initDividerButtonModel(Container divider, JButton smin, JButton smax) {
         ButtonModel selectMinModel = null;
         ButtonModel selectMaxModel = null;
-        for(Component c: divider.getComponents()) {
-            if(c instanceof JButton) {
-                ButtonModel m = ((JButton)c).getModel();
-                if(selectMinModel==null && selectMaxModel==null) {
+        for (Component c: divider.getComponents()) {
+            if (c instanceof JButton) {
+                ButtonModel m = ((JButton) c).getModel();
+                if (selectMinModel == null && selectMaxModel == null) {
                     selectMinModel = m;
-                }else if(selectMaxModel==null) {
+                } else if (selectMaxModel == null) {
                     selectMaxModel = m;
                 }
             }
@@ -132,10 +132,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

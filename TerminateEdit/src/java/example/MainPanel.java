@@ -21,12 +21,12 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
-            if(isRowSelected(row)) {
+            if (isRowSelected(row)) {
                 c.setForeground(getSelectionForeground());
                 c.setBackground(getSelectionBackground());
-            }else{
+            } else {
                 c.setForeground(getForeground());
-                c.setBackground((row%2==0)?EVEN_COLOR:getBackground());
+                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     private final JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
     private final JCheckBox teoflCheck  = new JCheckBox(new AbstractAction("terminateEditOnFocusLost") {
         @Override public void actionPerformed(ActionEvent e) {
-            JCheckBox c = (JCheckBox)e.getSource();
+            JCheckBox c = (JCheckBox) e.getSource();
             table.putClientProperty("terminateEditOnFocusLost", c.isSelected());
         }
     });
@@ -49,15 +49,15 @@ public final class MainPanel extends JPanel {
 //         // http://bugs.sun.com/view_bug.do?bug_id=4330950
 //         frame.addWindowListener(new WindowAdapter() {
 //             @Override public void windowClosing(WindowEvent e) {
-// //                 if(table.isEditing()) {
+// //                 if (table.isEditing()) {
 // //                     table.getCellEditor().stopCellEditing();
 // //                 }
-// //                 System.out.println(table.getValueAt(0,1));
+// //                 System.out.println(table.getValueAt(0, 1));
 //             }
 //         });
 //         frame.addWindowStateListener(new WindowStateListener() {
 //             @Override public void windowStateChanged(WindowEvent e) {
-//                 if(frame.getExtendedState()==JFrame.MAXIMIZED_BOTH && table.isEditing()) {
+//                 if (frame.getExtendedState() == JFrame.MAXIMIZED_BOTH && table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();
 //                 }
 //             }
@@ -65,13 +65,13 @@ public final class MainPanel extends JPanel {
 
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-        DefaultCellEditor dce = (DefaultCellEditor)table.getDefaultEditor(Object.class);
+        DefaultCellEditor dce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
         dce.getComponent().addFocusListener(new FocusAdapter() {
             @Override public void focusLost(FocusEvent e) {
-                if(!focusCheck.isSelected()) {
+                if (!focusCheck.isSelected()) {
                     return;
                 }
-                if(table.isEditing()) {
+                if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
             }
@@ -80,10 +80,10 @@ public final class MainPanel extends JPanel {
 
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                if(!headerCheck.isSelected()) {
+                if (!headerCheck.isSelected()) {
                     return;
                 }
-                if(table.isEditing()) {
+                if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }
             }
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
 //         table.getTableHeader().addComponentListener(new ComponentAdapter() {
 //             @Override public void componentResized(ComponentEvent e) {
 //                 System.out.println("componentResized");
-//                 if(table.isEditing()) {
+//                 if (table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();
 //                 }
 //             }
@@ -105,14 +105,14 @@ public final class MainPanel extends JPanel {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         combobox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED) {
-                    table.setAutoResizeMode(((AutoResizeMode)e.getItem()).mode);
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    table.setAutoResizeMode(((AutoResizeMode) e.getItem()).mode);
                 }
             }
         });
 
-        JPanel box = new JPanel(new GridLayout(4,0));
-        box.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JPanel box = new JPanel(new GridLayout(4, 0));
+        box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(teoflCheck);
         box.add(focusCheck);
         box.add(headerCheck);
@@ -131,10 +131,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -147,7 +147,7 @@ public final class MainPanel extends JPanel {
         frame2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame2.getContentPane().add(new MainPanel());
         frame2.pack();
-        frame2.setLocation(frame.getX()+50, frame.getY()+50);
+        frame2.setLocation(frame.getX() + 50, frame.getY() + 50);
 
         frame2.setVisible(true);
         frame.setVisible(true);

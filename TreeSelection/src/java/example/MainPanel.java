@@ -19,19 +19,19 @@ public final class MainPanel extends JPanel {
 
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JRadioButton rb = (JRadioButton)e.getSource();
-                if(rb.equals(r2)) {
+                JRadioButton rb = (JRadioButton) e.getSource();
+                if (rb.equals(r2)) {
                     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-                }else if(rb.equals(r1)) {
+                } else if (rb.equals(r1)) {
                     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-                }else{
+                } else {
                     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
                 }
             }
         };
         r0.setSelected(true);
         Box p = Box.createVerticalBox();
-        for(AbstractButton b:Arrays.asList(r0, r1, r2)) {
+        for (AbstractButton b:Arrays.asList(r0, r1, r2)) {
             b.addActionListener(al); bg.add(b); p.add(b);
         }
         add(p, BorderLayout.NORTH);
@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

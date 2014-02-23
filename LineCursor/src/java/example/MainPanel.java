@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final LineCursorTextArea textArea= new LineCursorTextArea();
     public MainPanel() {
         super(new BorderLayout());
-        textArea.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         textArea.setText("Line Cursor Test\n\naaaaaaaaaaafasdfas");
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -55,7 +55,7 @@ class LineCursorTextArea extends JTextArea {
         super();
         caret = new DefaultCaret() {
             @Override protected synchronized void damage(Rectangle r) {
-                if(r!=null) {
+                if (r != null) {
                     JTextComponent c = getComponent();
                     x = 0;
                     y = r.y;
@@ -70,17 +70,17 @@ class LineCursorTextArea extends JTextArea {
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
         Insets i = getInsets();
-        //int y = g2.getFontMetrics().getHeight()*getLineAtCaret(this)+i.top;
-        int y = caret.y+caret.height-1;
+        //int y = g2.getFontMetrics().getHeight() * getLineAtCaret(this) + i.top;
+        int y = caret.y + caret.height - 1;
         g2.setPaint(LINE_COLOR);
-        g2.drawLine(i.left, y, getSize().width-i.left-i.right, y);
+        g2.drawLine(i.left, y, getSize().width - i.left - i.right, y);
         g2.dispose();
     }
 //     public static int getLineAtCaret(JTextComponent component) {
 //         int caretPosition = component.getCaretPosition();
 //         Element root = component.getDocument().getDefaultRootElement();
-//         return root.getElementIndex(caretPosition)+1;
+//         return root.getElementIndex(caretPosition) + 1;
 //     }
 }

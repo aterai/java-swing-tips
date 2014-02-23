@@ -35,9 +35,9 @@ public final class MainPanel extends JPanel {
 //                 fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
 //                     @Override public void propertyChange(PropertyChangeEvent e) {
 //                         String prop = e.getPropertyName();
-//                         System.out.println("----\n"+prop);
-//                         if(prop==JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
-//                            prop==JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
+//                         System.out.println("----\n" + prop);
+//                         if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
+//                             prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
 //                             System.out.println("sss");
 //                             fileChooser.setApproveButtonText("保存(S)");
 //                             fileChooser.setApproveButtonMnemonic('S');
@@ -73,17 +73,17 @@ public final class MainPanel extends JPanel {
 //     private String openButtonText = null;
 //     private String cancelButtonText = null;
 //     private void initDefaultButtonText(boolean defalut) {
-//         if(defalut) {
-//             if(saveButtonText==null) {
+//         if (defalut) {
+//             if (saveButtonText == null) {
 //                 Locale l = fc.getLocale();
-//                 saveButtonText   = UIManager.getString("FileChooser.saveButtonText",l);
-//                 openButtonText   = UIManager.getString("FileChooser.openButtonText",l);
-//                 cancelButtonText = UIManager.getString("FileChooser.cancelButtonText",l);
+//                 saveButtonText   = UIManager.getString("FileChooser.saveButtonText", l);
+//                 openButtonText   = UIManager.getString("FileChooser.openButtonText", l);
+//                 cancelButtonText = UIManager.getString("FileChooser.cancelButtonText", l);
 //             }
 //             UIManager.put("FileChooser.saveButtonText",   saveButtonText);
 //             UIManager.put("FileChooser.openButtonText",   openButtonText);
 //             UIManager.put("FileChooser.cancelButtonText", cancelButtonText);
-//         }else{
+//         } else {
 //             UIManager.put("FileChooser.saveButtonText",   "保存(S)");
 //             UIManager.put("FileChooser.openButtonText",   "開く(O)");
 //             UIManager.put("FileChooser.cancelButtonText", "キャンセル");
@@ -97,10 +97,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
