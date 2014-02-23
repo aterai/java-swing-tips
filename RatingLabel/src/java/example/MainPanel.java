@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Arrays;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(2,2,4,4));
         //PI Diagona Icons Pack 1.0 - Download Royalty Free Icons and Stock Images For Web & Graphics Design

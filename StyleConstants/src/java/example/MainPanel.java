@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextPane jtp = new JTextPane();
     private final JButton ok  = new JButton("Test");
     private final JButton err = new JButton("Error");

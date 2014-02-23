@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree = new JTree() {
         @Override public void updateUI() {
             super.updateUI();

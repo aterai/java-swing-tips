@@ -8,7 +8,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox modelCheck    = new JCheckBox("isCellEditable return false");
     private final JCheckBox objectCheck   = new JCheckBox("setDefaultEditor(Object.class, null)");
     private final JCheckBox editableCheck = new JCheckBox("setEnabled(false)");

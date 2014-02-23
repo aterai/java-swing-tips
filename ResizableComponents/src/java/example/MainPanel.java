@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLayeredPane layeredPane = new JLayeredPane();
     private final JToolBar toolbar = new JToolBar("Resizable Components");
     private final Point pt = new Point();

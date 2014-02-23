@@ -8,7 +8,7 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JPanel p = new JPanel();
     private final DisableInputLayerUI layerUI = new DisableInputLayerUI();
     private final JLayer<JPanel> jlayer = new JLayer<JPanel>(p, layerUI);

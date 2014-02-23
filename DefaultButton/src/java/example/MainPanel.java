@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JButton b1 = new JButton("Button1");
     private final JButton b2 = new JButton("Button2");
     public MainPanel() {

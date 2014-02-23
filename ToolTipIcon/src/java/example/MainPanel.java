@@ -7,7 +7,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final URL url = MainPanel.class.getResource("wi0124-48.png");
     private final ImageIcon icon = new ImageIcon(url);

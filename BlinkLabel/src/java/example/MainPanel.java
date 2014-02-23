@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label1 = new JLabel("\u25CF", SwingConstants.CENTER);
     private final JLabel label2 = new JLabel("", SwingConstants.CENTER);
     private final Timer timer1 = new Timer(600, new ActionListener() {

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTabbedPane tab  = new JTabbedPane();
     private final JCheckBox cbox   = new JCheckBox("Details");
     public MainPanel() {

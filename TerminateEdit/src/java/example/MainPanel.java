@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final String[] columnNames = {"String", "Integer"};
     private final Object[][] data = {

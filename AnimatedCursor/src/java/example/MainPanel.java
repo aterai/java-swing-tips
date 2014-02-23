@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.net.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final Timer animator;
     private final JButton button;
     private final Toolkit tk    = Toolkit.getDefaultToolkit();

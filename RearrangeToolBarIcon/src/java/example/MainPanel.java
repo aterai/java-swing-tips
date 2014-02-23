@@ -9,7 +9,7 @@ import java.net.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String PATH = "/toolbarButtonGraphics/general/";
     private final JToolBar toolbar = new JToolBar("ToolBarButton");
     public MainPanel() {

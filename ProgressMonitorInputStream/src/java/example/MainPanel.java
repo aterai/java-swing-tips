@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JButton runButton  = new JButton(new RunAction());
     private transient SwingWorker<String, Chunk> worker;

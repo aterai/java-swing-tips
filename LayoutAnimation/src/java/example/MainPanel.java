@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree       = new JTree();
     private final JTextField field = new JTextField("", 10);
     private final JButton button   = new JButton("Find Next(dummy)");

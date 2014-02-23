@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JSpinner spinner01 = new JSpinner();
     private final JSpinner spinner02 = new JSpinner();
     private final JSpinner spinner03 = new JSpinner();

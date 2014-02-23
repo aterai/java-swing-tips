@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     //private final Box box = Box.createVerticalBox();
     //private final Component glue = Box.createVerticalGlue();
     public MainPanel() {

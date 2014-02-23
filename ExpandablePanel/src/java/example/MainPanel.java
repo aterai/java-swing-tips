@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final Box northBox  = Box.createVerticalBox();
     private final Box centerBox = Box.createVerticalBox();
     private final Box southBox  = Box.createVerticalBox();

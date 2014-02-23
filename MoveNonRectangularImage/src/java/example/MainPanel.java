@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super((LayoutManager)null);
         add(makeLabelIcon());

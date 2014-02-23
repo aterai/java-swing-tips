@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
     private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
 

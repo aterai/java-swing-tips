@@ -9,7 +9,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String STR0 = "Default Default Default Default";
     private static final String STR1 = "GlyphVector GlyphVector GlyphVector GlyphVector";
     private static final String STR2 = "JTextArea JTextArea JTextArea JTextArea";

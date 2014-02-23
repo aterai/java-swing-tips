@@ -8,7 +8,7 @@ import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String INIT_TXT =
         "Trail: Creating a GUI with JFC/Swing\n"
       + "Lesson: Learning Swing by Example\n"

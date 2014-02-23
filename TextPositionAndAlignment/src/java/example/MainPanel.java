@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> verticalAlignmentChoices      = new JComboBox<>(Vertical.values());
     private final JComboBox<? extends Enum> verticalTextPositionChoices   = new JComboBox<>(Vertical.values());
     private final JComboBox<? extends Enum> horizontalAlignmentChoices    = new JComboBox<>(Horizontal.values());

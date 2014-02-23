@@ -8,7 +8,7 @@ import javax.swing.border.*;
 import javax.swing.tree.*;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1,3));
         UIManager.put("Tree.closedIcon", new ColorIcon(Color.RED));

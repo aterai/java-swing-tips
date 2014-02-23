@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int START_HEIGHT = 4;
     private static final int END_HEIGHT = 24;
     private static final int DELAY = 10;

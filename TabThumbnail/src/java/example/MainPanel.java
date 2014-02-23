@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final MyTabbedPane tab = new MyTabbedPane();
     public MainPanel() {
         super(new BorderLayout());

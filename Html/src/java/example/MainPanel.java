@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"<html>Comment<p>etc.", 12, true}, {"bbb", 5, false},

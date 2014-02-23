@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JDialog dialog = new JDialog();
     private final PopupMenu popup = new PopupMenu();
     private final JFrame frame;

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
     private final String[] columnNames = {"A", "B", "C"};
     private final Object[][] data = {

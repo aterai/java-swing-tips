@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton  = new JButton(new RunAction());

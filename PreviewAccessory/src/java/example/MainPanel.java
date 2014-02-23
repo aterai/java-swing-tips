@@ -9,7 +9,7 @@ import java.beans.*;
 import java.io.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private JFileChooser fileChooser;
     public MainPanel() {
         super(new BorderLayout());

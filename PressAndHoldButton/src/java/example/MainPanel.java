@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JToolBar toolbar = new JToolBar("toolbar");
     private final URL url = getClass().getResource("ei0021-16.png");
     public MainPanel() {

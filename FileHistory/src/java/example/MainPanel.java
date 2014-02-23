@@ -9,7 +9,7 @@ import java.util.List;
 import java.io.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int MAXHISTORY = 3;
     private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 

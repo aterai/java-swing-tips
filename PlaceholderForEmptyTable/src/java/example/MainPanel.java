@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String PLACEHOLDER = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
     private final JEditorPane editor = new JEditorPane("text/html", PLACEHOLDER);
     private final String[] columnNames = {"Integer", "String", "Boolean"};

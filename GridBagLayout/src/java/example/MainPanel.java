@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int GAP = 5;
     private final JComboBox<String> combo1 = new JComboBox<>(new String[] {"aaaaaa", "bbbbb"});
     private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"cccccccc", "ddd"});

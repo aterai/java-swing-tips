@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.sound.midi.*;
 //import javax.sound.midi.spi.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final byte END_OF_TRACK = 0x2F;
     private long tickpos;
     private final JButton start;

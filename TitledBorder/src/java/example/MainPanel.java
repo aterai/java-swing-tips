@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> verticalOrientationChoices = new JComboBox<>(VerticalOrientation.values());
     private final JComboBox<? extends Enum> justificationChoices       = new JComboBox<>(Justification.values());
     private final TitledBorder border = BorderFactory.createTitledBorder("Test Test");

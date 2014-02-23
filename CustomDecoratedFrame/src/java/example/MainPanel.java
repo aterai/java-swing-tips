@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int W = 4;
     private static final Color BORDER_COLOR = new Color(100, 100, 100);
     private final SideLabel left        = new SideLabel(Side.W);

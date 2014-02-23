@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"user", "rwx"};
     private final Object[][] data = {
         {"owner", 7}, {"group", 6}, {"other", 5}

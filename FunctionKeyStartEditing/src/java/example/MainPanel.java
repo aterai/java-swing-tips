@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("ignore: F1,F4-F7,F9-");
     private final JTextArea textarea = new JTextArea("F2: startEditing\nF8: focusHeader\nF3: beep");
     public MainPanel() {

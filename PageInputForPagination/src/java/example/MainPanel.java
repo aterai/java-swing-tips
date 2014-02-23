@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Year", "String", "Comment"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {

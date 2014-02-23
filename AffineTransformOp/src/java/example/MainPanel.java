@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.imageio.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private Flip mode = Flip.NONE;
     private final transient BufferedImage bufferedImage;
     private final ButtonGroup bg = new ButtonGroup();

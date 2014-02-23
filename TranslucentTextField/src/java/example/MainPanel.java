@@ -11,7 +11,7 @@ import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color BG_COLOR = new Color(1f, .8f, .8f, .2f);
     private final JTextField field0,field1,field2;
     private transient TexturePaint texture;

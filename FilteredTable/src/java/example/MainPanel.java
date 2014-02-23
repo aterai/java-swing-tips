@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final JTable table;
     private final TestModel model;

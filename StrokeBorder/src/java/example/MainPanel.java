@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> joinCombo   = new JComboBox<>(JoinStyle.values());
     private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");

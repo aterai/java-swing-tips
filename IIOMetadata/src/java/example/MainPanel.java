@@ -13,7 +13,7 @@ import javax.imageio.metadata.*;
 import javax.imageio.stream.*;
 import org.w3c.dom.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         IIOMetadataNode root = null;

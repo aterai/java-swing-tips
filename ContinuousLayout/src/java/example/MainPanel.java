@@ -8,7 +8,7 @@ import java.beans.*;
 import java.util.Objects;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JSplitPane leftPane   = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     private final JSplitPane rightPane  = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     private final JSplitPane centerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

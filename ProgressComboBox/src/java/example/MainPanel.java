@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<String> combo = new JComboBox<>();
     private final JButton button;
     private SwingWorker<String[], Integer> worker;

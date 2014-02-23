@@ -9,7 +9,7 @@ import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200,150,100,50));
 
     public MainPanel() {

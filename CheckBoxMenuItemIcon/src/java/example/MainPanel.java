@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JCheckBox check = new JCheckBox("JCheckBox#setIcon(...)");

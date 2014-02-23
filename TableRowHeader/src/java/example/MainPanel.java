@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final DefaultListModel<String> listModel = new DefaultListModel<>();
     private final TestModel model = new TestModel(listModel);
     private final JTable table = new JTable(model);

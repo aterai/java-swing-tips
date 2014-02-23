@@ -15,7 +15,7 @@ import javax.swing.*;
 //import java.nio.file.attribute.*;
 //import static java.nio.file.FileVisitResult.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox<String> dirCombo = new JComboBox<>();
     private final JFileChooser fileChooser = new JFileChooser();
     private final JTextArea textArea = new JTextArea();

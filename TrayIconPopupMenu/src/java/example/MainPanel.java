@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JPopupMenu popup = new JPopupMenu();
     private final transient SystemTray tray = SystemTray.getSystemTray();
     private final transient Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();

@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JFileChooser fileChooser = new JFileChooser();
     public MainPanel() {
         super(new BorderLayout());

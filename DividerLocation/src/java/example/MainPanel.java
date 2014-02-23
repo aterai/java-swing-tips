@@ -8,7 +8,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JRadioButton r0 = new JRadioButton("0.0");
     private final JRadioButton r1 = new JRadioButton("0.5");
     private final JRadioButton r2 = new JRadioButton("1.0");

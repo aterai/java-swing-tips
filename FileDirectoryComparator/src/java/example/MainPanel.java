@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JRadioButton check1 = new JRadioButton("Default", true);
     private final JRadioButton check2 = new JRadioButton("Directory < File", false);
     private final JRadioButton check3 = new JRadioButton("Group Sorting", false);

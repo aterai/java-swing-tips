@@ -8,7 +8,7 @@ import java.util.Locale;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     private static final Font FONT24 = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);

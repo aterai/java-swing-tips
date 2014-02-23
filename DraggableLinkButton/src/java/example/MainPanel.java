@@ -14,7 +14,7 @@ import javax.swing.text.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String MYSITE = "http://terai.xrea.jp/";
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {

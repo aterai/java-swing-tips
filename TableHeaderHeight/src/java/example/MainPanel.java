@@ -9,7 +9,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int HEADER_HEIGHT = 32;
     private JTable makeTable() {
         JTable table = new JTable(new DefaultTableModel(2, 20));

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField field      = new JTextField(20);
     private final JPasswordField passwd = new JPasswordField(20);
     private final JComboBox combo1      = new JComboBox();

@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
     private final JSlider slider0 = new JSlider(JSlider.VERTICAL);
     private final JSlider slider1 = new JSlider(JSlider.VERTICAL);

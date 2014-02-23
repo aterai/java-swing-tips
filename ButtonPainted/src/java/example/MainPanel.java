@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JPanel p = new JPanel();
     private final JButton b1 = new JButton("button");
     private final JButton b2 = new JButton();

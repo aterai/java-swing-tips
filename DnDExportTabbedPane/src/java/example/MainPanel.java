@@ -14,7 +14,7 @@ import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
     public MainPanel() {
         super(new BorderLayout());

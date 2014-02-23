@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JLabel label = new JLabel();
 

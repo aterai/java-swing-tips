@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final String DEVICE_NAME = "con.txt";
     public MainPanel() {
         super(new BorderLayout(10, 10));

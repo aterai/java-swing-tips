@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label       = new JLabel();
     private final JScrollPane scroll = new JScrollPane(); //new JScrollPane(label);
     private final JRadioButton r1    = new JRadioButton("scrollRectToVisible");

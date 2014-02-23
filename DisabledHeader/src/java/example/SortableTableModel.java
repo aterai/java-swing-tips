@@ -16,7 +16,7 @@ import javax.swing.table.*;
 
 public class SortableTableModel extends DefaultTableModel {
     @SuppressWarnings("unchecked")
-    public void sortByColumn(int column, boolean isAscent) {
+    public final void sortByColumn(int column, boolean isAscent) {
         Collections.sort(getDataVector(), new ColumnComparator(column, isAscent));
         fireTableDataChanged();
     }

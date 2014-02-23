@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 // import java.util.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(245, 245, 245);
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {

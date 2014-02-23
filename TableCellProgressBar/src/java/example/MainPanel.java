@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final WorkerModel model = new WorkerModel();
     private final JTable table = new JTable(model);
     private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);

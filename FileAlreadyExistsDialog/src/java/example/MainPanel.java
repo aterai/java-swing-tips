@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JFileChooser fileChooser;
     private final JPanel p = new JPanel(new GridBagLayout());
     public MainPanel() {

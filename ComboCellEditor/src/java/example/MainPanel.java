@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Boolean"};
     private final Object[][] data = {
         {12, "Name 0", true}, {5, "Name 2", false},

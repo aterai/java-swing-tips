@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JComboBox combo = makeComboBox();
     private final JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
     public MainPanel() {

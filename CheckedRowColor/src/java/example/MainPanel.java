@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final int BOOLEAN_COLUMN = 2;
     private static String[] columnNames = {"String", "Number", "Boolean"};
     private static Object[][] data = {

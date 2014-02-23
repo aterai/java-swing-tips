@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private ClipboardService cs;
     public MainPanel() {
         super(new GridLayout(2,1));

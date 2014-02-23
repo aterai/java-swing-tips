@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "List<Icon>"};
     private final Object[][] data = {
         {"aaa", Arrays.<Icon>asList(getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.errorIcon"))},

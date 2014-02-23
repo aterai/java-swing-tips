@@ -13,7 +13,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JPanel breadcrumb = makePanel(10 + 1);
     private final JTree tree = new JTree();
     public MainPanel() {

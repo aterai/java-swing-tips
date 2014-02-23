@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JButton button = new JButton(new AbstractAction("showMessageDialog") {
         @Override public void actionPerformed(ActionEvent e) {
             JButton b = (JButton)e.getSource();

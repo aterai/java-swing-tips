@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel label       = new JLabel();
     private final JScrollPane scroll = new JScrollPane(label);
     private final JViewport vport    = scroll.getViewport();

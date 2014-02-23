@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final JFrame frame;
     public MainPanel(JFrame frame) {

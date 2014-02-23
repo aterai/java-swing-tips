@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel implements HierarchyListener {
     private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
     private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
     private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);

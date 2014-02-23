@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox box = new JCheckBox("Crossfade Type?", true);
     public MainPanel() {
         super(new BorderLayout());

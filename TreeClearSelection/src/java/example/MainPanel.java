@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     private final transient MouseListener ml = new MouseAdapter() {
         @Override public void mousePressed(MouseEvent e) {

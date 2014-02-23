@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTextField field1 = new JTextField("aaaaaaaaa");
     private final JTextField field2 = new JTextField("bbbbbbbbb");
     public MainPanel() {

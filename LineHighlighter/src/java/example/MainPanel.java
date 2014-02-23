@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("LineWrap");
     private final HighlightCursorTextArea textArea= new HighlightCursorTextArea();
     public MainPanel() {

@@ -7,7 +7,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final String[] columnNames = {"A", "B"};
     private final Object[][] data = {
         {"123456789012345678901234567890123456789012345678901234567890", "12345"},

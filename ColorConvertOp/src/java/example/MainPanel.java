@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final ImageIcon orgImage;
     public MainPanel() {
         super(new GridLayout(0,1));

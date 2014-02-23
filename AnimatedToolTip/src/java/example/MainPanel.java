@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final URL url = getClass().getResource("anime.gif");
     private final JLabel l1 = new JLabel("Timer Animated ToolTip") {
         @Override public JToolTip createToolTip() {

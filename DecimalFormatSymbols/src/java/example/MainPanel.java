@@ -9,7 +9,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JSpinner s0 = new JSpinner(makeSpinnerNumberModel());
     private final JSpinner s1 = makeSpinner1(makeSpinnerNumberModel());
     private final JSpinner s2 = makeSpinner2(makeSpinnerNumberModel());

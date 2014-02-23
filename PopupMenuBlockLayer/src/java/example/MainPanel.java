@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {

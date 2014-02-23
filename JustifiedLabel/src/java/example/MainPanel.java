@@ -8,7 +8,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JLabel l0 = new JLabel("打率");
     private final JLabel l1 = new JLabel("打率", JLabel.RIGHT);
     private final JLabel l2 = new JustifiedLabel("打率");

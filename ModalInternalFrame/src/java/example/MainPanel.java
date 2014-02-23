@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final JFrame frame;
     private final JMenuBar dummyBar = new JMenuBar();

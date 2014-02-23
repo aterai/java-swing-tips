@@ -9,7 +9,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.tree.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final JTree tree       = new JTree();
     private final JTextField field = new JTextField("foo");
     private final HighlightTreeCellRenderer renderer = new HighlightTreeCellRenderer();

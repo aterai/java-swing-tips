@@ -11,7 +11,7 @@ import javax.imageio.*;
 import javax.imageio.stream.*;
 import javax.swing.*;
 
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JLabel label = new JLabel();

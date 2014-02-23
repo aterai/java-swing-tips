@@ -13,7 +13,7 @@ import javax.sound.sampled.*;
 ////                             http://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous
 //Magic with Merlin: Swinging audio>http://www.ibm.com/developerworks/java/library/j-mer0730/
 ////                                http://www.ibm.com/developerworks/jp/java/library/j-mer0730/
-class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private static final Object[] OPTION_PANE_AUDITORY_CUES = {
         "OptionPane.errorSound", "OptionPane.informationSound",
         "OptionPane.questionSound", "OptionPane.warningSound"

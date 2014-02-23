@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
 
-public class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel implements HierarchyListener {
     private SwingWorker<String, Void> worker;
     public MainPanel() {
         super(new BorderLayout());

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
-public class MainPanel extends JPanel {
+public final class MainPanel extends JPanel {
     private final List<? extends JTabbedPane> list = Arrays.asList(
         makeTestTabbedPane(new JTabbedPane()),
         makeTestTabbedPane(new ClippedTitleTabbedPane()));
