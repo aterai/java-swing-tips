@@ -128,8 +128,8 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI{
         Graphics2D g2  = image.createGraphics();
         Point2D start  = new Point2D.Float(0f, 0f);
         Point2D end    = new Point2D.Float(99f, 0f);
-        float[] dist   = {0.0f, 0.5f, 1.0f};
-        Color[] colors = { Color.RED, Color.YELLOW, Color.GREEN };
+        float[] dist   = {.0f, .5f, 1f};
+        Color[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
         g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
         g2.fillRect(0, 0, 100, 1);
         g2.dispose();

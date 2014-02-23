@@ -13,8 +13,8 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "Answer"};
     private final Object[][] data = {
-        { 1, Answer.A }, { 2, Answer.B }, { 3, Answer.C },
-        { 4, Answer.C }, { 5, Answer.A }
+        {1, Answer.A}, {2, Answer.B}, {3, Answer.C},
+        {4, Answer.C}, {5, Answer.A}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -27,11 +27,11 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        if(System.getProperty("java.version").startsWith("1.6.0")) {
+        if (System.getProperty("java.version").startsWith("1.6.0")) {
             //1.6.0_xx bug? column header click -> edit cancel?
             table.getTableHeader().addMouseListener(new MouseAdapter() {
                 @Override public void mousePressed(MouseEvent e) {
-                    if(table.isEditing()) {
+                    if (table.isEditing()) {
                         table.getCellEditor().stopCellEditing();
                     }
                 }
@@ -44,14 +44,14 @@ public final class MainPanel extends JPanel {
 //                 Point pt = e.getPoint();
 //                 int row  = t.rowAtPoint(pt);
 //                 int col  = t.columnAtPoint(pt);
-//                 if(t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
+//                 if (t.convertRowIndexToModel(row)>=0 && t.convertColumnIndexToModel(col)==1) {
 //                     TableCellEditor ce = t.getCellEditor(row, col);
 //                     //http://tips4java.wordpress.com/2009/07/12/table-button-column/
 //                     ce.stopCellEditing();
 //                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
 //                     Point p = SwingUtilities.convertPoint(t, pt, c);
 //                     Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-//                     if(b instanceof JRadioButton) { ((JRadioButton)b).doClick(); }
+//                     if (b instanceof JRadioButton) { ((JRadioButton)b).doClick(); }
 //                 }
 //             }
 //         });
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         table.getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
         table.getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
 
 class RadioButtonsPanel extends JPanel {
     private static final String OSNAME = System.getProperty("os.name");
-    private final String[] answer = { Answer.A.toString(), Answer.B.toString(), Answer.C.toString() };
+    private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};
     public JRadioButton[] buttons;
     public ButtonGroup bg = new ButtonGroup();
     public RadioButtonsPanel() {
@@ -97,7 +97,7 @@ class RadioButtonsPanel extends JPanel {
     private void initButtons() {
         bg = new ButtonGroup();
         buttons = new JRadioButton[answer.length];
-        for(int i=0;i<buttons.length;i++) {
+        for (int i = 0; i < buttons.length; i++) {
             buttons[i] = new JRadioButton(answer[i]);
             buttons[i].setActionCommand(answer[i]);
             buttons[i].setFocusable(false);
@@ -107,19 +107,20 @@ class RadioButtonsPanel extends JPanel {
         }
     }
     protected void updateSelectedButton(Object v) {
-        if("Windows 7".equals(OSNAME)) { //Windows aero?
+        if ("Windows 7".equals(OSNAME)) { //Windows aero?
             removeAll();
             initButtons();
         }
-        if("A".equals(v)) {
+        if ("A".equals(v)) {
             buttons[0].setSelected(true);
-        }else if("B".equals(v)) {
+        } else if ("B".equals(v)) {
             buttons[1].setSelected(true);
-        }else{
+        } else {
             buttons[2].setSelected(true);
         }
     }
 }
+
 class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRenderer {
     public RadioButtonsRenderer() {
         super();
@@ -130,6 +131,7 @@ class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRendere
         return this;
     }
 }
+
 class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
 
@@ -140,7 +142,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
                 fireEditingStopped();
             }
         };
-        for(AbstractButton b: buttons) {
+        for (AbstractButton b: buttons) {
             b.addActionListener(al);
         }
     }
@@ -182,13 +184,13 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingStopped(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
             }
         }
     }
@@ -197,16 +199,16 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for(int i = listeners.length-2; i>=0; i-=2) {
-            if(listeners[i]==CellEditorListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if(changeEvent == null) {
+                if (changeEvent == null) {
                     changeEvent = new ChangeEvent(this);
                 }
-                ((CellEditorListener)listeners[i+1]).editingCanceled(changeEvent);
+                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
             }
         }
     }
 }
 
-enum Answer {A, B, C}
+enum Answer { A, B, C }

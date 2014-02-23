@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
     private final JToolBar toolbar = new JToolBar();
     private final JLabel label = new JLabel("Test:");
-    private final JComboBox<String> combo = new JComboBox<>(new String[] { "Test" });
+    private final JComboBox<String> combo = new JComboBox<>(new String[] {"Test"});
     private final JButton button = new JButton(new AbstractAction("Dialog") {
         @Override public void actionPerformed(ActionEvent e) {
             Toolkit.getDefaultToolkit().beep();

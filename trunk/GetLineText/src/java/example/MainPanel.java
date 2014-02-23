@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
                         int count = 0;
-                        StringTokenizer st = new StringTokenizer(textArea.getText(), "\n") ;
+                        StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
                         while(st.hasMoreTokens()) {
                             if(st.nextToken().startsWith("#")) {
                                 count++;

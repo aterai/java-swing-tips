@@ -143,7 +143,7 @@ class LinkViewButtonUI extends BasicButtonUI {
                         return href;
                     }
                     @Override public DataFlavor[] getTransferDataFlavors() {
-                        return new DataFlavor[] { URI_FLAVOR };
+                        return new DataFlavor[] {URI_FLAVOR};
                     }
                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
                         //System.out.println(flavor.getMimeType());

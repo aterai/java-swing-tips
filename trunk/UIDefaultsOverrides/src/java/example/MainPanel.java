@@ -17,9 +17,9 @@ import javax.swing.plaf.nimbus.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"A", "B", "C"};
     private final Object[][] data = {
-        { "A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1" },
-        { "A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1" },
-        { "A2, Line1", "B2, Line1", "C2, Line1" }
+        {"A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1"},
+        {"A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1"},
+        {"A2, Line1", "B2, Line1", "C2, Line1"}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {

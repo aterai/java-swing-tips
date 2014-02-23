@@ -11,10 +11,10 @@ public final class MainPanel extends JPanel {
     private static final int BOOLEAN_COLUMN = 2;
     private static String[] columnNames = {"String", "Number", "Boolean"};
     private static Object[][] data = {
-        { "aaa",1,false}, { "bbb",20,false},
-        { "ccc",2,false}, { "ddd",3, false},
-        { "aaa",1,false}, { "bbb",20,false},
-        { "ccc",2,false}, { "ddd",3, false},
+        {"aaa", 1, false}, {"bbb", 20, false},
+        {"ccc", 2, false}, {"ddd", 3,  false},
+        {"aaa", 1, false}, {"bbb", 20, false},
+        {"ccc", 2, false}, {"ddd", 3,  false},
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         //TEST: final JTable table = makeTable2(model);
         model.addTableModelListener(new TableModelListener() {
             @Override public void tableChanged(TableModelEvent e) {
-                if(e.getType()==TableModelEvent.UPDATE) {
+                if (e.getType() == TableModelEvent.UPDATE) {
                     //System.out.println("TableModel: tableChanged");
                     rowRepaint(table, table.convertRowIndexToView(e.getFirstRow()));
                 }
@@ -44,25 +44,24 @@ public final class MainPanel extends JPanel {
         //table.setSurrendersFocusOnKeystroke(true);
         //table.putClientProperty("JTable.autoStartsEdit", false);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static JTable makeTable(final DefaultTableModel model) {
         return new JTable(model) {
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component cmp = super.prepareEditor(editor, row, column);
-                if(convertColumnIndexToModel(column) == BOOLEAN_COLUMN) {
+                if (convertColumnIndexToModel(column) == BOOLEAN_COLUMN) {
                     //System.out.println("JTable: prepareEditor");
-                    JCheckBox c = (JCheckBox)cmp;
-                    c.setBackground(c.isSelected()?Color.ORANGE:getBackground());
+                    JCheckBox c = (JCheckBox) cmp;
+                    c.setBackground(c.isSelected() ? Color.ORANGE : getBackground());
                 }
                 return cmp;
             }
             @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
-                Boolean isChecked = (Boolean) model.getValueAt(
-                    convertRowIndexToModel(row), BOOLEAN_COLUMN);
+                Boolean isChecked = (Boolean) model.getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
                 c.setForeground(getForeground());
-                c.setBackground(isChecked?Color.ORANGE:getBackground());
+                c.setBackground(isChecked ? Color.ORANGE : getBackground());
                 return c;
             }
         };
@@ -71,7 +70,7 @@ public final class MainPanel extends JPanel {
         final JTable table = new JTable(model);
         TableColumnModel columns = table.getColumnModel();
         TableCellRenderer r = new RowColorTableRenderer();
-        for(int i=0;i<columns.getColumnCount();i++) {
+        for (int i = 0; i < columns.getColumnCount(); i++) {
             columns.getColumn(i).setCellRenderer(r);
         }
         return table;
@@ -82,7 +81,7 @@ public final class MainPanel extends JPanel {
             TableModel model = table.getModel();
             Boolean isChecked = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
             c.setForeground(table.getForeground());
-            c.setBackground(isChecked?Color.ORANGE:table.getBackground());
+            c.setBackground(isChecked ? Color.ORANGE : table.getBackground());
             return c;
         }
     }
@@ -101,10 +100,10 @@ public final class MainPanel extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException |
-               IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

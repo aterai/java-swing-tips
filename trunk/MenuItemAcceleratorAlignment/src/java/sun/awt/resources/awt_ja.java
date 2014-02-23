@@ -8,6 +8,6 @@ public final class awt_ja extends ListResourceBundle { //NOPMD
 //CHECKSTYLE:ON
     @Override protected Object[][] getContents() {
         System.out.println("---- awt_ja ----");
-        return new Object[][] { { "AWT.space", "XXXXX" } };
+        return new Object[][] {{"AWT.space", "XXXXX"}};
     }
 }
