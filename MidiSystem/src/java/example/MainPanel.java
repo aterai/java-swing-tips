@@ -4,10 +4,10 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
 import java.io.IOException;
-import javax.swing.*;
+import java.net.*;
 import javax.sound.midi.*;
+import javax.swing.*;
 //import javax.sound.midi.spi.*;
 
 public final class MainPanel extends JPanel {

@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.*;
 import javax.activation.*;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final DnDTabbedPane tabbedPane = new DnDTabbedPane();

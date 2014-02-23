@@ -4,8 +4,8 @@ package example;
 //@homepage@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
+import javax.swing.table.*;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 public final class MainPanel extends JPanel {

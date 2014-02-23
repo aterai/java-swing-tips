@@ -7,12 +7,11 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.nimbus.*;
 import javax.swing.table.*;
 // // JDK 1.6
 // import com.sun.java.swing.*;
 // import com.sun.java.swing.plaf.nimbus.*;
-// JDK 1.7
-import javax.swing.plaf.nimbus.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"A", "B", "C"};

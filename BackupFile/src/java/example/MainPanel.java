@@ -8,8 +8,8 @@ import java.io.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
+import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final String FILE_NAME = "example.txt";

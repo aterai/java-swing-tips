@@ -3,16 +3,16 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.datatransfer.*;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.*;
 import javax.swing.*;
 // import javax.swing.border.*;
 // import javax.swing.event.*;
-import javax.swing.text.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "http://terai.xrea.jp/";

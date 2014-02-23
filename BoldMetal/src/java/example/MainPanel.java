@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.tree.*;
 import javax.swing.plaf.metal.*;
+import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     private static final String TAG = "<html><b>";

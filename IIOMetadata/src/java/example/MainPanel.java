@@ -6,11 +6,11 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.tree.*;
 import javax.imageio.*;
 import javax.imageio.metadata.*;
 import javax.imageio.stream.*;
+import javax.swing.*;
+import javax.swing.tree.*;
 import org.w3c.dom.*;
 
 public final class MainPanel extends JPanel {

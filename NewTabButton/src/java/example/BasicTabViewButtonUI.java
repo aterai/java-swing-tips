@@ -5,9 +5,9 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.text.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.text.*;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
     //private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();

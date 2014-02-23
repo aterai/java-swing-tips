@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.plaf.*;
+import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};

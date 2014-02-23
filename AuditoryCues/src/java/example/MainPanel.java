@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 // import java.security.*;
-import javax.swing.*;
 import javax.sound.sampled.*;
+import javax.swing.*;
 
 //Swing Changes and New Features>http://docs.oracle.com/javase/6/docs/technotes/guides/swing/SwingChanges.html#Miscellaneous
 ////                             http://docs.oracle.com/javase/jp/6/technotes/guides/swing/SwingChanges.html#Miscellaneous

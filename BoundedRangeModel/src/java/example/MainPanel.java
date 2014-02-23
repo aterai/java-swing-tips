@@ -11,8 +11,8 @@ import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 import javax.swing.table.*;
+import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final Color THUMB_COLOR  = new Color(0, 0, 255, 50);
