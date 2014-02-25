@@ -65,7 +65,8 @@ public final class MainPanel extends JPanel {
                     }
                     @Override public void updateUI() {
                         super.updateUI();
-                        BufferedImage bi = ImageUtil.getFilteredImage(MainPanel.class.getResource("test.jpg"));
+                        URL url = getClass().getClassLoader().getResource("example/test.jpg");
+                        BufferedImage bi = ImageUtil.getFilteredImage(url);
                         setBorder(new CentredBackgroundBorder(bi));
                         setOpaque(false);
                     }
