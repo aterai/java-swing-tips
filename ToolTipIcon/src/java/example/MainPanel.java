@@ -9,7 +9,7 @@ import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
-    private final URL url = MainPanel.class.getResource("wi0124-48.png");
+    private final URL url = getClass().getResource("wi0124-48.png");
     private final ImageIcon icon = new ImageIcon(url);
     public MainPanel() {
         super(new BorderLayout());

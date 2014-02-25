@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
-                ImageIcon img = new ImageIcon(MainPanel.class.getResource("splash.png"));
+                ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("example/splash.png"));
                 splashScreen.getContentPane().add(new JLabel(img));
                 splashScreen.pack();
                 splashScreen.setLocationRelativeTo(null);

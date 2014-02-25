@@ -13,8 +13,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
-    private final URL u1 = MainPanel.class.getResource("i03-04.gif");
-    private final URL u2 = MainPanel.class.getResource("i03-10.gif");
+    private final URL u1 = getClass().getResource("i03-04.gif");
+    private final URL u2 = getClass().getResource("i03-10.gif");
     private final ImageIcon i1 = new ImageIcon(u1);
     private final ImageIcon i2 = new ImageIcon(u2);
     private File file;
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
             @Override protected void exportDone(JComponent c, Transferable data, int action) {
                 cleanup(c, action == MOVE);
             }
-            private void cleanup(JComponent c, boolean removeFile) {
-                if (removeFile) {
+            private void cleanup(JComponent c, boolean isMoved) {
+                if (isMoved) {
                     clearFile();
                     c.repaint();
                 }
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
         }));
         add(label);
         add(box, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private File getFile() {
         return file;

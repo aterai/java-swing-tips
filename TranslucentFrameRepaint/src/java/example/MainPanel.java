@@ -167,7 +167,7 @@ final class TextureUtil {
         BufferedImage bi = null;
         try {
             //http://www.viva-edo.com/komon/edokomon.html
-            bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
+            bi = ImageIO.read(TextureUtil.class.getResource("unkaku_w.png"));
         } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);
