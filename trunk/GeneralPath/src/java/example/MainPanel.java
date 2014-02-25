@@ -54,11 +54,11 @@ class StarPanel1 extends JPanel {
         int h = getHeight();
         //<blockquote cite="%JAVA_HOME%/demo/jfc/Java2D/src/java2d/demos/Lines/Joins.java">
         GeneralPath p = new GeneralPath();
-        p.moveTo(-w / 4.0f, -h / 12.0f);
-        p.lineTo(+w / 4.0f, -h / 12.0f);
-        p.lineTo(-w / 6.0f, +h / 4.0f);
-        p.lineTo(0.0f,      -h / 4.0f);
-        p.lineTo(+w / 6.0f, +h / 4.0f);
+        p.moveTo(-w / 4f, -h / 12f);
+        p.lineTo(+w / 4f, -h / 12f);
+        p.lineTo(-w / 6f,  h / 4f);
+        p.lineTo(+0,      -h / 4f);
+        p.lineTo(+w / 6f,  h / 4f);
         p.closePath();
         //</blockquote>
         g2.translate(w / 2, h / 2);
@@ -76,11 +76,11 @@ class StarPanel2 extends JPanel {
         int w = getWidth();
         int h = getHeight();
         Polygon p = new Polygon();
-        p.addPoint(Math.round(-w / 4.0f), Math.round(-h / 12.0f));
-        p.addPoint(Math.round(+w / 4.0f), Math.round(-h / 12.0f));
-        p.addPoint(Math.round(-w / 6.0f), Math.round(+h / 4.0f));
-        p.addPoint(0.0f,                  Math.round(-h / 4.0f));
-        p.addPoint(Math.round(+w / 6.0f), Math.round(+h / 4.0f));
+        p.addPoint(Math.round(-w / 4f), Math.round(-h / 12f));
+        p.addPoint(Math.round(+w / 4f), Math.round(-h / 12f));
+        p.addPoint(Math.round(-w / 6f), Math.round(+h / 4f));
+        p.addPoint(0,                   Math.round(-h / 4f));
+        p.addPoint(Math.round(+w / 6f), Math.round(+h / 4f));
         g2.translate(w / 2, h / 2);
         g2.setColor(Color.YELLOW);
         g2.fill(p);
