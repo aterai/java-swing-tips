@@ -38,7 +38,9 @@ public final class MainPanel extends JPanel {
 
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if (!check2.isSelected()) { return; }
+                if (!check2.isSelected()) {
+                    return;
+                }
                 if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }

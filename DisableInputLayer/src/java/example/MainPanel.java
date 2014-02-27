@@ -65,7 +65,9 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
     private boolean isRunning;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (!isRunning) { return; }
+        if (!isRunning) {
+            return;
+        }
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
         g2.setPaint(Color.GRAY);
@@ -94,7 +96,9 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
     }
     private static final String CMD_REPAINT = "repaint";
     public void start() {
-        if (isRunning) { return; }
+        if (isRunning) {
+            return;
+        }
         isRunning = true;
         firePropertyChange(CMD_REPAINT, false, true);
     }

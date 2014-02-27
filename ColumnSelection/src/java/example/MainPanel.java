@@ -41,7 +41,9 @@ public final class MainPanel extends JPanel {
         final JTableHeader header = table.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                if (!check.isSelected()) { return; }
+                if (!check.isSelected()) {
+                    return;
+                }
                 if (table.isEditing()) {
                     table.getCellEditor().stopCellEditing();
                 }

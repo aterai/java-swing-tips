@@ -47,7 +47,9 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private void initFrameSize() {
-        if (!checkbox.isSelected()) { return; }
+        if (!checkbox.isSelected()) {
+            return;
+        }
         int fw = frame.getSize().width;
         int fh = MH * fw / MW;
         frame.setSize(MW > fw ? MW : fw, MH > fh ? MH : fh);

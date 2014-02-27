@@ -135,7 +135,9 @@ class CheckBoxNode {
 class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting;
     @Override public void treeNodesChanged(TreeModelEvent e) {
-        if (adjusting) { return; }
+        if (adjusting) {
+            return;
+        }
         adjusting = true;
         TreePath parent = e.getTreePath();
         Object[] children = e.getChildren();

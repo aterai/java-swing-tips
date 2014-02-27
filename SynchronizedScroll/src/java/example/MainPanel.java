@@ -31,7 +31,9 @@ public final class MainPanel extends JPanel {
                     src = sp2.getViewport();
                     tgt = sp1.getViewport();
                 }
-                if (adjflg || tgt == null || src == null) { return; }
+                if (adjflg || tgt == null || src == null) {
+                    return;
+                }
                 adjflg = true;
                 Dimension dim1 = src.getViewSize();
                 Dimension siz1 = src.getSize();
