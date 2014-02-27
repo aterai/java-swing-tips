@@ -80,7 +80,9 @@ class MyJTabbedPane extends JTabbedPane {
             @Override public void mouseMoved(MouseEvent e) {
                 JTabbedPane source = (JTabbedPane) e.getComponent();
                 int focussed = source.indexAtLocation(e.getX(), e.getY());
-                if (focussed == prev) { return; }
+                if (focussed == prev) {
+                    return;
+                }
                 for (int i = 0; i < source.getTabCount(); i++) {
                     TabPanel tab = (TabPanel) source.getTabComponentAt(i);
                     tab.setButtonVisible(i == focussed);

@@ -51,7 +51,9 @@ public final class MainPanel extends JPanel {
                 JFrame frame = (JFrame) e.getComponent();
                 if (frame.getExtendedState() == JFrame.NORMAL) {
                     Point pt = frame.getLocationOnScreen();
-                    if (pt.x < 0 || pt.y < 0) { return; }
+                    if (pt.x < 0 || pt.y < 0) {
+                        return;
+                    }
                     try {
                         pos.setLocation(pt);
                     } catch (IllegalComponentStateException icse) {

@@ -436,7 +436,9 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
 class CheckBoxStatusUpdateListener implements TreeModelListener {
     private boolean adjusting;
     @Override public void treeNodesChanged(TreeModelEvent e) {
-        if (adjusting) { return; }
+        if (adjusting) {
+            return;
+        }
         adjusting = true;
         Object[] children = e.getChildren();
         DefaultTreeModel model = (DefaultTreeModel) e.getSource();
