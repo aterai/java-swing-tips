@@ -95,7 +95,7 @@ class TranslucentPopupMenu extends JPopupMenu {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
 //                 Window p = SwingUtilities.getWindowAncestor(TranslucentPopupMenu.this);
-//                 if (p != null && p instanceof JWindow) {
+//                 if (p instanceof JWindow) {
 //                     System.out.println("Heavy weight");
 //                     JWindow w = (JWindow) p;
 //                     w.setBackground(ALPHA_ZERO);

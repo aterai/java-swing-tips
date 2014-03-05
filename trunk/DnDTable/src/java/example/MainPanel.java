@@ -227,7 +227,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
 //             } catch (IOException ie) {
 //                 e.dropComplete(false);
 //             }
-//             if (c != null && c instanceof JTable) {
+//             if (c instanceof JTable) {
 //                 JTable table = (JTable) c;
 //                 DefaultTableModel model = (DefaultTableModel) table.getModel();
             DefaultTableModel model = (DefaultTableModel) getModel();

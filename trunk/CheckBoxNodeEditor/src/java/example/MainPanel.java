@@ -420,11 +420,11 @@ class CheckBoxNodeRenderer extends JPanel implements TreeCellRenderer {
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         l.setFont(tree.getFont());
-        if (value != null && value instanceof DefaultMutableTreeNode) {
+        if (value instanceof DefaultMutableTreeNode) {
             check.setEnabled(tree.isEnabled());
             check.setFont(tree.getFont());
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-            if (userObject != null && userObject instanceof CheckBoxNode) {
+            if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
                 if (node.status == Status.INDETERMINATE) {
                     check.setIcon(new IndeterminateIcon());
@@ -477,11 +477,11 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         //JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
         l.setFont(tree.getFont());
-        if (value != null && value instanceof DefaultMutableTreeNode) {
+        if (value instanceof DefaultMutableTreeNode) {
             check.setEnabled(tree.isEnabled());
             check.setFont(tree.getFont());
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-            if (userObject != null && userObject instanceof CheckBoxNode) {
+            if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
                 if (node.status == Status.INDETERMINATE) {
                     check.setIcon(new IndeterminateIcon());
@@ -502,7 +502,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         return new CheckBoxNode(str, check.isSelected() ? Status.SELECTED : Status.DESELECTED);
     }
     @Override public boolean isCellEditable(EventObject e) {
-        if (e != null && e instanceof MouseEvent && e.getSource() instanceof JTree) {
+        if (e instanceof MouseEvent && e.getSource() instanceof JTree) {
             MouseEvent me = (MouseEvent) e;
             JTree tree = (JTree) e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
