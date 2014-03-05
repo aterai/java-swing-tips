@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("test") {
             @Override public void actionPerformed(ActionEvent ae) {
                 System.out.println("------------------");
-                searchTreeForCheckedNode(tree, tree.getPathForRow(0));
+                searchTreeForCheckedNode(tree.getPathForRow(0));
 //                 DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 //                 Enumeration e = root.breadthFirstEnumeration();
 //                 while (e.hasMoreElements()) {
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void searchTreeForCheckedNode(JTree tree, TreePath path) {
+    private static void searchTreeForCheckedNode(TreePath path) {
         Object o = path.getLastPathComponent();
         if (!(o instanceof DefaultMutableTreeNode)) {
             return;
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
         } else if (check.status == Status.INDETERMINATE && !node.isLeaf() && node.getChildCount() >= 0) {
             Enumeration e = node.children();
             while (e.hasMoreElements()) {
-                searchTreeForCheckedNode(tree, path.pathByAddingChild(e.nextElement()));
+                searchTreeForCheckedNode(path.pathByAddingChild(e.nextElement()));
             }
         }
     }
