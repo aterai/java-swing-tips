@@ -112,8 +112,8 @@ class CardLayoutTabbedPane extends JPanel {
         close.setPreferredSize(dim);
         close.setMaximumSize(dim);
         //close.setMinimumSize(dim);
-        //close.setAlignmentX(0.9f);
-        //close.setAlignmentY(0.1f);
+        //close.setAlignmentX(.9f);
+        //close.setAlignmentY(.1f);
         //close.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
         close.setBorder(BorderFactory.createEmptyBorder());
         close.setFocusPainted(false);

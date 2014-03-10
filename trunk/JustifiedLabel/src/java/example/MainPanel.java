@@ -120,7 +120,7 @@ class JustifiedLabel extends JLabel {
             return gv;
         }
         float xx = (jwidth - vwidth) / (float) (gv.getNumGlyphs() - 1);
-        float xpos = 0.0f;
+        float xpos = 0f;
         Point2D gmPos = new Point2D.Double(0.0d, 0.0d);
         for (int i = 0; i < gv.getNumGlyphs(); i++) {
             GlyphMetrics gm = gv.getGlyphMetrics(i);

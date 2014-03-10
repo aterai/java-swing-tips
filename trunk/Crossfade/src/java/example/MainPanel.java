@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - alpha * .1f));
             }
             g2d.drawImage(icon1.getImage(), 0, 0, (int) icon1.getIconWidth(), (int) icon1.getIconHeight(), this);
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * 0.1f));
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * .1f));
             g2d.drawImage(icon2.getImage(), 0, 0, (int) icon2.getIconWidth(), (int) icon2.getIconHeight(), this);
             g2d.dispose();
         }

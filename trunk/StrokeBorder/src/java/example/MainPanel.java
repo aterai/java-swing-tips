@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         button = new JButton(new AbstractAction("Change") {
             @Override public void actionPerformed(ActionEvent ae) {
-                BasicStroke dashedStroke = new BasicStroke(5.0f,
+                BasicStroke dashedStroke = new BasicStroke(5f,
                     ((EndCapStyle) endcapCombo.getSelectedItem()).style,
                     ((JoinStyle) joinCombo.getSelectedItem()).style,
-                    5.0f, getDashArray(), 0.0f);
+                    5f, getDashArray(), 0f);
                 label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
             }
         });

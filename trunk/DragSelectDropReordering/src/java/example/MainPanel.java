@@ -90,7 +90,7 @@ class SelectedImageFilter extends RGBImageFilter {
         //Color color = new Color(argb, true);
         //float[] array = new float[4];
         //color.getComponents(array);
-        //return new Color(array[0], array[1], array[2]*0.5f, array[3]).getRGB();
+        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
         return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
     }
 }
@@ -114,7 +114,7 @@ class DotBorder extends EmptyBorder {
 }
 
 class ReorderbleList<E extends ListItem> extends JList<E> {
-    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon  = new JLabel((Icon) null, JLabel.CENTER);
     private final JLabel label = new JLabel("", JLabel.CENTER);

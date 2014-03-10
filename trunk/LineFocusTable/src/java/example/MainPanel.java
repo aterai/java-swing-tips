@@ -238,9 +238,7 @@ class LineFocusTable extends JTable {
 enum Type { START, END; }
 
 class DotBorder extends EmptyBorder {
-    private static final BasicStroke DASHED = new BasicStroke(
-        1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-        10.0f, new float[] {1.0f}, 0.0f);
+    private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
     private static final Color DOT_COLOR = new Color(200, 150, 150);
     public EnumSet<Type> type = EnumSet.noneOf(Type.class);
 
@@ -344,8 +342,8 @@ class DotBorder extends EmptyBorder {
 //   public enum Type { LEAD, WEST, EAST; }
 //   public EnumSet<Type> type = EnumSet.noneOf(Type.class);
 //   private static final BasicStroke dashed = new BasicStroke(
-//     1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-//     10.0f, (new float[] {1.0f}), 0.0f);
+//     1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+//     10f, (new float[] {1f}), 0f);
 //   private static final Color DOT_COLOR = new Color(200, 150, 150);
 //   public DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);

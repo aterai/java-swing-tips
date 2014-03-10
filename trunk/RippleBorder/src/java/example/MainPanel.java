@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 class RippleBorder extends EmptyBorder {
     private final Timer animator;
     private final JComponent comp;
-    private float count = 1.0f;
+    private float count = 1f;
 
     public RippleBorder(JComponent c, int width) {
         super(width, width, width, width);
@@ -82,7 +82,7 @@ class RippleBorder extends EmptyBorder {
         }
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.WHITE);
-        float a = 1.0f / count;
+        float a = 1f / count;
         if (.12f - a > 1.0e-2) {
             a = 0f;
         }

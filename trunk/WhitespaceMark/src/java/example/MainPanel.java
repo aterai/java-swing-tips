@@ -121,7 +121,7 @@ class MyParagraphView extends ParagraphView {
 class WhitespaceLabelView extends LabelView {
     private static final String IDEOGRAPHIC_SPACE = "\u3000";
     private static final Color MARK_COLOR = new Color(130, 140, 120);
-    private static final BasicStroke DASHED = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] {1.0f}, 0.0f);
+    private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
     public WhitespaceLabelView(Element elem) {
         super(elem);
     }

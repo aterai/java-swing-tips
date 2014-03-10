@@ -590,7 +590,7 @@ class GhostGlassPane extends JPanel {
         Point p = getMousePosition(true); //dl.getDropPoint();
         if (draggingGhost != null && dl != null && p != null) {
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
             Rectangle rect = tabbedPane.getDropLineRect();
             if (rect != null && dl.isDropable()) {
                 Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
@@ -623,7 +623,7 @@ class GhostGlassPane extends JComponent {
         Rectangle rect = tabbedPane.getDropLineRect();
         if (rect != null) {
             Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
             g2.setColor(Color.RED);
             g2.fill(r);
             //tabbedPane.paintDropLine(g2);

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
         SimpleAttributeSet attr = new SimpleAttributeSet();
-        StyleConstants.setLineSpacing(attr, -0.2f);
+        StyleConstants.setLineSpacing(attr, -.2f);
         label1.setParagraphAttributes(attr, true);
 
         String dummyText = "asdfasdfasdfasdfasdfasdfasd";

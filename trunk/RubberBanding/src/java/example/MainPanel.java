@@ -68,7 +68,7 @@ class ListItem {
 }
 
 class RubberBandSelectionList<E extends ListItem> extends JList<E> {
-    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private RubberBandListCellRenderer<E> renderer;
     private Color polygonColor;
     public RubberBandSelectionList(ListModel<E> model) {
@@ -126,7 +126,7 @@ class SelectedImageFilter extends RGBImageFilter {
         //Color color = new Color(argb, true);
         //float[] array = new float[4];
         //color.getComponents(array);
-        //return new Color(array[0], array[1], array[2]*0.5f, array[3]).getRGB();
+        //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
         return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
     }
 }
@@ -251,7 +251,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
 //     private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //     private final Color rcolor;
 //     private final Color pcolor;
-//     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+//     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
 //     private final Polygon polygon = new Polygon();
 //     private final Line2D line = new Line2D.Double();
 //     private Point srcPoint = null;
@@ -372,7 +372,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
 //     private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //     private final Color rcolor;
 //     private final Color pcolor;
-//     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+//     private final AlphaComposite alcomp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
 //     private final Path2D polygon = new Path2D.Double();
 //     private Point srcPoint = null;
 //     public MyList2(ListModel model) {

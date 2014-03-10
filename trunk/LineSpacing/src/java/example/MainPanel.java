@@ -17,10 +17,10 @@ public final class MainPanel extends JPanel {
 
         SimpleAttributeSet a = new SimpleAttributeSet();
         StyleConstants.setLineSpacing(a, .5f);
-        //StyleConstants.setSpaceAbove(a, 5.0f);
-        //StyleConstants.setSpaceBelow(a, 5.0f);
-        //StyleConstants.setLeftIndent(a, 5.0f);
-        //StyleConstants.setRightIndent(a, 5.0f);
+        //StyleConstants.setSpaceAbove(a, 5f);
+        //StyleConstants.setSpaceBelow(a, 5f);
+        //StyleConstants.setLeftIndent(a, 5f);
+        //StyleConstants.setRightIndent(a, 5f);
         editor1.setParagraphAttributes(a, false);
         setDummyText(editor1, attr);
 

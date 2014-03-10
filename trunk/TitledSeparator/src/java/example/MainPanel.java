@@ -95,7 +95,7 @@ class TitledSeparator extends JLabel {
                 width = w;
                 Point2D start = new Point2D.Float(0f, 0f);
                 Point2D end   = new Point2D.Float((float) width, 0f);
-                float[] dist  = {0.0f, 1.0f};
+                float[] dist  = {0f, 1f};
                 color = color == null ? UIManager.getColor("Panel.background") : color;
                 Color tc = target == null ? color : target;
                 painter1 = new LinearGradientPaint(start, end, dist, new Color[] {tc.darker(),   color});

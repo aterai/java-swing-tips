@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout(5, 5));
 
         Font font = textField2.getFont();
-        textField2.setFont(font.deriveFont(16.0f));
+        textField2.setFont(font.deriveFont(16f));
         //TEST:
         //Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
         //attrs.put(TextAttribute.SIZE, 32);

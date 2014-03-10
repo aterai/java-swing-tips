@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private static Font makeFont(URL url) {
         Font font = null;
         try (InputStream is = url.openStream()) {
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
         } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }

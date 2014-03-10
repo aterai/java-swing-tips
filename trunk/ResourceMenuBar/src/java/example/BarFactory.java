@@ -118,7 +118,7 @@ public final class BarFactory {
         } else {
             b = new JButton(new ImageIcon(url));
         }
-        b.setAlignmentY(0.5f);
+        b.setAlignmentY(.5f);
         b.setFocusPainted(false);
         b.setFocusable(false);
         b.setRequestFocusEnabled(false);

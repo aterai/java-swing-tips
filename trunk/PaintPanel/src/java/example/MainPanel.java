@@ -117,7 +117,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 // }
 // class PaintPanel3 extends JPanel implements MouseMotionListener, MouseListener {
 //     java.util.ArrayList<Shape> list = new java.util.ArrayList<Shape>();
-//     Stroke stroke = new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+//     Stroke stroke = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 //     Path2D.Double path;
 //     public PaintPanel3() {
 //         super();

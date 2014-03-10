@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         p.setOpaque(true);
         p.setBackground(new Color(COLORS[i]));
 
-        Color col = getColor(COLORS[i], 0.5f);
+        Color col = getColor(COLORS[i], .5f);
         Border border = BorderFactory.createLineBorder(col, 1);
         p.setBorder(border);
 

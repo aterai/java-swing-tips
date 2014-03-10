@@ -101,8 +101,8 @@ class DotBorder extends LineBorder {
 
 // class DotBorder extends EmptyBorder {
 //     private static final BasicStroke dashed = new BasicStroke(
-//         1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
-//         new float[]{1.0f}, 0.0f);
+//         1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
+//         new float[]{1f}, 0f);
 //     public DotBorder(Insets borderInsets) {
 //         super(borderInsets);
 //     }

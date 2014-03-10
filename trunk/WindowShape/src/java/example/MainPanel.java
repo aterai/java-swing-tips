@@ -37,11 +37,11 @@ public final class MainPanel extends JPanel {
 //                 int w = 300;
 //                 int h = 300;
 //                 GeneralPath p = new GeneralPath();
-//                 p.moveTo(- w / 4.0f, - h / 12.0f);
-//                 p.lineTo(+ w / 4.0f, - h / 12.0f);
-//                 p.lineTo(- w / 6.0f, + h / 4.0f);
-//                 p.lineTo(+     0.0f, - h / 4.0f);
-//                 p.lineTo(+ w / 6.0f, + h / 4.0f);
+//                 p.moveTo(-w / 4f, -h / 12f);
+//                 p.lineTo(+w / 4f, -h / 12f);
+//                 p.lineTo(-w / 6f, +h /  4f);
+//                 p.lineTo(     0f, -h /  4f);
+//                 p.lineTo(+w / 6f, +h /  4f);
 //                 p.closePath();
 //                 AffineTransform at = AffineTransform.getTranslateInstance(w / 4, h / 4);
 //                 shape = at.createTransformedShape(p);

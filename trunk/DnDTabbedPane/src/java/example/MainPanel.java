@@ -414,7 +414,7 @@ class TabDropTargetListener implements DropTargetListener {
 }
 
 class GhostGlassPane extends JPanel {
-    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f);
     public final DnDTabbedPane tabbedPane;
     private final Rectangle lineRect  = new Rectangle();
     private final Color     lineColor = new Color(0, 100, 255);
