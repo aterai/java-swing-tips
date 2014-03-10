@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         //Document doc = makeDocument(getClass().getResource("bar.utf8.txt"), "UTF-8");
         if (font != null) {
             System.out.println(font.toString());
-            textpane.setFont(font.deriveFont(10.0f));
+            textpane.setFont(font.deriveFont(10f));
             //textpane.setDocument(doc);
         }
 
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 //         InputStream is = null;
 //         try {
 //             is = url.openStream();
-//             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+//             font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
 //             is.close();
 //         } catch (IOException ioe) {
 //             ioe.printStackTrace();
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     private static Font makeFont(URL url) {
         Font font = null;
         try (InputStream is = url.openStream()) {
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
         } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }

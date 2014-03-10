@@ -129,8 +129,8 @@ class WrappedLabel extends JLabel {
         Point2D gmPos    = new Point2D.Double(0.0d, 0.0d);
         GlyphVector gv   = font.createGlyphVector(frc, str);
         float lineheight = (float) (gv.getLogicalBounds().getHeight());
-        float xpos       = 0.0f;
-        float advance    = 0.0f;
+        float xpos       = 0f;
+        float advance    = 0f;
         int   lineCount  = 0;
         GlyphMetrics gm;
         for (int i = 0; i < gv.getNumGlyphs(); i++) {

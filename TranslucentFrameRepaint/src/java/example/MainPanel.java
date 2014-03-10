@@ -197,7 +197,7 @@ final class TextureUtil {
         //http://www.yourname.jp/soft/digitalfonts-20090306.shtml
         //Digital display font: Copyright (c) Yourname, Inc.
         Font font = makeFont(url);
-        label.setFont(font.deriveFont(80.0f));
+        label.setFont(font.deriveFont(80f));
         label.setBackground(new Color(0, 0, 0, 0));
         label.setOpaque(false);
         TexturePanel p = new TexturePanel(new BorderLayout(8, 8));
@@ -214,7 +214,7 @@ final class TextureUtil {
     private static Font makeFont(URL url) {
         Font font = null;
         try (InputStream is = url.openStream()) {
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12.0f);
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
         } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }

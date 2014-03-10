@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextField field = new JTextField("1.0f, 1.0f, 5.0f, 1.0f");
+    private final JTextField field = new JTextField("1f, 1f, 5f, 1f");
     private final JLabel label;
     private transient BasicStroke dashedStroke;
 

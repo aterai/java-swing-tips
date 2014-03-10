@@ -427,8 +427,8 @@ class TabTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
         dialog.add(label);
         //dialog.setAlwaysOnTop(true); // Web Start
-        dialog.setOpacity(0.5f);
-        //com.sun.awt.AWTUtilities.setWindowOpacity(dialog, 0.5f); // JDK 1.6.0
+        dialog.setOpacity(.5f);
+        //com.sun.awt.AWTUtilities.setWindowOpacity(dialog, .5f); // JDK 1.6.0
         DragSource.getDefaultDragSource().addDragSourceMotionListener(new DragSourceMotionListener() {
             @Override public void dragMouseMoved(DragSourceDragEvent dsde) {
                 Point pt = dsde.getLocation();
@@ -582,7 +582,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
             if (loc != null && loc.isDropable() && loc.getIndex() >= 0) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
                 g2.setColor(Color.RED);
                 initLineRect(tabbedPane, loc);
                 g2.fill(lineRect);

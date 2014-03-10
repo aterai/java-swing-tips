@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
         b2.setMaximumSize(dim);
         b2.setPreferredSize(dim);
         b2.setMinimumSize(dim);
-        b2.setAlignmentX(1.0f);
-        b2.setAlignmentY(1.0f);
+        b2.setAlignmentX(1f);
+        b2.setAlignmentY(1f);
         b1.add(b2);
         return b1;
     }

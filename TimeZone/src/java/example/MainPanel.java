@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         box.add(outf);
         box.add(Box.createVerticalStrut(5));
         box.add(button);
-        button.setAlignmentX(1.0f);
+        button.setAlignmentX(1f);
 
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
             } else {
                 animator.stop();
             }
-            g2d.setComposite(makeAlphaComposite(alpha * 0.1f));
+            g2d.setComposite(makeAlphaComposite(alpha * .1f));
             g2d.drawImage(icon, null, 0, 0);
             g2d.dispose();
         }

@@ -213,7 +213,7 @@ class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener 
 
 class AnimeIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Color ELLIPSE_COLOR = new Color(0.5f, 0.5f, 0.5f);
+    private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
     private static final double R  = 2.0d;
     private static final double SX = 1.0d;
     private static final double SY = 1.0d;

@@ -66,8 +66,8 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerButton extends JButton {
-    private static final float ARC_WIDTH  = 16.0f;
-    private static final float ARC_HEIGHT = 16.0f;
+    private static final float ARC_WIDTH  = 16f;
+    private static final float ARC_HEIGHT = 16f;
     protected static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100, 150, 255, 200);
     protected final Color ac = new Color(230, 230, 230);

@@ -293,7 +293,7 @@ class MyLabel extends JLabel {
 }
 
 class MyTable extends JTable {
-    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private final Color rcolor;
     private final Color pcolor;
     private final Path2D polygon = new Path2D.Double();

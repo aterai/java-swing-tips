@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         BufferedImage bfimage = null;
         try {
             bfimage = ImageIO.read(url);
-            //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1.0f, 1.0f, 0.5f});
+            //bfimage = makeBufferedImage(ImageIO.read(url), new float[] {1f, 1f, .5f});
         } catch (IOException ioe) {
             ioe.printStackTrace();
             throw new IllegalArgumentException(ioe);

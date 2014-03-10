@@ -181,7 +181,7 @@ class RoundButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
-        //g2.setStroke(new BasicStroke(1.0f));
+        //g2.setStroke(new BasicStroke(1f));
         g2.draw(shape);
         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.dispose();
@@ -192,7 +192,7 @@ class RoundButton extends JButton {
     }
 }
 
-// class RoundImageButtonUI extends BasicButtonUI{
+// class RoundImageButtonUI extends BasicButtonUI {
 //     protected Shape shape, base;
 //     @Override protected void installDefaults(AbstractButton b) {
 //         super.installDefaults(b);
@@ -246,7 +246,7 @@ class RoundButton extends JButton {
 //         //Border
 //         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //         g2.setColor(c.getBackground());
-//         //g2.setStroke(new BasicStroke(1.0f));
+//         //g2.setStroke(new BasicStroke(1f));
 //         g2.draw(shape);
 //         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 //         g2.dispose();

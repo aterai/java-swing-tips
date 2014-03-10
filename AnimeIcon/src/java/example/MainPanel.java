@@ -264,7 +264,7 @@ class AnimeIcon implements Icon, Serializable {
 
 class AnimeIcon2 implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Color ELLIPSE_COLOR = new Color(0.5f, 0.8f, 0.5f);
+    private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
     private final List<Shape> list = new ArrayList<>();
     private final Dimension dim;
     private boolean isRunning;
@@ -317,7 +317,7 @@ class AnimeIcon2 implements Icon, Serializable {
 
 class AnimeIcon3 implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Color ELLIPSE_COLOR = new Color(0.9f, 0.7f, 0.7f);
+    private static final Color ELLIPSE_COLOR = new Color(.9f, .7f, .7f);
     private final List<Shape> list = new ArrayList<Shape>();
     private final Dimension dim;
     private boolean isRunning;

@@ -205,7 +205,7 @@ class TestRenderer extends Box implements TableCellRenderer {
             //Color color = new Color(argb, true);
             //float[] array = new float[4];
             //color.getComponents(array);
-            //return new Color(array[0]*0.5f, array[1]*0.5f, array[2], array[3]).getRGB();
+            //return new Color(array[0] * .5f, array[1] * .5f, array[2], array[3]).getRGB();
             int r = (argb >> 16) & 0xff;
             int g = (argb >>  8) & 0xff;
             return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);

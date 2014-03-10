@@ -53,7 +53,7 @@ class DraggableImageMouseListener extends MouseAdapter {
     private static final Color HOVER_COLOR = new Color(100, 255, 200, 100);
     private static final int IR = 40;
     private static final int OR = IR * 3;
-    private static final BasicStroke BORDER_STROKE = new BasicStroke(4.0f);
+    private static final BasicStroke BORDER_STROKE = new BasicStroke(4f);
     private final RoundRectangle2D.Double border;
     private final Ellipse2D.Double inner = new Ellipse2D.Double(0, 0, IR, IR);
     private final Ellipse2D.Double outer = new Ellipse2D.Double(0, 0, OR, OR);

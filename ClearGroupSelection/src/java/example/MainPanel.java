@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
             //Color color = new Color(argb, true);
             //float[] a = new float[4];
             //color.getComponents(a);
-            //return new Color(a[0], a[1], a[2]*0.5f, a[3]).getRGB();
+            //return new Color(a[0], a[1], a[2] * .5f, a[3]).getRGB();
             return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
         }
     }

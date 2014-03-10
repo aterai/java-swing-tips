@@ -71,11 +71,11 @@ class FishEyeTable extends JTable {
     public FishEyeTable(TableModel m) {
         super(m);
         Font font = getFont();
-        minFont = font.deriveFont(8.0f);
-        Font font12 = font.deriveFont(10.0f);
-        Font font18 = font.deriveFont(16.0f);
-        Font font24 = font.deriveFont(22.0f);
-        Font font32 = font.deriveFont(30.0f);
+        minFont = font.deriveFont(8f);
+        Font font12 = font.deriveFont(10f);
+        Font font18 = font.deriveFont(16f);
+        Font font24 = font.deriveFont(22f);
+        Font font32 = font.deriveFont(30f);
         Color color12 = new Color(250, 250, 250);
         Color color18 = new Color(245, 245, 245);
         Color color24 = new Color(240, 240, 240);

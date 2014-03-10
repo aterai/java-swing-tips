@@ -96,7 +96,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         if (isVisible && b) {
             w = 40;
             h = 40;
-            alpha = 0.0f;
+            alpha = 0f;
             animator = new Timer(10, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
                     animatedIcon.next();
@@ -142,8 +142,8 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         g2d.fill(rect);
 
         if (alpha > 0) {
-            if (alpha > 1.0f) {
-                alpha = 1.0f;
+            if (alpha > 1f) {
+                alpha = 1f;
             }
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2d.drawImage(image.getImage(), rect.x + 5, rect.y + 5,
