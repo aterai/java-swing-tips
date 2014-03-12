@@ -43,6 +43,7 @@ public final class MainPanel extends JPanel {
                     encoding = value.substring("charset=".length());
                 }
             }
+            System.out.println(encoding);
             if (encoding != null) {
                 cs = Charset.forName(encoding);
             }
@@ -57,16 +58,16 @@ public final class MainPanel extends JPanel {
         //Random random = new Random();
         //Charset cs = Charset.forName("EUC-JP");
         int index = 19; //1 + random.nextInt(27-1);
-        String path = String.format("http://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index); //???: UTF-8
-        //String path = String.format("http://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index); //EUC-JP
+        String path = String.format("http://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
+        //String path = String.format("http://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
         //String path = "http://terai.xrea.jp/";
         System.out.println(path);
 
         URLConnection urlConnection = null;
         try {
             urlConnection = new URL(path).openConnection();
-            System.out.println(urlConnection.getContentEncoding());
-            System.out.println(urlConnection.getContentType());
+            System.out.println("urlConnection.getContentEncoding(): " + urlConnection.getContentEncoding());
+            System.out.println("urlConnection.getContentType(): " + urlConnection.getContentType());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
             if (urlConnection == null) {
                 return;
             }
-            Charset cs = getCharset(urlConnection, "EUC-JP");
+            Charset cs = getCharset(urlConnection, "UTF-8");
             int length = urlConnection.getContentLength();
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 
