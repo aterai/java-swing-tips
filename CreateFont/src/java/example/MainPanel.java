@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
 //             ioe.printStackTrace();
 //         } catch (FontFormatException ffe) {
 //             ffe.printStackTrace();
-//         }finally{
+//         } finally {
 //             if (is != null) {
 //                 try {
 //                     is.close();

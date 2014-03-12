@@ -269,7 +269,7 @@ class StarIcon implements Icon {
 //             bufferedWriter.write(str, 0, str.length());
 //         } catch (IOException e) {
 //             e.printStackTrace();
-//         }finally{
+//         } finally {
 //             try {
 //                 bufferedWriter.close();
 //             } catch (IOException e) {
