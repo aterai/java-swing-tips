@@ -16,23 +16,9 @@ public final class MainPanel extends JPanel {
         add(new CompoundButton(d, ButtonLocation.EAST));
         add(new CompoundButton(d, ButtonLocation.WEST));
         add(new CompoundButton(d, ButtonLocation.CENTER));
-        add(makeCompoundButton(d));
+        add(new CompoundButtonPanel(d));
 
         setPreferredSize(new Dimension(320, 240));
-    }
-    private static JComponent makeCompoundButton(final Dimension d) {
-        JPanel p = new JPanel() {
-            @Override public Dimension getPreferredSize() {
-                return d;
-            }
-        };
-        p.setLayout(new OverlayLayout(p));
-        p.add(new CompoundButton(d, ButtonLocation.NOTH));
-        p.add(new CompoundButton(d, ButtonLocation.SOUTH));
-        p.add(new CompoundButton(d, ButtonLocation.EAST));
-        p.add(new CompoundButton(d, ButtonLocation.WEST));
-        p.add(new CompoundButton(d, ButtonLocation.CENTER));
-        return p;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -54,6 +40,26 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class CompoundButtonPanel extends JComponent {
+    private final Dimension d;
+    public CompoundButtonPanel(final Dimension d) {
+        super();
+        this.d = d;
+        setLayout(new OverlayLayout(this));
+        add(new CompoundButton(d, ButtonLocation.CENTER));
+        add(new CompoundButton(d, ButtonLocation.NOTH));
+        add(new CompoundButton(d, ButtonLocation.SOUTH));
+        add(new CompoundButton(d, ButtonLocation.EAST));
+        add(new CompoundButton(d, ButtonLocation.WEST));
+    }
+    @Override public Dimension getPreferredSize() {
+        return d;
+    }
+    @Override public boolean isOptimizedDrawingEnabled() {
+        return false;
     }
 }
 
@@ -87,8 +93,7 @@ class CompoundButton extends JButton {
         setIcon(new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                    RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 if (getModel().isArmed()) {
                     g2.setColor(ac);
                     g2.fill(shape);
@@ -126,6 +131,8 @@ class CompoundButton extends JButton {
             if (ButtonLocation.CENTER == bl) {
                 shape = inner;
             } else {
+                //TEST: parent.isOptimizedDrawingEnabled: false
+                //shape = new Arc2D.Float(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90f, Arc2D.PIE);
                 Shape outer = new Arc2D.Float(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90f, Arc2D.PIE);
                 Area area = new Area(outer);
                 area.subtract(new Area(inner));
