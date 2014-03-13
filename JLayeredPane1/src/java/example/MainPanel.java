@@ -129,6 +129,9 @@ class BGImageLayeredPane extends JLayeredPane {
         super();
         this.bgImage = img;
     }
+    @Override public boolean isOptimizedDrawingEnabled() {
+        return false;
+    }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (bgImage != null) {
