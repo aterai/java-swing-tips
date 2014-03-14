@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
     private static JButton getArrowButton(JComboBox box) {
-        for (Component c:box.getComponents()) {
+        for (Component c: box.getComponents()) {
             if (c instanceof JButton) { //&& "ComboBox.arrowButton".equals(c.getName())) {
                 //System.out.println(c.getName());
                 return (JButton) c;

@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         ButtonGroup group = new ButtonGroup();
         Box box = Box.createVerticalBox();
         for (LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
-            JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.<JComponent>asList(popup)));
+            JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
             group.add(rb); box.add(rb);
         }
         box.add(Box.createVerticalGlue());
@@ -226,8 +226,8 @@ enum LookAndFeelEnum {
 
 class ChangeLookAndFeelAction extends AbstractAction {
     private final String lnf;
-    private final List<JComponent> list;
-    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<JComponent> list) {
+    private final List<? extends JComponent> list;
+    protected ChangeLookAndFeelAction(LookAndFeelEnum lnfe, List<? extends JComponent> list) {
         super(lnfe.toString());
         this.list = list;
         this.lnf = lnfe.getClassName();
@@ -250,11 +250,11 @@ class ChangeLookAndFeelAction extends AbstractAction {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + lnf);
         }
-        for (Frame f:Frame.getFrames()) {
+        for (Frame f: Frame.getFrames()) {
             SwingUtilities.updateComponentTreeUI(f);
             f.pack();
         }
-        for (JComponent c:list) {
+        for (JComponent c: list) {
             SwingUtilities.updateComponentTreeUI(c);
         }
     }

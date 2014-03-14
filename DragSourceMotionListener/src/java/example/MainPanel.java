@@ -193,10 +193,10 @@ class LabelTransferable implements Transferable {
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
         List<DataFlavor> list = new ArrayList<>();
-        for (DataFlavor f:ss.getTransferDataFlavors()) {
+        for (DataFlavor f: ss.getTransferDataFlavors()) {
             list.add(f);
         }
-        for (DataFlavor f:dh.getTransferDataFlavors()) {
+        for (DataFlavor f: dh.getTransferDataFlavors()) {
             list.add(f);
         }
         return list.toArray(dh.getTransferDataFlavors());

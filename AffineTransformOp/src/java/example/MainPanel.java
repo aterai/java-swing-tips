@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JLabel("Flip: "));
-        for (AbstractAction a:list) {
+        for (AbstractAction a: list) {
             JRadioButton rb = new JRadioButton(a);
             if (bg.getButtonCount() == 0) {
                 rb.setSelected(true);

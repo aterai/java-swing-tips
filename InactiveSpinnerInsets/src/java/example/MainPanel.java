@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
 
         final List<JSpinner> list = Arrays.asList(spinner0, spinner1, spinner2, spinner3);
         Box box = Box.createVerticalBox();
-        for (JSpinner s:list) {
+        for (JSpinner s: list) {
             s.setEnabled(false);
         }
 
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
         add(new JCheckBox(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox cb = (JCheckBox) e.getSource();
-                for (JSpinner s:list) {
+                for (JSpinner s: list) {
                     s.setEnabled(cb.isSelected());
                 }
             }

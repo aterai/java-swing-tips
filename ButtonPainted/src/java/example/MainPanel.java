@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         new JCheckBox(new AbstractAction("setFocusPainted") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b:list) {
+                for (JButton b: list) {
                     b.setFocusPainted(flg);
                 }
                 p.revalidate();
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         new JCheckBox(new AbstractAction("setBorderPainted") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b:list) {
+                for (JButton b: list) {
                     b.setBorderPainted(flg);
                 }
                 p.revalidate();
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         new JCheckBox(new AbstractAction("setContentAreaFilled") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b:list) {
+                for (JButton b: list) {
                     b.setContentAreaFilled(flg);
                 }
                 p.revalidate();
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         new JCheckBox(new AbstractAction("setRolloverEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JButton b:list) {
+                for (JButton b: list) {
                     b.setRolloverEnabled(flg);
                 }
                 p.revalidate();
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         //    @Override public void actionPerformed(ActionEvent e) {
         //        boolean flg = ((JCheckBox) e.getSource()).isSelected();
         //        Border border = flg ? BorderFactory.createLineBorder(Color.RED, 5) : null;
-        //        for (JButton b:list) b.setBorder(border);
+        //        for (JButton b: list) b.setBorder(border);
         //        p.revalidate();
         //    }
         //}),
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
         Box box = Box.createVerticalBox();
-        for (JCheckBox c:clist) {
+        for (JCheckBox c: clist) {
             c.setSelected(true);
             box.add(c);
         }

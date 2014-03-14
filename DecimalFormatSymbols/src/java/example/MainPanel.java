@@ -21,16 +21,16 @@ public final class MainPanel extends JPanel {
             Object old;
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
-                for (JSpinner c:Arrays.asList(s0, s1, s2, s3)) {
+                for (JSpinner c: Arrays.asList(s0, s1, s2, s3)) {
                     c.setEnabled(flg);
                 }
                 if (flg) {
-                    for (JSpinner c:Arrays.asList(s2, s3)) {
+                    for (JSpinner c: Arrays.asList(s2, s3)) {
                         c.setValue(old);
                     }
                 } else {
                     old = s2.getValue();
-                    for (JSpinner c:Arrays.asList(s2, s3)) {
+                    for (JSpinner c: Arrays.asList(s2, s3)) {
                         c.setValue(Double.NaN);
                     }
                 }
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         cbx.setSelected(true);
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
-        for (JComponent c:Arrays.asList(s0, s1, s2, s3)) {
+        for (JComponent c: Arrays.asList(s0, s1, s2, s3)) {
             c.setEnabled(true);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             int h = c.getPreferredSize().height;

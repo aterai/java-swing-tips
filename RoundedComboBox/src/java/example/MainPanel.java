@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
         add(new JCheckBox(new AbstractAction("editable") {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flag = ((JCheckBox) e.getSource()).isSelected();
-                for (JComboBox c:list) {
+                for (JComboBox c: list) {
                     c.setEditable(flag);
                 }
                 repaint();

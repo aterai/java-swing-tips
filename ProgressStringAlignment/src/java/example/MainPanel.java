@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     private static BoundedRangeModel model = new DefaultBoundedRangeModel(0, 0, 0, 100);
     private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
     private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
-    private final List<JProgressBar> list = Arrays.<JProgressBar>asList(progressBar1, progressBar2);
+    private final List<JProgressBar> list = Arrays.asList(progressBar1, progressBar2);
     private SwingWorker<String, Void> worker;
 
     public MainPanel() {

@@ -139,7 +139,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         Graphics2D g2d = (Graphics2D) g.create();
 //         g2d.setPaint(Color.BLACK);
 //         g2d.setStroke(stroke);
-//         for (Shape s:list) g2d.draw(s);
+//         for (Shape s: list) g2d.draw(s);
 //         g2d.dispose();
 //     }
 //     @Override public void mouseMoved(MouseEvent e) {}

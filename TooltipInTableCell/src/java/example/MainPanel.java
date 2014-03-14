@@ -12,8 +12,8 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "List<Icon>"};
     private final Object[][] data = {
-        {"aaa", Arrays.<Icon>asList(getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.errorIcon"))},
-        {"bbb", Arrays.<Icon>asList(getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))}
+        {"aaa", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.errorIcon"))},
+        {"bbb", Arrays.asList(getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {

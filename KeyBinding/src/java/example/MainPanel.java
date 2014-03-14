@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 model.setRowCount(0);
                 JComponent c = ((JComponentType) componentChoices.getSelectedItem()).component;
-                for (Integer f:focusType) {
+                for (Integer f: focusType) {
                     loadBindingMap(f, c.getInputMap(f), c.getActionMap());
                 }
             }
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
 //     private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
 //         Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<Object, ArrayList<KeyStroke>>();
 //         if (im.allKeys() == null) { return h; }
-//         for (KeyStroke ks:im.allKeys()) {
+//         for (KeyStroke ks: im.allKeys()) {
 //             Object name = im.get(ks);
 //             if (h.containsKey(name)) {
 //                 h.get(name).add(ks);
@@ -75,10 +75,10 @@ public final class MainPanel extends JPanel {
             return;
         }
         ActionMap tmpAm = new ActionMap();
-        for (Object actionMapKey:am.allKeys()) {
+        for (Object actionMapKey: am.allKeys()) {
             tmpAm.put(actionMapKey, am.get(actionMapKey));
         }
-        for (KeyStroke ks:im.allKeys()) {
+        for (KeyStroke ks: im.allKeys()) {
             Object actionMapKey = im.get(ks);
             Action action = am.get(actionMapKey);
             if (action == null) {
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
         if (tmpAm.allKeys() == null) {
             return;
         }
-        for (Object actionMapKey:tmpAm.allKeys()) {
+        for (Object actionMapKey: tmpAm.allKeys()) {
             model.addBinding(new Binding(focusType, actionMapKey.toString(), ""));
         }
     }

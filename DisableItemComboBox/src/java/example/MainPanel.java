@@ -134,7 +134,7 @@ class MyComboBox extends JComboBox<String> {
     }
     public void setDisableIndex(Set<Integer> set) {
         disableIndexSet.clear();
-        for (Integer i:set) {
+        for (Integer i: set) {
             disableIndexSet.add(i);
         }
     }

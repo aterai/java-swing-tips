@@ -10,7 +10,7 @@ import javax.imageio.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
 
         BufferedImage bi = null;
@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
         add(p2, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private BufferedImage makeFilteredImage(BufferedImage src, ImageFilter filter) {
+    private static BufferedImage makeFilteredImage(BufferedImage src, ImageFilter filter) {
         ImageProducer ip = src.getSource();
-        Image img = createImage(new FilteredImageSource(ip, filter));
-        BufferedImage bi = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_INT_ARGB);
+        Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, filter));
+        BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         g.drawImage(img, 0, 0, null);
         g.dispose();

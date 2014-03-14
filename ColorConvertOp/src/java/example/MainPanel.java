@@ -43,44 +43,44 @@ public final class MainPanel extends JPanel {
         return label;
     }
 
-    private ImageIcon makeGrayImageIcon1(Image img) {
-        BufferedImage source = new BufferedImage(img.getWidth(this), img.getHeight(this), BufferedImage.TYPE_INT_ARGB);
+    private static ImageIcon makeGrayImageIcon1(Image img) {
+        BufferedImage source = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics g = source.createGraphics();
-        g.drawImage(img, 0, 0, this);
+        g.drawImage(img, 0, 0, null);
         g.dispose();
         ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
         BufferedImage destination = colorConvert.filter(source, null);
         return new ImageIcon(destination);
     }
 
-    private ImageIcon makeGrayImageIcon2(Image img) {
-        int w = img.getWidth(this);
-        int h = img.getHeight(this);
+    private static ImageIcon makeGrayImageIcon2(Image img) {
+        int w = img.getWidth(null);
+        int h = img.getHeight(null);
         BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = destination.createGraphics();
         ////g.setColor(Color.WHITE);
         // https://forums.oracle.com/thread/1373262 Color to Grayscale to Binary
         //g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
-        g.drawImage(img, 0, 0, this);
+        g.drawImage(img, 0, 0, null);
         g.dispose();
         return new ImageIcon(destination);
     }
 
-    private ImageIcon makeGrayImageIcon3(Image img) {
+    private static ImageIcon makeGrayImageIcon3(Image img) {
         //GrayFilter1
         return new ImageIcon(GrayFilter.createDisabledImage(img));
     }
 
-    private ImageIcon makeGrayImageIcon4(Image img) {
+    private static ImageIcon makeGrayImageIcon4(Image img) {
         //GrayFilter2
         ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true, 50));
-        return new ImageIcon(createImage(ip));
+        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
     }
 
-    private ImageIcon makeGrayImageIcon5(Image img) {
+    private static ImageIcon makeGrayImageIcon5(Image img) {
         //RGBImageFilter
         ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayImageFilter());
-        return new ImageIcon(createImage(ip));
+        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
     }
 
     public static void main(String[] args) {
