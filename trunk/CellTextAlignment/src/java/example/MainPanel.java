@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel implements ActionListener {
         col.setHeaderRenderer(new HeaderRenderer());
 
         JPanel p = new JPanel();
-        for (JRadioButton r:Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
+        for (JRadioButton r: Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
             bg.add(r); p.add(r); r.addActionListener(this);
         }
 

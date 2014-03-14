@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
                     JRadioButton b2 = new JRadioButton("bbb");
                     JRadioButton b3 = new JRadioButton("ccc");
                     JRadioButton b4 = new JRadioButton("ddd");
-                    for (JRadioButton b:Arrays.asList(b1, b2, b3, b4)) {
+                    for (JRadioButton b: Arrays.asList(b1, b2, b3, b4)) {
                         b.setOpaque(false); pnl.add(b); bg.add(b);
                     }
                     b1.setSelected(true);

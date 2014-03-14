@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     private static JComponent makeTitlePanel(String title, List<? extends JComponent> list) {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder(title));
-        for (JComponent cmp:list) {
+        for (JComponent cmp: list) {
             box.add(Box.createVerticalStrut(5));
             box.add(cmp);
         }

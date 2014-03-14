@@ -28,13 +28,13 @@ public final class MainPanel extends JPanel {
             makeTestTabbedPane(new ClippedTitleTabbedPane(JTabbedPane.LEFT)));
 
         JPanel p = new JPanel(new GridLayout(list.size(), 1));
-        for (JTabbedPane t:list) {
+        for (JTabbedPane t: list) {
             p.add(t);
         }
         add(new JCheckBox(new AbstractAction("TOP") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox) e.getSource();
-                for (JTabbedPane t:list) {
+                for (JTabbedPane t: list) {
                     t.setTabPlacement(c.isSelected() ? JTabbedPane.TOP : JTabbedPane.LEFT);
                 }
             }

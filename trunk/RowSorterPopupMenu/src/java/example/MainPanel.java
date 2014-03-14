@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
             //new SortAction(SortOrder.UNSORTED));
         public TablePopupMenu() {
             super();
-            for (Action a:actions) {
+            for (Action a: actions) {
                 add(a);
             }
         }
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
                 JTableHeader h = (JTableHeader) c;
                 int i = h.columnAtPoint(new Point(x, y));
                 i = h.getTable().convertColumnIndexToModel(i);
-                for (SortAction a:actions) {
+                for (SortAction a: actions) {
                     a.setIndex(i);
                 }
                 super.show(c, x, y);

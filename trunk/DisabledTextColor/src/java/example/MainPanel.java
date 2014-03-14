@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     private final JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
     private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
     private final JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
-    private final List<JComponent> list = Arrays.<JComponent>asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
+    private final List<? extends JComponent> list = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
 
     public MainPanel() {
         super(new BorderLayout());
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox source = (JCheckBox) e.getSource();
                 boolean flg = source.isSelected();
-                for (JComponent c:list) {
+                for (JComponent c: list) {
                     c.setEnabled(flg);
                 }
             }
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
-        for (JComponent c:list) {
+        for (JComponent c: list) {
             c.setEnabled(false);
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
             int h = c.getPreferredSize().height;

@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
         p.add(label);
         return p;
     }
-    private ImageIcon makeStarImageIcon(ImageProducer ip, float[] filter) {
-        return new ImageIcon(createImage(new FilteredImageSource(ip, new SelectedImageFilter(filter))));
+    private static ImageIcon makeStarImageIcon(ImageProducer ip, float[] filter) {
+        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, new SelectedImageFilter(filter))));
     }
 
     public static void main(String[] args) {
@@ -108,7 +108,7 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
         this.defaultIcon = defaultIcon;
         this.iconList = list;
         this.gap = gap;
-        for (JLabel l:labelList) {
+        for (JLabel l: labelList) {
             l.setIcon(defaultIcon);
             add(l);
         }

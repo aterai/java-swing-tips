@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     }
     private static void scrollTabAt(JTabbedPane tp, int index) {
         JViewport vp = null;
-        for (Component c:tp.getComponents()) {
+        for (Component c: tp.getComponents()) {
             if ("TabbedPane.scrollableViewport".equals(c.getName())) {
                 vp = (JViewport) c; break;
             }

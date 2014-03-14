@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         };
-        for (String key:map.keySet()) {
+        for (String key: map.keySet()) {
             JRadioButton r = new JRadioButton(key);
             r.setActionCommand(key); r.addActionListener(al);
             bg.add(r); box.add(r);

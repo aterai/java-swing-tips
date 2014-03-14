@@ -21,14 +21,14 @@ public final class MainPanel extends JPanel {
         JToggleButton t2 = new JToggleButton(nicon);
         t1.setSelectedIcon(sicon);
         t2.setSelectedIcon(sicon);
-        List<AbstractButton> l = Arrays.<AbstractButton>asList(
-            new JRadioButton("RadioButton1"),
-            new JRadioButton("RadioButton2"),
-            t1, t2);
+        List<? extends AbstractButton> l = Arrays.asList(new JRadioButton("RadioButton1"), new JRadioButton("RadioButton2"), t1, t2);
 
         JPanel p = new JPanel(new GridLayout(2, 2));
         p.setBorder(BorderFactory.createTitledBorder("ButtonGroup"));
-        for (AbstractButton b:l) { bg.add(b); p.add(b); }
+        for (AbstractButton b: l) {
+            bg.add(b);
+            p.add(b);
+        }
         t2.setSelected(true);
 
         add(p, BorderLayout.NORTH);
@@ -38,19 +38,7 @@ public final class MainPanel extends JPanel {
             }
         }), BorderLayout.SOUTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 180));
-    }
-    private static class SelectedImageFilter extends RGBImageFilter {
-        //public SelectedImageFilter() {
-        //    canFilterIndexColorModel = false;
-        //}
-        @Override public int filterRGB(int x, int y, int argb) {
-            //Color color = new Color(argb, true);
-            //float[] a = new float[4];
-            //color.getComponents(a);
-            //return new Color(a[0], a[1], a[2] * .5f, a[3]).getRGB();
-            return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
-        }
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {
@@ -73,5 +61,18 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class SelectedImageFilter extends RGBImageFilter {
+    //public SelectedImageFilter() {
+    //    canFilterIndexColorModel = false;
+    //}
+    @Override public int filterRGB(int x, int y, int argb) {
+        //Color color = new Color(argb, true);
+        //float[] a = new float[4];
+        //color.getComponents(a);
+        //return new Color(a[0], a[1], a[2] * .5f, a[3]).getRGB();
+        return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
     }
 }

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final Box northBox  = Box.createVerticalBox();
     private final Box centerBox = Box.createVerticalBox();
     private final Box southBox  = Box.createVerticalBox();
-    private final List<AbstractExpansionPanel> panelList = makeList();
+    private final List<? extends AbstractExpansionPanel> panelList = makeList();
     private final transient ExpansionListener rl = new ExpansionListener() {
         @Override public void expansionStateChanged(ExpansionEvent e) {
             initComps(panelList, (JComponent) e.getSource());
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void initComps(List<AbstractExpansionPanel> list, JComponent source) {
+    private void initComps(List<? extends AbstractExpansionPanel> list, JComponent source) {
         setVisible(false);
         centerBox.removeAll();
         northBox.removeAll();
@@ -60,8 +60,8 @@ public final class MainPanel extends JPanel {
         setVisible(true);
     }
 
-    private List<AbstractExpansionPanel> makeList() {
-        return Arrays.<AbstractExpansionPanel>asList(
+    private List<? extends AbstractExpansionPanel> makeList() {
+        return Arrays.asList(
             new AbstractExpansionPanel("Panel1") {
                 public Container makePanel() {
                     Box p = Box.createVerticalBox();

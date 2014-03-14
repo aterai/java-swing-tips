@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 200));
     }
     public static boolean searchAndClick(Container parent, Icon icon) {
-        for (Component c:parent.getComponents()) {
+        for (Component c: parent.getComponents()) {
             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
                 ((AbstractButton) c).doClick();
                 return true;
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
 //         };
 //     private static AbstractButton getDetailsViewButton(Container parent, Icon icon) {
 //         AbstractButton b = null;
-//         for (Component c:parent.getComponents()) {
+//         for (Component c: parent.getComponents()) {
 //             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
 //                 b = (AbstractButton) c; break;
 //             } else {

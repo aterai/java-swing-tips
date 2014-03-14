@@ -50,7 +50,7 @@ class TreePopupMenu extends JPopupMenu {
         super();
         add(new AbstractAction("path") {
             @Override public void actionPerformed(ActionEvent e) {
-                //for (TreePath path:tsp) System.out.println(path);
+                //for (TreePath path: tsp) System.out.println(path);
                 JOptionPane.showMessageDialog(null, tsp, "path", JOptionPane.INFORMATION_MESSAGE);
             }
         });

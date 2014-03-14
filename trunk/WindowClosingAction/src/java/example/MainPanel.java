@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         }
     }
     private static void initMenu(JComponent p) {
-        for (JComponent c:Arrays.<JComponent>asList(
+        for (JComponent c: Arrays.asList(
                 new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
                 new JSeparator(), new JMenuItem(new ExitAction()))) {
             p.add(c);

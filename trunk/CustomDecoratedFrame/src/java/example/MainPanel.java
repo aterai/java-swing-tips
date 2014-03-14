@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
         //title.add(iconify, BorderLayout.WEST);
 
         ResizeWindowListener rwl = new ResizeWindowListener(frame);
-        for (SideLabel l:Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
+        for (SideLabel l: Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
             l.addMouseListener(rwl);
             l.addMouseMotionListener(rwl);
         }

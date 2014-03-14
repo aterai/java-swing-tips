@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         po.add(label);
         JPanel box = new JPanel(new GridLayout(1, 4, 2, 2));
         box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        for (JComponent c:Arrays.asList(first, prev, po, next, last)) {
+        for (JComponent c: Arrays.asList(first, prev, po, next, last)) {
             box.add(c);
         }
 

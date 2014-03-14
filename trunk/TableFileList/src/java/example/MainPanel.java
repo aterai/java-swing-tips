@@ -335,7 +335,7 @@ class MyTable extends JTable {
             polygon.closePath();
             clearSelection();
             int col = convertColumnIndexToView(0);
-            for (int i:getIntersectedIndices(polygon)) {
+            for (int i: getIntersectedIndices(polygon)) {
                 addRowSelectionInterval(i, i);
                 changeSelection(i, col, true, true);
             }

@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
         DropTargetListener dropTargetListener = new TabDropTargetAdapter();
         try {
-            for (JTabbedPane t:Arrays.asList(tabbedPane, sub, sub2)) {
+            for (JTabbedPane t: Arrays.asList(tabbedPane, sub, sub2)) {
                 t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                 t.setTransferHandler(handler);
                 t.getDropTarget().addDropTargetListener(dropTargetListener);

@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
             "do_not_dispose",
             "restore_to_background_color",
             "restore_to_previous");
-        for (String s:list) {
+        for (String s: list) {
             Icon i = new ImageIcon(getClass().getResource(s + ".gif"));
             box.add(new JLabel(s, i, JLabel.LEFT));
             box.add(Box.createVerticalStrut(20));

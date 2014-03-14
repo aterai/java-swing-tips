@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
         // //System.out.println(table.getActionMap().get("startEditing"));
         //InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        //for (KeyStroke ks:im.allKeys()) {
+        //for (KeyStroke ks: im.allKeys()) {
         //    Object actionMapKey = im.get(ks);
         //    if ("startEditing".equals(actionMapKey.toString())) {
         //        System.out.println("startEditing: "+ ks.toString());
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         };
         r0.setSelected(true);
         Box p = Box.createVerticalBox();
-        for (AbstractButton b:Arrays.asList(r0, r1, r2, r3, r4)) {
+        for (AbstractButton b: Arrays.asList(r0, r1, r2, r3, r4)) {
             b.addActionListener(al); bg.add(b); p.add(b);
         }
         add(p, BorderLayout.NORTH);
