@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         comboBox.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Object style = ((UnderlineStyle) comboBox.getSelectedItem()).style;
+                    Object style = ((UnderlineStyle) e.getItem()).style;
                     initUnderline(textField0, style);
                     initUnderline(textField1, style);
                     initUnderline(textField2, style);

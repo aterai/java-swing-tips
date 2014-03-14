@@ -51,9 +51,13 @@ public final class MainPanel extends JPanel {
         model.addTest(new Test("Name 0", "Test aa"));
 
         cbox.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent ie) {
-                JCheckBox box = (JCheckBox) ie.getSource();
-                hrenderer.setEnabledAt(2, !box.isSelected());
+            @Override public void itemStateChanged(ItemEvent e) {
+                hrenderer.setEnabledAt(2, !((JCheckBox) e.getItemSelectable()).isSelected());
+                //if (e.getStateChange() == ItemEvent.SELECTED) {
+                //    hrenderer.setEnabledAt(2, false);
+                //} else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                //    hrenderer.setEnabledAt(2, true);
+                //}
             }
         });
 

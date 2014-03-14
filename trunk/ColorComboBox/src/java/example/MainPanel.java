@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
                 if (e.getStateChange() != ItemEvent.SELECTED) {
                     return;
                 }
-                JComboBox cb = (JComboBox) e.getSource();
+                JComboBox cb = (JComboBox) e.getItemSelectable();
                 Color rc = getAlternateRowColor(cb.getSelectedIndex());
                 if (cb.isEditable()) {
                     JTextField field = (JTextField) cb.getEditor().getEditorComponent();
