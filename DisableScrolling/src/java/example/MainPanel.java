@@ -48,13 +48,13 @@ public final class MainPanel extends JPanel {
             @Override public void itemStateChanged(ItemEvent ie) {
                 table.clearSelection();
                 JScrollBar bar = scroll.getVerticalScrollBar();
-                if (((JCheckBox) ie.getSource()).isSelected()) {
+                if (ie.getStateChange() == ItemEvent.SELECTED) {
                     bar.setEnabled(false);
                     scroll.setWheelScrollingEnabled(false);
                     table.setEnabled(false);
                     //table.getTableHeader().setEnabled(false);
                     //scroll.setComponentPopupMenu(null);
-                } else {
+                } else if (ie.getStateChange() == ItemEvent.DESELECTED) {
                     bar.setEnabled(true);
                     scroll.setWheelScrollingEnabled(true);
                     table.setEnabled(true);

@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         final DisableInputLayerUI layerUI = new DisableInputLayerUI();
         check.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent ie) {
-                layerUI.setLocked(((JCheckBox) ie.getSource()).isSelected());
+                layerUI.setLocked(((JCheckBox) ie.getItemSelectable()).isSelected());
             }
         });
 

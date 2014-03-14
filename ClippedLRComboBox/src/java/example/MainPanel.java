@@ -32,8 +32,6 @@ public final class MainPanel extends JPanel {
         combo.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    //JComboBox c = (JComboBox) e.getSource();
-                    //LRItem item = (LRItem) c.getSelectedItem();
                     LRItem item = (LRItem) e.getItem();
                     leftTextField.setText(item.getLeftText());
                     rightTextField.setText(item.getRightText());
