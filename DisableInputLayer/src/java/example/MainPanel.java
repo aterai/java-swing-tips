@@ -11,7 +11,7 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
     private final JPanel p = new JPanel();
     private final DisableInputLayerUI layerUI = new DisableInputLayerUI();
-    private final JLayer<JPanel> jlayer = new JLayer<JPanel>(p, layerUI);
+    private final JLayer<JPanel> jlayer = new JLayer<>(p, layerUI);
     private final Timer stopper = new Timer(5000, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             layerUI.stop();

@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         model.addElement("AAAAAAAAAAAAAA");
         model.addElement("****");
 
-        JList<String> list = new DnDList<String>();
+        JList<String> list = new DnDList<>();
         list.setModel(model);
         list.setCellRenderer(new DefaultListCellRenderer() {
             private final Color ec = new Color(240, 240, 240);

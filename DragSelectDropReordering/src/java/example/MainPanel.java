@@ -10,6 +10,7 @@ import java.awt.image.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.List;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -226,7 +227,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         }
         private int[] getIntersectsIcons(Shape p) {
             ListModel model = getModel();
-            ArrayList<Integer> list = new ArrayList<Integer>(model.getSize());
+            List<Integer> list = new ArrayList<>(model.getSize());
             for (int i = 0; i < model.getSize(); i++) {
                 Rectangle r = getCellBounds(i, i);
                 if (p.intersects(r)) {

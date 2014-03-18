@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         slider1.setLabelTable(labelTable);
         slider1.setPaintLabels(true);
 
-        Dictionary<Integer, Component> labelTable2 = new Hashtable<Integer, Component>();
+        Dictionary<Integer, Component> labelTable2 = new Hashtable<>();
         int i = 0;
         for (String s: Arrays.asList("零", "壱", "弐", "参", "肆", "伍", "陸", "漆", "捌", "玖", "拾")) {
             JLabel l = new JLabel(s);

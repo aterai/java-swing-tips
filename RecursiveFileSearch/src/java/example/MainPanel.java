@@ -221,7 +221,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
             publish(new Message("The directory does not exist.", true));
             return "Error";
         }
-        ArrayList<File> list = new ArrayList<File>();
+        List<File> list = new ArrayList<>();
         //ArrayList<Path> list = new ArrayList<>();
         try {
             scount = 0;
@@ -248,8 +248,8 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
                 //Path path = list.get(current);
                 Thread.sleep(50); //dummy
                 setProgress(100 * current / lengthOfTask);
-                publish(new Message(current + "/" + lengthOfTask + ", " + file.getAbsolutePath(), true));
                 current++;
+                publish(new Message(current + "/" + lengthOfTask + ", " + file.getAbsolutePath(), true));
             }
         } catch (InterruptedException ie) {
             return "Interrupted";

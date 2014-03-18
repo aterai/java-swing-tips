@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     }
 /*/
     // http://www.asahi-net.or.jp/~dp8t-asm/java/tips/Event.html
-    private final Vector<FontChangeListener> listenerList = new Vector<FontChangeListener>();
+    private final Vector<FontChangeListener> listenerList = new Vector<>();
     public void addFontChangeListener(FontChangeListener listener) {
         if (!listenerList.contains(listener)) { listenerList.add(listener); }
     }

@@ -183,7 +183,7 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
 }
 
 class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
-    private final List<List<Integer>> rowColHeight = new ArrayList<List<Integer>>();
+    private final List<List<Integer>> rowColHeight = new ArrayList<>();
     private final Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
     private final Border epb = BorderFactory.createEmptyBorder(2, 5, 2, 5);
     public MultiLineTableCellRenderer() {

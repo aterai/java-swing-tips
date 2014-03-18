@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
             @Override public void toggleSortOrder(int column) {
                 //if (column >= 0 && column<getModelWrapper().getColumnCount() && isSortable(column)) {
                 if (check2.isSelected() && column >= 0 && column < getModelWrapper().getColumnCount() && isSortable(column)) {
-                    List<SortKey> keys = new ArrayList<SortKey>(getSortKeys());
+                    List<SortKey> keys = new ArrayList<>(getSortKeys());
                     if (!keys.isEmpty()) {
                         SortKey sortKey = keys.get(0);
                         if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

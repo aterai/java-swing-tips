@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
@@ -390,7 +391,7 @@ class MyTable extends JTable {
     }
     private int[] getIntersectedIndices(Path2D path) {
         TableModel model = getModel();
-        ArrayList<Integer> list = new ArrayList<Integer>(model.getRowCount());
+        List<Integer> list = new ArrayList<>(model.getRowCount());
         for (int i = 0; i < getRowCount(); i++) {
             if (path.intersects(getCellRect2(MyTable.this, i, convertColumnIndexToView(0)))) {
                 list.add(i);
