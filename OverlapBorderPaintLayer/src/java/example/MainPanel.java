@@ -33,7 +33,11 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(int overlap) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, -overlap, 0));
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, -overlap, 0)) {
+            @Override public boolean isOptimizedDrawingEnabled() {
+                return false;
+            }
+        };
         p.setOpaque(false);
         return p;
     }
