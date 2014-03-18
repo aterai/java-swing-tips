@@ -14,12 +14,12 @@ public final class MainPanel extends JPanel {
     private final WorkerModel model = new WorkerModel();
     private final JTable table = new JTable(model);
     private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-    private final transient ExecutorService executor = Executors.newCachedThreadPool();
+    //TEST: private final transient ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
     //TEST: private final Executor executor = Executors.newFixedThreadPool(2);
     public MainPanel() {
         super(new BorderLayout());
         table.setRowSorter(sorter);
-        model.addProgressValue(new ProgressValue("Name 1", 100), null);
+        model.addProgressValue("Name 1", 100, null);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setBackground(Color.WHITE);
@@ -27,8 +27,6 @@ public final class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
         table.setIntercellSpacing(new Dimension());
         table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         TableColumn column = table.getColumnModel().getColumn(0);
@@ -38,37 +36,32 @@ public final class MainPanel extends JPanel {
         column = table.getColumnModel().getColumn(2);
         column.setCellRenderer(new ProgressRenderer());
 
-        add(new JButton(new ProgressValueCreateAction("add", null)), BorderLayout.SOUTH);
+        add(new JButton(new ProgressValueCreateAction("add")), BorderLayout.SOUTH);
         add(scrollPane);
         setPreferredSize(new Dimension(320, 240));
     }
 
     class ProgressValueCreateAction extends AbstractAction {
-        public ProgressValueCreateAction(String label, Icon icon) {
-            super(label, icon);
+        public ProgressValueCreateAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             final int key = model.getRowCount();
             SwingWorker<Integer, Integer> worker = new Task() {
                 @Override protected void process(List<Integer> c) {
                     if (!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
                         cancel(true);
-                        executor.shutdown();
+                        //executor.shutdown();
                         return;
                     }
                     model.setValueAt(c.get(c.size() - 1), key, 2);
-                    //for (Integer value : chunks) {
-                    //    model.setValueAt(value, key, 2);
-                    //}
-                    //model.fireTableCellUpdated(key, 2);
-                    //table.repaint();
                 }
                 @Override protected void done() {
                     if (!isDisplayable()) {
                         System.out.println("done: DISPOSE_ON_CLOSE");
                         cancel(true);
-                        executor.shutdown();
+                        //executor.shutdown();
                         return;
                     }
                     String text;
@@ -85,11 +78,12 @@ public final class MainPanel extends JPanel {
                         }
                     }
                     System.out.format("%s:%s(%dms)%n", key, text, i);
+                    //executor.remove(this);
                 }
             };
-            model.addProgressValue(new ProgressValue("example", 0), worker);
-            executor.execute(worker);
-            //worker.execute();
+            model.addProgressValue("example", 0, worker);
+            //executor.execute(worker);
+            worker.execute();
         }
     }
 
@@ -130,16 +124,15 @@ public final class MainPanel extends JPanel {
                 SwingWorker worker = model.getSwingWorker(midx);
                 if (worker != null && !worker.isDone()) {
                     worker.cancel(true);
-                    //((ThreadPoolExecutor) executor).remove(worker);
+                    //executor.remove(worker);
                 }
                 worker = null;
             }
-            final RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
+            sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
                 @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                     return !deleteRowSet.contains(entry.getIdentifier());
                 }
-            };
-            sorter.setRowFilter(filter);
+            });
             table.repaint();
         }
     }
@@ -149,7 +142,7 @@ public final class MainPanel extends JPanel {
         private final Action deleteAction = new DeleteAction("delete", null);
         public TablePopupMenu() {
             super();
-            add(new ProgressValueCreateAction("add", null));
+            add(new ProgressValueCreateAction("add"));
             //add(new ClearAction("clearSelection", null));
             addSeparator();
             add(deleteAction);
@@ -208,13 +201,13 @@ class Task extends SwingWorker<Integer, Integer> {
 class WorkerModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",      Integer.class, false),
-        new ColumnContext("Name",     String.class, false),
+        new ColumnContext("Name",     String.class,  false),
         new ColumnContext("Progress", Integer.class, false)
     };
     private final ConcurrentMap<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
     private int number;
-    public void addProgressValue(ProgressValue t, SwingWorker worker) {
-        Object[] obj = {number, t.getName(), t.getProgress()};
+    public void addProgressValue(String name, Integer iv, SwingWorker worker) {
+        Object[] obj = {number, name, iv};
         super.addRow(obj);
         if (worker != null) {
             swmap.put(number, worker);
@@ -224,9 +217,6 @@ class WorkerModel extends DefaultTableModel {
     public synchronized SwingWorker getSwingWorker(int identifier) {
         Integer key = (Integer) getValueAt(identifier, 0);
         return swmap.get(key);
-    }
-    public ProgressValue getProgressValue(int identifier) {
-        return new ProgressValue((String) getValueAt(identifier, 1), (Integer) getValueAt(identifier, 2));
     }
     @Override public boolean isCellEditable(int row, int col) {
         return COLUMN_ARRAY[col].isEditable;
@@ -252,41 +242,14 @@ class WorkerModel extends DefaultTableModel {
     }
 }
 
-class ProgressValue {
-    private String name;
-    private Integer progress;
-    public ProgressValue(String name, Integer progress) {
-        this.name = name;
-        this.progress = progress;
-    }
-    public void setName(String str) {
-        name = str;
-    }
-    public void setProgress(Integer str) {
-        progress = str;
-    }
-    public String getName() {
-        return name;
-    }
-    public Integer getProgress() {
-        return progress;
-    }
-}
-
 class ProgressRenderer extends DefaultTableCellRenderer {
-    private final JProgressBar b = new JProgressBar(0, 100);
+    private final JProgressBar b = new JProgressBar();
     private final JPanel p = new JPanel(new BorderLayout());
     public ProgressRenderer() {
         super();
         setOpaque(true);
-//         //TEST:
-//         UIManager.put("Table.cellNoFocusBorder", BorderFactory.createEmptyBorder(1, 10, 1, 10));
-//         UIManager.put("Table.focusSelectedCellHighlightBorder", BorderFactory.createEmptyBorder(1, 10, 1, 10));
-//         UIManager.put("Table.focusCellHighlightBorder", BorderFactory.createEmptyBorder(1, 10, 1, 10));
-
         p.add(b);
         p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        //TEST: b.setBorder(BorderFactory.createMatteBorder(1, 10, 1, 1, Color.RED));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Integer i = (Integer) value;
