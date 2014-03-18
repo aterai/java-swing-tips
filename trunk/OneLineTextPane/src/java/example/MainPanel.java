@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
         });
 
         // @see http://terai.xrea.jp/Swing/FocusTraversalKeys.html
-        Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(textPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        Set<AWTKeyStroke> forwardKeys = new HashSet<>(textPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK));
         textPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
 //@see http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
-    //HashMap<String, AttributeSet> keywords = new HashMap<String, AttributeSet>();
+    //HashMap<String, AttributeSet> keywords = new HashMap<>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
     private static final String OPERANDS = ".,";
     public SimpleSyntaxDocument() {

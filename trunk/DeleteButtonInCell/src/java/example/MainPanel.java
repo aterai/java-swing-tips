@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
         sorter.setSortable(BUTTON_COLUMN, false);
 
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String[] args) {

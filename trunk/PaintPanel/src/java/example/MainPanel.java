@@ -116,7 +116,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     @Override public void mouseClicked(MouseEvent e) {}
 // }
 // class PaintPanel3 extends JPanel implements MouseMotionListener, MouseListener {
-//     java.util.ArrayList<Shape> list = new java.util.ArrayList<Shape>();
+//     java.util.ArrayList<Shape> list = new java.util.ArrayList<>();
 //     Stroke stroke = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 //     Path2D.Double path;
 //     public PaintPanel3() {

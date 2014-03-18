@@ -7,8 +7,8 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.*;
+import java.util.List;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -108,7 +108,7 @@ class TableRowTransferHandler extends TransferHandler {
     @Override protected Transferable createTransferable(JComponent c) {
         JTable table = (JTable) c;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        ArrayList<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         indices = table.getSelectedRows();
         for (int i: indices) {
             list.add(model.getDataVector().elementAt(i));

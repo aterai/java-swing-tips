@@ -8,6 +8,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.net.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
@@ -228,7 +229,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
     }
     private int[] getIntersectsIcons(JList l, Shape p) {
         ListModel model = l.getModel();
-        ArrayList<Integer> list = new ArrayList<Integer>(model.getSize());
+        List<Integer> list = new ArrayList<>(model.getSize());
         for (int i = 0; i < model.getSize(); i++) {
             Rectangle r = l.getCellBounds(i, i);
             if (p.intersects(r)) {
@@ -331,7 +332,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
 //         }
 //         private int[] getIntersectsIcons(Shape p) {
 //             ListModel model = getModel();
-//             Vector<Integer> list = new Vector<Integer>(model.getSize());
+//             Vector<Integer> list = new Vector<>(model.getSize());
 //             for (int i = 0; i < model.getSize(); i++) {
 //                 Rectangle r = getCellBounds(i, i);
 //                 if (p.intersects(r)) {
@@ -446,7 +447,7 @@ class RubberBandListCellRenderer<E extends ListItem> extends JPanel implements L
 //         }
 //         private int[] getIntersectsIcons(Shape p) {
 //             ListModel model = getModel();
-//             Vector<Integer> list = new Vector<Integer>(model.getSize());
+//             Vector<Integer> list = new Vector<>(model.getSize());
 //             for (int i = 0; i < model.getSize(); i++) {
 //                 Rectangle r = getCellBounds(i, i);
 //                 if (p.intersects(r)) {

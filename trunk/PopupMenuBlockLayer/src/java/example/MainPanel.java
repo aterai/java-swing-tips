@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        JLayer<JComponent> layer = new JLayer<JComponent>(scroll, layerUI);
+        JLayer<JComponent> layer = new JLayer<>(scroll, layerUI);
         add(layer);
         add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

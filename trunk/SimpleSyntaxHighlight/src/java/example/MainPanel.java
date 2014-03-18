@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 }
 //From: http://www.discoverteenergy.com/files/SyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
-    //HashMap<String, AttributeSet> keywords = new HashMap<String, AttributeSet>();
+    //HashMap<String, AttributeSet> keywords = new HashMap<>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
     private static final String OPERANDS = ".,";
     public SimpleSyntaxDocument() {

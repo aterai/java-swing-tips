@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         }
         boolean isGif = reader.getFormatName().equalsIgnoreCase("gif");
         reader.setInput(imageStream, false, !isGif);
-        List<BufferedImage> list = new ArrayList<BufferedImage>();
+        List<BufferedImage> list = new ArrayList<>();
         for (int i = 0; i < reader.getNumImages(true); i++) {
             IIOImage frame = reader.readAll(i, null);
             list.add((BufferedImage) frame.getRenderedImage());
