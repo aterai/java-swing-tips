@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final MyComboBox combo = makeComboBox();
+    private final DisableItemComboBox<String> combo = new DisableItemComboBox<>(makeModel());
     private final JTextField field = new JTextField("1, 2, 5");
     public MainPanel() {
         super(new BorderLayout());
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static MyComboBox makeComboBox() {
+    private static ComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("0000000000000");
         model.addElement("111111");
@@ -39,9 +39,7 @@ public final class MainPanel extends JPanel {
         model.addElement("4444444444444444");
         model.addElement("555555555555555555555555");
         model.addElement("6666666666");
-        MyComboBox combo = new MyComboBox();
-        combo.setModel(model);
-        return combo;
+        return model;
     }
 
     private Set<Integer> getDisableIndexFromTextField() {
@@ -82,12 +80,42 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyComboBox extends JComboBox<String> {
+class DisableItemComboBox<E> extends JComboBox<E> {
     private final Set<Integer> disableIndexSet = new HashSet<>();
     private boolean isDisableIndex;
-
-    public MyComboBox() {
+    private final Action up = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            int si = getSelectedIndex();
+            for (int i = si - 1; i >= 0; i--) {
+                if (!disableIndexSet.contains(i)) {
+                    setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    };
+    private final Action down = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            int si = getSelectedIndex();
+            for (int i = si + 1; i < getModel().getSize(); i++) {
+                if (!disableIndexSet.contains(i)) {
+                    setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    };
+    public DisableItemComboBox() {
         super();
+    }
+    public DisableItemComboBox(ComboBoxModel<E> aModel) {
+        super(aModel);
+    }
+    public DisableItemComboBox(E[] items) {
+        super(items);
+    }
+    @Override public void updateUI() {
+        super.updateUI();
         setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c;
@@ -101,28 +129,6 @@ class MyComboBox extends JComboBox<String> {
                 return c;
             }
         });
-        Action up = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int si = getSelectedIndex();
-                for (int i = si - 1; i >= 0; i--) {
-                    if (!disableIndexSet.contains(i)) {
-                        setSelectedIndex(i);
-                        break;
-                    }
-                }
-            }
-        };
-        Action down = new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                int si = getSelectedIndex();
-                for (int i = si + 1; i < getModel().getSize(); i++) {
-                    if (!disableIndexSet.contains(i)) {
-                        setSelectedIndex(i);
-                        break;
-                    }
-                }
-            }
-        };
         ActionMap am = getActionMap();
         am.put("selectPrevious3", up);
         am.put("selectNext3", down);
