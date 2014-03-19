@@ -7,10 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final Color EVEN_BGCOLOR = new Color(225, 255, 225);
-    private static final Color ODD_BGCOLOR  = new Color(255, 255, 255);
-    private final JComboBox<String> combo01 = makeComboBox();
-    private final JComboBox<String> combo02 = makeComboBox();
+    private final JComboBox<String> combo01 = new AlternateRowColorComboBox<>(makeModel());
+    private final JComboBox<String> combo02 = new AlternateRowColorComboBox<>(makeModel());
 
     public MainPanel() {
         super(new BorderLayout());
@@ -31,14 +29,7 @@ public final class MainPanel extends JPanel {
 //                 };
 //             }
 //         });
-        combo01.setSelectedIndex(0);
-        combo01.setBackground(EVEN_BGCOLOR);
-
-        JTextField field = (JTextField) combo02.getEditor().getEditorComponent();
-        field.setOpaque(true);
-        field.setBackground(EVEN_BGCOLOR);
         combo02.setEditable(true);
-        combo02.setSelectedIndex(0);
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -47,7 +38,7 @@ public final class MainPanel extends JPanel {
         box.add(makePanel("setEditable(true)",  combo02));
 
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -55,20 +46,7 @@ public final class MainPanel extends JPanel {
         p.add(c);
         return p;
     }
-    private static Color getAlternateRowColor(int index) {
-        return (index % 2 == 0) ? EVEN_BGCOLOR : ODD_BGCOLOR;
-    }
-    private static class AlternateRowColorListCellRenderer extends DefaultListCellRenderer {
-        @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel cmp = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            cmp.setOpaque(true);
-            if (!isSelected) {
-                cmp.setBackground(getAlternateRowColor(index));
-            }
-            return cmp;
-        }
-    }
-    private static JComboBox<String> makeComboBox() {
+    private static ComboBoxModel<String> makeModel() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("aaaa");
         model.addElement("aaaabbb");
@@ -76,25 +54,7 @@ public final class MainPanel extends JPanel {
         model.addElement("1234123512351234");
         model.addElement("bbb1");
         model.addElement("bbb12");
-
-        JComboBox<String> combo = new JComboBox<>(model);
-        combo.setRenderer(new AlternateRowColorListCellRenderer());
-        combo.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() != ItemEvent.SELECTED) {
-                    return;
-                }
-                JComboBox cb = (JComboBox) e.getItemSelectable();
-                Color rc = getAlternateRowColor(cb.getSelectedIndex());
-                if (cb.isEditable()) {
-                    JTextField field = (JTextField) cb.getEditor().getEditorComponent();
-                    field.setBackground(rc);
-                } else {
-                    cb.setBackground(rc);
-                }
-            }
-        });
-        return combo;
+        return model;
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -116,5 +76,69 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class AlternateRowColorComboBox<E> extends JComboBox<E> {
+    private static final Color EVEN_BGCOLOR = new Color(225, 255, 225);
+    private static final Color ODD_BGCOLOR  = new Color(255, 255, 255);
+    private transient ItemListener itemColorListener;
+
+    public AlternateRowColorComboBox() {
+        super();
+    }
+    public AlternateRowColorComboBox(ComboBoxModel<E> aModel) {
+        super(aModel);
+    }
+    public AlternateRowColorComboBox(E[] items) {
+        super(items);
+    }
+    @Override public void setEditable(boolean aFlag) {
+        super.setEditable(aFlag);
+        if (aFlag) {
+            JTextField field = (JTextField) getEditor().getEditorComponent();
+            field.setOpaque(true);
+            field.setBackground(getAlternateRowColor(getSelectedIndex()));
+        }
+    }
+    @Override public void updateUI() {
+        removeItemListener(itemColorListener);
+        super.updateUI();
+        setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel c = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                c.setOpaque(true);
+                if (!isSelected) {
+                    c.setBackground(getAlternateRowColor(index));
+                }
+                return c;
+            }
+        });
+        if (itemColorListener == null) {
+            itemColorListener = new ItemListener() {
+                @Override public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() != ItemEvent.SELECTED) {
+                        return;
+                    }
+                    JComboBox cb = (JComboBox) e.getItemSelectable();
+                    Color rc = getAlternateRowColor(cb.getSelectedIndex());
+                    if (cb.isEditable()) {
+                        JTextField field = (JTextField) cb.getEditor().getEditorComponent();
+                        field.setBackground(rc);
+                    } else {
+                        cb.setBackground(rc);
+                    }
+                }
+            };
+        }
+        addItemListener(itemColorListener);
+        JTextField field = (JTextField) getEditor().getEditorComponent();
+        if (field != null) {
+            field.setOpaque(true);
+            field.setBackground(getAlternateRowColor(getSelectedIndex()));
+        }
+    }
+    private static Color getAlternateRowColor(int index) {
+        return (index % 2 == 0) ? EVEN_BGCOLOR : ODD_BGCOLOR;
     }
 }

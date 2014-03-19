@@ -269,4 +269,3 @@ class StarIcon2 implements Icon {
 //         }
 //         return res;
 //     }
-

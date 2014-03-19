@@ -116,4 +116,3 @@ enum Justification {
         return description;
     }
 }
-

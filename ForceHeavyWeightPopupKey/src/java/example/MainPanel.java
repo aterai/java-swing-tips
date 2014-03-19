@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JComponent glass = new MyGlassPane();
     private final JLabel label1 = makeLabel("Default: setToolTipText");
     private final JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP");
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super();
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
@@ -35,11 +35,16 @@ public final class MainPanel extends JPanel {
                 return null;
             }
         });
-        glass.add(label1, BorderLayout.WEST);
-        glass.add(label2, BorderLayout.EAST);
-        glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
-        frame.setGlassPane(glass);
-        frame.getGlassPane().setVisible(true);
+
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                glass.add(label1, BorderLayout.WEST);
+                glass.add(label2, BorderLayout.EAST);
+                glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
+                getRootPane().setGlassPane(glass);
+                getRootPane().getGlassPane().setVisible(true);
+            }
+        });
 
 //         add(new JButton(new AbstractAction("show GlassPane") {
 //             @Override public void actionPerformed(ActionEvent e) {
@@ -89,7 +94,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

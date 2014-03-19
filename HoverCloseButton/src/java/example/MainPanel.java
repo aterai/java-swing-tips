@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final MyJTabbedPane tab = new MyJTabbedPane();
+    private final JTabbedPane tabbedPane = new HoverCloseButtonTabbedPane();
     private final JPopupMenu pop = new JPopupMenu();
     private static int count;
 
@@ -16,16 +16,16 @@ public final class MainPanel extends JPanel {
         pop.add(new NewTabAction("Add", null));
         pop.addSeparator();
         pop.add(new CloseAllAction("Close All", null));
-        tab.setComponentPopupMenu(pop);
-        tab.addTab("aaaaaa", new JScrollPane(new JTree()));
-        tab.addTab("12345678901234567890", new JScrollPane(new JLabel("asdfasdfsadf")));
-        tab.addTab("b", new JScrollPane(new JTree()));
+        tabbedPane.setComponentPopupMenu(pop);
+        tabbedPane.addTab("aaaaaa", new JScrollPane(new JTree()));
+        tabbedPane.addTab("12345678901234567890", new JScrollPane(new JLabel("asdfasdfsadf")));
+        tabbedPane.addTab("b", new JScrollPane(new JTree()));
 
-        tab.setSelectedIndex(0);
-        TabPanel titleTab = (TabPanel) tab.getTabComponentAt(0);
-        titleTab.setButtonVisible(true);
+//         tab.setSelectedIndex(0);
+//         TabPanel titleTab = (TabPanel) tab.getTabComponentAt(0);
+//         titleTab.setButtonVisible(true);
 
-        add(tab);
+        add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            tab.addTab("Title" + count, new JLabel("Tab" + count));
-            tab.setSelectedIndex(tab.getTabCount() - 1);
+            tabbedPane.addTab("Title" + count, new JLabel("Tab" + count));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             count++;
         }
     }
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            tab.removeAll();
+            tabbedPane.removeAll();
         }
     }
 
@@ -70,26 +70,40 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyJTabbedPane extends JTabbedPane {
+class HoverCloseButtonTabbedPane extends JTabbedPane {
     //private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
-    public MyJTabbedPane() {
-        super();
-        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        addMouseMotionListener(new MouseMotionAdapter() {
-            private int prev = -1;
-            @Override public void mouseMoved(MouseEvent e) {
-                JTabbedPane source = (JTabbedPane) e.getComponent();
-                int focussed = source.indexAtLocation(e.getX(), e.getY());
-                if (focussed == prev) {
-                    return;
+    private transient MouseMotionListener hoverHandler;
+    public HoverCloseButtonTabbedPane() {
+        super(TOP, SCROLL_TAB_LAYOUT);
+    }
+    public HoverCloseButtonTabbedPane(int tabPlacement) {
+        super(tabPlacement, SCROLL_TAB_LAYOUT);
+    }
+//     public HoverCloseButtonTabbedPane(int tabPlacement, int tabLayoutPolicy) {
+//         super(tabPlacement, SCROLL_TAB_LAYOUT);
+//     }
+    @Override public void updateUI() {
+        removeMouseMotionListener(hoverHandler);
+        super.updateUI();
+        //setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        if (hoverHandler == null) {
+            hoverHandler = new MouseMotionAdapter() {
+                private int prev = -1;
+                @Override public void mouseMoved(MouseEvent e) {
+                    JTabbedPane source = (JTabbedPane) e.getComponent();
+                    int focussed = source.indexAtLocation(e.getX(), e.getY());
+                    if (focussed == prev) {
+                        return;
+                    }
+                    for (int i = 0; i < source.getTabCount(); i++) {
+                        TabPanel tab = (TabPanel) source.getTabComponentAt(i);
+                        tab.setButtonVisible(i == focussed);
+                    }
+                    prev = focussed;
                 }
-                for (int i = 0; i < source.getTabCount(); i++) {
-                    TabPanel tab = (TabPanel) source.getTabComponentAt(i);
-                    tab.setButtonVisible(i == focussed);
-                }
-                prev = focussed;
-            }
-        });
+            };
+        }
+        addMouseMotionListener(hoverHandler);
     }
     @Override public void addTab(String title, final Component content) {
         super.addTab(title, content);
