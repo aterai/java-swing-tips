@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
         return createFrame(null);
     }
     private JInternalFrame createFrame(JPanel panel) {
-        MyInternalFrame frame = new MyInternalFrame();
+        JInternalFrame frame = new MyInternalFrame();
         if (panel != null) {
             frame.setContentPane(panel);
             panel.add(new JLabel("label"));

@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 //     private final UIDefaults d = new UIDefaults();
 
     protected JInternalFrame createFrame(JPanel panel, int idx) {
-        MyInternalFrame frame = new MyInternalFrame();
+        JInternalFrame frame = new MyInternalFrame();
 //         frame.putClientProperty("Nimbus.Overrides", d);
 //         //frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
         if (panel != null) {

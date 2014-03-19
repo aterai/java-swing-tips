@@ -12,16 +12,16 @@ public final class MainPanel extends JPanel {
         //System.setProperty("swing.noxp", "true");
         //UIManager.put("CheckBox.interiorBackground", new ColorUIResource(Color.GREEN));
         //UIManager.put("CheckBox.darkShadow", new ColorUIResource(Color.RED));
-        //UIManager.put("CheckBox.icon", new IconUIResource(new MyCheckBoxIcon()));
+        //UIManager.put("CheckBox.icon", new IconUIResource(new CheckBoxIcon()));
 
         JCheckBox cb1 = new JCheckBox("bbbbbbbbbb");
-        cb1.setIcon(new MyCheckBoxIcon());
+        cb1.setIcon(new CheckBoxIcon());
 
         JCheckBox cb2 = new JCheckBox("ccccccccccccccc");
-        cb2.setIcon(new MyCheckBoxIcon2());
+        cb2.setIcon(new CheckBoxIcon2());
 
         JCheckBox cb3 = new JCheckBox("dddddddd");
-        cb3.setIcon(new MyCheckBoxIcon3());
+        cb3.setIcon(new CheckBoxIcon3());
 
         Box box = Box.createVerticalBox();
         box.add(makePanel("Default", new JCheckBox("aaaaaaaaaaaaa")));
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyCheckBoxIcon3 implements Icon {
+class CheckBoxIcon3 implements Icon {
     private final Icon orgIcon = new MetalCheckBoxIcon();
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         orgIcon.paintIcon(c, g, x, y);
@@ -76,7 +76,7 @@ class MyCheckBoxIcon3 implements Icon {
     }
 }
 
-class MyCheckBoxIcon2 implements Icon {
+class CheckBoxIcon2 implements Icon {
     private final Icon orgIcon = UIManager.getIcon("CheckBox.icon");
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         orgIcon.paintIcon(c, g, x, y);
@@ -107,7 +107,7 @@ class MyCheckBoxIcon2 implements Icon {
     }
 }
 
-class MyCheckBoxIcon implements Icon {
+class CheckBoxIcon implements Icon {
     //com/sun/java/swing/plaf/windows/WindowsIconFactory.java
     private static final int CSIZE = 13;
     private static JCheckBox getCheckBox(Component c) {
@@ -201,4 +201,3 @@ class MyCheckBoxIcon implements Icon {
         return CSIZE;
     }
 }
-

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -32,7 +33,7 @@ public final class MainPanel extends JPanel {
                 if (f != null) {
                     f.setClosed(true);
                 }
-            } catch (java.beans.PropertyVetoException ex) {
+            } catch (PropertyVetoException ex) {
                 ex.printStackTrace();
             }
         }
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
     };
     private final Action createNewFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            MyInternalFrame frame = new MyInternalFrame();
+            JInternalFrame frame = new MyInternalFrame();
             //frame.setVisible(true);
             desktop.add(frame);
             try {
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
                 if (openFrameCount % 2 == 0) {
                     frame.setIcon(true);
                 }
-            } catch (java.beans.PropertyVetoException ex) {
+            } catch (PropertyVetoException ex) {
                 ex.printStackTrace();
             }
         }
@@ -127,7 +128,7 @@ public final class MainPanel extends JPanel {
             //    @Override public void actionPerformed(ActionEvent e) {
             //        try {
             //            frame.setClosed(true);
-            //        } catch (java.beans.PropertyVetoException ex) {
+            //        } catch (PropertyVetoException ex) {
             //            ex.printStackTrace();
             //        }
             //    }

@@ -10,23 +10,24 @@ import java.net.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final MyTabbedPane tab = new MyTabbedPane();
+    private final JTabbedPane tabbedPane = new TabThumbnailTabbedPane();
+
     public MainPanel() {
         super(new BorderLayout());
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-48.png"));
-        tab.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");
+        tabbedPane.addTab("wi0124-48.png", null, new JLabel(icon), "dummy");
         //addImageTab(tab, getClass().getResource("wi0124-48.png"));
-        addImageTab(tab, getClass().getResource("tokeidai.jpg"));
-        addImageTab(tab, getClass().getResource("CRW_3857_JFR.jpg")); //http://sozai-free.com/
-        add(tab);
+        addImageTab(tabbedPane, getClass().getResource("tokeidai.jpg"));
+        addImageTab(tabbedPane, getClass().getResource("CRW_3857_JFR.jpg")); //http://sozai-free.com/
+        add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void addImageTab(JTabbedPane tabs, URL url) {
+    private static void addImageTab(JTabbedPane tabbedPane, URL url) {
         JScrollPane scroll = new JScrollPane(new JLabel(new ImageIcon(url)));
         File f = new File(url.getFile());
-        tabs.addTab(f.getName(), null, scroll, "dummy");
+        tabbedPane.addTab(f.getName(), null, scroll, "dummy");
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -51,7 +52,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyTabbedPane extends JTabbedPane {
+class TabThumbnailTabbedPane extends JTabbedPane {
     private int current = -1;
     private static final double SCALE = 0.15d;
     private Component getTabThumbnail(int index) {
