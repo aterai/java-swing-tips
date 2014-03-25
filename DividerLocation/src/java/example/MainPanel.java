@@ -22,9 +22,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                                 new JScrollPane(new JTable(model)),
-                                                 new JScrollPane(new JTree()));
+    private final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTable(model)), new JScrollPane(new JTree()));
     public MainPanel() {
         super(new BorderLayout());
         ActionListener al = new ActionListener() {
