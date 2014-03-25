@@ -51,8 +51,7 @@ public final class MainPanel extends JPanel {
             }
         } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(),
-                                          "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return set;
     }

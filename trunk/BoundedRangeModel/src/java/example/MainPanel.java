@@ -36,9 +36,7 @@ public final class MainPanel extends JPanel {
             model.addRow(new Object[] {str, ""});
         }
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(
-                JTable table, Object value,
-                boolean isSelected, boolean hasFocus, int row, int column) {
+            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (highlighter.contains(row)) {
                     setBackground(Color.YELLOW);

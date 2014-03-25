@@ -15,8 +15,7 @@ public final class MainPanel extends JPanel {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(btn);
                 //JFrame frame = (JFrame) btn.getTopLevelAncestor();
                 //JFrame frame = (JFrame)JOptionPane.getFrameForComponent(btn);
-                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(),
-                                              "title", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);
             }
         }));
         setPreferredSize(new Dimension(320, 100));

@@ -80,8 +80,9 @@ class ImageCaptionLabel extends JLabel {
             }
         });
 
-        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(222, 222, 222)),
-                                                     BorderFactory.createLineBorder(Color.WHITE, 4)));
+        setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(222, 222, 222)),
+            BorderFactory.createLineBorder(Color.WHITE, 4)));
         setLayout(new OverlayLayout(this) {
             @Override public void layoutContainer(Container parent) {
                 //Insets insets = parent.getInsets();
