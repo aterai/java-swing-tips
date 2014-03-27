@@ -4,32 +4,21 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
+//import java.net.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.*;
+//import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final JToolBar toolbar = new JToolBar("toolbar");
-    private final URL url = getClass().getResource("ei0021-16.png");
+
     public MainPanel() {
         super(new BorderLayout());
-        toolbar.add(new PressAndHoldButton(new ImageIcon(url), makeIconList()));
+        toolbar.add(new PressAndHoldButton(new ImageIcon(getClass().getResource("ei0021-16.png"))));
         add(toolbar, BorderLayout.NORTH);
         add(new JLabel("press and hold the button for 1000 milliseconds"));
         setPreferredSize(new Dimension(320, 240));
-    }
-    private List<MenuContext> makeIconList() {
-        return Arrays.asList(
-            new MenuContext("BLUE",    Color.BLUE),
-            new MenuContext("CYAN",    Color.CYAN),
-            new MenuContext("GREEN",   Color.GREEN),
-            new MenuContext("MAGENTA", Color.MAGENTA),
-            new MenuContext("ORANGE",  Color.ORANGE),
-            new MenuContext("PINK",    Color.PINK),
-            new MenuContext("RED",     Color.RED),
-            new MenuContext("YELLOW",  Color.YELLOW));
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -54,48 +43,21 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class PressAndHoldButton extends JToggleButton {
+class PressAndHoldButton extends JButton {
     private static final Icon ARROW_ICON = new MenuArrowIcon();
-    private final ButtonGroup bg = new ButtonGroup();
-    private final JPopupMenu pop = new JPopupMenu();
-//     public PressAndHoldButton() {
-//         this("", null);
-//     }
-//     public PressAndHoldButton(Icon icon) {
-//         this("", icon);
-//     }
-//     public PressAndHoldButton(String text) {
-//         this(text, null);
-//     }
-//     public PressAndHoldButton(String text, Icon icon) {
-    //private final List<MenuContext> iconList;
-    public PressAndHoldButton(Icon icon, List<MenuContext> iconList) {
-        super();
-        //this.iconList = iconList;
-        pop.setLayout(new GridLayout(0, 3));
-        for (MenuContext m: iconList) {
-            AbstractButton b = new JRadioButton();
-            b.setBorder(BorderFactory.createEmptyBorder());
-            //b.setAction(m.action);
-            b.addActionListener(new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    System.out.println(bg.getSelection().getActionCommand());
-                    pop.setVisible(false);
-                }
-            });
-            b.setIcon(m.small);
-            b.setRolloverIcon(m.rollover);
-            b.setSelectedIcon(m.rollover);
-            b.setActionCommand(m.command);
-            b.setFocusable(false);
-            b.setPreferredSize(new Dimension(m.small.getIconWidth(), m.small.getIconHeight()));
-            pop.add(b);
-            bg.add(b);
-            b.setSelected(true);
+    private PressAndHoldHandler handler;
+    public PressAndHoldButton(Icon icon) {
+        super(icon);
+        //getAction().putValue(Action.NAME, text);
+        getAction().putValue(Action.SMALL_ICON, icon);
+    }
+    @Override public void updateUI() {
+        removeMouseListener(handler);
+        super.updateUI();
+        if (handler == null) {
+            handler = new PressAndHoldHandler();
         }
-        ArrowButtonHandler handler = new ArrowButtonHandler(pop);
-        //handler.putValue(Action.NAME, text);
-        handler.putValue(Action.SMALL_ICON, icon);
+        SwingUtilities.updateComponentTreeUI(handler.pop);
         setAction(handler);
         addMouseListener(handler);
         setFocusable(false);
@@ -111,53 +73,64 @@ class PressAndHoldButton extends JToggleButton {
     }
 }
 
-class MenuContext {
-    public final String command;
-    public final Icon small;
-    public final Icon rollover;
-    public MenuContext(String cmd, Color c) {
-        command = cmd;
-        small = new DummyIcon(c);
-        rollover = new DummyIcon2(c);
-    }
-}
-
-class ArrowButtonHandler extends AbstractAction implements MouseListener {
-    private final Timer autoRepeatTimer;
-    private final JPopupMenu pop;
+class PressAndHoldHandler extends AbstractAction implements MouseListener {
+    public final JPopupMenu pop = new JPopupMenu();
+    public final ButtonGroup bg = new ButtonGroup();
     private AbstractButton arrowButton;
-    public ArrowButtonHandler(JPopupMenu popup) {
+    private final Timer holdTimer = new Timer(1000, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            System.out.println("InitialDelay(1000)");
+            if (arrowButton != null && arrowButton.getModel().isPressed() && holdTimer.isRunning()) {
+                holdTimer.stop();
+                pop.show(arrowButton, 0, arrowButton.getHeight());
+                pop.requestFocusInWindow();
+            }
+        }
+    });
+    public PressAndHoldHandler() {
         super();
-        this.pop = popup;
-        autoRepeatTimer = new Timer(1000, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("InitialDelay(1000)");
-                if (arrowButton != null && arrowButton.getModel().isPressed() && autoRepeatTimer.isRunning()) {
-                    autoRepeatTimer.stop();
-                    pop.show(arrowButton, 0, arrowButton.getHeight());
-                    pop.requestFocusInWindow();
+        holdTimer.setInitialDelay(1000);
+        pop.setLayout(new GridLayout(0, 3, 5, 5));
+        for (MenuContext m: makeMenuList()) {
+            AbstractButton b = new JRadioButton(m.command);
+            b.setActionCommand(m.command);
+            b.setForeground(m.color);
+            b.setBorder(BorderFactory.createEmptyBorder());
+            b.addActionListener(new ActionListener() {
+                @Override public void actionPerformed(ActionEvent e) {
+                    System.out.println(bg.getSelection().getActionCommand());
+                    pop.setVisible(false);
                 }
-            }
-        });
-        autoRepeatTimer.setInitialDelay(1000);
-        pop.addPopupMenuListener(new PopupMenuListener() {
-            @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
-            @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
-            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                if (arrowButton != null) {
-                    arrowButton.setSelected(false);
-                }
-            }
-        });
+            });
+            //b.setIcon(m.small);
+            //b.setRolloverIcon(m.rollover);
+            //b.setSelectedIcon(m.rollover);
+            //b.setFocusable(false);
+            //b.setPreferredSize(new Dimension(m.small.getIconWidth(), m.small.getIconHeight()));
+            pop.add(b);
+            bg.add(b);
+        }
+    }
+    private List<MenuContext> makeMenuList() {
+        return Arrays.asList(
+            new MenuContext("BLACK",   Color.BLACK),
+            new MenuContext("BLUE",    Color.BLUE),
+            new MenuContext("CYAN",    Color.CYAN),
+            new MenuContext("GREEN",   Color.GREEN),
+            new MenuContext("MAGENTA", Color.MAGENTA),
+            new MenuContext("ORANGE",  Color.ORANGE),
+            new MenuContext("PINK",    Color.PINK),
+            new MenuContext("RED",     Color.RED),
+            new MenuContext("YELLOW",  Color.YELLOW));
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if (autoRepeatTimer.isRunning()) {
-            System.out.println("actionPerformed");
-            //System.out.println("    " + bg.getSelection().getActionCommand());
-            if (arrowButton != null) {
-                arrowButton.setSelected(false);
+        System.out.println("actionPerformed");
+        if (holdTimer.isRunning()) {
+            ButtonModel model = bg.getSelection();
+            if (model != null) {
+                System.out.println(model.getActionCommand());
             }
-            autoRepeatTimer.stop();
+            holdTimer.stop();
         }
     }
     @Override public void mousePressed(MouseEvent e) {
@@ -165,19 +138,32 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
         Component c = e.getComponent();
         if (SwingUtilities.isLeftMouseButton(e) && c.isEnabled()) {
             arrowButton = (AbstractButton) c;
-            autoRepeatTimer.start();
+            holdTimer.start();
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        autoRepeatTimer.stop();
+        holdTimer.stop();
     }
     @Override public void mouseExited(MouseEvent e) {
-        if (autoRepeatTimer.isRunning()) {
-            autoRepeatTimer.stop();
+        if (holdTimer.isRunning()) {
+            holdTimer.stop();
         }
     }
     @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
     @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
+}
+
+class MenuContext {
+    public final String command;
+    public final Color color;
+//     public final Icon small;
+//     public final Icon rollover;
+    public MenuContext(String cmd, Color c) {
+        command = cmd;
+        color = c;
+//         small = new DummyIcon(c);
+//         rollover = new DummyIcon2(c);
+    }
 }
 
 class MenuArrowIcon implements Icon {
@@ -195,38 +181,38 @@ class MenuArrowIcon implements Icon {
     @Override public int getIconHeight() { return 9; }
 }
 
-class DummyIcon implements Icon {
-    private final Color color;
-    public DummyIcon(Color color) {
-        this.color = color;
-    }
-    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(color);
-        g2.translate(x, y);
-        g2.fillOval(4, 4, 16, 16);
-        //g2.translate(-x, -y);
-        g2.dispose();
-    }
-    @Override public int getIconWidth()  {
-        return 24;
-    }
-    @Override public int getIconHeight() {
-        return 24;
-    }
-}
-
-class DummyIcon2 extends DummyIcon {
-    public DummyIcon2(Color color) {
-        super(color);
-    }
-    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        super.paintIcon(c, g, x, y);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(Color.BLACK);
-        g2.translate(x, y);
-        g2.drawOval(4, 4, 16, 16);
-        //g2.translate(-x, -y);
-        g2.dispose();
-    }
-}
+// class DummyIcon implements Icon {
+//     private final Color color;
+//     public DummyIcon(Color color) {
+//         this.color = color;
+//     }
+//     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.setPaint(color);
+//         g2.translate(x, y);
+//         g2.fillOval(4, 4, 16, 16);
+//         //g2.translate(-x, -y);
+//         g2.dispose();
+//     }
+//     @Override public int getIconWidth()  {
+//         return 24;
+//     }
+//     @Override public int getIconHeight() {
+//         return 24;
+//     }
+// }
+//
+// class DummyIcon2 extends DummyIcon {
+//     public DummyIcon2(Color color) {
+//         super(color);
+//     }
+//     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+//         super.paintIcon(c, g, x, y);
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.setPaint(Color.BLACK);
+//         g2.translate(x, y);
+//         g2.drawOval(4, 4, 16, 16);
+//         //g2.translate(-x, -y);
+//         g2.dispose();
+//     }
+// }
