@@ -52,55 +52,11 @@ public final class MainPanel extends JPanel {
 //         table.getColumnModel().getColumn(MODEL_COLUMN_INDEX).setHeaderValue(Status.INDETERMINATE);
         table.getColumnModel().getColumn(MODEL_COLUMN_INDEX).setHeaderRenderer(renderer);
         table.setFillsViewportHeight(true);
-        table.setComponentPopupMenu(new TablePopupMenu());
 
         model.addTableModelListener(new HeaderCheckBoxHandler(table, MODEL_COLUMN_INDEX));
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
-    }
-
-    class AddRowAction extends AbstractAction {
-        private final boolean isSelected;
-        public AddRowAction(String label, boolean isSelected) {
-            super(label);
-            this.isSelected = isSelected;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {isSelected, 0, ""});
-            table.scrollRectToVisible(table.getCellRect(model.getRowCount() - 1, 0, true));
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        public DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int[] selection = table.getSelectedRows();
-            if (selection.length == 0) {
-                return;
-            }
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete");
-        public TablePopupMenu() {
-            super();
-            add(new AddRowAction("add(true)", true));
-            add(new AddRowAction("add(false)", false));
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l.length > 0);
-            super.show(c, x, y);
-        }
     }
 
     public static void main(String[] args) {
@@ -207,10 +163,45 @@ class HeaderCheckBoxHandler implements TableModelListener {
         TableColumn column = table.getColumnModel().getColumn(vci);
         Object status = column.getHeaderValue();
         TableModel m = table.getModel();
-        if (e.getType() == TableModelEvent.DELETE || e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
-            if (m.getRowCount() == 0) {
-                column.setHeaderValue(Status.DESELECTED);
-            } else if (Status.INDETERMINATE.equals(status)) {
+//         // @see http://terai.xrea.jp/Swing/TableModelEvent.html
+//         if (e.getType() == TableModelEvent.DELETE) {
+//             if (m.getRowCount() == 0) {
+//                 column.setHeaderValue(Status.DESELECTED);
+//             } else if (Status.INDETERMINATE.equals(status)) {
+//                 boolean selected = true;
+//                 boolean deselected = true;
+//                 for (int i = 0; i < m.getRowCount(); i++) {
+//                     Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+//                     selected &= b;
+//                     deselected &= !b;
+//                 }
+//                 if (deselected) {
+//                     column.setHeaderValue(Status.DESELECTED);
+//                 } else if (selected) {
+//                     column.setHeaderValue(Status.SELECTED);
+//                 } else {
+//                     return;
+//                 }
+//             } else {
+//                 column.setHeaderValue(Status.INDETERMINATE);
+//             }
+//         } else if (e.getType() == TableModelEvent.INSERT && !Status.INDETERMINATE.equals(status)) {
+//             boolean selected = Status.DESELECTED.equals(status);
+//             boolean deselected = Status.SELECTED.equals(status);
+//             for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
+//                 Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+//                 selected &= b;
+//                 deselected &= !b;
+//             }
+//             if (selected && m.getRowCount() == 1) {
+//                 column.setHeaderValue(Status.SELECTED);
+//             } else if (selected || deselected) {
+//                 column.setHeaderValue(Status.INDETERMINATE);
+//             }
+//         } else 
+        if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
+            //System.out.println("UPDATE");
+            if (Status.INDETERMINATE.equals(status)) {
                 boolean selected = true;
                 boolean deselected = true;
                 for (int i = 0; i < m.getRowCount(); i++) {
@@ -229,19 +220,6 @@ class HeaderCheckBoxHandler implements TableModelListener {
                     return;
                 }
             } else {
-                column.setHeaderValue(Status.INDETERMINATE);
-            }
-        } else if (e.getType() == TableModelEvent.INSERT && !Status.INDETERMINATE.equals(status)) {
-            boolean selected = Status.DESELECTED.equals(status);
-            boolean deselected = Status.SELECTED.equals(status);
-            for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-                Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-                selected &= b;
-                deselected &= !b;
-            }
-            if (selected && m.getRowCount() == 1) {
-                column.setHeaderValue(Status.SELECTED);
-            } else if (selected || deselected) {
                 column.setHeaderValue(Status.INDETERMINATE);
             }
         }
