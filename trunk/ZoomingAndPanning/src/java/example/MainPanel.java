@@ -81,7 +81,7 @@ class ZoomAndPanHandler extends MouseAdapter {
         Point dragEnd   = transformPoint(dragEndPoint);
         coordTransform.translate(dragEnd.x - dragStart.x, dragEnd.y - dragStart.y);
         dragStartPoint.setLocation(dragEndPoint);
-        ((Component) e.getSource()).repaint();
+        e.getComponent().repaint();
     }
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
         int dir = e.getWheelRotation();
@@ -90,13 +90,16 @@ class ZoomAndPanHandler extends MouseAdapter {
         if (z == zoomRange.getValue()) {
             return;
         }
-        Point p = e.getPoint();
+        Component c = e.getComponent();
+        Rectangle r = c.getBounds();
+        //Point p = e.getPoint();
+        Point p = new Point(r.x + r.width / 2, r.y + r.height / 2);
         Point p1 = transformPoint(p);
         double scale = dir > 0 ? 1 / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
         coordTransform.scale(scale, scale);
         Point p2 = transformPoint(p);
         coordTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
-        ((Component) e.getSource()).repaint();
+        c.repaint();
     }
     //https://forums.oracle.com/thread/1263955
     //How to implement Zoom & Pan in Java using Graphics2D
