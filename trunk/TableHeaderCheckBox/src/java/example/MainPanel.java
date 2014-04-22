@@ -198,7 +198,7 @@ class HeaderCheckBoxHandler implements TableModelListener {
 //             } else if (selected || deselected) {
 //                 column.setHeaderValue(Status.INDETERMINATE);
 //             }
-//         } else 
+//         } else
         if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
             //System.out.println("UPDATE");
             if (Status.INDETERMINATE.equals(status)) {
