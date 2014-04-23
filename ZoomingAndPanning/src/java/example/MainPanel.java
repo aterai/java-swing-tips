@@ -68,8 +68,7 @@ class ZoomAndPanHandler extends MouseAdapter {
     private static final int MIN_ZOOM = -10;
     private static final int MAX_ZOOM = 10;
     private static final int EXTENT = 1;
-    private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(
-        0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
+    private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
     private final AffineTransform coordTransform = new AffineTransform();
     private final Point dragStartPoint = new Point();
     @Override public void mousePressed(MouseEvent e) {
@@ -86,7 +85,7 @@ class ZoomAndPanHandler extends MouseAdapter {
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
         int dir = e.getWheelRotation();
         int z = zoomRange.getValue();
-        zoomRange.setValue(z + (dir > 0 ? -1 : 1));
+        zoomRange.setValue(z + EXTENT * (dir > 0 ? -1 : 1));
         if (z == zoomRange.getValue()) {
             return;
         }
