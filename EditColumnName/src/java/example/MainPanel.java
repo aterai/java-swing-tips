@@ -70,7 +70,7 @@ class TablePopupMenu extends JPopupMenu {
                 String str = textField.getText().trim();
                 if (!str.equals(name)) {
                     column.setHeaderValue(str);
-                    header.repaint();
+                    header.repaint(header.getHeaderRect(index));
                 }
             }
         }
