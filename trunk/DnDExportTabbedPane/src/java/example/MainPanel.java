@@ -397,7 +397,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
     }
     @Override public void dragEnter(DropTargetDragEvent dtde) {
         Component c = dtde.getDropTargetContext().getComponent();
-        System.out.println("DropTargetListener#dragEnter" + c.getName());
+        System.out.println("DropTargetListener#dragEnter: " + c.getName());
     }
 //     @Override public void dragOver(DropTargetDragEvent dtde) {
 //         //System.out.println("dragOver");
