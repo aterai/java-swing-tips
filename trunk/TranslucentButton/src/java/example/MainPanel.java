@@ -46,9 +46,9 @@ public final class MainPanel extends JPanel {
         add(b);
 
         add(makeButton("a"));
-        add(makeButton("bb"));
-        add(makeButton("ccc"));
-        add(makeButton("dddd"));
+        add(makeButton("bbbb"));
+        add(makeButton("cccccccccccccccc"));
+        add(makeButton("dddddddddddddddddddddddddddddddd"));
 
         BufferedImage bi = getFilteredImage(getClass().getResource("test.jpg"));
         setBorder(new CentredBackgroundBorder(bi));
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
                 setVerticalTextPosition(SwingConstants.CENTER);
                 setHorizontalAlignment(SwingConstants.CENTER);
                 setHorizontalTextPosition(SwingConstants.CENTER);
-                setBorder(BorderFactory.createEmptyBorder());
+                setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
                 //setBorderPainted(false);
                 setContentAreaFilled(false);
                 setFocusPainted(false);
@@ -197,13 +197,15 @@ class TranslucentButtonIcon implements Icon {
     private static final Color ST = new Color(1f, 1f, 1f, .2f);
     private static final Color SB = new Color(1f, 1f, 1f, .1f);
     private static final int R = 8;
+    private int width;
+    private int height;
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = c.getWidth();
-        int h = c.getHeight();
+        width  = c.getWidth();
+        height = c.getHeight();
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Shape area = new RoundRectangle2D.Float(x, y, w - 1, h - 1, R, R);
+        Shape area = new RoundRectangle2D.Float(x, y, width - 1, height - 1, R, R);
         Color ssc = TL;
         Color bgc = BR;
         if (c instanceof AbstractButton) {
@@ -216,17 +218,17 @@ class TranslucentButtonIcon implements Icon {
                 bgc = SB;
             }
         }
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
+        g2.setPaint(new GradientPaint(x, y, ssc, x, y + height, bgc, true));
         g2.fill(area);
         g2.setPaint(BR);
         g2.draw(area);
         g2.dispose();
     }
     @Override public int getIconWidth()  {
-        return 100;
+        return Math.max(width, 100);
     }
     @Override public int getIconHeight() {
-        return 24;
+        return Math.max(height, 24);
     }
 }
 
