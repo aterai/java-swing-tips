@@ -46,8 +46,8 @@ public final class MainPanel extends JPanel {
         add(b);
 
         add(makeButton("a"));
-        add(makeButton("bbbb"));
-        add(makeButton("cccccccccccccccc"));
+        add(makeButton("bbbbbbbb"));
+        add(makeButton("cccccccccccccccccccc"));
         add(makeButton("dddddddddddddddddddddddddddddddd"));
 
         BufferedImage bi = getFilteredImage(getClass().getResource("test.jpg"));
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
                 setHorizontalTextPosition(SwingConstants.CENTER);
                 setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
                 setMargin(new Insets(2, 8, 2, 8));
-                //setBorderPainted(false);
+                setBorderPainted(false);
                 setContentAreaFilled(false);
                 setFocusPainted(false);
                 setOpaque(false);
@@ -203,6 +203,7 @@ class TranslucentButtonIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
+            //Insets i = b.getBorder().getBorderInsets(b);
             Insets i = b.getMargin();
             int w = c.getWidth();
             int h = c.getHeight();
@@ -210,7 +211,7 @@ class TranslucentButtonIcon implements Icon {
             height = h - i.top - i.bottom;
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            Shape area = new RoundRectangle2D.Float(x - 8, y, w - 1, height - 1, R, R);
+            Shape area = new RoundRectangle2D.Float(x - i.left, y - i.top, w - 1, h - 1, R, R);
             Color ssc = TL;
             Color bgc = BR;
             ButtonModel m = b.getModel();
@@ -221,7 +222,7 @@ class TranslucentButtonIcon implements Icon {
                 ssc = ST;
                 bgc = SB;
             }
-            g2.setPaint(new GradientPaint(x, y, ssc, x, y + height, bgc, true));
+            g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
             g2.fill(area);
             g2.setPaint(BR);
             g2.draw(area);
@@ -232,7 +233,7 @@ class TranslucentButtonIcon implements Icon {
         return Math.max(width, 100);
     }
     @Override public int getIconHeight() {
-        return Math.max(height, 24);
+        return Math.max(height, 20);
     }
 }
 
