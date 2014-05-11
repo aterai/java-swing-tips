@@ -203,8 +203,8 @@ class TranslucentButtonIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
-            //Insets i = b.getBorder().getBorderInsets(b);
-            Insets i = b.getMargin();
+            //XXX: Insets i = b.getMargin();
+            Insets i = b.getBorder().getBorderInsets(b);
             int w = c.getWidth();
             int h = c.getHeight();
             width  = w - i.left - i.right;
