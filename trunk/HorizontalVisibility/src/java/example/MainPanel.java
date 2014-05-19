@@ -15,12 +15,20 @@ public class MainPanel extends JPanel {
 
         scroller.setModel(textField.getHorizontalVisibility());
 
-        JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+        Box p = Box.createVerticalBox();
+        JScrollPane scroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setViewportView(new JTextField(TEXT));
+        p.add(new JLabel("JScrollPane + VERTICAL_SCROLLBAR_NEVER"));
+        p.add(scroll);
+        p.add(Box.createVerticalStrut(15));
+        p.add(new JLabel("BoundedRangeModel: textField.getHorizontalVisibility()"));
         p.add(textField, BorderLayout.SOUTH);
+        p.add(Box.createVerticalStrut(5));
         p.add(scroller);
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
+        box.add(Box.createHorizontalStrut(5));
         box.add(new JButton(new AbstractAction("setCaretPosition: 0") {
             @Override public void actionPerformed(ActionEvent e) {
                 textField.requestFocusInWindow();
