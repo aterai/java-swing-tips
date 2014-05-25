@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.awt.event.FocusEvent;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -137,7 +138,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //         //setUIProperty("opaque", true);
 //         updateUI();
 //     }
-    @Override protected void processFocusEvent(java.awt.event.FocusEvent e) {
+    @Override protected void processFocusEvent(FocusEvent e) {
         System.out.println("processFocusEvent");
     }
 }
