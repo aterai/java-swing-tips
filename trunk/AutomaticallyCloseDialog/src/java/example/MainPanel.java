@@ -96,7 +96,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
         if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
             JLabel l = (JLabel) e.getComponent();
             if (l.isShowing()) {
-                textArea.append("isShowing=ture\n");
+                textArea.append("isShowing=true\n");
                 atomicDown.set(SECONDS);
                 l.setText(String.format("Closing in %d seconds", SECONDS));
                 timer = makeTimer(l);
