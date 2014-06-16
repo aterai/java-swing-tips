@@ -17,25 +17,27 @@ public class MainPanel extends JPanel {
     public MainPanel(JMenuBar menuBar) {
         super(new BorderLayout());
 
-        updateCheckBox();
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Object o = e.getSource();
-                if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
-                    updateCheckBox();
-                }
-            }
-        };
+        dfbaiCheck.setSelected(UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon"));
+        ddfiCheck.setSelected(UIManager.getBoolean("Tree.drawDashedFocusIndicator"));
 
-        List<JRadioButtonMenuItem> list = new ArrayList<>();
-        searchAllMenuElements(menuBar, list);
-        for (JRadioButtonMenuItem mi: list) {
-            mi.addActionListener(al);
-        }
-
-//         listMenuItems(menuBar)
-//           .filter(mi -> mi instanceof JRadioButtonMenuItem)
-//           .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
+//         ActionListener al = new ActionListener() {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 Object o = e.getSource();
+//                 if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
+//                     updateCheckBox();
+//                 }
+//             }
+//         };
+//
+//         List<JRadioButtonMenuItem> list = new ArrayList<>();
+//         searchAllMenuElements(menuBar, list);
+//         for (JRadioButtonMenuItem mi: list) {
+//             mi.addActionListener(al);
+//         }
+//
+// //         listMenuItems(menuBar)
+// //           .filter(mi -> mi instanceof JRadioButtonMenuItem)
+// //           .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
 
         dfbaiCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -61,26 +63,27 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private void updateCheckBox() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                dfbaiCheck.setSelected(UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon"));
-                ddfiCheck.setSelected(UIManager.getBoolean("Tree.drawDashedFocusIndicator"));
-            }
-        });
+    @Override public void updateUI() {
+        super.updateUI();
+        if (dfbaiCheck != null) {
+            dfbaiCheck.setSelected(UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon"));
+        }
+        if (ddfiCheck != null) {
+            ddfiCheck.setSelected(UIManager.getBoolean("Tree.drawDashedFocusIndicator"));
+        }
     }
 
-    private static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
-        if (me instanceof JRadioButtonMenuItem) {
-            list.add((JRadioButtonMenuItem) me);
-        }
-        MenuElement[] sub = me.getSubElements();
-        if (sub.length != 0) {
-            for (MenuElement e: sub) {
-                searchAllMenuElements(e, list);
-            }
-        }
-    }
+//     private static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
+//         if (me instanceof JRadioButtonMenuItem) {
+//             list.add((JRadioButtonMenuItem) me);
+//         }
+//         MenuElement[] sub = me.getSubElements();
+//         if (sub.length != 0) {
+//             for (MenuElement e: sub) {
+//                 searchAllMenuElements(e, list);
+//             }
+//         }
+//     }
 
 //     static Stream<MenuElement> listMenuItems(MenuElement me) {
 //         MenuElement[] sub = me.getSubElements();
