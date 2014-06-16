@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-                    for (String message : chunks) {
+                    for (String message: chunks) {
                         monitor.setNote(message);
                     }
                 }

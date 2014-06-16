@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
                         cancel(true);
                         return;
                     }
-                    for (String message : chunks) {
+                    for (String message: chunks) {
                         monitor.setNote(message);
                     }
                 }

@@ -137,7 +137,7 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
 //         super.addTab(title, new CloseTabIcon(extraIcon), component);
 //
 //         if (headerViewport == null) {
-//             //for (Component c : getComponents()) {
+//             //for (Component c: getComponents()) {
 //             //    if ("TabbedPane.scrollableViewport".equals(c.getName()))
 //             //      headerViewport = (JViewport) c;
 //             //}
@@ -188,7 +188,7 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         boolean closeit = true;
         // Guaranteed to return a non-null array
         Object[] listeners = eventListenerList.getListenerList();
-        //for (Object i : listeners) {
+        //for (Object i: listeners) {
         for (int j = 0; j < listeners.length; j++) {
             Object i = listeners[j];
             if (i instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) i).closeTab(tabIndexToClose)) {

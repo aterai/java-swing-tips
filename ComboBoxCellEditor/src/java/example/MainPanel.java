@@ -123,7 +123,7 @@ class PluginPanel extends JPanel {
         model.removeAllElements();
         if (node.plugins.length > 0) {
             add(comboBox);
-            for (String s : node.plugins) {
+            for (String s: node.plugins) {
                 model.addElement(s);
             }
             comboBox.setSelectedIndex(node.getSelectedPluginIndex());

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
 
         ButtonGroup group = new ButtonGroup();
         Box box = Box.createVerticalBox();
-        for (LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
+        for (LookAndFeelEnum lnf: LookAndFeelEnum.values()) {
             JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
             group.add(rb); box.add(rb);
         }
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//             for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
+//             for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels())
 //               if ("Nimbus".equals(laf.getName()))
 //                 UIManager.setLookAndFeel(laf.getClassName());
         } catch (ClassNotFoundException | InstantiationException |

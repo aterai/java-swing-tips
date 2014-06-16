@@ -208,7 +208,7 @@ class TableRowTransferHandler extends TransferHandler {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<Object> list = new ArrayList<>();
         indices = table.getSelectedRows();
-        for (int i : indices) {
+        for (int i: indices) {
             list.add(model.getDataVector().elementAt(i));
         }
         Object[] transferedObjects = list.toArray();
