@@ -4,59 +4,58 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
+    private static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
+    private final JCheckBox disabledAreNavigableCheck = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
+        @Override public void actionPerformed(ActionEvent e) {
+            Boolean b = ((JCheckBox) e.getSource()).isSelected();
+            UIManager.put(DISABLED_ARE_NAVIGABLE, b);
+        }
+    });
     private MainPanel() {
         super();
-        Boolean b = UIManager.getBoolean(LookAndFeelUtil.DISABLED_ARE_NAVIGABLE);
-        System.out.println(b);
-        JCheckBox check = LookAndFeelUtil.disabledAreNavigableCheck;
-        check.setSelected(b);
-        add(check);
+        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+        System.out.println(DISABLED_ARE_NAVIGABLE + ": " + b);
+        disabledAreNavigableCheck.setSelected(b);
+        add(disabledAreNavigableCheck);
+
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                ActionListener al = new ActionListener() {
+                    @Override public void actionPerformed(final ActionEvent e) {
+                        EventQueue.invokeLater(new Runnable() {
+                            @Override public void run() {
+                                Object o = e.getSource();
+                                if (o instanceof JRadioButtonMenuItem) {
+                                    JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
+                                    if (rbmi.isSelected()) {
+                                        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+                                        System.out.println(rbmi.getText() + ": " + b);
+                                        disabledAreNavigableCheck.setSelected(b);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                };
+                List<JRadioButtonMenuItem> list = new ArrayList<>();
+                ManuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
+                for (JRadioButtonMenuItem mi: list) {
+                    mi.addActionListener(al);
+                }
+            }
+        });
+
         JPopupMenu popup = new JPopupMenu();
-        initMenu(popup);
+        ManuBarUtil.initMenu(popup);
         setComponentPopupMenu(popup);
         setPreferredSize(new Dimension(320, 240));
     }
-    public static JMenuBar createMenubar() {
-        JMenuBar mb = new JMenuBar();
-        JMenu m = new JMenu("File");
-        initMenu(m);
-        mb.add(m);
-        m = createMenu("Edit");
-        mb.add(m);
-        m = LookAndFeelUtil.createLookAndFeelMenu();
-        mb.add(m);
-        mb.add(Box.createGlue());
-        m = new JMenu("Help");
-        m.add("About");
-        mb.add(m);
-
-        return mb;
-    }
-    private static JMenu createMenu(String key) {
-        JMenu menu = new JMenu(key);
-        for (String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
-            JMenuItem m = new JMenuItem(k);
-            m.setEnabled(false);
-            menu.add(m);
-        }
-        return menu;
-    }
-    private static void initMenu(JComponent p) {
-        JMenuItem item = new JMenuItem("Open(disabled)");
-        item.setEnabled(false);
-        p.add(item);
-        item = new JMenuItem("Save(disabled)");
-        item.setEnabled(false);
-        p.add(item);
-        p.add(new JSeparator());
-        p.add(new JMenuItem(new ExitAction()));
-    }
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -67,13 +66,16 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
 //         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (Exception e) {
-//             e.printStackTrace();
+//         } catch (ClassNotFoundException | InstantiationException |
+//                  IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//             ex.printStackTrace();
 //         }
+        JMenuBar menuBar = ManuBarUtil.createMenuBar();
+
         JFrame frame = new JFrame("@title@");
-        frame.setJMenuBar(createMenubar());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
+        frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -110,89 +112,98 @@ class ExitAction extends AbstractAction {
     }
 }
 
-//@see SwingSet2.java
+final class ManuBarUtil {
+    private ManuBarUtil() { /* Singleton */ }
+    public static JMenuBar createMenuBar() {
+        JMenuBar mb = new JMenuBar();
+        JMenu m = new JMenu("File");
+        initMenu(m);
+        mb.add(m);
+        m = createMenu("Edit");
+        mb.add(m);
+        m = LookAndFeelUtil.createLookAndFeelMenu();
+        mb.add(m);
+        mb.add(Box.createGlue());
+        m = new JMenu("Help");
+        m.add("About");
+        mb.add(m);
+        return mb;
+    }
+    private static JMenu createMenu(String key) {
+        JMenu menu = new JMenu(key);
+        for (String k: Arrays.asList("Cut", "Copy", "Paste", "Delete")) {
+            JMenuItem m = new JMenuItem(k);
+            m.setEnabled(false);
+            menu.add(m);
+        }
+        return menu;
+    }
+    public static void initMenu(JComponent p) {
+        JMenuItem item = new JMenuItem("Open(disabled)");
+        item.setEnabled(false);
+        p.add(item);
+        item = new JMenuItem("Save(disabled)");
+        item.setEnabled(false);
+        p.add(item);
+        p.add(new JSeparator());
+        p.add(new JMenuItem(new ExitAction()));
+    }
+    public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
+        if (me instanceof JRadioButtonMenuItem) {
+            list.add((JRadioButtonMenuItem) me);
+        }
+        MenuElement[] sub = me.getSubElements();
+        if (sub.length != 0) {
+            for (MenuElement e: sub) {
+                searchAllMenuElements(e, list);
+            }
+        }
+    }
+}
+
+//http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
-    // Possible Look & Feels
-    private static final String MAC     = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
-    private static final String METAL   = "javax.swing.plaf.metal.MetalLookAndFeel";
-    private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-    private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-    private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
-
-    // The current Look & Feel
-    private static String currentLookAndFeel = METAL;
-
-    // Test: disabledAreNavigable
-    public static final String DISABLED_ARE_NAVIGABLE = "MenuItem.disabledAreNavigable";
-    public static JCheckBox disabledAreNavigableCheck = new JCheckBox(new AbstractAction(DISABLED_ARE_NAVIGABLE) {
-        @Override public void actionPerformed(ActionEvent e) {
-            Boolean b = ((JCheckBox) e.getSource()).isSelected();
-            UIManager.put(DISABLED_ARE_NAVIGABLE, b);
-        }
-    });
-
+    private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
     private LookAndFeelUtil() { /* Singleton */ }
-
     public static JMenu createLookAndFeelMenu() {
-        ButtonGroup lafMenuGroup = new ButtonGroup();
-        JMenu lafMenu = new JMenu("Look&Feel");
-        JMenuItem mi = createLafMenuItem(lafMenu, lafMenuGroup, "Metal", METAL);
-        mi.setSelected(true); //this is the default l&f
-        createLafMenuItem(lafMenu, lafMenuGroup, "Mac",     MAC);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Motif",   MOTIF);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Windows", WINDOWS);
-        createLafMenuItem(lafMenu, lafMenuGroup, "GTK",     GTK);
-        createLafMenuItem(lafMenu, lafMenuGroup, "Nimbus",  NIMBUS);
-        return lafMenu;
-    }
-    private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
-        JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
-        lafMenuGroup.add(mi);
-        mi.addActionListener(new ChangeLookAndFeelAction(laf));
-        mi.setEnabled(isAvailableLookAndFeel(laf));
-        return mi;
-    }
-    private static boolean isAvailableLookAndFeel(String laf) {
-        try {
-            Class lnfClass = Class.forName(laf);
-            LookAndFeel newLAF = (LookAndFeel) lnfClass.newInstance();
-            return newLAF.isSupportedLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            return false;
+        JMenu menu = new JMenu("LookAndFeel");
+        ButtonGroup lookAndFeelRadioGroup = new ButtonGroup();
+        for (UIManager.LookAndFeelInfo lafInfo: UIManager.getInstalledLookAndFeels()) {
+            menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lookAndFeelRadioGroup));
         }
+        return menu;
     }
-    private static class ChangeLookAndFeelAction extends AbstractAction {
-        private final String laf;
-        protected ChangeLookAndFeelAction(String laf) {
-            super("ChangeTheme");
-            this.laf = laf;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            setLookAndFeel(laf);
-        }
+    private static JRadioButtonMenuItem createLookAndFeelItem(String lafName, String lafClassName, final ButtonGroup lookAndFeelRadioGroup) {
+        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem();
+        lafItem.setSelected(lafClassName.equals(lookAndFeel));
+        lafItem.setHideActionText(true);
+        lafItem.setAction(new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                ButtonModel m = lookAndFeelRadioGroup.getSelection();
+                try {
+                    setLookAndFeel(m.getActionCommand());
+                } catch (ClassNotFoundException | InstantiationException |
+                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        lafItem.setText(lafName);
+        lafItem.setActionCommand(lafClassName);
+        lookAndFeelRadioGroup.add(lafItem);
+        return lafItem;
     }
-    private static void setLookAndFeel(String laf) {
-        if (currentLookAndFeel.equals(laf)) {
-            return;
-        }
-        currentLookAndFeel = laf;
-        try {
-            UIManager.setLookAndFeel(currentLookAndFeel);
+    private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
+        if (!oldLookAndFeel.equals(lookAndFeel)) {
+            UIManager.setLookAndFeel(lookAndFeel);
+            LookAndFeelUtil.lookAndFeel = lookAndFeel;
             updateLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-            System.out.println("Failed loading L&F: " + currentLookAndFeel);
+            //firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
         }
-
-        // Test: disabledAreNavigable
-        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
-        System.out.format("%s %s: %s%n", laf, DISABLED_ARE_NAVIGABLE, b);
-        disabledAreNavigableCheck.setSelected(b);
     }
     private static void updateLookAndFeel() {
-        for (Window window : Frame.getWindows()) {
+        for (Window window: Frame.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
     }

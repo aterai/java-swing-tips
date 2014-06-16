@@ -242,7 +242,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
         }
         colHeights.set(column, prefH);
         int maxH = prefH;
-        for (Integer colHeight : colHeights) {
+        for (Integer colHeight: colHeights) {
             if (colHeight > maxH) {
                 maxH = colHeight;
             }
