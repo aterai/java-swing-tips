@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+//import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -31,6 +32,10 @@ public class MainPanel extends JPanel {
         for (JRadioButtonMenuItem mi: list) {
             mi.addActionListener(al);
         }
+
+//         listMenuItems(menuBar)
+//           .filter(mi -> mi instanceof JRadioButtonMenuItem)
+//           .forEach(mi -> ((JRadioButtonMenuItem) mi).addActionListener(al));
 
         dfbaiCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -76,6 +81,15 @@ public class MainPanel extends JPanel {
             }
         }
     }
+
+//     static Stream<MenuElement> listMenuItems(MenuElement me) {
+//         MenuElement[] sub = me.getSubElements();
+//         if (sub.length != 0) {
+//             return Arrays.stream(sub).flatMap(MainPanel::listMenuItems);
+//         } else {
+//             return Stream.of(me);
+//         }
+//     }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
