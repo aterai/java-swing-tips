@@ -5,20 +5,22 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.List;
+//import java.util.List;
 //import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
 public class MainPanel extends JPanel {
-    private final JCheckBox dfbaiCheck = new JCheckBox("Tree.drawsFocusBorderAroundIcon");
-    private final JCheckBox ddfiCheck  = new JCheckBox("Tree.drawDashedFocusIndicator");
+    private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
+    private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
+    private final JCheckBox dfbaiCheck = new JCheckBox(DRAWS_FOCUS_BORDER_AROUND_ICON);
+    private final JCheckBox ddfiCheck  = new JCheckBox(DRAW_DASHED_FOCUS_INDICATOR);
     private final JTree tree = new JTree();
-    public MainPanel(JMenuBar menuBar) {
+    public MainPanel() {
         super(new BorderLayout());
 
-        dfbaiCheck.setSelected(UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon"));
-        ddfiCheck.setSelected(UIManager.getBoolean("Tree.drawDashedFocusIndicator"));
+        dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
+        ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
 
 //         ActionListener al = new ActionListener() {
 //             @Override public void actionPerformed(ActionEvent e) {
@@ -42,14 +44,14 @@ public class MainPanel extends JPanel {
         dfbaiCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean b = ((JCheckBox) e.getSource()).isSelected();
-                UIManager.put("Tree.drawsFocusBorderAroundIcon", b);
+                UIManager.put(DRAWS_FOCUS_BORDER_AROUND_ICON, b);
                 SwingUtilities.updateComponentTreeUI(tree);
             }
         });
         ddfiCheck.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 boolean b = ((JCheckBox) e.getSource()).isSelected();
-                UIManager.put("Tree.drawDashedFocusIndicator", b);
+                UIManager.put(DRAW_DASHED_FOCUS_INDICATOR, b);
                 SwingUtilities.updateComponentTreeUI(tree);
             }
         });
@@ -66,10 +68,10 @@ public class MainPanel extends JPanel {
     @Override public void updateUI() {
         super.updateUI();
         if (dfbaiCheck != null) {
-            dfbaiCheck.setSelected(UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon"));
+            dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
         }
         if (ddfiCheck != null) {
-            ddfiCheck.setSelected(UIManager.getBoolean("Tree.drawDashedFocusIndicator"));
+            ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
         }
     }
 
@@ -112,7 +114,7 @@ public class MainPanel extends JPanel {
         mb.add(LookAndFeelUtil.createLookAndFeelMenu());
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(mb));
+        frame.getContentPane().add(new MainPanel());
         frame.setJMenuBar(mb);
         frame.pack();
         frame.setLocationRelativeTo(null);
