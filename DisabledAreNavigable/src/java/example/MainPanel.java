@@ -24,37 +24,44 @@ public final class MainPanel extends JPanel {
         disabledAreNavigableCheck.setSelected(b);
         add(disabledAreNavigableCheck);
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                ActionListener al = new ActionListener() {
-                    @Override public void actionPerformed(final ActionEvent e) {
-                        EventQueue.invokeLater(new Runnable() {
-                            @Override public void run() {
-                                Object o = e.getSource();
-                                if (o instanceof JRadioButtonMenuItem) {
-                                    JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
-                                    if (rbmi.isSelected()) {
-                                        Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
-                                        System.out.println(rbmi.getText() + ": " + b);
-                                        disabledAreNavigableCheck.setSelected(b);
-                                    }
-                                }
-                            }
-                        });
-                    }
-                };
-                List<JRadioButtonMenuItem> list = new ArrayList<>();
-                ManuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
-                for (JRadioButtonMenuItem mi: list) {
-                    mi.addActionListener(al);
-                }
-            }
-        });
+//         EventQueue.invokeLater(new Runnable() {
+//             @Override public void run() {
+//                 ActionListener al = new ActionListener() {
+//                     @Override public void actionPerformed(final ActionEvent e) {
+//                         EventQueue.invokeLater(new Runnable() {
+//                             @Override public void run() {
+//                                 Object o = e.getSource();
+//                                 if (o instanceof JRadioButtonMenuItem) {
+//                                     JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) o;
+//                                     if (rbmi.isSelected()) {
+//                                         Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+//                                         System.out.println(rbmi.getText() + ": " + b);
+//                                         disabledAreNavigableCheck.setSelected(b);
+//                                     }
+//                                 }
+//                             }
+//                         });
+//                     }
+//                 };
+//                 List<JRadioButtonMenuItem> list = new ArrayList<>();
+//                 ManuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
+//                 for (JRadioButtonMenuItem mi: list) {
+//                     mi.addActionListener(al);
+//                 }
+//             }
+//         });
 
         JPopupMenu popup = new JPopupMenu();
         ManuBarUtil.initMenu(popup);
         setComponentPopupMenu(popup);
         setPreferredSize(new Dimension(320, 240));
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        if (disabledAreNavigableCheck != null) {
+            Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
+            disabledAreNavigableCheck.setSelected(b);
+        }
     }
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
