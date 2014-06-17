@@ -79,6 +79,15 @@ public final class MainPanel extends JPanel {
 //         }
         JMenuBar menuBar = ManuBarUtil.createMenuBar();
 
+//         Stream.of(menuBar)
+//           .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
+//               @Override public Stream<MenuElement> apply(MenuElement me) {
+//                   return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(e -> apply(e)));
+//               }
+//           })
+//           .filter(mi -> mi instanceof JRadioButtonMenuItem)
+//           .forEach(mi -> System.out.println("----\n" + mi.getClass()));
+
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
