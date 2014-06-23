@@ -226,7 +226,9 @@ final class LookAndFeelUtil {
     }
     private static void updateLookAndFeel() {
         for (Window window: Frame.getWindows()) {
-            SwingUtilities.updateComponentTreeUI(window);
+            if (window instanceof JFrame) {
+                SwingUtilities.updateComponentTreeUI(((JFrame) window).getContentPane());
+            }
         }
     }
 }
