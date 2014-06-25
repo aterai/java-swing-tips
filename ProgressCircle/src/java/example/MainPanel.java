@@ -98,9 +98,9 @@ class ProgressCircleUI extends BasicProgressBarUI {
             return;
         }
 
-        // draw the cells
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         double degree = 360 * progressBar.getPercentComplete();
         double sz = Math.min(barRectWidth, barRectHeight);
         double cx = b.left + barRectWidth  * .5;
@@ -119,9 +119,11 @@ class ProgressCircleUI extends BasicProgressBarUI {
         foreground.subtract(hole);
         background.subtract(hole);
 
+        // draw the track
         g2.setPaint(new Color(0xDDDDDD));
         g2.fill(background);
 
+        // draw the circular sector
         //AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
         //at.translate(-(barRectWidth + b.left * 2), 0);
         //AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(degree), cx, cy);
