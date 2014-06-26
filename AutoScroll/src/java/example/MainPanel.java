@@ -73,7 +73,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
         this.scroller = new Timer(DELAY, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 Container c = SwingUtilities.getAncestorOfClass(JViewport.class, label);
-                if (c != null) {
+                if (c instanceof JViewport) {
                     JViewport vport = (JViewport) c;
                     Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
                     vp.translate(move.x, move.y);
@@ -152,7 +152,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         scroller.stop();
         JComponent jc = (JComponent) e.getComponent();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, jc);
-        if (c != null) {
+        if (c instanceof JViewport) {
             JViewport vport = (JViewport) c;
             Point cp = SwingUtilities.convertPoint(jc, e.getPoint(), vport);
             int dx = startPt.x - cp.x;

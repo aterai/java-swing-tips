@@ -216,7 +216,7 @@ class TableRowTransferHandler extends TransferHandler {
     }
     private JInternalFrame getInternalFrame(JComponent c) {
         Container cn = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
-        if (cn != null) {
+        if (cn instanceof JInternalFrame) {
             return (JInternalFrame) cn;
         }
         return null;
@@ -230,7 +230,7 @@ class TableRowTransferHandler extends TransferHandler {
         if (!target.equals(source)) {
             JDesktopPane dp = null;
             Container cn = SwingUtilities.getAncestorOfClass(JDesktopPane.class, target);
-            if (cn != null) {
+            if (cn instanceof JDesktopPane) {
                 dp = (JDesktopPane) cn;
             }
 

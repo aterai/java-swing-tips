@@ -147,7 +147,7 @@ class ResizeMouseListener extends MouseAdapter {
         startPos = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
         startingBounds = c.getBounds();
         Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
-        if (parent != null) {
+        if (parent instanceof JLayeredPane) {
             ((JLayeredPane) parent).moveToFront(c);
         }
     }
