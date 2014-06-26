@@ -148,7 +148,7 @@ class FishEyeTable extends JTable {
     @Override public void doLayout() {
         super.doLayout();
         Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
-        if (p == null) {
+        if (!(p instanceof JViewport)) {
             return;
         }
         int h = ((JViewport) p).getExtentSize().height;

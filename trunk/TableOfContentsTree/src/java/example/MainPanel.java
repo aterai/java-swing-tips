@@ -238,7 +238,7 @@ class TableOfContentsTree extends JTree {
         }
         // we should consider a non-visible area above
         Container container = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
-        if (container != null) {
+        if (container instanceof JScrollPane) {
             JScrollPane pane = (JScrollPane) container;
             JScrollBar bar = pane.getHorizontalScrollBar();
             if (bar != null && bar.isVisible()) {
