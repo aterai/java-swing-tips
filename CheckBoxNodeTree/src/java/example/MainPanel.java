@@ -169,7 +169,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         super.updateUI();
         setName("Tree.cellEditor");
     }
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {

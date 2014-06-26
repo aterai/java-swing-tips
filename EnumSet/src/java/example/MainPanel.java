@@ -191,7 +191,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         return f;
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {

@@ -108,7 +108,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         return getValue();
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {

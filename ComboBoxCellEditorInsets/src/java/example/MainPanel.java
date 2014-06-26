@@ -136,7 +136,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         return this;
     }
 
-    //Copid from DefaultCellEditor.EditorDelegate
+    //Copied from DefaultCellEditor.EditorDelegate
     @Override public Object getCellEditorValue() {
         return comboBox.getSelectedItem();
     }
@@ -155,7 +155,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         return true;
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {

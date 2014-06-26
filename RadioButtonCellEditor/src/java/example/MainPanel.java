@@ -104,7 +104,7 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
         return isSelected();
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {

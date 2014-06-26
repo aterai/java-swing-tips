@@ -346,7 +346,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         //}
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
 //     protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
@@ -535,7 +535,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         //}
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     protected EventListenerList listenerList = new EventListenerList();
     protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
