@@ -144,7 +144,7 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
         return "";
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
 

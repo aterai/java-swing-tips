@@ -127,7 +127,7 @@ class SliderEditor extends JSlider implements TableCellEditor {
         return Integer.valueOf(getValue());
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
 

@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 //import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
-//Copid from
+//Copied from
 //JTabbedPane with close Icons | Oracle Forums
 //https://community.oracle.com/thread/1356993
 

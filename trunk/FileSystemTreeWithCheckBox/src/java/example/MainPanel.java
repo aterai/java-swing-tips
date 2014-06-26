@@ -378,7 +378,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         //}
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
 //     protected transient ChangeEvent changeEvent;
 

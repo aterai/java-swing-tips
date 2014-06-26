@@ -154,7 +154,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
         return bg.getSelection().getActionCommand();
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean isCellEditable(EventObject e) {

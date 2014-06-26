@@ -116,7 +116,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         return true;
     }
 
-    //Copid from AbstractCellEditor
+    //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject e) {

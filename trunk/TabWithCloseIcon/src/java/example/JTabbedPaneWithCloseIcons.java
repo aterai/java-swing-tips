@@ -32,7 +32,7 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
     }
 }
 
-//Copid from
+//Copied from
 //JTabbedPane with close Icons | Oracle Forums
 //https://community.oracle.com/thread/1356993
 /**
