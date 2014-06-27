@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
                 addHighlight(element, true);
             }
         } else { //inline
-            Enumeration e = attrs.getAttributeNames();
+            Enumeration<?> e = attrs.getAttributeNames();
             while (e.hasMoreElements()) {
                 Object obj = attrs.getAttribute(e.nextElement());
                 //System.out.println("AttributeNames: " + obj);
