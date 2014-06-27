@@ -171,14 +171,14 @@ class XMLTreeNode implements TreeNode {
             list.add(new XMLTreeNode(cn.item(i), this));
         }
     }
-    @Override public Enumeration children() {
+    @Override public Enumeration<XMLTreeNode> children() {
         if (list == null) {
             loadChildren();
         }
         final Iterator<XMLTreeNode> iter = list.iterator();
-        return new Enumeration() {
+        return new Enumeration<XMLTreeNode>() {
             @Override public boolean hasMoreElements() { return iter.hasNext(); }
-            @Override public Object nextElement() { return iter.next(); }
+            @Override public XMLTreeNode nextElement() { return iter.next(); }
         };
     }
     @Override public boolean getAllowsChildren() { //NOPMD
