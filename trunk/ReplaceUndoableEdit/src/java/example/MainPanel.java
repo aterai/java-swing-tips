@@ -135,16 +135,16 @@ class DocumentFilterUndoManager extends UndoManager {
     private CompoundEdit compoundEdit;
     public final DocumentFilter undoFilter = new DocumentFilter() {
         @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-             if (length == 0) {
-                 fb.insertString(offset, text, attrs);
-             } else {
-                 compoundEdit = new CompoundEdit();
-                 fb.replace(offset, length, text, attrs);
-                 compoundEdit.end();
-                 addEdit(compoundEdit);
-                 compoundEdit = null;
-             }
-         }
+            if (length == 0) {
+                fb.insertString(offset, text, attrs);
+            } else {
+                compoundEdit = new CompoundEdit();
+                fb.replace(offset, length, text, attrs);
+                compoundEdit.end();
+                addEdit(compoundEdit);
+                compoundEdit = null;
+            }
+        }
     };
     @Override public void undoableEditHappened(UndoableEditEvent e) {
         if (compoundEdit == null) {
