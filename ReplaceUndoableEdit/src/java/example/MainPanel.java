@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         if (d instanceof AbstractDocument) {
             AbstractDocument doc = (AbstractDocument) d;
             doc.addUndoableEditListener(undoManager2);
-            doc.setDocumentFilter(undoManager2.undoFilter);
+            doc.setDocumentFilter(undoManager2.getDocumentFilter());
         }
 
         JPanel p = new JPanel();
@@ -133,7 +133,7 @@ class CustomUndoPlainDocument extends PlainDocument {
 
 class DocumentFilterUndoManager extends UndoManager {
     private CompoundEdit compoundEdit;
-    public final DocumentFilter undoFilter = new DocumentFilter() {
+    private final transient DocumentFilter undoFilter = new DocumentFilter() {
         @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
             if (length == 0) {
                 fb.insertString(offset, text, attrs);
@@ -146,6 +146,9 @@ class DocumentFilterUndoManager extends UndoManager {
             }
         }
     };
+    public DocumentFilter getDocumentFilter() {
+        return undoFilter;
+    }
     @Override public void undoableEditHappened(UndoableEditEvent e) {
         if (compoundEdit == null) {
             addEdit(e.getEdit());
