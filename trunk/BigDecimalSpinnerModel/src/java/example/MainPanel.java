@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
         //TEST:
         StringBuilder sb = new StringBuilder();
         double d = 29.7 - 29.6 - 0.1;
-        sb.append(String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, 0.1, d >= 0));
-        sb.append(String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, 0.1, Math.abs(d) < 1.0e-14));
-        sb.append(String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, 0.1, Math.abs(d) < 1.0e-15));
+        sb.append(String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, 0.1, d >= 0))
+          .append(String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, 0.1, Math.abs(d) < 1.0e-14))
+          .append(String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, 0.1, Math.abs(d) < 1.0e-15));
 
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea(sb.toString())));
