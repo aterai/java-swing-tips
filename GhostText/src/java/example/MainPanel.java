@@ -4,12 +4,15 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.*;
 import javax.swing.*;
+import javax.swing.plaf.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JTextField field1 = new JTextField("Please enter your E-mail address");
     private final JTextField field2 = new JTextField("History Search");
+    private final JTextField field3 = new JTextField();
     public MainPanel() {
         super(new BorderLayout());
         field1.addFocusListener(new PlaceholderFocusListener(field1));
@@ -18,8 +21,10 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("E-mail", field1));
-        box.add(Box.createVerticalStrut(5));
+        box.add(Box.createVerticalStrut(10));
         box.add(makePanel("Search", field2));
+        box.add(Box.createVerticalStrut(10));
+        box.add(makePanel("JLayer", new JLayer<JTextComponent>(field3, new PlaceholderLayerUI("JLayer version"))));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
@@ -72,6 +77,38 @@ class PlaceholderFocusListener implements FocusListener {
         if ("".equals(tf.getText().trim())) {
             tf.setForeground(INACTIVE);
             tf.setText(hintMessage);
+        }
+    }
+}
+
+class PlaceholderLayerUI extends LayerUI<JTextComponent> {
+    private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
+//     private final String hintMessage;
+    private final JLabel hint;
+    public PlaceholderLayerUI(String hintMessage) {
+        super();
+        this.hint = new JLabel(hintMessage);
+        hint.setForeground(INACTIVE);
+    }
+    @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        if (c instanceof JLayer) {
+            JLayer jlayer = (JLayer) c;
+            JTextComponent tc = (JTextComponent) jlayer.getView();
+            if (tc.getText().length() == 0 && !tc.hasFocus()) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setPaint(INACTIVE);
+                Insets i = tc.getInsets();
+                Dimension d = hint.getPreferredSize();
+                SwingUtilities.paintComponent(g2, hint, tc, i.left, i.top, d.width, d.height);
+//                 int baseline = tc.getBaseline(tc.getWidth(), tc.getHeight());
+//                 Font font = tc.getFont();
+//                 FontRenderContext frc = g2.getFontRenderContext();
+//                 TextLayout tl = new TextLayout(hintMessage, font, frc);
+//                 tl.draw(g2, i.left + 2, baseline);
+                g2.dispose();
+            }
+            tc.repaint();
         }
     }
 }
