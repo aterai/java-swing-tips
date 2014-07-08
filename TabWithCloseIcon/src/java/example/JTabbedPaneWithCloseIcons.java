@@ -10,25 +10,22 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane {
         super();
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                tabClicked(e);
+                int index = indexAtLocation(e.getX(), e.getY());
+                if (index < 0) {
+                    return;
+                }
+                Rectangle rect = ((SimpleCloseTabIcon) getIconAt(index)).getBounds();
+                if (rect.contains(e.getX(), e.getY())) {
+                    removeTabAt(index);
+                }
             }
         });
     }
     @Override public void addTab(String title, Component component) {
-        this.addTab(title, component, null);
+        super.addTab(title, new SimpleCloseTabIcon(null), component);
     }
-    public void addTab(String title, Component component, Icon extraIcon) {
-        super.addTab(title, new SimpleCloseTabIcon(extraIcon), component);
-    }
-    private void tabClicked(MouseEvent e) {
-        int index = getUI().tabForCoordinate(this, e.getX(), e.getY());
-        if (index < 0) {
-            return;
-        }
-        Rectangle rect = ((SimpleCloseTabIcon) getIconAt(index)).getBounds();
-        if (rect.contains(e.getX(), e.getY())) {
-            removeTabAt(index);
-        }
+    @Override public void addTab(String title, Icon icon, Component component) {
+        super.addTab(title, new SimpleCloseTabIcon(icon), component);
     }
 }
 
