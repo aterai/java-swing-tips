@@ -37,13 +37,13 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     @Override protected LayoutManager createLayoutManager() {
         return new CloseButtonTabbedPaneLayout();
     }
-    //add 40 to the tab size to allow room for the close button and 8 to the height
+    //add 40 to the tab size to allow room for the close button and 2 + 2 to the height
     @Override protected Insets getTabInsets(int tabPlacement, int tabIndex) {
         //note that the insets that are returned to us are not copies.
         Insets defaultInsets = (Insets) super.getTabInsets(tabPlacement, tabIndex).clone();
         defaultInsets.right  += 40;
-        defaultInsets.top    += 4;
-        defaultInsets.bottom += 4;
+        defaultInsets.top    += 2;
+        defaultInsets.bottom += 2;
         return defaultInsets;
     }
     private class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
@@ -55,13 +55,17 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
                 closeButtons.add(new CloseButton(tabPane, closeButtons.size()));
             }
             Rectangle rect = new Rectangle();
+            int selectedIndex = tabPane.getSelectedIndex();
+            int tabPlacement = tabPane.getTabPlacement();
             int i;
             for (i = 0; i < tabPane.getTabCount(); i++) {
                 rect = getTabBounds(i, rect);
                 JButton closeButton = closeButtons.get(i);
-                //shift the close button 3 down from the top of the pane and 20 to the left
-                closeButton.setLocation(rect.x + rect.width - 20, rect.y + 5);
-                closeButton.setSize(15, 15);
+                Dimension d = closeButton.getPreferredSize();
+                boolean isSeleceted = i == tabPane.getSelectedIndex();
+                int x = getTabLabelShiftX(tabPlacement, i, isSeleceted) + rect.x + rect.width - d.width - 2;
+                int y = getTabLabelShiftY(tabPlacement, i, isSeleceted) + rect.y + (rect.height - d.height) / 2;
+                closeButton.setBounds(x, y, d.width, d.height);
                 tabPane.add(closeButton);
             }
             for (; i < closeButtons.size(); i++) {
@@ -76,7 +80,12 @@ class CloseButton extends JButton implements UIResource {
     public CloseButton(JTabbedPane tabPane, int index) {
         super(new CloseButtonAction(tabPane, index));
         setToolTipText("Close this tab");
-        setMargin(new Insets(0, 0, 0, 0));
+        //setMargin(new Insets(0, 0, 0, 0));
+        setBorder(BorderFactory.createEmptyBorder());
+        setFocusPainted(false);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+        setRolloverEnabled(false);
         addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 setForeground(Color.RED);
@@ -85,6 +94,9 @@ class CloseButton extends JButton implements UIResource {
                 setForeground(Color.BLACK);
             }
         });
+    }
+    @Override public Dimension getPreferredSize() {
+        return new Dimension(16, 16);
     }
 }
 
