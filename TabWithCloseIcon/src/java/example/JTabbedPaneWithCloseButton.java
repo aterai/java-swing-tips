@@ -55,7 +55,6 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
                 closeButtons.add(new CloseButton(tabPane, closeButtons.size()));
             }
             Rectangle rect = new Rectangle();
-            int selectedIndex = tabPane.getSelectedIndex();
             int tabPlacement = tabPane.getTabPlacement();
             int i;
             for (i = 0; i < tabPane.getTabCount(); i++) {
