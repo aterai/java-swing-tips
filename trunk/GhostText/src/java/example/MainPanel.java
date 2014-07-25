@@ -108,7 +108,21 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
 //                 tl.draw(g2, i.left + 2, baseline);
                 g2.dispose();
             }
-            tc.repaint();
         }
+    }
+    @Override public void installUI(JComponent c) {
+        super.installUI(c);
+        if (c instanceof JLayer) {
+            ((JLayer) c).setLayerEventMask(AWTEvent.FOCUS_EVENT_MASK);
+        }
+    }
+    @Override public void uninstallUI(JComponent c) {
+        super.uninstallUI(c);
+        if (c instanceof JLayer) {
+            ((JLayer) c).setLayerEventMask(0);
+        }
+    }
+    @Override public void processFocusEvent(FocusEvent e, JLayer<? extends JTextComponent> l) {
+        l.getView().repaint();
     }
 }
