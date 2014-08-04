@@ -111,7 +111,7 @@ final class SizeVariantUtil {
 //                 cb.setFont(new FontUIResource(new Font(null)));
 //                 cb.putClientProperty("JComponent.sizeVariant", key);
 //             }
-            jc.setFont(new FontUIResource(new Font(null)));
+            jc.setFont(new FontUIResource(jc.getFont()));
             jc.putClientProperty("JComponent.sizeVariant", key);
         }
         for (Component c: me.getComponents()) {
