@@ -148,9 +148,14 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
             } else {
                 v.paint(g, textRect);
             }
-            if (b.hasFocus() && b.isFocusPainted() && textRect.width > 0 && textRect.height > 0) {
+            if (b.hasFocus() && b.isFocusPainted()) {
                 paintFocus(g, textRect, size);
             }
+        }
+    }
+    @Override protected void paintFocus(Graphics g, Rectangle textRect, Dimension size) {
+        if (textRect.width > 0 && textRect.height > 0) {
+            super.paintFocus(g, textRect, size);
         }
     }
 }
@@ -204,9 +209,14 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
             } else {
                 v.paint(g, textRect);
             }
-            if (b.hasFocus() && b.isFocusPainted() && textRect.width > 0 && textRect.height > 0) {
+            if (b.hasFocus() && b.isFocusPainted()) {
                 paintFocus(g, textRect, size);
             }
+        }
+    }
+    @Override protected void paintFocus(Graphics g, Rectangle textRect, Dimension size) {
+        if (textRect.width > 0 && textRect.height > 0) {
+            super.paintFocus(g, textRect, size);
         }
     }
 }
