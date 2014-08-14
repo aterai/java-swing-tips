@@ -10,12 +10,12 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final int MAXHISTORY = 3;
+    private static final int MAX_HISTORY = 3;
     private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
 
-    private final List<String> fh = new ArrayList<>();
+    private final List<String> fileHistoryCache = new ArrayList<>();
     private final JMenuItem noFile = new JMenuItem("なし");
-    private JMenu fileHistory;
+    private JMenu fileHistoryMenu;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -37,49 +37,49 @@ public final class MainPanel extends JPanel {
 
     private void initHistory() {
         JMenu fm = BAR_FACTORY.getMenu("file");
-        if (fileHistory == null) {
-            fileHistory = new JMenu("最近使ったファイル(F)");
-            fileHistory.setMnemonic('F');
+        if (fileHistoryMenu == null) {
+            fileHistoryMenu = new JMenu("最近使ったファイル(F)");
+            fileHistoryMenu.setMnemonic('F');
             JMenuItem exit = BAR_FACTORY.getMenuItem("exit");
             fm.remove(exit);
-            fm.add(fileHistory);
+            fm.add(fileHistoryMenu);
             fm.addSeparator();
             fm.add(exit);
         } else {
-            fileHistory.removeAll();
+            fileHistoryMenu.removeAll();
         }
-        if (fh.size() <= 0) {
+        if (fileHistoryCache.isEmpty()) {
             noFile.setEnabled(false);
-            fileHistory.add(noFile);
+            fileHistoryMenu.add(noFile);
         } else {
             fm.remove(noFile);
-            for (int i = 0; i < fh.size(); i++) {
-                String name = fh.get(i);
+            for (int i = 0; i < fileHistoryCache.size(); i++) {
+                String name = fileHistoryCache.get(i);
                 String num  = Integer.toString(i + 1);
                 JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
                 mi.setText(num + ": " + name);
                 //byte[] bt = num.getBytes();
                 mi.setMnemonic((int) num.charAt(0));
-                fileHistory.add(mi);
+                fileHistoryMenu.add(mi);
             }
         }
     }
     private void updateHistory(String str) {
-        fileHistory.removeAll();
-        fh.remove(str);
-        fh.add(0, str);
-        if (fh.size() > MAXHISTORY) {
-            fh.remove(fh.size() - 1);
+        fileHistoryMenu.removeAll();
+        fileHistoryCache.remove(str);
+        fileHistoryCache.add(0, str);
+        if (fileHistoryCache.size() > MAX_HISTORY) {
+            fileHistoryCache.remove(fileHistoryCache.size() - 1);
         }
-        for (int i = 0; i < fh.size(); i++) {
-            String name = fh.get(i);
+        for (int i = 0; i < fileHistoryCache.size(); i++) {
+            String name = fileHistoryCache.get(i);
             String num  = Integer.toString(i + 1);
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
             mi.setText(num + ": " + name);
             //byte[] bt = num.getBytes();
             mi.setMnemonic((int) num.charAt(0));
-            fileHistory.add(mi, i);
+            fileHistoryMenu.add(mi, i);
         }
     }
     class HistoryAction extends AbstractAction {
