@@ -43,14 +43,14 @@ public final class MainPanel extends JPanel {
     private JToolBar makeToolBar() {
         JToolBar tb = new JToolBar("Sort by my order");
         tb.setFloatable(true);
-        tb.add(initButton(new UpAction("\u25B2", table)));
-        tb.add(initButton(new DownAction("\u25BC", table)));
+        tb.add(makeToolButton(new UpAction("\u25B2", table)));
+        tb.add(makeToolButton(new DownAction("\u25BC", table)));
         tb.add(Box.createHorizontalGlue());
-        tb.add(initButton(new InitAction("OK", table)));
+        tb.add(makeToolButton(new InitAction("OK", table)));
         return tb;
     }
 
-    private static JButton initButton(Action action) {
+    private static JButton makeToolButton(Action action) {
         JButton b = new JButton(action);
         b.setFocusable(false);
         return b;
