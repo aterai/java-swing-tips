@@ -10,8 +10,7 @@
 <tr height="380px">
 <td width="50%" align="left" valign="top">
 <ul>
-<li><a id="jar">Runnable JAR(example.jar)</a></li>
-<li><a id="src">Source code(src.zip)</a></li>
+<li><a id="download">Download page(src.zip, example.jar)</a></li>
 <li><a id="svn">Repository(svn repository)</a></li>
 </ul>
 <p><img src="__UP_img__" /></p>
@@ -41,7 +40,7 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
     var folder = imgpath.substring(imgpath.lastIndexOf("/"), imgpath.lastIndexOf("."));
     var dir = folder.toLowerCase();
 
-    var elm = document.getElementById("jar, zip file download");
+    var elm = document.getElementById("download");
     elm.setAttribute("href", "http://terai.xrea.jp/Swing" + folder + ".html");
 
     elm = document.getElementById("svn");
