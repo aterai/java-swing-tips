@@ -41,17 +41,11 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
     var folder = imgpath.substring(imgpath.lastIndexOf("/"), imgpath.lastIndexOf("."));
     var dir = folder.toLowerCase();
 
-    var elm = document.getElementById("jar");
-    elm.setAttribute("href", BASE + dir + "/example.jar");
-    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Jar', 'Download', 'Swing/" + folder + "']);");
-
-    elm = document.getElementById("src");
-    elm.setAttribute("href", BASE + dir + "/src.zip");
-    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Source', 'Download', 'Swing/" + folder + "']);");
+    var elm = document.getElementById("jar, zip file download");
+    elm.setAttribute("href", "http://terai.xrea.jp/Swing" + folder + ".html");
 
     elm = document.getElementById("svn");
     elm.setAttribute("href", "http://java-swing-tips.googlecode.com/svn/trunk" + folder);
-    elm.setAttribute("onclick", "_gaq.push(['_trackEvent', 'Subversion', 'View', 'Swing/" + folder + "']);");
 
     gadgets.util.registerOnLoadHandler(function() {
        gadgets.window.adjustHeight();
