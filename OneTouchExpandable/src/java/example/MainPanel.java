@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.lang.reflect.*;
 import java.security.*;
-import javax.jnlp.*;
+// import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -32,53 +32,51 @@ public final class MainPanel extends JPanel {
         splitPane.setOneTouchExpandable(true);
         //splitPane.setDividerLocation(0);
 
-        BasicService bs;
-        try {
-            bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-        } catch (UnavailableServiceException ex) {
-            bs = null;
-        }
+//         BasicService bs;
+//         try {
+//             bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+//         } catch (UnavailableServiceException ex) {
+//             bs = null;
+//         }
         s1.setMinimumSize(new Dimension(0, 100));
         s2.setMinimumSize(new Dimension(0, 100));
-        if (bs == null) {
-            if (splitPane.getUI() instanceof BasicSplitPaneUI) {
-                AccessController.doPrivileged(new PrivilegedAction<Void>() {
-                    @Override public Void run() {
-                        try {
-                            //splitPane.setDividerLocation(1);
-                            splitPane.setDividerLocation(0);
-                            Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod(
-                                "setKeepHidden", new Class<?>[] {Boolean.TYPE}); //boolean.class });
-                            setKeepHidden.setAccessible(true);
-                            setKeepHidden.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
-                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
+//         if (bs == null) {
+        if (splitPane.getUI() instanceof BasicSplitPaneUI) {
+            AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                @Override public Void run() {
+                    try {
+                        splitPane.setDividerLocation(0);
+                        Method setKeepHidden = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", new Class<?>[] {Boolean.TYPE});
+                        setKeepHidden.setAccessible(true);
+                        setKeepHidden.invoke(splitPane.getUI(), new Object[] {Boolean.TRUE});
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
                     }
-                });
-            }
-        } else {
-//             s1.setMinimumSize(new Dimension(0, 0));
-//             s2.setMinimumSize(new Dimension(0, 0));
-//             EventQueue.invokeLater(new Runnable() {
-//                 @Override public void run() {
-//                     splitPane.setDividerLocation(1.0);
-//                     splitPane.setResizeWeight(1.0);
-//                 }
-//             });
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
-                    for (Component c: divider.getComponents()) {
-                        if (c instanceof JButton) {
-                            ((JButton) c).doClick();
-                            break;
-                        }
-                    }
+                    return null;
                 }
             });
         }
+//         } else {
+// //             s1.setMinimumSize(new Dimension(0, 0));
+// //             s2.setMinimumSize(new Dimension(0, 0));
+// //             EventQueue.invokeLater(new Runnable() {
+// //                 @Override public void run() {
+// //                     splitPane.setDividerLocation(1.0);
+// //                     splitPane.setResizeWeight(1.0);
+// //                 }
+// //             });
+//             EventQueue.invokeLater(new Runnable() {
+//                 @Override public void run() {
+//                     Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+//                     for (Component c: divider.getComponents()) {
+//                         if (c instanceof JButton) {
+//                             ((JButton) c).doClick();
+//                             break;
+//                         }
+//                     }
+//                 }
+//             });
+//         }
         add(splitPane);
         setPreferredSize(new Dimension(320, 240));
     }
