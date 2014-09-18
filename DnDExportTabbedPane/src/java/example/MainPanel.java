@@ -204,6 +204,7 @@ class DnDTabbedPane extends JTabbedPane {
           case ON_OR_INSERT:
           default:
             assert false : "Unexpected drop mode";
+            break;
         }
         return new DropLocation(p, -1);
     }

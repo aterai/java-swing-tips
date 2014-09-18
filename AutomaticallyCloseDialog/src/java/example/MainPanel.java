@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
                   case JOptionPane.CLOSED_OPTION:
                     textArea.append("Closed(automatically)\n"); break;
                   default:
-                    textArea.append("----\n");
+                    textArea.append("----\n"); break;
                 }
                 textArea.append("\n");
             }

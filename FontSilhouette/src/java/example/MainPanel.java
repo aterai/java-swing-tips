@@ -116,6 +116,7 @@ class SilhouetteIcon implements Icon, Serializable {
             break;
           default:
             System.err.println("Unexpected value! " + pathSegmentType);
+            break;
         }
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
