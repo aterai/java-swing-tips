@@ -91,7 +91,7 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
 //         }
 //         slider.setValue(value);
 //     }
-    protected TrackListener createTrackListener(JSlider slider) {
+    @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
@@ -116,7 +116,7 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
 }
 
 class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
-    protected TrackListener createTrackListener(JSlider slider) {
+    @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
