@@ -1,11 +1,7 @@
 java-swing-tips
 ===============
-
-Contains samples of the Java Swing.
-
-概要
----------------
-このページ以下では、`Java Swing`での`GUI`プログラム作成のコツなどを、 **「小さなサンプル(ソースコード付き)」** を使って紹介しています。
+[日本語](http://terai.xrea.jp/Swing.html): `Java Swing`の`GUI`プログラムを、 **小さなソースコード付きサンプル** を使って紹介しています。  
+[English](http://java-swing-tips.blogspot.com/): Contains samples of the Java Swing.
 
 <a href="https://picasaweb.google.com/at.terai/JavaSwingTips02"><img src="http://lh3.ggpht.com/_9Z4BYR88imo/TQslJy3MxYI/AAAAAAAAAts/xrxOCvbp-0A/s800/screenshots.png" /></a>
 - 上の画像をクリックするとスクリーンショットの一覧に移動します。
