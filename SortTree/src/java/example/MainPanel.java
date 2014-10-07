@@ -97,7 +97,27 @@ final class TreeUtil {
     private static final boolean DEBUG = true;
     public static AtomicInteger compareCount = new AtomicInteger();
     public static AtomicInteger swapCount = new AtomicInteger();
+
+    //JDK 1.7.0
     private static TreeNodeComparator tnc = new TreeNodeComparator();
+    private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
+        private static final long serialVersionUID = 1L;
+        @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
+            compareCount.getAndIncrement();
+            if (a.isLeaf() && !b.isLeaf()) {
+                return 1;
+            } else if (!a.isLeaf() && b.isLeaf()) {
+                return -1;
+            } else {
+                String sa = a.getUserObject().toString();
+                String sb = b.getUserObject().toString();
+                return sa.compareToIgnoreCase(sb);
+            }
+        }
+    }
+//     //JDK 1.8.0
+//     private static TreeNodeComparator tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
+//                                                       .thenComparing(DefaultMutableTreeNode::getUserObject().toString());
 
     private TreeUtil() { /* Singleton */ }
 
@@ -151,7 +171,7 @@ final class TreeUtil {
             int min = i;
             for (int j = i + 1; j < n; j++) {
                 if (tnc.compare((DefaultMutableTreeNode) parent.getChildAt(min),
-                               (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
+                                (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
                     min = j;
                 }
             }
@@ -200,22 +220,6 @@ final class TreeUtil {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
             if (!node.isLeaf()) {
                 sort3(node);
-            }
-        }
-    }
-
-    private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
-        private static final long serialVersionUID = 1L;
-        @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
-            compareCount.getAndIncrement();
-            if (a.isLeaf() && !b.isLeaf()) {
-                return 1;
-            } else if (!a.isLeaf() && b.isLeaf()) {
-                return -1;
-            } else {
-                String sa = a.getUserObject().toString();
-                String sb = b.getUserObject().toString();
-                return sa.compareToIgnoreCase(sb);
             }
         }
     }
