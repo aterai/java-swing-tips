@@ -98,7 +98,7 @@ final class TreeUtil {
     public static AtomicInteger compareCount = new AtomicInteger();
     public static AtomicInteger swapCount = new AtomicInteger();
 
-    //JDK 1.7.0
+//* //JDK 1.7.0
     private static TreeNodeComparator tnc = new TreeNodeComparator();
     private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
         private static final long serialVersionUID = 1L;
@@ -115,9 +115,10 @@ final class TreeUtil {
             }
         }
     }
-//     //JDK 1.8.0
-//     private static TreeNodeComparator tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
-//                                                       .thenComparing(DefaultMutableTreeNode::getUserObject().toString());
+/*/ //JDK 1.8.0
+    private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
+                                                                      .thenComparing(n -> n.getUserObject().toString());
+//*/
 
     private TreeUtil() { /* Singleton */ }
 
