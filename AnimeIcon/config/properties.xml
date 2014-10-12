@@ -3,7 +3,7 @@
 <!-- project -->
 <property name="Name"    value="Example" />
 <property name="name"    value="example" />
-<property name="vendor"  value="Java Swing Tips - at.terai@gmail.com" />
+<property name="vendor"  value="Java Swing Tips - http://terai.xrea.jp/" />
 <property name="version" value="1.0.0" />
 <property name="year"    value="2003-2014" />
 
@@ -25,7 +25,7 @@
 <property name="javadoc.docencoding" value="UTF-8" />
 <property name="javadoc.pkgs"        value="*" />
 <property name="javadoc.locale"      value="ja" />
-<property name="javadoc.link"        value="http://http://docs.oracle.com/javase/jp/7/api/" />
+<property name="javadoc.link"        value="http://docs.oracle.com/javase/jp/8/api/" />
 
 <!-- signjar -->
 <property name="signjar.keystore" value="myKeyStore" />
