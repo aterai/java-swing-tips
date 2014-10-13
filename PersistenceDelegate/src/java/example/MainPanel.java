@@ -55,8 +55,7 @@ public class MainPanel extends JPanel {
         }));
         p.add(new JButton(new AbstractAction("XMLDecoder") {
             @Override public void actionPerformed(ActionEvent e) {
-                try (InputStream is = new BufferedInputStream(new ByteArrayInputStream(textArea.getText().getBytes("UTF-8")))) {
-                    XMLDecoder xd = new XMLDecoder(is);
+                try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(textArea.getText().getBytes("UTF-8"))))) {
                     model = (DefaultTableModel) xd.readObject();
                     table.setModel(model);
                 } catch (IOException ex) {
