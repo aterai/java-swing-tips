@@ -34,8 +34,7 @@ public class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 try {
                     File file = File.createTempFile("output", ".xml");
-                    try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
-                        XMLEncoder xe = new XMLEncoder(os);
+                    try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
                         xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
 //                         xe.setExceptionListener(new ExceptionListener() {
 //                             @Override public void exceptionThrown(Exception exception) {
@@ -44,7 +43,7 @@ public class MainPanel extends JPanel {
 //                         });
                         xe.writeObject(model);
                         //xe.flush();
-                        xe.close();
+                        //xe.close();
                     }
                     try (Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
                         textArea.read(r, "temp");
