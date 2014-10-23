@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
         p.add(showHideButton, BorderLayout.SOUTH);
         return p;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

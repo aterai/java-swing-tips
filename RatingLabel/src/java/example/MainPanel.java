@@ -19,20 +19,20 @@ public final class MainPanel extends JPanel {
 
         // 1
         List<ImageIcon> list = Arrays.asList(
-            makeStarImageIcon(ip, new float[]{1.0f, 0.5f, 0.5f}),
-            makeStarImageIcon(ip, new float[]{0.5f, 1.0f, 0.5f}),
-            makeStarImageIcon(ip, new float[]{1.0f, 0.5f, 1.0f}),
-            makeStarImageIcon(ip, new float[]{0.5f, 0.5f, 1.0f}),
-            makeStarImageIcon(ip, new float[]{1.0f, 1.0f, 0.5f}));
+            makeStarImageIcon(ip,  1f, .5f, .5f),
+            makeStarImageIcon(ip, .5f,  1f, .5f),
+            makeStarImageIcon(ip,  1f, .5f,  1f),
+            makeStarImageIcon(ip, .5f, .5f,  1f),
+            makeStarImageIcon(ip,  1f,  1f, .5f));
         add(makeStarRatingPanel("gap=0", new LevelBar(defaultIcon, list, 0)));
 
         // 2
         list = Arrays.asList(
-            makeStarImageIcon(ip, new float[]{0.2f, 0.5f, 0.5f}),
-            makeStarImageIcon(ip, new float[]{0.0f, 1.0f, 0.2f}),
-            makeStarImageIcon(ip, new float[]{1.0f, 1.0f, 0.2f}),
-            makeStarImageIcon(ip, new float[]{0.8f, 0.4f, 0.2f}),
-            makeStarImageIcon(ip, new float[]{1.0f, 0.1f, 0.1f}));
+            makeStarImageIcon(ip, .2f, .5f, .5f),
+            makeStarImageIcon(ip,  0f,  1f, .2f),
+            makeStarImageIcon(ip,  1f,  1f, .2f),
+            makeStarImageIcon(ip, .8f, .4f, .2f),
+            makeStarImageIcon(ip,  1f, .1f, .1f));
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1) {
             @Override protected void repaintIcon(int index) {
                 for (int i = 0; i < labelList.size(); i++) {
@@ -44,15 +44,15 @@ public final class MainPanel extends JPanel {
 
         // 3
         list = Arrays.asList(
-            makeStarImageIcon(ip, new float[]{.6f, .6f, .0f}),
-            makeStarImageIcon(ip, new float[]{.7f, .7f, .0f}),
-            makeStarImageIcon(ip, new float[]{.8f, .8f, .0f}),
-            makeStarImageIcon(ip, new float[]{.9f, .9f, .0f}),
-            makeStarImageIcon(ip, new float[]{1f,   1f, .0f}));
+            makeStarImageIcon(ip, .6f, .6f, 0f),
+            makeStarImageIcon(ip, .7f, .7f, 0f),
+            makeStarImageIcon(ip, .8f, .8f, 0f),
+            makeStarImageIcon(ip, .9f, .9f, 0f),
+            makeStarImageIcon(ip,  1f,  1f, 0f));
         add(makeStarRatingPanel("gap=2+2", new LevelBar(defaultIcon, list, 2)));
 
         // 4
-        ImageIcon yStar = makeStarImageIcon(ip, new float[] {1f, 1f, .0f});
+        ImageIcon yStar = makeStarImageIcon(ip, 1f, 1f, 0f);
         list = Arrays.asList(yStar, yStar, yStar, yStar, yStar);
         add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list, 1)));
         setPreferredSize(new Dimension(320, 240));
@@ -68,11 +68,11 @@ public final class MainPanel extends JPanel {
         p.add(label);
         return p;
     }
-    private static ImageIcon makeStarImageIcon(ImageProducer ip, float[] filter) {
-        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, new SelectedImageFilter(filter))));
+    private static ImageIcon makeStarImageIcon(ImageProducer ip, float rf, float gf, float bf) {
+        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, new SelectedImageFilter(rf, gf, bf))));
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -160,15 +160,12 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    private final float[] filter;
-    public SelectedImageFilter(float[] array) {
+    private final float rf, gf, bf;
+    public SelectedImageFilter(float rf, float gf, float bf) {
         super();
-        //filter = array;
-        filter = new float[array.length];
-        System.arraycopy(array, 0, filter, 0, array.length);
-//         for (int i = 0; i < arrays.length; i++) {
-//             filter[i] = arrays[i];
-//         }
+        this.rf = rf;
+        this.gf = gf;
+        this.bf = bf;
         canFilterIndexColorModel = false;
     }
 //     @Override public int filterRGB(int x, int y, int argb) {
@@ -178,9 +175,9 @@ class SelectedImageFilter extends RGBImageFilter {
 //         return new Color(array[0]*filter[0], array[1]*filter[1], array[2]*filter[2], array[3]).getRGB();
 //     }
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int) (((argb >> 16) & 0xff) * filter[0]);
-        int g = (int) (((argb >>  8) & 0xff) * filter[1]);
-        int b = (int) (((argb)       & 0xff) * filter[2]);
+        int r = (int) (((argb >> 16) & 0xff) * rf);
+        int g = (int) (((argb >>  8) & 0xff) * gf);
+        int b = (int) (((argb)       & 0xff) * bf);
         return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }

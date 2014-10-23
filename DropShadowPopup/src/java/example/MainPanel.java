@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         // http://bugs.sun.com/view_bug.do?bug_id=6595814
         //p.addSeparator();
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

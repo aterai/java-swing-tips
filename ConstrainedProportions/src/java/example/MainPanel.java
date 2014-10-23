@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         int fh = MH * fw / MW;
         frame.setSize(MW > fw ? MW : fw, MH > fh ? MH : fh);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

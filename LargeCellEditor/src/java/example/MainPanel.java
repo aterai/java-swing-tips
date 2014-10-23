@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         list.addElement(new MyIcon("wi0124"));
         return list;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

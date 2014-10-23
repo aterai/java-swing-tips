@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -72,9 +72,9 @@ class PropertyTable extends JTable {
     public PropertyTable(TableModel model) {
         super(model);
     }
-    public PropertyTable(Object[][] data, String[] columnNames) {
-        super(data, columnNames);
-    }
+    //public PropertyTable(Object[][] data, String[] columnNames) {
+    //    super(data, columnNames);
+    //}
     private Class<?> getClassAt(int row, int column) {
         int mc = convertColumnIndexToModel(column);
         int mr = convertRowIndexToModel(row);
@@ -305,13 +305,12 @@ class HtmlTableTransferHandler extends TransferHandler {
     @Override protected Transferable createTransferable(JComponent c) {
         if (c instanceof JTable) {
             JTable table = (JTable) c;
-            int[] rows;
-            int[] cols;
 
             if (!table.getRowSelectionAllowed() && !table.getColumnSelectionAllowed()) {
                 return null;
             }
 
+            int[] rows;
             if (table.getRowSelectionAllowed()) {
                 rows = table.getSelectedRows();
             } else {
@@ -323,6 +322,7 @@ class HtmlTableTransferHandler extends TransferHandler {
                 }
             }
 
+            int[] cols;
             if (table.getColumnSelectionAllowed()) {
                 cols = table.getSelectedColumns();
             } else {

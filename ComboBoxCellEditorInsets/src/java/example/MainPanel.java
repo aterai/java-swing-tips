@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
         combo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), combo.getBorder()));
         return combo;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         g2.dispose();
         di.paint(g, this);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

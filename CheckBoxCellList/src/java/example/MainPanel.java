@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         c.setAlignmentX(Component.LEFT_ALIGNMENT);
         box.add(c);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

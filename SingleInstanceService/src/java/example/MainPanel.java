@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
             SingleInstanceService singleInstanceService = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
             singleInstanceService.addSingleInstanceListener(new SingleInstanceListener() {
                 private int count;
-                @Override public void newActivation(String[] args) {
+                @Override public void newActivation(String... args) {
                     //System.out.println(EventQueue.isDispatchThread());
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {

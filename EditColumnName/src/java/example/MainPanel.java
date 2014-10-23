@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -97,7 +97,7 @@ class TablePopupMenu extends JPopupMenu {
     });
 
     private int index = -1;
-    public TablePopupMenu(String[] arrays) {
+    public TablePopupMenu(String... arrays) {
         super();
         columnNames = new String[arrays.length];
         System.arraycopy(arrays, 0, columnNames, 0, arrays.length);

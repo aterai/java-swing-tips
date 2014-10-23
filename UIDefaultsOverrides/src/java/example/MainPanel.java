@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
         menuBar.add(menu);
         return menuBar;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -147,7 +147,7 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
         this.state = state;
         this.ctx = new AbstractRegionPainter.PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1.0, 1.0);
     }
-    @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] eckey) {
+    @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object... eckey) {
         switch(state) {
           case ENABLED:
             paintcheckIconEnabled(g);              break;

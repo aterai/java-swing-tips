@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -123,7 +123,7 @@ class JSearchBar extends JComboBox<SearchEngine> {
         //setModel(aModel);
         //init();
     }
-    public JSearchBar(SearchEngine[] items) {
+    public JSearchBar(SearchEngine... items) {
         super(items);
         //setModel(new DefaultComboBoxModel<SearchEngine>(items));
         //init();

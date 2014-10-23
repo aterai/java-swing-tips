@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComboBox<String> makeComboBox(String[] model) {
+    private static JComboBox<String> makeComboBox(String... model) {
         return new JComboBox<String>(model);
 //         //Test: Remove ArrowButtn(look like a JTextField)
 //         //UIManager.put("ComboBox.squareButton", Boolean.FALSE);
@@ -113,7 +113,7 @@ public final class MainPanel extends JPanel {
         return p;
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

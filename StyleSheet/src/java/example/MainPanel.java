@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
              + "<div>2222222222</div>"
              + "</body></html>";
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

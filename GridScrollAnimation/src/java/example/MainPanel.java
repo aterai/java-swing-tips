@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         add(new JButton(new ScrollAction("bottom", scrollPane, new Point(0, 1))),  BorderLayout.SOUTH);
         add(new JButton(new ScrollAction("top",    scrollPane, new Point(0, -1))), BorderLayout.NORTH);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

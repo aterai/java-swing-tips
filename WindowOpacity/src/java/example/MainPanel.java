@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
         g2.dispose();
         return new TexturePaint(bi, new Rectangle(0, 0, sz, sz));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

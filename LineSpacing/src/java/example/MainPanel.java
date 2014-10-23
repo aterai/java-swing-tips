@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
 //         doc.setParagraphAttributes(0, doc.getLength() - 1, a, false);
 //         textPane.setStyledDocument(doc);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

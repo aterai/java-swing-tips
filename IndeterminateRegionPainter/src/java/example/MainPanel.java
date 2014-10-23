@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         p.add(cmp, c);
         return p;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -197,7 +197,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     private final PaintContext ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(29, 19), false);
     private Rectangle2D rect = new Rectangle2D.Float(0, 0, 0, 0);
     private Path2D path = new Path2D.Float();
-    @Override public void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] extendedCacheKeys) {
+    @Override public void doPaint(Graphics2D g, JComponent c, int width, int height, Object... extendedCacheKeys) {
         path = decodePath1();
         g.setPaint(color17);
         g.fill(path);

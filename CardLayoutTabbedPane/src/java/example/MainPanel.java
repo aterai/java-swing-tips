@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         add(tab4);
         setPreferredSize(new Dimension(320, 320));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

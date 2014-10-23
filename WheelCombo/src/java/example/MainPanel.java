@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         model.addElement("88888888888");
         return new JComboBox<String>(model);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

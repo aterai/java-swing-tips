@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         scroll.setPreferredSize(new Dimension(320, 240));
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

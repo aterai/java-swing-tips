@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         model.addElement("bbb12");
         return model;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -90,9 +90,9 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     public AlternateRowColorComboBox(ComboBoxModel<E> aModel) {
         super(aModel);
     }
-    public AlternateRowColorComboBox(E[] items) {
-        super(items);
-    }
+    //public AlternateRowColorComboBox(E[] items) {
+    //    super(items);
+    //}
     @Override public void setEditable(boolean aFlag) {
         super.setEditable(aFlag);
         if (aFlag) {

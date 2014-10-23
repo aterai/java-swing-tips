@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
 //         System.out.println("Locale: " + fileChooser.getLocale());
 //         System.out.println("DefaultLocale: " + fileChooser.getDefaultLocale());
 //     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         add(new LabelWithToolBox(new ImageIcon(getClass().getResource("test.png"))));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

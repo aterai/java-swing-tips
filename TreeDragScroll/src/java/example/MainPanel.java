@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         scroll.setBorder(BorderFactory.createTitledBorder(title));
         return scroll;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

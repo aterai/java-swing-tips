@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         jtp.addTab("55555555555555555555555555555555", new JLabel("e"));
         return jtp;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

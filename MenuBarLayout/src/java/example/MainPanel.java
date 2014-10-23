@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
         menu.add("dummy1"); menu.add("dummy2"); menu.add("dummy3");
         return menu;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

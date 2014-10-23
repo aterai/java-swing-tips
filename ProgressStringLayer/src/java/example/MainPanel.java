@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         progressBar.setStringPainted(false);
         return new JLayer<JProgressBar>(progressBar, new ProgressBarLayerUI(label));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

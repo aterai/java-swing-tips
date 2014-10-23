@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         return set;
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -110,9 +110,9 @@ class DisableItemComboBox<E> extends JComboBox<E> {
     public DisableItemComboBox(ComboBoxModel<E> aModel) {
         super(aModel);
     }
-    public DisableItemComboBox(E[] items) {
-        super(items);
-    }
+    //public DisableItemComboBox(E[] items) {
+    //    super(items);
+    //}
     @Override public void updateUI() {
         super.updateUI();
         setRenderer(new DefaultListCellRenderer() {

@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         add(panel, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JPanel makeColorSpinner(String[] items) {
+    private static JPanel makeColorSpinner(String... items) {
         UIManager.put("ComboBox.squareButton", Boolean.FALSE);
         final JComboBox<String> comboBox = new JComboBox<String>(items) {
             @Override public void updateUI() {
@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
             }
         };
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
         area.setCaretPosition(area.getDocument().getLength());
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
@@ -292,7 +292,7 @@ class Task extends SwingWorker<String, Progress> {
 //         area.setCaretPosition(area.getDocument().getLength());
 //     }
 //
-//     public static void main(String[] args) {
+//     public static void main(String... args) {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
 //                 createAndShowGUI();

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         g2.drawImage(img, 0, 0, null);
         g2.dispose();
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

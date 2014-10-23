@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

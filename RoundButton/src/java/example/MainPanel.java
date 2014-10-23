@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, or, 0);
         return new Path2D.Double(p, at);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

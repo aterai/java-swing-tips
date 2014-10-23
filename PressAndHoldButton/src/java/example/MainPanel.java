@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         add(new JLabel("press and hold the button for 1000 milliseconds"));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

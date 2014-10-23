@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(c2, c);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

@@ -142,7 +142,7 @@ public final class MainPanel extends JPanel {
         field.setText(Integer.toString(currentPageIndex));
         label.setText(String.format("/ %d", maxPageIndex));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

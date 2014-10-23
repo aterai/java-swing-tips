@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         pane.setText("<html><h2>H2</h2>text<ul><li>list: " + bullet + "</li></ul></html>");
         return pane;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

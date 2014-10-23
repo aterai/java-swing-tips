@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
             table.getRowSorter().setSortKeys(Arrays.asList(new RowSorter.SortKey(index, dir)));
         }
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

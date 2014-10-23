@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
         return new Insets(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
         //NO EFFECT?: return new javax.swing.plaf.InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

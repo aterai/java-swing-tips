@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
     private static JSpinner makeSpinner(int num, int min, int max, int step) {
         return new JSpinner(new SpinnerNumberModel(num, min, max, step));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

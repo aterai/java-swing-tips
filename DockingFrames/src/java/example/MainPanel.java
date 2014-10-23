@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super();
         setPreferredSize(new Dimension(320, 100));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

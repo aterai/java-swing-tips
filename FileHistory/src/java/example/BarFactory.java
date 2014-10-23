@@ -45,10 +45,9 @@ public final class BarFactory {
         //initActions();
     }
 
-    public void initActions(Action[] actlist) {
+    public void initActions(Action... actlist) {
         //Action[] actlist = getActions();
-        for (int i = 0; i < actlist.length; i++) {
-            Action a = actlist[i];
+        for (Action a: actlist) {
             commands.put(a.getValue(Action.NAME), a);
         }
     }

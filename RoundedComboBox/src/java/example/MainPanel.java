@@ -146,7 +146,7 @@ public final class MainPanel extends JPanel {
         model.addElement("6789000000000");
         return model;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

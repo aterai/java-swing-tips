@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         l.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         return l;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

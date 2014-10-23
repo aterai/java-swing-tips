@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         button.setComponentPopupMenu(pop);
         return button;
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();

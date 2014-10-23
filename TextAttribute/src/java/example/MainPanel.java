@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         attrs.put(TextAttribute.UNDERLINE, style);
         tc.setFont(font.deriveFont(attrs));
     }
-    public static void main(String[] args) {
+    public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 createAndShowGUI();
