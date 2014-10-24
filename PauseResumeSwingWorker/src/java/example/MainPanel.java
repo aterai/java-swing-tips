@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
                 return;
             }
             for (Progress s: chunks) {
-                switch(s.component) {
+                switch (s.component) {
                   case TOTAL: bar1.setValue((Integer) s.value); break;
                   case FILE:  bar2.setValue((Integer) s.value); break;
                   case LOG:   area.append((String) s.value);    break;

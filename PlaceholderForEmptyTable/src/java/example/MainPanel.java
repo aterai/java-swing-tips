@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "String", "Boolean"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            switch(column) {
+            switch (column) {
               case 0:  return Integer.class;
               case 2:  return Boolean.class;
               default: return String.class;

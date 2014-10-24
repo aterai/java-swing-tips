@@ -85,7 +85,7 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
-                switch(slider.getOrientation()) {
+                switch (slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
                     break;
@@ -110,7 +110,7 @@ class MetalTooltipSliderUI extends MetalSliderUI {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
-                switch(slider.getOrientation()) {
+                switch (slider.getOrientation()) {
                   case JSlider.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
                     break;

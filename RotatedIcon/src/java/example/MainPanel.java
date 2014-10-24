@@ -126,7 +126,7 @@ class QuadrantRotateIcon implements Icon {
         int h = icon.getIconHeight();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        switch(rotate) {
+        switch (rotate) {
           case CLOCKWISE:         g2.translate(h, 0); break;
           case VERTICAL_FLIP:     g2.translate(w, h); break;
           case COUNTER_CLOCKWISE: g2.translate(0, w); break;

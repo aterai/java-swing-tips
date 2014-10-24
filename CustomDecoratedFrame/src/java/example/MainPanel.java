@@ -214,7 +214,7 @@ class ResizeWindowListener extends MouseAdapter {
         frame.setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
     }
     private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
-        switch(side) {
+        switch (side) {
           case NW:
             r.y      += dy;
             r.height -= dy;

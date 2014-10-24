@@ -96,7 +96,7 @@ class SilhouetteIcon implements Icon, Serializable {
         return area;
     }
     private static void addPathSegment2Area(int pathSegmentType, Area area, double[] coords, Path2D.Double path) {
-        switch(pathSegmentType) {
+        switch (pathSegmentType) {
           case PathIterator.SEG_MOVETO:
             path.moveTo(coords[0], coords[1]);
             break;

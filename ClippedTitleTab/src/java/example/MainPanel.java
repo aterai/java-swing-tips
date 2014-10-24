@@ -88,7 +88,7 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
         Insets insets = tabPane.getInsets();
         //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
         int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        switch(tabPlacement) {
+        switch (tabPlacement) {
           case LEFT: case RIGHT:
             return (int) (width / 4);
           case BOTTOM: case TOP: default:
@@ -124,7 +124,7 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
         Insets insets = tabPane.getInsets();
         //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
         int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-        switch(tabPlacement) {
+        switch (tabPlacement) {
           case LEFT: case RIGHT:
             return (int) (width / 4);
           case BOTTOM: case TOP: default:

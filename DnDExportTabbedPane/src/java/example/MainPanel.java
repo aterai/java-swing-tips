@@ -188,7 +188,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public DropLocation dropLocationForPoint(Point p) {
         //boolean isTB = getTabPlacement() == JTabbedPane.TOP || getTabPlacement() == JTabbedPane.BOTTOM;
-        switch(dropMode) {
+        switch (dropMode) {
           case INSERT:
             for (int i = 0; i < getTabCount(); i++) {
                 if (getBoundsAt(i).contains(p)) {

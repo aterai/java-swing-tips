@@ -212,7 +212,7 @@ class ResizeMouseListener extends MouseAdapter {
         Container parent = SwingUtilities.getUnwrappedParent(c);
         Rectangle parentBounds = parent.getBounds();
 
-        switch(cursor) {
+        switch (cursor) {
           case Cursor.NW_RESIZE_CURSOR: {
               int dx = getDeltaX(deltaX);
               int dy = getDeltaY(deltaY);
@@ -363,7 +363,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
 
     private Rectangle getRectangle(int x, int y, int w, int h, int location) {
-        switch(location) {
+        switch (location) {
           case NORTH:      return new Rectangle(x + w / 2 - dist / 2, y, dist, dist);
           case SOUTH:      return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist, dist);
           case WEST:       return new Rectangle(x, y + h / 2 - dist / 2, dist, dist);

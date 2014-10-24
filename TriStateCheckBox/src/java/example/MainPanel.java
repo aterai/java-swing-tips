@@ -171,7 +171,7 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
         JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
         if (targetColumnIndex == tbl.convertColumnIndexToModel(col)) {
             if (val instanceof Status) {
-                switch((Status) val) {
+                switch ((Status) val) {
                   case SELECTED:      setSelected(true);  setIcon(null); break;
                   case DESELECTED:    setSelected(false); setIcon(null); break;
                   case INDETERMINATE: setSelected(false); setIcon(icon); break;

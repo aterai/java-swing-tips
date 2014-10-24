@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                 // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
                 // http://bugs.sun.com/view_bug.do?bug_id=6967479
                 //return getValueAt(0, column).getClass();
-                switch(column) {
+                switch (column) {
                   case 0:
                     return String.class;
                   case 1:

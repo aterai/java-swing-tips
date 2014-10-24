@@ -138,7 +138,7 @@ public final class MainPanel extends JPanel {
         factory = MAXY - MINY;
         GenerateInputs gi = (GenerateInputs) distributionsChoices.getSelectedItem();
         for (int i = 0; i < n; i++) {
-            switch(gi) {
+            switch (gi) {
               case Random:     array.add((double) Math.random()); break;
               case Ascending:  array.add(i / (double) n);         break;
               case Descending: array.add(1d - i / (double) n);    break;
@@ -215,7 +215,7 @@ class SortingTask extends SwingWorker<String, Rectangle> {
 
     @Override public String doInBackground() {
         try {
-            switch(sortAlgorithm) {
+            switch (sortAlgorithm) {
               case Isort:     isort(number);         break;
               case Selsort:   ssort(number);         break;
               case Shellsort: shellsort(number);     break;

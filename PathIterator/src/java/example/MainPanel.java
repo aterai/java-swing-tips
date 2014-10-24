@@ -153,7 +153,7 @@ final class StarburstSVGMaker {
           .append("  <path d=\"");
         double[] c = new double[6];
         while (!pi.isDone()) {
-            switch(pi.currentSegment(c)) {
+            switch (pi.currentSegment(c)) {
               case PathIterator.SEG_MOVETO:
                 sb.append(String.format("M%.2f,%.2f ", c[0], c[1])); break;
               case PathIterator.SEG_LINETO:

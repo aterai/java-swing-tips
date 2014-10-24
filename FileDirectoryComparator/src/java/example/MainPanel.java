@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return File.class;
-//             switch(column) {
+//             switch (column) {
 //               case 0:  return File.class;
 //               case 1:  return Long.class;
 //               case 2:  return String.class;
@@ -143,7 +143,7 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
         l.setIcon(null);
         File file = (File) value;
         int c = table.convertColumnIndexToModel(column);
-        switch(c) {
+        switch (c) {
           case 0:
             //???: WindowsLnF, Java 1.7.0
             //if (file.isDirectory()) {
@@ -231,7 +231,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
         this.column = column;
     }
     @Override public int compare(File a, File b) {
-        switch(column) {
+        switch (column) {
           case 0:  return a.getName().compareToIgnoreCase(b.getName());
           case 1:  return (int) (a.length() - b.length());
           default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());

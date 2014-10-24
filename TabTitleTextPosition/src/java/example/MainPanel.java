@@ -97,7 +97,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         int tabWidth  = 0; // = tabInsets.left + tabInsets.right + 3;
         int gap       = 0;
 
-        switch(getTabPlacement()) {
+        switch (getTabPlacement()) {
           case LEFT: case RIGHT:
             tabWidth = areaWidth / 4;
             gap = 0;

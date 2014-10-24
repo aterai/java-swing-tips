@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("show") {
             @Override public void actionPerformed(ActionEvent e) {
                 int r = JOptionPane.showConfirmDialog(frame, c, "Automatically close dialog", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                switch(r) {
+                switch (r) {
                   case JOptionPane.OK_OPTION:
                     textArea.append("OK\n"); break;
                   case JOptionPane.CANCEL_OPTION:

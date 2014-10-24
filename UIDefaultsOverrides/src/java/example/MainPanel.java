@@ -148,7 +148,7 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
         this.ctx = new AbstractRegionPainter.PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1.0, 1.0);
     }
     @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object... eckey) {
-        switch(state) {
+        switch (state) {
           case ENABLED:
             paintcheckIconEnabled(g);              break;
           case MOUSEOVER:

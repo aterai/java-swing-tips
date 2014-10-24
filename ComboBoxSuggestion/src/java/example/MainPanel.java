@@ -174,7 +174,7 @@ class ComboKeyHandler extends KeyAdapter {
         JTextField textField = (JTextField) e.getComponent();
         String text = textField.getText();
         shouldHide = false;
-        switch(e.getKeyCode()) {
+        switch (e.getKeyCode()) {
           case KeyEvent.VK_RIGHT:
             for (String s: list) {
                 if (s.startsWith(text)) {
@@ -260,7 +260,7 @@ class ComboKeyHandler extends KeyAdapter {
 //             JTextField textField = (JTextField) e.getSource();
 //             String t = textField.getText();
 //             shouldHide = false;
-//             switch(e.getKeyCode()) {
+//             switch (e.getKeyCode()) {
 //               case KeyEvent.VK_RIGHT:
 //                 for (String s: list) {
 //                     if (s.startsWith(t)) {
