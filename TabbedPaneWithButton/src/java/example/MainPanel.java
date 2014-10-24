@@ -29,11 +29,11 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 UIManager.put("TabbedPane.tabAreaInsets", null); //uninstall
                 super.updateUI();
-                setAlignmentX(0f);
-                setAlignmentY(0f);
+                setAlignmentX(Component.LEFT_ALIGNMENT);
+                setAlignmentY(Component.TOP_ALIGNMENT);
                 b.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-                b.setAlignmentX(0f);
-                b.setAlignmentY(0f);
+                b.setAlignmentX(Component.LEFT_ALIGNMENT);
+                b.setAlignmentY(Component.TOP_ALIGNMENT);
                 tabAreaInsets = getTabAreaInsets();
                 UIManager.put("TabbedPane.tabAreaInsets",
                               getButtonPaddingTabAreaInsets(b, getTabInsets(), tabAreaInsets));

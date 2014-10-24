@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(2, 1));
         add(new JButton("Dummy"));
         add(makeOverlayLayoutButton());
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeOverlayLayoutButton() {
         JButton b1 = new JButton();
@@ -23,22 +23,28 @@ public final class MainPanel extends JPanel {
                 Toolkit.getDefaultToolkit().beep();
             }
         });
-        JButton b2 = new JButton();
+        JButton b2 = new JButton() {
+            private final Dimension dim = new Dimension(120, 24);
+            @Override public Dimension getPreferredSize() {
+                return dim;
+            }
+            @Override public Dimension getMaximumSize() {
+                return getPreferredSize();
+            }
+            @Override public Dimension getMinimumSize() {
+                return getPreferredSize();
+            }
+        };
         b2.setAction(new AbstractAction("\u25BC") {
             @Override public void actionPerformed(ActionEvent e) {
                 System.out.println("sub");
             }
         });
-        Dimension dim = new Dimension(64, 20);
-        b2.setMaximumSize(dim);
-        b2.setPreferredSize(dim);
-        b2.setMinimumSize(dim);
-        b2.setAlignmentX(1f);
-        b2.setAlignmentY(1f);
+        b2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        b2.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         b1.add(b2);
         return b1;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

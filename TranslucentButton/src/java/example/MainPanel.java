@@ -30,9 +30,9 @@ public final class MainPanel extends JPanel {
 
         JLabel label = new JLabel("JLabel", icon, SwingConstants.CENTER);
         label.setForeground(Color.WHITE);
-        label.setAlignmentX(.5f);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         b = makeButton("");
-        b.setAlignmentX(.5f);
+        b.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel p = new JPanel();
         p.setLayout(new OverlayLayout(p));
         p.setOpaque(false);
