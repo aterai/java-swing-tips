@@ -137,7 +137,7 @@ class URLRenderer1 extends DefaultTableCellRenderer implements MouseListener, Mo
 // <<<<
         //table.repaint();
     }
-    @Override public void mouseExited(MouseEvent e)  {
+    @Override public void mouseExited(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
         if (isURLColumn(table, col)) {
             table.repaint(table.getCellRect(row, col, false));
@@ -260,7 +260,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 // <<<<
         //table.repaint();
     }
-    @Override public void mouseExited(MouseEvent e)  {
+    @Override public void mouseExited(MouseEvent e) {
         JTable table = (JTable) e.getComponent();
         if (isURLColumn(table, col)) {
             table.repaint(table.getCellRect(row, col, false));

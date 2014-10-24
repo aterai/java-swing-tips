@@ -138,7 +138,7 @@ class ArrowIcon implements Icon {
         //g2.translate(-x, -y - shift);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 9;
     }
     @Override public int getIconHeight() {

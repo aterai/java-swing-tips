@@ -146,6 +146,10 @@ class SilhouetteIcon implements Icon, Serializable {
         //g2.draw(shapeCentered);
         g2.dispose();
     }
-    @Override public int getIconWidth()  { return size; }
-    @Override public int getIconHeight() { return size; }
+    @Override public int getIconWidth() {
+        return size;
+    }
+    @Override public int getIconHeight() {
+        return size;
+    }
 }

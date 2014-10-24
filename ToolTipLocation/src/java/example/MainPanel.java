@@ -51,7 +51,9 @@ public final class MainPanel extends JPanel {
                 }
             }
             @Override public void mouseReleased(MouseEvent me) {
-                if (popup != null) { popup.hide(); }
+                if (popup != null) {
+                    popup.hide();
+                }
                 window.setVisible(false);
             }
         };

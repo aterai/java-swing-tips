@@ -229,7 +229,9 @@ class MyGlassPane extends JPanel {
     public MyGlassPane() {
         super((LayoutManager) null);
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-            @Override public boolean accept(Component c) { return false; }
+            @Override public boolean accept(Component c) {
+                return false;
+            }
         });
     }
     @Override public void paintComponent(Graphics g) {

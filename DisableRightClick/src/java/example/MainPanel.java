@@ -167,12 +167,12 @@ class BasicComboPopup3 extends BasicComboPopup {
     @SuppressWarnings("unchecked")
     @Override protected JList createList() {
         return new JList(comboBox.getModel()) {
-            @Override public void processMouseEvent(MouseEvent e)  {
+            @Override public void processMouseEvent(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     return;
                 }
                 MouseEvent ev = e;
-                if (e.isControlDown())  {
+                if (e.isControlDown()) {
                     // Fix for 4234053. Filter out the Control Key from the list.
                     // ie., don't allow CTRL key deselection.
                     ev = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(),

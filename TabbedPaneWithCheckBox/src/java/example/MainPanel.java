@@ -96,9 +96,19 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
         cbox.setBounds(rect);
         cbox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, me, cbox));
     }
-    @Override public void mouseClicked(MouseEvent me)  { dispatchEvent(me); }
-    @Override public void mouseEntered(MouseEvent me)  { dispatchEvent(me); }
-    @Override public void mouseExited(MouseEvent me)   { dispatchEvent(me); }
-    @Override public void mousePressed(MouseEvent me)  { dispatchEvent(me); }
-    @Override public void mouseReleased(MouseEvent me) { dispatchEvent(me); }
+    @Override public void mouseClicked(MouseEvent me) {
+        dispatchEvent(me);
+    }
+    @Override public void mouseEntered(MouseEvent me) {
+        dispatchEvent(me);
+    }
+    @Override public void mouseExited(MouseEvent me) {
+        dispatchEvent(me);
+    }
+    @Override public void mousePressed(MouseEvent me) {
+        dispatchEvent(me);
+    }
+    @Override public void mouseReleased(MouseEvent me) {
+        dispatchEvent(me);
+    }
 }

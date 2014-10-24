@@ -93,7 +93,7 @@ class RotateIcon implements Icon {
         g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return width;
     }
     @Override public int getIconHeight() {
@@ -136,7 +136,7 @@ class QuadrantRotateIcon implements Icon {
         icon.paintIcon(c, g2, 0, 0);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return rotate == QuadrantRotate.VERTICAL_FLIP ? icon.getIconWidth() : icon.getIconHeight();
     }
     @Override public int getIconHeight() {

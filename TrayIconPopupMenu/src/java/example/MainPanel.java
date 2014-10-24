@@ -164,7 +164,7 @@ final class TrayIconPopupMenuUtil {
         long pw = (long) p.x + (long) size.width;
         long ph = (long) p.y + (long) size.height;
 
-        if (pw > screenBounds.x + screenBounds.width)  {
+        if (pw > screenBounds.x + screenBounds.width) {
             p.x -= size.width;
         }
         if (ph > screenBounds.y + screenBounds.height) {

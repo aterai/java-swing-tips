@@ -190,7 +190,7 @@ class ToggleButtonBarCellIcon implements Icon {
         g2.draw(area);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 40;
     }
     @Override public int getIconHeight() {

@@ -108,7 +108,7 @@ final class ComboBoxUtil {
     private ComboBoxUtil() { /* Singleton */ }
     public static Border makeIconComboBorder(final JComponent comp, final ImageIcon icon) {
         Icon wrappedIcon = new ImageIcon() {
-            @Override public int getIconWidth()  {
+            @Override public int getIconWidth() {
                 return icon.getIconWidth();
             }
             @Override public int getIconHeight() {
@@ -132,7 +132,7 @@ final class ComboBoxUtil {
     public static void initIconComboBorder1(JComboBox comboBox, final ImageIcon icon) {
         final JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
         Icon wrappedIcon = new ImageIcon() {
-            @Override public int getIconWidth()  {
+            @Override public int getIconWidth() {
                 return icon.getIconWidth();
             }
             @Override public int getIconHeight() {

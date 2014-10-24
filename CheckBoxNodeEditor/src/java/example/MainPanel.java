@@ -106,7 +106,7 @@ class IndeterminateIcon implements Icon {
         //g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return icon.getIconWidth();
     }
     @Override public int getIconHeight() {
@@ -318,7 +318,9 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             JTree tree = (JTree) e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if (r == null) { return false; }
+            if (r == null) {
+                return false;
+            }
             Dimension d = getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if (r.contains(me.getX(), me.getY())) {

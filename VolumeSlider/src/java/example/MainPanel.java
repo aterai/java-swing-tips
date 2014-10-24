@@ -182,6 +182,6 @@ class TriSliderUI extends MetalSliderUI {
 //     g.drawLine(x + 1, y + 0, x + 3, y + 0);
 //     g.drawLine(x + 0, y + 1, x + 4, y + 1);
 //   }
-//   @Override public int getIconWidth()  { return 5; }
+//   @Override public int getIconWidth() { return 5; }
 //   @Override public int getIconHeight() { return 3; }
 // }

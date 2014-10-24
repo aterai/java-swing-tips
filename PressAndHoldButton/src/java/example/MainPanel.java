@@ -177,8 +177,12 @@ class MenuArrowIcon implements Icon {
         //g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  { return 9; }
-    @Override public int getIconHeight() { return 9; }
+    @Override public int getIconWidth() {
+        return 9;
+    }
+    @Override public int getIconHeight() {
+        return 9;
+    }
 }
 
 // class DummyIcon implements Icon {
@@ -194,7 +198,7 @@ class MenuArrowIcon implements Icon {
 //         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
-//     @Override public int getIconWidth()  {
+//     @Override public int getIconWidth() {
 //         return 24;
 //     }
 //     @Override public int getIconHeight() {

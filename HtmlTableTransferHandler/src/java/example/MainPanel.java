@@ -296,8 +296,12 @@ class ColorIcon implements Icon {
         g.setColor(color);
         g.fillRect(x, y, getIconWidth(), getIconHeight());
     }
-    @Override public int getIconWidth()  { return 10; }
-    @Override public int getIconHeight() { return 10; }
+    @Override public int getIconWidth() {
+        return 10;
+    }
+    @Override public int getIconHeight() {
+        return 10;
+    }
 }
 
 class HtmlTableTransferHandler extends TransferHandler {

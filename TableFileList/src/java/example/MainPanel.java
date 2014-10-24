@@ -251,7 +251,9 @@ class MyLabel extends JLabel {
         public DotBorder(Color color, int thickness) {
             super(color, thickness);
         }
-        @Override public boolean isBorderOpaque() { return true; }
+        @Override public boolean isBorderOpaque() {
+            return true;
+        }
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
@@ -326,8 +328,8 @@ class MyTable extends JTable {
     }
     class RubberBandingListener extends MouseAdapter {
         @Override public void mouseDragged(MouseEvent e) {
-            if (srcPoint == null) { srcPoint = e.getPoint(); }
             Point destPoint = e.getPoint();
+            srcPoint = srcPoint == null ? destPoint : srcPoint;
             polygon.reset();
             polygon.moveTo(srcPoint.x,  srcPoint.y);
             polygon.lineTo(destPoint.x, srcPoint.y);

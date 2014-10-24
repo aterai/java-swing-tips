@@ -76,7 +76,7 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
             g2.dispose();
         }
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 12;
     }
     @Override public int getIconHeight() {
@@ -98,6 +98,10 @@ class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {
             //g.fillArc(x + 2, y + 2, getIconWidth() - 5, getIconHeight() - 5, 0, 360);
         }
     }
-    @Override public int getIconWidth()  { return 12; }
-    @Override public int getIconHeight() { return 12; }
+    @Override public int getIconWidth() {
+        return 12;
+    }
+    @Override public int getIconHeight() {
+        return 12;
+    }
 }

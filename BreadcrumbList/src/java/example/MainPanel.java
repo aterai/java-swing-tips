@@ -175,7 +175,7 @@ class ToggleButtonBarCellIcon implements Icon, Serializable {
         g2.draw(area);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 100;
     }
     @Override public int getIconHeight() {

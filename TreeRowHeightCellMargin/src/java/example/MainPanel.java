@@ -142,7 +142,7 @@ class ColorIcon implements Icon {
         g.setColor(color);
         g.fillRoundRect(x + 1, y + 1, 22, 22, 10, 10);
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 24;
     }
     @Override public int getIconHeight() {

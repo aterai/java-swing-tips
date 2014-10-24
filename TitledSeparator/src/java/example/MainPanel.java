@@ -109,7 +109,11 @@ class TitledSeparator extends JLabel {
             g2.fillRect(x, y + h, width, getIconHeight() - h);
             g2.dispose();
         }
-        @Override public int getIconWidth()  { return 200; } //dummy width
-        @Override public int getIconHeight() { return height; }
+        @Override public int getIconWidth() {
+            return 200; //dummy width
+        }
+        @Override public int getIconHeight() {
+            return height;
+        }
     }
 }

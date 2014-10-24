@@ -233,7 +233,9 @@ class AnimeIcon implements Icon, Serializable {
 
     private boolean isRunning;
     public void next() {
-        if (isRunning) { list.add(list.remove(0)); }
+        if (isRunning) {
+            list.add(list.remove(0));
+        }
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;

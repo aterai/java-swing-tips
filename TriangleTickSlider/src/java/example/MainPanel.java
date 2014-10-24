@@ -87,6 +87,10 @@ class TickIcon implements Icon {
         g.drawLine(x + 1, y + 1, x + 3, y + 1);
         g.drawLine(x + 0, y + 2, x + 4, y + 2);
     }
-    @Override public int getIconWidth()  { return 5; }
-    @Override public int getIconHeight() { return 3; }
+    @Override public int getIconWidth() {
+        return 5;
+    }
+    @Override public int getIconHeight() {
+        return 3;
+    }
 }

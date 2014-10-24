@@ -63,9 +63,13 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private boolean isCanonicalPath(File file) {
-        if (file == null) { return false; }
+        if (file == null) {
+            return false;
+        }
         try {
-            if (file.getCanonicalPath() == null) { return false; }
+            if (file.getCanonicalPath() == null) {
+                return false;
+            }
         } catch (IOException ioe) {
             return false;
         }

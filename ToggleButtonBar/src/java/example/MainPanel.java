@@ -115,7 +115,7 @@ class CellIcon implements Icon {
 
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 80;
     }
     @Override public int getIconHeight() {
@@ -187,7 +187,7 @@ class ToggleButtonBarCellIcon implements Icon {
 
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 80;
     }
     @Override public int getIconHeight() {

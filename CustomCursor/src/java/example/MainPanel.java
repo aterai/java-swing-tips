@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
 }
 
 class GreenBlueIcon implements Icon {
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 32;
     }
     @Override public int getIconHeight() {

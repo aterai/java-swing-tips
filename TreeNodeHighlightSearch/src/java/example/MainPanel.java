@@ -41,7 +41,9 @@ public final class MainPanel extends JPanel {
         renderer.q = q;
         TreePath root = tree.getPathForRow(0);
         collapseAll(tree, root);
-        if (!q.isEmpty()) { searchTree(tree, root, q); }
+        if (!q.isEmpty()) {
+            searchTree(tree, root, q);
+        }
         //tree.repaint();
     }
     private static void searchTree(JTree tree, TreePath path, String q) {

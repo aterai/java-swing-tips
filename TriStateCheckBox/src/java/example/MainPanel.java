@@ -229,7 +229,7 @@ class IndeterminateIcon implements Icon {
         g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return icon.getIconWidth();
     }
     @Override public int getIconHeight() {

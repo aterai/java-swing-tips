@@ -16,8 +16,12 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         UIManager.put("Slider.horizontalThumbIcon", new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
-            @Override public int getIconWidth()  { return 15; }
-            @Override public int getIconHeight() { return 64; }
+            @Override public int getIconWidth() {
+                return 15;
+            }
+            @Override public int getIconHeight() {
+                return 64;
+            }
         });
         System.out.println(UIManager.get("Slider.trackWidth"));
         System.out.println(UIManager.get("Slider.majorTickLength"));

@@ -165,9 +165,12 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     }
     @Override public Object getCellEditorValue() {
         int i = 0;
-        if (buttons[0].isSelected()) { i |= 1 << 2; }
-        if (buttons[1].isSelected()) { i |= 1 << 1; }
-        if (buttons[2].isSelected()) { i |= 1 << 0; }
+        i = buttons[0].isSelected() ? 1 << 2 | i : i;
+        i = buttons[1].isSelected() ? 1 << 1 | i : i;
+        i = buttons[2].isSelected() ? 1 << 0 | i : i;
+        //if (buttons[0].isSelected()) { i |= 1 << 2; }
+        //if (buttons[1].isSelected()) { i |= 1 << 1; }
+        //if (buttons[2].isSelected()) { i |= 1 << 0; }
         return i;
     }
 

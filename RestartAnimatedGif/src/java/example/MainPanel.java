@@ -42,8 +42,12 @@ public final class MainPanel extends JPanel {
                 g2.fillRect(x, y, getIconWidth(), getIconHeight());
                 g2.dispose();
             }
-            @Override public int getIconWidth()  { return icon9.getIconWidth();  }
-            @Override public int getIconHeight() { return icon9.getIconHeight(); }
+            @Override public int getIconWidth() {
+                return icon9.getIconWidth();
+            }
+            @Override public int getIconHeight() {
+                return icon9.getIconHeight();
+            }
         });
 
         JLabel label = new JLabel(animatedIcon);

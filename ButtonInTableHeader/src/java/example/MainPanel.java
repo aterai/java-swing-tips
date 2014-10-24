@@ -188,6 +188,10 @@ class MenuArrowIcon implements Icon {
         //g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  { return 10; }
-    @Override public int getIconHeight() { return 10; }
+    @Override public int getIconWidth() {
+        return 10;
+    }
+    @Override public int getIconHeight() {
+        return 10;
+    }
 }

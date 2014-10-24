@@ -120,7 +120,7 @@ class WavyLineSeparator extends JSeparator {
             g2.setTransform(oldTransform);
             g2.dispose();
         }
-        @Override public int getIconWidth()  {
+        @Override public int getIconWidth() {
             return (orientation == HORIZONTAL) ? ICONWIDTH * 2 : ICONWIDTH;
         }
         @Override public int getIconHeight() {

@@ -25,9 +25,15 @@ public final class MainPanel extends JPanel {
     };
     @Override public void updateUI() {
         super.updateUI();
-        if (fc0 != null) { SwingUtilities.updateComponentTreeUI(fc0); }
-        if (fc1 != null) { SwingUtilities.updateComponentTreeUI(fc1); }
-        if (fc2 != null) { SwingUtilities.updateComponentTreeUI(fc2); }
+        if (fc0 != null) {
+            SwingUtilities.updateComponentTreeUI(fc0);
+        }
+        if (fc1 != null) {
+            SwingUtilities.updateComponentTreeUI(fc1);
+        }
+        if (fc2 != null) {
+            SwingUtilities.updateComponentTreeUI(fc2);
+        }
     }
     public MainPanel() {
         super(new BorderLayout());
@@ -80,7 +86,9 @@ public final class MainPanel extends JPanel {
                 if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(fc.getSelectedFile().getAbsolutePath());
                 }
-                if (check2.isSelected()) { fc.setSelectedFile(f.getParentFile()); } //XXX: reset???
+                if (check2.isSelected()) {
+                    fc.setSelectedFile(f.getParentFile()); //XXX: reset???
+                }
             }
         }), c);
         c.gridx++;

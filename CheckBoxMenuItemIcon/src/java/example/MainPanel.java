@@ -69,7 +69,7 @@ class CheckIcon implements Icon {
             g2.dispose();
         }
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 14;
     }
     @Override public int getIconHeight() {

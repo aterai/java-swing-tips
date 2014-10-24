@@ -44,7 +44,9 @@ public final class MainPanel extends JPanel {
                     //    System.out.println(key);
                     //}
                     Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
-                    if (detailsAction != null) { detailsAction.actionPerformed(null); }
+                    if (detailsAction != null) {
+                        detailsAction.actionPerformed(null);
+                    }
                 }
                 int retvalue = chooser.showOpenDialog(p);
                 if (retvalue == JFileChooser.APPROVE_OPTION) {
@@ -62,7 +64,9 @@ public final class MainPanel extends JPanel {
                 ((AbstractButton) c).doClick();
                 return true;
             } else {
-                if (searchAndClick((Container) c, icon)) { return true; }
+                if (searchAndClick((Container) c, icon)) {
+                    return true;
+                }
             }
         }
         return false;

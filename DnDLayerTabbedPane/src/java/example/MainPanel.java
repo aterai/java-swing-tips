@@ -302,7 +302,9 @@ class DnDTabbedPane extends JTabbedPane {
         setEnabledAt(tgtindex, flg);
         //When you drag'n'drop a disabled tab, it finishes enabled and selected.
         //pointed out by dlorde
-        if (flg) { setSelectedIndex(tgtindex); }
+        if (flg) {
+            setSelectedIndex(tgtindex);
+        }
         //I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
@@ -360,7 +362,7 @@ class DnDTabbedPane extends JTabbedPane {
             boolean flag = idx < 0 || !src.isEnabledAt(idx) || src.getComponentAt(idx) == null;
             startPt = flag ? null : tabPt;
         }
-        @Override public void mouseDragged(MouseEvent e)  {
+        @Override public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
@@ -440,7 +442,9 @@ class TabTransferHandler extends TransferHandler {
     }
     @Override protected Transferable createTransferable(JComponent c) {
         System.out.println("createTransferable");
-        if (c instanceof DnDTabbedPane) { source = (DnDTabbedPane) c; }
+        if (c instanceof DnDTabbedPane) {
+            source = (DnDTabbedPane) c;
+        }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
     private boolean isDropable(DnDTabbedPane target, Point pt, int idx) {

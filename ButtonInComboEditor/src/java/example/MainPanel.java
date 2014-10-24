@@ -292,9 +292,9 @@ class SelectedImageFilter extends RGBImageFilter {
         r = (int) (r * SCALE);
         g = (int) (g * SCALE);
         b = (int) (b * SCALE);
-        if (r > 255) { r = 255; }
-        if (g > 255) { g = 255; }
-        if (b > 255) { b = 255; }
+        r = r > 0xff ? 0xff : r;
+        g = g > 0xff ? 0xff : g;
+        b = b > 0xff ? 0xff : b;
         return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }

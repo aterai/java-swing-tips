@@ -374,7 +374,7 @@ class DummyIcon implements Icon {
         //g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return 24;
     }
     @Override public int getIconHeight() {

@@ -177,8 +177,12 @@ class XMLTreeNode implements TreeNode {
         }
         final Iterator<XMLTreeNode> iter = list.iterator();
         return new Enumeration<XMLTreeNode>() {
-            @Override public boolean hasMoreElements() { return iter.hasNext(); }
-            @Override public XMLTreeNode nextElement() { return iter.next(); }
+            @Override public boolean hasMoreElements() {
+                return iter.hasNext();
+            }
+            @Override public XMLTreeNode nextElement() {
+                return iter.next();
+            }
         };
     }
     @Override public boolean getAllowsChildren() { //NOPMD

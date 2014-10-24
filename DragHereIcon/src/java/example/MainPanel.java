@@ -102,7 +102,7 @@ class DragHereIcon implements Icon {
         g2.translate(-x, -y);
         g2.dispose();
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return ICON_SIZE;
     }
     @Override public int getIconHeight() {

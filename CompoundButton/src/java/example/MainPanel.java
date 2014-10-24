@@ -107,7 +107,7 @@ class CompoundButton extends JButton {
                 }
                 g2.dispose();
             }
-            @Override public int getIconWidth()  {
+            @Override public int getIconWidth() {
                 return dim.width;
             }
             @Override public int getIconHeight() {

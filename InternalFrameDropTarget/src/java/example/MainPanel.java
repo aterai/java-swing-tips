@@ -98,7 +98,7 @@ public class MainPanel extends JPanel {
 //             startPt = e.getPoint(); //e.getDragOrigin();
 //             //System.out.println(startPt);
 //         }
-//         @Override public void mouseDragged(MouseEvent e)  {
+//         @Override public void mouseDragged(MouseEvent e) {
 //             Point tabPt = e.getPoint(); //e.getDragOrigin();
 //             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
 //                 JTableHeader src = (JTableHeader) e.getComponent();

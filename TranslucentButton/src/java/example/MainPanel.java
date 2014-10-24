@@ -235,7 +235,7 @@ class TranslucentButtonIcon implements Icon {
             g2.dispose();
         }
     }
-    @Override public int getIconWidth()  {
+    @Override public int getIconWidth() {
         return Math.max(width, 100);
     }
     @Override public int getIconHeight() {
