@@ -67,8 +67,8 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
 //         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (ClassNotFoundException | InstantiationException |
-//                  IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//         } catch (ClassNotFoundException | InstantiationException
+//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
 //             ex.printStackTrace();
 //         }
         JMenuBar menuBar = new JMenuBar();
@@ -145,8 +145,8 @@ final class LookAndFeelUtil {
         try {
             UIManager.setLookAndFeel(currentLookAndFeel);
             updateLookAndFeel();
-        } catch (ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
             System.out.println("Failed loading L&F: " + currentLookAndFeel);
         }

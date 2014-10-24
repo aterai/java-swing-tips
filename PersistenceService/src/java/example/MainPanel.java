@@ -46,9 +46,9 @@ public final class MainPanel extends JPanel {
                 try {
                     windowListener = get();
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (InterruptedException   | ExecutionException |
-                         ClassNotFoundException | InstantiationException |
-                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (InterruptedException   | ExecutionException
+                       | ClassNotFoundException | InstantiationException
+                       | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
                 JFrame frame = new JFrame("@title@");

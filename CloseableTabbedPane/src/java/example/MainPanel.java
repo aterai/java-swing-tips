@@ -58,8 +58,8 @@ public class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.put("TabbedPane.tabInsets", new Insets(2, 18, 2, 18));
-        } catch (ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");

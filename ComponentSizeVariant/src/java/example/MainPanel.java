@@ -55,8 +55,8 @@ public final class MainPanel extends JPanel {
                     UIManager.setLookAndFeel(laf.getClassName());
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JMenuBar mb = new JMenuBar();

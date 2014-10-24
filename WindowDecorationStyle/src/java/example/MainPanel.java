@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
 //                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
 //                 try {
 //                     setLookAndFeel(m.getActionCommand());
-//                 } catch (ClassNotFoundException | InstantiationException |
-//                          IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//                 } catch (ClassNotFoundException | InstantiationException
+//                        | IllegalAccessException | UnsupportedLookAndFeelException ex) {
 //                     ex.printStackTrace();
 //                 }
 //             }
@@ -98,8 +98,8 @@ public final class MainPanel extends JPanel {
         JFrame frame = new JFrame();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         //XXX: JFrame frame = new JFrame();
@@ -204,8 +204,8 @@ final class LookAndFeelUtil {
                 ButtonModel m = lookAndFeelRadioGroup.getSelection();
                 try {
                     setLookAndFeel(m.getActionCommand());
-                } catch (ClassNotFoundException | InstantiationException |
-                         IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException
+                       | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     ex.printStackTrace();
                 }
             }

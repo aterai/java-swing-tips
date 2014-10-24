@@ -49,8 +49,8 @@ public final class MainPanel extends JPanel {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-        } catch (ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
