@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
                 setFocusPainted(false);
                 setOpaque(false);
                 setForeground(Color.WHITE);
-                setIcon(new TranslucentButtonIcon());
+                setIcon(new TranslucentButtonIcon(this));
             }
         };
     }
@@ -110,7 +110,7 @@ public final class MainPanel extends JPanel {
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < b.length; i++) {
             b[i] = (byte) (i * .5);
         }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
@@ -200,6 +200,12 @@ class TranslucentButtonIcon implements Icon {
     private static final int R = 8;
     private int width;
     private int height;
+    public TranslucentButtonIcon(JComponent c) {
+        Insets i = c.getBorder().getBorderInsets(c);
+        Dimension d = c.getPreferredSize();
+        width  = d.width - i.left - i.right;
+        height = d.height - i.top - i.bottom;
+    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;

@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextField field = new JTextField(30);
-    private final JTextField outf  = new JTextField(30);
+    private final JTextArea  outf  = new JTextArea();
     private final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
     private final DateFormat df = DateFormat.getDateTimeInstance();
     public MainPanel() {
@@ -26,9 +26,9 @@ public final class MainPanel extends JPanel {
                 ParsePosition pp = new ParsePosition(0);
                 Date date = format.parse(str, pp);
                 if (date == null) {
-                    outf.setText("error");
+                    outf.append("error\n");
                 } else {
-                    outf.setText(df.format(date));
+                    outf.append(df.format(date) + "\n");
                 }
             }
         });
@@ -37,14 +37,13 @@ public final class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createTitledBorder("DateFormat"));
         box.add(field);
         box.add(Box.createVerticalStrut(5));
-        box.add(outf);
-        box.add(Box.createVerticalStrut(5));
         box.add(button);
         button.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         add(box, BorderLayout.NORTH);
+        add(new JScrollPane(outf));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 160));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {
