@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
         }
         BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         byte[] b = new byte[256];
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < b.length; i++) {
             b[i] = (byte) (i * .2f);
         }
         BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
