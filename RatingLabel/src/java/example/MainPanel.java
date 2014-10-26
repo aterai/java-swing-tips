@@ -163,9 +163,9 @@ class SelectedImageFilter extends RGBImageFilter {
     private final float rf, gf, bf;
     public SelectedImageFilter(float rf, float gf, float bf) {
         super();
-        this.rf = rf;
-        this.gf = gf;
-        this.bf = bf;
+        this.rf = Math.min(1f, rf);
+        this.gf = Math.min(1f, gf);
+        this.bf = Math.min(1f, bf);
         canFilterIndexColorModel = false;
     }
 //     @Override public int filterRGB(int x, int y, int argb) {

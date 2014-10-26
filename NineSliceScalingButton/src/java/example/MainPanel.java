@@ -220,17 +220,17 @@ class NineSliceScalingIcon implements Icon {
 }
 class PressedImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int) (((argb >> 16) & 0xff) * 0.6);
-        int g = (int) (((argb >>  8) & 0xff) * 1.0);
-        int b = (int) (((argb)       & 0xff) * 1.0);
+        int r = (int) (((argb >> 16) & 0xff) * .6);
+        int g = (int) (((argb >>  8) & 0xff) * 1d);
+        int b = (int) (((argb)       & 0xff) * 1d);
         return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }
 class RolloverImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int) (((argb >> 16) & 0xff) * 1.0);
-        int g = (int) (((argb >>  8) & 0xff) * 1.5); g = Math.min(255, g);
-        int b = (int) (((argb)       & 0xff) * 1.5); b = Math.min(255, b);
+        int r = (int) Math.min(0xff, ((argb >> 16) & 0xff) * 1.0);
+        int g = (int) Math.min(0xff, ((argb >>  8) & 0xff) * 1.5);
+        int b = (int) Math.min(0xff, ((argb)       & 0xff) * 1.5);
         return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }

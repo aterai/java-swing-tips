@@ -3,46 +3,44 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tab0 = new JTabbedPane();
-    private final JTabbedPane tab1 = new JTabbedPane();
+    private static final int MIN_TAB_WIDTH = 100;
+    private final JTabbedPane tabbedPane = new JTabbedPane();
     public MainPanel() {
-        super(new BorderLayout());
-        tab0.addTab("aaaaaa",          new JLabel("aaaaaaaaaaa"));
-        tab0.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
-        tab0.addTab("c",               new JLabel("cccccccccc"));
+        super(new GridLayout(2, 1, 0, 10));
 
-        if (tab1.getUI() instanceof WindowsTabbedPaneUI) {
-            tab1.setUI(new WindowsTabbedPaneUI() {
-                protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                    int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-                    return i < 100 ? 100 : i;
+        for (JTabbedPane tab: Arrays.asList(new JTabbedPane(), tabbedPane)) {
+            tab.addTab("aaaaaa",          new JLabel("aaaaaaaaaaa"));
+            tab.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
+            tab.addTab("c",               new JLabel("cccccccccc"));
+            add(tab);
+        }
+
+        if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
+            tabbedPane.setUI(new WindowsTabbedPaneUI() {
+                @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                    return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
                 }
             });
         } else {
-            tab1.setUI(new BasicTabbedPaneUI() {
-                protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                    int i = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
-                    return i < 100 ? 100 : i;
+            tabbedPane.setUI(new BasicTabbedPaneUI() {
+                @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                    return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
                 }
             });
         }
-        tab1.addTab("aaaaaa",          new JLabel("aaaaaaaaaaa"));
-        tab1.addTab("bbbbbbbbbbbbbbb", new JLabel("bbbbbbbbb"));
-        tab1.addTab("c",               new JLabel("cccccccccc"));
-
-        add(tab0, BorderLayout.NORTH);
-        add(tab1, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
-    public String makeTitle(String title) {
-        return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
-    }
+//     //TEST
+//     public String makeTitle(String title) {
+//         return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
+//     }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

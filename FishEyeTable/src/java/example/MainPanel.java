@@ -206,7 +206,7 @@ class FishEyeTable extends JTable {
         }
         int restRc   = rowCount - viewRc;
         int restH    = height - viewH;
-        int restRh   = restH / restRc; restRh = restRh > 0 ? restRh : 1;
+        int restRh   = Math.max(1, restH / restRc); //restRh = restRh > 0 ? restRh : 1;
         int restGap  = restH - restRh * restRc;
         //System.out.println(String.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH));
         int index = -1;

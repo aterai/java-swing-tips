@@ -192,7 +192,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
 //     public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
 //         RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
 //         BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-//         //TEST: RescaleOp op = new RescaleOp(1.2f, 0.0f, null);
+//         //TEST: RescaleOp op = new RescaleOp(1.2f, 0f, null);
 //         //BufferedImage img = new BufferedImage(srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
 //         Graphics g = img.getGraphics();
 //         //g.drawImage(srcIcon.getImage(), 0, 0, null);
@@ -286,15 +286,9 @@ class SelectedImageFilter extends RGBImageFilter {
     private static final float SCALE = 1.2f;
     @Override public int filterRGB(int x, int y, int argb) {
         //int a = (argb >> 24) & 0xff;
-        int r = (argb >> 16) & 0xff;
-        int g = (argb >>  8) & 0xff;
-        int b = (argb)       & 0xff;
-        r = (int) (r * SCALE);
-        g = (int) (g * SCALE);
-        b = (int) (b * SCALE);
-        r = r > 0xff ? 0xff : r;
-        g = g > 0xff ? 0xff : g;
-        b = b > 0xff ? 0xff : b;
+        int r = (int) Math.min(0xff, ((argb >> 16) & 0xff) * SCALE);
+        int g = (int) Math.min(0xff, ((argb >>  8) & 0xff) * SCALE);
+        int b = (int) Math.min(0xff, ((argb)       & 0xff) * SCALE);
         return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
     }
 }

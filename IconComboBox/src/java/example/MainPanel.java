@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.insets  = new Insets(5, 5, 5, 5);
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.gridy   = 0;
         for (JComponent cmp: list) {
             p.add(cmp, c);
@@ -119,7 +119,7 @@ final class ComboBoxUtil {
                 g.translate(x, y);
                 int ih = icon.getIconHeight();
                 int ch = getIconHeight();
-                int yy = ch - ih > 0 ? (ch - ih) / 2 : 0;
+                int yy = Math.max((ch - ih) / 2, 0); //ch - ih > 0 ? (ch - ih) / 2 : 0;
                 g.drawImage(icon.getImage(), 0, yy, c);
                 g.translate(-x, -y);
             }
@@ -144,7 +144,7 @@ final class ComboBoxUtil {
                 //g2.translate(x, y);
                 int ih = icon.getIconHeight();
                 int ch = getIconHeight();
-                int yy = ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
+                int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); //ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
                 g2.drawImage(icon.getImage(), 0, yy, c);
                 g2.dispose();
                 //g.translate(-x, -y);
@@ -164,7 +164,7 @@ final class ComboBoxUtil {
                 int ih = icon.getIconHeight();
                 int ch = comboBox.getPreferredSize().height;
                 //int ch = c.getPreferredSize().height; //Nimbus???
-                int yy = ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
+                int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); //ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
 
                 Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
                 c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
