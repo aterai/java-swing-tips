@@ -98,15 +98,15 @@ public final class MainPanel extends JPanel {
         c.gridwidth  = 1;
         c.gridheight = 1;
         c.gridy   = 0;
-        c.weighty = 1.0;
+        c.weighty = 1d;
 
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.BOTH;
         c.gridx   = 0; p.add(lp, c);
         c.gridx   = 2; p.add(rp, c);
 
         c.insets  = new Insets(0, 5, 0, 5);
-        c.weightx = 0.0;
+        c.weightx = 0d;
         c.gridx   = 1;
         p.add(new JSeparator(JSeparator.VERTICAL), c);
 

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 0; p2.add(new JLabel(" TitlePosition"), c);
         c.gridy   = 1; p2.add(new JLabel(" TitleJustification"), c);
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.gridy   = 0; p2.add(verticalOrientationChoices, c);
         c.gridy   = 1; p2.add(justificationChoices, c);

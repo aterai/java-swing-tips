@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
         l1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
         //l2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
 
-        setScaleAndAdd(panel, layout, l1, 0.05f, 0.05f, 0.90f, 0.55f);
-        setScaleAndAdd(panel, layout, l2, 0.50f, 0.65f, 0.40f, 0.30f);
+        setScaleAndAdd(panel, layout, l1, .05f, .05f, .90f, .55f);
+        setScaleAndAdd(panel, layout, l2, .50f, .65f, .40f, .30f);
 
         //addComponentListener(new ComponentAdapter() {
         //    @Override public void componentResized(ComponentEvent e) {

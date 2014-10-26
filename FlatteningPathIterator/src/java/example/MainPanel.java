@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         int x0 = b.x + r1;
         int y0 = b.y + r2;
         int v  = 60;
-        double a = 0.0;
+        double a = 0d;
         double d = 2 * Math.PI / v;
         Polygon polygon = new Polygon();
         for (int i = 0; i < v; i++) {
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     // http://java-sl.com/tip_flatteningpathiterator_moving_shape.html
     // via: http://stackoverflow.com/questions/17272912/converting-an-ellipse2d-to-polygon
     public static Polygon convertShape2Polygon(Shape s) {
-        PathIterator i  = new FlatteningPathIterator(s.getPathIterator(null), 1.0);
+        PathIterator i  = new FlatteningPathIterator(s.getPathIterator(null), 1d);
         Polygon polygon = new Polygon();
         float[] coords  = new float[6];
         while (!i.isDone()) {
@@ -98,7 +98,7 @@ class ShapeIcon implements Icon {
         g2.draw(shape);
         g2.setPaint(Color.RED);
 
-        PathIterator i = new FlatteningPathIterator(shape.getPathIterator(null), 1.0);
+        PathIterator i = new FlatteningPathIterator(shape.getPathIterator(null), 1d);
         double[] coords = new double[6];
         while (!i.isDone()) {
             i.currentSegment(coords);

@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.insets  = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
@@ -103,7 +103,7 @@ class StarIcon implements Icon {
     private Path2D.Double makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
-        double agl = 0.0;
+        double agl = 0d;
         double add = 2 * Math.PI / (vc * 2);
         Path2D.Double p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);

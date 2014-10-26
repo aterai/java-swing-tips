@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
 
             //double sy = (crect.height - insets.top - insets.bottom) / trect.getHeight();
             double sy = crect.getHeight() / trect.getHeight();
-            AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+            AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
             //paint Highlight
             g.setColor(Color.YELLOW);
             for (Integer viewIndex: highlighter) {

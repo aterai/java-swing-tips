@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 5; p.add(l5, c);
 
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.gridy   = 0; p.add(new JTextField(), c);
         c.gridy   = 1; p.add(new JTextField(), c);
         c.gridy   = 2; p.add(new JTextField(), c);
@@ -121,7 +121,7 @@ class JustifiedLabel extends JLabel {
         }
         float xx = (jwidth - vwidth) / (float) (gv.getNumGlyphs() - 1);
         float xpos = 0f;
-        Point2D gmPos = new Point2D.Double(0.0d, 0.0d);
+        Point2D gmPos = new Point2D.Double(0d, 0d);
         for (int i = 0; i < gv.getNumGlyphs(); i++) {
             GlyphMetrics gm = gv.getGlyphMetrics(i);
             gmPos.setLocation(xpos, 0);

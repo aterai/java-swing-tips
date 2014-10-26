@@ -146,9 +146,9 @@ class AnimatedLabel extends JLabel implements ActionListener {
 class AnimeIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
-    private static final double R  = 2.0d;
-    private static final double SX = 1.0d;
-    private static final double SY = 1.0d;
+    private static final double R  = 2d;
+    private static final double SX = 1d;
+    private static final double SY = 1d;
     private static final int WIDTH  = (int) (R * 8 + SX * 2);
     private static final int HEIGHT = (int) (R * 8 + SY * 2);
     private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(

@@ -157,7 +157,7 @@ class HighlightIcon implements Icon {
         int itop = scrollbar.getInsets().top;
         BoundedRangeModel range = scrollbar.getModel();
         double sy = range.getExtent() / (double) (range.getMaximum() - range.getMinimum());
-        AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+        AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
         Highlighter highlighter = textArea.getHighlighter();
 
         //paint Highlight
@@ -205,7 +205,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
 
         Rectangle rect = textArea.getBounds();
         double sy = trackBounds.getHeight() / rect.getHeight();
-        AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+        AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
         Highlighter highlighter = textArea.getHighlighter();
         g.setColor(Color.YELLOW);
         try {
@@ -232,7 +232,7 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
 
         Rectangle rect = textArea.getBounds();
         double sy = trackBounds.getHeight() / rect.getHeight();
-        AffineTransform at = AffineTransform.getScaleInstance(1.0, sy);
+        AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
         Highlighter highlighter = textArea.getHighlighter();
         g.setColor(Color.YELLOW);
         try {

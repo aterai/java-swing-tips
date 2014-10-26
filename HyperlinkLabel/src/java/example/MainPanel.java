@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 3; add(new JLabel("JEditorPane+HyperlinkListener: "), c);
 
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.anchor  = GridBagConstraints.WEST;
         c.gridy   = 0; add(new URILabel(MYSITE), c);
         c.gridy   = 1; add(new JButton(browseAction), c);

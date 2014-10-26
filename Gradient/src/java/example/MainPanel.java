@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         c.gridwidth = 3;
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(makeTitlePanel(title, sp), c);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         c.gridwidth = 1;
         c.gridx = 2;
         c.gridy = 1;
-        c.weightx = 0.0;
+        c.weightx = 0d;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
         p.add(new JButton("dummy"), c);
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(new JTextField(), c);
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
 
         c.gridwidth = 2;
         c.gridx = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(separator, c);
 

@@ -124,7 +124,7 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
         } else if (w < image.getIconWidth() + 5 + 5) {
             h  = image.getIconHeight() + 5 + 5;
             w += image.getIconWidth() / 16;
-        } else if (alpha < 1.0) {
+        } else if (alpha < 1f) {
             w  = image.getIconWidth() + 5 + 5;
             alpha = alpha + .1f;
         } else {

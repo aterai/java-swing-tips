@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.insets  = new Insets(5, 5, 5, 5);
         p.add(cmp, c);

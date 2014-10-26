@@ -106,7 +106,7 @@ class StarIcon implements Icon {
     private Path2D.Double makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
-        double agl = 0.0;
+        double agl = 0d;
         double add = 2 * Math.PI / (vc * 2);
         Path2D.Double p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);

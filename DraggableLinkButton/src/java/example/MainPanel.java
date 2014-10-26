@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         c.anchor  = GridBagConstraints.EAST;
         c.gridy   = 0; p.add(new JLabel("D&D->Brouser: "), c);
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.anchor  = GridBagConstraints.WEST;
         c.gridy   = 0; p.add(label, c);
 

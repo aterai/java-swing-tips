@@ -54,13 +54,13 @@ public final class MainPanel extends JPanel {
     }
     private static void addRow(JComponent c1, JComponent c2, JPanel p, GridBagConstraints c) {
         c.gridx = 0;
-        c.weightx = 0.0;
+        c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 0);
         c.anchor = GridBagConstraints.EAST;
         p.add(c1, c);
 
         c.gridx = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(c2, c);

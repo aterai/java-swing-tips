@@ -36,12 +36,12 @@ public final class MainPanel extends JPanel {
 
         c.gridx = 0;
         c.insets = new Insets(0, 0, 0, 4);
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(progressBar, c);
 
         c.gridx = 1;
-        c.weightx = 0.0;
+        c.weightx = 0d;
         p.add(new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {
                 final JButton b = (JButton) e.getSource();
@@ -145,7 +145,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         return pallet;
     }
     private static Color getColorFromPallet(int[] pallet, float x) {
-        if (x < 0.0 || x > 1.0) {
+        if (x < 0d || x > 1d) {
             throw new IllegalArgumentException("Parameter outside of expected range");
         }
         int i = (int) (pallet.length * x);

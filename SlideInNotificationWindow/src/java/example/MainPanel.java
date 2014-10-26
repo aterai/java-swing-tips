@@ -214,7 +214,7 @@ final class AnimationUtil {
             throw new IllegalArgumentException("B must be a positive integer or zero");
         }
         double a = da;
-        double d = 1.0;
+        double d = 1d;
         for (; b > 0; a *= a, b >>>= 1) {
             if ((b & 1) != 0) {
                 d *= a;

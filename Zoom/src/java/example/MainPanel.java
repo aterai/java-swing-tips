@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         private final transient ImageIcon icon;
         private final int iw;
         private final int ih;
-        private double scale = 1.0d;
+        private double scale = 1d;
         public ZoomImage(ImageIcon icon) {
             super();
             this.icon = icon;

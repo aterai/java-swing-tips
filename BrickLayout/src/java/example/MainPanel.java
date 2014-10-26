@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         panel.setBorder(BorderFactory.createTitledBorder("Brick Layout"));
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        //c.weightx = 1.0; c.weighty = 0.0;
+        //c.weightx = 1d; c.weighty = 0d;
         for (int i = 0; i < SIZE; i++) {
             int x = i & 1; //= (i % 2 == 0) ? 0 : 1;
             for (int j = 0; j < SIZE; j++) {

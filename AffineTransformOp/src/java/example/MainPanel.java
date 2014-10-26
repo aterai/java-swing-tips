@@ -25,13 +25,13 @@ public final class MainPanel extends JPanel {
             if (mode == Flip.NONE) {
                 g.drawImage(bufferedImage, 0, 0, w, h, this);
             } else if (mode == Flip.VERTICAL) {
-                AffineTransform at = AffineTransform.getScaleInstance(1.0, -1.0);
+                AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
                 at.translate(0, -h);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.drawImage(bufferedImage, at, this);
                 g2.dispose();
             } else if (mode == Flip.HORIZONTAL) {
-                AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
+                AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
                 at.translate(-w, 0);
                 AffineTransformOp atOp = new AffineTransformOp(at, null);
                 g.drawImage(atOp.filter(bufferedImage, null), 0, 0, w, h, this);

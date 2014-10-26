@@ -74,7 +74,7 @@ class ComboBoxPanel extends JPanel {
         super(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.insets = new Insets(0, 10, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
 

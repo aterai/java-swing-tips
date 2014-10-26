@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 2; p.add(new JLabel("Count of Teeth:"), c);
 
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.gridy   = 0; p.add(spinner1,  c);
         c.gridy   = 1; p.add(spinner2,  c);
@@ -176,7 +176,7 @@ final class StarburstSVGMaker {
     public static Path2D.Double makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
-        double agl = 0.0;
+        double agl = 0d;
         double add = 2 * Math.PI / (vc * 2);
         Path2D.Double p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);

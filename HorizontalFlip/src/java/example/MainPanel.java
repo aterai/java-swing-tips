@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         Font font = new Font(Font.MONOSPACED, Font.BOLD, 200);
         FontRenderContext frc = new FontRenderContext(null, true, true);
         Shape copyright = new TextLayout("\u00a9", font, frc).getOutline(null);
-        AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
+        AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
         //Rectangle r = copyright.getBounds()
         //at.translate(r.getWidth(), r.getHeight());
         //AffineTransform at = new AffineTransform(-1d, 0, 0, 1d, r.getWidth(), r.getHeight());

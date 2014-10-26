@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 1; p.add(new JLabel("Nomal:"), c);
 
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.gridy   = 0; p.add(combo, c);
         c.gridy   = 1; p.add(makeComboBox(), c);

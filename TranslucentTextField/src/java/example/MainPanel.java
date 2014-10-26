@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 2; add(new JLabel("2. 1+paintComponent"), c);
 
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.gridy   = 0; add(field0, c);
         c.gridy   = 1; add(field1, c);

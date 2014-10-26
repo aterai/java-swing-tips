@@ -28,11 +28,11 @@ public final class MainPanel extends JPanel {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 if (r2.isSelected()) {
-                    sp.setResizeWeight(1.0);
+                    sp.setResizeWeight(1d);
                 } else if (r1.isSelected()) {
-                    sp.setResizeWeight(0.5);
+                    sp.setResizeWeight(.5);
                 } else {
-                    sp.setResizeWeight(0.0);
+                    sp.setResizeWeight(0d);
                 }
             }
         };

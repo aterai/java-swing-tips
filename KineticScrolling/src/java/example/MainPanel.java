@@ -202,10 +202,10 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
                 vp.y = (int) (vp.y * D);
             }
             if (vp.x + vport.getWidth() - label.getWidth() > 0) {
-                vp.x = (int) (vp.x - (vp.x + vport.getWidth() - label.getWidth()) * (1.0 - D));
+                vp.x = (int) (vp.x - (vp.x + vport.getWidth() - label.getWidth()) * (1d - D));
             }
             if (vp.y + vport.getHeight() > label.getHeight()) {
-                vp.y = (int) (vp.y - (vp.y + vport.getHeight() - label.getHeight()) * (1.0 - D));
+                vp.y = (int) (vp.y - (vp.y + vport.getHeight() - label.getHeight()) * (1d - D));
             }
             vport.setViewPosition(vp);
             if (isInside(vport, label)) {

@@ -44,19 +44,19 @@ public final class MainPanel extends JPanel {
         c.gridy = 0;
 
         c.gridx = 0;
-        c.weightx = 0.0;
+        c.weightx = 0d;
         c.insets = new Insets(GAP, GAP, GAP, 0);
         c.anchor = GridBagConstraints.WEST;
         panel.add(new JLabel(str), c);
 
         c.gridx = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         //c.insets = new Insets(GAP, GAP, GAP, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(cmp, c);
 
         c.gridx = 2;
-        c.weightx = 0.0;
+        c.weightx = 0d;
         c.insets = new Insets(GAP, GAP, GAP, GAP);
         c.anchor = GridBagConstraints.WEST;
         panel.add(btn, c);

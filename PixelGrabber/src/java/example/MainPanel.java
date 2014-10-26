@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         }
-        AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
+        AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
         at.translate(-width, 0);
         s = at.createTransformedShape(area); //NE
         for (int y = 0; y < r.height; y++) {

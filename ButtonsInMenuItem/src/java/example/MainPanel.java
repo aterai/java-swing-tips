@@ -59,12 +59,12 @@ public final class MainPanel extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
 
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
         item.add(Box.createHorizontalGlue(), c);
         c.gridx = 1;
         c.fill = GridBagConstraints.NONE;
-        c.weightx = 0.0;
+        c.weightx = 0d;
         c.anchor = GridBagConstraints.EAST;
         item.add(edit, c);
 

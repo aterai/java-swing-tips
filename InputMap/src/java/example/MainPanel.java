@@ -82,8 +82,8 @@ public final class MainPanel extends JPanel {
         c.gridheight = 1;
         c.gridx = 0;
         c.gridy = 2;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weightx = 1d;
+        c.weighty = 1d;
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.NONE;
         panel.add(new JButton(act), c);

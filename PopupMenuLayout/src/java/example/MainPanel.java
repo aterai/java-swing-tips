@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
         popup.setLayout(new GridBagLayout());
         c.gridheight = 1;
 
-        c.weightx = 1.0;
-        c.weighty = 0.0;
+        c.weightx = 1d;
+        c.weighty = 0d;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.CENTER;
 

@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
         c.gridy   = 2; p2.add(new JLabel("setHorizontalAlignment:"), c);
         c.gridy   = 3; p2.add(new JLabel("setHorizontalTextPosition:"), c);
         c.gridx   = 1;
-        c.weightx = 1.0;
+        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.gridy   = 0; p2.add(verticalAlignmentChoices, c);
         c.gridy   = 1; p2.add(verticalTextPositionChoices, c);
@@ -123,7 +123,7 @@ class StarburstIcon implements Icon {
     private static final int VC = 18;
     private final Shape star;
     public StarburstIcon() {
-        double agl = 0.0;
+        double agl = 0d;
         double add = 2 * Math.PI / (VC * 2);
         Path2D.Double p = new Path2D.Double();
         p.moveTo(R2 * 1, R2 * 0);

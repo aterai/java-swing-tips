@@ -60,7 +60,7 @@ class DraggableImageMouseListener extends MouseAdapter {
     public final int width;
     public final int height;
     public final double centerX, centerY;
-    public double x = 10.0, y = 50.0, radian = 45.0 * (Math.PI / 180.0);
+    public double x = 10d, y = 50d, radian = 45d * (Math.PI / 180d);
     public double startX, startY, startA;
     private boolean moverHover, rotatorHover;
 
@@ -75,7 +75,7 @@ class DraggableImageMouseListener extends MouseAdapter {
         inner.y = y + centerY - IR / 2;
         outer.x = x + centerX - OR / 2;
         outer.y = y + centerY - OR / 2;
-        border  = new RoundRectangle2D.Double(0, 0, width, height, 10.0, 10.0);
+        border  = new RoundRectangle2D.Double(0d, 0d, width, height, 10d, 10d);
     }
     public void paint(Graphics g, ImageObserver ior) {
         Graphics2D g2d = (Graphics2D) g.create();
