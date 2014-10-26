@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
@@ -62,7 +63,7 @@ class TextAreaRenderer extends JTextArea implements ListCellRenderer<String> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     @Override public Component getListCellRendererComponent(JList list, String str, int index, boolean isSelected, boolean cellHasFocus) {
         //setLineWrap(true);
-        setText(str == null ? "" : str);
+        setText(Objects.toString(str, ""));
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());

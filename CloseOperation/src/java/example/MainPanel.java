@@ -4,12 +4,13 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static int number;
     public static JFrame createFrame(String title) {
-        JFrame frame = new JFrame((title == null) ? "Frame #" + number : title);
+        JFrame frame = new JFrame(Objects.toString(title, "Frame #" + number));
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         number++;
         frame.addWindowListener(new WindowAdapter() {

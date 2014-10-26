@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -186,7 +187,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
         add(box, BorderLayout.EAST);
     }
     @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
-        label.setText((value == null) ? "" : value);
+        label.setText(Objects.toString(value, ""));
         this.index = index;
         if (isSelected) {
             setBackground(list.getSelectionBackground());

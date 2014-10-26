@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 //             }
             @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-                c.setToolTipText((value == null) ? null : "TreeCellRenderer: " + value.toString());
+                c.setToolTipText(value == null ? null : "TreeCellRenderer: " + value.toString());
                 return c;
             }
         });

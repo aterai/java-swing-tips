@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
@@ -123,7 +123,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        super.insertTab(title, icon, component, tip == null ? title : tip, index);
+        super.insertTab(title, icon, component, Objects.toString(tip, title), index);
         JLabel label = new JLabel(title, JLabel.CENTER);
         //Dimension dim = label.getPreferredSize();
         //Insets tabInsets = getTabInsets();

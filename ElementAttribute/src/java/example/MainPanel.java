@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
                 } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
-                    editorPane.setToolTipText((url == null) ? null : url.toExternalForm());
+                    editorPane.setToolTipText(url == null ? null : url.toExternalForm());
                 } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editorPane.setToolTipText(tooltip);
                 }
