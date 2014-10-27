@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"A", "B"};
     private final Object[][] data = {
         {"aaa", "bbaacc"}, {"bbb", "defg"},
-        {"ccccbbbbaaabbbbaaeee", "xxx"}, {"dddaaabbbbb", "ccbbaa"},
+        {"ccccbbbbaaabbbbaaeabee", "xxx"}, {"dddaaabbbbb", "ccbbaa"},
         {"cc cc bbbb aaa bbbb e", "xxx"}, {"ddd aaa b bbbb", "cc bbaa"}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
@@ -129,7 +129,8 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
         setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
         if (pattern != null && !pattern.isEmpty() && !pattern.equals(prev)) {
             Matcher matcher = Pattern.compile(pattern).matcher(txt);
-            if (matcher.find()) {
+            int pos = 0;
+            while (matcher.find(pos)) {
                 int start = matcher.start();
                 int end   = matcher.end();
                 try {
@@ -137,6 +138,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
                 } catch (BadLocationException | PatternSyntaxException e) {
                     e.printStackTrace();
                 }
+                pos = end;
             }
         }
         return this;
