@@ -4,9 +4,11 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.util.Locale;
+import java.util.*;
+import java.util.List;
 import javax.swing.*;
-// import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicMenuItemUI;
+import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
 //import sun.swing.*;
 
 public final class MainPanel {
@@ -15,60 +17,53 @@ public final class MainPanel {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu0 = new JMenu("Default");
         JMenu menu1 = new JMenu("RightAcc");
+        JMenu menu2 = new JMenu("EastAcc");
         //XXX: JMenuItem.setDefaultLocale(Locale.ENGLISH);
+
+        //UIManager.put("MenuItem.acceleratorForeground", menu1.getBackground());
+        //UIManager.put("MenuItem.acceleratorSelectionForeground", menu1.getBackground());
 
         menu0.setMnemonic(KeyEvent.VK_D);
         menu1.setMnemonic(KeyEvent.VK_R);
+        menu2.setMnemonic(KeyEvent.VK_E);
         menuBar.add(menu0);
         menuBar.add(menu1);
+        menuBar.add(menu2);
 
+        List<JMenuItem> list = new ArrayList<>();
         JMenuItem menuItem = new JMenuItem("mi");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
-        menu0.add(menuItem);
-        menuItem = makeMenuItem("mi");
-        menuItem.setMnemonic(KeyEvent.VK_N);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
-        menu1.add(menuItem);
-
-        menu0.addSeparator();
-        menu1.addSeparator();
+        list.add(menuItem);
 
         menuItem = new JMenuItem("aaa");
         menuItem.setMnemonic(KeyEvent.VK_1);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, ActionEvent.ALT_MASK));
-        menu0.add(menuItem);
-        menuItem = makeMenuItem("aaa");
-        menuItem.setMnemonic(KeyEvent.VK_1);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, ActionEvent.ALT_MASK));
-        menu1.add(menuItem);
+        list.add(menuItem);
 
         menuItem = new JMenuItem("bbbbb");
         menuItem.setMnemonic(KeyEvent.VK_2);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK));
-        menu0.add(menuItem);
-        menuItem = makeMenuItem("bbbbb");
-        menuItem.setMnemonic(KeyEvent.VK_2);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK));
-        menu1.add(menuItem);
+        list.add(menuItem);
 
         menuItem = new JMenuItem("c");
         menuItem.setMnemonic(KeyEvent.VK_3);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        menu0.add(menuItem);
-        menuItem = makeMenuItem("c");
-        menuItem.setMnemonic(KeyEvent.VK_3);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        menu1.add(menuItem);
+        list.add(menuItem);
 
+        for (JMenuItem mi: list) {
+            menu0.add(mi);
+            menu1.add(makeMenuItem1(mi));
+            menu2.add(makeMenuItem2(mi));
+        }
         return menuBar;
     }
-    private static JMenuItem makeMenuItem(String str) {
-        return new JMenuItem(str) {
+    private static JMenuItem makeMenuItem1(JMenuItem mi) {
+        JMenuItem menuItem = new JMenuItem(mi.getText()) {
             @Override public void updateUI() {
                 super.updateUI();
                 //System.out.println(getLocale());
-                if (getUI() instanceof com.sun.java.swing.plaf.windows.WindowsMenuItemUI) {
+                if (getUI() instanceof WindowsMenuItemUI) {
                     setUI(new RAAWindowsMenuItemUI());
                 } else {
                     setUI(new RAABasicMenuItemUI());
@@ -76,6 +71,67 @@ public final class MainPanel {
                 //XXX: setLocale(Locale.JAPAN);
             }
         };
+        menuItem.setMnemonic(mi.getMnemonic());
+        menuItem.setAccelerator(mi.getAccelerator());
+        return menuItem;
+    }
+
+    private static JMenuItem makeMenuItem2(JMenuItem mi) {
+        final JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
+        label.setOpaque(true);
+        JMenuItem item = new JMenuItem(mi.getText()) {
+//             @Override public Dimension getPreferredSize() {
+//                 Dimension d = super.getPreferredSize();
+//                 label.setText(MenuItemUIHelper.getAccText(this, "+"));
+//                 //d.width += label.getPreferredSize().width;
+//                 d.height = Math.max(label.getPreferredSize().height, d.height);
+//                 return d;
+//             }
+//             @Override protected void fireStateChanged() {
+//                 super.fireStateChanged();
+//                 ButtonModel m = getModel();
+//                 if (m.isSelected() || m.isRollover() || m.isArmed()) {
+//                     label.setForeground(UIManager.getColor("MenuItem.acceleratorSelectionForeground"));
+//                     label.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+//                 } else {
+//                     label.setForeground(getForeground());
+//                     label.setBackground(getBackground());
+//                 }
+//             }
+            @Override public void updateUI() {
+                super.updateUI();
+                if (getUI() instanceof WindowsMenuItemUI) {
+                    setUI(new WindowsMenuItemUI() {
+                        @Override protected void installDefaults() {
+                            super.installDefaults();
+                            acceleratorForeground = UIManager.getColor("MenuItem.background");
+                            acceleratorSelectionForeground = acceleratorForeground;
+                        }
+                    });
+                }
+            }
+        };
+
+        GridBagConstraints c = new GridBagConstraints();
+        item.setLayout(new GridBagLayout());
+        c.gridheight = 1;
+        c.gridwidth  = 1;
+        c.gridy = 0;
+        c.gridx = 0;
+        c.insets = new Insets(0, 0, 0, 4);
+
+        c.weightx = 1d;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        item.add(Box.createHorizontalGlue(), c);
+        c.gridx = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0d;
+        c.anchor = GridBagConstraints.EAST;
+        item.add(label, c);
+
+        item.setMnemonic(mi.getMnemonic());
+        item.setAccelerator(mi.getAccelerator());
+        return item;
     }
 
     public static void main(String... args) {
@@ -199,9 +255,28 @@ final class MenuItemUIHelper {
             rect.height -= insets.bottom + rect.y;
         }
     }
+
+    public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
+        StringBuilder accText = new StringBuilder();
+        KeyStroke accelerator = mi.getAccelerator();
+        if (accelerator != null) {
+            int modifiers = accelerator.getModifiers();
+            if (modifiers > 0) {
+                accText.append(KeyEvent.getKeyModifiersText(modifiers))
+                       .append(acceleratorDelimiter);
+            }
+            int keyCode = accelerator.getKeyCode();
+            if (keyCode == 0) {
+                accText.append(accelerator.getKeyChar());
+            } else {
+                accText.append(KeyEvent.getKeyText(keyCode));
+            }
+        }
+        return accText.toString();
+    }
 }
 
-class RAAWindowsMenuItemUI extends com.sun.java.swing.plaf.windows.WindowsMenuItemUI {
+class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
     @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
         // Save original graphics font and color
         Font holdf = g.getFont();
@@ -244,7 +319,7 @@ class RAAWindowsMenuItemUI extends com.sun.java.swing.plaf.windows.WindowsMenuIt
     }
 }
 
-class RAABasicMenuItemUI extends javax.swing.plaf.basic.BasicMenuItemUI {
+class RAABasicMenuItemUI extends BasicMenuItemUI {
     @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
         // Save original graphics font and color
         Font holdf = g.getFont();
