@@ -112,6 +112,10 @@ public final class MainPanel {
             }
         };
 
+        if (mi.getAccelerator() == null) {
+            return item;
+        }
+
         GridBagConstraints c = new GridBagConstraints();
         item.setLayout(new GridBagLayout());
         c.gridheight = 1;
