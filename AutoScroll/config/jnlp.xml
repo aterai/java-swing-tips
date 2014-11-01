@@ -4,6 +4,6 @@
  <property name="jnlp.title"    value="JST 画像を自動的にスクロール" />
  <property name="jnlp.Name"     value="AutoScroll" />
  <property name="jnlp.name"     value="autoscroll" />
- <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+ <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>

@@ -4,6 +4,6 @@
  <property name="jnlp.title"    value="JST JComboBox内の右端にボタン" />
  <property name="jnlp.Name"     value="ButtonInComboEditor" />
  <property name="jnlp.name"     value="buttonincomboeditor" />
- <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+ <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>

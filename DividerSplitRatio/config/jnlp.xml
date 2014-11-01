@@ -4,6 +4,6 @@
  <property name="jnlp.title"    value="JST 分割比率を最大化も保存" />
  <property name="jnlp.Name"     value="DividerSplitRatio" />
  <property name="jnlp.name"     value="dividersplitratio" />
- <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+ <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>

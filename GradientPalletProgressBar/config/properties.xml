@@ -3,7 +3,7 @@
 <!-- project -->
 <property name="Name"    value="Example" />
 <property name="name"    value="example" />
-<property name="vendor"  value="Java Swing Tips - http://terai.xrea.jp/" />
+<property name="vendor"  value="Java Swing Tips - http://ateraimemo.com/" />
 <property name="version" value="1.0.0" />
 <property name="year"    value="2003-2014" />
 

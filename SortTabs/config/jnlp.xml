@@ -4,6 +4,6 @@
  <property name="jnlp.title"    value="JST タブをソート" />
  <property name="jnlp.Name"     value="SortTabs" />
  <property name="jnlp.name"     value="sorttabs" />
- <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+ <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>

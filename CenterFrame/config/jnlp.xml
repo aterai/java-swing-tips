@@ -4,6 +4,6 @@
  <property name="jnlp.title"    value="JST フレーム画面を中央に表示" />
  <property name="jnlp.Name"     value="CenterFrame" />
  <property name="jnlp.name"     value="centerframe" />
- <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+ <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>

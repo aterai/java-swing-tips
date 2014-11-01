@@ -4,6 +4,6 @@
  <property name="jnlp.title"    value="JST セルの編集を禁止" />
  <property name="jnlp.Name"     value="CellEditor" />
  <property name="jnlp.name"     value="celleditor" />
- <property name="jnlp.codebase" value="http://terai.xrea.jp/swing/${jnlp.name}/" />
- <property name="jnlp.homepage" value="http://terai.xrea.jp/Swing/${jnlp.Name}.html" />
+ <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
+ <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>
