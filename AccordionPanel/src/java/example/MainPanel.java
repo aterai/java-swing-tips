@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().add(accordion);
 
         JSplitPane split = new JSplitPane();
-        split.setResizeWeight(0.5);
+        split.setResizeWeight(.5);
         split.setDividerSize(2);
         split.setLeftComponent(scroll);
         split.setRightComponent(new JLabel("Dummy"));

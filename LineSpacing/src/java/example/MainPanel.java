@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setTopComponent(new JScrollPane(editor1));
         sp.setBottomComponent(new JScrollPane(editor2));
-        sp.setResizeWeight(0.5);
+        sp.setResizeWeight(.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }

@@ -183,9 +183,9 @@ final class AnimationUtil {
     public static double easeInOut(double t) {
 /*/
         if (t < .5) {
-            return 0.5d * Math.pow(t * 2d, N);
+            return .5 * Math.pow(t * 2d, N);
         } else {
-            return 0.5d*(Math.pow(t * 2d - 2d, N) + 2d);
+            return .5 *(Math.pow(t * 2d - 2d, N) + 2d);
         }
     }
 /*/

@@ -103,12 +103,12 @@ class MyIconTable extends JTable {
     private static final int XOFF = 4;
     private final MyGlassPane panel = new MyGlassPane() {
         @Override public void paintComponent(Graphics g) {
-            g.setColor(new Color(255, 255, 255, 100));
+            g.setColor(new Color(0x64FFFFFF, true));
             g.fillRect(0, 0, getWidth(), getHeight());
             BufferedImage bufimg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = bufimg.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
             g2.setPaint(Color.BLACK);
             for (int i = 0; i < XOFF; i++) {
                 g2.fillRoundRect(rect.x - i, rect.y + XOFF, rect.width + i + i, rect.height - XOFF + i, 5, 5);

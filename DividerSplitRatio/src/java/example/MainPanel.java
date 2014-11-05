@@ -76,7 +76,7 @@ class SplitPaneWrapper extends JPanel {
         add(splitPane);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                splitPane.setDividerLocation(0.5);
+                splitPane.setDividerLocation(.5);
             }
         });
     }
@@ -86,7 +86,7 @@ class SplitPaneWrapper extends JPanel {
         add(sp);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                splitPane.setDividerLocation(0.5);
+                splitPane.setDividerLocation(.5);
             }
         });
     }

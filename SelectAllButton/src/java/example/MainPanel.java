@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT); //Panel(new GridLayout(2, 1));
         sp.setTopComponent(new JScrollPane(table));
         sp.setBottomComponent(new JScrollPane(new JTextArea()));
-        sp.setResizeWeight(0.5);
+        sp.setResizeWeight(.5);
 
         add(p, BorderLayout.NORTH);
         add(sp);

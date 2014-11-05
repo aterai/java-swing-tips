@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
         label.setFont(FONT);
         label.setOpaque(true);
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setBackground(getColor(COLORS[i], 0.85f));
+        label.setBackground(getColor(COLORS[i], .85f));
         Border border1 = BorderFactory.createEmptyBorder(4, 4, 4, 4);
         label.setBorder(border1);
 

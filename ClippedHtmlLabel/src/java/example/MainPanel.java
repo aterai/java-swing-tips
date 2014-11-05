@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
 
         sp.setTopComponent(new JScrollPane(table1));
         sp.setBottomComponent(new JScrollPane(table));
-        sp.setResizeWeight(0.5);
+        sp.setResizeWeight(.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }

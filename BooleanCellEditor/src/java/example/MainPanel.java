@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         table1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(table0), new JScrollPane(table1));
-        sp.setResizeWeight(0.5);
+        sp.setResizeWeight(.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }

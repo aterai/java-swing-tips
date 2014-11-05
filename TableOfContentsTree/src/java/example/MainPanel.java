@@ -278,7 +278,7 @@ class TableOfContentsTree extends JTree {
                     TableOfContents toc = (TableOfContents) o;
                     String pn = Integer.toString(toc.page);
                     int x = getWidth() - 1 - fm.stringWidth(pn) - ins.right;
-                    //int y = (int) (0.5 + r.y + (r.height + fm.getAscent()) * 0.5);
+                    //int y = (int) (.5 + r.y + (r.height + fm.getAscent()) * .5);
                     int y = r.y + c.getBaseline(r.width, r.height);
                     g2.drawString(pn, x, y);
 

@@ -189,7 +189,7 @@ final class TextureFactory {
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point pt = e.getPoint();
 //         Graphics2D g2d = currentImage.createGraphics();
-//         g2d.setStroke(new BasicStroke(3.0F));
+//         g2d.setStroke(new BasicStroke(3f));
 //         if (isPen) {
 //             g2d.setPaint(Color.BLACK);
 //         } else {

@@ -31,12 +31,12 @@ public final class MainPanel extends JPanel {
 
         sp.setTopComponent(editor1);
         sp.setBottomComponent(editor2);
-        sp.setResizeWeight(0.5);
+        sp.setResizeWeight(.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                sp.setDividerLocation(0.5);
+                sp.setDividerLocation(.5);
             }
         });
     }

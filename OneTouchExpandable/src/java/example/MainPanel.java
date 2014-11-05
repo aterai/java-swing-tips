@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
 // //             s2.setMinimumSize(new Dimension(0, 0));
 // //             EventQueue.invokeLater(new Runnable() {
 // //                 @Override public void run() {
-// //                     splitPane.setDividerLocation(1.0);
-// //                     splitPane.setResizeWeight(1.0);
+// //                     splitPane.setDividerLocation(1d);
+// //                     splitPane.setResizeWeight(1d);
 // //                 }
 // //             });
 //             EventQueue.invokeLater(new Runnable() {

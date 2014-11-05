@@ -134,7 +134,7 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
                                     : slider.getMinorTickSpacing();
                     float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
                     xPos -= trackLeft;
-                    snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + 0.5) + trackLeft;
+                    snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
                     offset = 0;
                     //System.out.println(snappedPos);
                 }
@@ -182,7 +182,7 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
                                     : slider.getMinorTickSpacing();
                     float actualPixelsForOneTick = trackLength * tickSpacing / (float) possibleTickPositions;
                     xPos -= trackLeft;
-                    snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + 0.5) + trackLeft;
+                    snappedPos = (int) (Math.round(xPos / actualPixelsForOneTick) * actualPixelsForOneTick + .5) + trackLeft;
                     offset = 0;
                     //System.out.println(snappedPos);
                 }
