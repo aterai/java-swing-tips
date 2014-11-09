@@ -406,7 +406,7 @@
   <target name="ftp" depends="dist">
     <property name="ftp.userid" value="${env.FTP_USERID}" />
     <property name="ftp.server" value="${env.FTP_SERVER}" />
-    <property name="ftp.remotedir" value="/public_html/swing/${jnlp.name}" />
+    <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
     <input message="Enter Password:" addproperty="ftp.password">
       <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
     </input>
