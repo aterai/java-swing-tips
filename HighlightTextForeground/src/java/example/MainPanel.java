@@ -116,12 +116,19 @@ public final class MainPanel extends JPanel {
 
     private void changeHighlight() {
         field.setBackground(Color.WHITE);
-        Highlighter highlighter = textPane.getHighlighter();
-        highlighter.removeAllHighlights();
         StyledDocument doc = textPane.getStyledDocument();
         Style s = doc.getStyle("highlight-text-foreground");
         Style def = doc.getStyle("regular");
-        doc.setCharacterAttributes(0, doc.getLength(), def, true);
+
+        //clear the previous highlight:
+        Highlighter highlighter = textPane.getHighlighter();
+        for (Highlighter.Highlight h: highlighter.getHighlights()) {
+            doc.setCharacterAttributes(h.getStartOffset(), h.getEndOffset() - h.getStartOffset(), def, true);
+        }
+        highlighter.removeAllHighlights();
+        //doc.setCharacterAttributes(0, doc.getLength(), def, true);
+
+        //match highlighting:
         try {
             Pattern pattern = getPattern();
             if (pattern != null) {
@@ -131,7 +138,7 @@ public final class MainPanel extends JPanel {
                     int start = matcher.start();
                     int end   = matcher.end();
                     highlighter.addHighlight(start, end, highlightPainter);
-                    doc.setCharacterAttributes(start, end - start, def, true);
+                    //doc.setCharacterAttributes(start, end - start, red, true);
                     pos = end;
                 }
             }
