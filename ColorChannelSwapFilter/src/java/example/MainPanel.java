@@ -130,7 +130,8 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
             g2.dispose();
 
             Image image = c.createImage(new FilteredImageSource(bi.getSource(), new RedGreenChannelSwapFilter()));
-            g.drawImage(image, 0, 0, c);
+            //BUG: cause an infinite repaint loop: g.drawImage(image, 0, 0, c);
+            g.drawImage(image, 0, 0, null);
         } else {
             super.paint(g, c);
         }
