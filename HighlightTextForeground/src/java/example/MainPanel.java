@@ -121,6 +121,7 @@ public final class MainPanel extends JPanel {
         StyledDocument doc = textPane.getStyledDocument();
         Style s = doc.getStyle("highlight-text-foreground");
         Style def = doc.getStyle("regular");
+        doc.setCharacterAttributes(0, doc.getLength(), def, true);
         try {
             Pattern pattern = getPattern();
             if (pattern != null) {
