@@ -23,20 +23,19 @@ public final class MainPanel extends JPanel {
             {"ccccccccccccccccccc", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
         };
         TableModel model = new DefaultTableModel(data, columnNames);
-        final JTable table = new JTable(model);
-//         final JTable table = new JTable(model) {
-//             private static final Color EVEN_COLOR = new Color(230, 240, 255);
-//             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-//                 Component c = super.prepareRenderer(tcr, row, column);
-//                 if (isRowSelected(row)) {
-//                     c.setForeground(getSelectionForeground());
-//                     c.setBackground(getSelectionBackground());
-//                 } else {
-//                     c.setForeground(getForeground());
-//                     c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
-//                 }
-//                 return c;
-//             }
+        final JTable table = new JTable(model) {
+            private final Color evenColor = new Color(230, 240, 255);
+            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+                Component c = super.prepareRenderer(tcr, row, column);
+                if (isRowSelected(row)) {
+                    c.setForeground(getSelectionForeground());
+                    c.setBackground(getSelectionBackground());
+                } else {
+                    c.setForeground(getForeground());
+                    c.setBackground((row % 2 == 0) ? evenColor : getBackground());
+                }
+                return c;
+            }
 //             @Override public void doLayout() {
 //                 //System.out.println("doLayout");
 //                 initPreferredHeight();
@@ -72,7 +71,7 @@ public final class MainPanel extends JPanel {
 //                 int preferredHeight = (int) f;
 //                 return preferredHeight + insets.top + insets.bottom;
 //             }
-//         };
+        };
         table.setEnabled(false);
         table.setShowGrid(false);
         table.getColumnModel().getColumn(AUTOWRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
@@ -106,7 +105,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
-    private final List<List<Integer>> rowColHeight = new ArrayList<>();
+    private final List<List<Integer>> rowAndCellHeightList = new ArrayList<>();
 
     //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
     public TextAreaCellRenderer() {
@@ -142,23 +141,22 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
         setBounds(table.getCellRect(row, column, false));
         //doLayout();
 
-        int prefH = getPreferredSize().height;
-        while (rowColHeight.size() <= row) {
-            rowColHeight.add(new ArrayList<Integer>(column));
+        int preferredHeight = getPreferredSize().height;
+        while (rowAndCellHeightList.size() <= row) {
+            rowAndCellHeightList.add(new ArrayList<Integer>(column));
         }
-        List<Integer> colHeights = rowColHeight.get(row);
-        while (colHeights.size() <= column) {
-            colHeights.add(0);
+        List<Integer> cellHeightList = rowAndCellHeightList.get(row);
+        while (cellHeightList.size() <= column) {
+            cellHeightList.add(0);
         }
-        colHeights.set(column, prefH);
-        int maxH = prefH;
-        for (Integer colHeight: colHeights) {
-            if (colHeight > maxH) {
-                maxH = colHeight;
-            }
-        }
-        if (table.getRowHeight(row) != maxH) {
-            table.setRowHeight(row, maxH);
+        cellHeightList.set(column, preferredHeight);
+//         int max = preferredHeight;
+//         for (int h: cellHeightList) {
+//             max = Math.max(h, max);
+//         }
+        int max = cellHeightList.stream().max(Integer::compare).get();
+        if (table.getRowHeight(row) != max) {
+            table.setRowHeight(row, max);
         }
     }
 
