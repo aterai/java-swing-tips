@@ -12,14 +12,14 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"JTextField", "JTextArea"};
     private final Object[][] data = {
-            {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
-            {"bbb", "ggg"}, {"ccccDDD", "hhh\njjj\nkkk"}
-        };
+        {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
+        {"bbb", "ggg"}, {"ccccDDD", "hhh\njjj\nkkk"}
+    };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
-            }
-        };
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
     private final JTable table = new JTable(model);
 
     public MainPanel() {
@@ -27,9 +27,11 @@ public final class MainPanel extends JPanel {
 
         table.setAutoCreateRowSorter(true);
         table.setSurrendersFocusOnKeystroke(true);
-        table.getColumn(table.getColumnName(1)).setCellEditor(new TextAreaCellEditor());
-        table.getColumn(table.getColumnName(1)).setCellRenderer(new TextAreaCellRenderer());
         table.setRowHeight(64);
+
+        TableColumn c = table.getColumnModel().getColumn(1);
+        c.setCellEditor(new TextAreaCellEditor());
+        c.setCellRenderer(new TextAreaCellRenderer());
 
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
