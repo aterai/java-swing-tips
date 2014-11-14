@@ -12,7 +12,7 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"user", "rwx"};
     private final Object[][] data = {
-        {"owner", EnumSet.of(Permissions.READ, Permissions.WRITE, Permissions.EXECUTE)},
+        {"owner", EnumSet.allOf(Permissions.class)}, //EnumSet.of(Permissions.READ, Permissions.WRITE, Permissions.EXECUTE)},
         {"group", EnumSet.of(Permissions.READ)},
         {"other", EnumSet.noneOf(Permissions.class)}
     };
@@ -22,6 +22,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
+    private final JLabel label = new JLabel();
 
     public MainPanel() {
         super(new BorderLayout());
@@ -45,9 +46,13 @@ public final class MainPanel extends JPanel {
         map.put(Permissions.READ,    1 << 2);
         map.put(Permissions.WRITE,   1 << 1);
         map.put(Permissions.EXECUTE, 1 << 0);
-        add(new JButton(new AbstractAction("ls -l (chmod)") {
+
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(label);
+        p.add(new JButton(new AbstractAction("ls -l (chmod)") {
             private static final String M = "-";
             @Override public void actionPerformed(ActionEvent e) {
+                StringBuilder nbuf = new StringBuilder(3);
                 StringBuilder buf = new StringBuilder(9);
                 for (int i = 0; i < model.getRowCount(); i++) {
                     @SuppressWarnings("unchecked")
@@ -71,12 +76,13 @@ public final class MainPanel extends JPanel {
                     } else {
                         buf.append(M);
                     }
-                    System.out.print(flg);
+                    nbuf.append(flg);
                 }
-                System.out.println(" " + M + buf.toString());
+                label.setText(String.format(" %s %s%s", nbuf, M, buf));
             }
-        }), BorderLayout.SOUTH);
+        }), BorderLayout.EAST);
         add(new JScrollPane(table));
+        add(p, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
