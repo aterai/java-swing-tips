@@ -58,8 +58,9 @@ public final class MainPanel extends JPanel {
         //Random random = new Random();
         //Charset cs = Charset.forName("EUC-JP");
         int index = 19; //1 + random.nextInt(27-1);
-        String path = String.format("http://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
-        //String path = String.format("http://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
+        String path = String.format("https://docs.oracle.com/javase/8/docs/api/index-files/index-%d.html", index);
+        //String path = String.format("https://docs.oracle.com/javase/7/docs/api/index-files/index-%d.html", index);
+        //String path = String.format("https://docs.oracle.com/javase/jp/6/api/index-files/index-%d.html", index);
         //String path = "http://terai.xrea.jp/";
         System.out.println(path);
 
