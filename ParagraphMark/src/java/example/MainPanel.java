@@ -65,6 +65,7 @@ class MyViewFactory implements ViewFactory {
 }
 
 class MyParagraphView extends ParagraphView {
+    //private static final ParagraphMarkIcon paragraphMarkIcon = new ParagraphMarkIcon();
     private static final Color MARK_COLOR = new Color(120, 130, 110);
     public MyParagraphView(Element elem) {
         super(elem);
@@ -80,14 +81,41 @@ class MyParagraphView extends ParagraphView {
             int x = r.x;
             int y = r.y;
             int h = r.height;
-            Color old = g.getColor();
-            g.setColor(MARK_COLOR);
-            g.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
-            g.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
-            g.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
-            g.setColor(old);
+            //paragraphMarkIcon.paintIcon(null, g, x, y);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setColor(MARK_COLOR);
+            g2.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
+            g2.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
+            g2.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
+            g2.dispose();
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
     }
 }
+
+// TEST:
+// class ParagraphMarkIcon implements Icon {
+//     private static final Color MARK_COLOR = new Color(120, 130, 110);
+//     private final Polygon paragraphMark = new Polygon();
+//     public ParagraphMarkIcon() {
+//         paragraphMark.addPoint(1, 7);
+//         paragraphMark.addPoint(3, 7);
+//         paragraphMark.addPoint(3, 11);
+//         paragraphMark.addPoint(4, 11);
+//         paragraphMark.addPoint(1, 14);
+//     }
+//     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.setColor(MARK_COLOR);
+//         g2.translate(x, y);
+//         g2.draw(paragraphMark);
+//         g2.dispose();
+//     }
+//     @Override public int getIconWidth()  {
+//         return 3;
+//     }
+//     @Override public int getIconHeight() {
+//         return 7;
+//     }
+// }
