@@ -17,7 +17,8 @@ public final class MainPanel extends JPanel {
     private final JCheckBox sort0 = new JCheckBox("0: bubble sort");
     private final JCheckBox sort1 = new JCheckBox("1: bubble sort");
     private final JCheckBox sort2 = new JCheckBox("2: selection sort");
-    private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort");
+    //private final JCheckBox sort3 = new JCheckBox("3: iterative merge sort"); //JDK 1.6.0
+    private final JCheckBox sort3 = new JCheckBox("3: TimSort"); //JDK 1.7.0
 
     public MainPanel() {
         super(new BorderLayout());
