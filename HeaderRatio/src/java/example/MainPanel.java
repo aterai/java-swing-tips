@@ -59,20 +59,21 @@ public final class MainPanel extends JPanel {
     }
 
     private void setTableHeaderColumnRaito() {
+        TableColumnModel m = table.getColumnModel();
         List<Integer> list = getWidthRaitoArray();
-        //System.out.println("a: "+table.getColumnModel().getTotalColumnWidth());
+        //System.out.println("a: "+m.getTotalColumnWidth());
         //System.out.println("b: "+table.getSize().width);
-        int total = table.getSize().width; //table.getColumnModel().getTotalColumnWidth();
+        int total = table.getSize().width; //m.getTotalColumnWidth();
         double raito = total / (double) getRaitoTotal(list);
-        for (int i = 0; i < table.getColumnModel().getColumnCount() - 1; i++) {
-            TableColumn col = table.getColumnModel().getColumn(i);
+        for (int i = 0; i < m.getColumnCount() - 1; i++) {
+            TableColumn col = m.getColumn(i);
             int colwidth = (int) (.5 + list.get(i) * raito);
             //col.setMaxWidth(colwidth);
             col.setPreferredWidth(colwidth);
             total -= colwidth;
         }
-        //table.getColumnModel().getColumn(table.getColumnModel().getColumnCount() - 1).setMaxWidth(total);
-        table.getColumnModel().getColumn(table.getColumnModel().getColumnCount() - 1).setPreferredWidth(total);
+        //m.getColumn(m.getColumnCount() - 1).setMaxWidth(total);
+        m.getColumn(m.getColumnCount() - 1).setPreferredWidth(total);
         table.revalidate();
     }
 
