@@ -6,7 +6,6 @@
     <homepage href="@homepage@" />
     <description>Swing Example</description>
     <description kind="short">example</description>
-    <offline-allowed />
   </information>
   <update check="timeout" policy="always" />
   <resources>
