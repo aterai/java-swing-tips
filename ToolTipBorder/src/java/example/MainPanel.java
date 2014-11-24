@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JButton button0 = new JButton("ToolTip") {
-            public JToolTip createToolTip() {
+            @Override public JToolTip createToolTip() {
                 JToolTip tip = new JToolTip();
                 Border b1 = tip.getBorder();
                 Border b2 = BorderFactory.createTitledBorder("ToolTip");
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         button0.setToolTipText("Test - ToolTipText0");
 
         JButton button1 = new JButton("ToolTip") {
-            public JToolTip createToolTip() {
+            @Override public JToolTip createToolTip() {
                 JToolTip tip = new JToolTip();
                 Border b1 = tip.getBorder();
                 Border b2 = BorderFactory.createMatteBorder(0, 10, 0, 0, Color.GREEN);
