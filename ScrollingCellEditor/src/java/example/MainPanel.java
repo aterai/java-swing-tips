@@ -74,7 +74,7 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 
-        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_MASK);
+        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK);
         getInputMap(JComponent.WHEN_FOCUSED).put(enter, KEY);
         getActionMap().put(KEY, new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {

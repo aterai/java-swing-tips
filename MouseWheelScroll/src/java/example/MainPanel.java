@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
         InputMap im  = scroll.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = scroll.getActionMap();
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, InputEvent.SHIFT_MASK, false), "pressed");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK, false), "pressed");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "released");
         am.put("pressed", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {

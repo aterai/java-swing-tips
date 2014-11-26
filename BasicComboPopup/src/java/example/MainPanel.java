@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         });
-        jtp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK), "myPop");
+        jtp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), "myPop");
 
         add(new JScrollPane(jtp));
         setPreferredSize(new Dimension(320, 240));

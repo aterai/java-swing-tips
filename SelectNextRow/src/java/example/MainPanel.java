@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         checkBox.setSelected(true);
         im.put(tab, im.get(enter));
 
-        KeyStroke stab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK);
+        KeyStroke stab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
         KeyStroke senter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
         im.put(stab, im.get(senter));
 

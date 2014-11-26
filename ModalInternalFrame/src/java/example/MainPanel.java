@@ -38,24 +38,24 @@ public final class MainPanel extends JPanel {
 
         JMenuItem menuItem = new JMenuItem(new OpenFrameAction("New Frame"));
         menuItem.setMnemonic(KeyEvent.VK_N);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
 
         menu.addSeparator();
 
         menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
         menuItem.setMnemonic(KeyEvent.VK_1);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
 
         menuItem = new JMenuItem(new ModalInternalFrameAction2("InternalMessageDialog"));
         menuItem.setMnemonic(KeyEvent.VK_2);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
 
         menuItem = new JMenuItem(new ModalInternalFrameAction3("InternalMessageDialog(Print)"));
         menuItem.setMnemonic(KeyEvent.VK_3);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
 
         frame.setJMenuBar(menuBar);

@@ -90,22 +90,22 @@ class MainPanel {
 //
 //         JMenuItem menuItem = new JMenuItem("NNNNNNNNN");
 //         menuItem.setMnemonic(KeyEvent.VK_N);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
 //         menu.add(menuItem);
 //
 //         menuItem = new JMenuItem("MMMMMMMM");
 //         menuItem.setMnemonic(KeyEvent.VK_M);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.ALT_MASK));
+//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK));
 //         menu.add(menuItem);
 //
 //         menuItem = new JMenuItem("UUUUUU");
 //         menuItem.setMnemonic(KeyEvent.VK_U);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.ALT_MASK));
+//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.ALT_DOWN_MASK));
 //         menu.add(menuItem);
 //
 //         menuItem = new JMenuItem("IIIIIIIIII");
 //         menuItem.setMnemonic(KeyEvent.VK_I);
-//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.ALT_MASK));
+//         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_DOWN_MASK));
 //         menu.add(menuItem);
 //
 //         return menuBar;

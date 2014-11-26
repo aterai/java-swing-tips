@@ -179,7 +179,7 @@ class UpAction extends AbstractAction {
             return;
         }
         TestModel model = (TestModel) table.getModel();
-        if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+        if ((e.getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0) {
             if (pos[0] == 0) {
                 return;
             }
@@ -209,7 +209,7 @@ class DownAction extends AbstractAction {
             return;
         }
         TestModel model = (TestModel) table.getModel();
-        if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 0) {
+        if ((e.getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0) {
             if (pos[pos.length - 1] == model.getRowCount() - 1) {
                 return;
             }

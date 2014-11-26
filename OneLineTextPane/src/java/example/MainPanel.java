@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         // @see http://terai.xrea.jp/Swing/FocusTraversalKeys.html
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(textPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
-        forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK));
+        forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK));
         textPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 
         //// @see http://tips4java.wordpress.com/2009/01/25/no-wrap-text-pane/

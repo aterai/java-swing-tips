@@ -33,22 +33,22 @@ public final class MainPanel {
         List<JMenuItem> list = new ArrayList<>();
         JMenuItem menuItem = new JMenuItem("mi");
         menuItem.setMnemonic(KeyEvent.VK_N);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         list.add(menuItem);
 
         menuItem = new JMenuItem("aaa");
         menuItem.setMnemonic(KeyEvent.VK_1);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.ALT_DOWN_MASK));
         list.add(menuItem);
 
         menuItem = new JMenuItem("bbbbb");
         menuItem.setMnemonic(KeyEvent.VK_2);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK));
         list.add(menuItem);
 
         menuItem = new JMenuItem("c");
         menuItem.setMnemonic(KeyEvent.VK_3);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, ActionEvent.ALT_MASK | ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         list.add(menuItem);
 
         for (JMenuItem mi: list) {
