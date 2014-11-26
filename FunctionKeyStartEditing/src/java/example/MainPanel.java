@@ -75,8 +75,8 @@ public final class MainPanel extends JPanel {
 //             if (im.get(KeyStroke.getKeyStroke(ks, 0)) == null) {
 //                 im.put(KeyStroke.getKeyStroke(ks, 0),            "none");
 //             }
-//             im.put(KeyStroke.getKeyStroke(ks, Event.CTRL_MASK),  "none");
-//             im.put(KeyStroke.getKeyStroke(ks, Event.SHIFT_MASK), "none");
+//             im.put(KeyStroke.getKeyStroke(ks, InputEvent.CTRL_DOWN_MASK),  "none");
+//             im.put(KeyStroke.getKeyStroke(ks, InputEvent.SHIFT_DOWN_MASK), "none");
 //         }
 
         check.setSelected(true);

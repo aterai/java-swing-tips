@@ -28,8 +28,8 @@ public final class MainPanel extends JPanel {
         tc.getActionMap().put("undo", new UndoAction(manager));
         tc.getActionMap().put("redo", new RedoAction(manager));
         InputMap imap = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK), "undo");
-        imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK), "redo");
+        imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo");
+        imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), "redo");
     }
     private static class UndoAction extends AbstractAction {
         private final UndoManager undoManager;
