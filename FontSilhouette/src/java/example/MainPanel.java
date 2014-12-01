@@ -13,8 +13,6 @@ public final class MainPanel extends JPanel {
     private static final Font FONT = new Font(Font.SANS_SERIF, Font.PLAIN, SIZE);
     private MainPanel() {
         super(new GridLayout(4, 6, 0, 0));
-        // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
-        // http://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels
         String[] pieces = {
             "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
             "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
@@ -74,50 +72,40 @@ class SilhouetteIcon implements Icon, Serializable {
         this.str = str;
         this.size = size;
     }
+    // Inspired from java - 'Fill' Unicode characters in labels - Stack Overflow
+    // http://stackoverflow.com/questions/18686199/fill-unicode-characters-in-labels
     private static Area getOuterShape(Shape shape) {
         Area area = new Area();
-        double[] coords = new double[6];
-        PathIterator pi = shape.getPathIterator(null);
         Path2D.Double path = new Path2D.Double();
+        PathIterator pi = shape.getPathIterator(null);
+        double[] coords = new double[6];
         while (!pi.isDone()) {
             int pathSegmentType = pi.currentSegment(coords);
-            if (pathSegmentType == PathIterator.SEG_MOVETO) {
-                if (area.isEmpty() || !area.contains(coords[0], coords[1])) {
-                    path.moveTo(coords[0], coords[1]);
-                }
-            } else if (path.getCurrentPoint() == null) {
-                pi.next();
-                continue;
-            } else {
-                addPathSegment2Area(pathSegmentType, area, coords, path);
+            switch (pathSegmentType) {
+              case PathIterator.SEG_MOVETO:
+                path.moveTo(coords[0], coords[1]);
+                break;
+              case PathIterator.SEG_LINETO:
+                path.lineTo(coords[0], coords[1]);
+                break;
+              case PathIterator.SEG_QUADTO:
+                path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+                break;
+              case PathIterator.SEG_CUBICTO:
+                path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                break;
+              case PathIterator.SEG_CLOSE:
+                path.closePath();
+                area.add(new Area(path));
+                path.reset();
+                break;
+              default:
+                System.err.println("Unexpected value! " + pathSegmentType);
+                break;
             }
             pi.next();
         }
         return area;
-    }
-    private static void addPathSegment2Area(int pathSegmentType, Area area, double[] coords, Path2D.Double path) {
-        switch (pathSegmentType) {
-          case PathIterator.SEG_MOVETO:
-            path.moveTo(coords[0], coords[1]);
-            break;
-          case PathIterator.SEG_LINETO:
-            path.lineTo(coords[0], coords[1]);
-            break;
-          case PathIterator.SEG_QUADTO:
-            path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-            break;
-          case PathIterator.SEG_CUBICTO:
-            path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-            break;
-          case PathIterator.SEG_CLOSE:
-            path.closePath();
-            area.add(new Area(path));
-            path.reset();
-            break;
-          default:
-            System.err.println("Unexpected value! " + pathSegmentType);
-            break;
-        }
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
