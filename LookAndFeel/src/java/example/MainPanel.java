@@ -92,7 +92,8 @@ final class LookAndFeelUtil {
     private static final String MOTIF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
     private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
     private static final String GTK     = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+    //private static final String NIMBUS  = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.6.0_10
+    private static final String NIMBUS  = "javax.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.7.0
 
     // The current Look & Feel
     private static String currentLookAndFeel = METAL;
