@@ -165,32 +165,32 @@ class Task extends SwingWorker<File, Message> {
         this.intnew = intnew;
     }
     @Override public File doInBackground() throws IOException {
-         if (!file.exists()) {
-             return file;
-         }
+        if (!file.exists()) {
+            return file;
+        }
 
-         String newfilename = file.getAbsolutePath();
+        String newfilename = file.getAbsolutePath();
 
-         if (intold == 0 && intnew == 0) { //= backup off
-             if (file.delete()) {
-                 return new File(newfilename);
-             } else {
-                 publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
-                 return null;
-             }
-         }
+        if (intold == 0 && intnew == 0) { //= backup off
+            if (file.delete()) {
+                return new File(newfilename);
+            } else {
+                publish(new Message("古いバックアップファイル削除に失敗", MessageType.ERROR));
+                return null;
+            }
+        }
 
-         File tmpFile = renameAndBackup(file, newfilename);
-         if (tmpFile != null) {
-             return tmpFile;
-         }
+        File tmpFile = renameAndBackup(file, newfilename);
+        if (tmpFile != null) {
+            return tmpFile;
+        }
 
-         if (renameAndShiftBackup(file)) {
-             return new File(newfilename);
-         } else {
-             return null;
-         }
-     }
+        if (renameAndShiftBackup(file)) {
+            return new File(newfilename);
+        } else {
+            return null;
+        }
+    }
     private File renameAndBackup(File file, String newfilename) throws IOException {
         boolean simpleRename = false;
         File testFile = null;
@@ -253,3 +253,4 @@ class Task extends SwingWorker<File, Message> {
         return String.format("%s.%d~", name, num);
     }
 }
+
