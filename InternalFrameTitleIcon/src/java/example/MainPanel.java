@@ -1,0 +1,69 @@
+package example;
+//-*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+//@homepage@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Arrays;
+import javax.swing.*;
+import javax.swing.event.*;
+
+public final class MainPanel extends JPanel {
+    private final JDesktopPane desktop = new JDesktopPane();
+
+    public MainPanel() {
+        super(new BorderLayout());
+        int idx = 0;
+        for (Color c: Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
+            String s = String.format("Document #%s", ++idx);
+            JInternalFrame f = new JInternalFrame(s, true, true, true, true);
+            desktop.add(f);
+            f.setFrameIcon(new ColorIcon(c));
+            f.setSize(240, 120);
+            f.setLocation(10 + 20 * idx, 20 * idx);
+            f.setVisible(true);
+        }
+        add(desktop);
+        setPreferredSize(new Dimension(320, 240));
+    }
+    public static void main(String... args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class ColorIcon implements Icon {
+    private final Color color;
+    public ColorIcon(Color color) {
+        this.color = color;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+        g.translate(x, y);
+        g.setColor(color);
+        g.fillRect(1, 1, 15, 15);
+        g.translate(-x, -y);
+    }
+    @Override public int getIconWidth() {
+        return 16;
+    }
+    @Override public int getIconHeight() {
+        return 16;
+    }
+}
