@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Encoding Hint: 雀の往来 -->
 <project>
- <property name="jnlp.title"    value="JST JInternalFrameを閉じる" />
- <property name="jnlp.Name"     value="CloseInternalFrame" />
- <property name="jnlp.name"     value="closeinternalframe" />
+ <property name="jnlp.title"    value="JST JInternalFrameのタイトルバーアイコン" />
+ <property name="jnlp.Name"     value="InternalFrameTitleIcon" />
+ <property name="jnlp.name"     value="internalframetitleicon" />
  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>
