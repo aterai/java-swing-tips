@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.nio.file.*;
-import javax.jnlp.*;
+//import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
@@ -40,17 +40,18 @@ public final class MainPanel extends JPanel {
 
         add(new JButton(new AbstractAction("browse: SurrogatePair.html") {
             @Override public void actionPerformed(ActionEvent e) {
-                BasicService bs = null;
-                try {
-                    bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-                } catch (UnavailableServiceException t) {
-                    bs = null;
-                }
-                if (bs == null) {
-                    browseCacheFile(url);
-                } else {
-                    bs.showDocument(url);
-                }
+//                 BasicService bs = null;
+//                 try {
+//                     bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
+//                 } catch (UnavailableServiceException t) {
+//                     bs = null;
+//                 }
+//                 if (bs == null) {
+//                     browseCacheFile(url);
+//                 } else {
+//                     bs.showDocument(url);
+//                 }
+                browseCacheFile(url);
             }
         }), BorderLayout.SOUTH);
         add(p);
