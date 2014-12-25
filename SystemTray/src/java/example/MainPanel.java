@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             return;
         }
-        frame.addWindowStateListener(new WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
             @Override public void windowIconified(WindowEvent e) {
-                frame.dispose();
+                e.getWindow().dispose();
             }
         });
         final SystemTray tray = SystemTray.getSystemTray();

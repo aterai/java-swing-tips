@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
 //                 ((JComponent) e.getSource()).revalidate();
 //             }
 //         });
-//         frame.addWindowStateListener(new WindowAdapter() {
+//         frame.addWindowStateListener(new WindowStateListener() {
 //             @Override public void windowStateChanged(final WindowEvent e) {
 //                 EventQueue.invokeLater(new Runnable() {
 //                     @Override public void run() {
