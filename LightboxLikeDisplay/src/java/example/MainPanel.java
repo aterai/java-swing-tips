@@ -65,25 +65,37 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class LightboxGlassPane extends JComponent implements HierarchyListener {
-    private final ImageIcon image;
+class LightboxGlassPane extends JPanel {
+    private final ImageIcon image = new ImageIcon(LightboxGlassPane.class.getResource("test.png"));
     private final AnimeIcon animatedIcon = new AnimeIcon();
     private float alpha;
     private int w;
     private int h;
     private final Rectangle rect = new Rectangle();
     private Timer animator;
-    public LightboxGlassPane() {
-        super();
+    private Handler handler;
+
+    @Override public void updateUI() {
+        removeMouseListener(handler);
+        removeHierarchyListener(handler);
+        super.updateUI();
         setOpaque(false);
         super.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        image = new ImageIcon(getClass().getResource("test.png"));
-        addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent me) {
-                setVisible(false);
+        if (handler == null) {
+            handler = new Handler();
+        }
+        addMouseListener(handler);
+        addHierarchyListener(handler);
+    }
+    private class Handler extends MouseAdapter implements HierarchyListener {
+        @Override public void mouseClicked(MouseEvent me) {
+            me.getComponent().setVisible(false);
+        }
+        @Override public void hierarchyChanged(HierarchyEvent e) {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && animator != null) {
+                animator.stop();
             }
-        });
-        addHierarchyListener(this);
+        }
     }
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
@@ -155,11 +167,6 @@ class LightboxGlassPane extends JComponent implements HierarchyListener {
                                    screen.y + screen.height / 2 - animatedIcon.getIconHeight() / 2);
         }
         g2d.dispose();
-    }
-    @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !isDisplayable()) {
-            animator.stop();
-        }
     }
 }
 
