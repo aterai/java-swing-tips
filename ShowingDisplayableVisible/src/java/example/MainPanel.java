@@ -49,6 +49,8 @@ public final class MainPanel extends JPanel {
             }
         });
 
+        printInfo("after: new JButton, before: add(button); frame.setVisible(true)");
+
         JPanel panel = new JPanel();
         panel.add(button);
         for (int i = 0; i < 5; i++) {
@@ -96,8 +98,8 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
