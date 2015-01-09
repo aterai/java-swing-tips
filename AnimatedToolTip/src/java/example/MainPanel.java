@@ -120,7 +120,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (isShowing()) {
+                    if (e.getComponent().isShowing()) {
                         startAnimation();
                     } else {
                         stopAnimation();

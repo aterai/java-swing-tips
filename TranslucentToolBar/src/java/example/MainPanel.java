@@ -133,7 +133,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }

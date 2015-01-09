@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-            if (isDisplayable()) {
+            if (e.getComponent().isDisplayable()) {
                 timer.start();
             } else {
                 timer.stop();

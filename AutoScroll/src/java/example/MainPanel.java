@@ -83,8 +83,7 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent c = (JComponent) e.getComponent();
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             scroller.stop();
         }
     }
@@ -143,8 +142,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         });
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent jc = (JComponent) e.getComponent();
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !jc.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             scroller.stop();
         }
     }

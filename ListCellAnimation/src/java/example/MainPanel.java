@@ -89,7 +89,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-            if (list.isDisplayable()) {
+            if (e.getComponent().isDisplayable()) {
                 animator.start();
             } else {
                 animator.stop();

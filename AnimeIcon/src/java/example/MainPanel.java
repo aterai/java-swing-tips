@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
             bar.setIndeterminate(true);
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
-                    System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
                     if (!isDisplayable()) {
                         cancel(true);
                         return;
@@ -73,16 +73,18 @@ public final class MainPanel extends JPanel {
                     canButton.setEnabled(false);
                     statusPanel.remove(bar);
                     statusPanel.revalidate();
+                    publish("\n");
                     try {
                         if (isCancelled()) {
-                            appendLine("Cancelled");
+                            publish("Cancelled");
                         } else {
-                            appendLine(get());
+                            publish(get());
                         }
                     } catch (InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
-                        appendLine("Exception");
+                        publish("Exception");
                     }
+                    publish("\n\n");
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));
@@ -107,7 +109,7 @@ public final class MainPanel extends JPanel {
 //     }
 
     private void appendLine(String str) {
-        area.append(str + "\n");
+        area.append(str);
         area.setCaretPosition(area.getDocument().getLength());
     }
 
@@ -151,13 +153,14 @@ class Task extends SwingWorker<String, String> {
         int current = 0;
         int lengthOfTask = 120; //list.size();
         publish("Length Of Task: " + lengthOfTask);
-        publish("------------------------------");
+        publish("\n------------------------------\n");
         while (current < lengthOfTask && !isCancelled()) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ie) {
                 return "Interrupted";
             }
+            publish(".");
             setProgress(100 * current / lengthOfTask);
             current++;
         }
@@ -193,7 +196,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
         setIcon(icon);
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
                     stopAnimation();
                 }
             }

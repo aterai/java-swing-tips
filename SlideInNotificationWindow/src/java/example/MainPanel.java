@@ -140,8 +140,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        JComponent c = (JComponent) e.getComponent();
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !c.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }

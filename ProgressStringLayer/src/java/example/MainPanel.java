@@ -59,9 +59,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void hierarchyChanged(HierarchyEvent he) {
-        JComponent c = (JComponent) he.getComponent();
-        if ((he.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && worker != null) {
+    @Override public void hierarchyChanged(HierarchyEvent e) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && worker != null) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;

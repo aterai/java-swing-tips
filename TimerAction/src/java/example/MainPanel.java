@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         c2.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (c2.isShowing()) {
+                    if (e.getComponent().isShowing()) {
                         timer.start();
                     } else {
                         timer.stop();
@@ -77,7 +77,7 @@ class Tile1 extends JComponent implements HierarchyListener {
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-            if (isShowing()) {
+            if (e.getComponent().isShowing()) {
                 timer.start();
             } else {
                 timer.stop();
@@ -142,7 +142,7 @@ class TilePanel extends JPanel {
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (isShowing()) {
+                    if (e.getComponent().isShowing()) {
                         timer.start();
                     } else {
                         timer.stop();

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             new CustomComponentCellEditor2(new CustomComponent()));
 
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -54,7 +54,7 @@ class CustomCellEditor extends DefaultCellEditor {
         field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, BUTTON_WIDTH));
         field.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && field.isShowing()) {
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && e.getComponent().isShowing()) {
                     //System.out.println("hierarchyChanged: SHOWING_CHANGED");
                     field.removeAll();
                     field.add(button);

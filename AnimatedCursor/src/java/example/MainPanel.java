@@ -44,8 +44,7 @@ public final class MainPanel extends JPanel {
         button.setPreferredSize(new Dimension(0, 100));
         button.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                JButton button = (JButton) e.getComponent();
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !button.isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
                     animator.stop();
                 }
             }

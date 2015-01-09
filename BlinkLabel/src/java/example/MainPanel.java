@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
                 if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-                    if (isDisplayable()) {
+                    if (e.getComponent().isDisplayable()) {
                         timer1.start();
                         timer2.start();
                     } else {

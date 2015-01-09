@@ -150,8 +150,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
         scroller.start();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        Component c = e.getComponent();
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             scroller.stop();
         }
     }
@@ -249,8 +248,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        Component c = e.getComponent();
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             inside.stop();
             outside.stop();
         }
