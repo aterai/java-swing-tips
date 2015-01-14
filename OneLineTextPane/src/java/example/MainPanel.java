@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//@see https://community.oracle.com/message/9001041
+//@see https://community.oracle.com/thread/2105230
 //@see SyntaxDocument.java, MultiSyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
