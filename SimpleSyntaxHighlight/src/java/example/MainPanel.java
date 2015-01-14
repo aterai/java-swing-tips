@@ -36,7 +36,13 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-//From: http://www.discoverteenergy.com/files/SyntaxDocument.java
+
+//This code is taken from: SyntaxDocument.java
+// Fast styled JTextPane editor | Oracle Community
+// MultiSyntaxDocument
+// @author camickr
+// @author David Underhill
+// https://community.oracle.com/message/9001041
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     //HashMap<String, AttributeSet> keywords = new HashMap<>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();

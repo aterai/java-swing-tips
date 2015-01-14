@@ -104,7 +104,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//@see http://www.discoverteenergy.com/files/SyntaxDocument.java
+//@see https://community.oracle.com/message/9001041
+//@see SyntaxDocument.java, MultiSyntaxDocument.java
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
     //HashMap<String, AttributeSet> keywords = new HashMap<>();
