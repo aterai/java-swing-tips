@@ -121,7 +121,7 @@ class BlurJButton extends JButton {
                 ih = getHeight();
                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
             }
-            Graphics2D g2 = (Graphics2D) buf.getGraphics();
+            Graphics2D g2 = buf.createGraphics();
             super.paintComponent(g2);
             g2.dispose();
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);
@@ -151,7 +151,7 @@ class BlurButton extends JButton {
                 ih = getHeight();
                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
             }
-            Graphics2D g2 = (Graphics2D) buf.getGraphics();
+            Graphics2D g2 = buf.createGraphics();
             super.paintComponent(g2);
             g2.dispose();
             g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, null);

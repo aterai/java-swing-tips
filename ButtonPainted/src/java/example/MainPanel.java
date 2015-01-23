@@ -89,10 +89,10 @@ public final class MainPanel extends JPanel {
             new float[] {0f, 0f, 0f, 0f}, null);
         BufferedImage img = new BufferedImage(
             srcIcon.getIconWidth(), srcIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = img.getGraphics();
-        //g.drawImage(srcIcon.getImage(), 0, 0, null);
-        srcIcon.paintIcon(null, g, 0, 0);
-        g.dispose();
+        Graphics2D g2 = img.createGraphics();
+        //g2.drawImage(srcIcon.getImage(), 0, 0, null);
+        srcIcon.paintIcon(null, g2, 0, 0);
+        g2.dispose();
         return new ImageIcon(op.filter(img, null));
     }
     public static void main(String... args) {

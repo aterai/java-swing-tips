@@ -326,14 +326,14 @@ class ListItemTransferHandler extends TransferHandler {
         int w = source.getWidth();
         int h = source.getHeight();
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = bi.getGraphics();
+        Graphics2D g2 = bi.createGraphics();
         DefaultListCellRenderer renderer = (DefaultListCellRenderer) source.getCellRenderer();
         for (int i: source.getSelectedIndices()) {
             Component c = renderer.getListCellRendererComponent(source, source.getModel().getElementAt(i), i, false, false);
             Rectangle rect = source.getCellBounds(i, i);
-            SwingUtilities.paintComponent(g, c, source, rect);
+            SwingUtilities.paintComponent(g2, c, source, rect);
         }
-        g.dispose();
+        g2.dispose();
         return bi;
     }
     private static BufferedImage createCompactDragImage(JList source, int w, int h) {
@@ -345,19 +345,19 @@ class ListItemTransferHandler extends TransferHandler {
         }
         int[] selectedIndices = source.getSelectedIndices();
         int length = selectedIndices.length;
-        Graphics g = br.getGraphics();
+        Graphics2D g2 = br.createGraphics();
         DefaultListCellRenderer renderer = (DefaultListCellRenderer) source.getCellRenderer();
         int idx = selectedIndices[0];
         Object valueAt = source.getModel().getElementAt(idx);
         Component c = renderer.getListCellRendererComponent(source, valueAt, idx, false, false);
         Rectangle rect = source.getCellBounds(idx, idx);
-        SwingUtilities.paintComponent(g, c, source, 0, 0, rect.width, rect.height);
+        SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);
         if (length > 1) {
             LABEL.setText(String.valueOf(length));
             Dimension d = LABEL.getPreferredSize();
-            SwingUtilities.paintComponent(g, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
+            SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
         }
-        g.dispose();
+        g2.dispose();
         br.coerceData(true);
         return br;
     }

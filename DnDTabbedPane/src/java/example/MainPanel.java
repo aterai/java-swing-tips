@@ -230,8 +230,9 @@ class DnDTabbedPane extends JTabbedPane {
         if (hasGhost) {
             Rectangle rect = getBoundsAt(dragTabIndex);
             BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics g = image.getGraphics();
-            paint(g);
+            Graphics2D g2 = image.createGraphics();
+            paint(g2);
+            g2.dispose();
             rect.x = Math.max(0, rect.x); //rect.x < 0 ? 0 : rect.x;
             rect.y = Math.max(0, rect.y); //rect.y < 0 ? 0 : rect.y;
             image = image.getSubimage(rect.x, rect.y, rect.width, rect.height);
