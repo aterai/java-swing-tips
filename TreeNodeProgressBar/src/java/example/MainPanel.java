@@ -30,18 +30,18 @@ public final class MainPanel extends JPanel {
                 b.setEnabled(false);
                 (new SwingWorker<Boolean, Void>() {
                     @Override protected Boolean doInBackground() throws InterruptedException {
-                         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-                         Enumeration e = root.breadthFirstEnumeration();
-                         while (e.hasMoreElements()) {
-                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-                             if (!root.equals(node) && !model.isLeaf(node)) {
-                                 executor.execute(new NodeProgressWorker(tree, node));
-                             }
-                         }
-                         executor.shutdown();
-                         return executor.awaitTermination(1, TimeUnit.MINUTES);
-                     }
+                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+                        Enumeration e = root.breadthFirstEnumeration();
+                        while (e.hasMoreElements()) {
+                            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                            if (!root.equals(node) && !model.isLeaf(node)) {
+                                executor.execute(new NodeProgressWorker(tree, node));
+                            }
+                        }
+                        executor.shutdown();
+                        return executor.awaitTermination(1, TimeUnit.MINUTES);
+                    }
                     @Override protected void done() {
                         b.setEnabled(true);
                     }
@@ -120,17 +120,17 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
         this.treeNode = treeNode;
     }
     @Override protected TreeNode doInBackground() throws InterruptedException {
-         int current = 0;
-         while (current <= lengthOfTask && !isCancelled()) {
-             try {
-                 Thread.sleep(sleepDummy);
-             } catch (InterruptedException ie) {
-                 break;
-             }
-             publish(100 * current++ / lengthOfTask);
-         }
-         return treeNode; //sleepDummy * lengthOfTask;
-     }
+        int current = 0;
+        while (current <= lengthOfTask && !isCancelled()) {
+            try {
+                Thread.sleep(sleepDummy);
+            } catch (InterruptedException ie) {
+                break;
+            }
+            publish(100 * current++ / lengthOfTask);
+        }
+        return treeNode; //sleepDummy * lengthOfTask;
+    }
     @Override protected void process(List<Integer> c) {
         String title = treeNode.getUserObject().toString();
         Integer i = (Integer) c.get(c.size() - 1);

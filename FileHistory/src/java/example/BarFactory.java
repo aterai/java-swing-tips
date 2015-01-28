@@ -256,33 +256,33 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control {
         return Arrays.asList("properties");
     }
     @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
-         ResourceBundle bundle = null;
-         if ("properties".equals(format)) {
-             String bundleName = toBundleName(
-                 Objects.requireNonNull(baseName, "baseName must not be null"),
-                 Objects.requireNonNull(locale,   "locale must not be null"));
-             String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
-             InputStream stream = null;
-             ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
-             if (reload) {
-                 URL url = cloader.getResource(resourceName);
-                 if (url != null) {
-                     URLConnection connection = url.openConnection();
-                     if (connection != null) {
-                         connection.setUseCaches(false);
-                         stream = connection.getInputStream();
-                     }
-                 }
-             } else {
-                 stream = cloader.getResourceAsStream(resourceName);
-             }
-             if (stream != null) {
-                 //BufferedInputStream bis = new BufferedInputStream(stream);
-                 try (Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
-                      bundle = new PropertyResourceBundle(r);
-                 }
-             }
-         }
-         return bundle;
-     }
+        ResourceBundle bundle = null;
+        if ("properties".equals(format)) {
+            String bundleName = toBundleName(
+                Objects.requireNonNull(baseName, "baseName must not be null"),
+                Objects.requireNonNull(locale,   "locale must not be null"));
+            String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
+            InputStream stream = null;
+            ClassLoader cloader = Objects.requireNonNull(loader, "loader must not be null");
+            if (reload) {
+                URL url = cloader.getResource(resourceName);
+                if (url != null) {
+                    URLConnection connection = url.openConnection();
+                    if (connection != null) {
+                        connection.setUseCaches(false);
+                        stream = connection.getInputStream();
+                    }
+                }
+            } else {
+                stream = cloader.getResourceAsStream(resourceName);
+            }
+            if (stream != null) {
+                //BufferedInputStream bis = new BufferedInputStream(stream);
+                try (Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+                    bundle = new PropertyResourceBundle(r);
+                }
+            }
+        }
+        return bundle;
+    }
 }

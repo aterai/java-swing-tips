@@ -225,12 +225,12 @@ class RJLTransferable implements Transferable {
         object = o;
     }
     @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
-         if (isDataFlavorSupported(df)) {
-             return object;
-         } else {
-             throw new UnsupportedFlavorException(df);
-         }
-     }
+        if (isDataFlavorSupported(df)) {
+            return object;
+        } else {
+            throw new UnsupportedFlavorException(df);
+        }
+    }
     @Override public boolean isDataFlavorSupported(DataFlavor df) {
         return df.getHumanPresentableName().equals(NAME);
         //return (df.equals(LOCAL_OBJECT_FLAVOR));

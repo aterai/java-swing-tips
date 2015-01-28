@@ -210,11 +210,11 @@ class LabelTransferable implements Transferable {
         return false;
     }
     @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-         if (flavor.equals(localObjectFlavor)) {
-             return dh.getTransferData(flavor);
-         } else {
-             return ss.getTransferData(flavor);
-         }
+        if (flavor.equals(localObjectFlavor)) {
+            return dh.getTransferData(flavor);
+        } else {
+            return ss.getTransferData(flavor);
+        }
 //                 if (flavor.equals(DataFlavor.stringFlavor)) {
 //                     return ss.getTransferData(flavor);
 //                 } else if (flavor.equals(DataFlavor.plainTextFlavor)) {
@@ -224,5 +224,5 @@ class LabelTransferable implements Transferable {
 //                 } else {
 //                     throw new UnsupportedFlavorException(flavor);
 //                 }
-     }
+    }
 }
