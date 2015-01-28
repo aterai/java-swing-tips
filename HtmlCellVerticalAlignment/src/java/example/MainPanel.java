@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
         };
         ButtonGroup bg = new ButtonGroup();
         JPanel p = new JPanel();
-        for (JRadioButton b : Arrays.asList(centerRadio, topRadio, bottomRadio)) {
+        for (JRadioButton b: Arrays.asList(centerRadio, topRadio, bottomRadio)) {
             b.addActionListener(al);
             bg.add(b);
             p.add(b);
