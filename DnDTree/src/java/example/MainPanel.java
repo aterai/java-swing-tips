@@ -153,7 +153,7 @@ class DnDTree extends JTree {
             //} else {
             //    draggingObject = getSelectionPath().getLastPathComponent();
             //}
-            Object draggingObject  = getSelectionPath().getLastPathComponent();
+            Object draggingObject = getSelectionPath().getLastPathComponent();
             Point pt = dtde.getLocation();
             TreePath path = getPathForLocation(pt.x, pt.y);
             if (path == null || !(draggingObject instanceof MutableTreeNode)) {

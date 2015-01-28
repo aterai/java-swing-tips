@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(makePanel("setEditable(false)", combo01));
         box.add(Box.createVerticalStrut(5));
-        box.add(makePanel("setEditable(true)",  combo02));
+        box.add(makePanel("setEditable(true)", combo02));
 
         add(box, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

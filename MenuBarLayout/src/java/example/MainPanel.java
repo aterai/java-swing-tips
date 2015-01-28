@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
                             rowHeight = Math.max(rowHeight, d.height + vgap);
                         }
                     }
-                    height += rowHeight + insets.top  + insets.bottom;
+                    height += rowHeight + insets.top + insets.bottom;
                     return new Dimension(targetWidth, height);
                 }
             }

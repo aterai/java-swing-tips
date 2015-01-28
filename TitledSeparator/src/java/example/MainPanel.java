@@ -102,9 +102,9 @@ class TitledSeparator extends JLabel {
                 painter2 = new LinearGradientPaint(start, end, dist, new Color[] {tc.brighter(), color});
             }
             int h = getIconHeight() / 2;
-            Graphics2D g2  = (Graphics2D) g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(painter1);
-            g2.fillRect(x, y,   width, getIconHeight());
+            g2.fillRect(x, y, width, getIconHeight());
             g2.setPaint(painter2);
             g2.fillRect(x, y + h, width, getIconHeight() - h);
             g2.dispose();

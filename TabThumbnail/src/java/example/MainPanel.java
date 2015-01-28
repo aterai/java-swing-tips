@@ -91,7 +91,7 @@ class TabThumbnailTabbedPane extends JTabbedPane {
             @Override public Dimension getPreferredSize() {
                 Insets i = getInsets();
                 Dimension d = p.getPreferredSize();
-                return new Dimension(d.width  + i.left + i.right, d.height + i.top  + i.bottom);
+                return new Dimension(d.width + i.left + i.right, d.height + i.top + i.bottom);
             }
         };
         tip.setComponent(this);

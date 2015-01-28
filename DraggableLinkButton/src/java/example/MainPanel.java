@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 //         //TransferHandler
-//         final DataFlavor uriflavor  = new DataFlavor(String.class, "text/uri-list");
+//         final DataFlavor uriflavor = new DataFlavor(String.class, "text/uri-list");
 //         final JLabel label = new JLabel(MYSITE);
 //         label.setTransferHandler(new TransferHandler("text") {
 //             @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {

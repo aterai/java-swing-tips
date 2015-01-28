@@ -164,7 +164,7 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends JCheckBox implements 
         if (e.getButton() == MouseEvent.BUTTON1) {
             JList l = (JList) e.getComponent();
             Point p = e.getPoint();
-            int index  = l.locationToIndex(p);
+            int index = l.locationToIndex(p);
             if (index >= 0) {
                 @SuppressWarnings("unchecked")
                 DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>) l.getModel();
@@ -244,7 +244,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {

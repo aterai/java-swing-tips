@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         ActionMap amc = popup.getActionMap();
-        amc.put("myUp",   new AbstractAction() {
+        amc.put("myUp", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo.getSelectedIndex();
                 combo.setSelectedIndex((index == 0) ? combo.getItemCount() - 1 : index - 1);
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
                 combo.setSelectedIndex((index == combo.getItemCount() - 1) ? 0 : index + 1);
             }
         });
-        amc.put("myEnt",  new AbstractAction() {
+        amc.put("myEnt", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 append((String) combo.getSelectedItem());
             }

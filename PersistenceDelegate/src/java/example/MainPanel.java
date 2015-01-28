@@ -102,7 +102,7 @@ public class MainPanel extends JPanel {
 //http://www.oracle.com/technetwork/java/persistence4-140124.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
     @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
-        super.initialize(type, oldInstance,  newInstance, encoder);
+        super.initialize(type, oldInstance, newInstance, encoder);
         DefaultTableModel m = (DefaultTableModel) oldInstance;
 //         Vector v = m.getDataVector();
 //         for (int i = 0; i < m.getRowCount(); i++) {

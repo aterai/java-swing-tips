@@ -200,8 +200,8 @@ class Task extends SwingWorker<Integer, ProgressValue> {
 
 class WorkerModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",      Integer.class, false),
-        new ColumnContext("Name",     String.class,  false),
+        new ColumnContext("No.",      Integer.class,       false),
+        new ColumnContext("Name",     String.class,        false),
         new ColumnContext("Progress", ProgressValue.class, false)
     };
     private final ConcurrentMap<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();

@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
 
 class EditableTabbedPane extends JTabbedPane {
     private final JComponent glassPane = new EditorGlassPane();
-    private final JTextField  editor = new JTextField();
+    private final JTextField editor = new JTextField();
     private Rectangle rect;
 
     public EditableTabbedPane() {

@@ -132,7 +132,7 @@ class WhitespaceLabelView extends LabelView {
         Rectangle alloc = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
         int spaceWidth = fontMetrics.stringWidth(IDEOGRAPHIC_SPACE);
-        int sumOfTabs  = 0;
+        int sumOfTabs = 0;
         String text = getText(getStartOffset(), getEndOffset()).toString();
         for (int i = 0; i < text.length(); i++) {
             String s = text.substring(i, i + 1);

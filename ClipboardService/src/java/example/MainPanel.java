@@ -80,11 +80,11 @@ public final class MainPanel extends JPanel {
 
 class TextComponentPopupMenu extends JPopupMenu {
     private final UndoManager manager = new UndoManager();
-    private final Action cutAction   = new DefaultEditorKit.CutAction();
-    private final Action copyAction  = new DefaultEditorKit.CopyAction();
-    private final Action pasteAction = new DefaultEditorKit.PasteAction();
-    private final Action undoAction  = new UndoAction(manager);
-    private final Action redoAction  = new RedoAction(manager);
+    private final Action cutAction    = new DefaultEditorKit.CutAction();
+    private final Action copyAction   = new DefaultEditorKit.CopyAction();
+    private final Action pasteAction  = new DefaultEditorKit.PasteAction();
+    private final Action undoAction   = new UndoAction(manager);
+    private final Action redoAction   = new RedoAction(manager);
     private final Action deleteAction = new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             JTextComponent tc = (JTextComponent) getInvoker();

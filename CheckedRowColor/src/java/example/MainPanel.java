@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     private static void rowRepaint(JTable table, int row) {
         Rectangle r = table.getCellRect(row, 0, true);
         //r.height = table.getRowHeight();
-        r.width  = table.getWidth();
+        r.width = table.getWidth();
         table.repaint(r);
     }
 

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
     private final JTextField field = new JTextField("5 : 3 : 2");
-    private final JCheckBox check  = new JCheckBox("ComponentListener#componentResized(...)", true);
+    private final JCheckBox check = new JCheckBox("ComponentListener#componentResized(...)", true);
 
     public MainPanel() {
         super(new BorderLayout(5, 5));

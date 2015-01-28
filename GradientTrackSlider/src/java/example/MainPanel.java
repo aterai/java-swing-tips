@@ -205,7 +205,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
 //             fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
 //
 //             if (drawInverted()) {
-//                 fillTop = slider.isEnabled() ? trackTop  + 1 : trackTop;
+//                 fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
 //                 fillBottom = middleOfThumb;
 //             } else {
 //                 fillTop = middleOfThumb;
@@ -250,7 +250,7 @@ final class GradientPalletFactory {
         g2.fillRect(0, 0, 100, 1);
         g2.dispose();
 
-        int width  = image.getWidth(null);
+        int width = image.getWidth(null);
         int[] pallet = new int[width];
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
         try {

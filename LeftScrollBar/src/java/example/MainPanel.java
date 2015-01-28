@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(Box.createHorizontalStrut(scroll.getVerticalScrollBar().getPreferredSize().width), BorderLayout.WEST);
         panel.add(scroll.getHorizontalScrollBar());
-        add(panel,  BorderLayout.NORTH);
+        add(panel, BorderLayout.NORTH);
         add(scroll);
         scroll.setPreferredSize(new Dimension(320, 240));
     }

@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         box.add(button3);
 
         add(zoom);
-        add(box,  BorderLayout.SOUTH);
+        add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 

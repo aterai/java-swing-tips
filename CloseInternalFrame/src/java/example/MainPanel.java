@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
             //    }
             //};
             //am.put("myTest", a);
-            //InputMap im  = frame.getInputMap();
+            //InputMap im = frame.getInputMap();
             //im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "myTest");
         }
     }

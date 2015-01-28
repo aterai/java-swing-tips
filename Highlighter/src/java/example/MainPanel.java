@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        final JTextArea jta  = new JTextArea();
+        final JTextArea jta = new JTextArea();
         jta.setLineWrap(true);
         jta.setText(INIT_TXT);
         Box box = Box.createHorizontalBox();

@@ -74,11 +74,11 @@ class OvertypeTextArea extends JTextArea {
     }
 
     /*
-     *  Override method from JComponent
+     * Override method from JComponent
      */
     @Override public void replaceSelection(String text) {
-        //  Implement overtype mode by selecting the character at the current
-        //  caret position
+        // Implement overtype mode by selecting the character at the current
+        // caret position
         if (isOvertypeMode()) {
             int pos = getCaretPosition();
             if (getSelectedText() == null && pos < getDocument().getLength()) {
@@ -89,12 +89,12 @@ class OvertypeTextArea extends JTextArea {
     }
 
     /*
-     *  Override method from JComponent
+     * Override method from JComponent
      */
     @Override protected void processKeyEvent(KeyEvent e) {
         super.processKeyEvent(e);
-        //  Handle release of Insert key to toggle overtype/insert mode
-        if (e.getID() == KeyEvent.KEY_RELEASED &&  e.getKeyCode() == KeyEvent.VK_INSERT) {
+        // Handle release of Insert key to toggle overtype/insert mode
+        if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_INSERT) {
             setCaretPosition(getCaretPosition());  //add
             moveCaretPosition(getCaretPosition()); //add
             setOvertypeMode(!isOvertypeMode());
@@ -103,12 +103,12 @@ class OvertypeTextArea extends JTextArea {
     }
 
     /*
-     *  Paint a horizontal line the width of a column and 1 pixel high
+     * Paint a horizontal line the width of a column and 1 pixel high
      */
     class OvertypeCaret extends DefaultCaret {
         /*
-         *  The overtype caret will simply be a horizontal line one pixel high
-         *  (once we determine where to paint it)
+         * The overtype caret will simply be a horizontal line one pixel high
+         * (once we determine where to paint it)
          */
         @Override public void paint(Graphics g) {
             if (isVisible()) {
@@ -139,9 +139,9 @@ class OvertypeTextArea extends JTextArea {
         }
 
         /*
-         *  Damage must be overridden whenever the paint method is overridden
-         *  (The damaged area is the area the caret is painted in. We must
-         *  consider the area for the default caret and this caret)
+         * Damage must be overridden whenever the paint method is overridden
+         * (The damaged area is the area the caret is painted in. We must
+         * consider the area for the default caret and this caret)
          */
         @Override protected synchronized void damage(Rectangle r) {
             if (r != null) {

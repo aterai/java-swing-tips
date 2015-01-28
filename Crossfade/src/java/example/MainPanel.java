@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
             }
         });
         add(crossfade);
-        add(button,    BorderLayout.NORTH);
-        add(box,       BorderLayout.SOUTH);
+        add(button, BorderLayout.NORTH);
+        add(box,    BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 

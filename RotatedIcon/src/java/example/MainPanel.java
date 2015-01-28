@@ -67,7 +67,7 @@ class RotateIcon implements Icon {
 
         width  = icon.getIconWidth();
         height = icon.getIconHeight();
-        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        image  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         icon.paintIcon(null, g, 0, 0);
         g.dispose();

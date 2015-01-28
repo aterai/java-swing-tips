@@ -214,7 +214,7 @@ class HelpAction extends AbstractAction {
 }
 
 class VersionAction extends AbstractAction {
-    public static final String APP_NAME  = "@title@";
+    public static final String APP_NAME   = "@title@";
     private static final String COPYRIGHT = "Copyright(C) 2006";
     private static final String VERSION   = "0.0";
     private static final int    RELEASE   = 1;

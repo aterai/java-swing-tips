@@ -8,8 +8,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tab  = new JTabbedPane();
-    private final JCheckBox cbox   = new JCheckBox("Details");
+    private final JTabbedPane tab = new JTabbedPane();
+    private final JCheckBox cbox  = new JCheckBox("Details");
     public MainPanel() {
         super(new BorderLayout());
         cbox.setFocusPainted(false);

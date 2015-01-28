@@ -105,7 +105,7 @@ class TriSliderUI extends MetalSliderUI {
 
             //trackBottom = (trackRect.height - 1) - getThumbOverhang();
             //trackTop    = trackBottom - (getTrackWidth() - 1);
-            trackRight  = trackRect.width - 1;
+            trackRight = trackRect.width - 1;
 
             int middleOfThumb = 0;
             //int fillTop = 0;

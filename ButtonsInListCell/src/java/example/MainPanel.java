@@ -62,7 +62,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     @Override public void mouseMoved(MouseEvent e) {
         //JList list = (JList) e.getComponent();
         Point pt = e.getPoint();
-        int index  = list.locationToIndex(pt);
+        int index = list.locationToIndex(pt);
         if (!list.getCellBounds(index, index).contains(pt)) {
             if (prevIndex >= 0) {
                 listRepaint(list, list.getCellBounds(prevIndex, prevIndex));
@@ -101,7 +101,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         //JList list = (JList) e.getComponent();
         Point pt = e.getPoint();
-        int index  = list.locationToIndex(pt);
+        int index = list.locationToIndex(pt);
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
             if (button != null) {
@@ -115,7 +115,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     @Override public void mouseReleased(MouseEvent e) {
         //JList list = (JList) e.getComponent();
         Point pt = e.getPoint();
-        int index  = list.locationToIndex(pt);
+        int index = list.locationToIndex(pt);
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
             if (button != null) {

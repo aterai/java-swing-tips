@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         super(new BorderLayout());
 
         final BoundedRangeModel m = new DefaultBoundedRangeModel();
-        final JProgressBar progressBar  = new JProgressBar(m);
+        final JProgressBar progressBar = new JProgressBar(m);
         progressBar.setOrientation(SwingConstants.VERTICAL);
 
         JProgressBar progressBar0 = new JProgressBar(m);

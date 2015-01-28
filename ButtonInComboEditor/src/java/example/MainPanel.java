@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
     private final ImageIcon image2;
     public MainPanel() {
         super(new GridLayout(2, 1));
-        image1  = new ImageIcon(getClass().getResource("favicon.png"));
-        image2  = new ImageIcon(getClass().getResource("16x16.png"));
+        image1 = new ImageIcon(getClass().getResource("favicon.png"));
+        image2 = new ImageIcon(getClass().getResource("16x16.png"));
         ImageIcon rss = new ImageIcon(getClass().getResource("feed-icon-14x14.png")); //http://feedicons.com/
 
         JComboBox<URLItem> combo01 = new JComboBox<>(makeTestModel());

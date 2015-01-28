@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
 
     private Timer animator;
     private boolean isHidden = true;
-    private final JPanel controls  = new JPanel(new BorderLayout(5, 5) {
+    private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
         private int controlsHeight;
         private int controlsPreferredHeight;
         @Override public Dimension preferredLayoutSize(Container target) {

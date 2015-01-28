@@ -134,7 +134,7 @@ class ToggleButtonBarCellIcon implements Icon, Serializable {
     private static final int H = 21;
     public Shape area;
     public Shape getShape(Container parent, Component c, int x, int y) {
-        int w = c.getWidth()  - 1;
+        int w = c.getWidth() - 1;
         int h = c.getHeight() - 1;
         int h2 = (int) (h * .5 + .5);
         int w2 = W;

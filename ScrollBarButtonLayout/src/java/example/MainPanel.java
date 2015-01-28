@@ -104,7 +104,7 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
         if (value < (sb.getMaximum() - sb.getVisibleAmount())) {
             float thumbRange = trackH - thumbH;
             thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
-            //thumbY +=  decrButtonY + decrButtonH + decrGap;
+            //thumbY += decrButtonY + decrButtonH + decrGap;
         }
 
         /* If the buttons don't fit, allocate half of the available
@@ -204,7 +204,7 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
         if (value < (sb.getMaximum() - sb.getVisibleAmount())) {
             float thumbRange = trackH - thumbH;
             thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
-            //thumbY +=  decrButtonY + decrButtonH + decrGap;
+            //thumbY += decrButtonY + decrButtonH + decrGap;
         }
 
         /* If the buttons don't fit, allocate half of the available

@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         return area;
     }
     private static MemoryImageSource makeRoundedMemoryImageSource(BufferedImage image, int width, int height) {
-        int[] pix  = new int[height * width];
+        int[] pix = new int[height * width];
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, pix, 0, width);
         try {
             pg.grabPixels();

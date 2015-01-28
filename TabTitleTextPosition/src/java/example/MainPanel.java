@@ -86,7 +86,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         }
     }
     @Override public void doLayout() {
-        int tabCount  = getTabCount();
+        int tabCount = getTabCount();
         if (tabCount == 0) {
             return;
         }

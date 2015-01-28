@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
     //@auther Nobuo Tamemasa
     private static final String ES = "";
     private final Object[][] data = new Object[][] {
-        {1, 11, "A", ES,  ES}, {2, 22, ES, "B", ES},
-        {3, 33, ES,  ES, "C"}, {4, 1,  ES, ES,  ES},
-        {5, 55, ES,  ES,  ES}, {6, 66, ES, ES,  ES}
+        {1, 11, "A",  ES,  ES}, {2, 22, ES, "B", ES},
+        {3, 33,  ES,  ES, "C"}, {4,  1, ES,  ES, ES},
+        {5, 55,  ES,  ES,  ES}, {6, 66, ES,  ES, ES}
     };
     private final String[] columnNames = {"1", "2", "a", "b", "c"};
     //</blockquote>

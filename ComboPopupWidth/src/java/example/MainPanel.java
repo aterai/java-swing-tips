@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         private boolean adjusting;
         @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             JComboBox combo = (JComboBox) e.getSource();
-            Dimension size  = combo.getSize();
+            Dimension size = combo.getSize();
             if (size.width >= POPUP_MIN_WIDTH) {
                 return;
             }

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table  = new JTable(model);
+    private final JTable table = new JTable(model);
     public MainPanel() {
         super(new BorderLayout());
         JLabel r = (JLabel) table.getDefaultRenderer(Date.class);

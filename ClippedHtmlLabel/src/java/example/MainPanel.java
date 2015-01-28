@@ -298,8 +298,8 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 class TestModel extends DefaultTableModel {
     private static final ColumnContext[] COLUMN_ARRAY = {
         new ColumnContext("No.",  Integer.class, false),
-        new ColumnContext("Name", String.class, false),
-        new ColumnContext("URL",  URL.class, false)
+        new ColumnContext("Name", String.class,  false),
+        new ColumnContext("URL",  URL.class,     false)
     };
     private int number;
     public void addTest(Test t) {

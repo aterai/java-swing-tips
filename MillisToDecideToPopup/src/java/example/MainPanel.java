@@ -10,8 +10,8 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea area     = new JTextArea();
-    private final JButton runButton  = new JButton(new RunAction());
+    private final JTextArea area    = new JTextArea();
+    private final JButton runButton = new JButton(new RunAction());
     private final JSpinner millisToDecideToPopup;
     private final JSpinner millisToPopup;
     private transient SwingWorker<String, String> worker;

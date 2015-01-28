@@ -35,7 +35,7 @@ class ColumnComparator implements Comparator, Serializable {
         if (one instanceof Vector && two instanceof Vector) {
             Object oOne = ((Vector) one).elementAt(index);
             Object oTwo = ((Vector) two).elementAt(index);
-            int dir = ascending ? 1 :  -1;
+            int dir = ascending ? 1 : -1;
             if (oOne instanceof Comparable && oTwo instanceof Comparable) {
                 Comparable cOne = (Comparable) oOne;
                 Comparable cTwo = (Comparable) oTwo;
@@ -45,7 +45,7 @@ class ColumnComparator implements Comparator, Serializable {
             } else if (oOne == null) {
                 return -1 * dir;
             } else { // if (oTwo == null) {
-                return  1 * dir;
+                return 1 * dir;
             }
         }
         return 1;

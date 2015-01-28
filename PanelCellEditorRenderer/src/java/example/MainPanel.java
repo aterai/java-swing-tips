@@ -121,7 +121,7 @@ class SpinnerEditor extends SpinnerPanel implements TableCellEditor {
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {
@@ -251,7 +251,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
         fireEditingStopped();
         return true;
     }
-    @Override public void  cancelCellEditing() {
+    @Override public void cancelCellEditing() {
         fireEditingCanceled();
     }
     @Override public void addCellEditorListener(CellEditorListener l) {

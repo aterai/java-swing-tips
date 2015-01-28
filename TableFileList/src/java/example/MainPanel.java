@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             return false;
         }
     };
-    private final JTable table  = new MyTable(model);
+    private final JTable table = new MyTable(model);
     public MainPanel() {
         super(new BorderLayout());
         table.putClientProperty("Table.isFileList", Boolean.TRUE);

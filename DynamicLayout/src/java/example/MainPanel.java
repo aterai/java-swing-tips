@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
             }
         });
         add(label);
-        add(cbox,  BorderLayout.NORTH);
+        add(cbox, BorderLayout.NORTH);
 //         setPreferredSize(new Dimension(320, 200));
 //         setMinimumSize(new Dimension(300, 150));
     }

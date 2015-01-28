@@ -248,7 +248,7 @@ class FileComparator extends DefaultFileComparator {
         if (a.isDirectory() && !b.isDirectory()) {
             return -1;
         } else if (!a.isDirectory() && b.isDirectory()) {
-            return  1;
+            return 1;
         } else {
             return super.compare(a, b);
         }
@@ -262,7 +262,7 @@ class FileGroupComparator extends DefaultFileComparator {
     private final JTable table;
     public FileGroupComparator(JTable table, int column) {
         super(column);
-        this.table  = table;
+        this.table = table;
     }
     @Override public int compare(File a, File b) {
         int flag = 1;
@@ -276,7 +276,7 @@ class FileGroupComparator extends DefaultFileComparator {
         if (a.isDirectory() && !b.isDirectory()) {
             return -1 * flag;
         } else if (!a.isDirectory() && b.isDirectory()) {
-            return  1 * flag;
+            return 1 * flag;
         } else {
             return super.compare(a, b);
         }

@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 
         add(makeTitledPanel("Default", new JTree()));
         //add(makeTitledPanel("Margin", tree1));
-        add(makeTitledPanel("Label",  tree));
+        add(makeTitledPanel("Label", tree));
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitledPanel(String title, JTree tree) {

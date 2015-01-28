@@ -13,12 +13,12 @@ public final class MainPanel extends JPanel {
     //@auther Nobuo Tamemasa
     private static final String ES = "";
     private final Object[][] data = new Object[][] {
-        {1, 11, "A", ES,  ES,  ES,  ES,  ES},
-        {2, 22, ES,  "B", ES,  ES,  ES,  ES},
-        {3, 33, ES,  ES,  "C", ES,  ES,  ES},
-        {4, 1,  ES,  ES,  ES,  "D", ES,  ES},
-        {5, 55, ES,  ES,  ES,  ES,  "E", ES},
-        {6, 66, ES,  ES,  ES,  ES,  ES,  "F"}
+        {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
+        {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
+        {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
+        {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
+        {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
+        {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
     };
     private final Object[] columnNames = {"fixed 1", "fixed 2", "a", "b", "c", "d", "e", "f"};
     //</blockquote>

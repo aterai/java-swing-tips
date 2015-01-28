@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     private final JButton runButton  = new JButton(new RunAction());
     private final JButton canButton  = new JButton(new CancelAction());
     private final JButton openButton = new JButton(new OpenAction());
-    private SwingWorker<String, Message>  worker;
+    private SwingWorker<String, Message> worker;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -313,6 +313,6 @@ class Message {
     public final boolean append;
     public Message(String text, boolean append) {
         this.text = text;
-        this.append  = append;
+        this.append = append;
     }
 }

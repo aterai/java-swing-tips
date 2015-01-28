@@ -144,7 +144,7 @@ final class TextureFactory {
 //     private Point startPoint = new Point(-10, -10);
 //     private BufferedImage currentImage = null;
 //     private BufferedImage backImage = null;
-//     private TexturePaint texture  = makeTexturePaint();
+//     private TexturePaint texture = makeTexturePaint();
 //     public PaintPanel() {
 //         super();
 //         addMouseMotionListener(this);

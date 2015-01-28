@@ -46,8 +46,8 @@ public final class MainPanel extends JPanel {
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(textField);
-        panel.add(button,    BorderLayout.EAST);
-        add(panel,  BorderLayout.NORTH);
+        panel.add(button, BorderLayout.EAST);
+        add(panel, BorderLayout.NORTH);
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }

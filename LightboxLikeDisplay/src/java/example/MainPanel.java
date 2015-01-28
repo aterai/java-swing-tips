@@ -173,7 +173,7 @@ class LightboxGlassPane extends JPanel {
 class AnimeIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
-    private static final double R  = 2.0d;
+    private static final double R  = 2d;
     private static final double SX = 0d;
     private static final double SY = 0d;
     private static final int WIDTH  = (int) (R * 8 + SX * 2);

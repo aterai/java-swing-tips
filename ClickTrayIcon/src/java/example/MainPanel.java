@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
         g.dispose();
 
         SystemTray tray = SystemTray.getSystemTray();
-        TrayIcon icon =  makeTrayIcon(frame, tray, image);
+        TrayIcon icon = makeTrayIcon(frame, tray, image);
         try {
             tray.add(icon);
         } catch (AWTException e) {

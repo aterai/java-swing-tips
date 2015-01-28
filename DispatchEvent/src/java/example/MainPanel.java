@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private static final int DELAY = 10 * 1000; //10s
     private final JLabel label = new JLabel("Not connected");
     private final JComboBox<String> combo = makeComboBox();
-    private final JTextField textField  = new JTextField(20);
+    private final JTextField textField = new JTextField(20);
     private final JButton button;
     private final Timer timer;
 

@@ -134,7 +134,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         g2.fillRect(0, 0, 100, 1);
         g2.dispose();
 
-        int width  = image.getWidth(null);
+        int width = image.getWidth(null);
         int[] pallet = new int[width];
         PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
         try {

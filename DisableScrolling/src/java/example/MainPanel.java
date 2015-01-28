@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         table.setInheritsPopupMenu(true);
 
         add(scroll);
-        add(check,  BorderLayout.NORTH);
+        add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
