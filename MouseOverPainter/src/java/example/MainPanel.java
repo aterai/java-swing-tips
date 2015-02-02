@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.getViewport().setBackground(Color.WHITE);
         add(scroll);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {
@@ -46,13 +46,35 @@ public final class MainPanel extends JPanel {
 class HighlightCursorTextArea extends JTextArea {
     private static final Color LINE_COLOR = new Color(250, 250, 220);
     private int rollOverRowIndex = -1;
+    private MouseAdapter rolloverHandler;
 
     public HighlightCursorTextArea() {
         super();
+    }
+    public HighlightCursorTextArea(Document doc) {
+        super(doc);
+    }
+    public HighlightCursorTextArea(Document doc, String text, int rows, int columns) {
+        super(doc, text, rows, columns);
+    }
+    public HighlightCursorTextArea(int rows, int columns) {
+        super(rows, columns);
+    }
+    public HighlightCursorTextArea(String text) {
+        super(text);
+    }
+    public HighlightCursorTextArea(String text, int rows, int columns) {
+        super(text, rows, columns);
+    }
+
+    @Override public void updateUI() {
+        removeMouseMotionListener(rolloverHandler);
+        removeMouseListener(rolloverHandler);
+        super.updateUI();
         setOpaque(false);
-        RollOverListener rol = new RollOverListener();
-        addMouseMotionListener(rol);
-        addMouseListener(rol);
+        rolloverHandler = new RollOverListener();
+        addMouseMotionListener(rolloverHandler);
+        addMouseListener(rolloverHandler);
     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
