@@ -8,19 +8,15 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JCheckBox check = new JCheckBox("LineWrap");
-    private final LineCursorTextArea textArea = new LineCursorTextArea();
+    private final JTextArea textArea = new LineCursorTextArea("Line Cursor Test\n\naaaaaaaaaaafasdfas");
     public MainPanel() {
         super(new BorderLayout());
-        textArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        textArea.setText("Line Cursor Test\n\naaaaaaaaaaafasdfas");
-        check.addActionListener(new ActionListener() {
+        add(new JCheckBox(new AbstractAction("LineWrap") {
             @Override public void actionPerformed(ActionEvent e) {
-                textArea.setLineWrap(check.isSelected());
+                textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected());
                 textArea.requestFocusInWindow();
             }
-        });
-        add(check, BorderLayout.NORTH);
+        }), BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -50,9 +46,30 @@ public final class MainPanel extends JPanel {
 
 class LineCursorTextArea extends JTextArea {
     private static final Color LINE_COLOR = Color.BLUE;
-    private final DefaultCaret caret;
+    private DefaultCaret caret;
+
     public LineCursorTextArea() {
         super();
+    }
+    public LineCursorTextArea(Document doc) {
+        super(doc);
+    }
+    public LineCursorTextArea(Document doc, String text, int rows, int columns) {
+        super(doc, text, rows, columns);
+    }
+    public LineCursorTextArea(int rows, int columns) {
+        super(rows, columns);
+    }
+    public LineCursorTextArea(String text) {
+        super(text);
+    }
+    public LineCursorTextArea(String text, int rows, int columns) {
+        super(text, rows, columns);
+    }
+
+    @Override public void updateUI() {
+        //setCaret(null);
+        super.updateUI();
         caret = new DefaultCaret() {
             @Override protected synchronized void damage(Rectangle r) {
                 if (r != null) {
