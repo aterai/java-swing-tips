@@ -122,16 +122,15 @@ class FIFODocumentFilter extends DocumentFilter {
     private static final int MAX_LINES = 10;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
         fb.insertString(offset, string, attr);
-        Document doc = fb.getDocument();
-        Element root = doc.getDefaultRootElement();
+        Element root = fb.getDocument().getDefaultRootElement();
         if (root.getElementCount() > MAX_LINES) {
-            doc.remove(0, root.getElement(0).getEndOffset());
+            fb.remove(0, root.getElement(0).getEndOffset());
         }
     }
-    @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
-        fb.remove(offset, length);
-    }
-    @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-        fb.replace(offset, length, text, attrs);
-    }
+//     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+//         fb.remove(offset, length);
+//     }
+//     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+//         fb.replace(offset, length, text, attrs);
+//     }
 }
