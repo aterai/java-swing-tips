@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         //        component.setSize(component.getPreferredSize());
         //    }
         //}
-        //SwingUtilities.updateComponentTreeUI(jsDur);
+        //SwingUtilities.updateComponentTreeUI(slider);
 
         slider.setLabelTable(slider.getLabelTable());
         //@see JSlider#setLabelTable(...)
