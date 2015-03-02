@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.io.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -156,7 +157,7 @@ class DnDTree extends JTree {
             Object draggingObject = getSelectionPath().getLastPathComponent();
             Point pt = dtde.getLocation();
             TreePath path = getPathForLocation(pt.x, pt.y);
-            if (path == null || !(draggingObject instanceof MutableTreeNode)) {
+            if (Objects.isNull(path) || !(draggingObject instanceof MutableTreeNode)) {
                 dtde.dropComplete(false);
                 return;
             }

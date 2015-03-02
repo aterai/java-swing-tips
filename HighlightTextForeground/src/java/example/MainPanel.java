@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     private static void scrollToCenter(JTextComponent tc, int pos) throws BadLocationException {
         Rectangle rect = tc.modelToView(pos);
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
-        if (rect != null && c instanceof JViewport) {
+        if (Objects.nonNull(rect) && c instanceof JViewport) {
             rect.x      = (int) (rect.x - c.getWidth() * .5);
             rect.width  = c.getWidth();
             rect.height = (int) (c.getHeight() * .5);
