@@ -11,8 +11,9 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
+    private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
     public MainPanel() {
-        super(new GridLayout(2, 1, 0, 10));
+        super(new GridLayout(3, 1, 0, 10));
 
         final JPasswordField pf1 = new JPasswordField(24);
         pf1.setText("abcdefghijklmn");
@@ -25,31 +26,31 @@ public final class MainPanel extends JPanel {
                 pf1.setEchoChar(ec);
             }
         }), BorderLayout.SOUTH);
-        add(makeTitlePanel(p1, "BorderLayout"));
+        add(makeTitlePanel(p1, "BorderLayout + JCheckBox"));
 
         JPasswordField pf2 = new JPasswordField(24);
         pf2.setText("abcdefghijklmn");
         pf2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         //AbstractDocument doc = (AbstractDocument) pf2.getDocument();
         //doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
-        AbstractButton b = new JToggleButton(new AbstractAction() {
+        AbstractButton b2 = new JToggleButton(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 AbstractButton c = (AbstractButton) e.getSource();
                 Character ec = c.isSelected() ? 0 : (Character) UIManager.get("PasswordField.echoChar");
                 pf2.setEchoChar(ec);
             }
         });
-        b.setFocusable(false);
-        b.setOpaque(false);
-        b.setContentAreaFilled(false);
-        b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-        b.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        b.setAlignmentY(Component.CENTER_ALIGNMENT);
-        b.setIcon(new ColorIcon(Color.GREEN));
-        b.setRolloverIcon(new ColorIcon(Color.BLUE));
-        b.setSelectedIcon(new ColorIcon(Color.RED));
-        b.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
-        b.setToolTipText("show/hide passwords");
+        b2.setFocusable(false);
+        b2.setOpaque(false);
+        b2.setContentAreaFilled(false);
+        b2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+        b2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        b2.setAlignmentY(Component.CENTER_ALIGNMENT);
+        b2.setIcon(new ColorIcon(Color.GREEN));
+        b2.setRolloverIcon(new ColorIcon(Color.BLUE));
+        b2.setSelectedIcon(new ColorIcon(Color.RED));
+        b2.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
+        b2.setToolTipText("show/hide passwords");
 
         JPanel p2 = new JPanel() {
             @Override public boolean isOptimizedDrawingEnabled() {
@@ -57,9 +58,51 @@ public final class MainPanel extends JPanel {
             }
         };
         p2.setLayout(new OverlayLayout(p2));
-        p2.add(b);
+        p2.add(b2);
         p2.add(pf2);
-        add(makeTitlePanel(p2, "OverlayLayout"));
+        add(makeTitlePanel(p2, "OverlayLayout + JToggleButton"));
+
+        JPasswordField pf3 = new JPasswordField(24);
+        pf3.setText("abcdefghijklmn");
+        AbstractDocument doc = (AbstractDocument) pf3.getDocument();
+        JTextField tf3 = new JTextField(24);
+        tf3.setFont(FONT);
+        tf3.enableInputMethods(false);
+        tf3.setDocument(doc);
+
+        final CardLayout cardLayout = new CardLayout();
+        final JPanel p3 = new JPanel(cardLayout);
+        p3.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        p3.add(pf3, PasswordField.HIDE.toString());
+        p3.add(tf3, PasswordField.SHOW.toString());
+
+        AbstractButton b3 = new JToggleButton(new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                AbstractButton c = (AbstractButton) e.getSource();
+                PasswordField s = c.isSelected() ? PasswordField.SHOW : PasswordField.HIDE;
+                cardLayout.show(p3, s.toString());
+            }
+        });
+        b3.setFocusable(false);
+        b3.setOpaque(false);
+        b3.setContentAreaFilled(false);
+        b3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+        b3.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        b3.setAlignmentY(Component.CENTER_ALIGNMENT);
+        b3.setIcon(new ColorIcon(Color.GREEN));
+        b3.setRolloverIcon(new ColorIcon(Color.BLUE));
+        b3.setSelectedIcon(new ColorIcon(Color.RED));
+        b3.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
+
+        JPanel panel = new JPanel() {
+            @Override public boolean isOptimizedDrawingEnabled() {
+                return false;
+            }
+        };
+        panel.setLayout(new OverlayLayout(panel));
+        panel.add(b3);
+        panel.add(p3);
+        add(makeTitlePanel(panel, "CardLayout + JTextField(can copy) + ..."));
 
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
@@ -97,10 +140,10 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// enum PasswordField {
-//     SHOW, HIDE;
-// }
-//
+enum PasswordField {
+    SHOW, HIDE;
+}
+
 // class ASCIIOnlyDocumentFilter extends DocumentFilter {
 //     //private static Pattern pattern = Pattern.compile("\\A\\p{ASCII}*\\z");
 //     private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
