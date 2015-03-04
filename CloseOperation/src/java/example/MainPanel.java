@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
                 if (number == 0) {
                     Window w = e.getWindow();
                     if (w instanceof JFrame) {
-                        ((JFrame) w).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        ((JFrame) w).setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     }
                 }
             }
