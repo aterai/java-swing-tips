@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.*;
 import javax.swing.*;
@@ -383,7 +384,7 @@ class HtmlTableTransferHandler extends TransferHandler {
     }
 }
 
-//Copied from javax/swing/plaf/basic/BasicTextUI.BasicTransferable
+//Copied from javax/swing/plaf/basic/BasicTransferable.java
 class BasicTransferable implements Transferable {
 
     protected String plainData;
@@ -482,7 +483,7 @@ class BasicTransferable implements Transferable {
      * @exception UnsupportedFlavorException if the requested data flavor is
      *              not supported.
      */
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         //???: DataFlavor[] richerFlavors = getRicherFlavors();
         if (isRicherFlavor(flavor)) {
@@ -496,7 +497,8 @@ class BasicTransferable implements Transferable {
             } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                 return new StringReader(data);
             } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                return new StringBufferInputStream(data);
+                //return new StringBufferInputStream(data);
+                return createInputStream(flavor, data);
             }
             // fall through to unsupported
         } else if (isPlainFlavor(flavor)) {
@@ -508,7 +510,8 @@ class BasicTransferable implements Transferable {
             } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                 return new StringReader(data);
             } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                return new StringBufferInputStream(data);
+                //return new StringBufferInputStream(data);
+                return createInputStream(flavor, data);
             }
             // fall through to unsupported
 
@@ -519,6 +522,21 @@ class BasicTransferable implements Transferable {
             return Objects.toString(getPlainData(), "");
         }
         throw new UnsupportedFlavorException(flavor);
+    }
+    //@see sun.datatransfer.DataFlavorUtil
+    public static String getTextCharset(DataFlavor flavor) {
+        //if (!isFlavorCharsetTextType(flavor)) {
+        //    return null;
+        //}
+        String encoding = flavor.getParameter("charset");
+        return Objects.nonNull(encoding) ? encoding : Charset.defaultCharset().name();
+    }
+    private InputStream createInputStream(DataFlavor flavor, String data) throws IOException, UnsupportedFlavorException {
+        String cs = getTextCharset(flavor);
+        if (Objects.isNull(cs)) {
+            throw new UnsupportedFlavorException(flavor);
+        }
+        return new ByteArrayInputStream(data.getBytes(cs));
     }
 
     // --- richer subclass flavors ----------------------------------------------
