@@ -79,7 +79,7 @@ class SingleMouseClickSelectList<E> extends JList<E> {
         }
     }
     private MouseEvent convertMouseEvent(MouseEvent e) {
-        // https://forums.oracle.com/thread/1351452 JList where mouse click acts like ctrl-mouse click
+        // https://community.oracle.com/thread/1351452 JList where mouse click acts like ctrl-mouse click
         return new MouseEvent(
             e.getComponent(),
             e.getID(), e.getWhen(),

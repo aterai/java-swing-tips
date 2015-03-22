@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     private List<JComboBox> initComboBoxes(boolean isColor) {
 //         if (uiCheck.isSelected()) {
 //             // Bug ID: JDK-7158712 Synth Property "ComboBox.popupInsets" is ignored
-//             // http://bugs.sun.com/view_bug.do?bug_id=7158712
+//             // http://bugs.java.com/view_bug.do?bug_id=7158712
 //             UIManager.put("ComboBox.padding", new javax.swing.plaf.InsetsUIResource(1, 15, 1, 1));
 //         }
         List<JComboBox> list = new ArrayList<>();

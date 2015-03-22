@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         BufferedImage bi = getFilteredImage(url);
         desktop.setBorder(new CentredBackgroundBorder(bi));
         // Bug ID: 6655001 D3D/OGL: Window translucency doesn't work with accelerated pipelines
-        // http://bugs.sun.com/view_bug.do?bug_id=6655001
+        // http://bugs.java.com/view_bug.do?bug_id=6655001
         //desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         add(desktop);
         add(createMenuBar(), BorderLayout.NORTH);
@@ -149,8 +149,8 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://forums.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
-// http://terai.xrea.jp/Swing/CentredBackgroundBorder.html
+// https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
+// http://http://ateraimemo.com/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;

@@ -184,8 +184,8 @@ class TranslucentTexturePanel extends JPanel {
     }
 }
 
-// https://forums.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
-// http://terai.xrea.jp/Swing/CentredBackgroundBorder.html
+// https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
+// http://http://ateraimemo.com/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
@@ -207,7 +207,7 @@ class CentredBackgroundBorder implements Border {
     }
 }
 
-//http://terai.xrea.jp/Swing/TranslucentPopupMenu.html
+//http://http://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
     private static final Color POPUP_BACK = new Color(250, 250, 250, 100);
     private static final Color POPUP_LEFT = new Color(230, 230, 230, 100);
@@ -258,7 +258,7 @@ class TransparentMenu extends JMenu {
         super(title);
     }
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
-    // http://bugs.sun.com/view_bug.do?bug_id=4688783
+    // http://bugs.java.com/view_bug.do?bug_id=4688783
     private void ensurePopupMenuCreated() {
         if (popupMenu == null) {
             this.popupMenu = new TranslucentPopupMenu();

@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
 //     private final JTable table = new JTable(model) {
 //         @Override public int rowAtPoint(Point pt) {
 //             // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
-//             // http://bugs.sun.com/view_bug.do?bug_id=6291631
+//             // http://bugs.java.com/view_bug.do?bug_id=6291631
 //             return (pt.y < 0) ? -1 : super.rowAtPoint(pt);
 //         }
 //     };
@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://forums.oracle.com/thread/1357722 JButton inside JTable Cell
+// https://community.oracle.com/thread/1357722 JButton inside JTable Cell
 class DeleteButton extends JButton {
     @Override public void updateUI() {
         super.updateUI();

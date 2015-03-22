@@ -427,7 +427,7 @@ class GhostGlassPane extends JPanel {
         this.tabbedPane = tabbedPane;
         setOpaque(false);
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
-        // http://bugs.sun.com/view_bug.do?bug_id=6700748
+        // http://bugs.java.com/view_bug.do?bug_id=6700748
         //setCursor(null);
     }
     public void setTargetRect(int x, int y, int width, int height) {

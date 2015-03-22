@@ -99,7 +99,7 @@ public final class MainPanel extends JPanel {
             row--;
         }
     }
-//     // https://forums.oracle.com/thread/1393385 How to Expand a JTree completely
+//     // https://community.oracle.com/thread/1393385 How to Expand a JTree completely
 //     private void expandAPath(TreePath p) {
 //         tree.expandPath(p);
 //         DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();

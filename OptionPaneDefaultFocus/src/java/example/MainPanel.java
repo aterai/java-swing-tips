@@ -104,7 +104,7 @@ class FocusHierarchyListener implements HierarchyListener {
     }
 }
 
-// https://forums.oracle.com/thread/1354218 Input focus
+// https://community.oracle.com/thread/1354218 Input focus
 class FocusAncestorListener implements AncestorListener {
     @Override public void ancestorAdded(AncestorEvent e) {
         e.getComponent().requestFocusInWindow();

@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
             });
         }
 
-        //http://terai.xrea.jp/Swing/TerminateEdit.html
+        //http://http://ateraimemo.com/Swing/TerminateEdit.html
         //table.getTableHeader().setReorderingAllowed(false);
         //frame.setResizeable(false);
         //or

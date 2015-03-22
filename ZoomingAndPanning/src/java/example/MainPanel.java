@@ -100,7 +100,7 @@ class ZoomAndPanHandler extends MouseAdapter {
         coordTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
         c.repaint();
     }
-    //https://forums.oracle.com/thread/1263955
+    //https://community.oracle.com/thread/1263955
     //How to implement Zoom & Pan in Java using Graphics2D
     private Point transformPoint(Point p1) {
         Point p2 = new Point();

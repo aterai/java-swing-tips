@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://forums.oracle.com/thread/1373824 XMLViewer
+// https://community.oracle.com/thread/1373824 XMLViewer
 class XMLTreeNode implements TreeNode {
     private Node xmlNode;
     private XMLTreeNode parent;

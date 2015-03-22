@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://forums.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
+// https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;

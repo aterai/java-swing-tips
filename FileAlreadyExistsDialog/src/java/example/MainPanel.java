@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
             @Override public void approveSelection() {
                 File f = getSelectedFile();
                 if (f.exists() && getDialogType() == SAVE_DIALOG) {
-                    //@see https://forums.oracle.com/thread/1391852 How to react on events fired by a JFileChooser?
+                    //@see https://community.oracle.com/thread/1391852 How to react on events fired by a JFileChooser?
                     //@see http://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
                     //String m = "Replace file: " + f.getAbsolutePath() + "?";
                     //String m = "The file exists, overwrite?";

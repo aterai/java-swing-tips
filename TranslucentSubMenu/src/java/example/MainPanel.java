@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://terai.xrea.jp/Swing/TranslucentPopupMenu.html
+//http://http://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
     private static final Color POPUP_BACK = new Color(250, 250, 250, 200);
     private static final Color POPUP_LEFT = new Color(230, 230, 230, 200);
@@ -123,7 +123,7 @@ class TransparentMenu extends JMenu {
         super(title);
     }
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
-    // http://bugs.sun.com/view_bug.do?bug_id=4688783
+    // http://bugs.java.com/view_bug.do?bug_id=4688783
     private void ensurePopupMenuCreated() {
         if (popupMenu == null) {
             this.popupMenu = new TranslucentPopupMenu();

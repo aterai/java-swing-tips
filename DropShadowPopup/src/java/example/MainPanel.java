@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
             p.add(c);
         }
         // Bug ID: 6595814 Nimbus LAF: Renderers, MenuSeparators, colors rollup bug
-        // http://bugs.sun.com/view_bug.do?bug_id=6595814
+        // http://bugs.java.com/view_bug.do?bug_id=6595814
         //p.addSeparator();
     }
     public static void main(String... args) {

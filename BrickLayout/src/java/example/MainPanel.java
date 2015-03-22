@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
                 panel.add(new JButton(" "), c);
             }
         }
-        //<blockquote cite="https://forums.oracle.com/thread/1357310"
+        //<blockquote cite="https://community.oracle.com/thread/1357310"
         //           title="GridBagLayout to create a board">
         //<dummy-row>
         c.gridwidth = 1;

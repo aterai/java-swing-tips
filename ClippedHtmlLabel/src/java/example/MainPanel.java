@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
     private static JTable makeTable() {
         TestModel model = new TestModel();
         try {
-            model.addTest(new Test("FrontPage", new URL("http://terai.xrea.jp/")));
-            model.addTest(new Test("Java Swing Tips", new URL("http://terai.xrea.jp/Swing.html")));
+            model.addTest(new Test("FrontPage", new URL("http://http://ateraimemo.com/")));
+            model.addTest(new Test("Java Swing Tips", new URL("http://http://ateraimemo.com/Swing.html")));
             model.addTest(new Test("Example", new URL("http://www.example.com/")));
             model.addTest(new Test("Example.jp", new URL("http://www.example.jp/")));
         } catch (MalformedURLException ex) {

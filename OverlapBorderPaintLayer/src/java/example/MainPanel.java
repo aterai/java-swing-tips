@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://terai.xrea.jp/Swing/ToggleButtonBar.html
+//http://http://ateraimemo.com/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
     private static final int W = 10;
     private static final int H = 21;

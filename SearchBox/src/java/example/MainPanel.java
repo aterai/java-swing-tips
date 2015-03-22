@@ -150,7 +150,7 @@ public final class MainPanel extends JPanel {
         }
     }
 
-//     //<blockquote cite="https://forums.oracle.com/thread/1357454"
+//     //<blockquote cite="https://community.oracle.com/thread/1357454"
 //     //           title="how to get everything in DefaultTreeNode">
 //     public void traverse(JTree tree) {
 //         TreeModel model = tree.getModel();

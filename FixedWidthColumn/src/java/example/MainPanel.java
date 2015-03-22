@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 //         col = table.getColumnModel().getColumn(1);
 //         col.setMinWidth(0);
 //         col.setMaxWidth(0);
-//         //<blockquote cite="https://forums.oracle.com/thread/1484284"
+//         //<blockquote cite="https://community.oracle.com/thread/1484284"
 //         //           title="JTable skiping the cells disableds">
 //         InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //         KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);

@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         try {
-            model.addTest(new Test("FrontPage", new URL("http://terai.xrea.jp/")));
-            model.addTest(new Test("Java Swing Tips", new URL("http://terai.xrea.jp/Swing.html")));
+            model.addTest(new Test("FrontPage", new URL("http://http://ateraimemo.com/")));
+            model.addTest(new Test("Java Swing Tips", new URL("http://http://ateraimemo.com/Swing.html")));
             model.addTest(new Test("Example", new URL("http://www.example.com/")));
             model.addTest(new Test("Example.jp", new URL("http://www.example.jp/")));
         } catch (MalformedURLException ex) {
@@ -93,7 +93,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     private boolean isRollover;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-// >>>> @see http://terai.xrea.jp/Swing/ClippedHtmlLabel.html
+// >>>> @see http://http://ateraimemo.com/Swing/ClippedHtmlLabel.html
 //         int mw = table.getColumnModel().getColumnMargin();
 //         int rh = table.getRowMargin();
 //         int w  = table.getColumnModel().getColumn(column).getWidth();

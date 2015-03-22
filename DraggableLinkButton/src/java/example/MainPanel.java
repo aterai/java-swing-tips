@@ -15,7 +15,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private static final String MYSITE = "http://terai.xrea.jp/";
+    private static final String MYSITE = "http://http://ateraimemo.com/";
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());

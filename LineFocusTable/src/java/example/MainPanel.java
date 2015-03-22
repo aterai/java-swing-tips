@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         @Override public Class<?> getColumnClass(int column) {
             // ArrayIndexOutOfBoundsException: 0 >= 0
             // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty
-            // http://bugs.sun.com/view_bug.do?bug_id=6967479
+            // http://bugs.java.com/view_bug.do?bug_id=6967479
             //return getValueAt(0, column).getClass();
             switch (column) {
               case 0:
@@ -149,7 +149,7 @@ class LineFocusTable extends JTable {
     }
     @Override public void updateUI() {
         // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-        // http://bugs.sun.com/view_bug.do?bug_id=6788475
+        // http://bugs.java.com/view_bug.do?bug_id=6788475
         //XXX: set dummy ColorUIResource
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));

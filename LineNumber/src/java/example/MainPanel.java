@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://forums.oracle.com/thread/1479759 Advice for editor gutter implementation...
+// https://community.oracle.com/thread/1479759 Advice for editor gutter implementation...
 // Original author: Alan Moore
 // Modified by: TERAI Atsuhiro
 class LineNumberView extends JComponent {

@@ -123,7 +123,7 @@ final class TreeUtil {
 
     private TreeUtil() { /* Singleton */ }
 
-    // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
+    // https://community.oracle.com/thread/1355435 How to sort jTree Nodes
     public static void sortTree0(DefaultMutableTreeNode root) {
         for (int i = 0; i < root.getChildCount(); i++) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(i);
@@ -146,7 +146,7 @@ final class TreeUtil {
         }
     }
 
-    // https://forums.oracle.com/thread/1355435 How to sort jTree Nodes
+    // https://community.oracle.com/thread/1355435 How to sort jTree Nodes
     public static void sortTree1(DefaultMutableTreeNode root) {
         int n = root.getChildCount();
         for (int i = 0; i < n - 1; i++) {
