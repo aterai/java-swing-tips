@@ -99,7 +99,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
             animator = new Timer(DELAY, new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
                     double a = AnimationUtil.easeInOut(++count / h);
-                    yy = (int) (.5d + a * h);
+                    yy = (int) (.5 + a * h);
                     toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
                     if (yy >= toolBox.getPreferredSize().height) {
                         yy = toolBox.getPreferredSize().height;

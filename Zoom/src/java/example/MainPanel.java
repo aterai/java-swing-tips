@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
             repaint();
         }
         public void changeScale(int iv) {
-            scale = Math.max(.05, Math.min(5.0d, scale - iv * .05));
+            scale = Math.max(.05, Math.min(5d, scale - iv * .05));
             repaint();
 //             double v = scale - iv * .1;
 //             if (v - 1d > -1.0e-2) {
