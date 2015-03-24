@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
 class TabThumbnailTabbedPane extends JTabbedPane {
     private int current = -1;
-    private static final double SCALE = 0.15d;
+    private static final double SCALE = .15;
     private Component getTabThumbnail(int index) {
         Component c = getComponentAt(index);
         Icon icon = null;

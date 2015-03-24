@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final double A2 = 4.0;
+    private static final double A2 = 4d;
     private MainPanel() {
         super(new BorderLayout());
 
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
                 int px = 0;
                 int py = 0;
                 for (int x = 0; x < w; x++) {
-                    int y = (int) Math.pow(x / A2, 2.0);
+                    int y = (int) Math.pow(x / A2, 2d);
                     g.drawLine(px, py, x, y);
                     px = x;
                     py = y;

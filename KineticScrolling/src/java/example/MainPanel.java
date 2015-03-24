@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
 class KineticScrollingListener1 extends MouseAdapter implements HierarchyListener {
     private static final int SPEED = 4;
     private static final int DELAY = 10;
-    private static final double D = 0.8;
+    private static final double D = .8;
     private final Cursor dc;
     private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Timer scroller;
@@ -159,7 +159,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
 class KineticScrollingListener2 extends MouseAdapter implements HierarchyListener {
     private static final int SPEED = 4;
     private static final int DELAY = 10;
-    private static final double D = 0.8;
+    private static final double D = .8;
     private final JComponent label;
     private final Point startPt = new Point();
     private final Point delta   = new Point();
