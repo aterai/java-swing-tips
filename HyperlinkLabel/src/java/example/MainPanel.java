@@ -13,7 +13,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private static final String MYSITE = "http://http://ateraimemo.com/";
+    private static final String MYSITE = "http://ateraimemo.com/";
     private final Action browseAction = new AbstractAction(MYSITE) {
         @Override public void actionPerformed(ActionEvent e) {
             Toolkit.getDefaultToolkit().beep();

@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         check.setSelected(true);
 
-        //http://http://ateraimemo.com/Swing/StyleSheet.html
+        //http://ateraimemo.com/Swing/StyleSheet.html
         StyleSheet styleSheet = new StyleSheet();
         styleSheet.addRule(".highlight {color: blue; background: #FF5533; opacity: 0.5;}"); //INCOMPLETE: opacity
         //INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
           + "}<br />"
         );
 
-        //TEST: http://http://ateraimemo.com/Swing/DrawsLayeredHighlights.html
+        //TEST: http://ateraimemo.com/Swing/DrawsLayeredHighlights.html
         //DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();
         //dh.setDrawsLayeredHighlights(false);
 
@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
         return dest;
     }
 
-    //http://http://ateraimemo.com/Swing/Highlighter.html
+    //http://ateraimemo.com/Swing/Highlighter.html
     private void setHighlight(JTextComponent jtc, String pattern) {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
@@ -153,7 +153,7 @@ public final class MainPanel extends JPanel {
 }
 
 // https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
-// http://http://ateraimemo.com/Swing/CentredBackgroundBorder.html
+// http://ateraimemo.com/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;

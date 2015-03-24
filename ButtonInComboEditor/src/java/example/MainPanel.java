@@ -30,9 +30,9 @@ public final class MainPanel extends JPanel {
     }
     private DefaultComboBoxModel<URLItem> makeTestModel() {
         DefaultComboBoxModel<URLItem> model = new DefaultComboBoxModel<>();
-        model.addElement(new URLItem("http://http://ateraimemo.com/", image1, true));
-        model.addElement(new URLItem("http://http://ateraimemo.com/Swing.html", image1, true));
-        model.addElement(new URLItem("http://http://ateraimemo.com/JavaWebStart.html", image1, true));
+        model.addElement(new URLItem("http://ateraimemo.com/", image1, true));
+        model.addElement(new URLItem("http://ateraimemo.com/Swing.html", image1, true));
+        model.addElement(new URLItem("http://ateraimemo.com/JavaWebStart.html", image1, true));
         model.addElement(new URLItem("http://d.hatena.ne.jp/aterai/", image2, true));
         model.addElement(new URLItem("http://java-swing-tips.blogspot.com/", image2, true));
         model.addElement(new URLItem("http://www.example.com/", image2, false));
@@ -175,14 +175,14 @@ class URLItemComboBox extends JComboBox<URLItem> {
         return item;
     }
 //     private ImageIcon getFavicon(String url) {
-//         if (url.startsWith("http://http://ateraimemo.com/")) {
+//         if (url.startsWith("http://ateraimemo.com/")) {
 //             return image1;
 //         } else {
 //             return image2;
 //         }
 //     }
 //     private boolean hasRSS(String url) {
-//         return url.startsWith("http://http://ateraimemo.com/");
+//         return url.startsWith("http://ateraimemo.com/");
 //     }
 //     public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
 //         ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());

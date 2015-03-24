@@ -12,7 +12,7 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
-    private static final String LINK = "http://http://ateraimemo.com/";
+    private static final String LINK = "http://ateraimemo.com/";
     private static final String HTML_TEXT = "<html><body>"
                                           + "html tag: <br /><a href='" + LINK + "'>" + LINK + "</a>"
                                           + "</body></html>";

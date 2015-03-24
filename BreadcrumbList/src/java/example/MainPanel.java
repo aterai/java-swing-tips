@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://http://ateraimemo.com/Swing/ToggleButtonBar.html
+//http://ateraimemo.com/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon, Serializable {
     private static final long serialVersionUID = 1L;
     private static final int W = 10;

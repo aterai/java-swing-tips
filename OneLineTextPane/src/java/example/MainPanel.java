@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        // @see http://http://ateraimemo.com/Swing/NoWrapTextPane.html
+        // @see http://ateraimemo.com/Swing/NoWrapTextPane.html
         textPane.setEditorKit(new NoWrapEditorKit());
 
         AbstractDocument doc = new SimpleSyntaxDocument();
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        // @see http://http://ateraimemo.com/Swing/FocusTraversalKeys.html
+        // @see http://ateraimemo.com/Swing/FocusTraversalKeys.html
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(textPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK));

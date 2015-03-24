@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//http://http://ateraimemo.com/Swing/ToggleButtonBar.html
+//http://ateraimemo.com/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();

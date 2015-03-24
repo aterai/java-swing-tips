@@ -163,7 +163,7 @@ class HeaderCheckBoxHandler implements TableModelListener {
         TableColumn column = table.getColumnModel().getColumn(vci);
         Object status = column.getHeaderValue();
         TableModel m = table.getModel();
-//         // @see http://http://ateraimemo.com/Swing/TableModelEvent.html
+//         // @see http://ateraimemo.com/Swing/TableModelEvent.html
 //         if (e.getType() == TableModelEvent.DELETE) {
 //             if (m.getRowCount() == 0) {
 //                 column.setHeaderValue(Status.DESELECTED);
