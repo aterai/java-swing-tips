@@ -104,7 +104,7 @@ class CardLayoutTabbedPane extends JPanel {
         //tab.setPreferredSize(new Dimension(200, 24));
         JButton close = new JButton(new AbstractAction("") {
             @Override public void actionPerformed(ActionEvent e) {
-                //@See http://java-swing-tips.googlecode.com/svn/trunk/NewTabButton
+                //@See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
                 System.out.println("close button");
             }
         });
