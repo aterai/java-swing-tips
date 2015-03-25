@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -168,7 +169,7 @@ class TreePopupMenu extends JPopupMenu {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
             path = tree.getPathForLocation(x, y);
-            if (path != null) {
+            if (Objects.nonNull(path)) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                 boolean flag = node.getAllowsChildren();
                 addFolderAction.setEnabled(flag);

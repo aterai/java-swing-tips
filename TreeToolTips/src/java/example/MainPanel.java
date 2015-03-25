@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
             @Override public String getToolTipText(MouseEvent e) {
                 Object o = null;
                 TreePath path = getPathForLocation(e.getX(), e.getY());
-                if (path != null) {
+                if (Objects.nonNull(path)) {
                     o = path.getLastPathComponent();
                 }
                 return Objects.toString(o, "getToolTipText");

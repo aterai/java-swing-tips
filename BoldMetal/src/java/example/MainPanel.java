@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.metal.*;
@@ -145,7 +146,7 @@ class TreePopupMenu extends JPopupMenu {
             //TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y);
             //if (path != null && Arrays.asList(tsp).contains(path)) {
-            if (path != null) {
+            if (Objects.nonNull(path)) {
                 tree.setSelectionPath(path);
                 super.show(c, x, y);
             }

@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.EventObject;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -71,7 +72,7 @@ class TreePopupMenu extends JPopupMenu {
     private final JTextField textField = new JTextField();
     private final Action editAction = new AbstractAction("Edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            if (path != null) {
+            if (Objects.nonNull(path)) {
                 JTree tree = (JTree) getInvoker();
                 tree.startEditingAtPath(path);
             }
