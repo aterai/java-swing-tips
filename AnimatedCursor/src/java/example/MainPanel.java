@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
         button.setPreferredSize(new Dimension(0, 100));
         button.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
                     animator.stop();
                 }
             }

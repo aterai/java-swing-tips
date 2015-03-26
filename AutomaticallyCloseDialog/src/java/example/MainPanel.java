@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
@@ -82,7 +83,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 l.setText(String.format("Closing in %d seconds", i));
                 if (i <= 0) {
                     Window w = SwingUtilities.getWindowAncestor(l);
-                    if (w != null && timer != null && timer.isRunning()) {
+                    if (Objects.nonNull(w) && Objects.nonNull(timer) && timer.isRunning()) {
                         textArea.append("Timer: timer.stop()\n");
                         timer.stop();
                         textArea.append("window.dispose()\n");
@@ -103,7 +104,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 timer.start();
             } else {
                 textArea.append("isShowing=false\n");
-                if (timer != null && timer.isRunning()) {
+                if (Objects.nonNull(timer) && timer.isRunning()) {
                     textArea.append("timer.stop()\n");
                     timer.stop();
                     timer = null;

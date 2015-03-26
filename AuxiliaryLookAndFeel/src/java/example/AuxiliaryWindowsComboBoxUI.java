@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -32,9 +33,9 @@ public class AuxiliaryWindowsComboBoxUI extends com.sun.java.swing.plaf.windows.
     @Override public void addEditor() {
         removeEditor();
         ComboBoxEditor cbe = comboBox.getEditor();
-        if (cbe != null) {
+        if (Objects.nonNull(cbe)) {
             editor = cbe.getEditorComponent();
-            if (editor != null) {
+            if (Objects.nonNull(editor)) {
                 configureEditor();
                 comboBox.add(editor);
                 if (comboBox.isFocusOwner()) {
@@ -88,7 +89,7 @@ class BasicComboPopup2 extends BasicComboPopup {
                 }
                 comboBox.setPopupVisible(false);
                 // workaround for cancelling an edited item (bug 4530953)
-                if (comboBox.isEditable() && comboBox.getEditor() != null) {
+                if (comboBox.isEditable() && Objects.nonNull(comboBox.getEditor())) {
                     comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
                 }
             }

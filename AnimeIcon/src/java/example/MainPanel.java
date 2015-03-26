@@ -7,13 +7,11 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-//import javax.swing.SwingWorker;
-//import org.jdesktop.swingworker.SwingWorker;
+import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
@@ -97,7 +95,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if (worker != null && !worker.isDone()) {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
             worker = null;
@@ -105,7 +103,7 @@ public final class MainPanel extends JPanel {
     }
 
 //     private boolean isCancelled() {
-//         return (worker != null) ? worker.isCancelled() : true;
+//         return Objects.nonNull(worker) ? worker.isCancelled() : true;
 //     }
 
     private void appendLine(String str) {
