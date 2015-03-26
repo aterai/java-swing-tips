@@ -63,7 +63,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         handler2 = null;
     }
     @Override protected MouseListener createListMouseListener() {
-        if (handler2 == null) {
+        if (Objects.isNull(handler2)) {
             handler2 = new Handler2();
         }
         return handler2;
@@ -74,7 +74,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
         @Override public void mousePressed(MouseEvent e) { /* not needed */ }
         @Override public void mouseReleased(MouseEvent e) {
-            if (e.getSource() == list) {
+            if (Objects.equals(e.getSource(), list)) {
                 if (list.getModel().getSize() > 0) {
                     // <ins>
                     if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
