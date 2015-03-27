@@ -138,7 +138,7 @@ public final class MainPanel extends JPanel {
 class ToggleButtonBarCellIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
-        if (parent == null) {
+        if (Objects.isNull(parent)) {
             return;
         }
 
@@ -207,7 +207,7 @@ class EditMenuLayerUI extends LayerUI<JPanel> {
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (shape != null) {
+        if (Objects.nonNull(shape)) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(Color.GRAY);
             g2.draw(shape);

@@ -63,7 +63,7 @@ public class MainPanel extends JPanel {
             }
             @Override public Dimension getMinimumSize() {
                 Dimension d = super.getMinimumSize();
-                if (d != null) {
+                if (Objects.nonNull(d)) {
                     d.width = value;
                     d.height = value;
                 }

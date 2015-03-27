@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -83,15 +84,15 @@ final class BrowserLauncher {
             } else { //assume Unix or Linux
                 String[] browsers = {"firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
                 String browser = null;
-                for (int count = 0; count < browsers.length && browser == null; count++) {
+                for (int count = 0; count < browsers.length && Objects.isNull(browser); count++) {
                     if (Runtime.getRuntime().exec(new String[] {"which", browsers[count]}).waitFor() == 0) {
                         browser = browsers[count];
                     }
                 }
-                if (browser == null) {
-                    throw new UnsupportedOperationException("Could not find web browser");
-                } else {
+                if (Objects.nonNull(browser)) {
                     Runtime.getRuntime().exec(new String[] {browser, url});
+                } else {
+                    throw new UnsupportedOperationException("Could not find web browser");
                 }
             }
         } catch (IOException | InterruptedException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

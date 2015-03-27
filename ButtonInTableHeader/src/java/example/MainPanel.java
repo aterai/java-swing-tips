@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -98,7 +99,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             r.translate(r.width - BUTTON_WIDTH, 0);
             r.setSize(BUTTON_WIDTH, r.height);
             Point pt = e.getPoint();
-            if (c.getComponentCount() > 0 && r.contains(pt) && pop != null) {
+            if (c.getComponentCount() > 0 && r.contains(pt) && Objects.nonNull(pop)) {
                 pop.show(header, r.x, r.height);
                 JButton b = (JButton) c.getComponent(0);
                 b.doClick();
@@ -133,7 +134,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
     @Override public void updateUI() {
         super.updateUI();
-        if (pop == null) {
+        if (Objects.isNull(pop)) {
             pop = new JPopupMenu();
         } else {
             SwingUtilities.updateComponentTreeUI(pop);

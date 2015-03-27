@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
                 @Override public void done() {
                     try {
                         File nf = get();
-                        if (nf == null) {
+                        if (Objects.isNull(nf)) {
                             append(new Message("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
                         } else if (nf.createNewFile()) {
                             append(new Message(nf.getName() + "を生成しました。", MessageType.REGULAR));
@@ -181,7 +182,7 @@ class Task extends SwingWorker<File, Message> {
         }
 
         File tmpFile = renameAndBackup(file, newfilename);
-        if (tmpFile != null) {
+        if (Objects.nonNull(tmpFile)) {
             return tmpFile;
         }
 

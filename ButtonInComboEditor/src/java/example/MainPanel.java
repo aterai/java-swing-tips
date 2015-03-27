@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
@@ -168,7 +168,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
                 break;
             }
         }
-        if (item != null) {
+        if (Objects.nonNull(item)) {
             model.removeElement(item);
             model.insertElementAt(item, 0);
         }
@@ -231,12 +231,12 @@ class ComboBoxLayout implements LayoutManager {
         int loupeWidth; //   = buttonHeight;
 
         JButton arrowButton = (JButton) cb.getComponent(0);
-        if (arrowButton != null) {
+        if (Objects.nonNull(arrowButton)) {
             Insets arrowInsets = arrowButton.getInsets();
             buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
             arrowButton.setBounds(width - insets.right - buttonWidth, insets.top, buttonWidth, buttonHeight);
         }
-        if (label != null) {
+        if (Objects.nonNull(label)) {
             Insets labelInsets = label.getInsets();
             labelWidth = label.getPreferredSize().width + labelInsets.left + labelInsets.right;
             label.setBounds(insets.left, insets.top, labelWidth, buttonHeight);
@@ -248,7 +248,7 @@ class ComboBoxLayout implements LayoutManager {
         //        break;
         //    }
         //}
-        if (rssButton != null && rssButton.isVisible()) {
+        if (Objects.nonNull(rssButton) && rssButton.isVisible()) {
             Insets loupeInsets = rssButton.getInsets();
             loupeWidth = rssButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
             rssButton.setBounds(width - insets.right - loupeWidth - buttonWidth, insets.top, loupeWidth, buttonHeight);
@@ -257,7 +257,7 @@ class ComboBoxLayout implements LayoutManager {
         }
 
         Component editor = cb.getEditor().getEditorComponent();
-        if (editor != null) {
+        if (Objects.nonNull(editor)) {
             editor.setBounds(insets.left + labelWidth, insets.top,
                              width  - insets.left - insets.right - buttonWidth - labelWidth - loupeWidth,
                              height - insets.top  - insets.bottom);

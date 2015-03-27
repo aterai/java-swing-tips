@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override public void valueChanged(TreeSelectionEvent e) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                if (node == null || node.isLeaf()) {
+                if (Objects.isNull(node) || node.isLeaf()) {
                     return;
                 } else {
                     initBreadcrumbList(breadcrumb, tree);
@@ -76,14 +76,14 @@ public final class MainPanel extends JPanel {
         final ToggleButtonBarCellIcon icon = new ToggleButtonBarCellIcon();
         AbstractButton b = new JRadioButton(path.getLastPathComponent().toString()) {
             @Override public boolean contains(int x, int y) {
-                if (icon == null || icon.area == null) {
-                    return super.contains(x, y);
-                } else {
+                if (Objects.nonNull(icon) && Objects.nonNull(icon.area)) {
                     return icon.area.contains(x, y);
+                } else {
+                    return super.contains(x, y);
                 }
             }
         };
-        if (tree != null) {
+        if (Objects.nonNull(tree)) {
             b.addActionListener(new ActionListener() {
                 @Override public void actionPerformed(ActionEvent e) {
                     JRadioButton r = (JRadioButton) e.getSource();
@@ -152,7 +152,7 @@ class ToggleButtonBarCellIcon implements Icon, Serializable {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
-        if (parent == null) {
+        if (Objects.isNull(parent)) {
             return;
         }
         area = getShape(parent, c, x, y);
@@ -187,7 +187,7 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
     private Shape shape;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (shape != null) {
+        if (Objects.nonNull(shape)) {
             Graphics2D g2 = (Graphics2D) g.create();
             //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setPaint(Color.GRAY);

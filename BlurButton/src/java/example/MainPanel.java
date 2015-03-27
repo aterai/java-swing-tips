@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
@@ -116,7 +116,7 @@ class BlurJButton extends JButton {
         if (isEnabled()) {
             super.paintComponent(g);
         } else {
-            if (buf == null || iw != getWidth() || ih != getHeight()) {
+            if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
                 iw = getWidth();
                 ih = getHeight();
                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
@@ -146,7 +146,7 @@ class BlurButton extends JButton {
         if (isEnabled()) {
             super.paintComponent(g);
         } else {
-            if (buf == null || iw != getWidth() || ih != getHeight()) {
+            if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
                 iw = getWidth();
                 ih = getHeight();
                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);

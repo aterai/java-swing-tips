@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
@@ -117,12 +118,12 @@ class EditorComboPopup extends BasicComboPopup {
                 }
             }
         };
-        if (list != null) {
+        if (Objects.nonNull(list)) {
             list.addMouseListener(listener);
         }
     }
     @Override public void uninstallingUI() {
-        if (listener != null) {
+        if (Objects.nonNull(listener)) {
             list.removeMouseListener(listener);
             listener = null;
         }

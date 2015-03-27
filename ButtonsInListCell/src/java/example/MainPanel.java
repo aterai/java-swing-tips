@@ -75,11 +75,11 @@ class CellButtonsMouseListener extends MouseAdapter {
             JButton button = getButton(list, pt, index);
             ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
             renderer.button = button;
-            if (button == null) {
+            if (Objects.isNull(button)) {
                 renderer.rolloverIndex = -1;
                 Rectangle r = null;
                 if (prevIndex == index) {
-                    if (prevIndex >= 0 && prevButton != null) {
+                    if (prevIndex >= 0 && Objects.nonNull(prevButton)) {
                         r = list.getCellBounds(prevIndex, prevIndex);
                     }
                 } else {
@@ -104,7 +104,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         int index = list.locationToIndex(pt);
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
-            if (button != null) {
+            if (Objects.nonNull(button)) {
                 ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
                 renderer.pressedIndex = index;
                 renderer.button = button;
@@ -118,7 +118,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         int index = list.locationToIndex(pt);
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
-            if (button != null) {
+            if (Objects.nonNull(button)) {
                 ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
                 renderer.pressedIndex = -1;
                 renderer.button = null;
@@ -128,7 +128,7 @@ class CellButtonsMouseListener extends MouseAdapter {
         }
     }
     private static void listRepaint(JList list, Rectangle rect) {
-        if (rect != null) {
+        if (Objects.nonNull(rect)) {
             list.repaint(rect);
         }
     }
@@ -197,7 +197,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
             label.setForeground(list.getForeground());
         }
         resetButtonStatus();
-        if (button != null) {
+        if (Objects.nonNull(button)) {
             if (index == pressedIndex) {
                 button.getModel().setSelected(true);
                 button.getModel().setArmed(true);
