@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
                 Component invoker = c.getParent();
                 window = SwingUtilities.getWindowAncestor(invoker);
             }
-            if (window != null) {
+            if (Objects.nonNull(window)) {
                 //window.dispose();
                 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             }

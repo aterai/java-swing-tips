@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -73,7 +74,7 @@ class MyEditorKit extends StyledEditorKit {
 class MyViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if (kind != null) {
+        if (Objects.nonNull(kind)) {
             if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new WhitespaceLabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
@@ -102,7 +103,7 @@ class MyParagraphView extends ParagraphView {
     private void paintCustomParagraph(Graphics g, Shape a) {
         try {
             Shape paragraph = modelToView(getEndOffset(), a, Position.Bias.Backward);
-            Rectangle r = (paragraph == null) ? a.getBounds() : paragraph.getBounds();
+            Rectangle r = Objects.nonNull(paragraph) ? paragraph.getBounds() : a.getBounds();
             int x = r.x;
             int y = r.y;
             int h = r.height;

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.io.*;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -26,7 +27,7 @@ public final class MainPanel extends JPanel {
         removeMouseMotionListener(zoomAndPanHandler);
         removeMouseWheelListener(zoomAndPanHandler);
         super.updateUI();
-        if (zoomAndPanHandler == null) {
+        if (Objects.isNull(zoomAndPanHandler)) {
             zoomAndPanHandler = new ZoomAndPanHandler();
         }
         addMouseListener(zoomAndPanHandler);

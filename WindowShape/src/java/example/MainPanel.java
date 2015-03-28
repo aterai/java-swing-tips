@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -18,7 +19,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             AbstractButton button = (AbstractButton) e.getSource();
             Window parent = SwingUtilities.getWindowAncestor(button);
-            if (frame == null) {
+            if (Objects.isNull(frame)) {
                 frame = new JFrame();
                 frame.setUndecorated(true);
                 frame.setAlwaysOnTop(true);
@@ -94,7 +95,7 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if (window == null) {
+        if (Objects.isNull(window)) {
             Object o = me.getSource();
             if (o instanceof Window) {
                 window = (Window) o;
@@ -105,7 +106,7 @@ class DragWindowListener extends MouseAdapter {
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

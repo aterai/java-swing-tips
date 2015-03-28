@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -61,7 +62,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void paintComponent(Graphics g) {
-        if (texture != null) {
+        if (Objects.nonNull(texture)) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(texture);
             g2.fillRect(0, 0, getWidth(), getHeight());

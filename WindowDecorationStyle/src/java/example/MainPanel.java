@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -132,7 +133,7 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if (window == null) {
+        if (Objects.isNull(window)) {
             Object o = me.getSource();
             if (o instanceof Window) {
                 window = (Window) o;
@@ -143,7 +144,7 @@ class DragWindowListener extends MouseAdapter {
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             Point pt = new Point();
             pt = window.getLocation(pt);
             int x = pt.x - startPt.x + me.getX();
@@ -162,7 +163,7 @@ class DraggableInternalFrame extends JInternalFrame {
                 String prop = e.getPropertyName();
                 if ("activeWindow".equals(prop)) {
                     try {
-                        setSelected(e.getNewValue() != null);
+                        setSelected(Objects.nonNull(e.getNewValue()));
                     } catch (PropertyVetoException ex) {
                         ex.printStackTrace();
                     }

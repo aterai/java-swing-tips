@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -77,7 +78,7 @@ class MyParagraphView extends ParagraphView {
     private void paintCustomParagraph(Graphics g, Shape a) {
         try {
             Shape paragraph = modelToView(getEndOffset(), a, Position.Bias.Backward);
-            Rectangle r = (paragraph == null) ? a.getBounds() : paragraph.getBounds();
+            Rectangle r = Objects.nonNull(paragraph) ? paragraph.getBounds() : a.getBounds();
             int x = r.x;
             int y = r.y;
             int h = r.height;

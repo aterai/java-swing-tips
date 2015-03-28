@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(button, BorderLayout.SOUTH);
         add(new JScrollPane(new JTree()));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {
@@ -93,13 +94,13 @@ class LockingGlassPane extends JComponent {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
         JRootPane rootPane = getRootPane();
-        if (rootPane != null && isVisible() != oldVisible) {
+        if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
     @Override public void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
-        if (rootPane != null) {
+        if (Objects.nonNull(rootPane)) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
             // it is important to call print() instead of paint() here
             // because print() doesn't affect the frame's double buffer
