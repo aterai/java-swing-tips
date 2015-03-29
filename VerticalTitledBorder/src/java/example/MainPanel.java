@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -62,7 +63,7 @@ class VerticalTitledBorder extends TitledBorder {
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Border border = getBorder();
         String title = getTitle();
-        if (title == null || title.isEmpty() || border == null) {
+        if (Objects.isNull(title) || title.isEmpty() || Objects.isNull(border)) {
             super.paintBorder(c, g, x, y, width, height);
         } else {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
@@ -101,7 +102,7 @@ class VerticalTitledBorder extends TitledBorder {
         Border border = getBorder();
         Insets ins = getBorderInsets(border, c, insets);
         String title = getTitle();
-        if (title != null && !title.isEmpty()) {
+        if (Objects.nonNull(title) && !title.isEmpty()) {
             int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
             JLabel label = getLabel(c);
             Dimension size = label.getPreferredSize();
@@ -119,14 +120,14 @@ class VerticalTitledBorder extends TitledBorder {
     //Copied from TitledBorder
     private Color getColor(Component c) {
         Color color = getTitleColor();
-        if (color != null) {
+        if (Objects.nonNull(color)) {
             return color;
         }
         color = UIManager.getColor("TitledBorder.titleColor");
-        if (color != null) {
+        if (Objects.nonNull(color)) {
             return color;
         }
-        return c == null ? null : c.getForeground();
+        return Objects.nonNull(c) ? c.getForeground() : null;
     }
     private JLabel getLabel(Component c) {
         this.label.setText(getTitle());
@@ -139,7 +140,7 @@ class VerticalTitledBorder extends TitledBorder {
     }
     private static Insets getBorderInsets(Border border, Component c, Insets i) {
         Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
-        if (border == null) {
+        if (Objects.isNull(border)) {
             ins.set(0, 0, 0, 0);
         } else if (border instanceof AbstractBorder) {
             AbstractBorder ab = (AbstractBorder) border;

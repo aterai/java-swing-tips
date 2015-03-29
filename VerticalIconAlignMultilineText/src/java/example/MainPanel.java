@@ -80,9 +80,9 @@ final class HtmlViewUtil {
     private HtmlViewUtil() { /* Singleton */ }
     public static int getFirstLineCenterY(String text, AbstractButton c, Rectangle iconRect) {
         int y = 0;
-        if (text != null && c.getVerticalTextPosition() == SwingConstants.TOP) {
+        if (Objects.nonNull(text) && c.getVerticalTextPosition() == SwingConstants.TOP) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-            if (v != null) {
+            if (Objects.nonNull(v)) {
                 try {
                     Element e = v.getElement().getElement(0);
                     Shape s = new Rectangle();
@@ -128,7 +128,7 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
-            b.getText() == null ? 0 : b.getIconTextGap());
+            Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
 //         // fill background
 //         if (c.isOpaque()) {
@@ -141,12 +141,12 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
         getDefaultIcon().paintIcon(c, g, iconRect.x, iconRect.y + y);
 
         // Draw the Text
-        if (text != null) {
+        if (Objects.nonNull(text)) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-            if (v == null) {
-                paintText(g, b, textRect, text);
-            } else {
+            if (Objects.nonNull(v)) {
                 v.paint(g, textRect);
+            } else {
+                paintText(g, b, textRect, text);
             }
             if (b.hasFocus() && b.isFocusPainted()) {
                 paintFocus(g, textRect, size);
@@ -189,7 +189,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
-            b.getText() == null ? 0 : b.getIconTextGap());
+            Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
 //         // fill background
 //         if (c.isOpaque()) {
@@ -204,10 +204,10 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
         // Draw the Text
         if (text != null) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-            if (v == null) {
-                paintText(g, b, textRect, text);
-            } else {
+            if (Objects.nonNull(v)) {
                 v.paint(g, textRect);
+            } else {
+                paintText(g, b, textRect, text);
             }
             if (b.hasFocus() && b.isFocusPainted()) {
                 paintFocus(g, textRect, size);
