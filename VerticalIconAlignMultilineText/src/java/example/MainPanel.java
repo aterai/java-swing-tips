@@ -202,7 +202,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
         getDefaultIcon().paintIcon(c, g, iconRect.x, iconRect.y + y);
 
         // Draw the Text
-        if (text != null) {
+        if (Objects.nonNull(text)) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
             if (Objects.nonNull(v)) {
                 v.paint(g, textRect);

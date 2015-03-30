@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
                 //System.out.println(prop);
                 if ("activeWindow".equals(prop)) {
                     try {
-                        internal.setSelected(e.getNewValue() != null);
+                        internal.setSelected(Objects.nonNull(e.getNewValue()));
                     } catch (PropertyVetoException ex) {
                         ex.printStackTrace();
                     }
@@ -114,7 +115,7 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if (window == null) {
+        if (Objects.isNull(window)) {
             Object o = me.getSource();
             if (o instanceof Window) {
                 window = (Window) o;
@@ -125,7 +126,7 @@ class DragWindowListener extends MouseAdapter {
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

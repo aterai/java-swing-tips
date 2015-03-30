@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -68,10 +69,10 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 Insets i = splitPane.getInsets();
                 if (splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT) {
-                    int v = i == null ? 0 : i.bottom;
+                    int v = Objects.nonNull(i) ? i.bottom : 0;
                     splitPane.setDividerLocation(splitPane.getHeight() - v);
                 } else {
-                    int v = i == null ? 0 : i.right;
+                    int v = Objects.nonNull(i) ? i.right : 0;
                     splitPane.setDividerLocation(splitPane.getWidth() - v);
                 }
 //                 int lastLoc    = splitPane.getLastDividerLocation();
@@ -114,9 +115,9 @@ public final class MainPanel extends JPanel {
         for (Component c: divider.getComponents()) {
             if (c instanceof JButton) {
                 ButtonModel m = ((JButton) c).getModel();
-                if (selectMinModel == null && selectMaxModel == null) {
+                if (Objects.isNull(selectMinModel) && Objects.isNull(selectMaxModel)) {
                     selectMinModel = m;
-                } else if (selectMaxModel == null) {
+                } else if (Objects.isNull(selectMaxModel)) {
                     selectMaxModel = m;
                 }
             }

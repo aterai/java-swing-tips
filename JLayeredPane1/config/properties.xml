@@ -3,9 +3,9 @@
 <!-- project -->
 <property name="Name"    value="Example" />
 <property name="name"    value="example" />
-<property name="vendor"  value="Java Swing Tips - http://ateraimemo.com/" />
+<property name="vendor"  value="Taka - http://ateraimemo.com/Taka.html" />
 <property name="version" value="1.0.0" />
-<property name="year"    value="2003-2014" />
+<property name="year"    value="2005" />
 
 <!-- class -->
 <property name="main.class"        value="example.MainPanel" />
@@ -17,7 +17,7 @@
 <property name="compile.nowarn"      value="off" />
 <property name="compile.deprecation" value="on" />
 <property name="compile.verbose"     value="off" />
-<property name="compile.source"      value="1.7" />
+<property name="compile.source"      value="1.8" />
 <property name="compile.encoding"    value="UTF-8" />
 
 <!-- javadoc -->
@@ -25,7 +25,7 @@
 <property name="javadoc.docencoding" value="UTF-8" />
 <property name="javadoc.pkgs"        value="*" />
 <property name="javadoc.locale"      value="ja" />
-<property name="javadoc.link"        value="http://docs.oracle.com/javase/jp/8/api/" />
+<property name="javadoc.link"        value="https://docs.oracle.com/javase/jp/8/docs/api/" />
 
 <!-- signjar -->
 <property name="signjar.keystore" value="myKeyStore" />

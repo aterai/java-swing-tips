@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -110,7 +111,7 @@ class DragMouseListener extends MouseAdapter {
         parent.moveToFront(panel);
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if (origin == null) {
+        if (Objects.isNull(origin)) {
             return;
         }
         JComponent panel = (JComponent) e.getComponent();
@@ -134,9 +135,9 @@ class BGImageLayeredPane extends JLayeredPane {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (bgImage != null) {
-            int imageh = bgImage.getHeight(null);
-            int imagew = bgImage.getWidth(null);
+        if (Objects.nonNull(bgImage)) {
+            int imageh = bgImage.getHeight(this);
+            int imagew = bgImage.getWidth(this);
             Dimension d = getSize();
             for (int h = 0; h < d.getHeight(); h += imageh) {
                 for (int w = 0; w < d.getWidth(); w += imagew) {

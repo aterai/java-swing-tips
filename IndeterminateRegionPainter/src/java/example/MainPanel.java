@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.*;
@@ -74,7 +75,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Test start") {
             @Override public void actionPerformed(ActionEvent e) {
-                if (worker != null && !worker.isDone()) {
+                if (Objects.nonNull(worker) && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 progressBar0.setIndeterminate(true);
@@ -94,7 +95,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && worker != null) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;

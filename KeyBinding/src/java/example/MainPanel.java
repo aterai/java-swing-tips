@@ -4,9 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.util.ArrayList;
-import java.util.Arrays;
-//import java.util.Hashtable;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -71,7 +69,7 @@ public final class MainPanel extends JPanel {
 //         return h;
 //     }
     private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
-        if (im.allKeys() == null) {
+        if (Objects.isNull(im.allKeys())) {
             return;
         }
         ActionMap tmpAm = new ActionMap();
@@ -81,14 +79,14 @@ public final class MainPanel extends JPanel {
         for (KeyStroke ks: im.allKeys()) {
             Object actionMapKey = im.get(ks);
             Action action = am.get(actionMapKey);
-            if (action == null) {
+            if (Objects.isNull(action)) {
                 model.addBinding(new Binding(focusType, "____" + actionMapKey.toString(), ks.toString()));
             } else {
                 model.addBinding(new Binding(focusType, actionMapKey.toString(), ks.toString()));
             }
             tmpAm.remove(actionMapKey);
         }
-        if (tmpAm.allKeys() == null) {
+        if (Objects.isNull(tmpAm.allKeys())) {
             return;
         }
         for (Object actionMapKey: tmpAm.allKeys()) {

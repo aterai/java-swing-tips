@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -104,7 +105,7 @@ class JustifiedLabel extends JLabel {
             gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
             prevWidth = w;
         }
-        if (gvtext == null) {
+        if (Objects.isNull(gvtext)) {
             super.paintComponent(g);
         } else {
             g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());

@@ -236,7 +236,7 @@ class TableRowTransferHandler extends TransferHandler {
 
             JInternalFrame sf = getInternalFrame(source);
             JInternalFrame tf = getInternalFrame(target);
-            if (sf == null || tf == null || dp.getIndexOf(tf) < dp.getIndexOf(sf)) {
+            if (Objects.isNull(sf) || Objects.isNull(tf) || dp.getIndexOf(tf) < dp.getIndexOf(sf)) {
                 return false;
             }
 
@@ -297,7 +297,7 @@ class TableRowTransferHandler extends TransferHandler {
         cleanup(c, action == MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
-        if (remove && indices != null) {
+        if (remove && Objects.nonNull(indices)) {
             c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
             if (addCount > 0) {
