@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeUI() {
-        final JProgressBar progressBar = new JProgressBar();
+        final JProgressBar progressBar = new JProgressBar(SwingConstants.VERTICAL);
         progressBar.setOpaque(false);
         progressBar.setUI(new GradientPalletProgressBarUI());
 
@@ -128,7 +128,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         Graphics2D g2  = image.createGraphics();
         Point2D start  = new Point2D.Float(0f, 0f);
         Point2D end    = new Point2D.Float(99f, 0f);
-        float[] dist   = {.0f, .5f, 1f};
+        float[] dist   = {0f, .5f, 1f};
         Color[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
         g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
         g2.fillRect(0, 0, 100, 1);
@@ -168,16 +168,15 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         // amount of progress to draw
         int amountFull = getAmountFull(b, barRectWidth, barRectHeight);
 
-        if (progressBar.getOrientation() == JProgressBar.HORIZONTAL) {
-            // draw the cells
+        // draw the cells
+        if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {
             float x = amountFull / (float) barRectWidth;
             g.setColor(getColorFromPallet(pallet, x));
             g.fillRect(b.left, b.top, amountFull, barRectHeight);
-
         } else { // VERTICAL
-            //XXX
-            super.paintDeterminate(g, c);
-            return;
+            float y = amountFull / (float) barRectHeight;
+            g.setColor(getColorFromPallet(pallet, y));
+            g.fillRect(b.left, barRectHeight + b.bottom - amountFull, barRectWidth, amountFull);
         }
         // Deal with possible text painting
         if (progressBar.isStringPainted()) {
