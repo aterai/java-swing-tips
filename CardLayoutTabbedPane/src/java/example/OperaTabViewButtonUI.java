@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -67,7 +68,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
             b.getVerticalAlignment(), b.getHorizontalAlignment(),
             b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
             viewRect, iconRect, textRect,
-            b.getText() == null ? 0 : b.getIconTextGap());
+            Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
         if (v == null) {

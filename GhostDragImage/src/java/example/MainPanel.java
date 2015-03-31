@@ -184,7 +184,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
             if (getDragEnabled()) {
                 return;
             }
-            if (srcPoint == null) {
+            if (Objects.isNull(srcPoint)) {
                 srcPoint = e.getPoint();
             }
             Point destPoint = e.getPoint();
@@ -240,7 +240,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (srcPoint == null || getDragEnabled()) {
+        if (Objects.isNull(srcPoint) || getDragEnabled()) {
             return;
         }
         Graphics2D g2d = (Graphics2D) g.create();
@@ -317,7 +317,7 @@ class ListItemTransferHandler extends TransferHandler {
             setDragImage(createDragImage(source));
             pt = c.getMousePosition();
         }
-        if (pt != null) {
+        if (Objects.nonNull(pt)) {
             setDragImageOffset(pt);
         }
         return MOVE; //TransferHandler.COPY_OR_MOVE;
@@ -398,7 +398,7 @@ class ListItemTransferHandler extends TransferHandler {
         cleanup(c, action == MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
-        if (remove && indices != null) {
+        if (remove && Objects.nonNull(indices)) {
             //If we are moving items around in the same list, we
             //need to adjust the indices accordingly, since those
             //after the insertion point have moved.

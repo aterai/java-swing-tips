@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import java.text.*;
 import javax.swing.*;
 
@@ -105,14 +106,14 @@ class WrappedLabel extends JLabel {
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
-        if (gvtext == null) {
-            super.paintComponent(g);
-        } else {
+        if (Objects.nonNull(gvtext)) {
             Insets i = getInsets();
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(Color.RED);
             g2.drawGlyphVector(gvtext, i.left, getFont().getSize() + i.top);
             g2.dispose();
+        } else {
+            super.paintComponent(g);
         }
     }
     private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {

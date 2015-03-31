@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -90,7 +91,7 @@ class ScrollAction extends AbstractAction {
         this.vec = vec;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if (scroller != null && scroller.isRunning()) {
+        if (Objects.nonNull(scroller) && scroller.isRunning()) {
             return;
         }
         final JViewport vport = scrollPane.getViewport();
