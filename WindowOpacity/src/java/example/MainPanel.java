@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
         //if (System.getProperty("java.version").startsWith("1.6.0")) {
         //    com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
         //} else {
-            frame.setBackground(new Color(0, 0, 0, 0)); //1.7.0
+            frame.setBackground(new Color(0x0, true)); //1.7.0
         //}
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());

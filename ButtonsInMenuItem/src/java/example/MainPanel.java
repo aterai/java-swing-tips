@@ -174,7 +174,7 @@ class ToggleButtonBarCellIcon implements Icon {
         }
         p.closePath();
         Area area = new Area(p);
-        Color color = new Color(0, true);
+        Color color = new Color(0x0, true);
         Color borderColor = Color.GRAY.brighter();
         if (c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton) c).getModel();

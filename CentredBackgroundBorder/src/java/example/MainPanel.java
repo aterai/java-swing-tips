@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JTextArea area = new JTextArea();
         //area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 32));
         area.setForeground(Color.WHITE);
-        area.setBackground(new Color(0, 0, 0, 0)); //Nimbus
+        area.setBackground(new Color(0x0, true)); //Nimbus
         area.setLineWrap(true);
         area.setOpaque(false);
         area.setText("  public static void createAndShowGUI() {\n"

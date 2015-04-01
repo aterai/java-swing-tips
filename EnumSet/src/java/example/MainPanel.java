@@ -117,7 +117,7 @@ class CheckBoxesPanel extends JPanel {
     public CheckBoxesPanel() {
         super();
         setOpaque(false);
-        setBackground(new Color(0, 0, 0, 0));
+        setBackground(new Color(0x0, true));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
     }
@@ -128,7 +128,7 @@ class CheckBoxesPanel extends JPanel {
             b.setOpaque(false);
             b.setFocusable(false);
             b.setRolloverEnabled(false);
-            b.setBackground(new Color(0, 0, 0, 0));
+            b.setBackground(new Color(0x0, true));
             buttons[i] = b;
             add(b);
             add(Box.createHorizontalStrut(5));

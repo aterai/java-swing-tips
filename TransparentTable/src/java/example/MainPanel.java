@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        final Color alphaZero = new Color(0, true);
+        final Color alphaZero = new Color(0x0, true);
         table.setOpaque(false);
         table.setBackground(alphaZero);
         scroll.getViewport().setOpaque(false);

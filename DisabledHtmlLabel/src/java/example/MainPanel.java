@@ -104,7 +104,7 @@ class DisabledHtmlLabel extends JLabel {
         if (!b) {
             BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = source.createGraphics();
-            g2.setPaint(new Color(0, true));
+            g2.setPaint(new Color(0x0, true));
             g2.fillRect(0, 0, getWidth(), getHeight());
             //print(g2);
             paint(g2);

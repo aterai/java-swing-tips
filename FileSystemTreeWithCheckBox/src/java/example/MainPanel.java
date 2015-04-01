@@ -241,7 +241,7 @@ class FileTreeCellRenderer extends TriStateCheckBox implements TreeCellRenderer 
         String uiName = getUI().getClass().getName();
         if (uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
             System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
-            renderer.setBackgroundSelectionColor(new Color(0, 0, 0, 0));
+            renderer.setBackgroundSelectionColor(new Color(0x0, true));
         }
         this.fileSystemView = fileSystemView;
         panel.setFocusable(false);

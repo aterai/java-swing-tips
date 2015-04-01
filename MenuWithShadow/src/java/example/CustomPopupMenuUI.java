@@ -56,7 +56,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
             @Override public void run() {
                 Window p = SwingUtilities.getWindowAncestor(popup);
                 if (p instanceof JWindow) {
-                    p.setBackground(new Color(0, true)); //JDK 1.7.0
+                    p.setBackground(new Color(0x0, true)); //JDK 1.7.0
                 }
             }
         });

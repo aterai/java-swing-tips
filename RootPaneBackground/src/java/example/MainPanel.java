@@ -225,7 +225,7 @@ class TranslucentPopupMenu extends JPopupMenu {
         menuItem.setOpaque(false);
         return super.add(menuItem);
     }
-//     private static final Color ALPHA_ZERO = new Color(0, true);
+//     private static final Color ALPHA_ZERO = new Color(0x0, true);
 //     @Override public void show(Component c, int x, int y) {
 //         EventQueue.invokeLater(new Runnable() {
 //             @Override public void run() {
@@ -336,7 +336,7 @@ class TranslucentPopup extends Popup {
         //com.sun.awt.AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
         //popupWindow.setOpacity(.5f);
         //com.sun.awt.AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
-        popupWindow.setBackground(new Color(0, true)); //Java 1.7.0
+        popupWindow.setBackground(new Color(0x0, true)); //Java 1.7.0
         // determine the popup location
         popupWindow.setLocation(ownerX, ownerY);
         // add the contents to the popup

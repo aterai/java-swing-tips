@@ -117,7 +117,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
         isSynth = getUI().getClass().getName().contains("Synth");
         if (isSynth) {
             //System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
-            setBackgroundSelectionColor(new Color(0, true));
+            setBackgroundSelectionColor(new Color(0x0, true));
         }
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -181,7 +181,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
         isSynth = getUI().getClass().getName().contains("Synth");
         if (isSynth) {
             //System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
-            setBackgroundSelectionColor(new Color(0, true));
+            setBackgroundSelectionColor(new Color(0x0, true));
         }
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {

@@ -72,7 +72,7 @@ class HighlightCursorTextArea extends JTextArea {
         removeMouseListener(rolloverHandler);
         super.updateUI();
         setOpaque(false);
-        setBackground(new Color(0, true)); // Nimbus
+        setBackground(new Color(0x0, true)); // Nimbus
         rolloverHandler = new RollOverListener();
         addMouseMotionListener(rolloverHandler);
         addMouseListener(rolloverHandler);

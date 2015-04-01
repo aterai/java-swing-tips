@@ -139,7 +139,7 @@ final class TextureFactory {
 }
 
 // class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
-//     private static final Color ERASER = new Color(0, 0, 0, 0);
+//     private static final Color ERASER = new Color(0x0, true);
 //     private boolean isPen = true;
 //     private Point startPoint = new Point(-10, -10);
 //     private BufferedImage currentImage = null;

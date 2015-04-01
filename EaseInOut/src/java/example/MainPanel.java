@@ -68,7 +68,7 @@ class ImageCaptionLabel extends JLabel {
         textArea.setOpaque(false);
         textArea.setEditable(false);
         //textArea.setFocusable(false);
-        textArea.setBackground(new Color(0, true));
+        textArea.setBackground(new Color(0x0, true));
         textArea.setForeground(Color.WHITE);
         textArea.setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
         textArea.addMouseListener(new MouseAdapter() {

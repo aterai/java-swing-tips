@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
                     digitalClock.setUndecorated(true);
                     //digitalClock.setAlwaysOnTop(true);
                     //com.sun.awt.AWTUtilities.setWindowOpaque(digitalClock, false); //JDK 1.6.0
-                    digitalClock.setBackground(new Color(0, 0, 0, 0)); //JDK 1.7.0
+                    digitalClock.setBackground(new Color(0x0, true)); //JDK 1.7.0
                     digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                     digitalClock.getContentPane().add(tp);
                     digitalClock.pack();
@@ -198,7 +198,7 @@ final class TextureUtil {
         //Digital display font: Copyright (c) Yourname, Inc.
         Font font = makeFont(url);
         label.setFont(font.deriveFont(80f));
-        label.setBackground(new Color(0, 0, 0, 0));
+        label.setBackground(new Color(0x0, true));
         label.setOpaque(false);
         TexturePanel p = new TexturePanel(new BorderLayout(8, 8));
         p.add(label);

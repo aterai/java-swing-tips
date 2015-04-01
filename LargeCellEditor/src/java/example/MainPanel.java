@@ -217,7 +217,7 @@ class EditorFromList extends JList<MyIcon> {
         setPreferredSize(new Dimension(iw * 3 + INS, ih * 3 + INS));
         setCellRenderer(new ListCellRenderer<MyIcon>() {
             private final JLabel label = new JLabel();
-            private final Color selctedColor = new Color(200, 200, 255);
+            private final Color selctedColor = new Color(0xC8C8FF);
             @Override public Component getListCellRendererComponent(JList list, MyIcon value, int index, boolean isSelected, boolean cellHasFocus) {
                 label.setOpaque(true);
                 label.setHorizontalAlignment(JLabel.CENTER);

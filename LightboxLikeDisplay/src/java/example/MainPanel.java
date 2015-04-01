@@ -199,7 +199,7 @@ class AnimeIcon implements Icon, Serializable {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setPaint(new Color(0, true));
+        g2d.setPaint(new Color(0x0, true));
         g2d.fillRect(x, y, getIconWidth(), getIconHeight());
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(ELLIPSE_COLOR);

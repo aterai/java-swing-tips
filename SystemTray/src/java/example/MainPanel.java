@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
 //         BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 //         ImageIcon i = new ImageIcon(getClass().getResource("16x16.png"));
 //         Graphics2D g = image.createGraphics();
-//         g.setBackground(new Color(0, 0, 0, 0));
+//         g.setBackground(new Color(0x0, true));
 //         g.clearRect(0, 0, d.width, d.height);
 //         i.paintIcon(null, g, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
 //         g.dispose();

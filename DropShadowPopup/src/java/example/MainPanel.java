@@ -185,7 +185,7 @@ class ShadowBorder extends AbstractBorder {
     }
 }
 /*/
-//JDK 1.7.0: JPopupMenu#setBackground(new Color(0, true));
+//JDK 1.7.0: JPopupMenu#setBackground(new Color(0x0, true));
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
     private transient BufferedImage shadow;
@@ -231,7 +231,7 @@ class DropShadowPopupMenu extends JPopupMenu {
             @Override public void run() {
                 Window pop = SwingUtilities.getWindowAncestor(DropShadowPopupMenu.this);
                 if (pop instanceof JWindow) {
-                    pop.setBackground(new Color(0, true)); //JDK 1.7.0
+                    pop.setBackground(new Color(0x0, true)); //JDK 1.7.0
                 }
             }
         });

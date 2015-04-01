@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         //System.out.println(System.getProperty("os.name"));
         //System.out.println(System.getProperty("os.version"));
         if ("Windows XP".equals(System.getProperty("os.name"))) {
-            menu.setBackground(new Color(0, 0, 0, 0)); //XXX Windows XP lnf?
+            menu.setBackground(new Color(0x0, true)); //XXX Windows XP lnf?
         }
         menu.add("dummy1"); menu.add("dummy2"); menu.add("dummy3");
         return menu;

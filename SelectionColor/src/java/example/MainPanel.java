@@ -18,7 +18,7 @@ import javax.swing.text.html.*;
 public final class MainPanel extends JPanel {
     private static final String PATTERN = "[Ff]rame";
     private static final Color SELECTION_COLOR = new Color(0xC86464FF, true);
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 255, 50, 100));
+    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(0x64FFFF32, true));
     private final JEditorPane area = new JEditorPane();
     //private final JTextArea area = new JTextArea();
 
@@ -45,9 +45,9 @@ public final class MainPanel extends JPanel {
         area.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         area.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         area.setOpaque(false);
-        area.setForeground(new Color(200, 200, 200));
+        area.setForeground(new Color(0xC8C8C8));
         area.setSelectedTextColor(Color.WHITE);
-        area.setBackground(new Color(0, true)); //Nimbus
+        area.setBackground(new Color(0x0, true)); //Nimbus
         area.setSelectionColor(SELECTION_COLOR);
         area.setText("<html><pre>"
           + "public static void createAndShowGUI() {<br />"

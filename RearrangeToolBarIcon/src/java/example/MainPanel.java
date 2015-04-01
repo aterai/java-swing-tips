@@ -68,7 +68,7 @@ class DragHandler extends MouseAdapter {
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
     public DragHandler() {
         super();
-        window.setBackground(new Color(0, true));
+        window.setBackground(new Color(0x0, true));
     }
     @Override public void mousePressed(MouseEvent e) {
         JComponent parent = (JComponent) e.getComponent();

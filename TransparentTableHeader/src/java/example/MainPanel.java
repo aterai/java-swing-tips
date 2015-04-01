@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        final Color alphaZero = new Color(0, true);
+        final Color alphaZero = new Color(0x0, true);
         table.setOpaque(false);
         table.setBackground(alphaZero);
         //table.setGridColor(alphaZero);
@@ -151,7 +151,7 @@ public final class MainPanel extends JPanel {
 class TransparentHeader extends JLabel implements TableCellRenderer {
     private final Border b = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
                                                                 BorderFactory.createEmptyBorder(2, 2, 1, 2));
-    private final Color alphaZero = new Color(0, true);
+    private final Color alphaZero = new Color(0x0, true);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setText(Objects.toString(value, ""));
         this.setHorizontalAlignment(JLabel.CENTER);
