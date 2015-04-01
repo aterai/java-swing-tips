@@ -81,7 +81,7 @@ class TriStateCheckBox extends JCheckBox {
         super.updateUI();
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                if (currentIcon != null) {
+                if (Objects.nonNull(currentIcon)) {
                     setIcon(new IndeterminateIcon());
                 }
                 setOpaque(false);
@@ -145,17 +145,17 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
 
         DefaultMutableTreeNode node;
         CheckBoxNode c; // = (CheckBoxNode) node.getUserObject();
-        if (children != null && children.length == 1) {
+        if (Objects.nonNull(children) && children.length == 1) {
             node = (DefaultMutableTreeNode) children[0];
             c = (CheckBoxNode) node.getUserObject();
             DefaultMutableTreeNode n = (DefaultMutableTreeNode) parent.getLastPathComponent();
-            while (n != null) {
+            while (Objects.nonNull(n)) {
                 updateParentUserObject(n);
                 DefaultMutableTreeNode tmp = (DefaultMutableTreeNode) n.getParent();
-                if (tmp == null) {
-                    break;
-                } else {
+                if (Objects.nonNull(tmp)) {
                     n = tmp;
+                } else {
+                    break;
                 }
             }
             model.nodeChanged(n);
@@ -252,7 +252,7 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
     }
     @Override public void updateUI() {
         super.updateUI();
-        if (panel != null) {
+        if (Objects.nonNull(panel)) {
             //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
             panel.updateUI();
             //panel.add(this, BorderLayout.WEST);
@@ -318,13 +318,13 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             JTree tree = (JTree) e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if (r == null) {
+            if (Objects.isNull(r)) {
                 return false;
             }
             Dimension d = getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if (r.contains(me.getX(), me.getY())) {
-                if (str == null && System.getProperty("java.version").startsWith("1.7.0")) {
+                if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
                     System.out.println("XXX: Java 7, only on first run\n" + getBounds());
                     setBounds(new Rectangle(0, 0, d.width, r.height));
                 }
@@ -337,7 +337,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
     @Override public void updateUI() {
         super.updateUI();
         setName("Tree.cellEditor");
-        if (panel != null) {
+        if (Objects.nonNull(panel)) {
             //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
             panel.updateUI();
             //panel.add(this, BorderLayout.WEST);
@@ -378,7 +378,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -393,7 +393,7 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
@@ -444,7 +444,7 @@ class CheckBoxNodeRenderer extends JPanel implements TreeCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if (check != null) {
+        if (Objects.nonNull(check)) {
             //removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
             check.updateUI();
             //add(check, BorderLayout.WEST);
@@ -509,11 +509,11 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
             JTree tree = (JTree) e.getSource();
             TreePath path = tree.getPathForLocation(me.getX(), me.getY());
             Rectangle r = tree.getPathBounds(path);
-            if (r == null) { return false; }
+            if (Objects.isNull(r)) { return false; }
             Dimension d = check.getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if (r.contains(me.getX(), me.getY())) {
-                if (str == null && System.getProperty("java.version").startsWith("1.7.0")) {
+                if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
                     System.out.println("XXX: Java 7, only on first run\n" + getBounds());
                     check.setBounds(new Rectangle(0, 0, d.width, r.height));
                 }
@@ -526,7 +526,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
     @Override public void updateUI() {
         super.updateUI();
         setName("Tree.cellEditor");
-        if (check != null) {
+        if (Objects.nonNull(check)) {
             //removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
             check.updateUI();
             //add(check, BorderLayout.WEST);
@@ -567,7 +567,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -582,7 +582,7 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);

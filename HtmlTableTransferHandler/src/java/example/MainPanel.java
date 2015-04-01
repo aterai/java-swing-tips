@@ -192,7 +192,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -207,7 +207,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
@@ -339,8 +339,8 @@ class HtmlTableTransferHandler extends TransferHandler {
                 }
             }
 
-            //if (rows == null || cols == null || rows.length == 0 || cols.length == 0) {
-            if (cols == null || rows.length == 0 || cols.length == 0) {
+            //if (Objects.isNull(rows) || Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
+            if (Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
                 return null;
             }
 
@@ -428,7 +428,7 @@ class BasicTransferable implements Transferable {
      */
     public DataFlavor[] getTransferDataFlavors() {
         DataFlavor[] richerFlavors = getRicherFlavors();
-        int nRicher = richerFlavors.length; //(richerFlavors != null) ? richerFlavors.length : 0;
+        int nRicher = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
         int nHTML = isHTMLSupported() ? htmlFlavors.length : 0;
         int nPlain = isPlainSupported() ? plainFlavors.length : 0;
         int nString = isPlainSupported() ? stringFlavors.length : 0;
@@ -490,7 +490,7 @@ class BasicTransferable implements Transferable {
             return getRicherData(flavor);
         } else if (isHTMLFlavor(flavor)) {
             //String data = getHTMLData();
-            //data = (data == null) ? "" : data;
+            //data = Objects.nonNull(data) ? data : "";
             String data = Objects.toString(getHTMLData(), "");
             if (String.class.equals(flavor.getRepresentationClass())) {
                 return data;
@@ -503,7 +503,7 @@ class BasicTransferable implements Transferable {
             // fall through to unsupported
         } else if (isPlainFlavor(flavor)) {
             //String data = getPlainData();
-            //data = (data == null) ? "" : data;
+            //data = Objects.nonNull(data) ? data : "";
             String data = Objects.toString(getPlainData(), "");
             if (String.class.equals(flavor.getRepresentationClass())) {
                 return data;
@@ -517,7 +517,7 @@ class BasicTransferable implements Transferable {
 
         } else if (isStringFlavor(flavor)) {
             //String data = getPlainData();
-            //data = (data == null) ? "" : data;
+            //data = Objects.nonNull(data) ? data : "";
             //return data;
             return Objects.toString(getPlainData(), "");
         }
@@ -543,7 +543,7 @@ class BasicTransferable implements Transferable {
 
     protected boolean isRicherFlavor(DataFlavor flavor) {
         DataFlavor[] richerFlavors = getRicherFlavors();
-        int nFlavors = richerFlavors.length; //(richerFlavors != null) ? richerFlavors.length : 0;
+        int nFlavors = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
         for (int i = 0; i < nFlavors; i++) {
             if (richerFlavors[i].equals(flavor)) {
                 return true;
@@ -588,7 +588,7 @@ class BasicTransferable implements Transferable {
      * getHTMLData should be implemented to provide something reasonable.
      */
     protected boolean isHTMLSupported() {
-        return htmlData != null;
+        return Objects.nonNull(htmlData);
     }
 
     /**
@@ -621,7 +621,7 @@ class BasicTransferable implements Transferable {
      * getPlainData should be implemented to provide something reasonable.
      */
     protected boolean isPlainSupported() {
-        return plainData != null;
+        return Objects.nonNull(plainData);
     }
 
     /**

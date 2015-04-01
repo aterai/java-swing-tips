@@ -199,7 +199,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -214,7 +214,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
@@ -285,13 +285,13 @@ class CheckBoxNode {
 //     }
 //     private JTree tree = null;
 //     @Override public void updateUI() {
-//         if (tree != null) {
+//         if (Objects.nonNull(tree)) {
 //             tree.setCellRenderer(null);
 //             super.updateUI();
 //             TreeCellRenderer r = tree.getCellRenderer();
 //
 //         }
-//         if (leafRenderer != null) { leafRenderer.updateUI(); }
+//         if (Objects.nonNull(leafRenderer)) { leafRenderer.updateUI(); }
 //
 //         //setLeafIcon(getDefaultLeafIcon());
 //         setOpenIcon(getDefaultOpenIcon());
@@ -316,11 +316,11 @@ class CheckBoxNode {
 // // //         drawDashedFocusIndicator = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
 // // //         fillBackground = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
 // //         Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
-// //         if (margins != null) {
+// //         if (Objects.nonNull(margins)) {
 // //             setBorder(new EmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
-// //             //if (leafRenderer != null) { leafRenderer.setBorder(getBorder()); }
+// //             //if (Objects.nonNull(leafRenderer)) { leafRenderer.setBorder(getBorder()); }
 // //         }
 //         setName("Tree.cellRenderer");
-//         //if (tree != null) tree.revalidate();
+//         //if (Objects.nonNull(tree)) tree.revalidate();
 //     }
 // }

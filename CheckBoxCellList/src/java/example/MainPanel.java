@@ -98,7 +98,7 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
         setBackground(null);
         setSelectionForeground(null);
         setSelectionBackground(null);
-        if (renderer != null) {
+        if (Objects.nonNull(renderer)) {
             removeMouseListener(renderer);
             removeMouseMotionListener(renderer);
         }
@@ -264,7 +264,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -279,7 +279,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);

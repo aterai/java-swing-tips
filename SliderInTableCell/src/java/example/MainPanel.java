@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.EventObject;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -79,10 +79,10 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable. //System.out.println(p.getClass());
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
@@ -161,7 +161,7 @@ class SliderEditor extends JSlider implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -176,7 +176,7 @@ class SliderEditor extends JSlider implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);

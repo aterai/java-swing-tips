@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.EventObject;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -109,7 +109,7 @@ class CheckBoxesPanel extends JPanel {
             removeAll();
             initButtons();
         }
-        Integer i = (Integer) (v == null ? 0 : v);
+        Integer i = (Integer) (Objects.nonNull(v) ? v : 0);
         buttons[0].setSelected((i & (1 << 2)) != 0);
         buttons[1].setSelected((i & (1 << 1)) != 0);
         buttons[2].setSelected((i & (1 << 0)) != 0);
@@ -207,7 +207,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -222,7 +222,7 @@ class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);

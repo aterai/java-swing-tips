@@ -108,7 +108,7 @@ class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        if (value != null) {
+        if (Objects.nonNull(value)) {
             comboBox.setSelectedItem(value);
         }
         return this;
@@ -181,7 +181,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
@@ -196,7 +196,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CellEditorListener.class) {
                 // Lazily create the event:
-                if (changeEvent == null) {
+                if (Objects.isNull(changeEvent)) {
                     changeEvent = new ChangeEvent(this);
                 }
                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
@@ -234,10 +234,10 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
