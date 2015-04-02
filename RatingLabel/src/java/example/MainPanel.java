@@ -172,7 +172,7 @@ class SelectedImageFilter extends RGBImageFilter {
 //         Color color = new Color(argb, true);
 //         float[] array = new float[4];
 //         color.getComponents(array);
-//         return new Color(array[0]*filter[0], array[1]*filter[1], array[2]*filter[2], array[3]).getRGB();
+//         return new Color(array[0] * filter[0], array[1] * filter[1], array[2] * filter[2], array[3]).getRGB();
 //     }
     @Override public int filterRGB(int x, int y, int argb) {
         int r = (int) (((argb >> 16) & 0xff) * rf);

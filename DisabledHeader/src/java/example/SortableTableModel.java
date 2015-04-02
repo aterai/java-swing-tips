@@ -1,7 +1,7 @@
 /**
 @version 1.0 02/25/99
 @author Nobuo Tamemasa
-modified by aterai at.terai@gmail.com
+modified by aterai aterai@outlook.com
 */
 package example;
 //-*- mode:java; encoding:utf-8 -*-

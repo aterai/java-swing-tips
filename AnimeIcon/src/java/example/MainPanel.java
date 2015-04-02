@@ -280,7 +280,7 @@ class AnimeIcon2 implements Icon, Serializable {
             at.concatenate(AffineTransform.getTranslateInstance(r, r));
             list.add(at.createTransformedShape(s));
         }
-        //int d = (int) (r * 2*(1 + 2 * Math.sqrt(2)));
+        //int d = (int) (r * 2 * (1 + 2 * Math.sqrt(2)));
         int d = (int) r * 2 * (1 + 3); // 2 * Math.sqrt(2) is nearly equal to 3.
         dim = new Dimension(d, d);
     }

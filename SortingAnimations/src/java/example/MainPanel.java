@@ -14,7 +14,7 @@ import javax.swing.*;
 // From 'Programming Pearls' by Jon Bentley
 //Sorting Algorithm Animations from Programming Pearls
 //http://www.cs.bell-labs.com/cm/cs/pearls/sortanim.html
-// modified by aterai at.terai@gmail.com
+// modified by aterai aterai@outlook.com
 
 public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
