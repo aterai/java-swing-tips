@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 //import java.beans.*;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if (worker != null && !worker.isDone()) {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
             worker = null;
@@ -281,7 +281,7 @@ class Task extends SwingWorker<String, Progress> {
 //             super("cancel");
 //         }
 //         @Override public void actionPerformed(ActionEvent evt) {
-//             if (worker != null && !worker.isDone()) {
+//             if (Objects.nonNull(worker) && !worker.isDone()) {
 //                 worker.cancel(true);
 //             }
 //             worker = null;

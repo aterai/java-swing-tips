@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
             }
         };
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            if (index < 0 && worker != null && !worker.isDone()) {
+            if (index < 0 && Objects.nonNull(worker) && !worker.isDone()) {
                 bar.setFont(list.getFont());
                 bar.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
                 bar.setValue(counter);
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void updateUI() {
             super.updateUI();
-            if (bar != null) {
+            if (Objects.nonNull(bar)) {
                 SwingUtilities.updateComponentTreeUI(bar);
             }
         }

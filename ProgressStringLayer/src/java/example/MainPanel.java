@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
@@ -42,7 +43,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Test") {
             @Override public void actionPerformed(ActionEvent e) {
-                if (worker != null && !worker.isDone()) {
+                if (Objects.nonNull(worker) && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = new Task();
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && worker != null) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
@@ -153,7 +154,7 @@ class TextLabelProgressBar extends JProgressBar {
     }
     @Override public void updateUI() {
         removeAll();
-        if (changeListener != null) {
+        if (Objects.nonNull(changeListener)) {
             removeChangeListener(changeListener);
         }
         super.updateUI();

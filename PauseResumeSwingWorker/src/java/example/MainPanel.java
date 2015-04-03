@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if (worker != null && !worker.isDone()) {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
             worker = null;
@@ -131,15 +131,15 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             JButton b = (JButton) e.getSource();
             String pause = (String) getValue(Action.NAME);
-            if (worker == null) {
-                b.setText(pause);
-            } else {
+            if (Objects.nonNull(worker)) {
                 if (worker.isCancelled() || worker.isPaused) {
                     b.setText(pause);
                 } else {
                     b.setText("resume");
                 }
                 worker.isPaused ^= true;
+            } else {
+                b.setText(pause);
             }
         }
     }
@@ -340,7 +340,7 @@ class Task extends SwingWorker<String, Progress> {
 //             super("cancel");
 //         }
 //         @Override public void actionPerformed(ActionEvent evt) {
-//             if (worker != null && !worker.isDone()) {
+//             if (Objects.nonNull(worker) && !worker.isDone()) {
 //                 worker.cancel(true);
 //             }
 //             worker = null;

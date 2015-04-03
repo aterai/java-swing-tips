@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     public static void addItem(JComboBox<String> dirCombo, String str, int max) {
-        if (str == null || str.trim().isEmpty()) {
+        if (Objects.isNull(str) || str.trim().isEmpty()) {
             return;
         }
         dirCombo.setVisible(false);
@@ -140,14 +140,14 @@ public final class MainPanel extends JPanel {
             super("Cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if (worker != null && !worker.isDone()) {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
             worker = null;
         }
     }
 //     private boolean isCancelled() {
-//         return (worker != null) ? worker.isCancelled() : true;
+//         return (Objects.nonNull(worker)) ? worker.isCancelled() : true;
 //     }
     class OpenAction extends AbstractAction {
         public OpenAction() {
@@ -161,7 +161,7 @@ public final class MainPanel extends JPanel {
             String title = "title";
             if (fcSelected == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                if (file == null || !file.isDirectory()) {
+                if (Objects.isNull(file) || !file.isDirectory()) {
                     Object[] obj = {"Please select directory."};
                     Toolkit.getDefaultToolkit().beep();
                     JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
@@ -217,7 +217,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
         this.dir = dir;
     }
     @Override public String doInBackground() {
-        if (dir == null || !dir.exists()) {
+        if (Objects.isNull(dir) || !dir.exists()) {
             publish(new Message("The directory does not exist.", true));
             return "Error";
         }

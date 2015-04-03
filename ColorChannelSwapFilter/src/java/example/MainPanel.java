@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         box.add(Box.createHorizontalStrut(2));
         box.add(new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {
-                if (worker != null && !worker.isDone()) {
+                if (Objects.nonNull(worker) && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = new Task();
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && worker != null) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
             System.out.println("DISPOSE_ON_CLOSE");
             worker.cancel(true);
             worker = null;
@@ -118,7 +118,7 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
             int w = progress.getSize().width;
             int h = progress.getSize().height;
 
-            if (bi == null || w != prevw || h != prevh) {
+            if (Objects.isNull(bi) || w != prevw || h != prevh) {
                 bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             }
             prevw = w;

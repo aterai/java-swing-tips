@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     });
     private final JButton cancelButton = new JButton(new AbstractAction("Cancel") {
         @Override public void actionPerformed(ActionEvent e) {
-            if (worker != null && !worker.isDone()) {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
         }

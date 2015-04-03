@@ -7,11 +7,11 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.beans.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
+import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     private final JTextArea area     = new JTextArea();
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
-            if (worker != null && !worker.isDone()) {
+            if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
             //worker = null;
@@ -239,20 +239,19 @@ class AnimeIcon implements Icon, Serializable {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setPaint(c == null ? Color.WHITE : c.getBackground());
-        g2d.fillRect(x, y, getIconWidth(), getIconHeight());
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(ELLIPSE_COLOR);
-        g2d.translate(x, y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(ELLIPSE_COLOR);
+        g2.translate(x, y);
         int size = list.size();
         for (int i = 0; i < size; i++) {
             float alpha = isRunning ? (i + 1) / (float) size : .5f;
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2d.fill(list.get(i));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.fill(list.get(i));
         }
-        //g2d.translate(-x, -y);
-        g2d.dispose();
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return WIDTH;

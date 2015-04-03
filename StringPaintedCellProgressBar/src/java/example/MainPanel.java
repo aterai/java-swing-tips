@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
             for (int i = 0; i < selection.length; i++) {
                 int midx = table.convertRowIndexToModel(selection[i]);
                 SwingWorker worker = model.getSwingWorker(midx);
-                if (worker != null && !worker.isDone()) {
+                if (Objects.nonNull(worker) && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = null;
@@ -119,7 +119,7 @@ public final class MainPanel extends JPanel {
                 int midx = table.convertRowIndexToModel(selection[i]);
                 deleteRowSet.add(midx);
                 SwingWorker worker = model.getSwingWorker(midx);
-                if (worker != null && !worker.isDone()) {
+                if (Objects.nonNull(worker) && !worker.isDone()) {
                     worker.cancel(true);
                 }
                 worker = null;
@@ -209,7 +209,7 @@ class WorkerModel extends DefaultTableModel {
     public void addProgressValue(String name, ProgressValue t, SwingWorker worker) {
         Object[] obj = {number, name, t.getProgress()};
         super.addRow(obj);
-        if (worker != null) {
+        if (Objects.nonNull(worker)) {
             swmap.put(number, worker);
         }
         number++;
@@ -286,7 +286,7 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             SwingUtilities.updateComponentTreeUI(p);
         }
     }
