@@ -147,7 +147,7 @@ class MyIconTable extends JTable {
 
         panel.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent me) {
-                if (rect == null || rect.contains(me.getPoint())) {
+                if (Objects.isNull(rect) || rect.contains(me.getPoint())) {
                     return;
                 }
                 setEditorSelectedIconAt(me.getPoint());
@@ -193,7 +193,7 @@ class MyIconTable extends JTable {
     }
     private void setEditorSelectedIconAt(Point p) {
         Object o = editor.getModel().getElementAt(editor.locationToIndex(p));
-        if (o != null) {
+        if (Objects.nonNull(o)) {
             setValueAt(o, getSelectedRow(), getSelectedColumn());
         }
         panel.setVisible(false);

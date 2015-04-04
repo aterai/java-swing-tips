@@ -91,10 +91,10 @@ public class MainPanel extends JPanel {
     }
 
     private void log(String str) {
-        if (textArea == null) {
-            System.out.println(str);
-        } else {
+        if (Objects.nonNull(textArea)) {
             textArea.append(str + "\n");
+        } else {
+            System.out.println(str);
         }
     }
 

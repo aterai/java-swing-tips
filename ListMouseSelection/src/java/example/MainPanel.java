@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -160,14 +161,14 @@ class SingleClickSelectList<E> extends JList<E> {
         setSelectionForeground(null);
         setSelectionBackground(null);
         super.updateUI();
-        if (listener == null) {
+        if (Objects.isNull(listener)) {
             listener = new ClearSelectionListener();
         }
         addMouseListener(listener);
         addMouseMotionListener(listener);
     }
     @Override public void setSelectionInterval(int anchor, int lead) {
-        if (anchor == lead && lead >= 0 && anchor >= 0 && listener != null) {
+        if (anchor == lead && lead >= 0 && anchor >= 0 && Objects.nonNull(listener)) {
             if (listener.isDragging) {
                 addSelectionInterval(anchor, anchor);
             } else if (!listener.isCellInsideDragging) {

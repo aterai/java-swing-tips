@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
                 if (index < 0) {
                     //@see BasicComboBoxUI#rectangleForCurrentValue
                     int buttonSize = combo.getHeight() - itb;
-                    if (arrowButton != null) {
+                    if (Objects.nonNull(arrowButton)) {
                         buttonSize = arrowButton.getWidth();
                     }
                     availableWidth -= buttonSize;

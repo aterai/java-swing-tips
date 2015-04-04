@@ -6,10 +6,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.Timer;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
@@ -81,7 +81,7 @@ class LightboxGlassPane extends JPanel {
         super.updateUI();
         setOpaque(false);
         super.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        if (handler == null) {
+        if (Objects.isNull(handler)) {
             handler = new Handler();
         }
         addMouseListener(handler);
@@ -92,7 +92,7 @@ class LightboxGlassPane extends JPanel {
             me.getComponent().setVisible(false);
         }
         @Override public void hierarchyChanged(HierarchyEvent e) {
-            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && animator != null) {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(animator)) {
                 animator.stop();
             }
         }
@@ -101,10 +101,10 @@ class LightboxGlassPane extends JPanel {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
         JRootPane rootPane = getRootPane();
-        if (rootPane != null && isVisible() != oldVisible) {
+        if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
-        boolean b = animator == null || !animator.isRunning();
+        boolean b = Objects.isNull(animator) || !animator.isRunning();
         if (isVisible && b) {
             w = 40;
             h = 40;
@@ -117,7 +117,7 @@ class LightboxGlassPane extends JPanel {
             });
             animator.start();
         } else {
-            if (animator != null) {
+            if (Objects.nonNull(animator)) {
                 animator.stop();
             }
         }
@@ -125,7 +125,7 @@ class LightboxGlassPane extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
-        if (rootPane != null) {
+        if (Objects.nonNull(rootPane)) {
             rootPane.getLayeredPane().print(g);
         }
         super.paintComponent(g);

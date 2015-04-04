@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -59,7 +60,7 @@ class HighlightCursorTextArea extends JTextArea {
         setOpaque(false);
         caret = new DefaultCaret() {
             @Override protected synchronized void damage(Rectangle r) {
-                if (r != null) {
+                if (Objects.nonNull(r)) {
                     JTextComponent c = getComponent();
                     x = 0;
                     y = r.y;

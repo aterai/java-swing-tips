@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -21,7 +22,7 @@ public final class MainPanel extends JPanel {
             //synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);
             controlsPreferredHeight = ps.height;
-            if (animator != null) {
+            if (Objects.nonNull(animator)) {
                 if (isHidden) {
                     if (controls.getHeight() < controlsPreferredHeight) {
                         controlsHeight += 5;
@@ -53,7 +54,7 @@ public final class MainPanel extends JPanel {
     private Action makeShowHideAction() {
         return new AbstractAction("Show/Hide Search Box") {
             @Override public void actionPerformed(ActionEvent e) {
-                if (animator != null && animator.isRunning()) {
+                if (Objects.nonNull(animator) && animator.isRunning()) {
                     return;
                 }
                 isHidden = controls.getHeight() == 0;

@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -45,10 +46,10 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     public static final String LB = "\n";
     public static final String PROMPT = "> ";
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if (string == null) {
-            return;
-        } else {
+        if (Objects.nonNull(string)) {
             replace(fb, offset, 0, string, attr);
+        } else {
+            return;
         }
     }
     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {

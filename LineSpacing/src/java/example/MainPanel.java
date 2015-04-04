@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -87,7 +88,7 @@ class BottomInsetEditorKit extends StyledEditorKit {
 class BottomInsetViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if (kind != null) {
+        if (Objects.nonNull(kind)) {
             if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
