@@ -15,6 +15,7 @@ import java.time.format.*;
 import java.time.temporal.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
@@ -50,15 +51,23 @@ public final class MainPanel extends JPanel {
         System.out.println(s);
         System.out.println(e);
 
-        JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS));
-        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
-        DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN).toFormat());
-        DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
-        JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
-        ftf.setHorizontalAlignment(JTextField.LEFT);
-        ftf.setColumns(10);
-        ftf.setEditable(true);
-        ftf.setFormatterFactory(factory);
+        JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS)) {
+            @Override protected JComponent createEditor(SpinnerModel model) {
+                if (model instanceof SpinnerLocalDateTimeModel) {
+                    return new LocalDateTimeEditor(this, DATE_FORMAT_PATTERN);
+                } else {
+                    return super.createEditor(model);
+                }
+            }
+        };
+//         JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
+//         DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN).toFormat());
+//         DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
+//         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
+//         ftf.setHorizontalAlignment(JTextField.LEFT);
+//         ftf.setColumns(10);
+//         ftf.setEditable(true);
+//         ftf.setFormatterFactory(factory);
 
         add(makeTitlePanel(spinner1, "SpinnerDateModel"));
         add(makeTitlePanel(spinner2, "SpinnerLocalDateTimeModel"));
@@ -184,5 +193,60 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
             this.value = (LocalDateTime) value;
             fireStateChanged();
         }
+    }
+}
+
+class LocalDateTimeEditor extends JSpinner.DefaultEditor {
+    private final DateTimeFormatter dateTimeFormatter;
+
+    public LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
+        super(spinner);
+        if (!(spinner.getModel() instanceof SpinnerLocalDateTimeModel)) {
+            throw new IllegalArgumentException("model not a SpinnerLocalDateTimeModel");
+        }
+        dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormatPattern);
+        final SpinnerLocalDateTimeModel model = (SpinnerLocalDateTimeModel) spinner.getModel();
+
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                DefaultFormatter formatter = new InternationalFormatter(dateTimeFormatter.toFormat()) {
+                    @Override public String valueToString(Object value) throws ParseException {
+                        //System.out.println(value.getClass().getName());
+                        if (value instanceof LocalDateTime) {
+                            return ((LocalDateTime) value).format(dateTimeFormatter);
+                        } else {
+                            return "";
+                        }
+                    }
+                    @Override public Object stringToValue(String text) throws ParseException {
+                        //System.out.println("stringToValue:" + text);
+                        try {
+                            return LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
+                        } catch (Exception e) {
+                            // PENDING: e.printStackTrace();
+                        }
+                        return text;
+                    }
+                };
+                formatter.setValueClass(LocalDateTime.class);
+                DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
+                JFormattedTextField ftf = (JFormattedTextField) getTextField();
+
+                try {
+                    String maxString = formatter.valueToString(model.getStart());
+                    String minString = formatter.valueToString(model.getEnd());
+                    ftf.setColumns(Math.max(maxString.length(), minString.length()));
+                } catch (ParseException e) {
+                    // PENDING: hmuller
+                }
+                ftf.setHorizontalAlignment(JTextField.LEFT);
+                ftf.setEditable(true);
+                ftf.setFormatterFactory(factory);
+            }
+        });
+    }
+
+    public SpinnerLocalDateTimeModel getModel() {
+        return (SpinnerLocalDateTimeModel) getSpinner().getModel();
     }
 }
