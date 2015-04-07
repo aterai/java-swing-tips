@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         box.add(new JButton(new AbstractAction("Load") {
             @Override public void actionPerformed(ActionEvent e) {
                 visitAll(tree, rootPath, false);
-                if (expandedState == null) {
+                if (Objects.isNull(expandedState)) {
                     return;
                 }
                 while (expandedState.hasMoreElements()) {
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
         }
         if (expand) {
             tree.expandPath(parent);
-        } else if (tree.isRootVisible() || parent.getParentPath() != null) {
+        } else if (tree.isRootVisible() || Objects.nonNull(parent.getParentPath())) {
             tree.collapsePath(parent);
         }
     }

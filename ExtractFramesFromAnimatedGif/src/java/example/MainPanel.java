@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
                 break;
             }
         }
-        if (reader == null) {
+        if (Objects.isNull(reader)) {
             throw new IOException("Can not read image format!");
         }
         boolean isGif = reader.getFormatName().equalsIgnoreCase("gif");

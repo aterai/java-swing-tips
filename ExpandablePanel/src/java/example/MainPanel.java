@@ -172,7 +172,7 @@ abstract class AbstractExpansionPanel extends JPanel {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == ExpansionListener.class) {
                 // Lazily create the event:
-                if (expansionEvent == null) {
+                if (Objects.isNull(expansionEvent)) {
                     expansionEvent = new ExpansionEvent(this);
                 }
                 ((ExpansionListener) listeners[i + 1]).expansionStateChanged(expansionEvent);

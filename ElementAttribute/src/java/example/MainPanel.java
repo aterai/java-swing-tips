@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
                 } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
-                    editorPane.setToolTipText(url == null ? null : url.toExternalForm());
+                    editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
                 } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editorPane.setToolTipText(tooltip);
                 }
@@ -104,9 +105,7 @@ class CustomTooltipEditorPane extends JEditorPane {
     //    return true;
     //}
     @Override public void updateUI() {
-        if (listener != null) {
-            removeHyperlinkListener(listener);
-        }
+        removeHyperlinkListener(listener);
         super.updateUI();
         listener = new HyperlinkListener() {
             private String tooltip;
@@ -117,10 +116,10 @@ class CustomTooltipEditorPane extends JEditorPane {
                 } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editor.getToolTipText();
                     Element elem = e.getSourceElement();
-                    if (elem != null) {
+                    if (Objects.nonNull(elem)) {
                         AttributeSet attr = elem.getAttributes();
                         AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
-                        if (a != null) {
+                        if (Objects.nonNull(a)) {
                             editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
                         }
                     }
@@ -144,7 +143,7 @@ class CustomTooltipEditorPane extends JEditorPane {
             if (pos >= 0 && editor.getDocument() instanceof HTMLDocument) {
                 HTMLDocument hdoc = (HTMLDocument) editor.getDocument();
                 String str = getSpanTitleAttribute(hdoc, pos);
-                if (str != null) {
+                if (Objects.nonNull(str)) {
                     title = str;
                 }
             }
@@ -160,7 +159,7 @@ class CustomTooltipEditorPane extends JEditorPane {
         //if (elem != null) {
         AttributeSet a = elem.getAttributes();
         AttributeSet span = (AttributeSet) a.getAttribute(HTML.Tag.SPAN);
-        if (span != null) {
+        if (Objects.nonNull(span)) {
             return (String) span.getAttribute(HTML.Attribute.TITLE);
         }
         //}
@@ -174,14 +173,14 @@ class TooltipEditorKit extends HTMLEditorKit {
             @Override public View create(Element elem) {
                 AttributeSet attrs = elem.getAttributes();
                 Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-                Object o = (elementName == null) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
+                Object o = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
                 if (o instanceof HTML.Tag) {
                     HTML.Tag kind = (HTML.Tag) o;
                     if (kind == HTML.Tag.DIV) {
                         return new BlockView(elem, View.Y_AXIS) {
                             @Override public String getToolTipText(float x, float y, Shape allocation) {
                                 String s = super.getToolTipText(x, y, allocation);
-                                if (s == null) {
+                                if (Objects.isNull(s)) {
                                     s = (String) getElement().getAttributes().getAttribute(HTML.Attribute.TITLE);
                                 }
                                 return s;

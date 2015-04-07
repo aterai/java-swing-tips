@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Enumeration;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
         TreeNode node = (TreeNode) path.getLastPathComponent();
-        if (node == null) {
+        if (Objects.isNull(node)) {
             return;
         }
         if (node.toString().equals(q)) {

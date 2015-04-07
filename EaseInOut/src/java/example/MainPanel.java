@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 //import java.awt.geom.*;
 //import java.beans.*;
-//import java.util.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -146,7 +146,7 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
         });
     }
     @Override public void mouseEntered(MouseEvent e) {
-        if (animator != null && animator.isRunning() || txah == textArea.getPreferredSize().height) {
+        if (Objects.nonNull(animator) && animator.isRunning() || txah == textArea.getPreferredSize().height) {
             return;
         }
         animator = createTimer(1);
@@ -154,14 +154,14 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     }
     @Override public void mouseExited(MouseEvent e) {
         JComponent parent = (JComponent) e.getComponent();
-        if (animator != null && animator.isRunning() || parent.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
+        if (Objects.nonNull(animator) && animator.isRunning() || parent.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
             return;
         }
         animator = createTimer(-1);
         animator.start();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }

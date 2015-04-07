@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -129,7 +130,7 @@ class EditableTabbedPane extends JTabbedPane {
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if (rect == null || rect.contains(me.getPoint())) {
+                    if (Objects.isNull(rect) || rect.contains(me.getPoint())) {
                         return;
                     }
                     renameTab();
