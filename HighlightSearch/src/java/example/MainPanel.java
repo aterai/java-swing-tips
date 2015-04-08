@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
 
     private Pattern getPattern() {
         String text = field.getText();
-        if (text == null || text.isEmpty()) {
+        if (Objects.isNull(text) || text.isEmpty()) {
             return null;
         }
         try {
@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
         Document doc = textArea.getDocument();
         try {
             Pattern pattern = getPattern();
-            if (pattern != null) {
+            if (Objects.nonNull(pattern)) {
                 Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
                 int pos = 0;
                 while (matcher.find(pos)) {

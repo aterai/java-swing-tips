@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Enumeration;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
             final String id = field.getText().trim();
             HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
             Element element = doc.getElement(id);
-            if (element != null) {
+            if (Objects.nonNull(element)) {
                 textArea.append(String.format("found: %s%n", element));
                 editorPane.requestFocusInWindow();
                 editorPane.select(element.getStartOffset(), element.getEndOffset());
@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
     private void checkID(Element element) {
         AttributeSet attrs = element.getAttributes();
         Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-        Object name = (elementName == null) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
+        Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
         HTML.Tag tag;
         if (name instanceof HTML.Tag) {
             tag = (HTML.Tag) name;
@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
         textArea.append(String.format("%s%n", tag));
         if (tag.isBlock()) { //block
             Object bid = attrs.getAttribute(HTML.Attribute.ID);
-            if (bid != null) {
+            if (Objects.nonNull(bid)) {
                 textArea.append(String.format("block: id=%s%n", bid));
                 addHighlight(element, true);
             }
@@ -137,7 +137,7 @@ public final class MainPanel extends JPanel {
                 if (obj instanceof AttributeSet) {
                     AttributeSet a = (AttributeSet) obj;
                     Object iid = a.getAttribute(HTML.Attribute.ID);
-                    if (iid != null) {
+                    if (Objects.nonNull(iid)) {
                         textArea.append(String.format("inline: id=%s%n", iid));
                         addHighlight(element, false);
                     }

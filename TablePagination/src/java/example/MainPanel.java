@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
@@ -232,10 +232,10 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if (v == null) {
-            paintText(g, c, textRect, text);
-        } else {
+        if (Objects.nonNull(v)) {
             v.paint(g, textRect);
+        } else {
+            paintText(g, c, textRect, text);
         }
     }
 }

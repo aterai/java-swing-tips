@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -99,15 +100,15 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
             g.drawLine(viewRect.x + 0, viewRect.y + 2, viewRect.x + viewRect.width - 0, viewRect.y + 2);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if (v == null) {
+        if (Objects.nonNull(v)) {
+            v.paint(g, textRect);
+        } else {
             if (model.isSelected()) {
                 textRect.y -= 2;
                 textRect.x -= 1;
             }
             textRect.x += 4;
             paintText(g, b, textRect, text);
-        } else {
-            v.paint(g, textRect);
         }
     }
 }

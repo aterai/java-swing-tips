@@ -7,6 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 // import javax.swing.border.*;
 // import javax.swing.event.*;
@@ -201,14 +202,14 @@ class LinkViewButtonUI extends BasicButtonUI {
         ButtonModel model = b.getModel();
         if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
             g.setColor(Color.BLUE);
-            g.drawLine(viewRect.x,                viewRect.y + viewRect.height,
+            g.drawLine(viewRect.x,                  viewRect.y + viewRect.height,
                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if (v == null) {
-            paintText(g, b, textRect, text);
-        } else {
+        if (Objects.nonNull(v)) {
             v.paint(g, textRect);
+        } else {
+            paintText(g, b, textRect, text);
         }
     }
 }

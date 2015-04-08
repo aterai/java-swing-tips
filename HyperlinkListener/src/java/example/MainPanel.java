@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
@@ -40,7 +41,7 @@ public final class MainPanel extends JPanel {
                 } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
                     tooltip = editorPane.getToolTipText();
                     URL url = e.getURL();
-                    editorPane.setToolTipText(url == null ? null : url.toExternalForm());
+                    editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
                 } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
                     editorPane.setToolTipText(tooltip);
                 }
@@ -117,10 +118,10 @@ class HyperlinkButton extends JButton {
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if (UIManager.get(UI_CLASS_ID) == null) {
-            setUI(BasicLinkViewButtonUI.createUI(this));
-        } else {
+        if (Objects.nonNull(UIManager.get(UI_CLASS_ID))) {
             setUI((LinkViewButtonUI) UIManager.getUI(this));
+        } else {
+            setUI(BasicLinkViewButtonUI.createUI(this));
         }
         setForeground(Color.BLUE);
         setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
@@ -206,10 +207,10 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if (v == null) {
-            paintText(g, b, textRect, text);
-        } else {
+        if (Objects.nonNull(v)) {
             v.paint(g, textRect);
+        } else {
+            paintText(g, b, textRect, text);
         }
     }
 }

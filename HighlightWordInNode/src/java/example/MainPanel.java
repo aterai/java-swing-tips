@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
         TreeNode node = (TreeNode) path.getLastPathComponent();
-        if (node == null) {
+        if (Objects.isNull(node)) {
             return;
         } else if (node.toString().startsWith(q)) {
             tree.expandPath(path.getParentPath());
@@ -113,7 +113,7 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
         getHighlighter().removeAllHighlights();
         setText(txt);
         setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
-        if (q != null && !q.isEmpty() && txt.startsWith(q)) {
+        if (Objects.nonNull(q) && !q.isEmpty() && txt.startsWith(q)) {
             try {
                 getHighlighter().addHighlight(0, q.length(), highlightPainter);
             } catch (BadLocationException e) {

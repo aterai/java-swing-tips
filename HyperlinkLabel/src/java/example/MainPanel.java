@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -111,10 +112,10 @@ class HyperlinkButton extends JButton {
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if (UIManager.get(UI_CLASS_ID) == null) {
-            setUI(BasicLinkViewButtonUI.createUI(this));
-        } else {
+        if (Objects.nonNull(UIManager.get(UI_CLASS_ID))) {
             setUI((LinkViewButtonUI) UIManager.getUI(this));
+        } else {
+            setUI(BasicLinkViewButtonUI.createUI(this));
         }
         setForeground(Color.BLUE);
         setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
@@ -200,10 +201,10 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
                        viewRect.x + viewRect.width, viewRect.y + viewRect.height);
         }
         View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-        if (v == null) {
-            paintText(g, b, textRect, text);
-        } else {
+        if (Objects.nonNull(v)) {
             v.paint(g, textRect);
+        } else {
+            paintText(g, b, textRect, text);
         }
     }
 }

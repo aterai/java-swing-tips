@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -86,7 +87,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
         removeMouseMotionListener(hoverHandler);
         super.updateUI();
         //setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        if (hoverHandler == null) {
+        if (Objects.isNull(hoverHandler)) {
             hoverHandler = new MouseMotionAdapter() {
                 private int prev = -1;
                 @Override public void mouseMoved(MouseEvent e) {
