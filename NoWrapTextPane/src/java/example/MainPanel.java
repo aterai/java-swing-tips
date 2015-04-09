@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import java.util.concurrent.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -24,7 +25,9 @@ public final class MainPanel extends JPanel {
             //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
             @Override public boolean getScrollableTracksViewportWidth() {
                 Component p = getParent();
-                if (p == null) { return true; }
+                if (Objects.isNull(p)) {
+                    return true;
+                }
                 int ewidth = getUI().getPreferredSize(this).width;
                 return ewidth <= p.getSize().width;
             }
@@ -39,7 +42,7 @@ public final class MainPanel extends JPanel {
                 final JComponent c = (JComponent) e.getSource();
                 threadPool.execute(new Runnable() {
                     @Override public void run() {
-                        if (text != null) {
+                        if (Objects.nonNull(text)) {
                             if (c.equals(editorPaneButton)) {
                                 editorPane.setText(text);
                             } else {
@@ -122,7 +125,7 @@ class NoWrapEditorKit1 extends StyledEditorKit {
     static class StyledViewFactory implements ViewFactory {
         @Override public View create(Element elem) {
             String kind = elem.getName();
-            if (kind != null) {
+            if (Objects.nonNull(kind)) {
                 if (kind.equals(AbstractDocument.ContentElementName)) {
                     return new LabelView(elem);
                 } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
@@ -168,7 +171,7 @@ class NoWrapParagraphView extends ParagraphView {
 class NoWrapViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if (kind != null) {
+        if (Objects.nonNull(kind)) {
             if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {

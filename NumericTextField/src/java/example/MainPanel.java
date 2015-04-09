@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.text.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -112,9 +113,7 @@ class IntegerDocument extends PlainDocument {
         return currentValue;
     }
     @Override public void insertString(int offset, String str, AttributeSet attributes) throws BadLocationException {
-        if (str == null) {
-            return;
-        } else {
+        if (Objects.nonNull(str)) {
             String newValue;
             int length = getLength();
             if (length == 0) {
@@ -159,9 +158,7 @@ class IntegerDocument extends PlainDocument {
 class IntegerDocumentFilter extends DocumentFilter {
     //int currentValue = 0;
     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if (string == null) {
-            return;
-        } else {
+        if (Objects.nonNull(string)) {
             replace(fb, offset, 0, string, attr);
         }
     }
@@ -174,8 +171,7 @@ class IntegerDocumentFilter extends DocumentFilter {
         String currentContent = doc.getText(0, currentLength);
         String before = currentContent.substring(0, offset);
         String after = currentContent.substring(length + offset, currentLength);
-        String str = text == null ? "" : text;
-        String newValue = before + str + after;
+        String newValue = before + Objects.toString(text, "") + after;
         checkInput(newValue, offset);
         fb.replace(offset, length, text, attrs);
     }
