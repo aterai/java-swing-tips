@@ -114,10 +114,10 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
 
     public SpinnerLocalDateTimeModel(LocalDateTime value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
         super();
-        if (value == null) {
+        if (Objects.isNull(value)) {
             throw new IllegalArgumentException("value is null");
         }
-        if (!(start == null || start.compareTo(value) <= 0) && (end == null || end.compareTo(value) >= 0)) {
+        if (!(Objects.isNull(start) || start.compareTo(value) <= 0) && (Objects.isNull(end) || end.compareTo(value) >= 0)) {
             throw new IllegalArgumentException("(start <= value <= end) is false");
         }
         this.value = value;
@@ -127,7 +127,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
     }
 
     public void setStart(Comparable<ChronoLocalDateTime<?>> start) {
-        if (start == null ? this.start != null : !start.equals(this.start)) {
+        if (Objects.isNull(start) ? Objects.nonNull(this.start) : !Objects.equals(start, this.start)) {
             this.start = start;
             fireStateChanged();
         }
@@ -138,7 +138,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
     }
 
     public void setEnd(Comparable<ChronoLocalDateTime<?>> end) {
-        if (end == null ? this.end != null : !end.equals(this.end)) {
+        if (Objects.isNull(end) ? Objects.nonNull(this.end) : !Objects.equals(end, this.end)) {
             this.end = end;
             fireStateChanged();
         }
@@ -165,7 +165,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
         //cal.add(calendarField, 1);
         //Date next = cal.getTime();
         LocalDateTime next = value.plus(1, temporalUnit);
-        return end == null || end.compareTo(next) >= 0 ? next : null;
+        return Objects.isNull(end) || end.compareTo(next) >= 0 ? next : null;
     }
 
     @Override public Object getPreviousValue() {
@@ -174,7 +174,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
         //cal.add(calendarField, -1);
         //Date prev = cal.getTime();
         LocalDateTime prev = value.minus(1, temporalUnit);
-        return start == null || start.compareTo(prev) <= 0 ? prev : null;
+        return Objects.isNull(start) || start.compareTo(prev) <= 0 ? prev : null;
     }
 
     public LocalDateTime getLocalDateTime() {
@@ -198,6 +198,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
 
 class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     private final DateTimeFormatter dateTimeFormatter;
+    private final SpinnerLocalDateTimeModel model;
 
     public LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
         super(spinner);
@@ -205,39 +206,21 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
             throw new IllegalArgumentException("model not a SpinnerLocalDateTimeModel");
         }
         dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormatPattern);
-        final SpinnerLocalDateTimeModel model = (SpinnerLocalDateTimeModel) spinner.getModel();
+        model = (SpinnerLocalDateTimeModel) spinner.getModel();
+        final DefaultFormatter formatter = new LocalDateTimeFormatter();
 
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                DefaultFormatter formatter = new InternationalFormatter(dateTimeFormatter.toFormat()) {
-                    @Override public String valueToString(Object value) throws ParseException {
-                        //System.out.println(value.getClass().getName());
-                        if (value instanceof LocalDateTime) {
-                            return ((LocalDateTime) value).format(dateTimeFormatter);
-                        } else {
-                            return "";
-                        }
-                    }
-                    @Override public Object stringToValue(String text) throws ParseException {
-                        //System.out.println("stringToValue:" + text);
-                        try {
-                            return LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
-                        } catch (Exception e) {
-                            // PENDING: e.printStackTrace();
-                        }
-                        return text;
-                    }
-                };
                 formatter.setValueClass(LocalDateTime.class);
                 DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
                 JFormattedTextField ftf = (JFormattedTextField) getTextField();
-
                 try {
                     String maxString = formatter.valueToString(model.getStart());
                     String minString = formatter.valueToString(model.getEnd());
                     ftf.setColumns(Math.max(maxString.length(), minString.length()));
                 } catch (ParseException e) {
                     // PENDING: hmuller
+                    e.printStackTrace();
                 }
                 ftf.setHorizontalAlignment(JTextField.LEFT);
                 ftf.setEditable(true);
@@ -248,5 +231,35 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
 
     public SpinnerLocalDateTimeModel getModel() {
         return (SpinnerLocalDateTimeModel) getSpinner().getModel();
+    }
+
+    class LocalDateTimeFormatter extends InternationalFormatter {
+        public LocalDateTimeFormatter() {
+            super(dateTimeFormatter.toFormat());
+        }
+        @Override public String valueToString(Object value) throws ParseException {
+            //System.out.println(value.getClass().getName());
+            if (value instanceof LocalDateTime) {
+                return ((LocalDateTime) value).format(dateTimeFormatter);
+            } else {
+                return "";
+            }
+        }
+        @Override public Object stringToValue(String text) throws ParseException {
+            //System.out.println("stringToValue:" + text);
+            try {
+                LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
+                Comparable<ChronoLocalDateTime<?>> min = model.getStart();
+                Comparable<ChronoLocalDateTime<?>> max = model.getEnd();
+                if (Objects.nonNull(min) && min.compareTo(value) > 0 || Objects.nonNull(max) && max.compareTo(value) < 0) {
+                    throw new ParseException(text + " is out of range", 0);
+                }
+                return value;
+            } catch (DateTimeParseException e) {
+                ParseException pe = new ParseException(e.getMessage(), e.getErrorIndex());
+                pe.setStackTrace(e.getStackTrace());
+                throw pe;
+            }
+        }
     }
 }
