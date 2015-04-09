@@ -109,10 +109,10 @@ public final class MainPanel extends JPanel {
 
 class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializable {
     private Comparable<ChronoLocalDateTime<?>> start, end;
-    private LocalDateTime value;
+    private ChronoLocalDateTime<?> value;
     private TemporalUnit temporalUnit;
 
-    public SpinnerLocalDateTimeModel(LocalDateTime value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
+    public SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
         super();
         if (Objects.isNull(value)) {
             throw new IllegalArgumentException("value is null");
@@ -164,7 +164,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
         //cal.setTime(value.getTime());
         //cal.add(calendarField, 1);
         //Date next = cal.getTime();
-        LocalDateTime next = value.plus(1, temporalUnit);
+        ChronoLocalDateTime<?> next = value.plus(1, temporalUnit);
         return Objects.isNull(end) || end.compareTo(next) >= 0 ? next : null;
     }
 
@@ -173,11 +173,11 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
         //cal.setTime(value.getTime());
         //cal.add(calendarField, -1);
         //Date prev = cal.getTime();
-        LocalDateTime prev = value.minus(1, temporalUnit);
+        ChronoLocalDateTime<?> prev = value.minus(1, temporalUnit);
         return Objects.isNull(start) || start.compareTo(prev) <= 0 ? prev : null;
     }
 
-    public LocalDateTime getLocalDateTime() {
+    public ChronoLocalDateTime<?> getLocalDateTime() {
         return value;
     }
 
@@ -186,7 +186,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
     }
 
     @Override public void setValue(Object value) {
-        if (!(value instanceof LocalDateTime)) {
+        if (!(value instanceof ChronoLocalDateTime<?>)) {
             throw new IllegalArgumentException("illegal value");
         }
         if (!value.equals(this.value)) {
@@ -239,8 +239,9 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         }
         @Override public String valueToString(Object value) throws ParseException {
             //System.out.println(value.getClass().getName());
-            if (value instanceof LocalDateTime) {
-                return ((LocalDateTime) value).format(dateTimeFormatter);
+            if (value instanceof TemporalAccessor) {
+                //return ((LocalDateTime) value).format(dateTimeFormatter);
+                return dateTimeFormatter.format((TemporalAccessor) value);
             } else {
                 return "";
             }
@@ -248,7 +249,15 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         @Override public Object stringToValue(String text) throws ParseException {
             //System.out.println("stringToValue:" + text);
             try {
-                LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
+                //LocalDateTime value = LocalDate.parse(text, dateTimeFormatter).atStartOfDay();
+                TemporalAccessor ta = dateTimeFormatter.parse(text);
+                ChronoLocalDateTime<?> value = model.getLocalDateTime();
+                //@see https://tips4java.wordpress.com/2015/04/09/temporal-spinners/
+                for (ChronoField field: ChronoField.values()) {
+                    if (field.isSupportedBy(value) && ta.isSupported(field)) {
+                        value = field.adjustInto(value, ta.getLong(field));
+                    }
+                }
                 Comparable<ChronoLocalDateTime<?>> min = model.getStart();
                 Comparable<ChronoLocalDateTime<?>> max = model.getEnd();
                 if (Objects.nonNull(min) && min.compareTo(value) > 0 || Objects.nonNull(max) && max.compareTo(value) < 0) {
