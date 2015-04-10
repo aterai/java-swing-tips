@@ -145,10 +145,10 @@ class TabButton extends JRadioButton {
     private Color rolloverSelectedTextColor; // = Color.WHITE;
     private Color selectedTextColor; // = Color.WHITE;
     @Override public void updateUI() {
-        if (UIManager.get(getUIClassID()) == null) {
-            setUI(new BasicTabViewButtonUI());
-        } else {
+        if (Objects.nonNull(UIManager.get(getUIClassID()))) {
             setUI((TabViewButtonUI) UIManager.getUI(this));
+        } else {
+            setUI(new BasicTabViewButtonUI());
         }
     }
     @Override public String getUIClassID() {
@@ -299,7 +299,7 @@ class TableHeaderTabbedPane extends JPanel {
             model.getColumnCount(), 75, header.getDefaultRenderer(), null);
         tc.setHeaderValue(title);
         model.addColumn(tc);
-        if (selectedColumn == null) {
+        if (Objects.isNull(selectedColumn)) {
             cardLayout.show(contentsPanel, title);
             selectedColumn = title;
         }
@@ -331,7 +331,7 @@ class TableHeaderTabbedPane extends JPanel {
         }
         //@see BasicTableHeaderUI.MouseInputHandler
         private void updateRolloverColumn(MouseEvent e) {
-            if (header.getDraggedColumn() == null && header.contains(e.getPoint())) {
+            if (Objects.isNull(header.getDraggedColumn()) && header.contains(e.getPoint())) {
                 int col = header.columnAtPoint(e.getPoint());
                 if (col != rolloverColumn) {
                     //int oldRolloverColumn = rolloverColumn;

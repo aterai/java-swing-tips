@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.FocusEvent;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -97,15 +98,15 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //     }
     @Override public void updateUI() {
         super.updateUI();
-        if (UIManager.get(getUIClassID()) == null) {
-            setUI(new BasicSearchBarComboBoxUI());
-        } else {
+        if (Objects.nonNull(UIManager.get(getUIClassID()))) {
             setUI((SearchBarComboBoxUI) UIManager.getUI(this));
+        } else {
+            setUI(new BasicSearchBarComboBoxUI());
         }
         UIManager.put("ComboBox.font", getFont()); //XXX: ???
         JButton arrowButton = (JButton) getComponent(0);
         SearchEngine se = getItemAt(0);
-        if (se != null) {
+        if (Objects.nonNull(se)) {
             arrowButton.setIcon(se.favicon);
         }
 //         ListCellRenderer renderer = getRenderer();
