@@ -21,7 +21,7 @@ import javax.swing.text.*;
 public final class MainPanel extends JPanel {
     private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
     public MainPanel() {
-        super(new GridLayout(2, 1));
+        super(new GridLayout(0, 1));
 
         Calendar cal = Calendar.getInstance();
         cal.clear(Calendar.MILLISECOND);
@@ -38,28 +38,23 @@ public final class MainPanel extends JPanel {
         System.out.println(start);
         System.out.println(end);
 
-        //JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
-        JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH));
-        spinner1.setEditor(new JSpinner.DateEditor(spinner1, DATE_FORMAT_PATTERN));
+        JSpinner spinner0 = new JSpinner(new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH));
+        spinner0.setEditor(new JSpinner.DateEditor(spinner0, DATE_FORMAT_PATTERN));
 
         LocalDateTime d = LocalDateTime.now();
         LocalDateTime s = d.minus(2, ChronoUnit.DAYS);
-        //LocalDateTime e = LocalDateTime.MAX;
         LocalDateTime e = d.plus(7, ChronoUnit.DAYS);
 
         System.out.println(d);
         System.out.println(s);
         System.out.println(e);
 
-        JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS)) {
-            @Override protected JComponent createEditor(SpinnerModel model) {
-                if (model instanceof SpinnerLocalDateTimeModel) {
-                    return new LocalDateTimeEditor(this, DATE_FORMAT_PATTERN);
-                } else {
-                    return super.createEditor(model);
-                }
-            }
-        };
+        JSpinner spinner1 = new JSpinner(new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH));
+        spinner1.setEditor(new JSpinner.DateEditor(spinner1, DATE_FORMAT_PATTERN));
+
+        JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS));
+        spinner2.setEditor(new LocalDateTimeEditor(spinner2, DATE_FORMAT_PATTERN));
+
 //         JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
 //         DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN).toFormat());
 //         DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
@@ -69,10 +64,14 @@ public final class MainPanel extends JPanel {
 //         ftf.setEditable(true);
 //         ftf.setFormatterFactory(factory);
 
-        add(makeTitlePanel(spinner1, "SpinnerDateModel"));
+        add(makeTitlePanel(spinner0, "SpinnerDateModel"));
+        add(makeTitlePanel(spinner1, "SpinnerDateModel / toInstant"));
         add(makeTitlePanel(spinner2, "SpinnerLocalDateTimeModel"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
