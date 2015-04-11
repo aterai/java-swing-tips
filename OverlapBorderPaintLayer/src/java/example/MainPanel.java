@@ -135,7 +135,7 @@ class ToggleButtonBarCellIcon implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
-        if (parent == null) {
+        if (Objects.isNull(parent)) {
             return;
         }
         area = getShape(parent, c, x, y);
@@ -210,7 +210,7 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
     private Shape shape;
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (shape != null) {
+        if (Objects.nonNull(shape)) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

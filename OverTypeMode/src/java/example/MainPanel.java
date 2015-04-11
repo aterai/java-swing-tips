@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
@@ -81,7 +82,7 @@ class OvertypeTextArea extends JTextArea {
         // caret position
         if (isOvertypeMode()) {
             int pos = getCaretPosition();
-            if (getSelectedText() == null && pos < getDocument().getLength()) {
+            if (Objects.isNull(getSelectedText()) && pos < getDocument().getLength()) {
                 moveCaretPosition(pos + 1);
             }
         }
@@ -118,11 +119,11 @@ class OvertypeTextArea extends JTextArea {
                     Rectangle r = mapper.modelToView(component, getDot());
                     g.setColor(component.getCaretColor());
                     int width = g.getFontMetrics().charWidth('w');
-                    // A patch for double-width CJK character >>>>
+                    // A patch for full width characters >>>>
                     if (isOvertypeMode()) {
                         int pos = getCaretPosition();
                         if (pos < getDocument().getLength()) {
-                            if (getSelectedText() == null) {
+                            if (Objects.isNull(getSelectedText())) {
                                 String str = getText(pos, 1);
                                 width = g.getFontMetrics().stringWidth(str);
                             } else {
@@ -144,7 +145,7 @@ class OvertypeTextArea extends JTextArea {
          * consider the area for the default caret and this caret)
          */
         @Override protected synchronized void damage(Rectangle r) {
-            if (r != null) {
+            if (Objects.nonNull(r)) {
                 JTextComponent component = getComponent();
                 x = r.x;
                 y = r.y;

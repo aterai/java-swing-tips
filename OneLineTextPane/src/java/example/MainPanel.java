@@ -124,7 +124,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         // @see PlainDocument#insertString(...)
         int length = 0;
         String str = text;
-        if (str != null && str.indexOf(LB) >= 0) {
+        if (Objects.nonNull(str) && str.indexOf(LB) >= 0) {
             StringBuilder filtered = new StringBuilder(str);
             int n = filtered.length();
             for (int i = 0; i < n; i++) {
@@ -186,7 +186,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         Style s = getStyle(token);
         //if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
-        if (s != null) {
+        if (Objects.nonNull(s)) {
             setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
         }
         return endOfToken + 1;
@@ -213,7 +213,7 @@ class NoWrapParagraphView extends ParagraphView {
 class NoWrapViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
-        if (kind != null) {
+        if (Objects.nonNull(kind)) {
             if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
