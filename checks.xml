@@ -53,8 +53,6 @@
 -->
 
 <module name="Checker">
-    <module name="SuppressionCommentFilter" />
-
     <!--
         If you set the basedir property below, then all reported file
         names will be relative to the specified directory. See
@@ -62,6 +60,10 @@
 
         <property name="basedir" value="${basedir}"/>
     -->
+
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <module name="SuppressionCommentFilter" />
 
     <!-- Checks that a package-info.java file exists for each package.     -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
@@ -181,7 +183,6 @@
         <module name="InnerAssignment"/>
         <!-- module name="MagicNumber"/ -->
         <module name="MissingSwitchDefault"/>
-        <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 
