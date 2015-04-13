@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             label.setText(df.format(new Date()));
             Container parent = SwingUtilities.getUnwrappedParent(label);
-            if (parent != null && parent.isOpaque()) {
+            if (Objects.nonNull(parent) && parent.isOpaque()) {
                 repaintWindowAncestor(label);
             }
         }
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     private void repaintWindowAncestor(JComponent c) {
         JRootPane root = c.getRootPane();
-        if (root == null) {
+        if (Objects.isNull(root)) {
             return;
         }
         Rectangle r = SwingUtilities.convertRectangle(c, c.getBounds(), root);
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
         JToggleButton button = new JToggleButton(new AbstractAction("timer") {
             private JFrame digitalClock;
             @Override public void actionPerformed(ActionEvent e) {
-                if (digitalClock == null) {
+                if (Objects.isNull(digitalClock)) {
                     digitalClock = new JFrame();
                     digitalClock.setUndecorated(true);
                     //digitalClock.setAlwaysOnTop(true);
@@ -130,10 +130,10 @@ class TexturePanel extends JPanel {
     public void setTexturePaint(TexturePaint texture) {
         this.texture = texture;
         //setOpaque(false);
-        setOpaque(texture == null);
+        setOpaque(Objects.isNull(texture));
     }
     @Override public void paintComponent(Graphics g) {
-        if (texture != null) {
+        if (Objects.nonNull(texture)) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(texture);
             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -226,7 +226,7 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if (window == null) {
+        if (Objects.isNull(window)) {
             Object o = me.getSource();
             if (o instanceof Window) {
                 window = (Window) o;
@@ -237,7 +237,7 @@ class DragWindowListener extends MouseAdapter {
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

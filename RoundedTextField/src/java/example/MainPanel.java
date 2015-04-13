@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -42,7 +43,7 @@ public final class MainPanel extends JPanel {
         p.add(makeTitlePanel(textField02, "setBorder(new RoundedCornerBorder())"));
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
@@ -84,7 +85,7 @@ class RoundedCornerBorder extends AbstractBorder {
         int r = height - 1;
         RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width - 1, height - 1, r, r);
         Container parent = c.getParent();
-        if (parent != null) {
+        if (Objects.nonNull(parent)) {
             g2.setColor(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(new Area(round));

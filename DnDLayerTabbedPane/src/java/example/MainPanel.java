@@ -184,9 +184,9 @@ class DnDTabbedPane extends JTabbedPane {
     }
     private void clickArrowButton(String actionKey) {
         ActionMap map = getActionMap();
-        if (map != null) {
+        if (Objects.nonNull(map)) {
             Action action = map.get(actionKey);
-            if (action != null && action.isEnabled()) {
+            if (Objects.nonNull(action) && action.isEnabled()) {
                 action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
             }
         }
@@ -241,7 +241,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
     public Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
         DropLocation old = dropLocation;
-        if (location == null || !forDrop) {
+        if (Objects.isNull(location) || !forDrop) {
             dropLocation = new DropLocation(new Point(), -1);
         } else if (location instanceof DropLocation) {
             dropLocation = (DropLocation) location;
@@ -257,7 +257,7 @@ class DnDTabbedPane extends JTabbedPane {
 
         Component cmp    = getComponentAt(dragIndex);
         Container parent = target;
-        while (parent != null) {
+        while (Objects.nonNull(parent)) {
             if (cmp.equals(parent)) { //target == child: JTabbedPane in JTabbedPane
                 return;
             }
@@ -313,7 +313,7 @@ class DnDTabbedPane extends JTabbedPane {
     public Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
         Component c = getSelectedComponent();
-        if (c == null) {
+        if (Objects.isNull(c)) {
             return tabbedRect;
         }
         int xx = tabbedRect.x;
@@ -359,12 +359,12 @@ class DnDTabbedPane extends JTabbedPane {
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
             //disabled tab, null component problem.
             //pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
-            boolean flag = idx < 0 || !src.isEnabledAt(idx) || src.getComponentAt(idx) == null;
+            boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
             startPt = flag ? null : tabPt;
         }
         @Override public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
-            if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
+            if (Objects.nonNull(startPt) && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
@@ -455,7 +455,7 @@ class TabTransferHandler extends TransferHandler {
             isDropable = tr.contains(pt) && idx >= 0 && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
             //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            if (source != null && target != source.getComponentAt(source.dragTabIndex)) {
+            if (Objects.nonNull(source) && target != source.getComponentAt(source.dragTabIndex)) {
                 isDropable = tr.contains(pt) && idx >= 0;
             }
         }
@@ -585,7 +585,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             JLayer layer = (JLayer) c;
             DnDTabbedPane tabbedPane = (DnDTabbedPane) layer.getView();
             DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
-            if (loc != null && loc.isDropable() && loc.getIndex() >= 0) {
+            if (Objects.nonNull(loc) && loc.isDropable() && loc.getIndex() >= 0) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
                 g2.setColor(Color.RED);
@@ -624,7 +624,7 @@ class ButtonTabComponent extends JPanel {
 
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if (pane == null) {
+        if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
         this.pane = pane;

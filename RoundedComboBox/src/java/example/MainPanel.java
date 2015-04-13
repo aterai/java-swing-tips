@@ -126,14 +126,14 @@ public final class MainPanel extends JPanel {
         } else {
             panel.add(cmp);
         }
-        if (str != null) {
+        if (Objects.nonNull(str)) {
             TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), str);
-            if (bgc != null) {
+            if (Objects.nonNull(bgc)) {
                 b.setTitleColor(new Color(~bgc.getRGB()));
             }
             panel.setBorder(b);
         }
-        if (bgc != null) {
+        if (Objects.nonNull(bgc)) {
             panel.setOpaque(true);
             panel.setBackground(bgc);
         }
@@ -235,7 +235,7 @@ class RoundedCornerBorder extends AbstractBorder {
         Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
 
         Container parent = c.getParent();
-        if (parent != null) {
+        if (Objects.nonNull(parent)) {
             g2.setColor(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(round);
@@ -294,7 +294,7 @@ class KamabokoBorder extends RoundedCornerBorder {
         round.add(new Area(b));
 //*/
         Container parent = c.getParent();
-        if (parent != null) {
+        if (Objects.nonNull(parent)) {
             g2.setColor(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(round);
