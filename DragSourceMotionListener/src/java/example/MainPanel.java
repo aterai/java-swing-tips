@@ -126,10 +126,7 @@ class LabelTransferHandler extends TransferHandler {
         return new LabelTransferable(dh, localObjectFlavor, text);
     }
     @Override public boolean canImport(TransferSupport support) {
-        if (!support.isDrop()) {
-            return false;
-        }
-        return true;
+        return support.isDrop() && support.isDataFlavorSupported(localObjectFlavor);
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");

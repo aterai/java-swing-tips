@@ -69,16 +69,13 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     public TableNextMatchKeyHandler() {
         super();
         //Long l = (Long) UIManager.get("List.timeFactor");
-        timeFactor = 500L; //(l != null) ? l.longValue() : 1000L;
+        timeFactor = 500L; //(Objects.nonNull(l) ? l.longValue() : 1000L;
     }
     private boolean isNavigationKey(KeyEvent event) {
         JTable table = (JTable) event.getComponent();
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         KeyStroke key = KeyStroke.getKeyStrokeForEvent(event);
-        if (inputMap != null && inputMap.get(key) != null) {
-            return true;
-        }
-        return false;
+        return Objects.nonNull(inputMap) && Objects.nonNull(inputMap.get(key));
     }
     @Override public void keyPressed(KeyEvent e) {
         if (isNavigationKey(e)) {
@@ -101,7 +98,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         int startIndex = src.getSelectedRow();
         if (time - lastTime < timeFactor) {
             typedString += c;
-            if (prefix != null && prefix.length() == 1 && c == prefix.charAt(0)) {
+            if (Objects.nonNull(prefix) && prefix.length() == 1 && c == prefix.charAt(0)) {
                 // Subsequent same key presses move the keyboard focus to the next
                 // object that starts with the same letter.
                 startIndex += increment;
@@ -145,7 +142,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     //@see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
     public static int getNextMatch(JTable table, String prefix, int startingRow, Position.Bias bias) {
         int max = table.getRowCount();
-        if (prefix == null || startingRow < 0 || startingRow >= max) {
+        if (Objects.isNull(prefix) || startingRow < 0 || startingRow >= max) {
             throw new IllegalArgumentException();
         }
         String uprefix = prefix.toUpperCase(Locale.ENGLISH);

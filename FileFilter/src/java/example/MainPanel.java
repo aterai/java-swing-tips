@@ -65,13 +65,7 @@ public final class MainPanel extends JPanel {
 
 class PngFileFilter extends FileFilter {
     @Override public boolean accept(File file) {
-        if (file.isDirectory()) {
-            return true;
-        }
-        if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
-            return true;
-        }
-        return false;
+        return file.isDirectory() || file.getName().toLowerCase(Locale.ENGLISH).endsWith(".png");
     }
     @Override public String getDescription() {
         return "PNG(*.png)";
@@ -80,13 +74,7 @@ class PngFileFilter extends FileFilter {
 
 class JpgFileFilter extends FileFilter {
     @Override public boolean accept(File file) {
-        if (file.isDirectory()) {
-            return true;
-        }
-        if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jpg")) {
-            return true;
-        }
-        return false;
+        return file.isDirectory() || file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jpg");
     }
     @Override public String getDescription() {
         return "JPEG(*.jpg)";
