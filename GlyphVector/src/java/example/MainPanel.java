@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.*;
-import java.util.Objects;
 import java.text.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {

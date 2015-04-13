@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.Objects;
 import java.beans.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.*;
 
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 //
 //                 // Paint the bouncing box.
 //                 boxRect = getBox(boxRect);
-//                 if (boxRect != null) {
+//                 if (Objects.nonNull(boxRect)) {
 //                     int w = 10;
 //                     int x = getAnimationIndex();
 //                     System.out.println(x);

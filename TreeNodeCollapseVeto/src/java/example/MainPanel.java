@@ -5,8 +5,8 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.tree.*;
 import javax.swing.plaf.IconUIResource;
+import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
