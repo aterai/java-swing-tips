@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -67,12 +68,12 @@ class TextComponentPopupMenu extends JPopupMenu {
         final Action cutAction    = new DefaultEditorKit.CutAction();
         final Action copyAction   = new DefaultEditorKit.CopyAction();
         final Action pasteAction  = new DefaultEditorKit.PasteAction();
-        final Action deleteAction = new AbstractAction("delete") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JPopupMenu pop = (JPopupMenu) e.getSource();
-                ((JTextComponent) pop.getInvoker()).replaceSelection(null);
-            }
-        };
+        final Action deleteAction = new DeleteAction();
+//         final Action deleteAction = new AbstractAction("delete") {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 ((JTextComponent) getInvoker()).replaceSelection(null);
+//             }
+//         };
         tc.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 manager.discardAllEdits();
@@ -105,7 +106,7 @@ class TextComponentPopupMenu extends JPopupMenu {
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 JPopupMenu pop = (JPopupMenu) e.getSource();
                 JTextComponent field = (JTextComponent) pop.getInvoker();
-                boolean flg = field.getSelectedText() != null;
+                boolean flg = Objects.nonNull(field.getSelectedText());
                 cutAction.setEnabled(flg);
                 copyAction.setEnabled(flg);
                 deleteAction.setEnabled(flg);
@@ -142,6 +143,19 @@ class RedoAction extends AbstractAction {
             undoManager.redo();
         } catch (CannotRedoException cre) {
             Toolkit.getDefaultToolkit().beep();
+        }
+    }
+}
+
+class DeleteAction extends AbstractAction {
+    public DeleteAction() {
+        super("delete");
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        Object o = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
+        if (Objects.nonNull(o)) {
+            JPopupMenu pop = (JPopupMenu) o;
+            ((JTextComponent) pop.getInvoker()).replaceSelection(null);
         }
     }
 }
