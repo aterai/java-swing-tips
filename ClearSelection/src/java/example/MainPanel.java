@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -33,7 +34,7 @@ public final class MainPanel extends JPanel {
                 setSelectionForeground(null);
                 setSelectionBackground(null);
                 super.updateUI();
-                if (listener == null) {
+                if (Objects.isNull(listener)) {
                     listener = new ClearSelectionListener();
                 }
                 addMouseListener(listener);

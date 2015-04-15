@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -103,10 +104,10 @@ class HighlightRenderer extends DefaultTableCellRenderer {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         Color highlight = highlighter.getHighlightableCellColor(row, column);
-        if (highlight == null) {
-            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        } else {
+        if (Objects.nonNull(highlight)) {
             setBackground(highlight);
+        } else {
+            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         }
         return this;
     }

@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
@@ -20,34 +20,22 @@ public final class MainPanel extends JPanel {
         spinner03.setModel(new SpinnerNumberModel(20, 0, 59, 1) {
             @Override public Object getNextValue() {
                 Object n = super.getNextValue();
-                if (n == null) {
-                    n = getMinimum();
-                }
-                return n;
+                return Objects.nonNull(n) ? n : getMinimum();
             }
             @Override public Object getPreviousValue() {
                 Object n = super.getPreviousValue();
-                if (n == null) {
-                    n = getMaximum();
-                }
-                return n;
+                return Objects.nonNull(n) ? n : getMaximum();
             }
         });
         spinner04.setModel(new SpinnerListModel(weeks) {
             @Override public Object getNextValue() {
                 Object o = super.getNextValue();
-                if (o == null) {
-                    o = getList().get(0);
-                }
-                return o;
+                return Objects.nonNull(o) ? o : getList().get(0);
             }
             @Override public Object getPreviousValue() {
+                List l = getList();
                 Object o = super.getPreviousValue();
-                if (o == null) {
-                    List list = getList();
-                    o = list.get(list.size() - 1);
-                }
-                return o;
+                return Objects.nonNull(o) ? o : l.get(l.size() - 1);
             }
         });
         add(makeTitlePanel("default model", Arrays.asList(spinner01, spinner02)));

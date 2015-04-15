@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -26,7 +27,7 @@ public final class MainPanel extends JPanel {
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 final RowSorter<? extends TableModel> sorter = table.getRowSorter();
-                if (sorter == null || sorter.getSortKeys().size() == 0) {
+                if (Objects.isNull(sorter) || sorter.getSortKeys().size() == 0) {
                     return;
                 }
                 JTableHeader h = (JTableHeader) e.getComponent();
