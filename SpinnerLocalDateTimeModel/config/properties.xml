@@ -25,7 +25,7 @@
 <property name="javadoc.docencoding" value="UTF-8" />
 <property name="javadoc.pkgs"        value="*" />
 <property name="javadoc.locale"      value="ja" />
-<property name="javadoc.link"        value="http://docs.oracle.com/javase/jp/8/api/" />
+<property name="javadoc.link"        value="https://docs.oracle.com/javase/jp/8/docs/api/" />
 
 <!-- signjar -->
 <property name="signjar.keystore" value="myKeyStore" />
