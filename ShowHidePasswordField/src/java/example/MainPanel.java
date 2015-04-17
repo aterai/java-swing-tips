@@ -22,8 +22,7 @@ public final class MainPanel extends JPanel {
         p1.add(new JCheckBox(new AbstractAction("show passwords") {
             @Override public void actionPerformed(ActionEvent e) {
                 AbstractButton c = (AbstractButton) e.getSource();
-                Character ec = c.isSelected() ? 0 : (Character) UIManager.get("PasswordField.echoChar");
-                pf1.setEchoChar(ec);
+                pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
             }
         }), BorderLayout.SOUTH);
         add(makeTitlePanel(p1, "BorderLayout + JCheckBox"));
@@ -36,8 +35,7 @@ public final class MainPanel extends JPanel {
         AbstractButton b2 = new JToggleButton(new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 AbstractButton c = (AbstractButton) e.getSource();
-                Character ec = c.isSelected() ? 0 : (Character) UIManager.get("PasswordField.echoChar");
-                pf2.setEchoChar(ec);
+                pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
             }
         });
         b2.setFocusable(false);
