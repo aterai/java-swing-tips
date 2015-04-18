@@ -7,7 +7,6 @@ package example;
 // import javax.swing.*;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.text.*;
 import java.time.*;
 import java.time.chrono.*;
@@ -106,7 +105,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializable {
+class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     private Comparable<ChronoLocalDateTime<?>> start, end;
     private ChronoLocalDateTime<?> value;
     private TemporalUnit temporalUnit;
@@ -189,14 +188,14 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel implements Serializ
             throw new IllegalArgumentException("illegal value");
         }
         if (!value.equals(this.value)) {
-            this.value = (LocalDateTime) value;
+            this.value = (ChronoLocalDateTime<?>) value;
             fireStateChanged();
         }
     }
 }
 
 class LocalDateTimeEditor extends JSpinner.DefaultEditor {
-    private final DateTimeFormatter dateTimeFormatter;
+    private final transient DateTimeFormatter dateTimeFormatter;
     private final SpinnerLocalDateTimeModel model;
 
     public LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
