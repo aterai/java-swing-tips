@@ -409,7 +409,6 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 }
 
 class TabTransferHandler extends TransferHandler {
-    private static GhostGlassPane glassPane;
     private final DataFlavor localObjectFlavor;
     private DnDTabbedPane source;
 
@@ -463,15 +462,14 @@ class TabTransferHandler extends TransferHandler {
 //         }
         boolean isDropable = isDropable(target, pt, idx);
 
-        glassPane.setVisible(false);
-        target.getRootPane().setGlassPane(glassPane);
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         // http://bugs.java.com/view_bug.do?bug_id=6700748
+        Component glassPane = target.getRootPane().getGlassPane();
+        glassPane.setVisible(false);
         glassPane.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         glassPane.setVisible(true);
         target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-        //Component c = target.getRootPane().getGlassPane();
-        //c.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+
         if (isDropable) {
             support.setShowDropLocation(true);
             dl.setDropable(true);
@@ -516,10 +514,7 @@ class TabTransferHandler extends TransferHandler {
         System.out.println("getSourceActions");
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane src = (DnDTabbedPane) c;
-            if (Objects.isNull(glassPane)) {
-                glassPane = new GhostGlassPane(src);
-                c.getRootPane().setGlassPane(glassPane);
-            }
+            c.getRootPane().setGlassPane(new GhostGlassPane(src));
             if (src.dragTabIndex < 0) {
                 return NONE;
             }
@@ -558,9 +553,9 @@ class TabTransferHandler extends TransferHandler {
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
         System.out.println("exportDone");
         DnDTabbedPane src = (DnDTabbedPane) c;
+        src.getRootPane().getGlassPane().setVisible(false);
         src.setDropLocation(null, null, false);
         src.repaint();
-        glassPane.setVisible(false);
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         //glassPane = null;
         //source = null;
