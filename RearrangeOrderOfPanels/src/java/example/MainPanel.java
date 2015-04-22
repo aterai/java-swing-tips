@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 class RearrangingHandler extends MouseAdapter {
     private static final Rectangle R1 = new Rectangle();
     private static final Rectangle R2 = new Rectangle();
-    private static Rectangle prevRect;
+    private Rectangle prevRect;
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
     private final JWindow window = new JWindow();
     private int index = -1;
@@ -116,7 +116,7 @@ class RearrangingHandler extends MouseAdapter {
         SwingUtilities.convertPointToScreen(p, parent);
         window.setLocation(p);
     }
-    private static int getTargetIndex(Rectangle r, Point pt, int i) {
+    private int getTargetIndex(Rectangle r, Point pt, int i) {
         int ht2 = (int) (.5 + r.height * .5);
         R1.setBounds(r.x, r.y,       r.width, ht2);
         R2.setBounds(r.x, r.y + ht2, r.width, ht2);
