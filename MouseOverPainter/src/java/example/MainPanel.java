@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 class HighlightCursorTextArea extends JTextArea {
     private static final Color LINE_COLOR = new Color(250, 250, 220);
     private int rollOverRowIndex = -1;
-    private MouseAdapter rolloverHandler;
+    private transient MouseAdapter rolloverHandler;
 
     public HighlightCursorTextArea() {
         super();
