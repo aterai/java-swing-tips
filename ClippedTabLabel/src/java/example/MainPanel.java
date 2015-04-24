@@ -73,27 +73,28 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     private Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-        if (insets == null) {
+        if (Objects.nonNull(insets)) {
+            return insets;
+        } else {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        } else {
-            return insets;
         }
     }
     private Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if (insets == null) {
+        if (Objects.nonNull(insets)) {
+            return insets;
+        } else {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        } else {
-            return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount = getTabCount();
-        if (tabCount == 0) {
+        if (tabCount == 0 || !isVisible()) {
+            super.doLayout();
             return;
         }
         Insets tabInsets     = getTabInsets();
@@ -123,11 +124,9 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
+        setVisible(false);
         super.insertTab(title, icon, component, Objects.toString(tip, title), index);
-        JLabel label = new JLabel(title, JLabel.CENTER);
-        //Dimension dim = label.getPreferredSize();
-        //Insets tabInsets = getTabInsets();
-        //label.setPreferredSize(new Dimension(0, dim.height + tabInsets.top + tabInsets.bottom));
-        setTabComponentAt(index, label);
+        setTabComponentAt(index, new JLabel(title, JLabel.CENTER));
+        setVisible(true);
     }
 }

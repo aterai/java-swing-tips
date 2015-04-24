@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -84,27 +84,28 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     private Insets getTabInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabInsets");
-        if (insets == null) {
+        if (Objects.nonNull(insets)) {
+            return insets;
+        } else {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        } else {
-            return insets;
         }
     }
     private Insets getTabAreaInsets() {
         Insets insets = UIManager.getInsets("TabbedPane.tabAreaInsets");
-        if (insets == null) {
+        if (Objects.nonNull(insets)) {
+            return insets;
+        } else {
             SynthStyle style = SynthLookAndFeel.getStyle(this, Region.TABBED_PANE_TAB_AREA);
             SynthContext context = new SynthContext(this, Region.TABBED_PANE_TAB_AREA, style, SynthConstants.ENABLED);
             return style.getInsets(context, null);
-        } else {
-            return insets;
         }
     }
     @Override public void doLayout() {
         int tabCount = getTabCount();
         if (tabCount == 0) {
+            super.doLayout();
             return;
         }
         Insets tabInsets     = getTabInsets();
@@ -134,12 +135,10 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        super.insertTab(title, icon, component, tip == null ? title : tip, index);
-        //JLabel label = new JLabel(title, JLabel.LEFT);
-        //Dimension dim = label.getPreferredSize();
-        //Insets tabInsets = getTabInsets();
-        //label.setPreferredSize(new Dimension(0, dim.height + tabInsets.top + tabInsets.bottom));
+        setVisible(false);
+        super.insertTab(title, icon, component, Objects.toString(tip, title), index);
         setTabComponentAt(index, new ButtonTabComponent(this));
+        setVisible(true);
     }
 }
 
@@ -153,7 +152,7 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
         String html = "html";
-        if (v != null) {
+        if (Objects.nonNull(v)) {
             tabPane.putClientProperty(html, v);
         }
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
@@ -188,7 +187,7 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
         textRect.setLocation(0, 0);
         iconRect.setLocation(0, 0);
         View v = getTextViewForTab(tabIndex);
-        if (v != null) {
+        if (Objects.nonNull(v)) {
             tabPane.putClientProperty("html", v);
         }
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
@@ -221,7 +220,7 @@ class ButtonTabComponent extends JPanel {
 
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new BorderLayout(0, 0)); //FlowLayout(FlowLayout.LEFT, 0, 0));
-        if (pane == null) {
+        if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
         this.pane = pane;

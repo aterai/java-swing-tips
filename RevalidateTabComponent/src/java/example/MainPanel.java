@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -55,7 +56,7 @@ class ButtonTabComponent extends JPanel {
 
     public ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if (pane == null) {
+        if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
         this.pane = pane;
@@ -233,7 +234,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
 //     }
 //     @Override public void mouseClicked(MouseEvent me) {
 //         Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
-//         if (rect != null && rect.contains(me.getPoint()) && me.getClickCount() == 2) {
+//         if (Objects.nonNull(rect) && rect.contains(me.getPoint()) && me.getClickCount() == 2) {
 //             startEditing();
 //         } else {
 //             renameTabTitle();
