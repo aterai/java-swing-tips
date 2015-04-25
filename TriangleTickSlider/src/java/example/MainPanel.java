@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         slider.setSnapToTicks(true);
         if (icon) {
             Dictionary dictionary = slider.getLabelTable();
-            if (dictionary != null) {
+            if (Objects.nonNull(dictionary)) {
                 Enumeration elements = dictionary.elements();
                 Icon tick = new TickIcon();
                 while (elements.hasMoreElements()) {

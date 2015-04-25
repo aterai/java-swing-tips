@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if (disabledAreNavigableCheck != null) {
+        if (Objects.nonNull(disabledAreNavigableCheck)) {
             Boolean b = UIManager.getBoolean(DISABLED_ARE_NAVIGABLE);
             disabledAreNavigableCheck.setSelected(b);
         }
@@ -121,7 +121,7 @@ class ExitAction extends AbstractAction {
             Component invoker = c.getParent();
             window = SwingUtilities.getWindowAncestor(invoker);
         }
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             //window.dispose();
             window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
         }

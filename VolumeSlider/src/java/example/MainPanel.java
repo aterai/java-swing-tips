@@ -161,7 +161,7 @@ class TriSliderUI extends MetalSliderUI {
 //   //slider.setPaintTicks(true);
 //   slider.setPaintLabels(true);
 //   Dictionary dictionary = slider.getLabelTable();
-//   if (dictionary != null) {
+//   if (Objects.nonNull(dictionary)) {
 //     Enumeration elements = dictionary.elements();
 //     while (elements.hasMoreElements()) {
 //       JLabel label = (JLabel) elements.nextElement();

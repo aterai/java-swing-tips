@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 JComponent b = (JComponent) e.getSource();
                 Window w = SwingUtilities.getWindowAncestor(b);
-                if (w != null) {
+                if (Objects.nonNull(w)) {
                     w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
                 }
             }
@@ -207,7 +207,7 @@ class ResizeWindowListener extends MouseAdapter {
         rect = frame.getBounds();
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if (rect == null) {
+        if (Objects.isNull(rect)) {
             return;
         }
         Side side = ((SideLabel) e.getComponent()).side;
@@ -259,7 +259,7 @@ class DragWindowListener extends MouseAdapter {
     private final transient Point startPt = new Point();
     private transient Window window;
     @Override public void mousePressed(MouseEvent me) {
-        if (window == null) {
+        if (Objects.isNull(window)) {
             Object o = me.getSource();
             if (o instanceof Window) {
                 window = (Window) o;
@@ -270,7 +270,7 @@ class DragWindowListener extends MouseAdapter {
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
             window.setLocation(eventLocationOnScreen.x - startPt.x,
                                eventLocationOnScreen.y - startPt.y);

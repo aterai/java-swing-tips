@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Locale;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         //    ((Window) c).pack();
         //}
         Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
+        if (Objects.nonNull(window)) {
             window.pack();
         }
     }

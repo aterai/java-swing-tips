@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import java.util.prefs.*;
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             saveLocation();
             Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
-            if (window != null) {
+            if (Objects.nonNull(window)) {
                 window.dispose();
             }
         }
@@ -30,7 +31,7 @@ public final class MainPanel extends JPanel {
                 ex.printStackTrace();
             }
             Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
-            if (window != null) {
+            if (Objects.nonNull(window)) {
                 window.dispose();
             }
         }
