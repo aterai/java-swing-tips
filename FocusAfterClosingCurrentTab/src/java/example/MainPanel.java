@@ -66,7 +66,6 @@ public class MainPanel extends JPanel {
                 String title = new Date().toString();
                 tabbedPane.addTab(title, new JLabel(title));
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-                
             }
         }));
         add(p, BorderLayout.SOUTH);
