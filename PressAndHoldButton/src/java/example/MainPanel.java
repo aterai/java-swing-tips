@@ -5,9 +5,10 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 //import java.net.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.Timer;
 //import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
@@ -54,7 +55,7 @@ class PressAndHoldButton extends JButton {
     @Override public void updateUI() {
         removeMouseListener(handler);
         super.updateUI();
-        if (handler == null) {
+        if (Objects.isNull(handler)) {
             handler = new PressAndHoldHandler();
         }
         SwingUtilities.updateComponentTreeUI(handler.pop);

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
@@ -112,7 +113,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         super(combo);
     }
     @Override protected MouseListener createListMouseListener() {
-        if (handler2 == null) {
+        if (Objects.isNull(handler2)) {
             handler2 = new Handler2();
         }
         return handler2;
@@ -134,7 +135,7 @@ class BasicComboPopup2 extends BasicComboPopup {
                 }
                 comboBox.setPopupVisible(false);
                 // workaround for cancelling an edited item (bug 4530953)
-                if (comboBox.isEditable() && comboBox.getEditor() != null) {
+                if (comboBox.isEditable() && Objects.nonNull(comboBox.getEditor())) {
                     comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
                 }
             }
@@ -153,7 +154,7 @@ class BasicComboPopup3 extends BasicComboPopup {
             @Override protected void processEvent(AWTEvent e) {
                 if (e instanceof MouseWheelEvent) {
                     JScrollBar toScroll = getVerticalScrollBar();
-                    if (toScroll == null || !toScroll.isVisible()) {
+                    if (Objects.isNull(toScroll) || !toScroll.isVisible()) {
                         ((MouseWheelEvent) e).consume();
                         return;
                     }

@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -92,17 +92,15 @@ class FishEyeTable extends JTable {
         );
     }
     @Override public void updateUI() {
-        if (handler != null) {
-            removeMouseListener(handler);
-            removeMouseMotionListener(handler);
-            getSelectionModel().removeListSelectionListener(handler);
-        }
+        removeMouseListener(handler);
+        removeMouseMotionListener(handler);
+        getSelectionModel().removeListSelectionListener(handler);
         super.updateUI();
         setColumnSelectionAllowed(false);
         setRowSelectionAllowed(true);
         setFillsViewportHeight(true);
 
-        if (handler == null) {
+        if (Objects.isNull(handler)) {
             handler = new FishEyeTableHandler();
         }
         addMouseListener(handler);
