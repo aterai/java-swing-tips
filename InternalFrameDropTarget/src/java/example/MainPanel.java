@@ -181,7 +181,7 @@ public class MainPanel extends JPanel {
 //     @Override public void dragEnter(DropTargetDragEvent dtde) {
 //         Component c = dtde.getDropTargetContext().getComponent();
 //         Container cn = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
-//         if (cn != null) {
+//         if (cn instanceof JInternalFrame) {
 //             JInternalFrame f = (JInternalFrame) cn;
 //             f.moveToFront();
 //             f.getParent().repaint();

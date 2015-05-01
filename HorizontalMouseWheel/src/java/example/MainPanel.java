@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
                 Component c = e.getComponent();
                 Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
-                if (Objects.nonNull(s)) {
+                if (s instanceof JScrollPane) {
                     JScrollPane sp = (JScrollPane) s;
                     JComponent sb = e.isControlDown() ? sp.getHorizontalScrollBar() : sp.getVerticalScrollBar();
                     sb.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, sb));
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
                 JScrollBar hsb = (JScrollBar) e.getComponent();
                 Container p = SwingUtilities.getAncestorOfClass(JScrollPane.class, hsb);
-                if (Objects.nonNull(p)) {
+                if (s instanceof JScrollPane) {
                     JViewport vport = ((JScrollPane) p).getViewport();
                     Point vp = vport.getViewPosition();
                     int d = hsb.getUnitIncrement() * e.getWheelRotation();
