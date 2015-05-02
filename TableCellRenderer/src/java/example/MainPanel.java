@@ -113,9 +113,7 @@ class WrappedLabel extends JLabel {
         super.doLayout();
     }
     @Override protected void paintComponent(Graphics g) {
-        if (gvtext == null) {
-            super.paintComponent(g);
-        } else {
+        if (Objects.nonNull(gvtext)) {
             Insets i = getInsets();
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());
@@ -123,6 +121,8 @@ class WrappedLabel extends JLabel {
             g2.setPaint(getForeground());
             g2.drawGlyphVector(gvtext, i.left, getFont().getSize() + i.top);
             g2.dispose();
+        } else {
+            super.paintComponent(g);
         }
     }
     private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {
@@ -172,10 +172,10 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {

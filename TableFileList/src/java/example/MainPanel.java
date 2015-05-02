@@ -179,10 +179,10 @@ class TestRenderer extends JPanel implements TableCellRenderer {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) { /* Overridden for performance reasons. */ }
@@ -204,10 +204,10 @@ class TestRendererLabel extends JLabel {
     @Override public boolean isOpaque() {
         //Color back = getBackground();
         //Component p = getParent();
-        //if (p != null) {
+        //if (Objects.nonNull(p)) {
         //    p = p.getParent();
         //} // p should now be the JTable.
-        //boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        //boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return false; //!colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
@@ -269,19 +269,19 @@ class MyLabel extends JLabel {
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         //System.out.println(propertyName);
 //      //String literal pool
 //      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
-//          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && getClientProperty(BasicHTML.propertyKey) != null)) {
+//          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
         if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
-              || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && getClientProperty(BasicHTML.propertyKey) != null || "foreground".equals(propertyName))) {
+              || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)) || "foreground".equals(propertyName))) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
@@ -329,7 +329,7 @@ class MyTable extends JTable {
     class RubberBandingListener extends MouseAdapter {
         @Override public void mouseDragged(MouseEvent e) {
             Point destPoint = e.getPoint();
-            srcPoint = srcPoint == null ? destPoint : srcPoint;
+            srcPoint = Objects.nonNull(srcPoint) ? srcPoint : destPoint;
             polygon.reset();
             polygon.moveTo(srcPoint.x,  srcPoint.y);
             polygon.lineTo(destPoint.x, srcPoint.y);
@@ -380,7 +380,7 @@ class MyTable extends JTable {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (srcPoint == null) {
+        if (Objects.isNull(srcPoint)) {
             return;
         }
         Graphics2D g2d = (Graphics2D) g.create();

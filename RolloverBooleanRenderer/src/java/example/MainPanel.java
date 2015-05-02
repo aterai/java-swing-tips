@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -30,7 +31,7 @@ public final class MainPanel extends JPanel {
         }
         private transient HighlightListener highlighter;
         @Override public void updateUI() {
-            if (highlighter != null) {
+            if (Objects.nonNull(highlighter)) {
                 addMouseListener(highlighter);
                 addMouseMotionListener(highlighter);
                 setDefaultRenderer(Object.class,  null);
@@ -184,7 +185,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
             setBackground(table.getBackground());
             //setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); //Nimbus
         }
-        setSelected(value != null && ((Boolean) value).booleanValue());
+        setSelected(Objects.nonNull(value) && ((Boolean) value).booleanValue());
 
         if (hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
@@ -197,10 +198,10 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {

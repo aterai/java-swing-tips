@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
 
         JScrollPane scroll = new JScrollPane(table) {
             @Override public void paintComponent(Graphics g) {
-                if (TEXTURE != null) {
+                if (Objects.nonNull(TEXTURE)) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setPaint(TEXTURE);
                     g2.fillRect(0, 0, getWidth(), getHeight());
@@ -183,7 +183,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
-        setSelected(value != null && ((Boolean) value).booleanValue());
+        setSelected(Objects.nonNull(value) && ((Boolean) value).booleanValue());
         if (hasFocus) {
             setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
         } else {
@@ -202,10 +202,10 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     @Override public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
-        if (p != null) {
+        if (Objects.nonNull(p)) {
             p = p.getParent();
         } // p should now be the JTable.
-        boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
         return !colorMatch && super.isOpaque();
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
