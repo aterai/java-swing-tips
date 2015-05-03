@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -16,7 +17,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         @Override public void actionPerformed(ActionEvent e) {
             comboBox.setPopupVisible(false);
             Object o = listBox.getSelectedValue();
-            if (o == null) {
+            if (Objects.isNull(o)) {
                 o = comboBox.getItemAt(0);
             }
             System.out.println(o + ": " + comboBox.getEditor().getItem());
@@ -35,17 +36,14 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     @Override protected void installListeners() {
         super.installListeners();
         popupMenuListener = createPopupMenuListener();
-        //if (popupMenuListener != null)
         comboBox.addPopupMenuListener(popupMenuListener);
     }
     @Override protected void uninstallListeners() {
         super.installListeners();
-        if (popupMenuListener != null) {
-            comboBox.removePopupMenuListener(popupMenuListener);
-        }
+        comboBox.removePopupMenuListener(popupMenuListener);
     }
     protected PopupMenuListener createPopupMenuListener() {
-        if (popupMenuListener == null) {
+        if (Objects.isNull(popupMenuListener)) {
             popupMenuListener = new PopupMenuListener() {
                 private String str;
                 @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -73,7 +71,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     //NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
     private static class DummyKeyAdapter extends KeyAdapter { /* dummy */ }
     @Override protected KeyListener createKeyListener() {
-        if (keyListener == null) {
+        if (Objects.isNull(keyListener)) {
             keyListener = new DummyKeyAdapter();
         }
         return keyListener;
@@ -84,7 +82,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         editor.setEnabled(comboBox.isEnabled());
         editor.setFocusable(comboBox.isFocusable());
         editor.setFont(comboBox.getFont());
-        //if (focusListener != null) {
+        //if (Objects.isNull(focusListener)) {
         //    editor.addFocusListener(focusListener);
         //}
         //editor.addFocusListener(getHandler());
@@ -106,7 +104,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     }
     @Override public void configureArrowButton() {
         super.configureArrowButton();
-        if (arrowButton != null) {
+        if (Objects.nonNull(arrowButton)) {
             arrowButton.setBackground(UIManager.getColor("Panel.background"));
             arrowButton.setHorizontalAlignment(SwingConstants.LEFT);
             arrowButton.setOpaque(true);
@@ -121,12 +119,10 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         //super.installComponents();
         arrowButton = createArrowButton();
         comboBox.add(arrowButton);
-        //if (arrowButton != null)
         configureArrowButton();
 
         loupeButton = createLoupeButton();
         comboBox.add(loupeButton);
-        //if (loupeButton != null)
         configureLoupeButton();
 
         //if (comboBox.isEditable())
@@ -134,7 +130,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         comboBox.add(currentValuePane);
     }
     @Override protected void uninstallComponents() {
-        if (loupeButton != null) {
+        if (Objects.nonNull(loupeButton)) {
             unconfigureLoupeButton();
         }
         loupeButton = null;
@@ -148,7 +144,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         return button;
     }
     public void configureLoupeButton() {
-        if (loupeButton != null) {
+        if (Objects.nonNull(loupeButton)) {
             loupeButton.setName("ComboBox.loupeButton");
             loupeButton.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             loupeButton.setEnabled(comboBox.isEnabled());
@@ -165,7 +161,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         }
     }
     public void unconfigureLoupeButton() {
-        if (loupeButton != null) {
+        if (Objects.nonNull(loupeButton)) {
             loupeButton.setAction(null);
             //loupeButton.removeMouseListener(popup.getMouseListener());
             //loupeButton.removeMouseMotionListener(popup.getMouseMotionListener());
@@ -228,7 +224,7 @@ class SearchBarLayout implements LayoutManager {
         int loupeWidth   = buttonHeight;
 
         JButton arrowButton = (JButton) cb.getComponent(0);
-        if (arrowButton != null) {
+        if (Objects.nonNull(arrowButton)) {
             Insets arrowInsets = arrowButton.getInsets();
             buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
             arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
@@ -241,14 +237,14 @@ class SearchBarLayout implements LayoutManager {
             }
         }
         //= (JButton) cb.getComponent(3);
-        if (loupeButton != null) {
+        if (Objects.nonNull(loupeButton)) {
             //Insets loupeInsets = loupeButton.getInsets();
             //loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
             loupeButton.setBounds(width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight);
         }
         JTextField editor = (JTextField) cb.getEditor().getEditorComponent();
         //JTextField editor = (JTextField) cb.getComponent(1);
-        if (editor != null) {
+        if (Objects.nonNull(editor)) {
             editor.setBounds(insets.left + buttonWidth, insets.top,
                              width  - insets.left - insets.right - buttonWidth - loupeWidth,
                              height - insets.top  - insets.bottom);
@@ -279,7 +275,7 @@ class TriangleArrowButton extends JButton {
     private static Icon triangleIcon = new TriangleIcon();
 //     @Override public void setIcon(Icon favicon) {
 //         super.setIcon(favicon);
-//         if (favicon != null) {
+//         if (Objects.nonNull(favicon)) {
 //             setRolloverIcon(makeRolloverIcon(favicon));
 //         }
 //     }
@@ -311,7 +307,7 @@ class TriangleArrowButton extends JButton {
     @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
         Icon favicon = getIcon();
-        int fw = favicon == null ? 16 : favicon.getIconWidth();
+        int fw = Objects.nonNull(favicon) ? favicon.getIconWidth() : 16;
         int w  = fw + triangleIcon.getIconWidth() + i.left + i.right;
         return new Dimension(w, w);
     }
