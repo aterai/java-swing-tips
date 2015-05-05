@@ -111,11 +111,12 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
         } else {
             String title = Objects.toString(value, "");
             int mrow = table.convertRowIndexToModel(row);
-            Test t = (Test) table.getModel().getValueAt(mrow, 0);
-            if (t == null) {
-                test = new Test(title, null, "");
-            } else {
+            Object o = table.getModel().getValueAt(mrow, 0);
+            if (o instanceof Test) {
+                Test t = (Test) o;
                 test = new Test(title, t.icon, t.text);
+            } else {
+                test = new Test(title, null, "");
             }
             remove(iconLabel);
         }
