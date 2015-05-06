@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -70,10 +70,10 @@ class LinkCellList<E> extends JList<E> {
         prevIndex = i;
         pt.translate(-r.x, -r.y);
         Component cmp = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-        if (cmp == null) {
-            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        } else {
+        if (Objects.nonNull(cmp)) {
             setCursor(cmp.getCursor());
+        } else {
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
 }

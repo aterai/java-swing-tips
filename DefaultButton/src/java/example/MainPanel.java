@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JRootPane rootPane = box.getRootPane();
-                if (rootPane != null) {
+                if (Objects.nonNull(rootPane)) {
                     rootPane.setDefaultButton(map.get(bg.getSelection().getActionCommand()));
                 }
             }

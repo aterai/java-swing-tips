@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.font.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -43,7 +44,7 @@ public final class MainPanel extends JPanel {
         add(makeTitlePanel(spinner1, "JSpinner+Default"));
         add(makeTitlePanel(spinner2, "JSpinner+StringBorder"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static void initTextFieldBorder(final JTextField textField) {
         EventQueue.invokeLater(new Runnable() {
@@ -52,7 +53,7 @@ public final class MainPanel extends JPanel {
                 //if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
                 if (textField.getUI().getClass().getName().startsWith("Synth")) {
                     Border c = textField.getBorder();
-                    textField.setBorder((c == null) ? b : BorderFactory.createCompoundBorder(c, b));
+                    textField.setBorder(Objects.nonNull(c) ? BorderFactory.createCompoundBorder(c, b) : b);
                 } else {
                     textField.setBorder(b);
                 }

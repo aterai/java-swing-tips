@@ -40,11 +40,11 @@ public final class MainPanel extends JPanel {
         });
         label = new JLabel() {
             @Override public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                super.paintComponent(g2);
-                if (dashedStroke == null) {
+                super.paintComponent(g);
+                if (Objects.isNull(dashedStroke)) {
                     dashedStroke = new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f);
                 }
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setStroke(dashedStroke);
                 g2.drawLine(5, label.getHeight() / 2, label.getWidth() - 10, label.getHeight() / 2);
                 g2.dispose();
