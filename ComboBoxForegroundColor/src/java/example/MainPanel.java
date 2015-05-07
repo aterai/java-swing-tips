@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -87,7 +88,7 @@ class ComboForegroundRenderer extends DefaultListCellRenderer {
         if (value instanceof ColorItem) {
             ColorItem item = (ColorItem) value;
             Color ic = item.color;
-            if (index < 0 && ic != null && !ic.equals(combo.getForeground())) {
+            if (index < 0 && Objects.nonNull(ic) && !ic.equals(combo.getForeground())) {
                 combo.setForeground(ic); //Windows, Motif Look&Feel
                 list.setSelectionForeground(ic);
                 list.setSelectionBackground(SELECTION_BACKGROUND);
