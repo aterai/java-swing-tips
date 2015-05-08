@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -47,9 +46,9 @@ public final class MainPanel extends JPanel {
         hsb.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
                 JScrollBar hsb = (JScrollBar) e.getComponent();
-                Container p = SwingUtilities.getAncestorOfClass(JScrollPane.class, hsb);
-                if (s instanceof JScrollPane) {
-                    JViewport vport = ((JScrollPane) p).getViewport();
+                Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, hsb);
+                if (c instanceof JScrollPane) {
+                    JViewport vport = ((JScrollPane) c).getViewport();
                     Point vp = vport.getViewPosition();
                     int d = hsb.getUnitIncrement() * e.getWheelRotation();
                     vp.translate(d, 0);
