@@ -6,77 +6,20 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final List<JList<String>> listArray = new ArrayList<>(3);
     private final JTabbedPane jtp = new JTabbedPane();
 
     public MainPanel() {
         super(new BorderLayout());
-        listArray.add(makeList(0));
-        listArray.add(makeList(1));
-        listArray.add(makeList(2));
 
-        jtp.addTab("00000000", new JScrollPane(listArray.get(0)));
-        jtp.addTab("11111111", new JScrollPane(listArray.get(1)));
-        jtp.addTab("22222222", new JScrollPane(listArray.get(2)));
+        jtp.addTab("00000000", new JScrollPane(makeList(0)));
+        jtp.addTab("11111111", new JScrollPane(makeList(1)));
+        jtp.addTab("22222222", new JScrollPane(makeList(2)));
         add(jtp);
 
-        new DropTarget(jtp, DnDConstants.ACTION_MOVE, new DropTargetListener() {
-            private int targetTabIndex = -1;
-            @Override public void dropActionChanged(DropTargetDragEvent e) {
-                //repaint();
-            }
-            @Override public void dragExit(DropTargetEvent e) {
-                //repaint();
-            }
-            @Override public void dragEnter(DropTargetDragEvent e) {
-                //repaint();
-            }
-            @Override public void dragOver(DropTargetDragEvent e) {
-                if (isDropAcceptable(e)) {
-                    e.acceptDrag(e.getDropAction());
-                } else {
-                    e.rejectDrag();
-                }
-                repaint();
-            }
-            @SuppressWarnings("unchecked")
-            @Override public void drop(DropTargetDropEvent e) {
-                try {
-                    Transferable t = e.getTransferable();
-                    DataFlavor[] f = t.getTransferDataFlavors();
-                    JList<String> sourceList = (JList<String>) t.getTransferData(f[0]);
-                    JList<String> targetList = listArray.get(targetTabIndex);
-                    DefaultListModel<String> tm = (DefaultListModel<String>) targetList.getModel();
-                    DefaultListModel<String> sm = (DefaultListModel<String>) sourceList.getModel();
-
-                    int[] indices = sourceList.getSelectedIndices();
-                    for (int j = indices.length - 1; j >= 0; j--) {
-                        tm.addElement(sm.remove(indices[j]));
-                    }
-                    e.dropComplete(true);
-                } catch (UnsupportedFlavorException | IOException ie) {
-                    e.dropComplete(false);
-                }
-            }
-            private boolean isDropAcceptable(DropTargetDragEvent e) {
-                Transferable t = e.getTransferable();
-                DataFlavor[] f = t.getTransferDataFlavors();
-                Point pt = e.getLocation();
-                targetTabIndex = -1;
-                for (int i = 0; i < jtp.getTabCount(); i++) {
-                    if (jtp.getBoundsAt(i).contains(pt)) {
-                        targetTabIndex = i;
-                        break;
-                    }
-                }
-                return targetTabIndex >= 0 && targetTabIndex != jtp.getSelectedIndex() && t.isDataFlavorSupported(f[0]);
-            }
-        }, true);
+        new DropTarget(jtp, DnDConstants.ACTION_MOVE, new TabTitleDropTargetListener(), true);
         setPreferredSize(new Dimension(320, 240));
     }
     private static JList<String> makeList(int index) {
@@ -161,5 +104,75 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getHumanPresentableName().equals(NAME);
         //return flavor.getRepresentationClass().equals(Object.class);
+    }
+}
+
+class TabTitleDropTargetListener implements DropTargetListener {
+    protected int targetTabIndex = -1;
+    @Override public void dropActionChanged(DropTargetDragEvent e) {
+        //repaint();
+    }
+    @Override public void dragExit(DropTargetEvent e) {
+        //repaint();
+    }
+    @Override public void dragEnter(DropTargetDragEvent e) {
+        //repaint();
+    }
+    @Override public void dragOver(DropTargetDragEvent e) {
+        if (isDropAcceptable(e)) {
+            e.acceptDrag(e.getDropAction());
+        } else {
+            e.rejectDrag();
+        }
+        e.getDropTargetContext().getComponent().repaint();
+    }
+    @SuppressWarnings("unchecked")
+    @Override public void drop(DropTargetDropEvent e) {
+        try {
+            DropTargetContext c = e.getDropTargetContext();
+            Component o = c.getComponent();
+            Transferable t = e.getTransferable();
+            DataFlavor[] f = t.getTransferDataFlavors();
+
+            if (o instanceof JTabbedPane) {
+                JTabbedPane jtp = (JTabbedPane) o;
+                JScrollPane sp = (JScrollPane) jtp.getComponentAt(targetTabIndex);
+                JViewport vp = (JViewport) sp.getViewport();
+                JList<String> targetList = (JList<String>) SwingUtilities.getUnwrappedView(vp);
+                JList<String> sourceList = (JList<String>) t.getTransferData(f[0]);
+
+                DefaultListModel<String> tm = (DefaultListModel<String>) targetList.getModel();
+                DefaultListModel<String> sm = (DefaultListModel<String>) sourceList.getModel();
+
+                int[] indices = sourceList.getSelectedIndices();
+                for (int j = indices.length - 1; j >= 0; j--) {
+                    tm.addElement(sm.remove(indices[j]));
+                }
+                e.dropComplete(true);
+            } else {
+                e.dropComplete(false);
+            }
+        } catch (UnsupportedFlavorException | IOException ie) {
+            e.dropComplete(false);
+        }
+    }
+    private boolean isDropAcceptable(DropTargetDragEvent e) {
+        DropTargetContext c = e.getDropTargetContext();
+        Transferable t = e.getTransferable();
+        DataFlavor[] f = t.getTransferDataFlavors();
+        Point pt = e.getLocation();
+        targetTabIndex = -1;
+        Component o = c.getComponent();
+        if (o instanceof JTabbedPane) {
+            JTabbedPane jtp = (JTabbedPane) o;
+            for (int i = 0; i < jtp.getTabCount(); i++) {
+                if (jtp.getBoundsAt(i).contains(pt)) {
+                    targetTabIndex = i;
+                    break;
+                }
+            }
+            return targetTabIndex >= 0 && targetTabIndex != jtp.getSelectedIndex() && t.isDataFlavorSupported(f[0]);
+        }
+        return false;
     }
 }
