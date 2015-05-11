@@ -25,6 +25,13 @@ public final class MainPanel extends JPanel {
             int i2 = ((Integer) spinner2.getValue()).intValue();
             (new Task(file, i1, i2) {
                 @Override protected void process(List<Message> chunks) {
+                    if (isCancelled()) {
+                        return;
+                    }
+                    if (!isDisplayable()) {
+                        cancel(true);
+                        return;
+                    }
                     for (Message m: chunks) {
                         append(m);
                     }

@@ -47,6 +47,9 @@ public final class MainPanel extends JPanel {
             int lengthOfTask = new Random().nextInt(100) + 100;
             SwingWorker<Integer, ProgressValue> worker = new Task(lengthOfTask) {
                 @Override protected void process(List<ProgressValue> c) {
+                    if (isCancelled()) {
+                        return;
+                    }
                     if (!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
                         cancel(true);

@@ -52,6 +52,9 @@ public final class MainPanel extends JPanel {
             worker = new Task() {
                 @Override protected void process(List<String> chunks) {
                     //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+                    if (isCancelled()) {
+                        return;
+                    }
                     if (!isDisplayable()) {
                         cancel(true);
                         return;
@@ -71,18 +74,18 @@ public final class MainPanel extends JPanel {
                     canButton.setEnabled(false);
                     statusPanel.remove(bar);
                     statusPanel.revalidate();
-                    publish("\n");
+                    appendLine("\n");
                     try {
                         if (isCancelled()) {
-                            publish("Cancelled");
+                            appendLine("Cancelled");
                         } else {
-                            publish(get());
+                            appendLine(get());
                         }
                     } catch (InterruptedException | ExecutionException ex) {
                         ex.printStackTrace();
-                        publish("Exception");
+                        appendLine("Exception");
                     }
-                    publish("\n\n");
+                    appendLine("\n\n");
                 }
             };
             worker.addPropertyChangeListener(new ProgressListener(bar));

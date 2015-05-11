@@ -92,6 +92,9 @@ class FolderSelectionListener implements TreeSelectionListener {
         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         SwingWorker<String, File> worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
+                if (isCancelled()) {
+                    return;
+                }
                 if (!tree.isDisplayable()) {
                     cancel(true);
                     return;

@@ -114,6 +114,13 @@ public final class MainPanel extends JPanel {
             super(pmis, cs, length);
         }
         @Override protected void process(List<Chunk> chunks) {
+            if (isCancelled()) {
+                return;
+            }
+            if (!textArea.isDisplayable()) {
+                cancel(true);
+                return;
+            }
             for (Chunk c: chunks) {
                 textArea.append(c.line + "\n");
                 monitor.setNote(c.note);

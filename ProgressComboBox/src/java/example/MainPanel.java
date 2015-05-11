@@ -24,6 +24,9 @@ public final class MainPanel extends JPanel {
                 //combo.removeAllItems();
                 worker = new Task() {
                     @Override protected void process(List<Integer> chunks) {
+                        if (isCancelled()) {
+                            return;
+                        }
                         if (!isDisplayable()) {
                             System.out.println("process: DISPOSE_ON_CLOSE");
                             cancel(true);

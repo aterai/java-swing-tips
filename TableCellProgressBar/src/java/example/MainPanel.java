@@ -49,6 +49,9 @@ public final class MainPanel extends JPanel {
             final int key = model.getRowCount();
             SwingWorker<Integer, Integer> worker = new Task() {
                 @Override protected void process(List<Integer> c) {
+                    if (isCancelled()) {
+                        return;
+                    }
                     if (!isDisplayable()) {
                         System.out.println("process: DISPOSE_ON_CLOSE");
                         cancel(true);

@@ -58,6 +58,9 @@ public final class MainPanel extends JPanel {
     }
     class ProgressTask extends Task {
         @Override protected void process(List<Progress> chunks) {
+            if (isCancelled()) {
+                return;
+            }
             if (!isDisplayable()) {
                 cancel(true);
                 return;

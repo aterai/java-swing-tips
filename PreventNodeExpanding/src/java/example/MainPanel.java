@@ -101,6 +101,9 @@ class FolderSelectionListener implements TreeSelectionListener {
         final JTree tree = (JTree) e.getSource();
         (new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
+                if (isCancelled()) {
+                    return;
+                }
                 if (!tree.isDisplayable()) {
                     cancel(true);
                     return;

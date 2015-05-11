@@ -62,6 +62,9 @@ public final class MainPanel extends JPanel {
     private class ProgressTask extends Task {
         @Override protected void process(List<Progress> chunks) {
             //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            if (isCancelled()) {
+                return;
+            }
             if (!isDisplayable()) {
                 System.out.println("process: DISPOSE_ON_CLOSE");
                 cancel(true);
