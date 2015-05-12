@@ -3,11 +3,9 @@
   <!-- all properties are in build.properties -->
   <!--property file="build.properties" /-->
   <property environment="env" />
-  <property name="config.dir" value="${basedir}/config" />
-  <!--native2ascii encoding="UTF-8" src="${config.dir}" dest="${config.dir}" includes="**/*.properties.utf8" ext="" /-->
-  <!--property file="${config.dir}/build.properties.utf8"/-->
-  <import file="${config.dir}/properties.xml" />
-  <import file="${config.dir}/jnlp.xml" />
+  <property name="config.dir" value="config" />
+  <import file="${basedir}/${config.dir}/properties.xml" />
+  <import file="${basedir}/${config.dir}/jnlp.xml" />
 
   <condition property="have.resources">
     <available file="${res.dir}" />
@@ -227,7 +225,7 @@
 
 <!-- End of file -->
 
-  <fileset id="dist.src.fileset" dir="${basedir}">
+  <fileset id="dist.src.fileset" dir=".">
     <include name="build.xml" />
     <include name="*.bat" />
     <include name="*.sh" />
@@ -238,9 +236,6 @@
     <include name="${lib.dir}/*.jar" />
   </fileset>
   <target name="dist" depends="package, dist-libcopy">
-    <tstamp>
-      <format property="TSTAMP_BACKUP" pattern="yyyyMMddHHmm" />
-    </tstamp>
     <mkdir dir="${bkup.dir}" />
     <filter token="homepage" value="${jnlp.homepage}" />
     <filter token="title" value="${jnlp.Name}" />
@@ -281,15 +276,6 @@
     </signjar>
   </target>
 
-  <!--fileset id="bkup.src.fileset" dir="${basedir}">
-    <exclude name="${src.dir}/**/*.bak" />
-    <include name="${src.dir}/**" />
-    <include name="${config.dir}/**/*.properties.utf8" />
-    <include name="${res.dir}/**" />
-    <include name="build.xml" />
-    <include name="*.bat" />
-    <include name="*.sh" />
-  </fileset-->
   <target name="bkup">
     <echo message="Building the buckup files (zip)" />
     <tstamp>
@@ -297,10 +283,9 @@
     </tstamp>
     <mkdir dir="${bkup.dir}" />
     <copy todir="${bkup.dir}">
-      <!--fileset refid="bkup.src.fileset"/-->
       <fileset refid="dist.src.fileset" />
     </copy>
-    <zip destfile="fse-${TSTAMP_BACKUP}.zip" basedir="${bkup.dir}" includes="**" />
+    <zip destfile="${name}-${TSTAMP_BACKUP}.zip" basedir="${bkup.dir}" includes="**" />
     <delete dir="${bkup.dir}" />
   </target>
 
@@ -348,6 +333,7 @@
     <mkdir dir="${src.n2a}" />
     <native2ascii encoding="UTF-8" src="${src.dir}" dest="${src.n2a}" includes="**/*.java" />
   </target-->
+
   <condition property="have.findbugs">
     <and>
       <available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
@@ -367,6 +353,7 @@
       <class location="${build.dest}" />
     </findbugs>
   </target>
+
   <target name="pmd">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
     <mkdir dir="${build.reports}" />
@@ -380,11 +367,8 @@
       </fileset>
     </pmd>
   </target>
-  <target name="reports" depends="clean,findbugs,pmd,checkstyle">
-  </target>
 
-  <taskdef resource="checkstyletask.properties"
-          classpath="${env.CHECKSTYLE_JAR}" />
+  <taskdef resource="checkstyletask.properties" classpath="${env.CHECKSTYLE_JAR}" />
   <target name="checkstyle">
     <mkdir dir="${build.reports}" />
     <checkstyle config="${user.dir}/checks.xml" failOnViolation="false">
@@ -394,6 +378,9 @@
         <include name="**/*.java" />
       </fileset>
     </checkstyle>
+  </target>
+
+  <target name="reports" depends="clean,findbugs,pmd,checkstyle">
   </target>
 
   <fileset id="ftp.upload.fileset" dir="${build.dir}">
