@@ -186,6 +186,11 @@ class CellButtonsMouseListener extends MouseAdapter {
             }
         }
     }
+    @Override public void mouseExited(MouseEvent e) {
+        JList list = (JList) e.getComponent();
+        ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
+        renderer.rolloverIndex = -1;
+    }
     @SuppressWarnings("unchecked")
     private static JButton getButton(JList list, Point pt, int index) {
         Container c = (Container) list.getCellRenderer().getListCellRendererComponent(list, "", index, false, false);
