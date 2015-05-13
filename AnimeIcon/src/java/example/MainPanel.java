@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.beans.*;
-import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -187,10 +186,10 @@ class ProgressListener implements PropertyChangeListener {
 
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
-    private final AnimeIcon icon = new AnimeIcon();
-    //private final AnimeIcon2 icon = new AnimeIcon2();
-    //private final AnimeIcon3 icon = new AnimeIcon3();
-    //private final AnimeIcon4 icon = new AnimeIcon4();
+    private final transient AnimeIcon icon = new AnimeIcon();
+    //private final transient AnimeIcon2 icon = new AnimeIcon2();
+    //private final transient AnimeIcon3 icon = new AnimeIcon3();
+    //private final transient AnimeIcon4 icon = new AnimeIcon4();
     public AnimatedLabel() {
         super();
         animator = new Timer(100, this);
@@ -217,8 +216,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
     }
 }
 
-class AnimeIcon implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
     private static final double R  = 2d;
     private static final double SX = 1d;
@@ -268,8 +266,7 @@ class AnimeIcon implements Icon, Serializable {
     }
 }
 
-class AnimeIcon2 implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon2 implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
     private final List<Shape> list = new ArrayList<>();
     private final Dimension dim;
@@ -321,8 +318,7 @@ class AnimeIcon2 implements Icon, Serializable {
     }
 }
 
-class AnimeIcon3 implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon3 implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.9f, .7f, .7f);
     private final List<Shape> list = new ArrayList<>();
     private final Dimension dim;
@@ -374,8 +370,7 @@ class AnimeIcon3 implements Icon, Serializable {
     }
 }
 
-class AnimeIcon4 implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon4 implements Icon {
     private static final int R = 4;
     private static final Color ELLIPSE_COLOR = new Color(.5f, .8f, .5f);
     private final Dimension dim;

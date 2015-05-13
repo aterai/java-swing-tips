@@ -12,7 +12,7 @@ import javax.swing.*;
 // import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
+    private final transient Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
     private final JTextArea textArea = new JTextArea();
     private final JTextField textField = new JTextField(TextAreaLogger.TEST.getClass().getName());
 
@@ -85,7 +85,7 @@ enum TextAreaLogger {
 }
 
 class EnterAction extends AbstractAction {
-    private final Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
+    private final transient Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
     private final JTextField textField;
     public EnterAction(JTextField textField) {
         super("Enter");

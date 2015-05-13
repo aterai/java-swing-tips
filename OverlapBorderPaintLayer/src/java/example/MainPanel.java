@@ -75,7 +75,18 @@ public final class MainPanel extends JPanel {
         return p;
     }
     private static AbstractButton makeButton(String title, Icon icon, Color color) {
-        AbstractButton b = new JRadioButton(title);
+        AbstractButton b = new JRadioButton(title) {
+            @Override public boolean contains(int x, int y) {
+                Icon i = getIcon();
+                if (i instanceof ToggleButtonBarCellIcon) {
+                    ToggleButtonBarCellIcon icon = (ToggleButtonBarCellIcon) i;
+                    if (Objects.nonNull(icon.getShape())) {
+                        return icon.getShape().contains(x, y);
+                    }
+                }
+                return super.contains(x, y);
+            }
+        };
         b.setIcon(icon);
         b.setContentAreaFilled(false);
         b.setBorder(BorderFactory.createEmptyBorder());
@@ -116,7 +127,10 @@ class ToggleButtonBarCellIcon implements Icon {
     private static final int W = 10;
     private static final int H = 21;
     public Shape area;
-    public Shape getShape(Container parent, Component c, int x, int y) {
+    public Shape getShape() {
+        return area;
+    }
+    protected Shape makeShape(Container parent, Component c, int x, int y) {
         int w = c.getWidth()  - 1;
         int h = c.getHeight() - 1;
         int h2 = (int) (h * .5 + .5);
@@ -138,7 +152,7 @@ class ToggleButtonBarCellIcon implements Icon {
         if (Objects.isNull(parent)) {
             return;
         }
-        area = getShape(parent, c, x, y);
+        area = makeShape(parent, c, x, y);
 
         Color bgc = parent.getBackground();
         Color borderColor = Color.GRAY.brighter();
@@ -167,7 +181,7 @@ class ToggleButtonBarCellIcon implements Icon {
 }
 
 class SizeIcon extends ToggleButtonBarCellIcon {
-    @Override public Shape getShape(Container parent, Component c, int x, int y) {
+    @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
         int w = c.getWidth()  - 1;
         int h = c.getHeight() - 1;
         Path2D.Float p = new Path2D.Float();
@@ -181,7 +195,7 @@ class SizeIcon extends ToggleButtonBarCellIcon {
 }
 
 class ToggleButtonBarCellIcon2 extends ToggleButtonBarCellIcon {
-    public Shape getShape(Container parent, Component c, int x, int y) {
+    @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
         int r = 4;
         int w = c.getWidth()  - 1;
         int h = c.getHeight() - 1;

@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
-import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -67,13 +66,13 @@ public final class MainPanel extends JPanel {
 
 class LightboxGlassPane extends JPanel {
     private final ImageIcon image = new ImageIcon(LightboxGlassPane.class.getResource("test.png"));
-    private final AnimeIcon animatedIcon = new AnimeIcon();
+    private final transient AnimeIcon animatedIcon = new AnimeIcon();
     private float alpha;
     private int w;
     private int h;
     private final Rectangle rect = new Rectangle();
     private Timer animator;
-    private Handler handler;
+    private transient Handler handler;
 
     @Override public void updateUI() {
         removeMouseListener(handler);
@@ -170,8 +169,7 @@ class LightboxGlassPane extends JPanel {
     }
 }
 
-class AnimeIcon implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
     private static final double R  = 2d;
     private static final double SX = 0d;

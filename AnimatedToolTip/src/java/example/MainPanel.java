@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
-import java.io.Serializable;
 import java.net.*;
 import java.util.*;
 import java.util.List;
@@ -111,7 +110,7 @@ class AnimatedToolTip extends JToolTip {
 
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
-    private final AnimeIcon icon = new AnimeIcon();
+    private final transient AnimeIcon icon = new AnimeIcon();
     public AnimatedLabel(String title) {
         super(title);
         setOpaque(true);
@@ -143,8 +142,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
     }
 }
 
-class AnimeIcon implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
     private static final double R  = 2d;
     private static final double SX = 1d;

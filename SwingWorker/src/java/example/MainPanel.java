@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.beans.*;
-import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,6 +17,7 @@ public final class MainPanel extends JPanel {
     private final JPanel statusPanel = new JPanel(new BorderLayout());
     private final JButton runButton  = new JButton(new RunAction());
     private final JButton canButton  = new JButton(new CancelAction());
+    private final JProgressBar bar   = new JProgressBar(0, 100);
     private final AnimatedLabel anil = new AnimatedLabel();
     private SwingWorker<String, String> worker;
 
@@ -34,8 +34,51 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
+        statusPanel.add(bar);
+        statusPanel.setVisible(false);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
+    }
+
+    class UIUpdateTask extends Task {
+        @Override protected void process(List<String> chunks) {
+            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            if (isCancelled()) {
+                return;
+            }
+            if (!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            for (String message: chunks) {
+                if (!isCancelled()) {
+                    appendText(message);
+                }
+            }
+        }
+        @Override public void done() {
+            System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+            if (!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            anil.stopAnimation();
+            runButton.setEnabled(true);
+            canButton.setEnabled(false);
+            statusPanel.setVisible(false);
+            try {
+                if (isCancelled()) {
+                    appendText("\nCancelled\n");
+                } else {
+                    appendText("\n" + get() + "\n");
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
+                appendText("\nException\n");
+            }
+        }
     }
 
     class RunAction extends AbstractAction {
@@ -44,60 +87,17 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-            final JProgressBar bar = new JProgressBar(0, 100);
             runButton.setEnabled(false);
             canButton.setEnabled(true);
             anil.startAnimation();
-            statusPanel.removeAll();
-            statusPanel.add(bar);
-            statusPanel.revalidate();
+            statusPanel.setVisible(true);
             bar.setIndeterminate(true);
-
-            worker = new Task() {
-                @Override protected void process(List<String> chunks) {
-                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-                    if (isCancelled()) {
-                        return;
-                    }
-                    if (!isDisplayable()) {
-                        System.out.println("process: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    for (String message: chunks) {
-                        if (!isCancelled()) {
-                            appendText(message);
-                        }
-                    }
-                }
-                @Override public void done() {
-                    System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-                    if (!isDisplayable()) {
-                        System.out.println("done: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    anil.stopAnimation();
-                    runButton.setEnabled(true);
-                    canButton.setEnabled(false);
-                    statusPanel.remove(bar);
-                    statusPanel.revalidate();
-                    try {
-                        if (isCancelled()) {
-                            appendText("\nCancelled\n");
-                        } else {
-                            appendText("\n" + get() + "\n");
-                        }
-                    } catch (InterruptedException | ExecutionException ex) {
-                        ex.printStackTrace();
-                        appendText("\nException\n");
-                    }
-                }
-            };
+            worker = new UIUpdateTask();
             worker.addPropertyChangeListener(new ProgressListener(bar));
             worker.execute();
         }
     }
+
     class CancelAction extends AbstractAction {
         public CancelAction() {
             super("cancel");
@@ -106,9 +106,9 @@ public final class MainPanel extends JPanel {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
-            //worker = null;
         }
     }
+
     private void appendText(String str) {
         area.append(str);
         area.setCaretPosition(area.getDocument().getLength());
@@ -141,11 +141,11 @@ public final class MainPanel extends JPanel {
 class Task extends SwingWorker<String, String> {
     @Override public String doInBackground() {
         System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
-//         try {
-//             Thread.sleep(1000);
-//         } catch (InterruptedException ie) {
-//             return "Interrupted";
-//         }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ie) {
+            return "Interrupted";
+        }
         int current = 0;
         int lengthOfTask = 120; //list.size();
         publish("Length Of Task: " + lengthOfTask);
@@ -188,7 +188,7 @@ class ProgressListener implements PropertyChangeListener {
 
 class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener {
     private final Timer animator;
-    private final AnimeIcon icon = new AnimeIcon();
+    private final transient AnimeIcon icon = new AnimeIcon();
     public AnimatedLabel() {
         super();
         animator = new Timer(100, this);
@@ -214,8 +214,7 @@ class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener 
     }
 }
 
-class AnimeIcon implements Icon, Serializable {
-    private static final long serialVersionUID = 1L;
+class AnimeIcon implements Icon {
     private static final Color ELLIPSE_COLOR = new Color(.5f, .5f, .5f);
     private static final double R  = 2d;
     private static final double SX = 1d;
