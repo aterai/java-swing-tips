@@ -179,7 +179,6 @@ class CellButtonsMouseListener extends MouseAdapter {
         if (index >= 0) {
             JButton button = getButton(list, pt, index);
             if (Objects.nonNull(button)) {
-                ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
                 button.doClick();
                 Rectangle r = list.getCellBounds(index, index);
                 listRepaint(list, r);
