@@ -4,8 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,7 +22,7 @@ public final class MainPanel extends JPanel {
         CellButtonsMouseListener cbml = new CellButtonsMouseListener(list);
         list.addMouseListener(cbml);
         list.addMouseMotionListener(cbml);
-        list.setCellRenderer(new ButtonsRenderer(model));
+        list.setCellRenderer(new ButtonsRenderer<String>(model));
 
         add(new JScrollPane(list));
         setPreferredSize(new Dimension(320, 240));
@@ -147,7 +146,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     }
 }
 
-class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
+class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     private final JTextArea label = new JTextArea();
     private final JButton deleteButton = new JButton(new AbstractAction("delete") {
@@ -162,13 +161,13 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
             model.insertElementAt(model.getElementAt(index), index);
         }
     });
-    private final DefaultListModel<String> model;
+    private final DefaultListModel<E> model;
     private int index;
     public int pressedIndex  = -1;
     public int rolloverIndex = -1;
     public JButton button;
 
-    public ButtonsRenderer(DefaultListModel<String> model) {
+    public ButtonsRenderer(DefaultListModel<E> model) {
         super(new BorderLayout());
         this.model = model;
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
@@ -186,7 +185,7 @@ class ButtonsRenderer extends JPanel implements ListCellRenderer<String> {
         }
         add(box, BorderLayout.EAST);
     }
-    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean hasFocus) {
         label.setText(Objects.toString(value, ""));
         this.index = index;
         if (isSelected) {
