@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
                     @Override public void run() {
                         Toolkit.getDefaultToolkit().beep();
                         JOptionPane.showMessageDialog(
-                            MainPanel.this, "paste is disabled", "title",
+                            getRootPane(), "paste is disabled", "title",
                             JOptionPane.ERROR_MESSAGE);
                     }
                 });

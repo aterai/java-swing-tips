@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
                         setOpaque(true);
                     }
                     getRootPane().getContentPane().repaint();
-//                     Window w = SwingUtilities.getWindowAncestor(MainPanel.this);
+//                     Window w = SwingUtilities.getWindowAncestor(getRootPane());
 //                     if (w instanceof JFrame) { //XXX: JDK 1.7.0 ???
 //                         //((JFrame) w).getRootPane().repaint();
 //                         ((JFrame) w).getContentPane().repaint();

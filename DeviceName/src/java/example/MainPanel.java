@@ -24,10 +24,10 @@ public final class MainPanel extends JPanel {
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                     Object[] obj = {ioe.getMessage()};
-                    JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
 //                 JFileChooser fileChooser = new JFileChooser();
-//                 int retvalue = fileChooser.showOpenDialog(MainPanel.this);
+//                 int retvalue = fileChooser.showOpenDialog(getRootPane());
 //                 if (retvalue == JFileChooser.APPROVE_OPTION) {
 //                     File file = fileChooser.getSelectedFile();
 //                     System.out.println(file.getAbsolutePath());
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
                 File file = new File(DEVICE_NAME);
                 if (!isCanonicalPath(file)) {
                     Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
-                    JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         })));
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
                 File file = new File(DEVICE_NAME);
                 if (!file.isFile()) {
                     Object[] obj = {file.getAbsolutePath() + " is not a file."};
-                    JOptionPane.showMessageDialog(MainPanel.this, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         })));

@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             UIManager.put("Button.textShiftOffset", offset);
-            SwingUtilities.updateComponentTreeUI(MainPanel.this);
+            SwingUtilities.updateComponentTreeUI(getRootPane());
         }
     }
 

@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private final JButton wb = new JButton("WEST");
     private final JButton eb = new JButton("EAST");
     private final JTextArea ta = new JTextArea("aaaaaaaaaa");
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
@@ -26,8 +26,6 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(ta));
         setPreferredSize(new Dimension(320, 180));
-
-        frame.getRootPane().setDefaultButton(eb);
 
 //         frame.addWindowListener(new WindowAdapter() {
 //             @Override public void windowOpened(WindowEvent e) {
@@ -65,6 +63,8 @@ public final class MainPanel extends JPanel {
             @Override public void run() {
                 System.out.println("invokeLater");
                 field.requestFocusInWindow();
+                System.out.println("getRootPane().setDefaultButton(eb)");
+                getRootPane().setDefaultButton(eb);
             }
         });
 

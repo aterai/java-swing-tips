@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent evt) {
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        Color color = cc.showDialog(MainPanel.this, "background color",
+                        Color color = cc.showDialog(getRootPane(), "background color",
                                                     scroll.getViewport().getBackground());
                         scroll.getViewport().setBackground(color);
                     }

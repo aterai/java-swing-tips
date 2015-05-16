@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
                     fileChooser = new JFileChooser();
                     fileChooser.setAccessory(new ImagePreview(fileChooser));
                 }
-                fileChooser.showOpenDialog(MainPanel.this);
+                fileChooser.showOpenDialog(getRootPane());
             }
         });
         add(button);

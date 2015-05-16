@@ -4,25 +4,24 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JDialog dialog = new JDialog();
     private final PopupMenu popup = new PopupMenu();
-    private final JFrame frame;
     private final Timer animator;
     private final transient Image[] imglist = new Image[4];
     private final transient SystemTray tray;
     private final transient TrayIcon icon;
 
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super();
         if (!SystemTray.isSupported()) {
             throw new UnsupportedOperationException("SystemTray is not supported");
         }
 
         setPreferredSize(new Dimension(320, 240));
-        this.frame = frame;
 
         imglist[0] = new ImageIcon(getClass().getResource("16x16.png")).getImage();
         imglist[2] = imglist[0];
@@ -55,7 +54,10 @@ public final class MainPanel extends JPanel {
         MenuItem item1 = new MenuItem("Open:Frame");
         item1.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                frame.setVisible(true);
+                Window w = SwingUtilities.getWindowAncestor(getRootPane());
+                if (Objects.nonNull(w)) {
+                    w.setVisible(true);
+                }
             }
         });
         MenuItem item2 = new MenuItem("Open:Dialog");
@@ -85,9 +87,13 @@ public final class MainPanel extends JPanel {
                 tray.remove(icon);
                 animator.stop();
                 dialog.dispose();
-                //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.dispose();
+                Window w = SwingUtilities.getWindowAncestor(getRootPane());
+                if (w instanceof JFrame) {
+                    JFrame frame = (JFrame) w;
+                    //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    frame.dispose();
+                }
             }
         });
         popup.add(item1);
@@ -116,7 +122,7 @@ public final class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@");
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

@@ -44,7 +44,12 @@ public final class MainPanel extends JPanel {
                 searchActionPerformed();
             }
         });
-        frame.getRootPane().setDefaultButton(searchButton);
+        //frame.getRootPane().setDefaultButton(searchButton);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setDefaultButton(searchButton);
+            }
+        });
 
         combo.setEditable(true);
 //         combo.addItemListener(new ItemListener() {

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
                 } else {
                     UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
                 }
-                SwingUtilities.updateComponentTreeUI(MainPanel.this);
+                SwingUtilities.updateComponentTreeUI(getRootPane());
             }
         });
 

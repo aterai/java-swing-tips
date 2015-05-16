@@ -158,14 +158,14 @@ public final class MainPanel extends JPanel {
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             //fileChooser.setDialogTitle("...");
             fileChooser.setSelectedFile(new File((String) dirCombo.getEditor().getItem()));
-            int fcSelected = fileChooser.showOpenDialog(MainPanel.this);
+            int fcSelected = fileChooser.showOpenDialog(getRootPane());
             String title = "title";
             if (fcSelected == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 if (Objects.isNull(file) || !file.isDirectory()) {
                     Object[] obj = {"Please select directory."};
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(getRootPane(), obj, title, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 addItem(dirCombo, file.getAbsolutePath(), 4);
@@ -175,7 +175,7 @@ public final class MainPanel extends JPanel {
             } else {
                 Object[] obj = {"Error."};
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(MainPanel.this, obj, title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(getRootPane(), obj, title, JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
