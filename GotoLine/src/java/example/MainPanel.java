@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JScrollPane scroll = new JScrollPane(textArea);
 
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
         String dummyStr = "aaaaaaaaaaaaa\n";
         for (int i = 0; i < 2000; i++) {
@@ -42,7 +42,12 @@ public final class MainPanel extends JPanel {
                 }
             }
         });
-        frame.getRootPane().setDefaultButton(button);
+        //frame.getRootPane().setDefaultButton(button);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setDefaultButton(button);
+            }
+        });
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(textField);
@@ -67,7 +72,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
