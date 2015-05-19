@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
         }
     };
 
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        tab = new EditableTabbedPane(frame);
+        tab = new EditableTabbedPane();
         pop.add(new NewTabAction(MENUITEM_NEWTAB, null));
         pop.add(sortAction);
         pop.addSeparator();
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -156,19 +156,11 @@ class ComparableTab implements Comparable<ComparableTab> {
 }
 
 class EditableTabbedPane extends JTabbedPane {
-    private final MyGlassPane panel  = new MyGlassPane();
-    private final JTextField  editor = new JTextField();
+    private final JComponent glassPane = new EditorGlassPane();
+    private final JTextField editor = new JTextField();
     private Rectangle rect;
 
-//     private final Rectangle2D lineRect = new Rectangle2D.Double();
-//     private final Color lineColor = new Color(
-//         SystemColor.activeCaption.getRed(),
-//         SystemColor.activeCaption.getGreen(),
-//         SystemColor.activeCaption.getBlue(),
-//         128);
-//     private int dragTab = -1;
-
-    public EditableTabbedPane(JFrame frame) {
+    public EditableTabbedPane() {
         super();
         editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         editor.addFocusListener(new FocusAdapter() {
@@ -186,47 +178,12 @@ class EditableTabbedPane extends JTabbedPane {
             }
         });
         addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent me) {
-                if (me.getClickCount() == 2) {
+            @Override public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
                     startEditing();
                 }
             }
-//             @Override public void mousePressed(MouseEvent e) {
-//                 dragTab = getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY());
-//             }
-//             @Override public void mouseReleased(MouseEvent e) {
-//                 if (dragTab >= 0) {
-//                     if (dragTab != getUI().tabForCoordinate(EditableTabbedPane.this, e.getX(), e.getY())) {
-//                         convertTab(dragTab, getTargetTabIndex(e.getPoint()));
-//                     }
-//                 }
-//                 dragTab = -1;
-//                 repaint();
-//                 setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-//             }
         });
-//         addMouseMotionListener(new MouseMotionAdapter() {
-//             @Override public void mouseDragged(MouseEvent e) {
-//                 int next = getTargetTabIndex(e.getPoint());
-//                 if (next < 0 || dragTab == next || next - dragTab == 1) {
-//                     lineRect.setRect(0, 0, 0, 0);
-//                     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-//                 } else if (next == getTabCount()) {
-//                     Rectangle rect = getBoundsAt(getTabCount() - 1);
-//                     lineRect.setRect(rect.x + rect.width - 2, rect.y, 4, rect.height);
-//                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                 } else if (next == 0) {
-//                     Rectangle rect = getBoundsAt(0);
-//                     lineRect.setRect(-2, rect.y, 4, rect.height);
-//                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                 } else {
-//                     Rectangle rect = getBoundsAt(next - 1);
-//                     lineRect.setRect(rect.x + rect.width - 2, rect.y, 4, rect.height);
-//                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                 }
-//                 repaint();
-//             }
-//         });
         addKeyListener(new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -234,86 +191,39 @@ class EditableTabbedPane extends JTabbedPane {
                 }
             }
         });
-        panel.add(editor);
-        frame.setGlassPane(panel);
-        panel.setVisible(false);
+        glassPane.add(editor);
+        glassPane.setVisible(false);
     }
-
-//     @Override public void paintComponent(Graphics g) {
-//         Graphics2D g2 = (Graphics2D) g.create();
-//         g2.setPaint(this.getBackground());
-//         g2.fillRect(0, 0, 500, 50);
-//         super.paintComponent(g2);
-//         if (dragTab >= 0) {
-//             g2.setPaint(lineColor);
-//             g2.fill(lineRect);
-//         }
-//         g2.dispose();
-//     }
-//
-//     private int getTargetTabIndex(Point pt) {
-//         for (int i = 0; i < this.getTabCount(); i++) {
-//             Rectangle rect = this.getBoundsAt(i);
-//             rect.setRect(rect.x - rect.width / 2, rect.y, rect.width, rect.height);
-//             if (rect.contains(pt)) {
-//                 return i;
-//             }
-//         }
-//         Rectangle rect = this.getBoundsAt(this.getTabCount() - 1);
-//         rect.setRect(rect.x + rect.width / 2, rect.y, rect.width + 100, rect.height);
-//         if (rect.contains(pt)) {
-//             return this.getTabCount();
-//         } else {
-//             return -1;
-//         }
-//     }
-//
-//     private void convertTab(int prev, int next) {
-//         if (next < 0 || prev == next) {
-//             //System.out.println("press=" + prev + " next=" + next);
-//             return;
-//         }
-//         Component cmp = this.getComponentAt(prev);
-//         String str = this.getTitleAt(prev);
-//         if (next == this.getTabCount()) {
-//             //System.out.println("last: press=" + prev + " next=" + next);
-//             this.remove(prev);
-//             this.addTab(str, cmp);
-//             this.setSelectedIndex(this.getTabCount() - 1);
-//         } else if (prev > next) {
-//             //System.out.println("   >: press=" + prev + " next=" + next);
-//             this.remove(prev);
-//             this.insertTab(str, null, cmp, null, next);
-//             this.setSelectedIndex(next);
-//         } else {
-//             //System.out.println("   <: press=" + prev + " next=" + next);
-//             this.remove(prev);
-//             this.insertTab(str, null, cmp, null, next - 1);
-//             this.setSelectedIndex(next - 1);
-//         }
-//     }
     private void initEditor() {
         rect = getUI().getTabBounds(this, getSelectedIndex());
-        rect.setRect(rect.x + 2, rect.y + 2, rect.width - 2, rect.height - 2);
+        Point p = SwingUtilities.convertPoint(this, rect.getLocation(), glassPane);
+        rect.setRect(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
         editor.setBounds(rect);
         editor.setText(getTitleAt(getSelectedIndex()));
     }
     private void startEditing() {
+        getRootPane().setGlassPane(glassPane);
         initEditor();
-        panel.setVisible(true);
+        glassPane.setVisible(true);
         editor.requestFocusInWindow();
     }
     private void cancelEditing() {
-        panel.setVisible(false);
+        glassPane.setVisible(false);
     }
     private void renameTab() {
         if (editor.getText().trim().length() > 0) {
             setTitleAt(getSelectedIndex(), editor.getText());
+            //java 1.6.0 ---->
+            Component c = getTabComponentAt(getSelectedIndex());
+            if (c instanceof JComponent) {
+                ((JComponent) c).revalidate();
+            }
+            //<----
         }
-        panel.setVisible(false);
+        glassPane.setVisible(false);
     }
-    class MyGlassPane extends JComponent {
-        public MyGlassPane() {
+    private class EditorGlassPane extends JComponent {
+        public EditorGlassPane() {
             super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
@@ -323,7 +233,7 @@ class EditableTabbedPane extends JTabbedPane {
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent me) {
-                    if (rect == null || rect.contains(me.getPoint())) {
+                    if (Objects.isNull(rect) || rect.contains(me.getPoint())) {
                         return;
                     }
                     renameTab();

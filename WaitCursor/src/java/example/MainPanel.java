@@ -9,14 +9,20 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JButton button = new JButton("Stop 5sec");
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        frame.setGlassPane(new LockingGlassPane());
-        frame.getGlassPane().setVisible(false);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                JComponent gp = new LockingGlassPane();
+                gp.setVisible(false);
+                getRootPane().setGlassPane(gp);
+            }
+        });
+
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
-                frame.getGlassPane().setVisible(true);
+                getRootPane().getGlassPane().setVisible(true);
                 button.setEnabled(false);
                 (new Task() {
                     @Override public void done() {
@@ -25,7 +31,7 @@ public final class MainPanel extends JPanel {
                             cancel(true);
                             return;
                         }
-                        frame.getGlassPane().setVisible(false);
+                        getRootPane().getGlassPane().setVisible(false);
                         button.setEnabled(true);
                     }
                 }).execute();
@@ -66,7 +72,7 @@ public final class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
