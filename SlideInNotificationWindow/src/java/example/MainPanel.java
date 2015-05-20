@@ -9,9 +9,9 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel(JFrame frame) {
+    private MainPanel() {
         super(new BorderLayout());
-        final SlideInNotification handler = new SlideInNotification(frame);
+        final SlideInNotification handler = new SlideInNotification();
 
 //         optionPane.addPropertyChangeListener(new PropertyChangeListener() {
 //             @Override public void propertyChange(PropertyChangeEvent e) {
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         JFrame frame = new JFrame("@title@");
         //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -70,16 +70,11 @@ public final class MainPanel extends JPanel {
 
 class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     private static final int DELAY = 5;
-    private final JFrame frame;
     private JWindow dialog;
     private Timer animator;
     private int dx;
     private int dy;
 
-    public SlideInNotification(JFrame frame) {
-        super();
-        this.frame = frame;
-    }
     public void startSlideIn(final SlideInAnimation slideInAnimation) {
         if (animator != null && animator.isRunning()) {
             return;
@@ -97,8 +92,8 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
         optionPane.addPropertyChangeListener(this);
         optionPane.addHierarchyListener(this);
 
-        GraphicsConfiguration gc = frame.getGraphicsConfiguration();
-        dialog = new JWindow(gc);
+        //GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+        dialog = new JWindow((Frame) null);
         dialog.getContentPane().add(optionPane);
         dialog.pack();
 

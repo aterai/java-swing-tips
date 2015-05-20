@@ -12,12 +12,12 @@ import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
-    private final JFrame frame;
+    private final JMenuBar menuBar = new JMenuBar();
     private final JMenuBar dummyBar = new JMenuBar();
 
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        this.frame = frame;
+
         JButton button = new JButton(new ModalInternalFrameAction3("Show"));
         button.setMnemonic(KeyEvent.VK_S);
         JInternalFrame internal = new JInternalFrame("Button");
@@ -31,7 +31,6 @@ public final class MainPanel extends JPanel {
         add(dummyBar, BorderLayout.NORTH);
         dummyBar.setVisible(false);
 
-        JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Frame");
         menu.setMnemonic(KeyEvent.VK_F);
         menuBar.add(menu);
@@ -58,10 +57,6 @@ public final class MainPanel extends JPanel {
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
 
-        frame.setJMenuBar(menuBar);
-        //add(createMenuBar(), BorderLayout.NORTH);
-        add(desktop);
-
         JButton b = new JButton(new AbstractAction("dummy button") {
             @Override public void actionPerformed(ActionEvent e) {
                 Toolkit.getDefaultToolkit().beep();
@@ -69,6 +64,12 @@ public final class MainPanel extends JPanel {
         });
         b.setMnemonic(KeyEvent.VK_B);
         add(b, BorderLayout.SOUTH);
+        add(desktop);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setJMenuBar(menuBar);
+            }
+        });
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -107,16 +108,15 @@ public final class MainPanel extends JPanel {
         private final JPanel glass = new MyGlassPane();
         public ModalInternalFrameAction2(String label) {
             super(label);
-            Rectangle screen = frame.getGraphicsConfiguration().getBounds();
-            glass.setBorder(BorderFactory.createEmptyBorder());
-            glass.setLocation(0, 0);
-            glass.setSize(screen.width, screen.height);
             glass.setOpaque(false);
             glass.setVisible(false);
             desktop.add(glass, JLayeredPane.MODAL_LAYER);
         }
         @Override public void actionPerformed(ActionEvent e) {
             setJMenuEnabled(false);
+            Window w = SwingUtilities.getWindowAncestor(desktop);
+            Rectangle screen = w.getGraphicsConfiguration().getBounds();
+            glass.setSize(screen.width, screen.height);
             glass.setVisible(true);
             JOptionPane.showInternalMessageDialog(
                 desktop, "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
@@ -176,14 +176,14 @@ public final class MainPanel extends JPanel {
 //             Rectangle screen = desktop.getBounds();
 //             modal.setLocation(screen.x + screen.width  / 2 - modal.getSize().width  / 2,
 //                               screen.y + screen.height / 2 - modal.getSize().height / 2);
-            frame.setGlassPane(glass);
+            getRootPane().setGlassPane(glass);
             glass.setVisible(true);
             modal.setVisible(true);
         }
     }
 
     private void setJMenuEnabled(boolean flag) {
-        JMenuBar bar = frame.getJMenuBar();
+        JMenuBar bar = getRootPane().getJMenuBar();
         bar.setVisible(flag);
         dummyBar.setVisible(!flag);
     }
@@ -216,8 +216,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
-
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

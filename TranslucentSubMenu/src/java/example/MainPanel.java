@@ -7,12 +7,16 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        frame.setJMenuBar(createMenubar());
         tree.setComponentPopupMenu(makePopupMenu());
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setJMenuBar(createMenubar());
+            }
+        });
     }
     private static JPopupMenu makePopupMenu() {
         JMenu menu = new TransparentMenu("Test");
@@ -65,7 +69,7 @@ public final class MainPanel extends JPanel {
         PopupFactory.setSharedInstance(new TranslucentPopupFactory());
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

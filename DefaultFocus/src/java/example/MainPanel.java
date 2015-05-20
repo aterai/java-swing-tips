@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         ta.setEditable(false);
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(ta));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
 
 //         frame.addWindowListener(new WindowAdapter() {
 //             @Override public void windowOpened(WindowEvent e) {
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         System.out.println("frame.pack();");
         frame.pack();
         frame.setLocationRelativeTo(null);

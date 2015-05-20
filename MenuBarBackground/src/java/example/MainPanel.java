@@ -7,10 +7,14 @@ import java.awt.image.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super();
-        frame.setJMenuBar(createMenubar());
-        setPreferredSize(new Dimension(320, 200));
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setJMenuBar(createMenubar());
+            }
+        });
+        setPreferredSize(new Dimension(320, 240));
     }
     private JMenuBar createMenubar() {
         JMenuBar mb = new JMenuBar() {
@@ -95,7 +99,7 @@ public final class MainPanel extends JPanel {
         //TEST: UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.FALSE);
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

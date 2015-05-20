@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     private final JComboBox<String> combo = new JComboBox<>();
 
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         textArea.setText(INIT_TXT);
@@ -138,7 +138,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
