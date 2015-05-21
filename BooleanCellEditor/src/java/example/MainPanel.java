@@ -51,8 +51,8 @@ public final class MainPanel extends JPanel {
                 TableModel m = getModel();
                 for (int i = 0; i < m.getColumnCount(); i++) {
                     TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-                    if (r instanceof JComponent) {
-                        ((JComponent) r).updateUI();
+                    if (r instanceof Component) {
+                        SwingUtilities.updateComponentTreeUI((Component) r);
                     }
                 }
             }

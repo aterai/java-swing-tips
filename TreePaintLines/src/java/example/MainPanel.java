@@ -24,8 +24,7 @@ public final class MainPanel extends JPanel {
 //                 } else {
 //                     UIManager.put("Tree.paintLines", Boolean.FALSE);
 //                 }
-                tree.updateUI();
-                //SwingUtilities.updateComponentTreeUI(MainPanel.this);
+                SwingUtilities.updateComponentTreeUI(tree);
             }
         }), BorderLayout.NORTH);
 

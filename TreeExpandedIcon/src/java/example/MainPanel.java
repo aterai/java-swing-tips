@@ -34,8 +34,7 @@ public final class MainPanel extends JPanel {
                 }
                 UIManager.put("Tree.expandedIcon",  new IconUIResource(ei));
                 UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
-                tree.updateUI();
-                //SwingUtilities.updateComponentTreeUI(p);
+                SwingUtilities.updateComponentTreeUI(tree);
             }
         }), BorderLayout.NORTH);
 

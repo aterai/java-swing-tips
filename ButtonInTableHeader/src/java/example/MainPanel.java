@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             //XXX: Nimbus
             TableCellRenderer r = getDefaultRenderer(Boolean.class);
-            if (r instanceof JComponent) {
-                ((JComponent) r).updateUI();
+            if (r instanceof Component) {
+                SwingUtilities.updateComponentTreeUI((Component) r);
             }
         }
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {

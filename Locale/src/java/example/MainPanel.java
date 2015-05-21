@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         panel.add(new JButton(new AbstractAction("<-") {
             @Override public void actionPerformed(ActionEvent e) {
                 fileChooser.setLocale((Locale) combo.getSelectedItem());
-                SwingUtilities.updateComponentTreeUI(fileChooser); //fileChooser.updateUI();
+                SwingUtilities.updateComponentTreeUI(fileChooser);
                 int retvalue = fileChooser.showOpenDialog(panel);
                 System.out.println(retvalue);
             }
