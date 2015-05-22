@@ -9,6 +9,7 @@ import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
@@ -35,7 +36,17 @@ public final class MainPanel extends JPanel {
         menu.setMnemonic(KeyEvent.VK_F);
         menuBar.add(menu);
 
-        JMenuItem menuItem = new JMenuItem(new OpenFrameAction("New Frame"));
+        JMenuItem menuItem = new JMenuItem(new AbstractAction("New Frame") {
+            private int openFrameCount;
+            @Override public void actionPerformed(ActionEvent e) {
+                JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
+                iframe.setSize(130, 100);
+                iframe.setLocation(30 * openFrameCount, 30 * openFrameCount);
+                desktop.add(iframe);
+                iframe.setVisible(true);
+                openFrameCount++;
+            }
+        });
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
@@ -57,11 +68,12 @@ public final class MainPanel extends JPanel {
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
         menu.add(menuItem);
 
-        JButton b = new JButton(new AbstractAction("dummy button") {
-            @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-        });
+//         JButton b = new JButton(new AbstractAction("dummy button") {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 Toolkit.getDefaultToolkit().beep();
+//             }
+//         });
+        JButton b = new JButton(new DefaultEditorKit.BeepAction());
         b.setMnemonic(KeyEvent.VK_B);
         add(b, BorderLayout.SOUTH);
         add(desktop);
@@ -71,21 +83,6 @@ public final class MainPanel extends JPanel {
             }
         });
         setPreferredSize(new Dimension(320, 240));
-    }
-
-    class OpenFrameAction extends AbstractAction {
-        private int openFrameCount;
-        public OpenFrameAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            JInternalFrame iframe = new JInternalFrame("title", true, true, true, true);
-            iframe.setSize(130, 100);
-            iframe.setLocation(30 * openFrameCount, 30 * openFrameCount);
-            desktop.add(iframe);
-            iframe.setVisible(true);
-            openFrameCount++;
-        }
     }
 
     //menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
