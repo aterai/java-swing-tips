@@ -39,7 +39,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
         comboBox.addPopupMenuListener(popupMenuListener);
     }
     @Override protected void uninstallListeners() {
-        super.installListeners();
+        super.uninstallListeners();
         comboBox.removePopupMenuListener(popupMenuListener);
     }
     protected PopupMenuListener createPopupMenuListener() {
@@ -51,38 +51,35 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
                     str = combo.getEditor().getItem().toString();
                 }
                 @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                    JComboBox combo = (JComboBox) e.getSource();
                     Object o = listBox.getSelectedValue();
                     if (o instanceof SearchEngine) {
                         SearchEngine se = (SearchEngine) o;
                         arrowButton.setIcon(se.favicon);
                         arrowButton.setRolloverIcon(IconUtil.makeRolloverIcon(se.favicon));
                     }
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override public void run() {
-                            comboBox.getEditor().setItem(str);
-                        }
-                    });
+                    combo.getEditor().setItem(str);
                 }
                 @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
             };
         }
         return popupMenuListener;
     }
-    //NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
-    private static class DummyKeyAdapter extends KeyAdapter { /* dummy */ }
-    @Override protected KeyListener createKeyListener() {
-        if (Objects.isNull(keyListener)) {
-            keyListener = new DummyKeyAdapter();
-        }
-        return keyListener;
-    }
+//     //NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
+//     private static class DummyKeyAdapter extends KeyAdapter { /* dummy */ }
+//     @Override protected KeyListener createKeyListener() {
+//         if (Objects.isNull(keyListener)) {
+//             keyListener = new DummyKeyAdapter();
+//         }
+//         return keyListener;
+//     }
     @Override protected void configureEditor() {
         //super.configureEditor();
         // Should be in the same state as the combobox
         editor.setEnabled(comboBox.isEnabled());
         editor.setFocusable(comboBox.isFocusable());
         editor.setFont(comboBox.getFont());
-        //if (Objects.isNull(focusListener)) {
+        //if (Objects.nonNull(focusListener)) {
         //    editor.addFocusListener(focusListener);
         //}
         //editor.addFocusListener(getHandler());
