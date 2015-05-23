@@ -31,9 +31,8 @@ public final class MainPanel extends JPanel {
             table.getActionMap().get("copy").actionPerformed(e);
         }
     };
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        frame.setJMenuBar(createMenuBar());
 
         JPanel p = new JPanel();
         p.add(new JButton(selectAllAction));
@@ -47,6 +46,11 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                getRootPane().setJMenuBar(createMenuBar());
+            }
+        });
     }
 
     private JMenuBar createMenuBar() {
@@ -75,7 +79,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

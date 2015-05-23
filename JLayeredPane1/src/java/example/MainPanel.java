@@ -99,21 +99,18 @@ public final class MainPanel extends JPanel {
 //タイトル部分のマウスクリックでパネルを最上位にもってくる。ドラッグで移動。
 class DragMouseListener extends MouseAdapter {
     private final JLayeredPane parent;
-    private Point origin;
+    private final Point origin = new Point();
     public DragMouseListener(JLayeredPane parent) {
         super();
         this.parent = parent;
     }
     @Override public void mousePressed(MouseEvent e) {
         JComponent panel = (JComponent) e.getComponent();
-        origin = e.getPoint();
+        origin.setLocation(e.getPoint());
         //選択された部品を上へ
         parent.moveToFront(panel);
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if (Objects.isNull(origin)) {
-            return;
-        }
         JComponent panel = (JComponent) e.getComponent();
         //ずれた分だけ JPanel を移動させる
         int dx = e.getX() - origin.x;

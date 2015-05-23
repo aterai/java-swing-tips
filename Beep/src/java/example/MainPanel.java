@@ -9,9 +9,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JButton button = new JButton(new AbstractAction("showMessageDialog") {
         @Override public void actionPerformed(ActionEvent e) {
+            Toolkit.getDefaultToolkit().beep();
             JButton b = (JButton) e.getSource();
             JOptionPane.showMessageDialog(b.getRootPane(), "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
-            Toolkit.getDefaultToolkit().beep();
         }
     });
     public MainPanel() {
