@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         });
         table.setCellSelectionEnabled(true);
         table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setTransferHandler(new TableRowTransferHandler(FLAVOR));
+        table.setTransferHandler(new CellIconTransferHandler(FLAVOR));
         table.setDragEnabled(true);
         table.setFillsViewportHeight(true);
         final TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
@@ -116,9 +116,9 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TableRowTransferHandler extends TransferHandler {
+class CellIconTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    public TableRowTransferHandler(DataFlavor flavor) {
+    public CellIconTransferHandler(DataFlavor flavor) {
         super();
         localObjectFlavor = flavor;
     }
