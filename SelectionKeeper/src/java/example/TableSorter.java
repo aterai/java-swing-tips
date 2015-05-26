@@ -500,7 +500,7 @@ class Arrow implements Icon, Serializable {
     }
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Color color1 = c == null ? Color.GRAY : c.getBackground();
+        Color color1 = Objects.nonNull(c) ? c.getBackground() : Color.GRAY;
         Color color2;
         // In a compound sort, make each succesive triangle 20%
         // smaller than the previous one.

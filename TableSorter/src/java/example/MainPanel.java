@@ -31,11 +31,20 @@ public final class MainPanel extends JPanel {
             }
             return c;
         }
+        @Override public void updateUI() {
+            sorter.setTableHeader(null);
+            super.updateUI();
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    JTableHeader h = table.getTableHeader();
+                    sorter.setTableHeader(h);
+                    h.repaint();
+                }
+            });
+        }
     };
     private MainPanel() {
         super(new BorderLayout());
-        sorter.setTableHeader(table.getTableHeader());
-
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }

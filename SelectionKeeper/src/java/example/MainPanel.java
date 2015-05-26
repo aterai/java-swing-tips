@@ -18,11 +18,21 @@ public final class MainPanel extends JPanel {
         }
     };
     private final TableSorter sorter = new TableSorter(model);
-    private final JTable table = new JTable(sorter);
+    private final JTable table = new JTable(sorter) {
+        @Override public void updateUI() {
+            sorter.setTableHeader(null);
+            super.updateUI();
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    JTableHeader h = table.getTableHeader();
+                    sorter.setTableHeader(h);
+                    h.repaint();
+                }
+            });
+        }
+    };
     private MainPanel() {
         super(new BorderLayout());
-        sorter.setTableHeader(table.getTableHeader());
-
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
