@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -96,8 +97,8 @@ class TitledSeparator extends JLabel {
                 Point2D start = new Point2D.Float(0f, 0f);
                 Point2D end   = new Point2D.Float((float) width, 0f);
                 float[] dist  = {0f, 1f};
-                color = color == null ? UIManager.getColor("Panel.background") : color;
-                Color tc = target == null ? color : target;
+                color = Objects.nonNull(color) ? color : UIManager.getColor("Panel.background");
+                Color tc = Objects.nonNull(target) ? target : color;
                 painter1 = new LinearGradientPaint(start, end, dist, new Color[] {tc.darker(),   color});
                 painter2 = new LinearGradientPaint(start, end, dist, new Color[] {tc.brighter(), color});
             }

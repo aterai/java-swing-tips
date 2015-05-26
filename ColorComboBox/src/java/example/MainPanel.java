@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -114,23 +115,21 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
                 return c;
             }
         });
-        if (itemColorListener == null) {
-            itemColorListener = new ItemListener() {
-                @Override public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() != ItemEvent.SELECTED) {
-                        return;
-                    }
-                    JComboBox cb = (JComboBox) e.getItemSelectable();
-                    Color rc = getAlternateRowColor(cb.getSelectedIndex());
-                    if (cb.isEditable()) {
-                        JTextField field = (JTextField) cb.getEditor().getEditorComponent();
-                        field.setBackground(rc);
-                    } else {
-                        cb.setBackground(rc);
-                    }
+        itemColorListener = new ItemListener() {
+            @Override public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() != ItemEvent.SELECTED) {
+                    return;
                 }
-            };
-        }
+                JComboBox cb = (JComboBox) e.getItemSelectable();
+                Color rc = getAlternateRowColor(cb.getSelectedIndex());
+                if (cb.isEditable()) {
+                    JTextField field = (JTextField) cb.getEditor().getEditorComponent();
+                    field.setBackground(rc);
+                } else {
+                    cb.setBackground(rc);
+                }
+            }
+        };
         addItemListener(itemColorListener);
         JTextField field = (JTextField) getEditor().getEditorComponent();
         if (field != null) {

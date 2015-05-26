@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -97,6 +98,6 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
         color = null;
     }
     @Override public Color getBackgroundSelectionColor() {
-        return color == null ? super.getBackgroundSelectionColor() : color;
+        return Objects.nonNull(color) ? color : super.getBackgroundSelectionColor();
     }
 }
