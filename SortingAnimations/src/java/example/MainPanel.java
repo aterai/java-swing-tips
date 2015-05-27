@@ -34,36 +34,7 @@ public final class MainPanel extends JPanel {
             }
             SortAlgorithms sa = (SortAlgorithms) algorithmsChoices.getSelectedItem();
             Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
-            worker = new SortingTask(sa, number, array, paintArea, factorx, factory) {
-                @Override protected void process(List<Rectangle> chunks) {
-                    if (isCancelled()) {
-                        return;
-                    }
-                    if (!isDisplayable()) {
-                        System.out.println("process: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    for (Rectangle r: chunks) {
-                        panel.repaint(r);
-                    }
-                }
-                @Override public void done() {
-                    if (!isDisplayable()) {
-                        System.out.println("done: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    setComponentEnabled(true);
-                    try {
-                        String text = isCancelled() ? "Cancelled" : get();
-                        System.out.println(text);
-                    } catch (InterruptedException | ExecutionException ex) {
-                        ex.printStackTrace();
-                    }
-                    repaint();
-                }
-            };
+            worker = new UITask(sa, number, array, paintArea, factorx, factory);
             worker.execute();
         }
     });
@@ -149,7 +120,39 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-
+    private class UITask extends SortingTask {
+        public UITask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
+            super(sortAlgorithm, number, array, rect, factorx, factory);
+        }
+        @Override protected void process(List<Rectangle> chunks) {
+            if (isCancelled()) {
+                return;
+            }
+            if (!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            for (Rectangle r: chunks) {
+                panel.repaint(r);
+            }
+        }
+        @Override public void done() {
+            if (!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            setComponentEnabled(true);
+            try {
+                String text = isCancelled() ? "Cancelled" : get();
+                System.out.println(text);
+            } catch (InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
+            }
+            repaint();
+        }
+    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

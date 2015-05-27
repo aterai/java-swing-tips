@@ -32,6 +32,8 @@ public final class MainPanel extends JPanel {
         dirCombo.setModel(model);
         dirCombo.setFocusable(false);
         textArea.setEditable(false);
+        statusPanel.add(pBar);
+        statusPanel.setVisible(false);
 
         JPanel box1 = new JPanel(new BorderLayout(5, 5));
         box1.add(new JLabel("Search folder:"), BorderLayout.WEST);
@@ -74,9 +76,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent evt) {
             addItem(dirCombo, (String) dirCombo.getEditor().getItem(), 4);
-            statusPanel.removeAll();
-            statusPanel.add(pBar);
-            statusPanel.revalidate();
+            statusPanel.setVisible(true);
             dirCombo.setEnabled(false);
             openButton.setEnabled(false);
             runButton.setEnabled(false);
@@ -84,56 +84,59 @@ public final class MainPanel extends JPanel {
             pBar.setIndeterminate(true);
             textArea.setText("");
             File dir = new File((String) dirCombo.getSelectedItem());
-            worker = new RecursiveFileSearchTask(dir) {
-                @Override protected void process(List<Message> chunks) {
-                    //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-                    if (isCancelled()) {
-                        return;
-                    }
-                    if (!isDisplayable()) {
-                        System.out.println("process: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    for (Message c: chunks) {
-                        if (c.append) {
-                            appendLine(c.text);
-                        } else {
-                            textArea.setText(c.text + "\n");
-                        }
-                    }
-                }
-                @Override public void done() {
-                    //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-                    if (!isDisplayable()) {
-                        System.out.println("done: DISPOSE_ON_CLOSE");
-                        cancel(true);
-                        return;
-                    }
-                    dirCombo.setEnabled(true);
-                    openButton.setEnabled(true);
-                    runButton.setEnabled(true);
-                    canButton.setEnabled(false);
-                    statusPanel.remove(pBar);
-                    statusPanel.revalidate();
-
-                    String text = null;
-                    if (isCancelled()) {
-                        text = "Cancelled";
-                    } else {
-                        try {
-                            text = get();
-                        } catch (InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                            text = "Exception";
-                        }
-                    }
-                    appendLine("----------------");
-                    appendLine(text);
-                }
-            };
+            RecursiveFileSearchTask worker = new UITask(dir);
             worker.addPropertyChangeListener(new ProgressListener(pBar));
             worker.execute();
+        }
+    }
+    class UITask extends RecursiveFileSearchTask {
+        public UITask(File dir) {
+            super(dir);
+        }
+        @Override protected void process(List<Message> chunks) {
+            //System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+            if (isCancelled()) {
+                return;
+            }
+            if (!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            for (Message c: chunks) {
+                if (c.append) {
+                    appendLine(c.text);
+                } else {
+                    textArea.setText(c.text + "\n");
+                }
+            }
+        }
+        @Override public void done() {
+            //System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+            if (!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            dirCombo.setEnabled(true);
+            openButton.setEnabled(true);
+            runButton.setEnabled(true);
+            canButton.setEnabled(false);
+            statusPanel.setVisible(false);
+
+            String text = null;
+            if (isCancelled()) {
+                text = "Cancelled";
+            } else {
+                try {
+                    text = get();
+                } catch (InterruptedException | ExecutionException ex) {
+                    ex.printStackTrace();
+                    text = "Exception";
+                }
+            }
+            appendLine("----------------");
+            appendLine(text);
         }
     }
     class CancelAction extends AbstractAction {

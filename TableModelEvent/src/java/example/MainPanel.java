@@ -185,69 +185,86 @@ class HeaderCheckBoxHandler implements TableModelListener {
         TableColumn column = table.getColumnModel().getColumn(vci);
         Object status = column.getHeaderValue();
         TableModel m = table.getModel();
+        boolean repaint = false;
         if (e.getType() == TableModelEvent.DELETE) {
             //System.out.println("DELETE");
             //System.out.println(status + ":   " + Status.INDETERMINATE.equals(status));
-            if (m.getRowCount() == 0) {
-                column.setHeaderValue(Status.DESELECTED);
-            } else if (Status.INDETERMINATE.equals(status)) {
-                boolean selected = true;
-                boolean deselected = true;
-                for (int i = 0; i < m.getRowCount(); i++) {
-                    Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-                    selected &= b;
-                    deselected &= !b;
-                }
-                //System.out.println(selected);
-                //System.out.println(deselected);
-                if (deselected) {
-                    column.setHeaderValue(Status.DESELECTED);
-                } else if (selected) {
-                    column.setHeaderValue(Status.SELECTED);
-                } else {
-                    return;
-                }
-            }
+            repaint = fireDeleteEvent(m, column, status);
         } else if (e.getType() == TableModelEvent.INSERT && !Status.INDETERMINATE.equals(status)) {
             //System.out.println("INSERT");
-            boolean selected = Status.DESELECTED.equals(status);
-            boolean deselected = Status.SELECTED.equals(status);
-            for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
+            repaint = fireInsertEvent(m, column, status, e);
+        } else if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
+            //System.out.println("UPDATE");
+            repaint = fireUpdateEvent(m, column, status);
+        }
+        if (repaint) {
+            JTableHeader h = table.getTableHeader();
+            h.repaint(h.getHeaderRect(vci));
+        }
+    }
+    private boolean fireDeleteEvent(TableModel m, TableColumn column, Object status) {
+        if (m.getRowCount() == 0) {
+            column.setHeaderValue(Status.DESELECTED);
+        } else if (Status.INDETERMINATE.equals(status)) {
+            boolean selected = true;
+            boolean deselected = true;
+            for (int i = 0; i < m.getRowCount(); i++) {
                 Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
                 selected &= b;
                 deselected &= !b;
             }
-            if (selected && m.getRowCount() == 1) {
+            //System.out.println(selected);
+            //System.out.println(deselected);
+            if (deselected) {
+                column.setHeaderValue(Status.DESELECTED);
+            } else if (selected) {
                 column.setHeaderValue(Status.SELECTED);
-            } else if (selected || deselected) {
-                column.setHeaderValue(Status.INDETERMINATE);
-            }
-        } else if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
-            //System.out.println("UPDATE");
-            if (Status.INDETERMINATE.equals(status)) {
-                boolean selected = true;
-                boolean deselected = true;
-                for (int i = 0; i < m.getRowCount(); i++) {
-                    Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-                    selected &= b;
-                    deselected &= !b;
-                    if (selected == deselected) {
-                        return;
-                    }
-                }
-                if (deselected) {
-                    column.setHeaderValue(Status.DESELECTED);
-                } else if (selected) {
-                    column.setHeaderValue(Status.SELECTED);
-                } else {
-                    return;
-                }
             } else {
-                column.setHeaderValue(Status.INDETERMINATE);
+                return false;
             }
         }
-        JTableHeader h = table.getTableHeader();
-        h.repaint(h.getHeaderRect(vci));
+        return true;
+    }
+    private boolean fireInsertEvent(TableModel m, TableColumn column, Object status, TableModelEvent e) {
+        boolean selected = Status.DESELECTED.equals(status);
+        boolean deselected = Status.SELECTED.equals(status);
+        for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
+            Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+            selected &= b;
+            deselected &= !b;
+        }
+        if (selected && m.getRowCount() == 1) {
+            column.setHeaderValue(Status.SELECTED);
+        } else if (selected || deselected) {
+            column.setHeaderValue(Status.INDETERMINATE);
+        } else {
+            return false;
+        }
+        return true;
+    }
+    private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+        if (Status.INDETERMINATE.equals(status)) {
+            boolean selected = true;
+            boolean deselected = true;
+            for (int i = 0; i < m.getRowCount(); i++) {
+                Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
+                selected &= b;
+                deselected &= !b;
+                if (selected == deselected) {
+                    return false;
+                }
+            }
+            if (deselected) {
+                column.setHeaderValue(Status.DESELECTED);
+            } else if (selected) {
+                column.setHeaderValue(Status.SELECTED);
+            } else {
+                return false;
+            }
+        } else {
+            column.setHeaderValue(Status.INDETERMINATE);
+        }
+        return true;
     }
 }
 

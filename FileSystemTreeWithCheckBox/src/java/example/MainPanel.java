@@ -197,9 +197,9 @@ class FolderSelectionListener implements TreeSelectionListener {
         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         Task worker = new Task(fileSystemView, parent) {
             @Override protected void process(List<File> chunks) {
-                if (isCancelled()) {
-                    return;
-                }
+                //if (isCancelled()) {
+                //    return;
+                //}
                 if (!tree.isDisplayable()) {
                     System.out.println("process: DISPOSE_ON_CLOSE");
                     cancel(true);

@@ -22,48 +22,50 @@ public final class MainPanel extends JPanel {
                 button.setEnabled(false);
                 combo.setEnabled(false);
                 //combo.removeAllItems();
-                worker = new Task() {
-                    @Override protected void process(List<Integer> chunks) {
-                        if (isCancelled()) {
-                            return;
-                        }
-                        if (!isDisplayable()) {
-                            System.out.println("process: DISPOSE_ON_CLOSE");
-                            cancel(true);
-                            return;
-                        }
-                        for (Integer i: chunks) {
-                            counter = i;
-                        }
-                        combo.setSelectedIndex(-1);
-                        combo.repaint();
-                    }
-                    @Override public void done() {
-                        if (!isDisplayable()) {
-                            System.out.println("done: DISPOSE_ON_CLOSE");
-                            cancel(true);
-                            return;
-                        }
-                        try {
-                            if (!isCancelled()) {
-                                String[] array = get();
-                                combo.setModel(new DefaultComboBoxModel<String>(array));
-                                combo.setSelectedIndex(0);
-                            }
-                        } catch (InterruptedException | ExecutionException ex) {
-                            System.out.println("Interrupted");
-                        }
-                        combo.setEnabled(true);
-                        button.setEnabled(true);
-                        counter = 0;
-                    }
-                };
+                worker = new UITask();
                 worker.execute();
             }
         });
         add(createPanel(combo, button, "ProgressComboBox: "), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
+    }
+
+    class UITask extends Task {
+        @Override protected void process(List<Integer> chunks) {
+            if (isCancelled()) {
+                return;
+            }
+            if (!isDisplayable()) {
+                System.out.println("process: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            for (Integer i: chunks) {
+                counter = i;
+            }
+            combo.setSelectedIndex(-1);
+            combo.repaint();
+        }
+        @Override public void done() {
+            if (!isDisplayable()) {
+                System.out.println("done: DISPOSE_ON_CLOSE");
+                cancel(true);
+                return;
+            }
+            try {
+                if (!isCancelled()) {
+                    String[] array = get();
+                    combo.setModel(new DefaultComboBoxModel<String>(array));
+                    combo.setSelectedIndex(0);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                System.out.println("Interrupted");
+            }
+            combo.setEnabled(true);
+            button.setEnabled(true);
+            counter = 0;
+        }
     }
 
     class ProgressCellRenderer extends DefaultListCellRenderer {

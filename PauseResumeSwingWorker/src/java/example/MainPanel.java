@@ -75,20 +75,20 @@ public final class MainPanel extends JPanel {
                   case TOTAL: bar1.setValue((Integer) s.value); break;
                   case FILE:  bar2.setValue((Integer) s.value); break;
                   case LOG:   area.append((String) s.value);    break;
-                  case PAUSE: {
-                      if ((Boolean) s.value) {
-                          area.append("*");
-                      } else {
-                          try {
-                              Document doc = area.getDocument();
-                              doc.remove(area.getDocument().getLength() - 1, 1);
-                          } catch (BadLocationException ex) {
-                              ex.printStackTrace();
-                          }
-                      }
-                      break;
-                  }
+                  case PAUSE: textProgress((Boolean) s.value);  break;
                   default: throw new AssertionError("Unknown Progress");
+                }
+            }
+        }
+        private void textProgress(boolean append) {
+            if (append) {
+                area.append("*");
+            } else {
+                try {
+                    Document doc = area.getDocument();
+                    doc.remove(area.getDocument().getLength() - 1, 1);
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
                 }
             }
         }
