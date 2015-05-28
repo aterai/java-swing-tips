@@ -67,13 +67,12 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
     private static final Rectangle R1 = new Rectangle();
     private static final Rectangle R2 = new Rectangle();
     private static final Rectangle R3 = new Rectangle();
-    private static Rectangle prevRect;
-
-    private final int gestureMotionThreshold = DragSource.getDragThreshold();
+    private final Rectangle prevRect = new Rectangle();
+    private final Rectangle draggingRect = new Rectangle();
     private final Point startPt = new Point(-100, -100);
     private final Point dragOffset = new Point();
     private final JComponent rubberStamp = new JPanel();
-    private final Rectangle draggingRect = new Rectangle();
+    private final int gestureMotionThreshold = DragSource.getDragThreshold();
 
     private Component draggingComonent;
     private Component gap;
@@ -149,16 +148,13 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
             Point pt = e.getPoint();
             JComponent parent = l.getView();
 
-            //MotionThreshold
-            double a = Math.pow(pt.x - startPt.x, 2);
-            double b = Math.pow(pt.y - startPt.y, 2);
-            if (Objects.isNull(draggingComonent) && Math.sqrt(a + b) > gestureMotionThreshold) {
-                startDragging(parent, pt);
-                return;
-            }
-
-            //dragging...
             if (Objects.isNull(draggingComonent)) {
+                //MotionThreshold
+                double a = Math.pow(pt.x - startPt.x, 2);
+                double b = Math.pow(pt.y - startPt.y, 2);
+                if (Math.sqrt(a + b) > gestureMotionThreshold) {
+                    startDragging(parent, pt);
+                }
                 return;
             }
 
@@ -166,7 +162,7 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
             updateWindowLocation(pt, parent);
             l.repaint();
 
-            if (Objects.nonNull(prevRect) && prevRect.contains(pt)) {
+            if (prevRect.contains(pt)) {
                 return;
             }
 
@@ -216,15 +212,15 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
         draggingRect.setLocation(x, yy);
     }
 
-    private static int getTargetIndex(Rectangle r, Point pt, int i) {
+    private int getTargetIndex(Rectangle r, Point pt, int i) {
         int ht2 = (int) (.5 + r.height * .5);
         R1.setBounds(r.x, r.y,       r.width, ht2);
         R2.setBounds(r.x, r.y + ht2, r.width, ht2);
         if (R1.contains(pt)) {
-            prevRect = R1;
+            prevRect.setBounds(R1);
             return i - 1 > 0 ? i : 0;
         } else if (R2.contains(pt)) {
-            prevRect = R2;
+            prevRect.setBounds(R2);
             return i;
         }
         return -1;

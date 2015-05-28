@@ -306,64 +306,70 @@ class ColorIcon implements Icon {
 }
 
 class HtmlTableTransferHandler extends TransferHandler {
-    //@see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
-    @Override protected Transferable createTransferable(JComponent c) {
+    protected boolean canStartDrag(JComponent c) {
         if (c instanceof JTable) {
             JTable table = (JTable) c;
-
-            if (!table.getRowSelectionAllowed() && !table.getColumnSelectionAllowed()) {
-                return null;
+            return table.getRowSelectionAllowed() || table.getColumnSelectionAllowed();
+        }
+        return false;
+    }
+    private static int[] getSelectedRows(JTable table) {
+        int[] rows;
+        if (table.getRowSelectionAllowed()) {
+            rows = table.getSelectedRows();
+        } else {
+            int rowCount = table.getRowCount();
+            rows = new int[rowCount];
+            for (int counter = 0; counter < rowCount; counter++) {
+                rows[counter] = counter;
             }
-
-            int[] rows;
-            if (table.getRowSelectionAllowed()) {
-                rows = table.getSelectedRows();
-            } else {
-                int rowCount = table.getRowCount();
-
-                rows = new int[rowCount];
-                for (int counter = 0; counter < rowCount; counter++) {
-                    rows[counter] = counter;
-                }
+        }
+        return rows;
+    }
+    private static int[] getSelectedColumns(JTable table) {
+        int[] cols;
+        if (table.getColumnSelectionAllowed()) {
+            cols = table.getSelectedColumns();
+        } else {
+            int colCount = table.getColumnCount();
+            cols = new int[colCount];
+            for (int counter = 0; counter < colCount; counter++) {
+                cols[counter] = counter;
             }
-
-            int[] cols;
-            if (table.getColumnSelectionAllowed()) {
-                cols = table.getSelectedColumns();
-            } else {
-                int colCount = table.getColumnCount();
-
-                cols = new int[colCount];
-                for (int counter = 0; counter < colCount; counter++) {
-                    cols[counter] = counter;
-                }
-            }
-
+        }
+        return cols;
+    }
+    protected void appendTag(StringBuffer htmlBuf, Object obj) {
+        if (obj instanceof Date) {
+            String v = Objects.toString((Date) obj, "");
+            htmlBuf.append("  <td><time>" + v + "</time></td>\n");
+        } else if (obj instanceof Color) {
+            htmlBuf.append(String.format("  <td style='background-color:#%06x'>&nbsp;</td>%n", ((Color) obj).getRGB() & 0xffffff));
+        } else {
+            htmlBuf.append("  <td>" + Objects.toString(obj, "") + "</td>\n");
+        }
+    }
+    //@see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
+    @Override protected Transferable createTransferable(JComponent c) {
+        if (canStartDrag(c)) {
+            JTable table = (JTable) c;
+            int[] rows = getSelectedRows(table);
+            int[] cols = getSelectedColumns(table);
             //if (Objects.isNull(rows) || Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
-            if (Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
+            if (rows.length == 0 || cols.length == 0) {
                 return null;
             }
 
             StringBuffer plainBuf = new StringBuffer();
             StringBuffer htmlBuf = new StringBuffer(64);
-
             htmlBuf.append("<html>\n<body>\n<table border='1'>\n");
-
             for (int row = 0; row < rows.length; row++) {
                 htmlBuf.append("<tr>\n");
                 for (int col = 0; col < cols.length; col++) {
                     Object obj = table.getValueAt(rows[row], cols[col]);
-                    String val = Objects.toString(obj, "") + "\t"; //.toString().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+                    String val = Objects.toString(obj, "") + "\t";
                     plainBuf.append(val);
-
-                    if (obj instanceof Date) {
-                        String v = Objects.toString((Date) obj, "");
-                        htmlBuf.append("  <td><time>" + v + "</time></td>\n");
-                    } else if (obj instanceof Color) {
-                        htmlBuf.append(String.format("  <td style='background-color:#%06x'>&nbsp;</td>%n", ((Color) obj).getRGB() & 0xffffff));
-                    } else {
-                        htmlBuf.append("  <td>" + Objects.toString(obj, "") + "</td>\n");
-                    }
+                    appendTag(htmlBuf, obj);
                 }
                 // we want a newline at the end of each line and not a tab
                 plainBuf.deleteCharAt(plainBuf.length() - 1).append("\n");
@@ -376,7 +382,6 @@ class HtmlTableTransferHandler extends TransferHandler {
 
             return new BasicTransferable(plainBuf.toString(), htmlBuf.toString());
         }
-
         return null;
     }
     @Override public int getSourceActions(JComponent c) {
@@ -386,10 +391,8 @@ class HtmlTableTransferHandler extends TransferHandler {
 
 //Copied from javax/swing/plaf/basic/BasicTransferable.java
 class BasicTransferable implements Transferable {
-
     protected String plainData;
     protected String htmlData;
-
     private static DataFlavor[] htmlFlavors;
     private static DataFlavor[] stringFlavors;
     private static DataFlavor[] plainFlavors;
@@ -437,22 +440,22 @@ class BasicTransferable implements Transferable {
 
         // fill in the array
         int nDone = 0;
-        if (nRicher > 0) {
+        //if (nRicher > 0) {
             System.arraycopy(richerFlavors, 0, flavors, nDone, nRicher);
             nDone += nRicher;
-        }
-        if (nHTML > 0) {
+        //}
+        //if (nHTML > 0) {
             System.arraycopy(htmlFlavors, 0, flavors, nDone, nHTML);
             nDone += nHTML;
-        }
-        if (nPlain > 0) {
+        //}
+        //if (nPlain > 0) {
             System.arraycopy(plainFlavors, 0, flavors, nDone, nPlain);
             nDone += nPlain;
-        }
-        if (nString > 0) {
+        //}
+        //if (nString > 0) {
             System.arraycopy(stringFlavors, 0, flavors, nDone, nString);
-            //nDone += nString;
-        }
+        //    nDone += nString;
+        //}
         return flavors;
     }
 
@@ -489,36 +492,10 @@ class BasicTransferable implements Transferable {
         if (isRicherFlavor(flavor)) {
             return getRicherData(flavor);
         } else if (isHTMLFlavor(flavor)) {
-            //String data = getHTMLData();
-            //data = Objects.nonNull(data) ? data : "";
-            String data = Objects.toString(getHTMLData(), "");
-            if (String.class.equals(flavor.getRepresentationClass())) {
-                return data;
-            } else if (Reader.class.equals(flavor.getRepresentationClass())) {
-                return new StringReader(data);
-            } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                //return new StringBufferInputStream(data);
-                return createInputStream(flavor, data);
-            }
-            // fall through to unsupported
+            return getHTMLTransferData(flavor);
         } else if (isPlainFlavor(flavor)) {
-            //String data = getPlainData();
-            //data = Objects.nonNull(data) ? data : "";
-            String data = Objects.toString(getPlainData(), "");
-            if (String.class.equals(flavor.getRepresentationClass())) {
-                return data;
-            } else if (Reader.class.equals(flavor.getRepresentationClass())) {
-                return new StringReader(data);
-            } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                //return new StringBufferInputStream(data);
-                return createInputStream(flavor, data);
-            }
-            // fall through to unsupported
-
+            return getPlaneTransferData(flavor);
         } else if (isStringFlavor(flavor)) {
-            //String data = getPlainData();
-            //data = Objects.nonNull(data) ? data : "";
-            //return data;
             return Objects.toString(getPlainData(), "");
         }
         throw new UnsupportedFlavorException(flavor);
@@ -598,6 +575,21 @@ class BasicTransferable implements Transferable {
         return htmlData;
     }
 
+    protected Object getHTMLTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+        //String data = getHTMLData();
+        //data = Objects.nonNull(data) ? data : "";
+        String data = Objects.toString(getHTMLData(), "");
+        if (String.class.equals(flavor.getRepresentationClass())) {
+            return data;
+        } else if (Reader.class.equals(flavor.getRepresentationClass())) {
+            return new StringReader(data);
+        } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
+            //return new StringBufferInputStream(data);
+            return createInputStream(flavor, data);
+        }
+        throw new UnsupportedFlavorException(flavor);
+    }
+
     // --- plain text flavors ----------------------------------------------------
 
     /**
@@ -629,6 +621,21 @@ class BasicTransferable implements Transferable {
      */
     protected String getPlainData() {
         return plainData;
+    }
+
+    protected Object getPlaneTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+        //String data = getPlainData();
+        //data = Objects.nonNull(data) ? data : "";
+        String data = Objects.toString(getPlainData(), "");
+        if (String.class.equals(flavor.getRepresentationClass())) {
+            return data;
+        } else if (Reader.class.equals(flavor.getRepresentationClass())) {
+            return new StringReader(data);
+        } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
+            //return new StringBufferInputStream(data);
+            return createInputStream(flavor, data);
+        }
+        throw new UnsupportedFlavorException(flavor);
     }
 
     // --- string flavorss --------------------------------------------------------
