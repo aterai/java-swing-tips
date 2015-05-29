@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static JComponent makeUI() {
-        final JProgressBar progressBar = new JProgressBar(SwingConstants.VERTICAL);
+        //final JProgressBar progressBar = new JProgressBar(SwingConstants.VERTICAL);
+        final JProgressBar progressBar = new JProgressBar();
         progressBar.setOpaque(false);
         progressBar.setUI(new GradientPalletProgressBarUI());
 
