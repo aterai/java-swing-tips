@@ -67,6 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
+    private Color color;
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
         if (isSelected) {
@@ -86,7 +87,6 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
         }
         return c;
     }
-    private Color color;
     private void setParticularCondition(Object value) {
         if (value instanceof DefaultMutableTreeNode) {
             Object uo = ((DefaultMutableTreeNode) value).getUserObject();

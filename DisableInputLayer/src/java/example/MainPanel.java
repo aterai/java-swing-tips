@@ -62,7 +62,19 @@ public final class MainPanel extends JPanel {
 }
 
 class DisableInputLayerUI extends LayerUI<JPanel> {
+    private static final String CMD_REPAINT = "repaint";
     private boolean isRunning;
+    public void start() {
+        if (isRunning) {
+            return;
+        }
+        isRunning = true;
+        firePropertyChange(CMD_REPAINT, false, true);
+    }
+    public void stop() {
+        isRunning = false;
+        firePropertyChange(CMD_REPAINT, true, false);
+    }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (!isRunning) {
@@ -94,18 +106,6 @@ class DisableInputLayerUI extends LayerUI<JPanel> {
         if (isRunning && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
-    }
-    private static final String CMD_REPAINT = "repaint";
-    public void start() {
-        if (isRunning) {
-            return;
-        }
-        isRunning = true;
-        firePropertyChange(CMD_REPAINT, false, true);
-    }
-    public void stop() {
-        isRunning = false;
-        firePropertyChange(CMD_REPAINT, true, false);
     }
     @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer l) {
         String cmd = pce.getPropertyName();

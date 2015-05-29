@@ -138,8 +138,13 @@ public final class MainPanel extends JPanel {
     }
 }
 class DisableInputLayerUI extends LayerUI<JComponent> {
+    private static final String CMD_REPAINT = "lock";
     private final transient MouseAdapter dummyMouseListener = new MouseAdapter() { /* Dummy listener */ };
     private boolean isBlocking;
+    public void setLocked(boolean flag) {
+        firePropertyChange(CMD_REPAINT, isBlocking, flag);
+        isBlocking = flag;
+    }
     @Override public void installUI(JComponent c) {
         super.installUI(c);
         if (c instanceof JLayer) {
@@ -161,11 +166,6 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         if (isBlocking && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
-    }
-    private static final String CMD_REPAINT = "lock";
-    public void setLocked(boolean flag) {
-        firePropertyChange(CMD_REPAINT, isBlocking, flag);
-        isBlocking = flag;
     }
     @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer l) {
         String cmd = pce.getPropertyName();

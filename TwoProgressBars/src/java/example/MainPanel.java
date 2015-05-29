@@ -141,6 +141,7 @@ class Progress {
 }
 
 class Task extends SwingWorker<String, Progress> {
+    private final Random r = new Random();
     @Override public String doInBackground() {
         //System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
         int current = 0;
@@ -160,7 +161,6 @@ class Task extends SwingWorker<String, Progress> {
         publish(new Progress(Component.LOG, "\n"));
         return "Done";
     }
-    private final Random r = new Random();
     private void convertFileToSomething() throws InterruptedException {
         int current = 0;
         int lengthOfTask = 10 + r.nextInt(50); //long lengthOfTask = file.length();
