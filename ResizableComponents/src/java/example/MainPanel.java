@@ -125,7 +125,7 @@ class JResizer extends JPanel { // implements Serializable {
     }
 }
 
-class ResizeMouseListener extends MouseAdapter {
+class ResizeMouseListener extends MouseAdapter { //NOPMD Cyclomatic Complexity, Standard Cyclomatic Complexity
     private static final Dimension MIN = new Dimension(50, 50);
     private static final Dimension MAX = new Dimension(500, 500);
     private int cursor;
@@ -200,7 +200,7 @@ class ResizeMouseListener extends MouseAdapter {
         return deltaY;
     }
     //@see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
-    @Override public void mouseDragged(MouseEvent e) {
+    @Override public void mouseDragged(MouseEvent e) { //NOPMD Cyclomatic Complexity, Standard Cyclomatic Complexity
         if (startPos == null || startingBounds == null) {
             return;
         }

@@ -69,10 +69,10 @@ class GridPanel extends JPanel implements Scrollable {
     @Override public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         return orientation == SwingConstants.HORIZONTAL ? visibleRect.width : visibleRect.height;
     }
-    @Override public boolean getScrollableTracksViewportWidth() { //NOPMD
+    @Override public boolean getScrollableTracksViewportWidth() { //NOPMD A getX() method which returns a boolean should be named isX()
         return false;
     }
-    @Override public boolean getScrollableTracksViewportHeight() { //NOPMD
+    @Override public boolean getScrollableTracksViewportHeight() { //NOPMD A getX() method which returns a boolean should be named isX()
         return false;
     }
     @Override public Dimension getPreferredSize() {

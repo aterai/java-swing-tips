@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTree tree = new JTree(makeModel()) {
-            @Override public boolean getScrollableTracksViewportWidth() { //NOPMD
+            @Override public boolean getScrollableTracksViewportWidth() { //NOPMD A getX() method which returns a boolean should be named isX()
                 return true;
             }
             @Override public void updateUI() {

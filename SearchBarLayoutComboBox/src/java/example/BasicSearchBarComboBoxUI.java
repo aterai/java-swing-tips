@@ -9,8 +9,9 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+import javax.swing.plaf.ComponentUI;
 
-public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
+public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI { //NOPMD This class has too many methods, consider refactoring it.
     protected PopupMenuListener popupMenuListener;
     protected JButton loupeButton;
     protected Action loupeAction = new AbstractAction() {
@@ -23,7 +24,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
             System.out.println(o + ": " + comboBox.getEditor().getItem());
         }
     };
-    public static javax.swing.plaf.ComponentUI createUI(JComponent c) {
+    public static ComponentUI createUI(JComponent c) {
         return new BasicSearchBarComboBoxUI();
     }
     //protected boolean isEditable = true;
