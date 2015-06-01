@@ -86,7 +86,8 @@ public final class MainPanel extends JPanel {
 
         return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size - 1)));
     }
-    private static AbstractButton makeButton(String title, Action action) {
+    //private static AbstractButton makeButton(String title, Action action) { //NOPMD False negative on "Avoid unused private methods"
+    protected static AbstractButton makeButton(String title, Action action) {
         JButton b = new JButton(action);
         b.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -106,7 +107,6 @@ public final class MainPanel extends JPanel {
         b.setContentAreaFilled(false);
         b.setFocusPainted(false);
         b.setOpaque(false);
-        b.setBorder(BorderFactory.createEmptyBorder());
         return b;
     }
 
