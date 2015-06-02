@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
                     } else {
                         TreeUtil.sortTree3(r);
                     }
-                    log(check.getText());
+                    //log(check.getText());
                     tree.setModel(new DefaultTreeModel(r));
                 } else {
                     tree.setModel(new DefaultTreeModel(root));
@@ -61,15 +61,15 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static void log(String title) {
-        if (TreeUtil.swapCount.get() == 0) {
-            System.out.format("%-24s - compare: %3d, swap: ---%n",
-                              title, TreeUtil.compareCount.get());
-        } else {
-            System.out.format("%-24s - compare: %3d, swap: %3d%n",
-                              title, TreeUtil.compareCount.get(), TreeUtil.swapCount.get());
-        }
-    }
+//     private static void log(String title) {
+//         if (TreeUtil.swapCount.get() == 0) {
+//             System.out.format("%-24s - compare: %3d, swap: ---%n",
+//                               title, TreeUtil.compareCount.get());
+//         } else {
+//             System.out.format("%-24s - compare: %3d, swap: %3d%n",
+//                               title, TreeUtil.compareCount.get(), TreeUtil.swapCount.get());
+//         }
+//     }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

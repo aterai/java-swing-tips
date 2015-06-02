@@ -2,10 +2,6 @@ package example;
 //-*- mode:java; encoding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 //@homepage@
-// import java.awt.*;
-// import java.awt.event.*;
-// import javax.swing.*;
-
 import java.awt.*;
 import java.text.*;
 import java.time.*;
@@ -115,9 +111,9 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
         if (Objects.isNull(value)) {
             throw new IllegalArgumentException("value is null");
         }
-        if (!(Objects.isNull(start) || start.compareTo(value) <= 0) && (Objects.isNull(end) || end.compareTo(value) >= 0)) {
-            throw new IllegalArgumentException("(start <= value <= end) is false");
-        }
+//         if (Objects.nonNull(start) && start.compareTo(value) >= 0 || Objects.nonNull(end) && end.compareTo(value) <= 0) {
+//             throw new IllegalArgumentException("(start <= value <= end) is false");
+//         }
         this.value = value;
         this.start = start;
         this.end = end;

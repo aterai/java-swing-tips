@@ -12,21 +12,26 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", -1, true}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+    };
+    public MainPanel() {
         super(new BorderLayout());
-        final FishEyeTable table = new FishEyeTable(makeTestModel());
+        for (int i = 0; i < 20; i++) {
+            model.addRow(new Object[] {"Name:" + i, i, i % 2 == 0});
+        }
+        JTable table = new FishEyeTable(model);
         table.setRowSelectionInterval(0, 0);
         JScrollPane scroll = new JScrollPane(table);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(320, 240));
         add(scroll, BorderLayout.NORTH);
-    }
-    private static TableModel makeTestModel() {
-        TestModel m = new TestModel();
-        for (int i = 0; i < 20; i++) {
-            m.addTest(new Test("Name:" + i, i % 2 == 0 ? "Comment" : ""));
-        }
-        return m;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -225,61 +230,5 @@ class FishEyeTable extends JTable {
             }
             setRowHeight(i, crh);
         }
-    }
-}
-
-class TestModel extends DefaultTableModel {
-    private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  true),
-        new ColumnContext("Comment", String.class,  true)
-    };
-    private int number;
-    public void addTest(Test t) {
-        Object[] obj = {number, t.getName(), t.getComment()};
-        super.addRow(obj);
-        number++;
-    }
-    @Override public boolean isCellEditable(int row, int col) {
-        return COLUMN_ARRAY[col].isEditable;
-    }
-    @Override public Class<?> getColumnClass(int modelIndex) {
-        return COLUMN_ARRAY[modelIndex].columnClass;
-    }
-    @Override public int getColumnCount() {
-        return COLUMN_ARRAY.length;
-    }
-    @Override public String getColumnName(int modelIndex) {
-        return COLUMN_ARRAY[modelIndex].columnName;
-    }
-    private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
-        public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
-            this.columnName = columnName;
-            this.columnClass = columnClass;
-            this.isEditable = isEditable;
-        }
-    }
-}
-
-class Test {
-    private String name, comment;
-    public Test(String name, String comment) {
-        this.name = name;
-        this.comment = comment;
-    }
-    public void setName(String str) {
-        name = str;
-    }
-    public void setComment(String str) {
-        comment = str;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getComment() {
-        return comment;
     }
 }
