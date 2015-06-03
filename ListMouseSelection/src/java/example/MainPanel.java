@@ -161,9 +161,7 @@ class SingleClickSelectList<E> extends JList<E> {
         setSelectionForeground(null);
         setSelectionBackground(null);
         super.updateUI();
-        if (Objects.isNull(listener)) {
-            listener = new ClearSelectionListener();
-        }
+        listener = new ClearSelectionListener();
         addMouseListener(listener);
         addMouseMotionListener(listener);
     }

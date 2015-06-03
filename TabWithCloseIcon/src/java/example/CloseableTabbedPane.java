@@ -75,9 +75,7 @@ public class CloseableTabbedPane extends JTabbedPane { //implements MouseListene
         removeMouseMotionListener(handler);
         super.updateUI();
         eventListenerList = new EventListenerList();
-        if (Objects.isNull(handler)) {
-            handler = new CloseableTabIconHandler();
-        }
+        handler = new CloseableTabIconHandler();
         addMouseListener(handler);
         addMouseMotionListener(handler);
 

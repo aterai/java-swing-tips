@@ -16,8 +16,11 @@ public final class MainPanel extends JPanel {
     private final JButton button   = new JButton();
     private final JButton showHideButton = new JButton();
     private final List<TreePath> rollOverPathLists = new ArrayList<>();
-
-    private Timer animator;
+    private final Timer animator = new Timer(5, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            controls.revalidate();
+        }
+    });
     private boolean isHidden = true;
     private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
         private int controlsHeight;
@@ -26,7 +29,7 @@ public final class MainPanel extends JPanel {
             //synchronized (target.getTreeLock()) {
             Dimension ps = super.preferredLayoutSize(target);
             controlsPreferredHeight = ps.height;
-            if (animator != null) {
+            if (animator.isRunning()) {
                 if (isHidden) {
                     if (controls.getHeight() < controlsPreferredHeight) {
                         controlsHeight += 5;
@@ -71,16 +74,10 @@ public final class MainPanel extends JPanel {
     };
     private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
         @Override public void actionPerformed(ActionEvent e) {
-            if (animator != null && animator.isRunning()) {
-                return;
+            if (!animator.isRunning()) {
+                isHidden = controls.getHeight() == 0;
+                animator.start();
             }
-            isHidden = controls.getHeight() == 0;
-            animator = new Timer(5, new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    controls.revalidate();
-                }
-            });
-            animator.start();
         }
     };
 
@@ -134,18 +131,18 @@ public final class MainPanel extends JPanel {
         return new DefaultTreeModel(root);
     }
     private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
-        TreeNode node = (TreeNode) path.getLastPathComponent();
-        if (node == null) {
-            return;
-        }
-        if (node.toString().startsWith(q)) {
-            rollOverPathLists.add(path);
-            tree.expandPath(path.getParentPath());
-        }
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration e = node.children();
-            while (e.hasMoreElements()) {
-                searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
+        Object o = path.getLastPathComponent();
+        if (o instanceof TreeNode) {
+            TreeNode node = (TreeNode) o;
+            if (node.toString().startsWith(q)) {
+                rollOverPathLists.add(path);
+                tree.expandPath(path.getParentPath());
+            }
+            if (!node.isLeaf() && node.getChildCount() >= 0) {
+                Enumeration e = node.children();
+                while (e.hasMoreElements()) {
+                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q, rollOverPathLists);
+                }
             }
         }
     }
@@ -155,7 +152,7 @@ public final class MainPanel extends JPanel {
 //     public void traverse(JTree tree) {
 //         TreeModel model = tree.getModel();
 //         Object root;
-//         if (model != null) {
+//         if (Objects.nonNull(model)) {
 //             root = model.getRoot();
 //             walk(model, root);
 //         } else {

@@ -4,8 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Date;
+import java.util.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.table.*;
 import javax.swing.tree.*;
 
@@ -21,12 +22,9 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model);
-
     private final DefaultListModel<Date> listModel = new DefaultListModel<>();
     private final JList<Date> list = new JList<>(listModel);
-
     private final JTree tree = new JTree();
-
     private final Timer timer;
     private transient HierarchyListener hierarchyListener;
 
@@ -56,7 +54,7 @@ public final class MainPanel extends JPanel {
                 int index = listModel.getSize() - 1;
                 list.ensureIndexIsVisible(index);
                 //Rectangle cellBounds = list.getCellBounds(index, index);
-                //if (cellBounds != null) {
+                //if (Objects.nonNull(cellBounds)) {
                 //    list.scrollRectToVisible(cellBounds);
                 //}
 
@@ -77,13 +75,11 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override public void updateUI() {
-        if (hierarchyListener != null) {
-            removeHierarchyListener(hierarchyListener);
-        }
+        removeHierarchyListener(hierarchyListener);
         super.updateUI();
         hierarchyListener = new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if (timer != null && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                if (Objects.nonNull(timer) && (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
                     System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
                     timer.stop();
                 }

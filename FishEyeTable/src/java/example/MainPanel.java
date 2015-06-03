@@ -105,9 +105,7 @@ class FishEyeTable extends JTable {
         setRowSelectionAllowed(true);
         setFillsViewportHeight(true);
 
-        if (Objects.isNull(handler)) {
-            handler = new FishEyeTableHandler();
-        }
+        handler = new FishEyeTableHandler();
         addMouseListener(handler);
         addMouseMotionListener(handler);
         getSelectionModel().addListSelectionListener(handler);

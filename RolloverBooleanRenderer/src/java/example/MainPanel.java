@@ -31,13 +31,11 @@ public final class MainPanel extends JPanel {
         }
         private transient HighlightListener highlighter;
         @Override public void updateUI() {
-            if (Objects.nonNull(highlighter)) {
-                addMouseListener(highlighter);
-                addMouseMotionListener(highlighter);
-                setDefaultRenderer(Object.class,  null);
-                setDefaultRenderer(Number.class,  null);
-                setDefaultRenderer(Boolean.class, null);
-            }
+            addMouseListener(highlighter);
+            addMouseMotionListener(highlighter);
+            setDefaultRenderer(Object.class,  null);
+            setDefaultRenderer(Number.class,  null);
+            setDefaultRenderer(Boolean.class, null);
             super.updateUI();
             highlighter = new HighlightListener(this);
             addMouseListener(highlighter);

@@ -33,16 +33,14 @@ public final class MainPanel extends JPanel {
                 super.updateUI();
                 EventQueue.invokeLater(new Runnable() {
                     @Override public void run() {
-                        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-                        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
                         getVerticalScrollBar().setUI(new TranslucentScrollBarUI());
-
                         setComponentZOrder(getVerticalScrollBar(), 0);
                         setComponentZOrder(getViewport(), 1);
                         getVerticalScrollBar().setOpaque(false);
                     }
                 });
+                setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 setLayout(new ScrollPaneLayout() {
                     @Override public void layoutContainer(Container parent) {
                         if (parent instanceof JScrollPane) {

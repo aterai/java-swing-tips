@@ -55,9 +55,7 @@ class PressAndHoldButton extends JButton {
     @Override public void updateUI() {
         removeMouseListener(handler);
         super.updateUI();
-        if (Objects.isNull(handler)) {
-            handler = new PressAndHoldHandler();
-        }
+        handler = new PressAndHoldHandler();
         SwingUtilities.updateComponentTreeUI(handler.pop);
         setAction(handler);
         addMouseListener(handler);

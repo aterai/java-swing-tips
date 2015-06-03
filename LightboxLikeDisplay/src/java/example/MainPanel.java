@@ -80,9 +80,7 @@ class LightboxGlassPane extends JPanel {
         super.updateUI();
         setOpaque(false);
         super.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        if (Objects.isNull(handler)) {
-            handler = new Handler();
-        }
+        handler = new Handler();
         addMouseListener(handler);
         addHierarchyListener(handler);
     }

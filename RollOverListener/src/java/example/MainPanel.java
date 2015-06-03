@@ -56,20 +56,14 @@ class RollOverList<E> extends JList<E> {
         super(model);
     }
     @Override public void updateUI() {
-        if (rollOverListener != null) {
-            removeMouseListener(rollOverListener);
-            removeMouseMotionListener(rollOverListener);
-        }
+        removeMouseListener(rollOverListener);
+        removeMouseMotionListener(rollOverListener);
         setSelectionBackground(null); //Nimbus
         super.updateUI();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                rollOverListener = new RollOverListener();
-                addMouseMotionListener(rollOverListener);
-                addMouseListener(rollOverListener);
-                setCellRenderer(new RollOverCellRenderer());
-            }
-        });
+        rollOverListener = new RollOverListener();
+        addMouseMotionListener(rollOverListener);
+        addMouseListener(rollOverListener);
+        setCellRenderer(new RollOverCellRenderer());
     }
     private class RollOverCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

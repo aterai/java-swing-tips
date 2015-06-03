@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
 class StringAlignmentProgressBar extends JProgressBar {
     private final JLabel label;
-    private ChangeListener changeListener;
+    private transient ChangeListener changeListener;
 
     public StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
         super(model);
@@ -101,20 +101,18 @@ class StringAlignmentProgressBar extends JProgressBar {
     }
     @Override public void updateUI() {
         removeAll();
-        if (Objects.nonNull(changeListener)) {
-            removeChangeListener(changeListener);
-        }
+        removeChangeListener(changeListener);
         super.updateUI();
+        setLayout(new BorderLayout());
+        changeListener = new ChangeListener() {
+            @Override public void stateChanged(ChangeEvent e) {
+                //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
+                label.setText(getString());
+            }
+        };
+        addChangeListener(changeListener);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                setLayout(new BorderLayout());
-                changeListener = new ChangeListener() {
-                    @Override public void stateChanged(ChangeEvent e) {
-                        //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
-                        label.setText(getString());
-                    }
-                };
-                addChangeListener(changeListener);
                 add(label);
                 label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
             }

@@ -114,19 +114,14 @@ public final class MainPanel extends JPanel {
 }
 
 class TriStateCheckBox extends JCheckBox {
-    private Icon currentIcon;
     @Override public void updateUI() {
-        currentIcon = getIcon();
+        Icon currentIcon = getIcon();
         setIcon(null);
         super.updateUI();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                if (Objects.nonNull(currentIcon)) {
-                    setIcon(new IndeterminateIcon());
-                }
-                setOpaque(false);
-            }
-        });
+        if (Objects.nonNull(currentIcon)) {
+            setIcon(new IndeterminateIcon());
+        }
+        setOpaque(false);
     }
 }
 

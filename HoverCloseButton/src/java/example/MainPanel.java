@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -87,23 +86,21 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
         removeMouseMotionListener(hoverHandler);
         super.updateUI();
         //setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        if (Objects.isNull(hoverHandler)) {
-            hoverHandler = new MouseMotionAdapter() {
-                private int prev = -1;
-                @Override public void mouseMoved(MouseEvent e) {
-                    JTabbedPane source = (JTabbedPane) e.getComponent();
-                    int focussed = source.indexAtLocation(e.getX(), e.getY());
-                    if (focussed == prev) {
-                        return;
-                    }
-                    for (int i = 0; i < source.getTabCount(); i++) {
-                        TabPanel tab = (TabPanel) source.getTabComponentAt(i);
-                        tab.setButtonVisible(i == focussed);
-                    }
-                    prev = focussed;
+        hoverHandler = new MouseMotionAdapter() {
+            private int prev = -1;
+            @Override public void mouseMoved(MouseEvent e) {
+                JTabbedPane source = (JTabbedPane) e.getComponent();
+                int focussed = source.indexAtLocation(e.getX(), e.getY());
+                if (focussed == prev) {
+                    return;
                 }
-            };
-        }
+                for (int i = 0; i < source.getTabCount(); i++) {
+                    TabPanel tab = (TabPanel) source.getTabComponentAt(i);
+                    tab.setButtonVisible(i == focussed);
+                }
+                prev = focussed;
+            }
+        };
         addMouseMotionListener(hoverHandler);
     }
     @Override public void addTab(String title, final Component content) {

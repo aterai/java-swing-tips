@@ -130,11 +130,16 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
             }
         };
         addItemListener(itemColorListener);
-        JTextField field = (JTextField) getEditor().getEditorComponent();
-        if (field != null) {
-            field.setOpaque(true);
-            field.setBackground(getAlternateRowColor(getSelectedIndex()));
-        }
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Component c = getEditor().getEditorComponent();
+                if (c instanceof JTextField) {
+                    JTextField field = (JTextField) c;
+                    field.setOpaque(true);
+                    field.setBackground(getAlternateRowColor(getSelectedIndex()));
+                }
+            }
+        });
     }
     private static Color getAlternateRowColor(int index) {
         return (index % 2 == 0) ? EVEN_BGCOLOR : ODD_BGCOLOR;

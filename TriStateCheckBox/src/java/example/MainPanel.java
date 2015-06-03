@@ -116,23 +116,17 @@ class TriStateCheckBox extends JCheckBox {
         super(title);
     }
     @Override public void updateUI() {
-        final Icon oi = getIcon();
+        Icon oi = getIcon();
         removeActionListener(listener);
         setIcon(null);
         super.updateUI();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                if (listener == null) {
-                    listener = new TriStateActionListener();
-                }
-                Icon icon = new IndeterminateIcon();
-                listener.setIcon(icon);
-                addActionListener(listener);
-                if (oi != null) {
-                    setIcon(icon);
-                }
-            }
-        });
+        listener = new TriStateActionListener();
+        Icon icon = new IndeterminateIcon();
+        listener.setIcon(icon);
+        addActionListener(listener);
+        if (oi != null) {
+            setIcon(icon);
+        }
     }
 }
 
@@ -200,16 +194,12 @@ class HeaderRenderer extends JCheckBox implements TableCellRenderer {
         return l;
     }
     @Override public void updateUI() {
-        final Icon oi = getIcon();
+        Icon oi = getIcon();
         super.updateUI();
         icon = new IndeterminateIcon();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                if (oi != null) {
-                    setIcon(icon);
-                }
-            }
-        });
+        if (oi != null) {
+            setIcon(icon);
+        }
     }
 }
 

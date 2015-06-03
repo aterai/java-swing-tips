@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MarqueePanel extends JComponent implements ActionListener {
-    public final Timer animator;
+    private final Timer animator = new Timer(10, this);
     private final GlyphVector gv;
     private final LineMetrics lm;
     private final float xheight;
@@ -47,10 +47,9 @@ class MarqueePanel extends JComponent implements ActionListener {
 
     public MarqueePanel() {
         super();
-        animator = new Timer(10, this);
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
+                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
                     animator.stop();
                 }
             }

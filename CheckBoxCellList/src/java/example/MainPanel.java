@@ -20,11 +20,18 @@ public final class MainPanel extends JPanel {
         JList<CheckBoxNode> list2 = new CheckBoxList<>(model);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("JTree");
-        JTree list3 = new JTree();
-        list3.setEditable(true);
-        list3.setRootVisible(false);
-        list3.setCellRenderer(new CheckBoxNodeRenderer());
-        list3.setCellEditor(new CheckBoxNodeEditor());
+        JTree list3 = new JTree() {
+            @Override public void updateUI() {
+                setCellRenderer(null);
+                setCellEditor(null);
+                super.updateUI();
+                setEditable(true);
+                setRootVisible(false);
+                setShowsRootHandles(false);
+                setCellRenderer(new CheckBoxNodeRenderer());
+                setCellEditor(new CheckBoxNodeEditor());
+            }
+        };
 
         for (String title: Arrays.asList(
                 "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee",
@@ -98,10 +105,8 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
         setBackground(null);
         setSelectionForeground(null);
         setSelectionBackground(null);
-        if (Objects.nonNull(renderer)) {
-            removeMouseListener(renderer);
-            removeMouseMotionListener(renderer);
-        }
+        removeMouseListener(renderer);
+        removeMouseMotionListener(renderer);
         super.updateUI();
         renderer = new CheckBoxCellRenderer<E>();
         setCellRenderer(renderer);
