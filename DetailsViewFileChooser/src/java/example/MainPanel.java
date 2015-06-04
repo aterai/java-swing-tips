@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,11 +14,8 @@ public final class MainPanel extends JPanel {
         final JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
         p.add(new JButton(new AbstractAction("List View(Default)") {
-            private JFileChooser chooser;
             @Override public void actionPerformed(ActionEvent ae) {
-                if (chooser == null) {
-                    chooser = new JFileChooser();
-                }
+                JFileChooser chooser = new JFileChooser();
                 int retvalue = chooser.showOpenDialog(p);
                 if (retvalue == JFileChooser.APPROVE_OPTION) {
                     log.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -27,26 +25,23 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("Details View") {
             private JFileChooser chooser;
             @Override public void actionPerformed(ActionEvent ae) {
-                if (chooser == null) {
-                    chooser = new JFileChooser();
+                JFileChooser chooser = new JFileChooser();
+//                 sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
+//                 filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
 
-//                     sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
-//                     filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
+//                 if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
+//                     Dimension d = chooser.getPreferredSize();
+//                     chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
+//                 }
 
-//                     if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
-//                         Dimension d = chooser.getPreferredSize();
-//                         chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
-//                     }
-
-                    //java - How can I start the JFileChooser in the Details view? - Stack Overflow]
-                    //http://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-                    //for (Object key: chooser.getActionMap().allKeys()) {
-                    //    System.out.println(key);
-                    //}
-                    Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
-                    if (detailsAction != null) {
-                        detailsAction.actionPerformed(null);
-                    }
+                //java - How can I start the JFileChooser in the Details view? - Stack Overflow]
+                //http://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+                //for (Object key: chooser.getActionMap().allKeys()) {
+                //    System.out.println(key);
+                //}
+                Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
+                if (Objects.nonNull(detailsAction)) {
+                    detailsAction.actionPerformed(null);
                 }
                 int retvalue = chooser.showOpenDialog(p);
                 if (retvalue == JFileChooser.APPROVE_OPTION) {
@@ -56,7 +51,7 @@ public final class MainPanel extends JPanel {
         }));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(log));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static boolean searchAndClick(Container parent, Icon icon) {
         for (Component c: parent.getComponents()) {
@@ -72,7 +67,7 @@ public final class MainPanel extends JPanel {
         return false;
     }
 //         AbstractButton b = getDetailsViewButton(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"));
-//         if (b != null) {
+//         if (Objects.nonNull(b)) {
 //             Dimension d = chooser.getPreferredSize();
 //             chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); //XXX
 //             b.doClick();
@@ -83,7 +78,7 @@ public final class MainPanel extends JPanel {
 //             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
 //                 b = (AbstractButton) c; break;
 //             } else {
-//                 if ((b = getDetailsViewButton((Container) c, icon)) != null) { break; }
+//                 if (Objects.nonNull(b = getDetailsViewButton((Container) c, icon))) { break; }
 //             }
 //         }
 //         return b;
@@ -96,7 +91,7 @@ public final class MainPanel extends JPanel {
 //                 return comp;
 //             } else if (comp instanceof Container) {
 //                 Component c = findChildComponent((Container) comp, cls);
-//                 if (c != null) {
+//                 if (Objects.nonNull(c)) {
 //                     return c;
 //                 }
 //             }
