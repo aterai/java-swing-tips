@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(new JTree()));
         p.add(new JButton(new AbstractAction("close") {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.windowForComponent((Component) e.getSource());
+                Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
                 //w.dispose();
                 w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
             }
@@ -112,24 +112,16 @@ public final class MainPanel extends JPanel {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private final transient Point startPt = new Point();
-    private transient Window window;
+    private final Point startPt = new Point();
     @Override public void mousePressed(MouseEvent me) {
-        if (Objects.isNull(window)) {
-            Object o = me.getSource();
-            if (o instanceof Window) {
-                window = (Window) o;
-            } else if (o instanceof JComponent) {
-                window = SwingUtilities.windowForComponent(me.getComponent());
-            }
-        }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (Objects.nonNull(window)) {
+        Component c = SwingUtilities.getRoot(me.getComponent());
+        if (c instanceof Window) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - startPt.x,
-                               eventLocationOnScreen.y - startPt.y);
+            ((Window) c).setLocation(eventLocationOnScreen.x - startPt.x,
+                                     eventLocationOnScreen.y - startPt.y);
         }
     }
 }

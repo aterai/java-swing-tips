@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 //         optionPane.addPropertyChangeListener(new PropertyChangeListener() {
 //             @Override public void propertyChange(PropertyChangeEvent e) {
 //                 if (dialog.isVisible() && e.getSource() == optionPane && //(event.getPropertyName().equals(VALUE_PROPERTY)) &&
-//                     e.getNewValue() != null && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+//                     Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
 //                     dialog.setVisible(false);
 //                 }
 //             }
@@ -76,10 +76,10 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     private int dy;
 
     public void startSlideIn(final SlideInAnimation slideInAnimation) {
-        if (animator != null && animator.isRunning()) {
+        if (Objects.nonNull(animator) && animator.isRunning()) {
             return;
         }
-        if (dialog != null && dialog.isVisible()) {
+        if (Objects.nonNull(dialog) && dialog.isVisible()) {
             dialog.dispose();
         }
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -131,36 +131,28 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
         animator.start();
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
-        if (dialog != null && dialog.isVisible() && e.getNewValue() != null && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+        if (Objects.nonNull(dialog) && dialog.isVisible() && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
             dialog.dispose();
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }
 }
 
 class DragWindowListener extends MouseAdapter {
-    private final transient Point startPt = new Point();
-    private transient Window window;
+    private final Point startPt = new Point();
     @Override public void mousePressed(MouseEvent me) {
-        if (Objects.isNull(window)) {
-            Object o = me.getSource();
-            if (o instanceof Window) {
-                window = (Window) o;
-            } else if (o instanceof JComponent) {
-                window = SwingUtilities.windowForComponent(me.getComponent());
-            }
-        }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (Objects.nonNull(window)) {
+        Component c = SwingUtilities.getRoot(me.getComponent());
+        if (c instanceof Window) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - startPt.x,
-                               eventLocationOnScreen.y - startPt.y);
+            ((Window) c).setLocation(eventLocationOnScreen.x - startPt.x,
+                                     eventLocationOnScreen.y - startPt.y);
         }
     }
 }

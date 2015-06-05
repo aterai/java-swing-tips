@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 import javax.swing.*;
 
 class MainPanel {
@@ -139,24 +138,16 @@ class MainPanel {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private final transient Point startPt = new Point();
-    private transient Window window;
+    private final Point startPt = new Point();
     @Override public void mousePressed(MouseEvent me) {
-        if (Objects.isNull(window)) {
-            Object o = me.getSource();
-            if (o instanceof Window) {
-                window = (Window) o;
-            } else if (o instanceof JComponent) {
-                window = SwingUtilities.windowForComponent(me.getComponent());
-            }
-        }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (Objects.nonNull(window)) {
+        Component c = SwingUtilities.getRoot(me.getComponent());
+        if (c instanceof Window) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - startPt.x,
-                               eventLocationOnScreen.y - startPt.y);
+            ((Window) c).setLocation(eventLocationOnScreen.x - startPt.x,
+                                     eventLocationOnScreen.y - startPt.y);
         }
     }
 }

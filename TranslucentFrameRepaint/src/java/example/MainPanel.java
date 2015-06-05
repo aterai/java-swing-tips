@@ -223,24 +223,16 @@ final class TextureUtil {
 }
 
 class DragWindowListener extends MouseAdapter {
-    private final transient Point startPt = new Point();
-    private transient Window window;
+    private final Point startPt = new Point();
     @Override public void mousePressed(MouseEvent me) {
-        if (Objects.isNull(window)) {
-            Object o = me.getSource();
-            if (o instanceof Window) {
-                window = (Window) o;
-            } else if (o instanceof JComponent) {
-                window = SwingUtilities.windowForComponent(me.getComponent());
-            }
-        }
         startPt.setLocation(me.getPoint());
     }
     @Override public void mouseDragged(MouseEvent me) {
-        if (Objects.nonNull(window)) {
+        Component c = SwingUtilities.getRoot(me.getComponent());
+        if (c instanceof Window) {
             Point eventLocationOnScreen = me.getLocationOnScreen();
-            window.setLocation(eventLocationOnScreen.x - startPt.x,
-                               eventLocationOnScreen.y - startPt.y);
+            ((Window) c).setLocation(eventLocationOnScreen.x - startPt.x,
+                                     eventLocationOnScreen.y - startPt.y);
         }
     }
 }
