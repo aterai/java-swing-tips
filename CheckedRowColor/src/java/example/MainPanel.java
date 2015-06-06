@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
@@ -48,6 +49,21 @@ public final class MainPanel extends JPanel {
     }
     public static JTable makeTable(final DefaultTableModel model) {
         return new JTable(model) {
+            @Override public void updateUI() {
+                // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+                // http://bugs.java.com/view_bug.do?bug_id=6788475
+                // XXX: set dummy ColorUIResource
+                setSelectionForeground(new ColorUIResource(Color.RED));
+                setSelectionBackground(new ColorUIResource(Color.RED));
+                super.updateUI();
+                TableModel m = getModel();
+                for (int i = 0; i < m.getColumnCount(); i++) {
+                    TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+                    if (r instanceof Component) {
+                        SwingUtilities.updateComponentTreeUI((Component) r);
+                    }
+                }
+            }
             @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
                 Component cmp = super.prepareEditor(editor, row, column);
                 if (convertColumnIndexToModel(column) == BOOLEAN_COLUMN) {

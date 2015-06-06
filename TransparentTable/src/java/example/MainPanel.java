@@ -10,74 +10,77 @@ import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private TexturePaint makeImageTexture() {
-        BufferedImage bi = null;
-        try {
-            bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
+    private final String[] columnNames = {"String", "Integer", "Boolean"};
+    private final Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false},
+        {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
         }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
-    }
-    private TableModel makeTableModel() {
-        String[] columnNames = {"String", "Integer", "Boolean"};
-        Object[][] data = {
-            {"aaa", 12, true}, {"bbb", 5, false},
-            {"CCC", 92, true}, {"DDD", 0, false}
-        };
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override public Class<?> getColumnClass(int column) {
-                return getValueAt(0, column).getClass();
+    };
+    private final JTable table = new JTable(model) {
+        @Override public void updateUI() {
+            // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+            // http://bugs.java.com/view_bug.do?bug_id=6788475
+            // XXX: set dummy ColorUIResource
+            setSelectionForeground(new ColorUIResource(Color.RED));
+            setSelectionBackground(new ColorUIResource(Color.RED));
+            super.updateUI();
+            TableModel m = getModel();
+            for (int i = 0; i < m.getColumnCount(); i++) {
+                TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+                if (r instanceof Component) {
+                    SwingUtilities.updateComponentTreeUI((Component) r);
+                }
             }
-        };
-        return model;
-    }
+        }
+        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+            Component c = super.prepareEditor(editor, row, column);
+            if (c instanceof JTextField) {
+                JTextField tf = (JTextField) c;
+                tf.setOpaque(false);
+            } else if (c instanceof JCheckBox) {
+                JCheckBox cb = (JCheckBox) c;
+                cb.setBackground(getSelectionBackground());
+            }
+            return c;
+        }
+    };
+    private final JScrollPane scroll = new JScrollPane(table) {
+        private final TexturePaint texture = makeImageTexture();
+        @Override protected JViewport createViewport() {
+            return new JViewport() {
+                @Override public void paintComponent(Graphics g) {
+                    if (Objects.nonNull(texture)) {
+                        Graphics2D g2 = (Graphics2D) g.create();
+                        g2.setPaint(texture);
+                        g2.fillRect(0, 0, getWidth(), getHeight());
+                        g2.dispose();
+                    }
+                    super.paintComponent(g);
+                }
+            };
+        }
+    };
+    private final Color alphaZero = new Color(0x0, true);
+
     public MainPanel() {
         super(new BorderLayout());
 
-        final JTable table = new JTable(makeTableModel()) {
-            @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-                Component c = super.prepareEditor(editor, row, column);
-                if (c instanceof JTextField) {
-                    JTextField tf = (JTextField) c;
-                    tf.setOpaque(false);
-                } else if (c instanceof JCheckBox) {
-                    JCheckBox cb = (JCheckBox) c;
-                    cb.setBackground(getSelectionBackground());
-                }
-                return c;
-            }
-        };
         table.setAutoCreateRowSorter(true);
         table.setRowSelectionAllowed(true);
         table.setFillsViewportHeight(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         table.setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
-
-        JScrollPane scroll = new JScrollPane(table) {
-            private final TexturePaint texture = makeImageTexture();
-            @Override protected JViewport createViewport() {
-                return new JViewport() {
-                    @Override public void paintComponent(Graphics g) {
-                        if (Objects.nonNull(texture)) {
-                            Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setPaint(texture);
-                            g2.fillRect(0, 0, getWidth(), getHeight());
-                            g2.dispose();
-                        }
-                        super.paintComponent(g);
-                    }
-                };
-            }
-        };
-
-        final Color alphaZero = new Color(0x0, true);
         table.setOpaque(false);
         table.setBackground(alphaZero);
+
         scroll.getViewport().setOpaque(false);
         scroll.getViewport().setBackground(alphaZero);
 
@@ -89,6 +92,16 @@ public final class MainPanel extends JPanel {
             }
         }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private TexturePaint makeImageTexture() {
+        BufferedImage bi = null;
+        try {
+            bi = ImageIO.read(getClass().getResource("unkaku_w.png"));
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            throw new IllegalArgumentException(ioe);
+        }
+        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
 
     public static void main(String... args) {
@@ -146,31 +159,31 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
         }
         super.paintComponent(g);
     }
-    //Overridden for performance reasons. ---->
-    @Override public boolean isOpaque() {
-        Color back = getBackground();
-        Component p = getParent();
-        if (Objects.nonNull(p)) {
-            p = p.getParent();
-        } // p should now be the JTable.
-        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return !colorMatch && super.isOpaque();
-    }
-    @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //System.out.println(propertyName);
-        //String literal pool
-        //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-        boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
-        if (flag && !Objects.equals(oldValue, newValue)) {
-            super.firePropertyChange(propertyName, oldValue, newValue);
-        }
-    }
-    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
-    @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
-    @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
+//     //Overridden for performance reasons. ---->
+//     @Override public boolean isOpaque() {
+//         Color back = getBackground();
+//         Component p = getParent();
+//         if (Objects.nonNull(p)) {
+//             p = p.getParent();
+//         } // p should now be the JTable.
+//         boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
+//         return !colorMatch && super.isOpaque();
+//     }
+//     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//         //System.out.println(propertyName);
+//         //String literal pool
+//         //if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
+//         boolean flag = "font".equals(propertyName) || "foreground".equals(propertyName);
+//         if (flag && !Objects.equals(oldValue, newValue)) {
+//             super.firePropertyChange(propertyName, oldValue, newValue);
+//         }
+//     }
+//     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
+//     @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//     @Override public void validate()   { /* Overridden for performance reasons. */ }
+//     @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//     //<---- Overridden for performance reasons.
 }

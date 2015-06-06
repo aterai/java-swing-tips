@@ -4,9 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
@@ -24,11 +24,18 @@ public final class MainPanel extends JPanel {
     };
     private final JTable table = new JTable(model) {
         @Override public void updateUI() {
+            // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+            // http://bugs.java.com/view_bug.do?bug_id=6788475
+            // XXX: set dummy ColorUIResource
+            setSelectionForeground(new ColorUIResource(Color.RED));
+            setSelectionBackground(new ColorUIResource(Color.RED));
             super.updateUI();
-            //XXX: Nimbus
-            TableCellRenderer r = getDefaultRenderer(Boolean.class);
-            if (r instanceof Component) {
-                SwingUtilities.updateComponentTreeUI((Component) r);
+            TableModel m = getModel();
+            for (int i = 0; i < m.getColumnCount(); i++) {
+                TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+                if (r instanceof Component) {
+                    SwingUtilities.updateComponentTreeUI((Component) r);
+                }
             }
         }
         @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
@@ -78,7 +85,7 @@ public final class MainPanel extends JPanel {
 class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final int BUTTON_WIDTH = 16;
     private static final Color BUTTONBGC = new Color(200, 200, 200, 100);
-    private JPopupMenu pop;
+    private final JPopupMenu pop = new JPopupMenu();
     private int rolloverIndex = -1;
     private final transient MouseAdapter ma = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
@@ -99,7 +106,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
             r.translate(r.width - BUTTON_WIDTH, 0);
             r.setSize(BUTTON_WIDTH, r.height);
             Point pt = e.getPoint();
-            if (c.getComponentCount() > 0 && r.contains(pt) && Objects.nonNull(pop)) {
+            if (c.getComponentCount() > 0 && r.contains(pt)) {
                 pop.show(header, r.x, r.height);
                 JButton b = (JButton) c.getComponent(0);
                 b.doClick();
@@ -134,11 +141,11 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
     @Override public void updateUI() {
         super.updateUI();
-        if (Objects.isNull(pop)) {
-            pop = new JPopupMenu();
-        } else {
-            SwingUtilities.updateComponentTreeUI(pop);
-        }
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                SwingUtilities.updateComponentTreeUI(pop);
+            }
+        });
     }
 
 //     JButton button = new JButton(new AbstractAction() {
