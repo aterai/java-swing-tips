@@ -25,15 +25,18 @@ public final class MainPanel extends JPanel {
             return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
         }
     };
-    private final JScrollPane scroll = new JScrollPane(table) {
-        @Override public void updateUI() {
-            super.updateUI();
-            JPopupMenu jpm = getComponentPopupMenu();
-            if (jpm == null && pop != null) {
-                SwingUtilities.updateComponentTreeUI(pop);
-            }
-        }
-    };
+    private final JScrollPane scroll = new JScrollPane(table);
+    //Fixed: [[#JDK-6299213] The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731) - Java Bug System]
+    //       (https://bugs.openjdk.java.net/browse/JDK-6299213)
+    //private final JScrollPane scroll = new JScrollPane(table) {
+    //    @Override public void updateUI() {
+    //        super.updateUI();
+    //        JPopupMenu jpm = getComponentPopupMenu();
+    //        if (jpm == null && pop != null) {
+    //            SwingUtilities.updateComponentTreeUI(pop);
+    //        }
+    //    }
+    //};
     private final JCheckBox check    = new JCheckBox("Disable Scrolling");
     private final TablePopupMenu pop = new TablePopupMenu();
     public MainPanel() {

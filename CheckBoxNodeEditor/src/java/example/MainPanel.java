@@ -211,11 +211,12 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
     private final JPanel panel = new JPanel(new BorderLayout());
     public CheckBoxNodeRenderer() {
         super();
-        String uiName = getUI().getClass().getName();
-        if (uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
-            System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
-            renderer.setBackgroundSelectionColor(new Color(0x0, true));
-        }
+        //Fixed?
+        //String uiName = getUI().getClass().getName();
+        //if (uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
+        //    System.out.println("XXX: FocusBorder bug?, JDK 1.7.0, Nimbus start LnF");
+        //    renderer.setBackgroundSelectionColor(new Color(0x0, true));
+        //}
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
@@ -245,19 +246,20 @@ class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer 
         }
         return l;
     }
-    @Override public void updateUI() {
-        super.updateUI();
-        if (Objects.nonNull(panel)) {
-            //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
-            panel.updateUI();
-            //panel.add(this, BorderLayout.WEST);
-        }
-        setName("Tree.cellRenderer");
-        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        //if (System.getProperty("java.version").startsWith("1.6.0")) {
-        //    renderer = new DefaultTreeCellRenderer();
-        //}
-    }
+    //Fixed?
+    //@Override public void updateUI() {
+    //    super.updateUI();
+    //    if (Objects.nonNull(panel)) {
+    //        //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+    //        panel.updateUI();
+    //        //panel.add(this, BorderLayout.WEST);
+    //    }
+    //    setName("Tree.cellRenderer");
+    //    //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+    //    //if (System.getProperty("java.version").startsWith("1.6.0")) {
+    //    //    renderer = new DefaultTreeCellRenderer();
+    //    //}
+    //}
 }
 
 class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
@@ -319,29 +321,32 @@ class CheckBoxNodeEditor extends TriStateCheckBox implements TreeCellEditor {
             Dimension d = getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if (r.contains(me.getX(), me.getY())) {
-                if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
-                    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
-                    setBounds(new Rectangle(0, 0, d.width, r.height));
-                }
+                //Fixed: Bug ID: JDK-8023474 First mousepress doesn't start editing in JTree
+                //       http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8023474
+                //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
+                //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
+                //    setBounds(new Rectangle(0, 0, d.width, r.height));
+                //}
                 //System.out.println(getBounds());
                 return true;
             }
         }
         return false;
     }
-    @Override public void updateUI() {
-        super.updateUI();
-        setName("Tree.cellEditor");
-        if (Objects.nonNull(panel)) {
-            //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
-            panel.updateUI();
-            //panel.add(this, BorderLayout.WEST);
-        }
-        //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
-        //if (System.getProperty("java.version").startsWith("1.6.0")) {
-        //    renderer = new DefaultTreeCellRenderer();
-        //}
-    }
+    //Fixed?
+    //@Override public void updateUI() {
+    //    super.updateUI();
+    //    setName("Tree.cellEditor");
+    //    if (Objects.nonNull(panel)) {
+    //        //panel.removeAll(); //??? Change to Nimbus LnF, JDK 1.6.0
+    //        panel.updateUI();
+    //        //panel.add(this, BorderLayout.WEST);
+    //    }
+    //    //???#1: JDK 1.6.0 bug??? @see 1.7.0 DefaultTreeCellRenderer#updateUI()
+    //    //if (System.getProperty("java.version").startsWith("1.6.0")) {
+    //    //    renderer = new DefaultTreeCellRenderer();
+    //    //}
+    //}
 
     //Copied from AbstractCellEditor
 //     protected EventListenerList listenerList = new EventListenerList();
@@ -508,10 +513,12 @@ class CheckBoxNodeEditor extends JPanel implements TreeCellEditor {
             Dimension d = check.getPreferredSize();
             r.setSize(new Dimension(d.width, r.height));
             if (r.contains(me.getX(), me.getY())) {
-                if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
-                    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
-                    check.setBounds(new Rectangle(0, 0, d.width, r.height));
-                }
+                //Fixed: Bug ID: JDK-8023474 First mousepress doesn't start editing in JTree
+                //       http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8023474
+                //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
+                //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
+                //    check.setBounds(new Rectangle(0, 0, d.width, r.height));
+                //}
                 //System.out.println(getBounds());
                 return true;
             }
