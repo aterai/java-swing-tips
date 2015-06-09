@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -84,14 +83,15 @@ class ScrollAction extends AbstractAction {
     private static final double SIZE = 100d;
     private final Point vec;
     private final JScrollPane scrollPane;
-    private Timer scroller;
+    private final Timer scroller = new Timer(5, null);
+    private transient ActionListener listener;
     public ScrollAction(String name, JScrollPane scrollPane, Point vec) {
         super(name);
         this.scrollPane = scrollPane;
         this.vec = vec;
     }
     @Override public void actionPerformed(ActionEvent e) {
-        if (Objects.nonNull(scroller) && scroller.isRunning()) {
+        if (scroller.isRunning()) {
             return;
         }
         final JViewport vport = scrollPane.getViewport();
@@ -101,7 +101,8 @@ class ScrollAction extends AbstractAction {
         final int sx = vport.getViewPosition().x;
         final int sy = vport.getViewPosition().y;
         final Rectangle rect = new Rectangle(w, h);
-        scroller = new Timer(5, new ActionListener() {
+        scroller.removeActionListener(listener);
+        listener = new ActionListener() {
             int count = (int) SIZE;
             @Override public void actionPerformed(ActionEvent e) {
                 double a = easeInOut(--count / SIZE);
@@ -115,7 +116,8 @@ class ScrollAction extends AbstractAction {
                 rect.setLocation(sx + vec.x * dx, sy + vec.y * dy);
                 v.scrollRectToVisible(rect);
             }
-        });
+        };
+        scroller.addActionListener(listener);
         scroller.start();
     }
     private static double easeInOut(double t) {

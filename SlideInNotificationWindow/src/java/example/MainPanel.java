@@ -70,20 +70,20 @@ public final class MainPanel extends JPanel {
 
 class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     private static final int DELAY = 5;
-    private JWindow dialog;
-    private Timer animator;
+    private final JWindow dialog = new JWindow((Frame) null);
+    private final Timer animator = new Timer(DELAY, null);
+    private transient ActionListener listener;
     private int dx;
     private int dy;
 
     public void startSlideIn(final SlideInAnimation slideInAnimation) {
-        if (Objects.nonNull(animator) && animator.isRunning()) {
+        if (animator.isRunning()) {
             return;
         }
-        if (Objects.nonNull(dialog) && dialog.isVisible()) {
-            dialog.dispose();
+        if (dialog.isVisible()) {
+            dialog.setVisible(false);
+            dialog.getContentPane().removeAll();
         }
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Rectangle desktopBounds = env.getMaximumWindowBounds();
 
         JOptionPane optionPane = new JOptionPane("Warning", JOptionPane.WARNING_MESSAGE);
         DragWindowListener dwl = new DragWindowListener();
@@ -91,20 +91,19 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
         optionPane.addMouseMotionListener(dwl);
         optionPane.addPropertyChangeListener(this);
         optionPane.addHierarchyListener(this);
-
-        //GraphicsConfiguration gc = frame.getGraphicsConfiguration();
-        dialog = new JWindow((Frame) null);
         dialog.getContentPane().add(optionPane);
         dialog.pack();
 
         final Dimension d = dialog.getContentPane().getPreferredSize();
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Rectangle desktopBounds = env.getMaximumWindowBounds();
         dx = desktopBounds.width - d.width;
         dy = desktopBounds.height;
-
         dialog.setLocation(new Point(dx, dy));
         dialog.setVisible(true);
 
-        animator = new Timer(DELAY, new ActionListener() {
+        animator.removeActionListener(listener);
+        listener = new ActionListener() {
             private int count;
             @Override public void actionPerformed(ActionEvent e) {
                 double a = 1d;
@@ -127,16 +126,18 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
                 }
                 dialog.setLocation(new Point(dx, dy - visibleHeidht));
             }
-        });
+        };
+        animator.addActionListener(listener);
         animator.start();
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
-        if (Objects.nonNull(dialog) && dialog.isVisible() && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
-            dialog.dispose();
+        if (dialog.isVisible() && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+            dialog.setVisible(false);
+            dialog.getContentPane().removeAll();
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }

@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 //import java.awt.geom.*;
 //import java.beans.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -108,10 +107,33 @@ class ImageCaptionLabel extends JLabel {
 
 class LabelHandler extends MouseAdapter implements HierarchyListener {
     private static final int DELAY = 4;
-    private Timer animator;
+    private final Timer animator = new Timer(DELAY, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            double height = (double) textArea.getPreferredSize().height;
+            double a = AnimationUtil.easeInOut(count / height);
+            count += direction;
+            txah = (int) (.5 + a * height);
+            textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+            if (direction > 0) { //show
+                if (txah >= textArea.getPreferredSize().height) {
+                    txah = textArea.getPreferredSize().height;
+                    animator.stop();
+                }
+            } else { //hide
+                if (txah <= 0) {
+                    txah = 0;
+                    animator.stop();
+                }
+            }
+            JComponent p = (JComponent) SwingUtilities.getUnwrappedParent(textArea);
+            p.revalidate();
+            p.repaint();
+        }
+    });
     private final JComponent textArea;
     private int txah;
     private int count;
+    private int direction;
 
     public LabelHandler(JComponent textArea) {
         super();
@@ -120,48 +142,23 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     public int getTextAreaHeight() {
         return txah;
     }
-    private Timer createTimer(final int dir) {
-        final double height = (double) textArea.getPreferredSize().height;
-        return new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                double a = AnimationUtil.easeInOut(count / height);
-                count += dir;
-                txah = (int) (.5 + a * height);
-                textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-                if (dir > 0) { //show
-                    if (txah >= textArea.getPreferredSize().height) {
-                        txah = textArea.getPreferredSize().height;
-                        animator.stop();
-                    }
-                } else { //hide
-                    if (txah <= 0) {
-                        txah = 0;
-                        animator.stop();
-                    }
-                }
-                JComponent p = (JComponent) SwingUtilities.getUnwrappedParent(textArea);
-                p.revalidate();
-                p.repaint();
-            }
-        });
-    }
     @Override public void mouseEntered(MouseEvent e) {
-        if (Objects.nonNull(animator) && animator.isRunning() || txah == textArea.getPreferredSize().height) {
+        if (animator.isRunning() || txah == textArea.getPreferredSize().height) {
             return;
         }
-        animator = createTimer(1);
+        this.direction = 1;
         animator.start();
     }
     @Override public void mouseExited(MouseEvent e) {
         JComponent parent = (JComponent) e.getComponent();
-        if (Objects.nonNull(animator) && animator.isRunning() || parent.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
+        if (animator.isRunning() || parent.contains(e.getPoint()) && txah == textArea.getPreferredSize().height) {
             return;
         }
-        animator = createTimer(-1);
+        this.direction = -1;
         animator.start();
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }
