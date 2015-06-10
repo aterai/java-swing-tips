@@ -36,6 +36,11 @@ public final class MainPanel extends JPanel {
             }
             return c;
         }
+        @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+            Component c = super.prepareRenderer(renderer, row, column);
+            c.setForeground(Color.BLACK);
+            return c;
+        }
     };
 
     public MainPanel() {
