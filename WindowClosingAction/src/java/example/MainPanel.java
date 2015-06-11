@@ -39,7 +39,8 @@ public final class MainPanel extends JPanel {
         @Override public void actionPerformed(ActionEvent e) {
             JComponent c = (JComponent) e.getSource();
             Window window = null;
-            Container parent = c.getParent();
+            //Container parent = c.getParent();
+            Container parent = SwingUtilities.getUnwrappedParent(c);
             if (parent instanceof JPopupMenu) {
                 JPopupMenu popup = (JPopupMenu) parent;
                 JComponent invoker = (JComponent) popup.getInvoker();
@@ -52,8 +53,7 @@ public final class MainPanel extends JPanel {
                     window = SwingUtilities.getWindowAncestor(toolbar);
                 }
             } else {
-                Component invoker = c.getParent();
-                window = SwingUtilities.getWindowAncestor(invoker);
+                window = SwingUtilities.getWindowAncestor(parent);
             }
             if (Objects.nonNull(window)) {
                 //window.dispose();

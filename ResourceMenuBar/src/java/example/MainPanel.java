@@ -4,7 +4,9 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
     private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
@@ -14,11 +16,11 @@ public final class MainPanel extends JPanel {
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
         JMenuBar menuBar = BAR_FACTORY.createMenubar();
-        //if (menuBar != null)
+        //if (Objects.nonNull(menuBar))
         menupanel.add(menuBar, BorderLayout.NORTH);
 
         JToolBar toolBar = BAR_FACTORY.createToolbar();
-        if (toolBar != null) {
+        if (Objects.nonNull(toolBar)) {
             menupanel.add(toolBar, BorderLayout.SOUTH);
         }
         add(menupanel, BorderLayout.NORTH);
@@ -93,11 +95,28 @@ class ExitAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
         //exitActionPerformed();
         //saveLocation(prefs);
-        Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
-        if (w != null) {
-            w.dispose();
+        JComponent c = (JComponent) e.getSource();
+        Window window = null;
+        //Container parent = c.getParent();
+        Container parent = SwingUtilities.getUnwrappedParent(c);
+        if (parent instanceof JPopupMenu) {
+            JPopupMenu popup = (JPopupMenu) parent;
+            JComponent invoker = (JComponent) popup.getInvoker();
+            window = SwingUtilities.getWindowAncestor(invoker);
+        } else if (parent instanceof JToolBar) {
+            JToolBar toolbar = (JToolBar) parent;
+            if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
+                window = SwingUtilities.getWindowAncestor(toolbar).getOwner();
+            } else {
+                window = SwingUtilities.getWindowAncestor(toolbar);
+            }
+        } else {
+            window = SwingUtilities.getWindowAncestor(parent);
         }
-        //System.exit(0);
+        if (Objects.nonNull(window)) {
+            //window.dispose();
+            window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+        }
     }
 }
 
