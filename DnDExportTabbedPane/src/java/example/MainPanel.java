@@ -424,6 +424,13 @@ class TabTransferHandler extends TransferHandler {
         }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
+    private Component getSourceDraggingComponent(DnDTabbedPane tabbedPane) {
+        if (Objects.nonNull(tabbedPane)) {
+            return tabbedPane.getComponentAt(tabbedPane.dragTabIndex);
+        } else {
+            return null;
+        }
+    }
     private boolean isDropable(DnDTabbedPane target, Point pt, int idx) {
         boolean isDropable = false;
         Rectangle tr = target.getTabAreaBounds();
@@ -432,7 +439,7 @@ class TabTransferHandler extends TransferHandler {
             isDropable = tr.contains(pt) && idx >= 0 && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
             //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            if (Objects.nonNull(source) && target != source.getComponentAt(source.dragTabIndex)) {
+            if (target != getSourceDraggingComponent(source)) {
                 isDropable = tr.contains(pt) && idx >= 0;
             }
         }
