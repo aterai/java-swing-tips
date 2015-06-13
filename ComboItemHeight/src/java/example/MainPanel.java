@@ -43,7 +43,6 @@ public final class MainPanel extends JPanel {
 
         JComboBox<String> combo3 = new JComboBox<>(items);
         combo3.setRenderer(new DefaultListCellRenderer() {
-            private int cheight;
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 String title = Objects.toString(value, "");
                 if (index >= 0) {
@@ -55,8 +54,20 @@ public final class MainPanel extends JPanel {
         p.add(makeTitledPanel("html", combo3));
         p.add(Box.createVerticalStrut(5));
 
-//         JComboBox<String> combo4 = new JComboBox<>(items);
-//         combo4.setUI(new BasicComboBoxUI() {
+        JComboBox<String> combo4 = new JComboBox<>(items);
+        combo4.setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setIcon(index >= 0 ? new H32Icon() : null);
+                //setIconTextGap(0);
+                return this;
+            }
+        });
+        p.add(makeTitledPanel("icon", combo4));
+        p.add(Box.createVerticalStrut(5));
+
+//         JComboBox<String> combo5 = new JComboBox<>(items);
+//         combo5.setUI(new BasicComboBoxUI() {
 //             @Override protected ComboPopup createPopup() {
 //                 return new BasicComboPopup(combo) {
 //                     @Override protected void configureList() {
@@ -66,7 +77,8 @@ public final class MainPanel extends JPanel {
 //                 };
 //             }
 //         });
-//         p.add(makeTitledPanel("BasicComboBoxUI", combo4));
+//         p.add(makeTitledPanel("BasicComboBoxUI", combo5));
+
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
@@ -97,5 +109,15 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class H32Icon implements Icon {
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+    @Override public int getIconWidth() {
+        return 0;
+    }
+    @Override public int getIconHeight() {
+        return 32;
     }
 }
