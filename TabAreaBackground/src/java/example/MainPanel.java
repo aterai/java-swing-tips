@@ -89,6 +89,8 @@ public final class MainPanel extends JPanel {
                 if (combo.getSelectedIndex() > 0) {
                     UIManager.put(combo.getSelectedItem(), Color.GREEN);
                 }
+                //XXX: JComboBox: by UP/DOWN keys
+                //XXX: NullPointerException at javax.swing.plaf.basic.BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
                 //SwingUtilities.updateComponentTreeUI(tabs);
                 tabs.updateUI();
             }
