@@ -12,6 +12,11 @@ Swingとは
 
 `Swing`は、`GUI`(グラフィカル・ユーザ・インタフェース)を作成するための、`Java`標準のコンポーネントセット(ライブラリ、`UI`ツールキット)です。
 
+ライセンス
+---------------
+- ソースコードはMITライセンスで公開しています。
+-- https://github.com/aterai/java-swing-tips/blob/master/LICENSE.txt
+
 編集方針
 ---------------
 - **最も欲しいものはサンプル** [あるチュートリアルの思い出 - Backnumbers: Steps to Phantasien][1]
