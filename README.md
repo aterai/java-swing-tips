@@ -15,7 +15,7 @@ Swingとは
 ライセンス
 ---------------
 - ソースコードはMITライセンスで公開しています。
--- https://github.com/aterai/java-swing-tips/blob/master/LICENSE.txt
+    - https://github.com/aterai/java-swing-tips/blob/master/LICENSE.txt
 
 編集方針
 ---------------
