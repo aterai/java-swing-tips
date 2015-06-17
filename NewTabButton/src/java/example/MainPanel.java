@@ -318,22 +318,14 @@ class TabLayout implements LayoutManager, Serializable {
             int lastw = parent.getComponent(ncomponents - 1).getPreferredSize().width;
             int width = parent.getWidth() - insets.left - insets.right - lastw;
             int h = parent.getHeight() - insets.top - insets.bottom;
-            int w = width > 100 * (ncomponents - 1) ? 100 : width / ncols;
+            int w = width > 100 * ncols ? 100 : width / ncols;
             int gap = width - w * ncols;
             int x = insets.left;
             int y = insets.top;
             for (int i = 0; i < ncomponents; i++) {
-                int a = 0;
-                if (gap > 0) {
-                    a = 1;
-                    gap--;
-                }
-                int cw = w + a;
-                if (i == ncols) {
-                    cw = lastw;
-                }
+                int cw = i == ncols ? lastw : w + (gap-- > 0 ? 1 : 0);
                 parent.getComponent(i).setBounds(x, y, cw, h);
-                x += w + a;
+                x += cw;
             }
         }
     }
@@ -348,12 +340,7 @@ class DummyIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
 
-        Insets i;
-        if (c instanceof JComponent) {
-            i = ((JComponent) c).getInsets();
-        } else {
-            i = new Insets(0, 0, 0, 0);
-        }
+        Insets i = c instanceof JComponent ? ((JComponent) c).getInsets() : new Insets(0, 0, 0, 0);
         Dimension size = c.getSize();
 
         viewRect.x      = i.left;
