@@ -289,7 +289,7 @@ class ComboKeyHandler extends KeyAdapter {
 //         }
 //         private ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
 //             DefaultComboBoxModel m = new DefaultComboBoxModel();
-//             if (text != null && text.length() != 0) {
+//             if (Objects.nonNull(text) && text.isEmpty()) {
 //                 for (String s: list) {
 //                     if (s.startsWith(text)) { m.addElement(s); }
 //                 }

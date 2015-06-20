@@ -95,7 +95,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
         if (c instanceof JLayer) {
             JLayer jlayer = (JLayer) c;
             JTextComponent tc = (JTextComponent) jlayer.getView();
-            if (tc.getText().length() == 0 && !tc.hasFocus()) {
+            if (tc.getText().isEmpty() && !tc.hasFocus()) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(INACTIVE);
                 Insets i = tc.getInsets();

@@ -165,7 +165,7 @@ class XMLTreeNode implements TreeNode {
         list = new ArrayList<XMLTreeNode>(count);
         for (int i = 0; i < count; i++) {
             Node c = cn.item(i);
-            if (c instanceof Text && c.getNodeValue().trim().length() == 0) {
+            if (c instanceof Text && c.getNodeValue().trim().isEmpty()) {
                 continue;
             }
             list.add(new XMLTreeNode(cn.item(i), this));

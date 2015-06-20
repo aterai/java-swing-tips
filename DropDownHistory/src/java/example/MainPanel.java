@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -75,8 +76,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     public static boolean addItem(JComboBox<String> combo, String str, int max) {
-        //if (str == null || str.trim().length() == 0) { return false; }
-        if (str == null || str.length() == 0) {
+        if (Objects.isNull(str) || str.isEmpty()) {
             return false;
         }
         combo.setVisible(false);
