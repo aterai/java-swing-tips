@@ -96,7 +96,7 @@ class CheckBoxNode {
 }
 
 class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
-    private CheckBoxCellRenderer<E> renderer;
+    private transient CheckBoxCellRenderer<E> renderer;
     public CheckBoxList(ListModel<E> model) {
         super(model);
     }
@@ -142,21 +142,22 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     }
 }
 
-class CheckBoxCellRenderer<E extends CheckBoxNode> extends JCheckBox implements ListCellRenderer<E>, MouseListener, MouseMotionListener {
+class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implements ListCellRenderer<E> {
+    private final JCheckBox checkBox = new JCheckBox();
     private int rollOverRowIndex = -1;
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        this.setOpaque(true);
+        checkBox.setOpaque(true);
         if (isSelected) {
-            this.setBackground(list.getSelectionBackground());
-            this.setForeground(list.getSelectionForeground());
+            checkBox.setBackground(list.getSelectionBackground());
+            checkBox.setForeground(list.getSelectionForeground());
         } else {
-            this.setBackground(list.getBackground());
-            this.setForeground(list.getForeground());
+            checkBox.setBackground(list.getBackground());
+            checkBox.setForeground(list.getForeground());
         }
-        this.setSelected(value.selected);
-        this.getModel().setRollover(index == rollOverRowIndex);
-        this.setText(value.text);
-        return this;
+        checkBox.setSelected(value.selected);
+        checkBox.getModel().setRollover(index == rollOverRowIndex);
+        checkBox.setText(value.text);
+        return checkBox;
     }
     @Override public void mouseExited(MouseEvent e) {
         if (rollOverRowIndex >= 0) {
@@ -187,35 +188,116 @@ class CheckBoxCellRenderer<E extends CheckBoxNode> extends JCheckBox implements 
             l.repaint();
         }
     }
-    @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
-    @Override public void mousePressed(MouseEvent e)  { /* not needed */ }
-    @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
-    @Override public void mouseDragged(MouseEvent e)  { /* not needed */ }
 }
 
-class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
+class CheckBoxNodeRenderer implements TreeCellRenderer {
+    private final JCheckBox checkBox = new JCheckBox();
     private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         if (leaf && value instanceof DefaultMutableTreeNode) {
-            this.setOpaque(false);
+            checkBox.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
-                this.setText(node.text);
-                this.setSelected(node.selected);
+                checkBox.setText(node.text);
+                checkBox.setSelected(node.selected);
             }
-            return this;
+            return checkBox;
         }
         return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     }
 }
 
-class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
+// class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
+//     public CheckBoxNodeEditor() {
+//         super();
+//         setOpaque(false);
+//         setFocusable(false);
+//         addActionListener(new ActionListener() {
+//             @Override public void actionPerformed(ActionEvent e) {
+//                 stopCellEditing();
+//             }
+//         });
+//     }
+//     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+//         if (leaf && value instanceof DefaultMutableTreeNode) {
+//             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+//             if (userObject instanceof CheckBoxNode) {
+//                 this.setSelected(((CheckBoxNode) userObject).selected);
+//             } else {
+//                 this.setSelected(false);
+//             }
+//             this.setText(value.toString());
+//         }
+//         return this;
+//     }
+//     @Override public Object getCellEditorValue() {
+//         return new CheckBoxNode(getText(), isSelected());
+//     }
+//     @Override public boolean isCellEditable(EventObject e) {
+//         return e instanceof MouseEvent;
+//     }
+//     //Copied from AbstractCellEditor
+//     //protected EventListenerList listenerList = new EventListenerList();
+//     //protected transient ChangeEvent changeEvent;
+//     @Override public boolean shouldSelectCell(EventObject anEvent) {
+//         return true;
+//     }
+//     @Override public boolean stopCellEditing() {
+//         fireEditingStopped();
+//         return true;
+//     }
+//     @Override public void cancelCellEditing() {
+//         fireEditingCanceled();
+//     }
+//     @Override public void addCellEditorListener(CellEditorListener l) {
+//         listenerList.add(CellEditorListener.class, l);
+//     }
+//     @Override public void removeCellEditorListener(CellEditorListener l) {
+//         listenerList.remove(CellEditorListener.class, l);
+//     }
+//     public CellEditorListener[] getCellEditorListeners() {
+//         return listenerList.getListeners(CellEditorListener.class);
+//     }
+//     protected void fireEditingStopped() {
+//         // Guaranteed to return a non-null array
+//         Object[] listeners = listenerList.getListenerList();
+//         // Process the listeners last to first, notifying
+//         // those that are interested in this event
+//         for (int i = listeners.length - 2; i >= 0; i -= 2) {
+//             if (listeners[i] == CellEditorListener.class) {
+//                 // Lazily create the event:
+//                 if (Objects.isNull(changeEvent)) {
+//                     changeEvent = new ChangeEvent(this);
+//                 }
+//                 ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
+//             }
+//         }
+//     }
+//     protected void fireEditingCanceled() {
+//         // Guaranteed to return a non-null array
+//         Object[] listeners = listenerList.getListenerList();
+//         // Process the listeners last to first, notifying
+//         // those that are interested in this event
+//         for (int i = listeners.length - 2; i >= 0; i -= 2) {
+//             if (listeners[i] == CellEditorListener.class) {
+//                 // Lazily create the event:
+//                 if (Objects.isNull(changeEvent)) {
+//                     changeEvent = new ChangeEvent(this);
+//                 }
+//                 ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
+//             }
+//         }
+//     }
+// }
+
+class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
+    private final JCheckBox checkBox = new JCheckBox();
     public CheckBoxNodeEditor() {
         super();
-        setOpaque(false);
-        setFocusable(false);
-        addActionListener(new ActionListener() {
+        checkBox.setOpaque(false);
+        checkBox.setFocusable(false);
+        checkBox.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 stopCellEditing();
             }
@@ -225,23 +307,20 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         if (leaf && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
-                this.setSelected(((CheckBoxNode) userObject).selected);
+                checkBox.setSelected(((CheckBoxNode) userObject).selected);
             } else {
-                this.setSelected(false);
+                checkBox.setSelected(false);
             }
-            this.setText(value.toString());
+            checkBox.setText(value.toString());
         }
-        return this;
+        return checkBox;
     }
     @Override public Object getCellEditorValue() {
-        return new CheckBoxNode(getText(), isSelected());
+        return new CheckBoxNode(checkBox.getText(), checkBox.isSelected());
     }
     @Override public boolean isCellEditable(EventObject e) {
         return e instanceof MouseEvent;
     }
-    //Copied from AbstractCellEditor
-    //protected EventListenerList listenerList = new EventListenerList();
-    //protected transient ChangeEvent changeEvent;
     @Override public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
@@ -251,44 +330,5 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     }
     @Override public void cancelCellEditing() {
         fireEditingCanceled();
-    }
-    @Override public void addCellEditorListener(CellEditorListener l) {
-        listenerList.add(CellEditorListener.class, l);
-    }
-    @Override public void removeCellEditorListener(CellEditorListener l) {
-        listenerList.remove(CellEditorListener.class, l);
-    }
-    public CellEditorListener[] getCellEditorListeners() {
-        return listenerList.getListeners(CellEditorListener.class);
-    }
-    protected void fireEditingStopped() {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == CellEditorListener.class) {
-                // Lazily create the event:
-                if (Objects.isNull(changeEvent)) {
-                    changeEvent = new ChangeEvent(this);
-                }
-                ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
-            }
-        }
-    }
-    protected void fireEditingCanceled() {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == CellEditorListener.class) {
-                // Lazily create the event:
-                if (Objects.isNull(changeEvent)) {
-                    changeEvent = new ChangeEvent(this);
-                }
-                ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
-            }
-        }
     }
 }
