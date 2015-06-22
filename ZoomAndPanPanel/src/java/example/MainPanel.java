@@ -58,21 +58,22 @@ class ZoomAndPanePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(new Color(0x55FF0000, true));
+        Rectangle r = new Rectangle(500, 140, 150, 150);
 
         //AffineTransform at = g2.getTransform();
         //at.concatenate(coordTransform);
         //g2.setTransform(at);
         //g2.drawImage(img, 0, 0, this);
-        //g2.fill(new Rectangle(500, 140, 150, 150));
+        //g2.fill(r);
 
         //g2.drawRenderedImage((java.awt.image.RenderedImage) img, coordTransform);
-//         g2.drawImage(img, coordTransform, this);
-//         g2.fill(coordTransform.createTransformedShape(new Rectangle(500, 140, 150, 150)));
+        g2.drawImage(img, coordTransform, this);
+        g2.fill(coordTransform.createTransformedShape(r));
 
-        g2.setTransform(coordTransform);
-        g2.drawImage(img, 0, 0, this);
+        //XXX
+        //g2.setTransform(coordTransform);
+        //g2.drawImage(img, 0, 0, this);
 
-        
         g2.dispose();
     }
     @Override public Dimension getPreferredSize() {
