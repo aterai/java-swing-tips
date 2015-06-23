@@ -47,7 +47,8 @@ class ZoomAndPanePanel extends JPanel {
     private final AffineTransform coordTransform = new AffineTransform();
     private final transient Image img;
     private final Rectangle imgrect;
-    private transient ZoomAndPanHandler handler;
+    private transient ZoomHandler handler;
+    private transient DragScrollListener listener;
 
     public ZoomAndPanePanel(Image img) {
         super();
@@ -81,69 +82,76 @@ class ZoomAndPanePanel extends JPanel {
         return new Dimension(r.width, r.height);
     }
     @Override public void updateUI() {
-        removeMouseListener(handler);
-        removeMouseMotionListener(handler);
+        removeMouseListener(listener);
+        removeMouseMotionListener(listener);
         removeMouseWheelListener(handler);
         super.updateUI();
-        handler = new ZoomAndPanHandler();
-        addMouseListener(handler);
-        addMouseMotionListener(handler);
+        listener = new DragScrollListener();
+        addMouseListener(listener);
+        addMouseMotionListener(listener);
+        handler = new ZoomHandler();
         addMouseWheelListener(handler);
     }
 
-    protected class ZoomAndPanHandler extends MouseAdapter {
-        private static final int MIN_ZOOM = -9;
-        private static final int MAX_ZOOM = 16;
+    protected class ZoomHandler extends MouseAdapter {
+        private static final double ZOOM_MULTIPLICATION_FACTOR = 1.2;
+        private static final int MIN_ZOOM = -10;
+        private static final int MAX_ZOOM = 10;
         private static final int EXTENT = 1;
         private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
-        private final Point dragStartPoint = new Point();
-        @Override public void mousePressed(MouseEvent e) {
-            dragStartPoint.setLocation(e.getPoint());
-        }
-        @Override public void mouseDragged(MouseEvent e) {
-            Point dragEndPoint = e.getPoint();
-            Point dragStart = inversedPoint(dragStartPoint);
-            Point dragEnd   = inversedPoint(dragEndPoint);
-            coordTransform.translate(dragEnd.x - dragStart.x, dragEnd.y - dragStart.y);
-            dragStartPoint.setLocation(dragEndPoint);
-            e.getComponent().repaint();
-        }
         @Override public void mouseWheelMoved(MouseWheelEvent e) {
             int dir = e.getWheelRotation();
             int z = zoomRange.getValue();
             zoomRange.setValue(z + EXTENT * (dir > 0 ? -1 : 1));
             if (z != zoomRange.getValue()) {
-                Container c = SwingUtilities.getAncestorOfClass(JViewport.class, e.getComponent());
-                if (c instanceof JViewport) {
-                    Rectangle r = ((JViewport) c).getBounds();
-                    Point p = new Point(r.x + r.width / 2, r.y + r.height / 2);
-                    Point p1 = inversedPoint(p);
-
-                    double s = 1d + zoomRange.getValue() * .1;
-                    coordTransform.setToScale(s, s);
-
-                    Point p2 = inversedPoint(p);
-                    coordTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
-
+                Component c = e.getComponent();
+                Container p = SwingUtilities.getAncestorOfClass(JViewport.class, c);
+                if (p instanceof JViewport) {
+                    JViewport vport = (JViewport) p;
+                    Rectangle ovr = vport.getViewRect();
+                    double s = dir > 0 ? 1d / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
+                    coordTransform.scale(s, s);
+                    //double s = 1d + zoomRange.getValue() * .1;
+                    //coordTransform.setToScale(s, s);
+                    Rectangle nvr = AffineTransform.getScaleInstance(s, s).createTransformedShape(ovr).getBounds();
+                    Point vp = nvr.getLocation();
+                    vp.translate((nvr.width - ovr.width) / 2, (nvr.height - ovr.height) / 2);
+                    vport.setViewPosition(vp);
                     c.revalidate();
                     c.repaint();
                 }
             }
         }
-        //https://community.oracle.com/thread/1263955
-        //How to implement Zoom & Pan in Java using Graphics2D
-        private Point inversedPoint(Point p1) {
-            Point p2 = new Point();
-            try {
-                AffineTransform inverse = coordTransform.createInverse();
-                inverse.transform(p1, p2);
-            } catch (NoninvertibleTransformException ex) {
-                ex.printStackTrace();
-            }
-            return p2;
+    }
+}
+
+class DragScrollListener extends MouseAdapter {
+    private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    private final Point pp = new Point();
+    @Override public void mouseDragged(MouseEvent e) {
+        Component c = e.getComponent();
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if (p instanceof JViewport) {
+            JViewport vport = (JViewport) p;
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+            Point vp = vport.getViewPosition();
+            vp.translate(pp.x - cp.x, pp.y - cp.y);
+            ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            pp.setLocation(cp);
         }
-        public AffineTransform getCoordTransform() {
-            return coordTransform;
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        Component c = e.getComponent();
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if (p instanceof JViewport) {
+            c.setCursor(hndCursor);
+            JViewport vport = (JViewport) p;
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+            pp.setLocation(cp);
         }
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        e.getComponent().setCursor(defCursor);
     }
 }
