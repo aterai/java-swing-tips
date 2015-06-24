@@ -69,7 +69,7 @@ class ListItem {
 class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private transient RubberBandingListener rbl;
-    private Color polygonColor;
+    private Color rubberBandColor;
     public RubberBandSelectionList(ListModel<E> model) {
         super(model);
     }
@@ -81,7 +81,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         removeMouseMotionListener(rbl);
         super.updateUI();
 
-        polygonColor = makeRubberBandColor(getSelectionBackground());
+        rubberBandColor = makeRubberBandColor(getSelectionBackground());
         setLayoutOrientation(JList.HORIZONTAL_WRAP);
         setVisibleRowCount(0);
         setFixedCellWidth(62);
@@ -95,15 +95,15 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (rbl == null || rbl.polygon == null) {
+        if (Objects.isNull(rbl)) {
             return;
         }
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(getSelectionBackground());
-        g2.draw(rbl.polygon);
+        g2.draw(rbl.rubberBand);
         g2.setComposite(ALPHA);
-        g2.setPaint(polygonColor);
-        g2.fill(rbl.polygon);
+        g2.setPaint(rubberBandColor);
+        g2.fill(rbl.rubberBand);
         g2.dispose();
     }
     private static Color makeRubberBandColor(Color c) {
@@ -128,44 +128,51 @@ class SelectedImageFilter extends RGBImageFilter {
     }
 }
 
-class DotBorder extends EmptyBorder {
-    public DotBorder(Insets borderInsets) {
-        super(borderInsets);
-    }
-    public DotBorder(int top, int left, int bottom, int right) {
-        super(top, left, bottom, right);
-    }
-    @Override public boolean isBorderOpaque() {
-        return true;
-    }
-    @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.translate(x, y);
-        g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
-        //new Color(200, 150, 150));
-        //g2.setStroke(dashed);
-        //g2.drawRect(0, 0, w - 1, h - 1);
-        BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-        //g2.translate(-x, -y);
-        g2.dispose();
-    }
-    //@Override public Insets getBorderInsets(Component c)
-    //@Override public Insets getBorderInsets(Component c, Insets insets)
-}
+// class DotBorder extends EmptyBorder {
+//     public DotBorder(Insets borderInsets) {
+//         super(borderInsets);
+//     }
+//     public DotBorder(int top, int left, int bottom, int right) {
+//         super(top, left, bottom, right);
+//     }
+//     @Override public boolean isBorderOpaque() {
+//         return true;
+//     }
+//     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.translate(x, y);
+//         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
+//         //new Color(200, 150, 150));
+//         //g2.setStroke(dashed);
+//         //g2.drawRect(0, 0, w - 1, h - 1);
+//         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
+//         //g2.translate(-x, -y);
+//         g2.dispose();
+//     }
+//     //@Override public Insets getBorderInsets(Component c)
+//     //@Override public Insets getBorderInsets(Component c, Insets insets)
+// }
 
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
     private final JPanel p = new JPanel(new BorderLayout());
-    private final JLabel icon  = new JLabel((Icon) null, JLabel.CENTER);
-    private final JLabel label = new JLabel("", JLabel.CENTER);
-    private final Border dotBorder = new DotBorder(2, 2, 2, 2);
-    private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
+    private final JLabel label = new JLabel("", SwingConstants.CENTER);
+    //private final Border dotBorder = new DotBorder(2, 2, 2, 2);
+    //private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
+    private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
     public ListItemListCellRenderer() {
+        Border b = UIManager.getBorder("List.noFocusBorder");
+        if (Objects.isNull(b)) { //Nimbus???
+            Insets i = focusCellHighlightBorder.getBorderInsets(label);
+            b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+        }
+        noFocusBorder = b;
         icon.setOpaque(false);
-        label.setOpaque(true);
         label.setForeground(p.getForeground());
         label.setBackground(p.getBackground());
-        label.setBorder(empBorder);
+        label.setBorder(noFocusBorder);
         p.setOpaque(false);
         p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         p.add(icon);
@@ -173,44 +180,44 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E item, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(item.title);
-        label.setBorder(cellHasFocus ? dotBorder : empBorder);
+        //label.setBorder(cellHasFocus ? dotBorder : empBorder);
+        label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
         if (isSelected) {
             icon.setIcon(item.sicon);
             label.setForeground(list.getSelectionForeground());
             label.setBackground(list.getSelectionBackground());
+            label.setOpaque(true);
         } else {
             icon.setIcon(item.nicon);
             label.setForeground(list.getForeground());
             label.setBackground(list.getBackground());
+            label.setOpaque(false);
         }
         return p;
     }
 }
 
 class RubberBandingListener extends MouseAdapter {
-    public Path2D polygon;
+    public final Path2D rubberBand = new Path2D.Double();
     private final Point srcPoint = new Point();
     @Override public void mouseDragged(MouseEvent e) {
         JList l = (JList) e.getComponent();
         l.setFocusable(true);
-        if (polygon == null) {
-            srcPoint.setLocation(e.getPoint());
-        }
         Point destPoint = e.getPoint();
-        polygon = new Path2D.Double();
-        polygon.moveTo(srcPoint.x,  srcPoint.y);
-        polygon.lineTo(destPoint.x, srcPoint.y);
-        polygon.lineTo(destPoint.x, destPoint.y);
-        polygon.lineTo(srcPoint.x,  destPoint.y);
-        polygon.closePath();
-        l.setSelectedIndices(getIntersectsIcons(l, polygon));
-        //JDK 1.8.0: l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> polygon.intersects(l.getCellBounds(i, i))).toArray());
+        rubberBand.reset();
+        rubberBand.moveTo(srcPoint.x,  srcPoint.y);
+        rubberBand.lineTo(destPoint.x, srcPoint.y);
+        rubberBand.lineTo(destPoint.x, destPoint.y);
+        rubberBand.lineTo(srcPoint.x,  destPoint.y);
+        rubberBand.closePath();
+        l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+        //JDK 1.8.0: l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
         l.repaint();
     }
     @Override public void mouseReleased(MouseEvent e) {
+        rubberBand.reset();
         Component c = e.getComponent();
         c.setFocusable(true);
-        polygon = null;
         c.repaint();
     }
     @Override public void mousePressed(MouseEvent e) {
@@ -225,6 +232,7 @@ class RubberBandingListener extends MouseAdapter {
             l.getSelectionModel().setLeadSelectionIndex(-1);
             l.setFocusable(false);
         }
+        srcPoint.setLocation(e.getPoint());
         l.repaint();
     }
     //JDK 1.7.0

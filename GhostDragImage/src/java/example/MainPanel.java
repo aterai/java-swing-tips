@@ -6,11 +6,12 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.IOException;
-import java.net.*;
 import java.util.*;
-import java.util.List;
+//import java.util.List;
+import java.util.stream.*;
 import javax.activation.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -33,20 +34,22 @@ public final class MainPanel extends JPanel {
         model.addElement(new ListItem("test123",    "wi0124-32.png"));
         model.addElement(new ListItem("test(1)",    "wi0126-32.png"));
 
-        ReorderbleList<ListItem> list = new ReorderbleList<>();
-        list.setModel(model);
-        //list.putClientProperty("List.isFileList", Boolean.TRUE);
-        list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        final ListItemTransferHandler handler = new ListItemTransferHandler();
-        list.setTransferHandler(handler);
-        list.setDropMode(DropMode.INSERT);
-        list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+        ReorderbleList<ListItem> list = new ReorderbleList<>(model);
         add(new JCheckBox(new AbstractAction("Compact drag image mode") {
             @Override public void actionPerformed(ActionEvent e) {
-                handler.setCompactDragImageMode(((JCheckBox) e.getSource()).isSelected());
+                JCheckBox c = (JCheckBox) e.getSource();
+                if (c.isSelected()) {
+                    list.setTransferHandler(new CompactListItemTransferHandler());
+                } else {
+                    list.setTransferHandler(new ListItemTransferHandler());
+                }
             }
-        }), BorderLayout.NORTH);
+        }) {
+            @Override public void updateUI() {
+                super.updateUI();
+                setSelected(false);
+            }
+        }, BorderLayout.NORTH);
         add(new JScrollPane(list));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -79,12 +82,65 @@ class ListItem {
     public final ImageIcon sicon;
     public final String title;
     public ListItem(String title, String iconfile) {
-        URL url = getClass().getResource(iconfile);
-        this.nicon = new ImageIcon(url);
-        ImageFilter filter = new SelectedImageFilter();
-        ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), filter);
+        this.nicon = new ImageIcon(getClass().getResource(iconfile));
+        ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
         this.title = title;
+    }
+}
+
+class ReorderbleList<E extends ListItem> extends JList<E> {
+    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
+    private transient RubberBandingListener rbl;
+    private Color rubberBandColor;
+    public ReorderbleList(ListModel<E> model) {
+        super(model);
+    }
+    @Override public void updateUI() {
+        setSelectionForeground(null); //Nimbus
+        setSelectionBackground(null); //Nimbus
+        setCellRenderer(null);
+        setTransferHandler(null);
+        removeMouseListener(rbl);
+        removeMouseMotionListener(rbl);
+        super.updateUI();
+
+        rubberBandColor = makeRubberBandColor(getSelectionBackground());
+        setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        setVisibleRowCount(0);
+        setFixedCellWidth(62);
+        setFixedCellHeight(62);
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        setCellRenderer(new ListItemListCellRenderer<E>());
+        rbl = new RubberBandingListener();
+        addMouseMotionListener(rbl);
+        addMouseListener(rbl);
+
+        //putClientProperty("List.isFileList", Boolean.TRUE);
+        getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        setTransferHandler(new ListItemTransferHandler());
+        setDropMode(DropMode.INSERT);
+    }
+    @Override public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (getDragEnabled() || Objects.isNull(rbl)) {
+            return;
+        }
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(getSelectionBackground());
+        g2.draw(rbl.rubberBand);
+        g2.setComposite(ALPHA);
+        g2.setPaint(rubberBandColor);
+        g2.fill(rbl.rubberBand);
+        g2.dispose();
+    }
+    private static Color makeRubberBandColor(Color c) {
+        int r = c.getRed();
+        int g = c.getGreen();
+        int b = c.getBlue();
+        return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
+                     : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
     }
 }
 
@@ -101,163 +157,144 @@ class SelectedImageFilter extends RGBImageFilter {
     }
 }
 
-class DotBorder extends EmptyBorder {
-    public DotBorder(Insets borderInsets) {
-        super(borderInsets);
-    }
-    public DotBorder(int top, int left, int bottom, int right) {
-        super(top, left, bottom, right);
-    }
-    @Override public boolean isBorderOpaque() {
-        return true;
-    }
-    @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.translate(x, y);
-        g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
-        BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-        //g2.translate(-x, -y);
-        g2.dispose();
-    }
-}
+// class DotBorder extends EmptyBorder {
+//     public DotBorder(Insets borderInsets) {
+//         super(borderInsets);
+//     }
+//     public DotBorder(int top, int left, int bottom, int right) {
+//         super(top, left, bottom, right);
+//     }
+//     @Override public boolean isBorderOpaque() {
+//         return true;
+//     }
+//     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.translate(x, y);
+//         g2.setPaint(new Color(~SystemColor.activeCaption.getRGB()));
+//         //new Color(200, 150, 150));
+//         //g2.setStroke(dashed);
+//         //g2.drawRect(0, 0, w - 1, h - 1);
+//         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
+//         //g2.translate(-x, -y);
+//         g2.dispose();
+//     }
+//     //@Override public Insets getBorderInsets(Component c)
+//     //@Override public Insets getBorderInsets(Component c, Insets insets)
+// }
 
-class ReorderbleList<E extends ListItem> extends JList<E> {
-    private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
+class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
     private final JPanel p = new JPanel(new BorderLayout());
     private final JLabel icon  = new JLabel((Icon) null, SwingConstants.CENTER);
     private final JLabel label = new JLabel("", SwingConstants.CENTER);
-    private final Border dotBorder = new DotBorder(2, 2, 2, 2);
-    private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-    private final Color rcolor;
-    private final Color pcolor;
-    private final Polygon polygon = new Polygon();
-    private Point srcPoint;
+    //private final Border dotBorder = new DotBorder(2, 2, 2, 2);
+    //private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+    private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
+    private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
-    public ReorderbleList() {
-        super();
-        rcolor = SystemColor.activeCaption;
-        pcolor = makeColor(rcolor);
-        setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        setVisibleRowCount(0);
-        setFixedCellWidth(62);
-        setFixedCellHeight(62);
+    public ListItemListCellRenderer() {
+        Border b = UIManager.getBorder("List.noFocusBorder");
+        if (Objects.isNull(b)) { //Nimbus???
+            Insets i = focusCellHighlightBorder.getBorderInsets(label);
+            b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+        }
+        noFocusBorder = b;
         icon.setOpaque(false);
-        label.setForeground(getForeground());
-        label.setBackground(getBackground());
-        label.setBorder(empBorder);
-
+        label.setForeground(p.getForeground());
+        label.setBackground(p.getBackground());
+        label.setBorder(noFocusBorder);
         p.setOpaque(false);
         p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         p.add(icon);
         p.add(label, BorderLayout.SOUTH);
+    }
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E item, int index, boolean isSelected, boolean cellHasFocus) {
+        label.setText(item.title);
+        //label.setBorder(cellHasFocus ? dotBorder : empBorder);
+        label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
+        if (isSelected) {
+            icon.setIcon(item.sicon);
+            label.setForeground(list.getSelectionForeground());
+            label.setBackground(list.getSelectionBackground());
+            label.setOpaque(true);
+        } else {
+            icon.setIcon(item.nicon);
+            label.setForeground(list.getForeground());
+            label.setBackground(list.getBackground());
+            label.setOpaque(false);
+        }
+        return p;
+    }
+}
 
-        setCellRenderer(new DefaultListCellRenderer() {
-            @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                ListItem item = (ListItem) value;
-                label.setText(item.title);
-                if (isSelected) {
-                    icon.setIcon(item.sicon);
-                    label.setForeground(list.getSelectionForeground());
-                    label.setBackground(list.getSelectionBackground());
-                    label.setOpaque(true);
-                } else {
-                    icon.setIcon(item.nicon);
-                    label.setForeground(list.getForeground());
-                    label.setBackground(list.getBackground());
-                    label.setOpaque(false);
-                }
-                label.setBorder(cellHasFocus ? dotBorder : empBorder);
-                return p;
-            }
-        });
-        RubberBandingListener rbl = new RubberBandingListener();
-        addMouseMotionListener(rbl);
-        addMouseListener(rbl);
-    }
-    @Override public void updateUI() {
-        setSelectionForeground(null); //Nimbus
-        setSelectionBackground(null); //Nimbus
-        super.updateUI();
-    }
-    class RubberBandingListener extends MouseAdapter {
-        @Override public void mouseDragged(MouseEvent e) {
-            if (getDragEnabled()) {
-                return;
-            }
-            if (Objects.isNull(srcPoint)) {
-                srcPoint = e.getPoint();
-            }
-            Point destPoint = e.getPoint();
-            polygon.reset();
-            polygon.addPoint(srcPoint.x,  srcPoint.y);
-            polygon.addPoint(destPoint.x, srcPoint.y);
-            polygon.addPoint(destPoint.x, destPoint.y);
-            polygon.addPoint(srcPoint.x,  destPoint.y);
-            setSelectedIndices(getIntersectsIcons(polygon));
-            repaint();
-        }
-        @Override public void mouseReleased(MouseEvent e) {
-            setFocusable(true);
-            srcPoint = null;
-            setDragEnabled(getSelectedIndices().length > 0);
-            repaint();
-        }
-        @Override public void mousePressed(MouseEvent e) {
-            int index = locationToIndex(e.getPoint());
-            Rectangle rect = getCellBounds(index, index);
-            if (rect.contains(e.getPoint())) {
-                setFocusable(true);
-                if (getDragEnabled()) {
-                    return;
-                } else {
-                    //System.out.println("ccc:" + startSelectedIndex);
-                    setSelectedIndex(index);
-                }
-            } else {
-                clearSelection();
-                getSelectionModel().setAnchorSelectionIndex(-1);
-                getSelectionModel().setLeadSelectionIndex(-1);
-                setFocusable(false);
-                setDragEnabled(false);
-            }
-            repaint();
-        }
-        private int[] getIntersectsIcons(Shape p) {
-            ListModel model = getModel();
-            List<Integer> list = new ArrayList<>(model.getSize());
-            for (int i = 0; i < model.getSize(); i++) {
-                Rectangle r = getCellBounds(i, i);
-                if (p.intersects(r)) {
-                    list.add(i);
-                }
-            }
-            int[] il = new int[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                il[i] = list.get(i);
-            }
-            return il;
-        }
-    }
-    @Override public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (Objects.isNull(srcPoint) || getDragEnabled()) {
+class RubberBandingListener extends MouseAdapter {
+    public final Path2D rubberBand = new Path2D.Double();
+    private final Point srcPoint = new Point();
+    @Override public void mouseDragged(MouseEvent e) {
+        JList l = (JList) e.getComponent();
+        if (l.getDragEnabled()) {
+            Component glassPane = l.getRootPane().getGlassPane();
+            glassPane.setVisible(true);
             return;
         }
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setPaint(rcolor);
-        g2d.drawPolygon(polygon);
-        g2d.setComposite(ALPHA);
-        g2d.setPaint(pcolor);
-        g2d.fillPolygon(polygon);
-        g2d.dispose();
+        Point destPoint = e.getPoint();
+        rubberBand.reset();
+        rubberBand.moveTo(srcPoint.x,  srcPoint.y);
+        rubberBand.lineTo(destPoint.x, srcPoint.y);
+        rubberBand.lineTo(destPoint.x, destPoint.y);
+        rubberBand.lineTo(srcPoint.x,  destPoint.y);
+        rubberBand.closePath();
+        //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+        l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
+        l.repaint();
     }
-    private Color makeColor(Color c) {
-        int r = c.getRed();
-        int g = c.getGreen();
-        int b = c.getBlue();
-        return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-                     : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+    @Override public void mouseReleased(MouseEvent e) {
+        JList l = (JList) e.getComponent();
+        l.setFocusable(true);
+        //if (Objects.isNull(srcPoint) || !getDragEnabled()) {
+        //    Component glassPane = l.getRootPane().getGlassPane();
+        //    glassPane.setVisible(false);
+        //}
+        rubberBand.reset();
+        l.setDragEnabled(l.getSelectedIndices().length > 0);
+        l.repaint();
     }
+    @Override public void mousePressed(MouseEvent e) {
+        JList l = (JList) e.getComponent();
+        int index = l.locationToIndex(e.getPoint());
+        Rectangle rect = l.getCellBounds(index, index);
+        if (rect.contains(e.getPoint())) {
+            l.setFocusable(true);
+            if (l.getDragEnabled()) {
+                return;
+            }
+            //System.out.println("ccc:" + startSelectedIndex);
+            l.setSelectedIndex(index);
+        } else {
+            l.clearSelection();
+            l.getSelectionModel().setAnchorSelectionIndex(-1);
+            l.getSelectionModel().setLeadSelectionIndex(-1);
+            l.setFocusable(false);
+            l.setDragEnabled(false);
+        }
+        srcPoint.setLocation(e.getPoint());
+        l.repaint();
+    }
+//     //JDK 1.7.0
+//     private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+//         ListModel model = l.getModel();
+//         List<Integer> ll = new ArrayList<>(model.getSize());
+//         for (int i = 0; i < model.getSize(); i++) {
+//             if (rect.intersects(l.getCellBounds(i, i))) {
+//                 ll.add(i);
+//             }
+//         }
+//         //JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
+//         int[] il = new int[ll.size()];
+//         for (int i = 0; i < ll.size(); i++) {
+//             il[i] = ll.get(i);
+//         }
+//         return il;
+//     }
 }
 
 class ListItemTransferHandler extends TransferHandler {
@@ -265,8 +302,7 @@ class ListItemTransferHandler extends TransferHandler {
     private int[] indices;
     private int addIndex = -1; //Location where items were added
     private int addCount; //Number of items added.
-    private boolean compact;
-    private static final JLabel LABEL = new JLabel() {
+    protected static final JLabel LABEL = new JLabel() {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
             d.width = 32;
@@ -283,9 +319,6 @@ class ListItemTransferHandler extends TransferHandler {
         LABEL.setForeground(Color.WHITE);
         LABEL.setBackground(new Color(0, 0, 255, 200));
     }
-    public void setCompactDragImageMode(boolean compact) {
-        this.compact = compact;
-    }
     @Override protected Transferable createTransferable(JComponent c) {
         JList source = (JList) c;
         indices = source.getSelectedIndices();
@@ -293,30 +326,25 @@ class ListItemTransferHandler extends TransferHandler {
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
-        if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
-            info.setShowDropLocation(true);
-            info.setDropAction(MOVE);
-            return true;
-        } else {
-            return false;
-        }
+        return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+//         if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
+//             info.setShowDropLocation(true);
+//             info.setDropAction(MOVE);
+//             return true;
+//         } else {
+//             return false;
+//         }
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
+        Component glassPane = c.getRootPane().getGlassPane();
+        glassPane.setCursor(DragSource.DefaultMoveDrop);
         if (!(c instanceof JList)) {
             return NONE;
         }
         JList source = (JList) c;
-        Point pt;
-        if (compact) {
-            int w = source.getFixedCellWidth();
-            int h = source.getFixedCellHeight() - 20; //TODO
-            setDragImage(createCompactDragImage(source, w, h));
-            pt = new Point(w / 2, h);
-        } else {
-            setDragImage(createDragImage(source));
-            pt = c.getMousePosition();
-        }
+        setDragImage(createDragImage(source));
+        Point pt = c.getMousePosition();
         if (Objects.nonNull(pt)) {
             setDragImageOffset(pt);
         }
@@ -327,8 +355,9 @@ class ListItemTransferHandler extends TransferHandler {
         int h = source.getHeight();
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bi.createGraphics();
-        DefaultListCellRenderer renderer = (DefaultListCellRenderer) source.getCellRenderer();
+        ListCellRenderer renderer = source.getCellRenderer();
         for (int i: source.getSelectedIndices()) {
+            @SuppressWarnings("unchecked")
             Component c = renderer.getListCellRendererComponent(source, source.getModel().getElementAt(i), i, false, false);
             Rectangle rect = source.getCellBounds(i, i);
             SwingUtilities.paintComponent(g2, c, source, rect);
@@ -336,38 +365,10 @@ class ListItemTransferHandler extends TransferHandler {
         g2.dispose();
         return bi;
     }
-    private static BufferedImage createCompactDragImage(JList source, int w, int h) {
-        BufferedImage br = null;
-        if (w > 0 && h > 0) {
-            br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
-        } else {
-            return null;
-        }
-        int[] selectedIndices = source.getSelectedIndices();
-        int length = selectedIndices.length;
-        Graphics2D g2 = br.createGraphics();
-        DefaultListCellRenderer renderer = (DefaultListCellRenderer) source.getCellRenderer();
-        int idx = selectedIndices[0];
-        Object valueAt = source.getModel().getElementAt(idx);
-        Component c = renderer.getListCellRendererComponent(source, valueAt, idx, false, false);
-        Rectangle rect = source.getCellBounds(idx, idx);
-        SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);
-        if (length > 1) {
-            LABEL.setText(String.valueOf(length));
-            Dimension d = LABEL.getPreferredSize();
-            SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
-        }
-        g2.dispose();
-        br.coerceData(true);
-        return br;
-    }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferSupport info) {
-        if (!canImport(info)) {
-            return false;
-        }
         TransferHandler.DropLocation tdl = info.getDropLocation();
-        if (!(tdl instanceof JList.DropLocation)) {
+        if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
             return false;
         }
         JList.DropLocation dl = (JList.DropLocation) tdl;
@@ -395,6 +396,10 @@ class ListItemTransferHandler extends TransferHandler {
         return false;
     }
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
+        System.out.println("exportDone");
+        Component glassPane = c.getRootPane().getGlassPane();
+        //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        glassPane.setVisible(false);
         cleanup(c, action == MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
@@ -418,5 +423,48 @@ class ListItemTransferHandler extends TransferHandler {
         indices  = null;
         addCount = 0;
         addIndex = -1;
+    }
+}
+
+class CompactListItemTransferHandler extends ListItemTransferHandler {
+    @Override public int getSourceActions(JComponent c) {
+        System.out.println("getSourceActions");
+        Component glassPane = c.getRootPane().getGlassPane();
+        glassPane.setCursor(DragSource.DefaultMoveDrop);
+        if (!(c instanceof JList)) {
+            return NONE;
+        }
+        JList source = (JList) c;
+        int w = source.getFixedCellWidth();
+        int h = source.getFixedCellHeight() - 20; //TODO
+        setDragImage(createCompactDragImage(source, w, h));
+        setDragImageOffset(new Point(w / 2, h));
+        return MOVE; //TransferHandler.COPY_OR_MOVE;
+    }
+    private static BufferedImage createCompactDragImage(JList source, int w, int h) {
+        BufferedImage br = null;
+        if (w > 0 && h > 0) {
+            br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+        } else {
+            return null;
+        }
+        int[] selectedIndices = source.getSelectedIndices();
+        int length = selectedIndices.length;
+        Graphics2D g2 = br.createGraphics();
+        ListCellRenderer renderer = source.getCellRenderer();
+        int idx = selectedIndices[0];
+        Object valueAt = source.getModel().getElementAt(idx);
+        @SuppressWarnings("unchecked")
+        Component c = renderer.getListCellRendererComponent(source, valueAt, idx, false, false);
+        Rectangle rect = source.getCellBounds(idx, idx);
+        SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);
+        if (length > 1) {
+            LABEL.setText(String.valueOf(length));
+            Dimension d = LABEL.getPreferredSize();
+            SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
+        }
+        g2.dispose();
+        br.coerceData(true);
+        return br;
     }
 }
