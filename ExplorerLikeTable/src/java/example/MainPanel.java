@@ -8,36 +8,33 @@ import java.awt.image.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private final TestModel model = new TestModel();
-    private final JTable table = new JTable(model);
+    private final String[] columnNames = {"Name", "Comment"};
+    private final Object[][] data = {
+        {"test1.jpg", "adfasd"},
+        {"test1234.jpg", "  "},
+        {"test15354.gif", "fasdf"},
+        {"t.png", "comment"},
+        {"tfasdfasd.jpg", "123"},
+        {"afsdfasdfffffffffffasdfasdf.mpg", "test"},
+        {"fffffffffffasdfasdf", ""},
+        {"test1.jpg", ""}
+    };
+    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        @Override public Class<?> getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+        }
+        @Override public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    private final JTable table = new FileListTable(model);
+
     public MainPanel() {
         super(new BorderLayout());
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                return super.getTableCellRendererComponent(table, value, false, false, row, column);
-            }
-        });
-        //table.setRowSelectionAllowed(true);
-        //table.setCellSelectionEnabled(true);
-        table.setIntercellSpacing(new Dimension());
-        //table.setRowMargin(0);
-        table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setMinWidth(0);
-        col.setMaxWidth(0);
-        col.setResizable(false);
-        //table.removeColumn(col);
-        col = table.getColumnModel().getColumn(1);
-        col.setCellRenderer(new TestRenderer(table));
-        col.setPreferredWidth(200);
-        col = table.getColumnModel().getColumn(2);
-        col.setPreferredWidth(300);
 
         InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         KeyStroke tab    = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
@@ -46,15 +43,6 @@ public final class MainPanel extends JPanel {
         KeyStroke senter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
         im.put(tab, im.get(enter));
         im.put(stab, im.get(senter));
-
-        model.addTest(new Test("test1.jpg", "adfasd"));
-        model.addTest(new Test("test1234.jpg", "  "));
-        model.addTest(new Test("test15354.gif", "fasdf"));
-        model.addTest(new Test("t.png", "comment"));
-        model.addTest(new Test("tfasdfasd.jpg", "123"));
-        model.addTest(new Test("afsdfasdfffffffffffasdfasdf.mpg", "test"));
-        model.addTest(new Test("fffffffffffasdfasdf", "456"));
-        model.addTest(new Test("test1.jpg", "789"));
 
         final Color orgColor = table.getSelectionBackground();
         final Color tflColor = this.getBackground();
@@ -69,25 +57,23 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        table.setAutoCreateRowSorter(true);
-        table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
+    protected class CreateAction extends AbstractAction {
+        public CreateAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            model.addTest(new Test("new", ""));
+            model.addRow(new Object[] {"new", ""});
             Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }
     }
 
-    class DeleteAction extends AbstractAction {
+    protected class DeleteAction extends AbstractAction {
         public DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
@@ -102,7 +88,7 @@ public final class MainPanel extends JPanel {
         }
     }
 
-    class ClearAction extends AbstractAction {
+    protected class ClearAction extends AbstractAction {
         public ClearAction(String label, Icon icon) {
             super(label, icon);
         }
@@ -110,11 +96,12 @@ public final class MainPanel extends JPanel {
             table.clearSelection();
         }
     }
-    private class TablePopupMenu extends JPopupMenu {
+
+    protected class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete", null);
         public TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
+            add(new CreateAction("add", null));
             add(new ClearAction("clearSelection", null));
             addSeparator();
             add(deleteAction);
@@ -149,158 +136,114 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TestRenderer extends Box implements TableCellRenderer {
-    private static final Border NO_FOCUS_BORDER = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+class SelectedImageFilter extends RGBImageFilter {
+    //public SelectedImageFilter() {
+    //    canFilterIndexColorModel = false;
+    //}
+    @Override public int filterRGB(int x, int y, int argb) {
+        int r = (argb >> 16) & 0xff;
+        int g = (argb >>  8) & 0xff;
+        return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);
+        //return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
+    }
+}
+
+class FileNameRenderer implements TableCellRenderer {
+    private final Dimension dim = new Dimension();
+    private final JPanel p = new JPanel(new BorderLayout()) {
+        @Override public Dimension getPreferredSize() {
+            return dim;
+        }
+    };
+    private final JPanel panel = new JPanel(new BorderLayout());
+    private final JLabel textLabel = new JLabel(" ");
+    private final JLabel iconLabel;
+    private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
+    private final Border noFocusBorder;
     private final ImageIcon nicon;
     private final ImageIcon sicon;
-    //private final DotLabel textLabel;
-    private final JLabel textLabel;
-    private final JLabel iconLabel;
-    public TestRenderer(JTable table) {
-        super(BoxLayout.X_AXIS);
-        //textLabel = new DotLabel(new Color(~table.getSelectionBackground().getRGB()));
-        textLabel = new JLabel("dummy");
-        textLabel.setOpaque(true);
-        textLabel.setBorder(NO_FOCUS_BORDER);
+
+    public FileNameRenderer(JTable table) {
+        Border b = UIManager.getBorder("Table.noFocusBorder");
+        if (Objects.isNull(b)) { //Nimbus???
+            Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
+            b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+        }
+        noFocusBorder = b;
+
+        p.setOpaque(false);
+        panel.setOpaque(false);
+
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
-        ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
-        sicon = new ImageIcon(createImage(ip));
+        sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
+
         iconLabel = new JLabel(nicon);
         iconLabel.setBorder(BorderFactory.createEmptyBorder());
-        table.setRowHeight(Math.max(textLabel.getPreferredSize().height,
-                                    iconLabel.getPreferredSize().height));
-        add(iconLabel);
-        add(textLabel);
-        add(Box.createHorizontalGlue());
+
+        p.add(iconLabel, BorderLayout.WEST);
+        p.add(textLabel);
+        panel.add(p, BorderLayout.WEST);
+
+        Dimension d = iconLabel.getPreferredSize();
+        dim.setSize(d);
+        table.setRowHeight(d.height);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        textLabel.setFont(table.getFont());
         textLabel.setText(Objects.toString(value, ""));
+        textLabel.setBorder(hasFocus ? focusCellHighlightBorder : noFocusBorder);
+
         FontMetrics fm = table.getFontMetrics(table.getFont());
-        int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
-        int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
-        textLabel.setPreferredSize(new Dimension(Math.min(swidth, cwidth), 0)); //height:0 is dummy
+        Insets i = textLabel.getInsets();
+        int swidth = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
+        int cwidth = table.getColumnModel().getColumn(column).getWidth();
+        dim.width = swidth > cwidth ? cwidth : swidth;
+
         if (isSelected) {
+            textLabel.setOpaque(true);
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());
+            iconLabel.setIcon(sicon);
         } else {
+            textLabel.setOpaque(false);
             textLabel.setForeground(table.getForeground());
             textLabel.setBackground(table.getBackground());
+            iconLabel.setIcon(nicon);
         }
-        if (hasFocus) {
-            textLabel.setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        } else {
-            textLabel.setBorder(NO_FOCUS_BORDER);
-        }
-        //textLabel.setFocusedBorder(hasFocus);
-        textLabel.setFont(table.getFont());
-        iconLabel.setIcon(isSelected ? sicon : nicon);
-        return this;
-    }
-    private static class SelectedImageFilter extends RGBImageFilter {
-        //public SelectedImageFilter() {
-        //    canFilterIndexColorModel = false;
-        //}
-        @Override public int filterRGB(int x, int y, int argb) {
-            //Color color = new Color(argb, true);
-            //float[] array = new float[4];
-            //color.getComponents(array);
-            //return new Color(array[0] * .5f, array[1] * .5f, array[2], array[3]).getRGB();
-            int r = (argb >> 16) & 0xff;
-            int g = (argb >>  8) & 0xff;
-            return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);
-        }
+        return panel;
     }
 }
 
-// class DotLabel extends JLabel {
-//     private final Border dotBorder;
-//     private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-//     public DotLabel(Color color) {
-//         super("dummy");
-//         dotBorder = new DotBorder(color, 2);
-//         setOpaque(true);
-//         setBorder(empBorder);
-//         //setFocusable(true);
-//     }
-//     private boolean focusflag = false;
-//     public boolean isFocusedBorder() {
-//         return focusflag;
-//     }
-//     public void setFocusedBorder(boolean flag) {
-//         setBorder(flag ? dotBorder : empBorder);
-//         focusflag = flag;
-//     }
-//     private class DotBorder extends LineBorder {
-//         public DotBorder(Color color, int thickness) {
-//             super(color, thickness);
-//         }
-//         @Override public boolean isBorderOpaque() { return true; }
-//         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-//             Graphics2D g2 = (Graphics2D) g.create();
-//             g2.translate(x, y);
-//             if (isFocusedBorder()) {
-//                 g2.setPaint(getLineColor());
-//                 javax.swing.plaf.basic.BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-//             }
-//             //g2.translate(-x, -y);
-//             g2.dispose();
-//         }
-//     }
-// }
+class FileListTable extends JTable {
+    public FileListTable(TableModel model) {
+        super(model);
+    }
+    @Override public void updateUI() {
+        // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+        // http://bugs.java.com/view_bug.do?bug_id=6788475
+        // XXX: set dummy ColorUIResource
+        setSelectionForeground(new ColorUIResource(Color.RED));
+        setSelectionBackground(new ColorUIResource(Color.RED));
+        super.updateUI();
 
-class TestModel extends DefaultTableModel {
-    private static final ColumnContext[] COLUMN_ARRAY = {
-        new ColumnContext("No.",     Integer.class, false),
-        new ColumnContext("Name",    String.class,  false),
-        new ColumnContext("Comment", String.class,  false)
-    };
-    private int number;
-    public void addTest(Test t) {
-        Object[] obj = {number, t.getName(), t.getComment()};
-        super.addRow(obj);
-        number++;
-    }
-    @Override public boolean isCellEditable(int row, int col) {
-        return COLUMN_ARRAY[col].isEditable;
-    }
-    @Override public Class<?> getColumnClass(int modelIndex) {
-        return COLUMN_ARRAY[modelIndex].columnClass;
-    }
-    @Override public int getColumnCount() {
-        return COLUMN_ARRAY.length;
-    }
-    @Override public String getColumnName(int modelIndex) {
-        return COLUMN_ARRAY[modelIndex].columnName;
-    }
-    private static class ColumnContext {
-        public final String  columnName;
-        public final Class   columnClass;
-        public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
-            this.columnName = columnName;
-            this.columnClass = columnClass;
-            this.isEditable = isEditable;
-        }
-    }
-}
+        putClientProperty("Table.isFileList", Boolean.TRUE);
+        setCellSelectionEnabled(true);
+        setIntercellSpacing(new Dimension());
+        setShowGrid(false);
+        setAutoCreateRowSorter(true);
+        setFillsViewportHeight(true);
 
-class Test {
-    private String name, comment;
-    public Test(String name, String comment) {
-        this.name = name;
-        this.comment = comment;
-    }
-    public void setName(String str) {
-        name = str;
-    }
-    public void setComment(String str) {
-        comment = str;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getComment() {
-        return comment;
+        setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                return super.getTableCellRendererComponent(table, value, false, false, row, column);
+            }
+        });
+
+        TableColumn col = getColumnModel().getColumn(0);
+        col.setCellRenderer(new FileNameRenderer(this));
+        col.setPreferredWidth(200);
+        col = getColumnModel().getColumn(1);
+        col.setPreferredWidth(300);
     }
 }

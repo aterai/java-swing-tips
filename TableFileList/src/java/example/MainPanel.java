@@ -7,9 +7,11 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.util.*;
-import java.util.List;
+//import java.util.List;
+import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 
@@ -33,60 +35,9 @@ public final class MainPanel extends JPanel {
             return false;
         }
     };
-    private final JTable table = new MyTable(model);
+    private final JTable table = new FileListTable(model);
     public MainPanel() {
         super(new BorderLayout());
-        table.putClientProperty("Table.isFileList", Boolean.TRUE);
-//         MouseInputAdapter ma = new MouseInputAdapter() {
-//             @Override public void mousePressed(MouseEvent e) {
-//                 Point pt = e.getPoint();
-//                 int row  = table.rowAtPoint(pt);
-//                 int col  = table.columnAtPoint(pt);
-//                 int mcol = table.convertColumnIndexToModel(col);
-//                 if (mcol != 1 || row < 0 || row > table.getRowCount()) { return; }
-//                 if (!isOnLabel(table, pt, row, col)) {
-//                     table.changeSelection(row, 0, false, false);
-//                     table.clearSelection();
-//                 }
-//             }
-//         };
-//         table.addMouseListener(ma);
-//         table.addMouseMotionListener(ma);
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                return super.getTableCellRendererComponent(table, value, false, false, row, column);
-            }
-        });
-        //table.setRowSelectionAllowed(true);
-        table.setCellSelectionEnabled(true);
-        table.setIntercellSpacing(new Dimension());
-        //table.setRowMargin(0);
-        table.setShowGrid(false);
-        //table.setShowHorizontalLines(false);
-        //table.setShowVerticalLines(false);
-
-        TableColumn col = table.getColumnModel().getColumn(0);
-        col.setCellRenderer(new TestRenderer(table));
-        col.setPreferredWidth(200);
-        col = table.getColumnModel().getColumn(1);
-        col.setPreferredWidth(300);
-
-        final Color orgColor = table.getSelectionBackground();
-        final Color tflColor = this.getBackground();
-        table.addFocusListener(new FocusListener() {
-            @Override public void focusGained(FocusEvent e) {
-                table.setSelectionForeground(Color.WHITE);
-                table.setSelectionBackground(orgColor);
-            }
-            @Override public void focusLost(FocusEvent e) {
-                table.setSelectionForeground(Color.BLACK);
-                table.setSelectionBackground(tflColor);
-            }
-        });
-
-        table.setAutoCreateRowSorter(true);
-        table.setFillsViewportHeight(true);
-        //table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -136,178 +87,254 @@ class SelectedImageFilter extends RGBImageFilter {
     }
 }
 
-class TestRenderer extends JPanel implements TableCellRenderer {
+class FileNameRenderer implements TableCellRenderer {
+    private final Dimension dim = new Dimension();
+    private final JPanel p = new JPanel(new BorderLayout()) {
+        @Override public Dimension getPreferredSize() {
+            return dim;
+        }
+    };
+    private final JPanel panel = new JPanel(new BorderLayout());
+    private final JLabel textLabel = new JLabel(" ");
+    private final JLabel iconLabel;
+    private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
+    private final Border noFocusBorder;
     private final ImageIcon nicon;
     private final ImageIcon sicon;
-    private final MyLabel textLabel;
-    private final JLabel iconLabel;
-    public TestRenderer(JTable table) {
-        super(new BorderLayout());
-        setOpaque(false);
+
+    public FileNameRenderer(JTable table) {
+        Border b = UIManager.getBorder("Table.noFocusBorder");
+        if (Objects.isNull(b)) { //Nimbus???
+            Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
+            b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+        }
+        noFocusBorder = b;
+
+        p.setOpaque(false);
+        panel.setOpaque(false);
+
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
-        sicon = new ImageIcon(createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
-        textLabel = new MyLabel(new Color(~table.getSelectionBackground().getRGB()));
-        iconLabel = new TestRendererLabel(nicon);
+        sicon = new ImageIcon(p.createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
+
+        iconLabel = new JLabel(nicon);
         iconLabel.setBorder(BorderFactory.createEmptyBorder());
-        table.setRowHeight(textLabel.getPreferredSize().height);
-        removeAll();
-        add(iconLabel, BorderLayout.WEST);
-        add(textLabel);
+
+        p.add(iconLabel, BorderLayout.WEST);
+        p.add(textLabel);
+        panel.add(p, BorderLayout.WEST);
+
+        Dimension d = iconLabel.getPreferredSize();
+        dim.setSize(d);
+        table.setRowHeight(d.height);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        textLabel.setText(Objects.toString(value, ""));
-        textLabel.setFocusedBorder(hasFocus);
         textLabel.setFont(table.getFont());
+        textLabel.setText(Objects.toString(value, ""));
+        textLabel.setBorder(hasFocus ? focusCellHighlightBorder : noFocusBorder);
+
         FontMetrics fm = table.getFontMetrics(table.getFont());
-        int swidth = fm.stringWidth(textLabel.getText()) + textLabel.getInsets().left + textLabel.getInsets().right;
-        int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
-        textLabel.setPreferredSize(new Dimension(swidth > cwidth ? cwidth : swidth, 10000)); //height: 10000 is dummy
+        Insets i = textLabel.getInsets();
+        int swidth = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
+        int cwidth = table.getColumnModel().getColumn(column).getWidth();
+        dim.width = swidth > cwidth ? cwidth : swidth;
 
         if (isSelected) {
+            textLabel.setOpaque(true);
             textLabel.setForeground(table.getSelectionForeground());
             textLabel.setBackground(table.getSelectionBackground());
             iconLabel.setIcon(sicon);
         } else {
+            textLabel.setOpaque(false);
             textLabel.setForeground(table.getForeground());
             textLabel.setBackground(table.getBackground());
             iconLabel.setIcon(nicon);
         }
-        return this;
+        return panel;
     }
-    //Overridden for performance reasons. ---->
-    @Override public boolean isOpaque() {
-        Color back = getBackground();
-        Component p = getParent();
-        if (Objects.nonNull(p)) {
-            p = p.getParent();
-        } // p should now be the JTable.
-        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return !colorMatch && super.isOpaque();
-    }
-    @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) { /* Overridden for performance reasons. */ }
-    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue)  { /* Overridden for performance reasons. */ }
-    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
-    @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //@Override public void invalidate() { /* Overridden for performance reasons. */ }
-    //@Override public void validate()   { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
 }
 
-class TestRendererLabel extends JLabel {
-    public TestRendererLabel(Icon icon) {
-        super(icon);
-    }
-    //Overridden for performance reasons. ---->
-    @Override public boolean isOpaque() {
-        //Color back = getBackground();
-        //Component p = getParent();
-        //if (Objects.nonNull(p)) {
-        //    p = p.getParent();
-        //} // p should now be the JTable.
-        //boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return false; //!colorMatch && super.isOpaque();
-    }
-    @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //String literal pool
-        //if (propertyName == "labelFor" || ((propertyName == "icon" || propertyName == "foreground") && oldValue != newValue)) {
-        if ("labelFor".equals(propertyName) || !Objects.equals(oldValue, newValue) && ("icon".equals(propertyName) || "foreground".equals(propertyName))) {
-            //System.out.println(propertyName);
-            super.firePropertyChange(propertyName, oldValue, newValue);
-        }
-    }
-    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
-    @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
-    @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
-}
+// class FileNameRenderer extends JPanel implements TableCellRenderer {
+//     private final MyLabel textLabel;
+//     private final JLabel iconLabel;
+//     private final Border focusCellHighlightBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
+//     private final Border noFocusBorder;
+//     private final ImageIcon nicon;
+//     private final ImageIcon sicon;
+//
+//     public FileNameRenderer(JTable table) {
+//         super(new BorderLayout());
+//         Border b = UIManager.getBorder("Table.noFocusBorder");
+//         if (Objects.isNull(b)) { //Nimbus???
+//             Insets i = focusCellHighlightBorder.getBorderInsets(this);
+//             b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+//         }
+//         noFocusBorder = b;
+//         setOpaque(false);
+//         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
+//         nicon = new ImageIcon(getClass().getResource("wi0063-16.png"));
+//         sicon = new ImageIcon(createImage(new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter())));
+//         textLabel = new MyLabel(new Color(~table.getSelectionBackground().getRGB()));
+//         iconLabel = new JLabel(nicon);
+//         iconLabel.setBorder(BorderFactory.createEmptyBorder());
+//
+//         add(iconLabel, BorderLayout.WEST);
+//         add(textLabel);
+//         table.setRowHeight(textLabel.getPreferredSize().height);
+//     }
+//     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//         textLabel.setFont(table.getFont());
+//         textLabel.setText(Objects.toString(value, ""));
+//         textLabel.setBorder(hasFocus ? focusCellHighlightBorder : noFocusBorder);
+//
+//         FontMetrics fm = table.getFontMetrics(table.getFont());
+//         Insets i = textLabel.getInsets();
+//         int swidth = fm.stringWidth(textLabel.getText()) + i.left + i.right;
+//         int cwidth = table.getColumnModel().getColumn(column).getWidth() - iconLabel.getPreferredSize().width;
+//         textLabel.setPreferredSize(new Dimension(swidth > cwidth ? cwidth : swidth, 10000)); //height: 10000 is dummy
+//
+//         if (isSelected) {
+//             textLabel.setOpaque(true);
+//             textLabel.setForeground(table.getSelectionForeground());
+//             textLabel.setBackground(table.getSelectionBackground());
+//             iconLabel.setIcon(sicon);
+//         } else {
+//             textLabel.setOpaque(false);
+//             textLabel.setForeground(table.getForeground());
+//             textLabel.setBackground(table.getBackground());
+//             iconLabel.setIcon(nicon);
+//         }
+//         return this;
+//     }
+//     //Overridden for performance reasons. ---->
+//     @Override public boolean isOpaque() {
+//         Color back = getBackground();
+//         Component p = getParent();
+//         if (Objects.nonNull(p)) {
+//             p = p.getParent();
+//         } // p should now be the JTable.
+//         boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
+//         return !colorMatch && super.isOpaque();
+//     }
+//     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) { /* Overridden for performance reasons. */ }
+//     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue)  { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
+//     @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//     //@Override public void invalidate() { /* Overridden for performance reasons. */ }
+//     //@Override public void validate()   { /* Overridden for performance reasons. */ }
+//     //<---- Overridden for performance reasons.
+// }
+//
+// class MyLabel extends JLabel {
+//     private final Border dotBorder;
+//     private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+//     private boolean focusflag;
+//
+//     public MyLabel(Color color) {
+//         super("dummy");
+//         setOpaque(true);
+//         dotBorder = new DotBorder(color, 2);
+//         setBorder(empBorder);
+//         //setFocusable(true);
+//     }
+//     private boolean isFocusedBorder() {
+//         return focusflag;
+//     }
+//     public void setFocusedBorder(boolean flag) {
+//         setBorder(flag ? dotBorder : empBorder);
+//         focusflag = flag;
+//     }
+//     private class DotBorder extends LineBorder {
+//         public DotBorder(Color color, int thickness) {
+//             super(color, thickness);
+//         }
+//         @Override public boolean isBorderOpaque() {
+//             return true;
+//         }
+//         @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+//             Graphics2D g2 = (Graphics2D) g.create();
+//             g2.translate(x, y);
+//             if (isFocusedBorder()) {
+//                 g2.setPaint(getLineColor());
+//                 BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
+//             }
+//             //g2.translate(-x, -y);
+//             g2.dispose();
+//         }
+//     }
+//     //Overridden for performance reasons. ---->
+//     @Override public boolean isOpaque() {
+//         Color back = getBackground();
+//         Component p = getParent();
+//         if (Objects.nonNull(p)) {
+//             p = p.getParent();
+//         } // p should now be the JTable.
+//         boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
+//         return !colorMatch && super.isOpaque();
+//     }
+//     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//         //System.out.println(propertyName);
+// //      //String literal pool
+// //      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
+// //          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
+//         if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
+//               || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)) || "foreground".equals(propertyName))) {
+//             super.firePropertyChange(propertyName, oldValue, newValue);
+//         }
+//     }
+//     @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//     @Override public void repaint()    { /* Overridden for performance reasons. */ }
+//     @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//     @Override public void validate()   { /* Overridden for performance reasons. */ }
+//     @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//     //<---- Overridden for performance reasons.
+// }
 
-class MyLabel extends JLabel {
-    private final Border dotBorder;
-    private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-    private boolean focusflag;
-
-    public MyLabel(Color color) {
-        super("dummy");
-        setOpaque(true);
-        dotBorder = new DotBorder(color, 2);
-        setBorder(empBorder);
-        //setFocusable(true);
-    }
-    private boolean isFocusedBorder() {
-        return focusflag;
-    }
-    public void setFocusedBorder(boolean flag) {
-        setBorder(flag ? dotBorder : empBorder);
-        focusflag = flag;
-    }
-    private class DotBorder extends LineBorder {
-        public DotBorder(Color color, int thickness) {
-            super(color, thickness);
-        }
-        @Override public boolean isBorderOpaque() {
-            return true;
-        }
-        @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.translate(x, y);
-            if (isFocusedBorder()) {
-                g2.setPaint(getLineColor());
-                BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-            }
-            //g2.translate(-x, -y);
-            g2.dispose();
-        }
-    }
-    //Overridden for performance reasons. ---->
-    @Override public boolean isOpaque() {
-        Color back = getBackground();
-        Component p = getParent();
-        if (Objects.nonNull(p)) {
-            p = p.getParent();
-        } // p should now be the JTable.
-        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return !colorMatch && super.isOpaque();
-    }
-    @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        //System.out.println(propertyName);
-//      //String literal pool
-//      if (propertyName == "text" || propertyName == "labelFor" || propertyName == "displayedMnemonic"
-//          || ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)))) {
-        if ("text".equals(propertyName) || "labelFor".equals(propertyName) || "displayedMnemonic".equals(propertyName)
-              || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName) && Objects.nonNull(getClientProperty(BasicHTML.propertyKey)) || "foreground".equals(propertyName))) {
-            super.firePropertyChange(propertyName, oldValue, newValue);
-        }
-    }
-    @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-    @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-    @Override public void repaint()    { /* Overridden for performance reasons. */ }
-    @Override public void invalidate() { /* Overridden for performance reasons. */ }
-    @Override public void validate()   { /* Overridden for performance reasons. */ }
-    @Override public void revalidate() { /* Overridden for performance reasons. */ }
-    //<---- Overridden for performance reasons.
-}
-
-class MyTable extends JTable {
+class FileListTable extends JTable {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
-    private final Color rcolor;
-    private final Color pcolor;
-    private final Path2D polygon = new Path2D.Double();
-    private Point srcPoint;
-    public MyTable(TableModel model) {
+    private final Color rcolor = SystemColor.activeCaption;
+    private final Color pcolor = makeColor(rcolor);
+    private final Path2D rubberBand = new Path2D.Double();
+    private transient RubberBandingListener rbl;
+
+    public FileListTable(TableModel model) {
         super(model);
-        rcolor = SystemColor.activeCaption;
-        pcolor = makeColor(rcolor);
-        RubberBandingListener rbl = new RubberBandingListener();
+    }
+    @Override public void updateUI() {
+        // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+        // http://bugs.java.com/view_bug.do?bug_id=6788475
+        // XXX: set dummy ColorUIResource
+        setSelectionForeground(new ColorUIResource(Color.RED));
+        setSelectionBackground(new ColorUIResource(Color.RED));
+        removeMouseMotionListener(rbl);
+        removeMouseListener(rbl);
+        super.updateUI();
+        rbl = new RubberBandingListener();
         addMouseMotionListener(rbl);
         addMouseListener(rbl);
+
+        putClientProperty("Table.isFileList", Boolean.TRUE);
+        setCellSelectionEnabled(true);
+        setIntercellSpacing(new Dimension());
+        setShowGrid(false);
+        setAutoCreateRowSorter(true);
+        setFillsViewportHeight(true);
+
+        setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                return super.getTableCellRendererComponent(table, value, false, false, row, column);
+            }
+        });
+
+        TableColumn col = getColumnModel().getColumn(0);
+        col.setCellRenderer(new FileNameRenderer(this));
+        col.setPreferredWidth(200);
+        col = getColumnModel().getColumn(1);
+        col.setPreferredWidth(300);
     }
     @Override public String getToolTipText(MouseEvent e) {
         Point pt = e.getPoint();
@@ -326,35 +353,37 @@ class MyTable extends JTable {
         int idx = convertColumnIndexToView(0);
         super.setColumnSelectionInterval(idx, idx);
     }
-    class RubberBandingListener extends MouseAdapter {
+    private class RubberBandingListener extends MouseAdapter {
+        private final Point srcPoint = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             Point destPoint = e.getPoint();
-            srcPoint = Objects.nonNull(srcPoint) ? srcPoint : destPoint;
-            polygon.reset();
-            polygon.moveTo(srcPoint.x,  srcPoint.y);
-            polygon.lineTo(destPoint.x, srcPoint.y);
-            polygon.lineTo(destPoint.x, destPoint.y);
-            polygon.lineTo(srcPoint.x,  destPoint.y);
-            polygon.closePath();
+            rubberBand.reset();
+            rubberBand.moveTo(srcPoint.x,  srcPoint.y);
+            rubberBand.lineTo(destPoint.x, srcPoint.y);
+            rubberBand.lineTo(destPoint.x, destPoint.y);
+            rubberBand.lineTo(srcPoint.x,  destPoint.y);
+            rubberBand.closePath();
             clearSelection();
             int col = convertColumnIndexToView(0);
-            for (int i: getIntersectedIndices(polygon)) {
+            int[] indeces = IntStream.range(0, getModel().getRowCount()).filter(i -> rubberBand.intersects(getCellRect2(FileListTable.this, i, col))).toArray();
+            for (int i: indeces) {
                 addRowSelectionInterval(i, i);
                 changeSelection(i, col, true, true);
             }
             repaint();
         }
         @Override public void mouseReleased(MouseEvent e) {
-            srcPoint = null;
+            rubberBand.reset();
             repaint();
         }
         @Override public void mousePressed(MouseEvent e) {
+            srcPoint.setLocation(e.getPoint());
             if (rowAtPoint(e.getPoint()) < 0) {
                 clearSelection();
                 repaint();
             } else {
                 int index = rowAtPoint(e.getPoint());
-                Rectangle rect = getCellRect2(MyTable.this, index, convertColumnIndexToView(0));
+                Rectangle rect = getCellRect2(FileListTable.this, index, convertColumnIndexToView(0));
                 if (!rect.contains(e.getPoint())) {
                     clearSelection();
                     repaint();
@@ -371,41 +400,32 @@ class MyTable extends JTable {
         Rectangle cellBounds = table.getCellRect(row, col, false);
         cellBounds.width = itemSize.width;
         return cellBounds;
-//         FontMetrics fm = table.getFontMetrics(table.getFont());
-//         Object o = table.getValueAt(row, col);
-//         int w = fm.stringWidth(o.toString()) + 16 + 2 + 2;
-//         Rectangle rect = table.getCellRect(row, col, true);
-//         rect.setSize(w, rect.height);
-//         return rect;
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (Objects.isNull(srcPoint)) {
-            return;
-        }
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setPaint(rcolor);
-        g2d.draw(polygon);
-        g2d.setComposite(ALPHA);
-        g2d.setPaint(pcolor);
-        g2d.fill(polygon);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(rcolor);
+        g2.draw(rubberBand);
+        g2.setComposite(ALPHA);
+        g2.setPaint(pcolor);
+        g2.fill(rubberBand);
+        g2.dispose();
     }
-    private int[] getIntersectedIndices(Path2D path) {
-        TableModel model = getModel();
-        List<Integer> list = new ArrayList<>(model.getRowCount());
-        for (int i = 0; i < getRowCount(); i++) {
-            if (path.intersects(getCellRect2(MyTable.this, i, convertColumnIndexToView(0)))) {
-                list.add(i);
-            }
-        }
-        int[] il = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            il[i] = list.get(i);
-        }
-        return il;
-    }
-    private Color makeColor(Color c) {
+//     private int[] getIntersectedIndices(Path2D path) {
+//         TableModel model = getModel();
+//         List<Integer> list = new ArrayList<>(model.getRowCount());
+//         for (int i = 0; i < getRowCount(); i++) {
+//             if (path.intersects(getCellRect2(FileListTable.this, i, convertColumnIndexToView(0)))) {
+//                 list.add(i);
+//             }
+//         }
+//         int[] il = new int[list.size()];
+//         for (int i = 0; i < list.size(); i++) {
+//             il[i] = list.get(i);
+//         }
+//         return il;
+//     }
+    private static Color makeColor(Color c) {
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
