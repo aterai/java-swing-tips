@@ -93,6 +93,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
     private transient RubberBandingListener rbl;
     private Color rubberBandColor;
+    private final Path2D rubberBand = new Path2D.Double();
     public ReorderbleList(ListModel<E> model) {
         super(model);
     }
@@ -124,15 +125,15 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (getDragEnabled() || Objects.isNull(rbl)) {
+        if (getDragEnabled()) {
             return;
         }
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(getSelectionBackground());
-        g2.draw(rbl.rubberBand);
+        g2.draw(rubberBand);
         g2.setComposite(ALPHA);
         g2.setPaint(rubberBandColor);
-        g2.fill(rbl.rubberBand);
+        g2.fill(rubberBand);
         g2.dispose();
     }
     private static Color makeRubberBandColor(Color c) {
@@ -141,6 +142,75 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         int b = c.getBlue();
         return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
                      : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
+    }
+    private class RubberBandingListener extends MouseAdapter {
+        private final Point srcPoint = new Point();
+        @Override public void mouseDragged(MouseEvent e) {
+            JList l = (JList) e.getComponent();
+            if (l.getDragEnabled()) {
+                Component glassPane = l.getRootPane().getGlassPane();
+                glassPane.setVisible(true);
+                return;
+            }
+            Point destPoint = e.getPoint();
+            rubberBand.reset();
+            rubberBand.moveTo(srcPoint.x,  srcPoint.y);
+            rubberBand.lineTo(destPoint.x, srcPoint.y);
+            rubberBand.lineTo(destPoint.x, destPoint.y);
+            rubberBand.lineTo(srcPoint.x,  destPoint.y);
+            rubberBand.closePath();
+            //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+            l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
+            l.repaint();
+        }
+        @Override public void mouseReleased(MouseEvent e) {
+            JList l = (JList) e.getComponent();
+            l.setFocusable(true);
+            //if (Objects.isNull(srcPoint) || !getDragEnabled()) {
+            //    Component glassPane = l.getRootPane().getGlassPane();
+            //    glassPane.setVisible(false);
+            //}
+            rubberBand.reset();
+            l.setDragEnabled(l.getSelectedIndices().length > 0);
+            l.repaint();
+        }
+        @Override public void mousePressed(MouseEvent e) {
+            JList l = (JList) e.getComponent();
+            int index = l.locationToIndex(e.getPoint());
+            Rectangle rect = l.getCellBounds(index, index);
+            if (rect.contains(e.getPoint())) {
+                l.setFocusable(true);
+                if (l.getDragEnabled()) {
+                    return;
+                }
+                //System.out.println("ccc:" + startSelectedIndex);
+                l.setSelectedIndex(index);
+            } else {
+                l.clearSelection();
+                l.getSelectionModel().setAnchorSelectionIndex(-1);
+                l.getSelectionModel().setLeadSelectionIndex(-1);
+                l.setFocusable(false);
+                l.setDragEnabled(false);
+            }
+            srcPoint.setLocation(e.getPoint());
+            l.repaint();
+        }
+        ////JDK 1.7.0
+        //private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+        //    ListModel model = l.getModel();
+        //    List<Integer> ll = new ArrayList<>(model.getSize());
+        //    for (int i = 0; i < model.getSize(); i++) {
+        //        if (rect.intersects(l.getCellBounds(i, i))) {
+        //            ll.add(i);
+        //        }
+        //    }
+        //    //JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
+        //    int[] il = new int[ll.size()];
+        //    for (int i = 0; i < ll.size(); i++) {
+        //        il[i] = ll.get(i);
+        //    }
+        //    return il;
+        //}
     }
 }
 
@@ -224,77 +294,6 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
         }
         return p;
     }
-}
-
-class RubberBandingListener extends MouseAdapter {
-    public final Path2D rubberBand = new Path2D.Double();
-    private final Point srcPoint = new Point();
-    @Override public void mouseDragged(MouseEvent e) {
-        JList l = (JList) e.getComponent();
-        if (l.getDragEnabled()) {
-            Component glassPane = l.getRootPane().getGlassPane();
-            glassPane.setVisible(true);
-            return;
-        }
-        Point destPoint = e.getPoint();
-        rubberBand.reset();
-        rubberBand.moveTo(srcPoint.x,  srcPoint.y);
-        rubberBand.lineTo(destPoint.x, srcPoint.y);
-        rubberBand.lineTo(destPoint.x, destPoint.y);
-        rubberBand.lineTo(srcPoint.x,  destPoint.y);
-        rubberBand.closePath();
-        //JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-        l.setSelectedIndices(IntStream.range(0, l.getModel().getSize()).filter(i -> rubberBand.intersects(l.getCellBounds(i, i))).toArray());
-        l.repaint();
-    }
-    @Override public void mouseReleased(MouseEvent e) {
-        JList l = (JList) e.getComponent();
-        l.setFocusable(true);
-        //if (Objects.isNull(srcPoint) || !getDragEnabled()) {
-        //    Component glassPane = l.getRootPane().getGlassPane();
-        //    glassPane.setVisible(false);
-        //}
-        rubberBand.reset();
-        l.setDragEnabled(l.getSelectedIndices().length > 0);
-        l.repaint();
-    }
-    @Override public void mousePressed(MouseEvent e) {
-        JList l = (JList) e.getComponent();
-        int index = l.locationToIndex(e.getPoint());
-        Rectangle rect = l.getCellBounds(index, index);
-        if (rect.contains(e.getPoint())) {
-            l.setFocusable(true);
-            if (l.getDragEnabled()) {
-                return;
-            }
-            //System.out.println("ccc:" + startSelectedIndex);
-            l.setSelectedIndex(index);
-        } else {
-            l.clearSelection();
-            l.getSelectionModel().setAnchorSelectionIndex(-1);
-            l.getSelectionModel().setLeadSelectionIndex(-1);
-            l.setFocusable(false);
-            l.setDragEnabled(false);
-        }
-        srcPoint.setLocation(e.getPoint());
-        l.repaint();
-    }
-//     //JDK 1.7.0
-//     private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-//         ListModel model = l.getModel();
-//         List<Integer> ll = new ArrayList<>(model.getSize());
-//         for (int i = 0; i < model.getSize(); i++) {
-//             if (rect.intersects(l.getCellBounds(i, i))) {
-//                 ll.add(i);
-//             }
-//         }
-//         //JDK 1.8.0: return ll.stream().mapToInt(i -> i).toArray();
-//         int[] il = new int[ll.size()];
-//         for (int i = 0; i < ll.size(); i++) {
-//             il[i] = ll.get(i);
-//         }
-//         return il;
-//     }
 }
 
 class ListItemTransferHandler extends TransferHandler {
