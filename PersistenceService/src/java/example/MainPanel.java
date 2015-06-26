@@ -92,7 +92,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
             return new WindowAdapter() {
                 @Override public void windowClosing(WindowEvent e) {
                     JFrame f = (JFrame) e.getComponent();
-                    if (f.getExtendedState() == JFrame.NORMAL) {
+                    if (f.getExtendedState() == Frame.NORMAL) {
                         windowState.setSize(f.getSize());
                         //Point pt = f.getLocationOnScreen();
                         //if (pt.x < 0 || pt.y < 0) { return; }

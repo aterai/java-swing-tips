@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
 //         });
 //         frame.addWindowStateListener(new WindowStateListener() {
 //             @Override public void windowStateChanged(WindowEvent e) {
-//                 if (frame.getExtendedState() == JFrame.MAXIMIZED_BOTH && table.isEditing()) {
+//                 if (frame.getExtendedState() == Frame.MAXIMIZED_BOTH && table.isEditing()) {
 //                     table.getCellEditor().stopCellEditing();
 //                 }
 //             }

@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     + "    if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {\n"
     + "      frame.setVisible(true);\n"
     + "    } else if (frame.isVisible()) {\n"
-    + "      frame.setExtendedState(JFrame.NORMAL);\n"
+    + "      frame.setExtendedState(Frame.NORMAL);\n"
     + "      frame.toFront();\n"
     + "    }\n"
     + "  }\n"
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
                     frame.setVisible(true);
                 } else if (frame.isVisible()) {
-                    frame.setExtendedState(JFrame.NORMAL);
+                    frame.setExtendedState(Frame.NORMAL);
                     frame.toFront();
                 }
             }

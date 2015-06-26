@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         frame.addComponentListener(new ComponentAdapter() {
             @Override public void componentMoved(ComponentEvent e) {
                 JFrame frame = (JFrame) e.getComponent();
-                if (frame.getExtendedState() == JFrame.NORMAL) {
+                if (frame.getExtendedState() == Frame.NORMAL) {
                     Point pt = frame.getLocationOnScreen();
                     if (pt.x < 0 || pt.y < 0) {
                         return;
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
             }
             @Override public void componentResized(ComponentEvent e) {
                 JFrame frame = (JFrame) e.getComponent();
-                if (frame.getExtendedState() == JFrame.NORMAL) {
+                if (frame.getExtendedState() == Frame.NORMAL) {
                     dim.setSize(getSize());
                 }
             }
