@@ -126,7 +126,62 @@ class CheckBoxNodeRenderer extends JCheckBox implements TreeCellRenderer {
         //}
     }
 }
-
+//*
+//delegation pattern
+class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
+    private final JCheckBox checkBox = new JCheckBox();
+    private final JTree tree;
+    public CheckBoxNodeEditor(JTree tree) {
+        super();
+        this.tree = tree;
+        checkBox.setOpaque(false);
+        checkBox.setFocusable(false);
+        checkBox.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                stopCellEditing();
+            }
+        });
+    }
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+        if (leaf && value instanceof DefaultMutableTreeNode) {
+            Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+            if (userObject instanceof CheckBoxNode) {
+                checkBox.setSelected(((CheckBoxNode) userObject).selected);
+            } else {
+                checkBox.setSelected(false);
+            }
+            checkBox.setText(value.toString());
+        }
+        return checkBox;
+    }
+    @Override public Object getCellEditorValue() {
+        return new CheckBoxNode(checkBox.getText(), checkBox.isSelected());
+    }
+    @Override public boolean isCellEditable(EventObject e) {
+        if (e instanceof MouseEvent) {
+            MouseEvent me = (MouseEvent) e;
+            TreePath path = tree.getPathForLocation(me.getX(), me.getY());
+            Object o = path.getLastPathComponent();
+            if (o instanceof TreeNode) {
+                return ((TreeNode) o).isLeaf();
+            }
+        }
+        return false;
+    }
+    //AbstractCellEditor
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
+        return true;
+    }
+    @Override public boolean stopCellEditing() {
+        fireEditingStopped();
+        return true;
+    }
+    @Override public void cancelCellEditing() {
+        fireEditingCanceled();
+    }
+}
+/*/
+//inheritence to extend a class
 class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     private final JTree tree;
     public CheckBoxNodeEditor(JTree tree) {
@@ -222,7 +277,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         }
     }
 }
-
+//*/
 class CheckBoxNode {
     public final String text;
     public final boolean selected;
