@@ -3,7 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Locale;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -59,10 +59,9 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
         this.textArea = textArea;
     }
     @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attrs) throws BadLocationException {
-        if (text == null) {
-            return;
+        if (Objects.nonNull(text)) {
+            replace(fb, offset, 0, text, attrs);
         }
-        replace(fb, offset, 0, text, attrs);
     }
     @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
         Document doc = fb.getDocument();
@@ -75,7 +74,7 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
     }
     @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         String str = text;
-        if (offset == 0 && text != null && text.length() > 0) {
+        if (offset == 0 && Objects.nonNull(text) && !text.isEmpty()) {
             str = text.substring(0, 1).toUpperCase(Locale.ENGLISH) + text.substring(1);
         }
         fb.replace(offset, length, str, attrs);

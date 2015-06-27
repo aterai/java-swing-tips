@@ -211,7 +211,7 @@ class EditableTabbedPane extends JTabbedPane {
         glassPane.setVisible(false);
     }
     private void renameTab() {
-        if (editor.getText().trim().length() > 0) {
+        if (!editor.getText().trim().isEmpty()) {
             setTitleAt(getSelectedIndex(), editor.getText());
             //java 1.6.0 ---->
             Component c = getTabComponentAt(getSelectedIndex());

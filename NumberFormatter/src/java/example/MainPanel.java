@@ -158,9 +158,7 @@ class WarningSpinner extends JSpinner {
 
 // class IntegerDocumentFilter extends DocumentFilter {
 //     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-//         if (string == null) {
-//             return;
-//         } else {
+//         if (Objects.nonNull(string)) {
 //             replace(fb, offset, 0, string, attr);
 //         }
 //     }
@@ -173,14 +171,14 @@ class WarningSpinner extends JSpinner {
 //         String currentContent = doc.getText(0, currentLength);
 //         String before = currentContent.substring(0, offset);
 //         String after = currentContent.substring(length + offset, currentLength);
-//         String newValue = before + (text == null ? "" : text) + after;
+//         String newValue = before + Objects.toString(text, "") + after;
 //         //currentValue =
 //         checkInput(newValue, offset);
 //         fb.replace(offset, length, text, attrs);
 //     }
 //     private static int checkInput(String proposedValue, int offset) throws BadLocationException {
 //         int newValue = 0;
-//         if (proposedValue.length() > 0) {
+//         if (!proposedValue.isEmpty()) {
 //             try {
 //                 newValue = Integer.parseInt(proposedValue);
 //             } catch (NumberFormatException e) {

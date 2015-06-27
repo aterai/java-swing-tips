@@ -162,14 +162,14 @@ enum PasswordField {
 //         String currentContent = doc.getText(0, currentLength);
 //         String before = currentContent.substring(0, offset);
 //         String after = currentContent.substring(length + offset, currentLength);
-//         String newValue = before + (text == null ? "" : text) + after;
+//         String newValue = before + Objects.toString(text, "") + after;
 //         checkInput(newValue, offset);
 //         fb.replace(offset, length, text, attrs);
 //     }
 //     //In Java, is it possible to check if a String is only ASCII? - Stack Overflow
 //     //http://stackoverflow.com/questions/3585053/in-java-is-it-possible-to-check-if-a-string-is-only-ascii
 //     private static void checkInput(String proposedValue, int offset) throws BadLocationException {
-//         if (proposedValue.length() > 0 && !asciiEncoder.canEncode(proposedValue)) {
+//         if (!proposedValue.isEmpty() && !asciiEncoder.canEncode(proposedValue)) {
 //             throw new BadLocationException(proposedValue, offset);
 //         }
 // //         for (char c: proposedValue.toCharArray()) {
@@ -177,9 +177,9 @@ enum PasswordField {
 // //                 throw new BadLocationException(proposedValue, offset);
 // //             }
 // //         }
-// //         //if (proposedValue.length() > 0 && !proposedValue.chars().allMatch(c -> c < 128)) { //JDK 8
+// //         //if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) { //JDK 8
 // //         Matcher m = pattern.matcher(proposedValue);
-// //         if (proposedValue.length() > 0 && !m.find()) {
+// //         if (!proposedValue.isEmpty() && !m.find()) {
 // //             throw new BadLocationException(proposedValue, offset);
 // //         }
 //     }
