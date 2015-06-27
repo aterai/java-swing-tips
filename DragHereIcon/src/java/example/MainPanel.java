@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         //Test: label.setTransferHandler(new FileTransferHandler());
 
         add(label);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

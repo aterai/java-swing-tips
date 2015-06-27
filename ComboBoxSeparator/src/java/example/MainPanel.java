@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createTitledBorder("ComboBoxSeparator"));
         add(box, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea("dummy")));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static ComboBoxModel<Object> makeModel() {
         DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<Object>() {

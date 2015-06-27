@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         //editor.setDocument(htmlDocument);
         editor.setText(makeTestHtml());
         add(new JScrollPane(editor));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static String makeTestHtml() {
         return "<html><body>"

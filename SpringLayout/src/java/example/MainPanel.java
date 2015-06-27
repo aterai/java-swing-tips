@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         //    }
         //});
         add(panel);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static void setScaleAndAdd(JComponent parent, SpringLayout layout, JComponent child, float sx, float sy, float sw, float sh) {

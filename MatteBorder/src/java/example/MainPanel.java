@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         p.add(makeInfoBox(), BorderLayout.SOUTH);
         add(p, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private static Box makeInfoBox() {

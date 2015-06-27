@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         add(makeTitlePanel(field1, "undo:Ctrl-z, redo:Ctrl-y"));
         add(makeTitlePanel(field2, "test"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static void initUndoRedo(JTextComponent tc) {
         UndoManager manager = new UndoManager();

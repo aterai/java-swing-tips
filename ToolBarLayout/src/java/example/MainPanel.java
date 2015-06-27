@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         add(toolbar1, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         add(toolbar2, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JButton createToolbarButton(URL url) {
         JButton b = new JButton(new ImageIcon(url));

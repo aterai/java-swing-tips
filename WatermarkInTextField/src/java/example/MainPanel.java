@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         box.add(makePanel("Search", field2));
 
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());

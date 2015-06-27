@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box, BorderLayout.NORTH);
         add(scrollPane);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

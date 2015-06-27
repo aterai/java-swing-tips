@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         add(makeTitlePanel(spinner1, "JSpinner"));
         add(makeTitlePanel(spinner2, "getTextField().setEditable(false)"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());

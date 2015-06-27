@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         box.add(makePanel(field02));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static int getLeftMargin(JTextField c) {
         System.out.println("----");

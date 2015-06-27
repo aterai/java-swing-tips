@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box1, BorderLayout.NORTH);
         add(box2, BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox makeComboBox() {
         DefaultComboBoxModel<MyItem> model = new DefaultComboBoxModel<>();

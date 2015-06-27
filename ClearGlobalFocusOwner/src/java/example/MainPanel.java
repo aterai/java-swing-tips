@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton("button"));
         add(p);
         add(new JLabel("JFrame:mouseClicked -> clearGlobalFocusOwner"), BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
         panel.add(button);
         add(menubar, BorderLayout.NORTH);
         add(panel);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

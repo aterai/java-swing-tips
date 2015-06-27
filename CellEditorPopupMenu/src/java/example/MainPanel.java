@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         JPopupMenu popup = new TextComponentPopupMenu(textField);
         textField.setComponentPopupMenu(popup);
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

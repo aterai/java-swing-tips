@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         add(cbx, BorderLayout.NORTH);
         add(box);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static SpinnerNumberModel makeSpinnerNumberModel() {
         return new SpinnerNumberModel(

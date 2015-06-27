@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
         add(new JScrollPane(table));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private class TablePopupMenu extends JPopupMenu {

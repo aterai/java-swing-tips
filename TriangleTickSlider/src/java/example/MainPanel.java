@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalGlue());
         add(box);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private JSlider makeSlider(boolean icon) {

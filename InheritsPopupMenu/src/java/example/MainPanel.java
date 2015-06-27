@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         box.add(cb1); box.add(cb2);
         add(box, BorderLayout.NORTH);
         add(scroll);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private class TablePopupMenu extends JPopupMenu {

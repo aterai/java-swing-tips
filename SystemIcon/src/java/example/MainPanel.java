@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
             }
         };
         setDropTarget(new DropTarget(this, DnDConstants.ACTION_COPY, dtl, true));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

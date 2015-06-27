@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         toolbar.add(Box.createGlue());
 
         add(toolbar, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     private AbstractButton makeButton(JPopupMenu pop, String title, ImageIcon icon) {

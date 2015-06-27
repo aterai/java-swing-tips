@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         p.add(makePanel("getClass().getResource(\"test.png\")", new JLabel(url2.toString())));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());

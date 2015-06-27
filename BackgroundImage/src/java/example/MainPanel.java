@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
         bgimage = new ImageIcon(getClass().getResource("16x16.png"));
         add(new JLabel("@title@"));
         setOpaque(false);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     @Override public void paintComponent(Graphics g) {
         Dimension d = getSize();

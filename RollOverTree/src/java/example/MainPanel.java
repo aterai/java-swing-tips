@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         tree.setModel(makeModel());
         tree.setCellRenderer(new RollOverTreeCellRenderer(tree));
         add(new JScrollPane(tree));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static DefaultTreeModel makeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");

@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         p.add(new JLabel("ImageIcon#setImageObserver(ImageObserver)"));
         p.add(combo2);
         add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static ImageIcon makeImageIcon(URL url, final JComboBox combo, final int row) {
         ImageIcon icon = new ImageIcon(url);

@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         box.add(makePanel("WindowsSpinnerUI", spinner3));
         add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static void searchSpinnerButtons(Container comp) {
         for (Component c: comp.getComponents()) {

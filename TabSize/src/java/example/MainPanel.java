@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
 
         add(new JScrollPane(ta), BorderLayout.NORTH);
         add(new JScrollPane(textpane));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

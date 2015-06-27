@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(makeTitledBox("Left Clip JComboBox", combo), BorderLayout.NORTH);
         add(makeTitledBox("Default JComboBox", makeComboBox()), BorderLayout.SOUTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JButton getArrowButton(JComboBox box) {
         for (Component c: box.getComponents()) {

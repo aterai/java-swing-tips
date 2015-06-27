@@ -12,7 +12,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private JFileChooser fileChooser;
     public MainPanel() {
-        super(new BorderLayout());
+        super(new GridBagLayout());
         JButton button = new JButton(new AbstractAction("Open JFileChooser") {
             @Override public void actionPerformed(ActionEvent e) {
                 if (fileChooser == null) {
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
             }
         });
         add(button);
-        setPreferredSize(new Dimension(320, 100));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {
@@ -59,9 +59,11 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
     private File file;
     public ImagePreview(JFileChooser fc) {
         super();
-        setPreferredSize(new Dimension(PREVIEW_WIDTH + PREVIEW_MARGIN * 2, 50));
         fc.addPropertyChangeListener(this);
         //setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, SystemColor.inactiveCaption));
+    }
+    @Override public Dimension getPreferredSize() {
+        return new Dimension(PREVIEW_WIDTH + PREVIEW_MARGIN * 2, 50);
     }
     private void loadImage() {
         if (file == null) {

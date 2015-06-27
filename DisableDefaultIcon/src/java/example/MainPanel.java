@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             box.add(Box.createVerticalStrut(5));
         }
         add(box);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

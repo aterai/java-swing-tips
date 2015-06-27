@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         add(combo2);
         add(combo3);
 
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

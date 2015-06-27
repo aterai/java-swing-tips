@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         textArea.setText("dummy");
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();

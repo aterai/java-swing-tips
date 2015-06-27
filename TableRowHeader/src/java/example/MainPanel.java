@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setBackground(Color.GREEN);
 
         add(scroll);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     class TestCreateAction extends AbstractAction {

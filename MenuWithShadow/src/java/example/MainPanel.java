@@ -9,7 +9,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         add(new JLabel(new ImageIcon(getClass().getResource("test.png"))));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JMenuBar makeMenuBar() {
         JMenuBar mb = new JMenuBar();

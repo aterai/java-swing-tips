@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createVerticalStrut(5));
         box.add(combo);
         add(box, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private void initTextField(Object obj) {
         LRItem item = (LRItem) obj;

@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         p.add(combo03); p.add(new JLabel("<- wide, editable"));
         setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
         add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JComboBox<String> makeComboBox() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();

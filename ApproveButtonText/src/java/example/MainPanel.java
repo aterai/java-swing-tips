@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(2, 1));
         add(makeDefaultChooserPanel());
         add(makeCustomChooserPanel());
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makeCustomChooserPanel() {
         //for JDK 1.6.0_11

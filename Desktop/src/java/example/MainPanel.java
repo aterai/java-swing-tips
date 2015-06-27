@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("Desktop.getDesktop().browse(URI)"));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

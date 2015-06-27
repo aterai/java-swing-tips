@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         p.add(makePanel("TitleBorder", button0), BorderLayout.NORTH);
         p.add(makePanel("MatteBorder", button1), BorderLayout.SOUTH);
         add(p, BorderLayout.NORTH);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());

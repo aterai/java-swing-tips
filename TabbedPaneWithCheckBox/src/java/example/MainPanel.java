@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         tab.setBorder(b);
         tab.addTab("Quick Preferences", new JLabel("aaaaaaaaa"));
         add(tab);
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

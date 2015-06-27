@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         box.add(button2);
         add(box);
         setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
-        setPreferredSize(new Dimension(320, 180));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
             }
         });
         add(tab);
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
 
     public static void main(String... args) {

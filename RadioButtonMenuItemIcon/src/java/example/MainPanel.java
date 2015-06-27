@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         add(new JTextArea());
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public JMenuBar createMenuBar() {
         JMenu menu = new JMenu("RadioButtonMenuItem-Test");

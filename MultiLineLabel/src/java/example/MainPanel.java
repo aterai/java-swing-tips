@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         add(label3);
 
         setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        setPreferredSize(new Dimension(320, 160));
+        setPreferredSize(new Dimension(320, 240));
     }
     private static Box setLeftIcon(JTextComponent label, ImageIcon icon) {
         label.setForeground(UIManager.getColor("Label.foreground"));

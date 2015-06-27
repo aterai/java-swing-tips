@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         p.add(button);
         add(p);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setPreferredSize(new Dimension(320, 200));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
