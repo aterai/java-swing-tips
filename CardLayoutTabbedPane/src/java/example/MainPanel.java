@@ -10,7 +10,7 @@ import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
-        super(new GridLayout(3, 1));
+        super(new GridLayout(2, 1));
         JTabbedPane tab1 = new JTabbedPane();
         tab1.setBorder(BorderFactory.createTitledBorder("JTabbedPane"));
         tab1.addTab("1111", new JScrollPane(new JTree()));
@@ -35,18 +35,10 @@ public final class MainPanel extends JPanel {
         tab3.addTab("bbbb", new JLabel("iiii"));
         tab3.addTab("cccc", new JButton("jjjjjj"));
 
-        TableHeaderTabbedPane tab4 = new TableHeaderTabbedPane();
-        tab4.setBorder(BorderFactory.createTitledBorder("CardLayout+JTableHeader"));
-        tab4.addTab("dddd", new JScrollPane(new JTree()));
-        tab4.addTab("eeee", new JLabel("kkk"));
-        tab4.addTab("ffff", new JLabel("llllllllll"));
-        tab4.addTab("gggg", new JButton("mmmmmm"));
-
         //add(tab1);
         add(tab2);
         add(tab3);
-        add(tab4);
-        setPreferredSize(new Dimension(320, 320));
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -101,24 +93,29 @@ class CardLayoutTabbedPane extends JPanel {
         });
         tab.setLayout(new BorderLayout());
         //tab.setLayout(new OverlayLayout(tab));
-        //tab.setPreferredSize(new Dimension(200, 24));
-        JButton close = new JButton(new AbstractAction("") {
+        JButton close = new JButton(new CloseTabIcon(Color.GRAY)) {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(12, 12);
+            }
+        };
+        close.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 //@See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
-                System.out.println("close button");
+                System.out.println("dummy action: close button");
+                //tabPanel.remove(tab);
+                //contentsPanel.remove(comp);
+                //if (tabPanel.getComponentCount() > 1) {
+                //    tabPanel.revalidate();
+                //    TabButton b = (TabButton) tabPanel.getComponent(0);
+                //    b.setSelected(true);
+                //    cardLayout.first(contentsPanel);
+                //}
+                //tabPanel.revalidate();
             }
         });
-        Dimension dim = new Dimension(12, 12);
-        close.setPreferredSize(dim);
-        close.setMaximumSize(dim);
-        //close.setMinimumSize(dim);
-        //close.setAlignmentX(.9f);
-        //close.setAlignmentY(.1f);
-        //close.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
         close.setBorder(BorderFactory.createEmptyBorder());
         close.setFocusPainted(false);
         close.setContentAreaFilled(false);
-        close.setIcon(new CloseTabIcon(Color.GRAY));
         close.setPressedIcon(new CloseTabIcon(Color.BLACK));
         close.setRolloverIcon(new CloseTabIcon(Color.ORANGE));
 
@@ -245,100 +242,5 @@ class CloseTabIcon implements Icon {
     }
     @Override public int getIconHeight() {
         return 12;
-    }
-}
-
-class TableHeaderTabbedPane extends JPanel {
-    protected final CardLayout cardLayout = new CardLayout();
-    protected final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
-    protected final JPanel wrapPanel = new JPanel(new BorderLayout(0, 0));
-    protected final JPanel contentsPanel = new JPanel(cardLayout);
-    protected final TableColumnModel model;
-    private final JTableHeader header;
-    private Object selectedColumn;
-    private int rolloverColumn = -1;
-    public TableHeaderTabbedPane() {
-        super(new BorderLayout());
-        int left  = 1;
-        int right = 3;
-        String[] columnNames = {};
-        final JTable table = new JTable(new DefaultTableModel(null, columnNames));
-        model = table.getTableHeader().getColumnModel();
-        tabPanel.setBorder(BorderFactory.createEmptyBorder(1, left, 0, right));
-        contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
-        header = table.getTableHeader();
-        MouseInputHandler handler = new MouseInputHandler();
-        header.addMouseListener(handler);
-        header.addMouseMotionListener(handler);
-        final TabButton l = new TabButton();
-//         final TableCellRenderer hr = header.getDefaultRenderer();
-        header.setDefaultRenderer(new TableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
-                l.setText((String) val);
-                l.setSelected(Objects.equals(val, selectedColumn) || Objects.equals(col, rolloverColumn));
-                return l;
-//                 JLabel l;
-//                 if (val == selectedColumn) {
-//                     l = (JLabel) hr.getTableCellRendererComponent(tbl, val, true, true, row, col);
-//                     //l.setForeground(Color.RED);
-//                 } else {
-//                     l = (JLabel) hr.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
-//                 }
-//                 return l;
-            }
-        });
-        JScrollPane sp = new JScrollPane(table);
-        sp.getViewport().setPreferredSize(new Dimension());
-        wrapPanel.add(sp);
-        add(wrapPanel, BorderLayout.NORTH);
-        add(contentsPanel);
-    }
-    public void addTab(final String title, final Component comp) {
-        contentsPanel.add(comp, title);
-        TableColumn tc = new TableColumn(
-            model.getColumnCount(), 75, header.getDefaultRenderer(), null);
-        tc.setHeaderValue(title);
-        model.addColumn(tc);
-        if (Objects.isNull(selectedColumn)) {
-            cardLayout.show(contentsPanel, title);
-            selectedColumn = title;
-        }
-    }
-    private class MouseInputHandler extends MouseAdapter {
-        @Override public void mousePressed(MouseEvent e) {
-            JTableHeader header = (JTableHeader) e.getComponent();
-            int index = header.columnAtPoint(e.getPoint());
-            if (index < 0) {
-                return;
-            }
-            Object title = model.getColumn(index).getHeaderValue();
-            cardLayout.show(contentsPanel, (String) title);
-            selectedColumn = title;
-        }
-        @Override public void mouseEntered(MouseEvent e) {
-            updateRolloverColumn(e);
-        }
-        @Override public void mouseMoved(MouseEvent e) {
-            updateRolloverColumn(e);
-        }
-        @Override public void mouseDragged(MouseEvent e) {
-            rolloverColumn = -1;
-            updateRolloverColumn(e);
-        }
-        @Override public void mouseExited(MouseEvent e) {
-            //int oldRolloverColumn = rolloverColumn;
-            rolloverColumn = -1;
-        }
-        //@see BasicTableHeaderUI.MouseInputHandler
-        private void updateRolloverColumn(MouseEvent e) {
-            if (Objects.isNull(header.getDraggedColumn()) && header.contains(e.getPoint())) {
-                int col = header.columnAtPoint(e.getPoint());
-                if (col != rolloverColumn) {
-                    //int oldRolloverColumn = rolloverColumn;
-                    rolloverColumn = col;
-                    //rolloverColumnUpdated(oldRolloverColumn, rolloverColumn);
-                }
-            }
-        }
     }
 }
