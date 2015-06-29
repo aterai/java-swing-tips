@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
         showHideButton.setAction(act);
         showHideButton.setFocusable(false);
         JPanel p = new JPanel(new BorderLayout());
-        InputMap imap = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        InputMap imap = p.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "open-searchbox");
         p.getActionMap().put("open-searchbox", act);
         p.add(controls, BorderLayout.NORTH);

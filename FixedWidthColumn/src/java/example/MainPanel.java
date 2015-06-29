@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 //         col.setMaxWidth(0);
 //         //<blockquote cite="https://community.oracle.com/thread/1484284"
 //         //           title="JTable skiping the cells disableds">
-//         InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+//         InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //         KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
 //         final Action oldTabAction = table.getActionMap().get(im.get(tab));
 //         Action tabAction = new AbstractAction() {

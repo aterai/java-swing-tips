@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         // //System.out.println(table.getActionMap().get("startEditing"));
-        //InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        //InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         //for (KeyStroke ks: im.allKeys()) {
         //    Object actionMapKey = im.get(ks);
         //    if ("startEditing".equals(actionMapKey.toString())) {

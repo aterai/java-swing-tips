@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        final InputMap im     = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        final InputMap im     = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         final KeyStroke tab   = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
         final KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         final Object orgTabAction = im.get(tab);
