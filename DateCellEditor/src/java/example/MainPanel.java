@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JLabel r = (JLabel) table.getDefaultRenderer(Date.class);
-        r.setHorizontalAlignment(JLabel.LEFT);
+        r.setHorizontalAlignment(SwingConstants.LEFT);
         table.setDefaultEditor(Date.class, new SpinnerCellEditor());
         //table.setShowGrid(false);
         //table.setAutoCreateRowSorter(true);
@@ -67,7 +67,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
         editor = new JSpinner.DateEditor(this, "yyyy/MM/dd");
         setEditor(editor);
         setArrowButtonEnabled(false);
-        editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
+        editor.getTextField().setHorizontalAlignment(SwingConstants.LEFT);
 
 //         addFocusListener(new FocusAdapter() {
 //             @Override public void focusGained(FocusEvent e) {

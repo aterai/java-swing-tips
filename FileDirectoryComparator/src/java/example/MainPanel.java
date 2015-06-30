@@ -139,7 +139,7 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        l.setHorizontalAlignment(JLabel.LEFT);
+        l.setHorizontalAlignment(SwingConstants.LEFT);
         l.setIcon(null);
         File file = (File) value;
         int c = table.convertColumnIndexToModel(column);
@@ -156,7 +156,7 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
             //l.setText(file.getName());
             break;
           case 1:
-            l.setHorizontalAlignment(JLabel.RIGHT);
+            l.setHorizontalAlignment(SwingConstants.RIGHT);
             l.setText(file.isDirectory() ? null : Long.toString(file.length()));
             break;
           case 2:

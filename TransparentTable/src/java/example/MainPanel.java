@@ -131,7 +131,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     private static final Border NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
     public TranslucentBooleanRenderer() {
         super();
-        setHorizontalAlignment(JLabel.CENTER);
+        setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

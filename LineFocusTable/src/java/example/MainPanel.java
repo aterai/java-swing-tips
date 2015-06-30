@@ -168,7 +168,7 @@ class LineFocusTable extends JTable {
     }
     private void remakeBooleanEditor() {
         JCheckBox checkBox = new JCheckBox();
-        checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+        checkBox.setHorizontalAlignment(SwingConstants.CENTER);
         checkBox.setBorderPainted(true);
         checkBox.setOpaque(true);
         checkBox.addMouseListener(new MouseAdapter() {

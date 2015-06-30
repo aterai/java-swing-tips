@@ -461,7 +461,7 @@ class SortableHeaderRenderer implements TableCellRenderer {
         Component c = tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if (c instanceof JLabel) {
             JLabel l = (JLabel) c;
-            l.setHorizontalTextPosition(JLabel.LEFT);
+            l.setHorizontalTextPosition(SwingConstants.LEFT);
             int modelColumn = table.convertColumnIndexToModel(column);
             TableModel model = table.getModel();
             if (model instanceof TableSorter) {

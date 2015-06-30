@@ -80,7 +80,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     public SortButtonRenderer(JTableHeader header) {
         super();
         this.header = header;
-        setHorizontalTextPosition(JButton.LEFT);
+        setHorizontalTextPosition(SwingConstants.LEFT);
         Icon i = UIManager.getIcon("Table.ascendingSortIcon");
         iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
         setIcon(new EmptyIcon(iconSize));

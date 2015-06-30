@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JLabel makeLabel(final ImageIcon image, String str) {
-        JLabel label = new JLabel(str, image, JLabel.LEFT);
+        JLabel label = new JLabel(str, image, SwingConstants.LEFT);
         label.addMouseListener(new MouseAdapter() {
             private boolean flag;
             @Override public void mouseClicked(MouseEvent e) {

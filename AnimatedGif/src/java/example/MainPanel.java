@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
             "restore_to_previous");
         for (String s: list) {
             Icon i = new ImageIcon(getClass().getResource(s + ".gif"));
-            box.add(new JLabel(s, i, JLabel.LEFT));
+            box.add(new JLabel(s, i, SwingConstants.LEFT));
             box.add(Box.createVerticalStrut(20));
         }
         box.add(Box.createVerticalGlue());

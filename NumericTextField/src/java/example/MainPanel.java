@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JTextField textField1 = new JTextField("1000");
-        textField1.setHorizontalAlignment(JTextField.RIGHT);
+        textField1.setHorizontalAlignment(SwingConstants.RIGHT);
         textField1.setInputVerifier(new IntegerInputVerifier());
 
         JTextField textField2 = new JTextField();
@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 
         JFormattedTextField textField4 = new JFormattedTextField();
         textField4.setFormatterFactory(new NumberFormatterFactory());
-        textField4.setHorizontalAlignment(JTextField.RIGHT);
+        textField4.setHorizontalAlignment(SwingConstants.RIGHT);
         textField4.setValue(4000);
 
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));

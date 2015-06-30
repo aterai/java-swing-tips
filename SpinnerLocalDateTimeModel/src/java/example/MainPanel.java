@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 //         DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN).toFormat());
 //         DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
 //         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
-//         ftf.setHorizontalAlignment(JTextField.LEFT);
+//         ftf.setHorizontalAlignment(SwingConstants.LEFT);
 //         ftf.setColumns(10);
 //         ftf.setEditable(true);
 //         ftf.setFormatterFactory(factory);
@@ -216,7 +216,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
                     // PENDING: hmuller
                     e.printStackTrace();
                 }
-                ftf.setHorizontalAlignment(JTextField.LEFT);
+                ftf.setHorizontalAlignment(SwingConstants.LEFT);
                 ftf.setEditable(true);
                 ftf.setFormatterFactory(factory);
             }

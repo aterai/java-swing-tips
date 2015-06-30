@@ -157,10 +157,10 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
         }
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
                                            metrics, title, icon,
-                                           SwingUtilities.CENTER,
-                                           SwingUtilities.LEFT, //CENTER, <----
-                                           SwingUtilities.CENTER,
-                                           SwingUtilities.TRAILING,
+                                           SwingConstants.CENTER,
+                                           SwingConstants.LEFT, //CENTER, <----
+                                           SwingConstants.CENTER,
+                                           SwingConstants.TRAILING,
                                            tabRect,
                                            iconRect,
                                            textRect,
@@ -192,10 +192,10 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
         }
         SwingUtilities.layoutCompoundLabel((JComponent) tabPane,
                                            metrics, title, icon,
-                                           SwingUtilities.CENTER,
-                                           SwingUtilities.LEFT, //CENTER, <----
-                                           SwingUtilities.CENTER,
-                                           SwingUtilities.TRAILING,
+                                           SwingConstants.CENTER,
+                                           SwingConstants.LEFT, //CENTER, <----
+                                           SwingConstants.CENTER,
+                                           SwingConstants.TRAILING,
                                            tabRect,
                                            iconRect,
                                            textRect,

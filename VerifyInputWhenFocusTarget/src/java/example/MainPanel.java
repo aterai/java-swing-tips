@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         button2.setVerifyInputWhenFocusTarget(false);
 
         for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-            tf.setHorizontalAlignment(JTextField.RIGHT);
+            tf.setHorizontalAlignment(SwingConstants.RIGHT);
             tf.setInputVerifier(new IntegerInputVerifier());
         }
 

@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         return polygon;
     }
     private static JLabel makeLabel(String title, Shape shape) {
-        JLabel l = new JLabel(title, new ShapeIcon(shape), JLabel.CENTER);
+        JLabel l = new JLabel(title, new ShapeIcon(shape), SwingConstants.CENTER);
         l.setHorizontalTextPosition(SwingConstants.CENTER);
         return l;
     }

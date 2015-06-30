@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        label.setVerticalTextPosition(JLabel.BOTTOM);
-        label.setVerticalAlignment(JLabel.CENTER);
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalTextPosition(SwingConstants.BOTTOM);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setHorizontalTextPosition(SwingConstants.CENTER);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBorder(BorderFactory.createTitledBorder("Drag Source JLabel"));
         clearFile();
 

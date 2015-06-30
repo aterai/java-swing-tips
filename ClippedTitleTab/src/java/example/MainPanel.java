@@ -103,8 +103,8 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
         Rectangle tabRect = rects[tabIndex];
         Rectangle rect = new Rectangle(textRect.x + fw / 2, textRect.y, tabRect.width - fw, textRect.height);
         String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
-                                                                SwingUtilities.CENTER, SwingUtilities.CENTER,
-                                                                SwingUtilities.CENTER, SwingUtilities.TRAILING,
+                                                                SwingConstants.CENTER, SwingConstants.CENTER,
+                                                                SwingConstants.CENTER, SwingConstants.TRAILING,
                                                                 rect, new Rectangle(), rect, 0);
         if (title.equals(clippedText)) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
@@ -138,8 +138,8 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
         Rectangle tabRect = rects[tabIndex];
         Rectangle rect = new Rectangle(textRect.x + tabInsets.left, textRect.y, tabRect.width - tabInsets.left - tabInsets.right, textRect.height);
         String clippedText = SwingUtilities.layoutCompoundLabel(metrics, title, null,
-                                                                SwingUtilities.CENTER, SwingUtilities.CENTER,
-                                                                SwingUtilities.CENTER, SwingUtilities.TRAILING,
+                                                                SwingConstants.CENTER, SwingConstants.CENTER,
+                                                                SwingConstants.CENTER, SwingConstants.TRAILING,
                                                                 rect, new Rectangle(), rect, 0);
         if (title.equals(clippedText)) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);

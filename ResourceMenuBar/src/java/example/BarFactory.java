@@ -195,7 +195,7 @@ public final class BarFactory {
         JMenuItem mi = new JMenuItem(mitext);
         URL url = getResource(cmd + IMAGE_SUFFIX);
         if (url != null) {
-            mi.setHorizontalTextPosition(JButton.RIGHT);
+            mi.setHorizontalTextPosition(SwingConstants.RIGHT);
             mi.setIcon(new ImageIcon(url));
         }
         String astr = getResourceString(cmd + ACTION_SUFFIX);

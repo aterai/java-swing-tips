@@ -139,7 +139,7 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         text.setBorder(BorderFactory.createEmptyBorder());
         icon.setOpaque(true);
         icon.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 2));
-        icon.setVerticalAlignment(JLabel.TOP);
+        icon.setVerticalAlignment(SwingConstants.TOP);
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         add(icon, BorderLayout.WEST);

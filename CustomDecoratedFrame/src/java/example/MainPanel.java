@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
         //title.setBackground(Color.ORANGE);
         title.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
 
-        title.add(new JLabel(str, JLabel.CENTER));
+        title.add(new JLabel(str, SwingConstants.CENTER));
         title.add(makeCloseButton(), BorderLayout.EAST);
         //title.add(iconify, BorderLayout.WEST);
 

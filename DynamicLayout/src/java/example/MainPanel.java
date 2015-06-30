@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel label = new JLabel("", JLabel.CENTER);
+    private final JLabel label = new JLabel("", SwingConstants.CENTER);
     public MainPanel() {
         super(new BorderLayout());
         label.addComponentListener(new ComponentAdapter() {

@@ -89,7 +89,7 @@ class MyIcon {
 class MyIconRenderer extends DefaultTableCellRenderer {
     public MyIconRenderer() {
         super();
-        setHorizontalAlignment(JLabel.CENTER);
+        setHorizontalAlignment(SwingConstants.CENTER);
         //setOpaque(true);
         //setBorder(BorderFactory.createEmptyBorder());
     }
@@ -220,7 +220,7 @@ class EditorFromList extends JList<MyIcon> {
             private final Color selctedColor = new Color(0xC8C8FF);
             @Override public Component getListCellRendererComponent(JList list, MyIcon value, int index, boolean isSelected, boolean cellHasFocus) {
                 label.setOpaque(true);
-                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
                 if (index == rollOverRowIndex) {
                     label.setBackground(getSelectionBackground());
                 } else if (isSelected) {

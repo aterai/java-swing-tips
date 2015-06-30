@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         table.setDefaultEditor(Object.class, new DefaultCellEditor(field));
 
 //         JTextField tf2 = new JTextField();
-//         tf2.setHorizontalAlignment(JTextField.RIGHT);
+//         tf2.setHorizontalAlignment(SwingConstants.RIGHT);
 //         tf2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
 //         table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
 //             @Override public boolean stopCellEditing() {

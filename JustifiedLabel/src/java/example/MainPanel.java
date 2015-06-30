@@ -11,9 +11,9 @@ import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
     private final JLabel l0 = new JLabel("打率");
-    private final JLabel l1 = new JLabel("打率", JLabel.RIGHT);
+    private final JLabel l1 = new JLabel("打率", SwingConstants.RIGHT);
     private final JLabel l2 = new JustifiedLabel("打率");
-    private final JLabel l3 = new JLabel("出塁率", JLabel.CENTER);
+    private final JLabel l3 = new JLabel("出塁率", SwingConstants.CENTER);
     private final JLabel l4 = new JustifiedLabel("出塁率");
     private final JLabel l5 = new JustifiedLabel("チーム出塁率");
     public MainPanel() {

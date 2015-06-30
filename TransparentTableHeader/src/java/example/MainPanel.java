@@ -159,7 +159,7 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
     private final Color alphaZero = new Color(0x0, true);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setText(Objects.toString(value, ""));
-        this.setHorizontalAlignment(JLabel.CENTER);
+        this.setHorizontalAlignment(SwingConstants.CENTER);
         this.setOpaque(false);
         this.setBackground(alphaZero);
         this.setForeground(Color.BLACK);
@@ -173,7 +173,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     private static final Border NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
     public TranslucentBooleanRenderer() {
         super();
-        setHorizontalAlignment(JLabel.CENTER);
+        setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

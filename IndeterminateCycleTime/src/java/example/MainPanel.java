@@ -34,9 +34,9 @@ public final class MainPanel extends JPanel {
 
         JPanel sp = new JPanel(new GridLayout(3, 2, 5, 5));
         sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        sp.add(new JLabel("ProgressBar.cycleTime:", JLabel.RIGHT));
+        sp.add(new JLabel("ProgressBar.cycleTime:", SwingConstants.RIGHT));
         sp.add(cycleTimeSpinner);
-        sp.add(new JLabel("ProgressBar.repaintInterval:", JLabel.RIGHT));
+        sp.add(new JLabel("ProgressBar.repaintInterval:", SwingConstants.RIGHT));
         sp.add(repaintIntervalSpinner);
         sp.add(Box.createHorizontalStrut(5));
         sp.add(box);

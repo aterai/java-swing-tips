@@ -156,7 +156,7 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
 class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
     public RolloverNumberRenderer(HighlightListener highlighter) {
         super(highlighter);
-        setHorizontalAlignment(JLabel.RIGHT);
+        setHorizontalAlignment(SwingConstants.RIGHT);
     }
 }
 
@@ -167,7 +167,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
     public RolloverBooleanRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;
-        setHorizontalAlignment(JLabel.CENTER);
+        setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
         setRolloverEnabled(true);
         setOpaque(true);
