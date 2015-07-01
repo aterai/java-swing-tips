@@ -9,7 +9,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
-    private final JSlider slider1 = new JSlider(JSlider.VERTICAL, 0, 1000, 500);
+    private final JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 1000, 500);
     private final JSlider slider2 = new JSlider(0, 1000, 500);
 
     public MainPanel() {
@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
 
         Box box1 = Box.createHorizontalBox();
         box1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        box1.add(new JSlider(JSlider.VERTICAL, 0, 1000, 100));
+        box1.add(new JSlider(SwingConstants.VERTICAL, 0, 1000, 100));
         box1.add(Box.createHorizontalStrut(20));
         box1.add(slider1);
         box1.add(Box.createHorizontalGlue());
@@ -84,9 +84,9 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
 //     //TEST:
 //     protected void scrollDueToClickInTrack(int direction) {
 //         int value = slider.getValue();
-//         if (slider.getOrientation() == JSlider.HORIZONTAL) {
+//         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
 //             value = this.valueForXPosition(slider.getMousePosition().x);
-//         } else if (slider.getOrientation() == JSlider.VERTICAL) {
+//         } else if (slider.getOrientation() == SwingConstants.VERTICAL) {
 //             value = this.valueForYPosition(slider.getMousePosition().y);
 //         }
 //         slider.setValue(value);
@@ -96,10 +96,10 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
                 switch (slider.getOrientation()) {
-                  case JSlider.VERTICAL:
+                  case SwingConstants.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
                     break;
-                  case JSlider.HORIZONTAL:
+                  case SwingConstants.HORIZONTAL:
                     slider.setValue(valueForXPosition(e.getX()));
                     break;
                   default:
@@ -121,10 +121,10 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
                 switch (slider.getOrientation()) {
-                  case JSlider.VERTICAL:
+                  case SwingConstants.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
                     break;
-                  case JSlider.HORIZONTAL:
+                  case SwingConstants.HORIZONTAL:
                     slider.setValue(valueForXPosition(e.getX()));
                     break;
                   default:

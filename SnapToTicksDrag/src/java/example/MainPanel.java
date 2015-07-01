@@ -110,7 +110,7 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
                     super.mouseDragged(e);
                     return;
                 }
-                //case JSlider.HORIZONTAL:
+                //case HORIZONTAL:
                 int halfThumbWidth = thumbRect.width / 2;
                 final int trackLength = trackRect.width;
                 final int trackLeft   = trackRect.x - halfThumbWidth;
@@ -158,7 +158,7 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
                     super.mouseDragged(e);
                     return;
                 }
-                //case JSlider.HORIZONTAL:
+                //case HORIZONTAL:
                 int halfThumbWidth = thumbRect.width / 2;
                 final int trackLength = trackRect.width;
                 final int trackLeft   = trackRect.x - halfThumbWidth;

@@ -84,7 +84,7 @@ class TriSliderUI extends MetalSliderUI {
         int cw;
         //int pad;
         Rectangle trackBounds = trackRect;
-        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
             Graphics2D g2 = (Graphics2D) g.create();
             //pad = trackBuffer;
             //cx = pad;

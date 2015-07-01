@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
             labelTable.put(c++, new JLabel(s, new ImageIcon(getClass().getResource(s)), SwingConstants.RIGHT));
         }
         labelTable.put(c, new JButton("aaa"));
-        JSlider slider1 = new JSlider(JSlider.VERTICAL, 0, 10, 0);
+        JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 10, 0);
         slider1.setSnapToTicks(true);
         //slider1.setMajorTickSpacing(1);
         //slider1.setMinorTickSpacing(5);

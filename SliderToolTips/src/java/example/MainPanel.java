@@ -86,10 +86,10 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
                 switch (slider.getOrientation()) {
-                  case JSlider.VERTICAL:
+                  case SwingConstants.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
                     break;
-                  case JSlider.HORIZONTAL:
+                  case SwingConstants.HORIZONTAL:
                     slider.setValue(valueForXPosition(e.getX()));
                     break;
                   default:
@@ -111,10 +111,10 @@ class MetalTooltipSliderUI extends MetalSliderUI {
             @Override public void mousePressed(MouseEvent e) {
                 JSlider slider = (JSlider) e.getComponent();
                 switch (slider.getOrientation()) {
-                  case JSlider.VERTICAL:
+                  case SwingConstants.VERTICAL:
                     slider.setValue(valueForYPosition(e.getY()));
                     break;
-                  case JSlider.HORIZONTAL:
+                  case SwingConstants.HORIZONTAL:
                     slider.setValue(valueForXPosition(e.getX()));
                     break;
                   default:

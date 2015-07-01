@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         //insertBR(kit, doc);
 
         textPane.insertComponent(new JLabel("JSeparator: "));
-        textPane.insertComponent(new JSeparator(JSeparator.HORIZONTAL));
+        textPane.insertComponent(new JSeparator(SwingConstants.HORIZONTAL));
         insertBR(kit, doc);
 
         textPane.insertComponent(new JLabel("MatteBorder1: "));
@@ -52,8 +52,8 @@ public class MainPanel extends JPanel {
         });
         insertBR(kit, doc);
 
-        textPane.insertComponent(new JLabel("JSeparator.VERTICAL "));
-        textPane.insertComponent(new JSeparator(JSeparator.VERTICAL) {
+        textPane.insertComponent(new JLabel("SwingConstants.VERTICAL "));
+        textPane.insertComponent(new JSeparator(SwingConstants.VERTICAL) {
             //@Override public void updateUI() {
             //    super.updateUI();
             //    setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.ORANGE));

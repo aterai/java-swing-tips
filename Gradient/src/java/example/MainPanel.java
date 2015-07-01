@@ -18,9 +18,9 @@ public final class MainPanel extends JPanel {
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         box.add(Box.createHorizontalStrut(10));
-        box.add(new JSeparator(JSeparator.VERTICAL));
+        box.add(new JSeparator(SwingConstants.VERTICAL));
         box.add(Box.createHorizontalStrut(10));
-        box.add(new GradientSeparator(JSeparator.VERTICAL));
+        box.add(new GradientSeparator(SwingConstants.VERTICAL));
         box.add(Box.createHorizontalStrut(10));
 
         add(p);
@@ -142,7 +142,7 @@ class GradientSeparatorUI extends BasicSeparatorUI {
             Graphics2D g2 = (Graphics2D) g.create();
             Dimension s = c.getSize();
             JSeparator js = (JSeparator) c;
-            if (js.getOrientation() == JSeparator.VERTICAL) {
+            if (js.getOrientation() == SwingConstants.VERTICAL) {
                 g2.setPaint(new GradientPaint(0, 0, ssc, 0, s.height, bgc, true));
                 g2.fillRect(0, 0, 1, s.height);
                 g2.setPaint(new GradientPaint(0, 0, shc, 0, s.height, bgc, true));

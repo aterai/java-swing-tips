@@ -117,7 +117,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
         int trackTop = 0;
         int trackRight = 0;
         int trackBottom = 0;
-        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
             trackBottom = trackRect.height - 1 - getThumbOverhang();
             trackTop = trackBottom - getTrackWidth() + 1;
             trackRight = trackRect.width - 1;
@@ -169,7 +169,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
         int fillBottom = 0;
         int fillRight  = 0;
 
-        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
             middleOfThumb = thumbRect.x + thumbRect.width / 2;
             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
             fillTop    = trackTop + 1;
@@ -185,7 +185,7 @@ class GradientPalletSliderUI extends MetalSliderUI {
             fillBottom = trackBottom - 1;
         }
 
-//         if (slider.getOrientation() == JSlider.HORIZONTAL) {
+//         if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
 //             middleOfThumb = thumbRect.x + thumbRect.width / 2;
 //             middleOfThumb -= trackRect.x; // To compensate for the g.translate()
 //             fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;

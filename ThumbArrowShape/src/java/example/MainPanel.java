@@ -9,12 +9,12 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    private final JSlider slider0 = new JSlider(JSlider.VERTICAL);
-    private final JSlider slider1 = new JSlider(JSlider.VERTICAL);
-    private final JSlider slider2 = new JSlider(JSlider.VERTICAL);
-    private final JSlider slider3 = new JSlider(JSlider.HORIZONTAL);
-    private final JSlider slider4 = new JSlider(JSlider.HORIZONTAL);
-    private final JSlider slider5 = new JSlider(JSlider.HORIZONTAL);
+    private final JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
+    private final JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
+    private final JSlider slider2 = new JSlider(SwingConstants.VERTICAL);
+    private final JSlider slider3 = new JSlider(SwingConstants.HORIZONTAL);
+    private final JSlider slider4 = new JSlider(SwingConstants.HORIZONTAL);
+    private final JSlider slider5 = new JSlider(SwingConstants.HORIZONTAL);
 
     public MainPanel() {
         super(new BorderLayout());

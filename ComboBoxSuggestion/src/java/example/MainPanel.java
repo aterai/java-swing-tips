@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
         c.insets  = new Insets(0, 5, 0, 5);
         c.weightx = 0d;
         c.gridx   = 1;
-        p.add(new JSeparator(JSeparator.VERTICAL), c);
+        p.add(new JSeparator(SwingConstants.VERTICAL), c);
 
         return p;
     }
