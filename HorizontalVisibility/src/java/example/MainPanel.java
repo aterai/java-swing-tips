@@ -13,8 +13,8 @@ public class MainPanel extends JPanel {
     private static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
     private final JTextField textField1 = new JTextField(TEXT);
     private final JTextField textField2 = new JTextField(TEXT);
-    private final JScrollBar scroller1 = new JScrollBar(JScrollBar.HORIZONTAL);
-    private final JScrollBar scroller2 = new JScrollBar(JScrollBar.HORIZONTAL) {
+    private final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
+    private final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new ArrowButtonlessScrollBarUI());

@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     private final JTable table         = new JTable(model);
     private final JScrollPane scroll   = new JScrollPane(table);
     private final JLabel label         = new JLabel();
-    private final JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
+    private final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
 
     public MainPanel() {
         super(new BorderLayout());

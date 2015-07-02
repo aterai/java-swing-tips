@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new GridLayout(2, 1));
-        scrollbar = new JScrollBar(JScrollBar.HORIZONTAL, VALUE, EXTENT, MIN, MAX + EXTENT);
+        scrollbar = new JScrollBar(Adjustable.HORIZONTAL, VALUE, EXTENT, MIN, MAX + EXTENT);
         scrollbar.setUnitIncrement(STEP);
         scrollbar.getModel().addChangeListener(new ChangeListener() {
             @Override public void stateChanged(ChangeEvent e) {

@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        JScrollBar scrollbar = new JScrollBar(JScrollBar.VERTICAL);
+        JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
         scrollbar.setUnitIncrement(10);
         if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
             scrollbar.setUI(new WindowsCustomScrollBarUI());
