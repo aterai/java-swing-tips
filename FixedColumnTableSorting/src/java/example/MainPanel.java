@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
 
         fixedTable.setPreferredScrollableViewportSize(fixedTable.getPreferredSize());
         scroll.setRowHeaderView(fixedTable);
-        scroll.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixedTable.getTableHeader());
+        scroll.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, fixedTable.getTableHeader());
         scroll.getViewport().setBackground(Color.WHITE);
         scroll.getRowHeader().setBackground(Color.WHITE);
 

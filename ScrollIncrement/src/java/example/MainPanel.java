@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         }
 
         final JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100000, 1));
         spinner.setEditor(new JSpinner.NumberEditor(spinner, "#####0"));

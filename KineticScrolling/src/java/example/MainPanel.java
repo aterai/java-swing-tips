@@ -9,8 +9,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JRadioButton r1    = new JRadioButton("scrollRectToVisible");
     private final JRadioButton r2    = new JRadioButton("setViewPosition");
-    private final JScrollPane scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                                                       JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    private final JScrollPane scroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+                                                       ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     private static final boolean HEAVYWEIGHT_LIGHTWEIGHT_MIXING = false;
     private final JViewport viewport; // = scroll.getViewport();
 
