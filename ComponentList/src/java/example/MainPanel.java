@@ -85,9 +85,12 @@ public final class MainPanel extends JPanel {
 final class MakeComponentUtil {
     private MakeComponentUtil() { /* Singleton */ }
     public static JComponent makeLabel() {
-        JLabel label = new JLabel("Height: 50");
+        JLabel label = new JLabel("Height: 50") {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(0, 50);
+            }
+        };
         label.setOpaque(true);
-        label.setPreferredSize(new Dimension(0, 50));
         label.setBackground(Color.YELLOW.brighter());
         return label;
     }

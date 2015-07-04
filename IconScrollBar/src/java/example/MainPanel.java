@@ -10,8 +10,11 @@ import com.sun.java.swing.plaf.windows.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        JLabel l = new JLabel("aaaaaaaaaaaaaaaaaaaaaaaaaa");
-        l.setPreferredSize(new Dimension(1000, 1000));
+        JLabel l = new JLabel("aaaaaaaaaaaaaaaaaaaaaaaaaa") {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(1000, 1000);
+            }
+        };
         JScrollPane scrollPane = new JScrollPane(l);
         if (scrollPane.getVerticalScrollBar().getUI() instanceof WindowsScrollBarUI) {
             scrollPane.getVerticalScrollBar().setUI(new BasicIconScrollBarUI());

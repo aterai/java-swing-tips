@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
         int wdim = prefs.getInt(PREFIX + "dimw", dim.width);
         int hdim = prefs.getInt(PREFIX + "dimh", dim.height);
         dim.setSize(wdim, hdim);
-        setPreferredSize(dim);
+        //setPreferredSize(dim);
 
         Rectangle screen = frame.getGraphicsConfiguration().getBounds();
         pos.setLocation(screen.x + screen.width / 2  - dim.width / 2,
@@ -91,6 +91,9 @@ public final class MainPanel extends JPanel {
         int ypos = prefs.getInt(PREFIX + "locy", pos.y);
         pos.setLocation(xpos, ypos);
         frame.setLocation(pos.x, pos.y);
+    }
+    @Override public Dimension getPreferredSize() {
+        return dim;
     }
     private void saveLocation() {
         prefs.putInt(PREFIX + "locx", pos.x);

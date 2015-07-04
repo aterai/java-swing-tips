@@ -49,8 +49,11 @@ public final class MainPanel extends JPanel {
         JTextField jtext = new JTextField(text + ": 0x" + Integer.toHexString(color.getRGB()).toUpperCase(Locale.ENGLISH));
         jtext.setEditable(false);
         p.add(jtext);
-        JLabel l = new JLabel();
-        l.setPreferredSize(new Dimension(32, 0));
+        JLabel l = new JLabel() {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(32, 0);
+            }
+        };
         l.setOpaque(true);
         l.setBackground(color);
         p.add(l, BorderLayout.EAST);

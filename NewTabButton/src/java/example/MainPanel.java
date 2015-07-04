@@ -55,14 +55,7 @@ class CardLayoutTabbedPane extends JPanel {
     protected final JPanel wrapPanel = new JPanel(new BorderLayout(0, 0));
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final ButtonGroup bg = new ButtonGroup();
-
-    private int count;
-    private final JButton button = new JButton(new AbstractAction("+") {
-        @Override public void actionPerformed(ActionEvent e) {
-            addTab("new tab:" + count, new JLabel("xxx:" + count));
-            count++;
-        }
-    });
+    private final JButton button = new JButton(new PlusIcon());
 
     //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
     private final List<ImageIcon> icons = Arrays.asList(
@@ -103,10 +96,14 @@ class CardLayoutTabbedPane extends JPanel {
         add(wrapPanel, BorderLayout.NORTH);
         add(contentsPanel);
 
-        DummyIcon icon = new DummyIcon();
-        button.setText("");
-        button.setIcon(icon);
         button.setBorder(BorderFactory.createEmptyBorder());
+        button.addActionListener(new ActionListener() {
+            private int count;
+            @Override public void actionPerformed(ActionEvent e) {
+                addTab("new tab:" + count, new JLabel("xxx:" + count));
+                count++;
+            }
+        });
     }
     protected JComponent createTabComponent(final String title, final Component comp) {
 //         final TabButton tab = new TabButton(new AbstractAction(title) {
@@ -123,7 +120,12 @@ class CardLayoutTabbedPane extends JPanel {
         });
         tab.setIcon(icons.get(new Random().nextInt(icons.size())));
         tab.setLayout(new BorderLayout());
-        JButton close = new JButton(new AbstractAction("") {
+        JButton close = new JButton(new CloseTabIcon(Color.GRAY)) {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(12, 12);
+            }
+        };
+        close.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 tabPanel.remove(tab);
                 contentsPanel.remove(comp);
@@ -136,13 +138,9 @@ class CardLayoutTabbedPane extends JPanel {
                 tabPanel.revalidate();
             }
         });
-        Dimension dim = new Dimension(12, 12);
-        close.setPreferredSize(dim);
-        close.setMaximumSize(dim);
         close.setBorder(BorderFactory.createEmptyBorder());
         close.setFocusPainted(false);
         close.setContentAreaFilled(false);
-        close.setIcon(new CloseTabIcon(Color.GRAY));
         close.setPressedIcon(new CloseTabIcon(Color.BLACK));
         close.setRolloverIcon(new CloseTabIcon(Color.ORANGE));
 
@@ -334,7 +332,7 @@ class TabLayout implements LayoutManager, Serializable {
     }
 }
 
-class DummyIcon implements Icon {
+class PlusIcon implements Icon {
     private static Rectangle viewRect = new Rectangle();
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();

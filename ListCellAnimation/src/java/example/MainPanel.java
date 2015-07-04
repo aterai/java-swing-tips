@@ -147,8 +147,10 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         public AnimeIcon() {
             super();
             setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
-            setPreferredSize(new Dimension(WIDTH + 2, HEIGHT));
             setOpaque(false);
+        }
+        @Override public Dimension getPreferredSize() {
+            return new Dimension(WIDTH + 2, HEIGHT);
         }
         @Override public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();

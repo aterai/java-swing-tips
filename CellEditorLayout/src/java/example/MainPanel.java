@@ -79,8 +79,11 @@ class CustomComponentCellEditor extends DefaultCellEditor {
     public CustomComponentCellEditor(JTextField field) {
         super(field);
         this.field = field;
-        button = new JButton();
-        button.setPreferredSize(new Dimension(25, 0));
+        button = new JButton() {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(25, 0);
+            }
+        };
         field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
         panel.add(field);
         panel.add(button, BorderLayout.EAST);

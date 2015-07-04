@@ -21,9 +21,11 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
         box.add(relative);
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(box);
-        setPreferredSize(panelDim);
         timer = new Timer(10, this);
         addHierarchyListener(this);
+    }
+    @Override public Dimension getPreferredSize() {
+        return panelDim;
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
