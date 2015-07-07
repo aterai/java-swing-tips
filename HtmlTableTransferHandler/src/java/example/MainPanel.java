@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public class MainPanel extends JPanel {
@@ -30,16 +31,13 @@ public class MainPanel extends JPanel {
     };
     public MainPanel() {
         super(new BorderLayout());
-        JPanel p = new JPanel(new GridLayout(3, 1));
         JTable table1 = new PropertyTable(model);
         JTable table2 = new PropertyTable(model);
-        for (JTable t: Arrays.asList(table1, table2)) {
-            t.setDefaultRenderer(Color.class, new ColorRenderer());
-            t.setDefaultEditor(Color.class,   new ColorEditor());
-            t.setDefaultEditor(Date.class,    new DateEditor());
-            p.add(new JScrollPane(t));
-        }
         table2.setTransferHandler(new HtmlTableTransferHandler());
+
+        JPanel p = new JPanel(new GridLayout(3, 1));
+        p.add(new JScrollPane(table1));
+        p.add(new JScrollPane(table2));
         p.add(new JScrollPane(new JEditorPane("text/html", "")));
         add(p);
         setPreferredSize(new Dimension(320, 240));
@@ -81,6 +79,17 @@ class PropertyTable extends JTable {
         int mr = convertRowIndexToModel(row);
         return getModel().getValueAt(mr, mc).getClass();
     }
+    @Override public void updateUI() {
+        // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+        // http://bugs.java.com/view_bug.do?bug_id=6788475
+        // XXX: set dummy ColorUIResource
+        setSelectionForeground(new ColorUIResource(Color.RED));
+        setSelectionBackground(new ColorUIResource(Color.RED));
+        super.updateUI();
+        setDefaultRenderer(Color.class, new ColorRenderer());
+        setDefaultEditor(Color.class,   new ColorEditor());
+        setDefaultEditor(Date.class,    new DateEditor());
+    }
     @Override public TableCellRenderer getCellRenderer(int row, int column) {
         if (convertColumnIndexToModel(column) == 1) {
             return getDefaultRenderer(getClassAt(row, column));
@@ -105,7 +114,78 @@ class PropertyTable extends JTable {
         }
     }
 }
+//*
+//delegation pattern
+class DateEditor extends AbstractCellEditor implements TableCellEditor {
+    private final JSpinner spinner;
+    private final JSpinner.DateEditor editor;
 
+    public DateEditor() {
+        super();
+        spinner = new JSpinner(new SpinnerDateModel());
+        editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
+        spinner.setEditor(editor);
+        setArrowButtonEnabled(false);
+        editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
+
+        editor.getTextField().addFocusListener(new FocusAdapter() {
+            @Override public void focusLost(FocusEvent e) {
+                setArrowButtonEnabled(false);
+            }
+            @Override public void focusGained(FocusEvent e) {
+                //System.out.println("getTextField");
+                setArrowButtonEnabled(true);
+                EventQueue.invokeLater(new Runnable() {
+                    @Override public void run() {
+                        editor.getTextField().setCaretPosition(8);
+                        editor.getTextField().setSelectionStart(8);
+                        editor.getTextField().setSelectionEnd(10);
+                    }
+                });
+            }
+        });
+        spinner.setBorder(BorderFactory.createEmptyBorder());
+    }
+    private void setArrowButtonEnabled(boolean flag) {
+        for (Component c: spinner.getComponents()) {
+            if (c instanceof JButton) {
+                ((JButton) c).setEnabled(flag);
+            }
+        }
+    }
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        spinner.setValue(value);
+        return spinner;
+    }
+    @Override public Object getCellEditorValue() {
+        return spinner.getValue();
+    }
+    //AbstractCellEditor
+    @Override public boolean isCellEditable(EventObject e) {
+        return true;
+    }
+    @Override public boolean shouldSelectCell(EventObject anEvent) {
+        return true;
+    }
+    @Override public boolean stopCellEditing() {
+        try {
+            spinner.commitEdit();
+        } catch (ParseException pe) {
+            Toolkit.getDefaultToolkit().beep();
+            return false;
+//             // Edited value is invalid, spinner.getValue() will return
+//             // the last valid value, you could revert the spinner to show that:
+//             editor.getTextField().setValue(getValue());
+        }
+        fireEditingStopped();
+        return true;
+    }
+    @Override public void cancelCellEditing() {
+        fireEditingCanceled();
+    }
+}
+/*/
+//inheritence to extend a class
 class DateEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
     private final JSpinner.DateEditor editor;
@@ -215,6 +295,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
         }
     }
 }
+//*/
 
 class ColorRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
