@@ -9,11 +9,16 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public final class MainPanel extends JPanel {
-    private final JButton button = new JButton("RoundedCornerButtonUI");
+    private final JButton button = new JButton("RoundedCornerButtonUI") {
+        @Override public void updateUI() {
+            //IGNORE LnF change: super.updateUI();
+            setUI(new RoundedCornerButtonUI());
+        }
+    };
     public MainPanel() {
         super();
         add(new JButton("Default JButton"));
-        button.setUI(new RoundedCornerButtonUI());
+        //button.setUI(new RoundedCornerButtonUI());
         add(button);
         add(new RoundedCornerButton("Rounded Corner Button"));
         add(new RoundButton(new ImageIcon(getClass().getResource("16x16.png"))) {
@@ -343,24 +348,23 @@ class ShapeButton extends JButton {
     @Override public boolean contains(int x, int y) {
         return shape.contains(x, y);
     }
-/*/ Test
-    @Override public Dimension getPreferredSize() {
-        Rectangle r = shape.getBounds();
-        return new Dimension(r.width, r.height);
+//     //Test
+//     @Override public Dimension getPreferredSize() {
+//         Rectangle r = shape.getBounds();
+//         return new Dimension(r.width, r.height);
+//     }
+}
+
+class DummySizeIcon implements Icon {
+    private final Shape shape;
+    public DummySizeIcon(Shape s) {
+        shape = s;
     }
-/*/
-    private static class DummySizeIcon implements Icon {
-        private final Shape shape;
-        public DummySizeIcon(Shape s) {
-            shape = s;
-        }
-        @Override public int getIconWidth() {
-            return shape.getBounds().width;
-        }
-        @Override public int getIconHeight() {
-            return shape.getBounds().height;
-        }
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+    @Override public int getIconWidth() {
+        return shape.getBounds().width;
     }
-//*/
+    @Override public int getIconHeight() {
+        return shape.getBounds().height;
+    }
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
 }
