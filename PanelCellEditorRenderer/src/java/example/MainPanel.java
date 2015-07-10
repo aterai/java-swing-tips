@@ -103,12 +103,12 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public Object getCellEditorValue() {
         return p.spinner.getValue();
     }
-    @Override public boolean isCellEditable(EventObject e) {
-        return true;
-    }
-    @Override public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
+//     @Override public boolean isCellEditable(EventObject e) {
+//         return true;
+//     }
+//     @Override public boolean shouldSelectCell(EventObject anEvent) {
+//         return true;
+//     }
     @Override public boolean stopCellEditing() {
         try {
             p.spinner.commitEdit();
@@ -116,8 +116,9 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
             Toolkit.getDefaultToolkit().beep();
             return false;
         }
-        fireEditingStopped();
-        return true;
+        return super.stopCellEditing();
+        //fireEditingStopped();
+        //return true;
     }
 }
 /*/
@@ -278,19 +279,20 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public Object getCellEditorValue() {
         return p.i;
     }
-    @Override public boolean isCellEditable(EventObject e) {
-        return true;
-    }
-    @Override public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
-    @Override public boolean stopCellEditing() {
-        fireEditingStopped();
-        return true;
-    }
-    @Override public void cancelCellEditing() {
-        fireEditingCanceled();
-    }
+//     //AbstractCellEditor
+//     @Override public boolean isCellEditable(EventObject e) {
+//         return true;
+//     }
+//     @Override public boolean shouldSelectCell(EventObject anEvent) {
+//         return true;
+//     }
+//     @Override public boolean stopCellEditing() {
+//         fireEditingStopped();
+//         return true;
+//     }
+//     @Override public void cancelCellEditing() {
+//         fireEditingCanceled();
+//     }
 }
 /*/
 class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {

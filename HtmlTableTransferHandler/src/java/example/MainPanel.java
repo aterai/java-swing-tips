@@ -160,13 +160,13 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public Object getCellEditorValue() {
         return spinner.getValue();
     }
-    //AbstractCellEditor
-    @Override public boolean isCellEditable(EventObject e) {
-        return true;
-    }
-    @Override public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
+//     //AbstractCellEditor
+//     @Override public boolean isCellEditable(EventObject e) {
+//         return true;
+//     }
+//     @Override public boolean shouldSelectCell(EventObject anEvent) {
+//         return true;
+//     }
     @Override public boolean stopCellEditing() {
         try {
             spinner.commitEdit();
@@ -177,12 +177,13 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 //             // the last valid value, you could revert the spinner to show that:
 //             editor.getTextField().setValue(getValue());
         }
-        fireEditingStopped();
-        return true;
+        return super.stopCellEditing();
+        //fireEditingStopped();
+        //return true;
     }
-    @Override public void cancelCellEditing() {
-        fireEditingCanceled();
-    }
+//     @Override public void cancelCellEditing() {
+//         fireEditingCanceled();
+//     }
 }
 /*/
 //inheritence to extend a class

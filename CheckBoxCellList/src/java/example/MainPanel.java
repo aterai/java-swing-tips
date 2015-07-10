@@ -239,17 +239,17 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     @Override public boolean isCellEditable(EventObject e) {
         return e instanceof MouseEvent;
     }
-    //AbstractCellEditor
-    @Override public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
-    @Override public boolean stopCellEditing() {
-        fireEditingStopped();
-        return true;
-    }
-    @Override public void cancelCellEditing() {
-        fireEditingCanceled();
-    }
+//     //AbstractCellEditor
+//     @Override public boolean shouldSelectCell(EventObject anEvent) {
+//         return true;
+//     }
+//     @Override public boolean stopCellEditing() {
+//         fireEditingStopped();
+//         return true;
+//     }
+//     @Override public void cancelCellEditing() {
+//         fireEditingCanceled();
+//     }
 }
 /*/
 //inheritence to extend a class

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.color.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,7 +16,8 @@ public final class MainPanel extends JPanel {
         final JLabel label0 = new JLabel("JLabel JLabel");
         final JLabel label1 = new JLabel(HTML_TEXT);
         final JLabel label2 = new JLabel(HTML_TEXT) {
-            // https://community.oracle.com/thread/1377943 JLabel with html tag can not be disabled or setForegroud?!
+            // JLabel with html tag can not be disabled or setForegroud?!
+            // https://community.oracle.com/thread/1377943
             @Override public void setEnabled(boolean b) {
                 super.setEnabled(b);
                 setForeground(b ? UIManager.getColor("Label.foreground")
@@ -45,14 +47,14 @@ public final class MainPanel extends JPanel {
         JCheckBox check = new JCheckBox("setEnabled", true);
         check.setAction(new AbstractAction("setEnabled") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean flag = ((JCheckBox) e.getSource()).isSelected();
+                boolean f = ((JCheckBox) e.getSource()).isSelected();
                 setVisible(false);
-                label0.setEnabled(flag);
-                label1.setEnabled(flag);
-                label2.setEnabled(flag);
-                label3.setEnabled(flag);
-                editor1.setEnabled(flag);
-                editor2.setEnabled(flag);
+                label0.setEnabled(f);
+                label1.setEnabled(f);
+                label2.setEnabled(f);
+                label3.setEnabled(f);
+                editor1.setEnabled(f);
+                editor2.setEnabled(f);
                 setVisible(true);
             }
         });
@@ -114,12 +116,10 @@ class DisabledHtmlLabel extends JLabel {
         super.setEnabled(b);
     }
     @Override public void paintComponent(Graphics g) {
-        if (isEnabled()) {
-            super.paintComponent(g);
+        if (!isEnabled() && Objects.nonNull(shadow)) {
+            g.drawImage(shadow, 0, 0, this);
         } else {
-            if (shadow != null) {
-                g.drawImage(shadow, 0, 0, this);
-            }
+            super.paintComponent(g);
         }
     }
 }
