@@ -161,7 +161,6 @@ class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
 }
 
 class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
-    private static final Border NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
     private final transient HighlightListener highlighter;
 
     public RolloverBooleanRenderer(HighlightListener highlighter) {
@@ -171,6 +170,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
         setBorderPainted(true);
         setRolloverEnabled(true);
         setOpaque(true);
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         getModel().setRollover(highlighter.isHighlightableCell(row, column));
@@ -183,13 +183,7 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
             setBackground(table.getBackground());
             //setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); //Nimbus
         }
-        setSelected(Objects.nonNull(value) && ((Boolean) value).booleanValue());
-
-        if (hasFocus) {
-            setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        } else {
-            setBorder(NO_FOCUS_BORDER);
-        }
+        setSelected(Objects.equals(value, Boolean.TRUE));
         return this;
     }
     //Overridden for performance reasons. ---->

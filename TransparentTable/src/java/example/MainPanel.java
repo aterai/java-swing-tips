@@ -128,11 +128,11 @@ public final class MainPanel extends JPanel {
 }
 
 class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
-    private static final Border NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
     public TranslucentBooleanRenderer() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
@@ -144,12 +144,7 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
             setForeground(table.getForeground());
             setBackground(table.getBackground());
         }
-        setSelected(Objects.nonNull(value) && ((Boolean) value).booleanValue());
-        if (hasFocus) {
-            setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        } else {
-            setBorder(NO_FOCUS_BORDER);
-        }
+        setSelected(Objects.equals(value, Boolean.TRUE));
         return this;
     }
     @Override protected void paintComponent(Graphics g) {
