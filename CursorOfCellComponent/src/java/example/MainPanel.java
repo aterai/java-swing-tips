@@ -60,7 +60,7 @@ class LinkCellList<E> extends JList<E> {
     @Override protected void processMouseMotionEvent(MouseEvent e) {
         Point pt = e.getPoint();
         int i = locationToIndex(pt);
-        E s = ((ListModel<E>) getModel()).getElementAt(i);
+        E s = getModel().getElementAt(i);
         Component c = getCellRenderer().getListCellRendererComponent(this, s, i, false, false);
         Rectangle r = getCellBounds(i, i);
         c.setBounds(r);

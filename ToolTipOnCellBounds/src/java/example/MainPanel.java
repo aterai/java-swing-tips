@@ -95,7 +95,7 @@ class CellRendererTooltipList<E> extends JList<E> {
         final Rectangle cellBounds = getCellBounds(i, i);
         if (i != -1 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
-            E str = ((ListModel<E>) getModel()).getElementAt(i);
+            E str = getModel().getElementAt(i);
             final Component rComponent = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
             if (rComponent instanceof JComponent && ((JComponent) rComponent).getToolTipText() != null) {
                 pt = cellBounds.getLocation();

@@ -152,13 +152,13 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             if (model.getSize() > 1) {
-                model.removeElementAt(index);
+                model.remove(index);
             }
         }
     });
     private final JButton copyButton = new JButton(new AbstractAction("copy") {
         @Override public void actionPerformed(ActionEvent e) {
-            model.insertElementAt(model.getElementAt(index), index);
+            model.add(index, model.get(index));
         }
     });
     private final DefaultListModel<E> model;

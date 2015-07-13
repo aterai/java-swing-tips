@@ -177,16 +177,16 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
 //                 e.dropComplete(false);
 //             }
             if (isDropAcceptable(e)) {
-                Object str = model.getElementAt(draggedIndex);
+                Object str = model.get(draggedIndex);
                 if (targetIndex == draggedIndex) {
                     setSelectedIndex(targetIndex);
                 } else if (targetIndex < draggedIndex) {
-                    model.removeElementAt(draggedIndex);
-                    model.insertElementAt(str, targetIndex);
+                    model.remove(draggedIndex);
+                    model.add(targetIndex, str);
                     setSelectedIndex(targetIndex);
                 } else {
-                    model.insertElementAt(str, targetIndex);
-                    model.removeElementAt(draggedIndex);
+                    model.add(targetIndex, str);
+                    model.remove(draggedIndex);
                     setSelectedIndex(targetIndex - 1);
                 }
                 e.dropComplete(true);
