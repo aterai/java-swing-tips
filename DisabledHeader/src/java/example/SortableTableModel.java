@@ -33,8 +33,8 @@ class ColumnComparator implements Comparator, Serializable {
     @SuppressWarnings("unchecked")
     @Override public int compare(Object one, Object two) {
         if (one instanceof Vector && two instanceof Vector) {
-            Object oOne = ((Vector) one).elementAt(index);
-            Object oTwo = ((Vector) two).elementAt(index);
+            Object oOne = ((Vector) one).get(index);
+            Object oTwo = ((Vector) two).get(index);
             int dir = ascending ? 1 : -1;
             if (oOne instanceof Comparable && oTwo instanceof Comparable) {
                 Comparable cOne = (Comparable) oOne;
