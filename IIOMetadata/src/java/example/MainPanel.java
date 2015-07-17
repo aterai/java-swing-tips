@@ -154,7 +154,7 @@ class XMLTreeNode implements TreeNode {
         return xmlNode.getNodeName();
     }
 //     private List<XMLTreeNode> getChildren() {
-//         if (list == null) {
+//         if (Objects.isNull(list)) {
 //             loadChildren();
 //         }
 //         return new ArrayList<XMLTreeNode>(list);

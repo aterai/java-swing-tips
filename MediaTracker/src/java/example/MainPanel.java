@@ -7,7 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
     private void addImageFile(File file) {
         String path = file.getAbsolutePath();
         Image img = Toolkit.getDefaultToolkit().createImage(path);
-        if (tracker == null) {
+        if (Objects.isNull(tracker)) {
             tracker = new MediaTracker((Container) this);
         }
         tracker.addImage(img, IMAGE_ID);

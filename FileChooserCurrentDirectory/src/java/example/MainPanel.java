@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -17,7 +18,7 @@ public final class MainPanel extends JPanel {
     private final JFileChooser fc1 = new JFileChooser();
     private final JFileChooser fc2 = new JFileChooser() {
         @Override public void setCurrentDirectory(File dir) {
-            if (dir != null && !dir.exists()) {
+            if (Objects.nonNull(dir) && !dir.exists()) {
                 this.setCurrentDirectory(dir.getParentFile());
             }
             super.setCurrentDirectory(dir);

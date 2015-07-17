@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -69,7 +70,7 @@ class SilentDeleteTextAction extends TextAction {
     }
     @Override public void actionPerformed(ActionEvent e) {
         JTextComponent target = getTextComponent(e);
-        if (target != null && target.isEditable()) {
+        if (Objects.nonNull(target) && target.isEditable()) {
             Caret caret = target.getCaret();
             int dot  = caret.getDot();
             int mark = caret.getMark();
