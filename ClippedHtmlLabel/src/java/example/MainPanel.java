@@ -55,7 +55,6 @@ public final class MainPanel extends JPanel {
         table.addMouseListener(renderer);
         table.addMouseMotionListener(renderer);
 
-
         sp.setTopComponent(new JScrollPane(table1));
         sp.setBottomComponent(new JScrollPane(table));
         sp.setResizeWeight(.5);

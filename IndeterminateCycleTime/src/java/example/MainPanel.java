@@ -41,8 +41,6 @@ public final class MainPanel extends JPanel {
         sp.add(Box.createHorizontalStrut(5));
         sp.add(box);
 
-
-
         add(sp, BorderLayout.NORTH);
         add(p);
         //add(box, BorderLayout.SOUTH);

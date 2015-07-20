@@ -23,7 +23,6 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setResizeWeight(.5);
         sp.setTopComponent(new JScrollPane(table));

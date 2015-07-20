@@ -61,7 +61,6 @@ public final class MainPanel extends JPanel {
         //}),
         );
 
-
     public MainPanel() {
         super(new BorderLayout());
 
