@@ -39,24 +39,24 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static void scrollTabAt(JTabbedPane tp, int index) {
-        JViewport vp = null;
+        Component cmp = null;
         for (Component c: tp.getComponents()) {
             if ("TabbedPane.scrollableViewport".equals(c.getName())) {
-                vp = (JViewport) c; break;
+                cmp = c;
+                break;
             }
         }
-        if (vp == null) {
-            return;
+        if (cmp instanceof JViewport) {
+            JViewport viewport = (JViewport) cmp;
+            for (int i = 0; i < tp.getTabCount(); i++) {
+                tp.setForegroundAt(i, i == index ? Color.RED : Color.BLACK);
+            }
+            Dimension d = tp.getSize();
+            Rectangle r = tp.getBoundsAt(index);
+            int gw = (d.width - r.width) / 2;
+            r.grow(gw, 0);
+            viewport.scrollRectToVisible(r);
         }
-        final JViewport viewport = vp;
-        for (int i = 0; i < tp.getTabCount(); i++) {
-            tp.setForegroundAt(i, i == index ? Color.RED : Color.BLACK);
-        }
-        Dimension d = tp.getSize();
-        Rectangle r = tp.getBoundsAt(index);
-        int gw = (d.width - r.width) / 2;
-        r.grow(gw, 0);
-        viewport.scrollRectToVisible(r);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -65,8 +65,8 @@ public final class MainPanel extends JPanel {
 class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants {
     private final JCheckBox cbox;
     private final JTabbedPane tab;
-    private final JComponent dummy = new JPanel();
-    private Rectangle rect;
+    private final JComponent rubberStamp = new JPanel();
+    private final Rectangle rect = new Rectangle();
 
     public TabbedPaneWithCompBorder(JCheckBox cbox, JTabbedPane tab) {
         this.cbox = cbox;
@@ -80,8 +80,8 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
         if (xx < tabEnd) {
             xx = tabEnd;
         }
-        rect = new Rectangle(xx, -2, size.width, size.height);
-        SwingUtilities.paintComponent(g, cbox, dummy, rect);
+        rect.setBounds(xx, -2, size.width, size.height);
+        SwingUtilities.paintComponent(g, cbox, rubberStamp, rect);
     }
     @Override public Insets getBorderInsets(Component c) {
         return new Insets(0, 0, 0, 0);
@@ -90,7 +90,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
         return true;
     }
     private void dispatchEvent(MouseEvent me) {
-        if (rect == null || !rect.contains(me.getX(), me.getY())) {
+        if (!rect.contains(me.getX(), me.getY())) {
             return;
         }
         cbox.setBounds(rect);

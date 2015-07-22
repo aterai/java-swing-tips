@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -20,15 +21,17 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new SortingColumnColorTable(model);
-    private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    //private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
 
     private MainPanel() {
         super(new BorderLayout());
-        table.setRowSorter(sorter);
+        //table.setRowSorter(sorter);
+        table.setAutoCreateRowSorter(true);
 
         add(new JButton(new AbstractAction("clear SortKeys") {
             @Override public void actionPerformed(ActionEvent e) {
-                sorter.setSortKeys(null);
+                //sorter.setSortKeys(null);
+                table.getRowSorter().setSortKeys(null);
             }
         }), BorderLayout.SOUTH);
         add(new JScrollPane(table));
@@ -75,14 +78,13 @@ class SortingColumnColorTable extends JTable {
         return c;
     }
     private boolean isSortingColumn(int column) {
-        RowSorter sorter = getRowSorter();
-        if (sorter != null) {
-            List list = sorter.getSortKeys();
-            if (list.isEmpty()) {
+         RowSorter<? extends TableModel> sorter = getRowSorter();
+        if (Objects.nonNull(sorter)) {
+            List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
+            if (keys.isEmpty()) {
                 return false;
             }
-            RowSorter.SortKey key0 = (RowSorter.SortKey) list.get(0);
-            if (column == convertColumnIndexToView(key0.getColumn())) {
+            if (column == convertColumnIndexToView(keys.get(0).getColumn())) {
                 return true;
             }
         }

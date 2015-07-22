@@ -49,8 +49,9 @@ public final class MainPanel extends JPanel {
 }
 
 class RollOverList<E> extends JList<E> {
-    private static final Color ROLLOVERBACKGROUND = new Color(220, 240, 255);
+    private static final Color ROLLOVER_BACKGROUND = new Color(220, 240, 255);
     private transient RollOverListener rollOverListener;
+    private int rollOverRowIndex = -1;
 
     public RollOverList(ListModel<E> model) {
         super(model);
@@ -68,8 +69,8 @@ class RollOverList<E> extends JList<E> {
     private class RollOverCellRenderer extends DefaultListCellRenderer {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (rollOverListener != null && index == rollOverListener.rollOverRowIndex) {
-                c.setBackground(ROLLOVERBACKGROUND);
+            if (index == rollOverRowIndex) {
+                c.setBackground(ROLLOVER_BACKGROUND);
                 if (isSelected) {
                     c.setForeground(Color.BLACK);
                 }
@@ -80,7 +81,6 @@ class RollOverList<E> extends JList<E> {
         }
     }
     private class RollOverListener extends MouseAdapter {
-        private int rollOverRowIndex = -1;
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             repaint();

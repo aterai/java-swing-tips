@@ -34,27 +34,29 @@ public final class MainPanel extends JPanel {
 //                 g.fillRoundRect(0, 0, w - 1, h - 1, 15, 15);
 //             }
 //         });
-        createFrame(p1, 0);
-        createFrame(p2, 1);
+        createFrame(initPanel(p1), 0);
+        createFrame(initPanel(p2), 1);
         add(desktop);
         setPreferredSize(new Dimension(320, 240));
     }
 //     private final UIDefaults d = new UIDefaults();
 
+    private static JPanel initPanel(JPanel p) {
+        p.add(new JLabel("label"));
+        p.add(new JButton("button"));
+        return p;
+    }
+
     protected JInternalFrame createFrame(JPanel panel, int idx) {
         JInternalFrame frame = new MyInternalFrame();
 //         frame.putClientProperty("Nimbus.Overrides", d);
 //         //frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
-        if (panel != null) {
-            frame.setContentPane(panel);
-            panel.add(new JLabel("label"));
-            panel.add(new JButton("button"));
-            frame.getRootPane().setOpaque(false);
-        }
-        desktop.add(frame);
+        frame.setContentPane(panel);
+        frame.getRootPane().setOpaque(false);
         frame.setOpaque(false);
         frame.setVisible(true);
         frame.setLocation(10 + 60 * idx, 10 + 40 * idx);
+        desktop.add(frame);
         desktop.getDesktopManager().activateFrame(frame);
         return frame;
     }
