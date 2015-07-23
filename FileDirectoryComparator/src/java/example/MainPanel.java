@@ -38,20 +38,23 @@ public final class MainPanel extends JPanel {
 
         final ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                TableRowSorter<?> sorter = (TableRowSorter<?>) table.getRowSorter();
-                Object source = e.getSource();
-                if (source.equals(check2)) {
-                    sorter.setComparator(0, new FileComparator(0));
-                    sorter.setComparator(1, new FileComparator(1));
-                    sorter.setComparator(2, new FileComparator(2));
-                } else if (source.equals(check3)) {
-                    sorter.setComparator(0, new FileGroupComparator(table, 0));
-                    sorter.setComparator(1, new FileGroupComparator(table, 1));
-                    sorter.setComparator(2, new FileGroupComparator(table, 2));
-                } else {
-                    sorter.setComparator(0, new DefaultFileComparator(0));
-                    sorter.setComparator(1, new DefaultFileComparator(1));
-                    sorter.setComparator(2, new DefaultFileComparator(2));
+                RowSorter<? extends TableModel> rs = table.getRowSorter();
+                if (rs instanceof TableRowSorter) {
+                    TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
+                    Object source = e.getSource();
+                    if (source.equals(check2)) {
+                        sorter.setComparator(0, new FileComparator(0));
+                        sorter.setComparator(1, new FileComparator(1));
+                        sorter.setComparator(2, new FileComparator(2));
+                    } else if (source.equals(check3)) {
+                        sorter.setComparator(0, new FileGroupComparator(table, 0));
+                        sorter.setComparator(1, new FileGroupComparator(table, 1));
+                        sorter.setComparator(2, new FileGroupComparator(table, 2));
+                    } else {
+                        sorter.setComparator(0, new DefaultFileComparator(0));
+                        sorter.setComparator(1, new DefaultFileComparator(1));
+                        sorter.setComparator(2, new DefaultFileComparator(2));
+                    }
                 }
             }
         };
@@ -67,10 +70,13 @@ public final class MainPanel extends JPanel {
         table.setShowGrid(false);
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
-        ((TableRowSorter<?>) table.getRowSorter()).setComparator(0, new DefaultFileComparator(0));
-        ((TableRowSorter<?>) table.getRowSorter()).setComparator(1, new DefaultFileComparator(1));
-        ((TableRowSorter<?>) table.getRowSorter()).setComparator(2, new DefaultFileComparator(2));
-
+        RowSorter<? extends TableModel> rs = table.getRowSorter();
+        if (rs instanceof TableRowSorter) {
+            TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
+            sorter.setComparator(0, new DefaultFileComparator(0));
+            sorter.setComparator(1, new DefaultFileComparator(1));
+            sorter.setComparator(2, new DefaultFileComparator(2));
+        }
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
         table.setDefaultRenderer(Object.class, new FileIconTableCellRenderer(fileSystemView));
 

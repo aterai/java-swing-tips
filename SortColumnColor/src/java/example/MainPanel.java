@@ -78,7 +78,7 @@ class SortingColumnColorTable extends JTable {
         return c;
     }
     private boolean isSortingColumn(int column) {
-         RowSorter<? extends TableModel> sorter = getRowSorter();
+        RowSorter<? extends TableModel> sorter = getRowSorter();
         if (Objects.nonNull(sorter)) {
             List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
             if (keys.isEmpty()) {

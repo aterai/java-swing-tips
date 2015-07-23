@@ -63,11 +63,11 @@ public final class MainPanel extends JPanel {
 class MultisortHeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String str = Objects.toString(value, "");
-        if (table.getRowSorter() != null) {
-            List<?> keys = table.getRowSorter().getSortKeys();
-            int max = keys.size();
-            for (int i = 0; i < max; i++) {
-                TableRowSorter.SortKey sortKey = (TableRowSorter.SortKey) keys.get(i);
+        RowSorter<? extends TableModel> sorter = table.getRowSorter();
+        if (Objects.nonNull(sorter)) {
+            List<? extends TableRowSorter.SortKey> keys = sorter.getSortKeys();
+            for (int i = 0; i < keys.size(); i++) {
+                TableRowSorter.SortKey sortKey = keys.get(i);
                 if (column == sortKey.getColumn()) {
                     //BLACK TRIANGLE
                     //String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "\u25B2 " : "\u25BC ";

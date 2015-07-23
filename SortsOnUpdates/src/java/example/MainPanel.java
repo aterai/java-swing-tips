@@ -49,14 +49,14 @@ public final class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         table.setComponentPopupMenu(new TablePopupMenu());
-        //((DefaultRowSorter) table.getRowSorter()).setSortsOnUpdates(true);
 
         add(new JScrollPane(table));
         add(new JCheckBox(new AbstractAction("DefaultRowSorter#setSortsOnUpdates") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean f = ((JCheckBox) e.getSource()).isSelected();
-                System.out.println(f);
-                ((DefaultRowSorter) table.getRowSorter()).setSortsOnUpdates(f);
+                RowSorter<? extends TableModel> rs = table.getRowSorter();
+                if (rs instanceof DefaultRowSorter) {
+                    ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
+                }
             }
         }), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

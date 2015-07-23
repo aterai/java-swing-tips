@@ -43,7 +43,10 @@ public final class MainPanel extends JPanel {
             @Override public Component getTableCellRendererComponent(JTable t, Object v, boolean isS, boolean hasF, int row, int col) {
                 TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
                 JLabel l = (JLabel) r.getTableCellRendererComponent(t, v, isS, hasF, row, col);
-                l.setForeground(((DefaultRowSorter) table.getRowSorter()).isSortable(t.convertColumnIndexToModel(col)) ? Color.BLACK : Color.GRAY);
+                RowSorter<? extends TableModel> rs = table.getRowSorter();
+                if (rs instanceof DefaultRowSorter) {
+                    l.setForeground(((DefaultRowSorter<? extends TableModel, ?>) rs).isSortable(t.convertColumnIndexToModel(col)) ? Color.BLACK : Color.GRAY);
+                }
                 return l;
             }
         };
@@ -59,9 +62,12 @@ public final class MainPanel extends JPanel {
         }
         add(new JCheckBox(new AbstractAction("Sortable(1, false)") {
             @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                ((DefaultRowSorter<?, ?>) table.getRowSorter()).setSortable(1, !cb.isSelected());
-                table.getTableHeader().repaint();
+                RowSorter<? extends TableModel> rs = table.getRowSorter();
+                if (rs instanceof DefaultRowSorter) {
+                    JCheckBox cb = (JCheckBox) e.getSource();
+                    ((DefaultRowSorter<? extends TableModel, ?>) rs).setSortable(1, !cb.isSelected());
+                    table.getTableHeader().repaint();
+                }
             }
         }), BorderLayout.NORTH);
         add(new JButton(new AbstractAction("clear SortKeys") {

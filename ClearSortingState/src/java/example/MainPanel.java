@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         table.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 final RowSorter<? extends TableModel> sorter = table.getRowSorter();
-                if (Objects.isNull(sorter) || sorter.getSortKeys().size() == 0) {
+                if (Objects.isNull(sorter) || sorter.getSortKeys().isEmpty()) {
                     return;
                 }
                 JTableHeader h = (JTableHeader) e.getComponent();
