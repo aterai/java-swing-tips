@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -16,8 +18,8 @@ public final class MainPanel extends JPanel {
 
         BufferedImage image;
         try {
-            image = javax.imageio.ImageIO.read(getClass().getResource("screenshot.png"));
-        } catch (java.io.IOException ioe) {
+            image = ImageIO.read(getClass().getResource("screenshot.png"));
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return;
         }
@@ -50,9 +52,8 @@ public final class MainPanel extends JPanel {
 //         g2d.dispose();
 
 //         try {
-//             javax.imageio.ImageIO.write(
-//                 bi, "png", java.io.File.createTempFile("screenshot", ".png"));
-//         } catch (java.io.IOException ioe) {
+//             ImageIO.write(bi, "png", File.createTempFile("screenshot", ".png"));
+//         } catch (IOException ioe) {
 //             ioe.printStackTrace();
 //         }
 
