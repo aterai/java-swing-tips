@@ -42,6 +42,7 @@ public final class MainPanel extends JPanel {
 // @author camickr
 // @author David Underhill
 // https://community.oracle.com/thread/2105230
+// modified by aterai aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     //HashMap<String, AttributeSet> keywords = new HashMap<>();
     private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
@@ -65,47 +66,46 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     }
     private void processChangedLines(int offset, int length) throws BadLocationException {
         Element root = getDefaultRootElement();
-        String content = getText(0, getLength());
         int startLine = root.getElementIndex(offset);
         int endLine = root.getElementIndex(offset + length);
-        for (int i = startLine; i <= endLine; i++) {
-            applyHighlighting(content, i);
+        for (int line = startLine; line <= endLine; line++) {
+            applyHighlighting(line);
         }
     }
-    private void applyHighlighting(String content, int line) throws BadLocationException {
+    private void applyHighlighting(int line) throws BadLocationException {
         Element root = getDefaultRootElement();
         int startOffset   = root.getElement(line).getStartOffset();
         int endOffset     = root.getElement(line).getEndOffset() - 1;
         int lineLength    = endOffset - startOffset;
-        int contentLength = content.length();
+        int contentLength = getLength();
         if (endOffset >= contentLength) {
             endOffset = contentLength - 1;
         }
         setCharacterAttributes(startOffset, lineLength, normal, true);
-        checkForTokens(content, startOffset, endOffset);
+        checkForTokens(startOffset, endOffset);
     }
-    private void checkForTokens(String content, int startOffset, int endOffset) {
+    private void checkForTokens(int startOffset, int endOffset) throws BadLocationException {
         int index = startOffset;
         while (index <= endOffset) {
-            while (isDelimiter(content.substring(index, index + 1))) {
+            while (isDelimiter(getText(index, 1))) {
                 if (index < endOffset) {
                     index++;
                 } else {
                     return;
                 }
             }
-            index = getOtherToken(content, index, endOffset);
+            index = getOtherToken(index, endOffset);
         }
     }
-    private int getOtherToken(String content, int startOffset, int endOffset) {
+    private int getOtherToken(int startOffset, int endOffset) throws BadLocationException {
         int endOfToken = startOffset + 1;
         while (endOfToken <= endOffset) {
-            if (isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
+            if (isDelimiter(getText(endOfToken, 1))) {
                 break;
             }
             endOfToken++;
         }
-        String token = content.substring(startOffset, endOfToken);
+        String token = getText(startOffset, endOfToken - startOffset);
         Style s = getStyle(token);
         //if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
