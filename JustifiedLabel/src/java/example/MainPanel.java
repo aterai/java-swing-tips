@@ -82,53 +82,49 @@ class JustifiedLabel extends JLabel {
     }
     public JustifiedLabel(String str) {
         super(str);
-//         Dimension d = getPreferredSize();
-//         int baseline = getBaseline(d.width, d.height);
-//         setAlignmentY(baseline/(float) d.height);
     }
-//     @Override public Dimension getMinimumSize() {
-//         return getPreferredSize();
-//     }
-//     @Override public Dimension getPreferredSize() {
-//         Dimension d = super.getPreferredSize();
-//         d.width = getWidth();
-//         return d;
-//     }
-//     @Override public int getWidth() {
-//         return 120;
-//     }
+    @Override public void setText(String text) {
+        super.setText(text);
+        prevWidth = -1;
+    }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        Insets i = getInsets();
-        int w = getWidth() - i.left - i.right;
+        Font font = getFont();
+        Dimension d = getSize();
+        Insets ins = getInsets();
+        int w = d.width - ins.left - ins.right;
         if (w != prevWidth) {
-            gvtext = getJustifiedGlyphVector(getText(), getFont(), g2.getFontRenderContext());
+            gvtext = getJustifiedGlyphVector(w, getText(), font, g2.getFontRenderContext());
             prevWidth = w;
         }
-        if (Objects.isNull(gvtext)) {
-            super.paintComponent(g);
+        if (Objects.nonNull(gvtext)) {
+            g2.setPaint(getBackground());
+            g2.fillRect(0, 0, d.width, d.height);
+            g2.setPaint(getForeground());
+            g2.drawGlyphVector(gvtext, ins.left, ins.top + font.getSize());
         } else {
-            g2.drawGlyphVector(gvtext, i.left, i.top + getFont().getSize());
+            super.paintComponent(g);
         }
         g2.dispose();
     }
-    private GlyphVector getJustifiedGlyphVector(String str, Font font, FontRenderContext frc) {
+    private GlyphVector getJustifiedGlyphVector(int width, String str, Font font, FontRenderContext frc) {
         GlyphVector gv = font.createGlyphVector(frc, str);
         Rectangle2D r = gv.getVisualBounds();
-        float jwidth = (float) getWidth();
+        float jwidth = (float) width;
         float vwidth = (float) r.getWidth();
-        if (jwidth < vwidth) {
+        if (jwidth > vwidth) {
+            int num = gv.getNumGlyphs();
+            float xx = (jwidth - vwidth) / (float) (num - 1);
+            float xpos = num == 1 ? (jwidth - vwidth) * .5f : 0f;
+            Point2D gmPos = new Point2D.Double(0d, 0d);
+            for (int i = 0; i < num; i++) {
+                GlyphMetrics gm = gv.getGlyphMetrics(i);
+                gmPos.setLocation(xpos, 0);
+                gv.setGlyphPosition(i, gmPos);
+                xpos += gm.getAdvance() + xx;
+            }
             return gv;
         }
-        float xx = (jwidth - vwidth) / (float) (gv.getNumGlyphs() - 1);
-        float xpos = 0f;
-        Point2D gmPos = new Point2D.Double(0d, 0d);
-        for (int i = 0; i < gv.getNumGlyphs(); i++) {
-            GlyphMetrics gm = gv.getGlyphMetrics(i);
-            gmPos.setLocation(xpos, 0);
-            gv.setGlyphPosition(i, gmPos);
-            xpos = xpos + gm.getAdvance() + xx;
-        }
-        return gv;
+        return null;
     }
 }
