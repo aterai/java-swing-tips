@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.*;
 
@@ -103,6 +102,33 @@ public final class MainPanel extends JPanel {
     }
 }
 
+class HeaderRenderer implements TableCellRenderer {
+    private final TriStateCheckBox check = new TriStateCheckBox("Check All");
+    @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
+        TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
+        JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+
+        check.setOpaque(false);
+        if (val instanceof Status) {
+            check.updateStatus((Status) val);
+        } else {
+            check.setSelected(true);
+        }
+        l.setIcon(new ComponentIcon(check));
+        l.setText(null); //XXX: Nimbus???
+//         System.out.println("getHeaderRect: " + tbl.getTableHeader().getHeaderRect(col));
+//         System.out.println("getPreferredSize: " + l.getPreferredSize());
+//         System.out.println("getMaximunSize: " + l.getMaximumSize());
+//         System.out.println("----");
+//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus???
+//             System.out.println(l.getPreferredSize().height);
+//             Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
+//             l.setPreferredSize(new Dimension(0, rect.height));
+//         }
+        return l;
+    }
+}
+
 class TriStateActionListener implements ActionListener {
     protected Icon icon;
     public void setIcon(Icon icon) {
@@ -150,33 +176,6 @@ class TriStateCheckBox extends JCheckBox {
     }
 }
 
-class HeaderRenderer implements TableCellRenderer {
-    private final TriStateCheckBox check = new TriStateCheckBox("Check All");
-    @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
-        TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
-
-        check.setOpaque(false);
-        if (val instanceof Status) {
-            check.updateStatus((Status) val);
-        } else {
-            check.setSelected(true);
-        }
-        l.setIcon(new ComponentIcon(check));
-        l.setText(null); //XXX: Nimbus???
-//         System.out.println("getHeaderRect: " + tbl.getTableHeader().getHeaderRect(col));
-//         System.out.println("getPreferredSize: " + l.getPreferredSize());
-//         System.out.println("getMaximunSize: " + l.getMaximumSize());
-//         System.out.println("----");
-//         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus???
-//             System.out.println(l.getPreferredSize().height);
-//             Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
-//             l.setPreferredSize(new Dimension(0, rect.height));
-//         }
-        return l;
-    }
-}
-
 class IndeterminateIcon implements Icon {
     private static final Color FOREGROUND = Color.BLACK; //TEST: UIManager.getColor("CheckBox.foreground");
     private static final int SIDE_MARGIN = 4;
@@ -197,70 +196,6 @@ class IndeterminateIcon implements Icon {
     }
     @Override public int getIconHeight() {
         return icon.getIconHeight();
-    }
-}
-
-class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
-    private final JTable table;
-    private final int targetColumnIndex;
-    public HeaderCheckBoxHandler(JTable table, int index) {
-        super();
-        this.table = table;
-        this.targetColumnIndex = index;
-    }
-    @Override public void tableChanged(TableModelEvent e) {
-        if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
-            int vci = table.convertColumnIndexToView(targetColumnIndex);
-            TableColumn column = table.getColumnModel().getColumn(vci);
-            Object status = column.getHeaderValue();
-            TableModel m = table.getModel();
-            if (fireUpdateEvent(m, column, status)) {
-                JTableHeader h = table.getTableHeader();
-                h.repaint(h.getHeaderRect(vci));
-            }
-        }
-    }
-    private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-        if (Status.INDETERMINATE.equals(status)) {
-            boolean selected = true;
-            boolean deselected = true;
-            for (int i = 0; i < m.getRowCount(); i++) {
-                Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-                selected &= b;
-                deselected &= !b;
-                if (selected == deselected) {
-                    return false;
-                }
-            }
-            if (deselected) {
-                column.setHeaderValue(Status.DESELECTED);
-            } else if (selected) {
-                column.setHeaderValue(Status.SELECTED);
-            } else {
-                return false;
-            }
-        } else {
-            column.setHeaderValue(Status.INDETERMINATE);
-        }
-        return true;
-    }
-    @Override public void mouseClicked(MouseEvent e) {
-        JTableHeader header = (JTableHeader) e.getComponent();
-        JTable table = header.getTable();
-        TableColumnModel columnModel = table.getColumnModel();
-        TableModel m = table.getModel();
-        int vci = columnModel.getColumnIndexAtX(e.getX());
-        int mci = table.convertColumnIndexToModel(vci);
-        if (mci == targetColumnIndex && m.getRowCount() > 0) {
-            TableColumn column = columnModel.getColumn(vci);
-            Object v = column.getHeaderValue();
-            boolean b = Status.DESELECTED.equals(v);
-            for (int i = 0; i < m.getRowCount(); i++) {
-                m.setValueAt(b, i, mci);
-            }
-            column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
-            //header.repaint();
-        }
     }
 }
 
