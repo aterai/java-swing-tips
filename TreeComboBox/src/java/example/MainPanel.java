@@ -165,7 +165,7 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     }
     @Override public void setSelectedIndex(int index) {
         TreeNode node = getItemAt(index);
-        if (node != null && node.isLeaf()) {
+        if (Objects.nonNull(node) && node.isLeaf()) {
             super.setSelectedIndex(index);
         } else {
             isNotSelectableIndex = true;

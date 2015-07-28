@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        createFrame(p1);
-        createFrame(p2);
-        createFrame(p3);
+        desktop.add(createFrame(p1));
+        desktop.add(createFrame(p2));
+        desktop.add(createFrame(p3));
 
         URL url = getClass().getResource("tokeidai.jpg");
         BufferedImage bi = getFilteredImage(url);
@@ -76,26 +76,22 @@ public final class MainPanel extends JPanel {
     private JInternalFrame createFrame() {
         return createFrame(null);
     }
-    private JInternalFrame createFrame(JPanel panel) {
-        JInternalFrame frame = new MyInternalFrame();
-        if (panel != null) {
-            frame.setContentPane(panel);
-            panel.add(new JLabel("label"));
-            panel.add(new JButton("button"));
+
+    private static JInternalFrame createFrame(JComponent c) {
+        String title = String.format("Frame #%s", ++openFrameCount);
+        JInternalFrame frame = new JInternalFrame(title, true, true, true, true);
+        if (c instanceof JPanel) {
+            JPanel p = (JPanel) c;
+            p.add(new JLabel("label"));
+            p.add(new JButton("button"));
+            frame.setContentPane(p);
         }
-        desktop.add(frame);
+        frame.setSize(160, 100);
+        frame.setLocation(30 * openFrameCount, 30 * openFrameCount);
         frame.setOpaque(false);
         frame.setVisible(true);
         //desktop.getDesktopManager().activateFrame(frame);
         return frame;
-    }
-
-    private static class MyInternalFrame extends JInternalFrame {
-        public MyInternalFrame() {
-            super(String.format("Frame #%s", ++openFrameCount), true, true, true, true);
-            setSize(160, 100);
-            setLocation(30 * openFrameCount, 30 * openFrameCount);
-        }
     }
 
     private static TexturePaint makeTexturePaint() {

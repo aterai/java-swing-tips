@@ -47,17 +47,17 @@ public final class MainPanel extends JPanel {
         //tree.repaint();
     }
     private static void searchTree(JTree tree, TreePath path, String q) {
-        TreeNode node = (TreeNode) path.getLastPathComponent();
-        if (node == null) {
-            return;
-        }
-        if (node.toString().startsWith(q)) {
-            tree.expandPath(path.getParentPath());
-        }
-        if (!node.isLeaf() && node.getChildCount() >= 0) {
-            Enumeration e = node.children();
-            while (e.hasMoreElements()) {
-                searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+        Object o = path.getLastPathComponent();
+        if (o instanceof TreeNode) {
+            TreeNode node = (TreeNode) o;
+            if (node.toString().startsWith(q)) {
+                tree.expandPath(path.getParentPath());
+            }
+            if (!node.isLeaf() && node.getChildCount() >= 0) {
+                Enumeration e = node.children();
+                while (e.hasMoreElements()) {
+                    searchTree(tree, path.pathByAddingChild(e.nextElement()), q);
+                }
             }
         }
     }
@@ -117,7 +117,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         if (isSelected) {
             c.setForeground(getTextSelectionColor());
         } else {
-            rollOver = q != null && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
+            rollOver = Objects.nonNull(q) && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
             c.setForeground(getTextNonSelectionColor());
             c.setBackground(getBackgroundNonSelectionColor());
         }
@@ -144,7 +144,7 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
             //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());
         } else {
             c.setOpaque(true);
-            if (q != null && !q.isEmpty() && value.toString().startsWith(q)) {
+            if (Objects.nonNull(q) && !q.isEmpty() && value.toString().startsWith(q)) {
                 c.setForeground(getTextNonSelectionColor());
                 c.setBackground(ROLLOVER_ROW_COLOR);
             } else {
