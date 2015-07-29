@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
             @Override public void dragGestureRecognized(DragGestureEvent dge) {
                 File tmpfile = getFile();
-                if (tmpfile == null) {
+                if (Objects.isNull(tmpfile)) {
                     return;
                 }
                 DragSourceAdapter dsa = new DragSourceAdapter() {
@@ -52,10 +52,10 @@ public final class MainPanel extends JPanel {
             }
             @Override protected Transferable createTransferable(JComponent c) {
                 File tmpfile = getFile();
-                if (tmpfile == null) {
-                    return null;
-                } else {
+                if (Objects.nonNull(tmpfile)) {
                     return new TempFileTransferable(tmpfile);
+                } else {
+                    return null;
                 }
             }
             @Override protected void exportDone(JComponent c, Transferable data, int action) {

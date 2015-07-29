@@ -120,10 +120,11 @@ class LabelTransferHandler extends TransferHandler {
         JLabel l = p.draggingLabel;
         DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
         String text = l.getText();
-        if (text == null) {
+        if (Objects.nonNull(text)) {
+            return new LabelTransferable(dh, localObjectFlavor, text);
+        } else {
             return dh;
         }
-        return new LabelTransferable(dh, localObjectFlavor, text);
     }
     @Override public boolean canImport(TransferSupport support) {
         return support.isDrop() && support.isDataFlavorSupported(localObjectFlavor);

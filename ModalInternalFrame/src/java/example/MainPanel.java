@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 //import java.lang.reflect.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.*;
@@ -247,13 +248,13 @@ class PrintGlassPane extends JPanel {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
         JRootPane rootPane = getRootPane();
-        if (rootPane != null && isVisible() != oldVisible) {
+        if (Objects.nonNull(rootPane) && isVisible() != oldVisible) {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
     @Override public void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
-        if (rootPane != null) {
+        if (Objects.nonNull(rootPane)) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html
             // it is important to call print() instead of paint() here
             // because print() doesn't affect the frame's double buffer
