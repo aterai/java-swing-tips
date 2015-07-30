@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
 //                         return MYSITE;
 //                     }
 //                     @Override public DataFlavor[] getTransferDataFlavors() {
-//                         return new DataFlavor[] { uriflavor };
+//                         return new DataFlavor[] {uriflavor};
 //                     }
 //                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //                         return flavor.equals(uriflavor);
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
 //                         return MYSITE;
 //                     }
 //                     @Override public DataFlavor[] getTransferDataFlavors() {
-//                         return new DataFlavor[] { uriflavor };
+//                         return new DataFlavor[] {uriflavor};
 //                     }
 //                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //                         return flavor.equals(uriflavor);

@@ -119,7 +119,7 @@ class ColorRadioButton extends JRadioButton {
             setForeground(Color.GRAY);
         }
         super.fireStateChanged();
-    };
+    }
     private static class DefaultIcon implements Icon {
         @Override public int getIconWidth() {
             return ICON_SIZE * 2;

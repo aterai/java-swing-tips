@@ -202,14 +202,16 @@ final class StarburstSVGMaker {
 //                 JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
 //                 return;
 //             }
-//             if (outfile == null) { return; }
+//             if (Objects.isNull(outfile)) {
+//                 return;
+//             }
 //             final File tmpfile = outfile;
 //             Transferable tran = new Transferable() {
 //                 @Override public Object getTransferData(DataFlavor flavor) {
 //                     return Arrays.asList(tmpfile);
 //                 }
 //                 @Override public DataFlavor[] getTransferDataFlavors() {
-//                     return new DataFlavor[] { DataFlavor.javaFileListFlavor };
+//                     return new DataFlavor[] {DataFlavor.javaFileListFlavor};
 //                 }
 //                 @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
 //                     return flavor.equals(DataFlavor.javaFileListFlavor);

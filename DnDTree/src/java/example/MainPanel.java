@@ -220,7 +220,7 @@ class DnDTree extends JTree {
 class RJLTransferable implements Transferable {
     public static final String NAME = "TREE-TEST";
     private static final DataFlavor LOCAL_OBJECT_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-    //private static final DataFlavor[] supportedFlavors = { LOCAL_OBJECT_FLAVOR };
+    //private static final DataFlavor[] supportedFlavors = {LOCAL_OBJECT_FLAVOR};
     private final Object object;
     public RJLTransferable(Object o) {
         object = o;
