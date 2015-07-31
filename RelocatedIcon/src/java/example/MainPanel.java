@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -81,7 +82,7 @@ public final class MainPanel extends JPanel {
         desktop.add(f);
         try {
             f.setIcon(true);
-        } catch (java.beans.PropertyVetoException e) {
+        } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
     }

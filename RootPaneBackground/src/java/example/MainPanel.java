@@ -333,9 +333,9 @@ class TranslucentPopup extends Popup {
         // create a new heavyweight window
         this.popupWindow = new JWindow();
         // mark the popup with partial opacity
-        //com.sun.awt.AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
+        //AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
         //popupWindow.setOpacity(.5f);
-        //com.sun.awt.AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
+        //AWTUtilities.setWindowOpaque(popupWindow, false); //Java 1.6.0_10
         popupWindow.setBackground(new Color(0x0, true)); //Java 1.7.0
         // determine the popup location
         popupWindow.setLocation(ownerX, ownerY);
@@ -353,7 +353,7 @@ class TranslucentPopup extends Popup {
         // mark the window as non-opaque, so that the
         // shadow border pixels take on the per-pixel
         // translucency
-        //com.sun.awt.AWTUtilities.setWindowOpaque(this.popupWindow, false);
+        //AWTUtilities.setWindowOpaque(this.popupWindow, false);
     }
     @Override public void hide() {
         this.popupWindow.setVisible(false);

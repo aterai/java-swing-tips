@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
 //         return new JComboBox(model) {
 //             @Override public void updateUI() {
 //                 super.updateUI();
-//                 setUI(new javax.swing.plaf.basic.BasicComboBoxUI() {
+//                 setUI(new BasicComboBoxUI() {
 //                     @Override protected JButton createArrowButton() {
 //                         JButton button = new JButton() {
 //                             @Override public int getWidth() {

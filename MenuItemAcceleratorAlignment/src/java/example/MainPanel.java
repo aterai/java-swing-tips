@@ -140,7 +140,7 @@ public final class MainPanel {
 
     public static void main(String... args) {
         //Locale.setDefault(Locale.ENGLISH);
-        //java.util.ResourceBundle awtBundle = java.util.ResourceBundle.getBundle(
+        //ResourceBundle awtBundle = ResourceBundle.getBundle(
         //    "sun.awt.resources.awt", sun.util.CoreResourceBundleControl.getRBControlInstance());
         //Locale.setDefault(new Locale("xx"));
         //JMenuItem.setDefaultLocale(Locale.ENGLISH);

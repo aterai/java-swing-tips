@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import com.sun.java.swing.plaf.windows.WindowsSpinnerUI;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
@@ -90,7 +91,7 @@ public final class MainPanel extends JPanel {
 
 class SimpleBorderSpinner extends JSpinner {
     @Override protected void paintComponent(Graphics g) {
-        if (getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
+        if (getUI() instanceof WindowsSpinnerUI) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
                                      : UIManager.getColor("FormattedTextField.inactiveBackground"));
@@ -100,7 +101,7 @@ class SimpleBorderSpinner extends JSpinner {
     }
     @Override protected void paintChildren(Graphics g) {
         super.paintChildren(g);
-        if (!isEnabled() && getUI() instanceof com.sun.java.swing.plaf.windows.WindowsSpinnerUI) {
+        if (!isEnabled() && getUI() instanceof WindowsSpinnerUI) {
             Graphics2D g2d = (Graphics2D) g.create();
             Rectangle r = getComponent(0).getBounds();
             r.add(getComponent(1).getBounds());

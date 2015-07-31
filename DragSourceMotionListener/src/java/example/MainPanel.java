@@ -104,7 +104,7 @@ class LabelTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(DragPanel.class, DataFlavor.javaJVMLocalObjectMimeType, "JLabel");
         window.add(label);
         //window.setAlwaysOnTop(true); // AccessControlException: access denied ("java.awt.AWTPermission" "setWindowAlwaysOnTop")
-        //com.sun.awt.AWTUtilities.setWindowOpaque(window, false); // JDK 1.6.0
+        //AWTUtilities.setWindowOpaque(window, false); // JDK 1.6.0
         window.setBackground(new Color(0x0, true)); // JDK 1.7.0
         DragSource.getDefaultDragSource().addDragSourceMotionListener(new DragSourceMotionListener() {
             @Override public void dragMouseMoved(DragSourceDragEvent dsde) {

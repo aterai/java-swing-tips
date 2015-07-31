@@ -141,7 +141,7 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         ImageIcon icon = new ImageIcon(getClass().getResource(name));
         JButton b = new JButton();
         b.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-//         b.addChangeListener(new javax.swing.event.ChangeListener() {
+//         b.addChangeListener(new ChangeListener() {
 //             @Override public void stateChanged(ChangeEvent e) {
 //                 JButton button = (JButton) e.getSource();
 //                 ButtonModel model = button.getModel();

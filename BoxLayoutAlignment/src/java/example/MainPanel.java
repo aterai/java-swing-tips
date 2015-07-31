@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
     private final JPanel panel = new JPanel(new GridLayout(1, 2, 5, 5));
@@ -32,8 +33,8 @@ public class MainPanel extends JPanel {
             panel.add(c);
         }
 
-        spinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            @Override public void stateChanged(javax.swing.event.ChangeEvent e) {
+        spinner.addChangeListener(new ChangeListener() {
+            @Override public void stateChanged(ChangeEvent e) {
                 JSpinner s = (JSpinner) e.getSource();
                 value = (Integer) s.getValue();
                 p1.revalidate();

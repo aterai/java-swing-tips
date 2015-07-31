@@ -77,8 +77,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         super();
 //         addMouseMotionListener(this);
 //         addMouseListener(this);
-//         offImage = new java.awt.image.BufferedImage(320, 240,
-//                        java.awt.image.BufferedImage.TYPE_INT_ARGB);
+//         offImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
@@ -116,7 +115,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     @Override public void mouseClicked(MouseEvent e) {}
 // }
 // class PaintPanel3 extends JPanel implements MouseMotionListener, MouseListener {
-//     java.util.ArrayList<Shape> list = new java.util.ArrayList<>();
+//     List<Shape> list = new ArrayList<>();
 //     Stroke stroke = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 //     Path2D.Double path;
 //     public PaintPanel3() {

@@ -84,7 +84,7 @@ class ProgressJTabbedPane extends JTabbedPane {
         Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
         bar.setPreferredSize(new Dimension(w, dim.height - tabInsets.top - 1));
         //bar.setString(title);
-        //bar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
+        //bar.setUI(new BasicProgressBarUI());
         setTabComponentAt(currentIndex, bar);
         SwingWorker<String, Integer> worker = new Task() {
             @Override protected void process(List<Integer> dummy) {

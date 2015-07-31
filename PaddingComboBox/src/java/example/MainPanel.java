@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
 //         if (uiCheck.isSelected()) {
 //             // Bug ID: JDK-7158712 Synth Property "ComboBox.popupInsets" is ignored
 //             // http://bugs.java.com/view_bug.do?bug_id=7158712
-//             UIManager.put("ComboBox.padding", new javax.swing.plaf.InsetsUIResource(1, 15, 1, 1));
+//             UIManager.put("ComboBox.padding", new InsetsUIResource(1, 15, 1, 1));
 //         }
         List<JComboBox> list = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

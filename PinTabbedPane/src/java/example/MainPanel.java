@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-//         if (tabbedPane.getUI() instanceof com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI) {
-//             tabbedPane.setUI(new com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI() {
+//         if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
+//             tabbedPane.setUI(new WindowsTabbedPaneUI() {
 //                 @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
 //                     int defaultWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
 //                     int selectedIndex  = tabPane.getSelectedIndex();

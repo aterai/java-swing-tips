@@ -7,6 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -66,7 +67,7 @@ public final class MainPanel extends JPanel {
 
         try {
             addImageFile(new File(getClass().getResource("test.png").toURI()));
-        } catch (java.net.URISyntaxException e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         add(scroll);

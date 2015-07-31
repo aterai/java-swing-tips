@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setHorizontalTextPosition(SwingConstants.CENTER);
 
-        //java.net.URL path = getClass().getResource("CRW_3857_JFR.jpg");
+        //URL path = getClass().getResource("CRW_3857_JFR.jpg");
         String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/CRW_3857_JFR.jpg";
 
         int w = 2048;

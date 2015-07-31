@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
 //             @Override public void run() {
 //                 try {
 //                     internal.setSelected(true);
-//                 } catch (java.beans.PropertyVetoException ex) {
+//                 } catch (PropertyVetoException ex) {
 //                     ex.printStackTrace();
 //                 }
 //                 //internal.requestFocusInWindow();

@@ -104,8 +104,8 @@ class JResizer extends JPanel { // implements Serializable {
         setBorder(border);
         add(comp);
     }
-//     private void writeObject(java.io.ObjectOutputStream out) throws IOException {}
-//     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {}
+//     private void writeObject(ObjectOutputStream out) throws IOException {}
+//     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {}
 //     private void readObjectNoData() throws ObjectStreamException {}
 //     private void readObject() {
 //         this.resizeListener = new ResizeMouseListener();

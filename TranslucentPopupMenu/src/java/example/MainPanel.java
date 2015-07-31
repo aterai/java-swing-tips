@@ -83,8 +83,8 @@ class TranslucentPopupMenu extends JPopupMenu {
                     JWindow w = (JWindow) p;
 //                     if (System.getProperty("java.version").startsWith("1.6.0")) {
 //                         w.dispose();
-//                         if (com.sun.awt.AWTUtilities.isWindowOpaque(w)) {
-//                             com.sun.awt.AWTUtilities.setWindowOpaque(w, false);
+//                         if (AWTUtilities.isWindowOpaque(w)) {
+//                             AWTUtilities.setWindowOpaque(w, false);
 //                         }
 //                         w.setVisible(true);
 //                     } else {

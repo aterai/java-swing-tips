@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
@@ -238,7 +238,7 @@ class DotBorder extends LineBorder {
         g2.setPaint(borderSelectionColor);
         g2.drawRect(x, y, w - 1, h - 1);
         g2.setPaint(getLineColor());
-        javax.swing.plaf.basic.BasicGraphicsUtils.drawDashedRect(g2, x, y, w, h);
+        BasicGraphicsUtils.drawDashedRect(g2, x, y, w, h);
         //g2.translate(-x, -y);
         g2.dispose();
     }

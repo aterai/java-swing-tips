@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
 //         frame.setUndecorated(true);
 
         //if (System.getProperty("java.version").startsWith("1.6.0")) {
-        //    com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
+        //    AWTUtilities.setWindowOpaque(frame, false);
         //} else {
             frame.setBackground(new Color(0x0, true)); //1.7.0
         //}

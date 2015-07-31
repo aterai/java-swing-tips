@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
 
                 frame.setBounds(shape.getBounds());
                 //frame.setSize(shape.getBounds().width, shape.getBounds().height);
-                //com.sun.awt.AWTUtilities.setWindowShape(frame, shape); //JDK 1.6.0
+                //AWTUtilities.setWindowShape(frame, shape); //JDK 1.6.0
                 frame.setShape(shape); //JDK 1.7.0
                 frame.setLocationRelativeTo(parent);
                 frame.setVisible(true);

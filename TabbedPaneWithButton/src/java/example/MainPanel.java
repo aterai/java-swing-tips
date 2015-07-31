@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
         FontMetrics fm = b.getFontMetrics(b.getFont());
         int tih = b.getPreferredSize().height - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
         return new Insets(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
-        //NO EFFECT?: return new javax.swing.plaf.InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
+        //NO EFFECT?: return new InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -67,7 +67,7 @@ class ZoomAndPanePanel extends JPanel {
         //g2.drawImage(img, 0, 0, this);
         //g2.fill(r);
 
-        //g2.drawRenderedImage((java.awt.image.RenderedImage) img, coordTransform);
+        //g2.drawRenderedImage((RenderedImage) img, coordTransform);
         g2.drawImage(img, coordTransform, this);
         g2.fill(coordTransform.createTransformedShape(r));
 
