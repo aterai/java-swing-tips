@@ -1,0 +1,105 @@
+package example;
+//-*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+//@homepage@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
+
+public final class MainPanel extends JPanel {
+    private MainPanel() {
+        super(new BorderLayout());
+        add(makeLabelTable(6, 4));
+        setPreferredSize(new Dimension(320, 240));
+    }
+
+    private static JPanel makeLabelTable(int row, int column) {
+        float length = 5f;
+        float spacing = 5f;
+        float[] array = {length - 1f, spacing + 1f};
+        BasicStroke dashedStroke = new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 2f, array, 0f);
+
+        JPanel p = new JPanel(new GridBagLayout());
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.fill = GridBagConstraints.BOTH;
+        gc.weighty = 1;
+        gc.weightx = 1;
+        Border dashed = new StrokeMatteBorder(0, 0, 1, 1, dashedStroke, Color.BLACK);
+        for (gc.gridy = 0; gc.gridy < row; gc.gridy++) {
+            for (gc.gridx = 0; gc.gridx < column; gc.gridx++) {
+                JLabel l = new JLabel(String.format(Locale.ENGLISH, "%d%d", gc.gridx, gc.gridy), SwingConstants.CENTER);
+                l.setBorder(BorderFactory.createCompoundBorder(
+                    dashed,
+                    BorderFactory.createEmptyBorder(1, 1, 0, 0)));
+                p.add(l, gc);
+            }
+        }
+        p.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEmptyBorder(15, 15, 15 + 1, 15 + 1),
+            new StrokeMatteBorder(1, 1, 0, 0, dashedStroke, Color.RED)));
+        return p;
+    }
+
+    public static void main(String... args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+    public static void createAndShowGUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException
+               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new MainPanel());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
+class StrokeMatteBorder extends EmptyBorder {
+    private final transient BasicStroke stroke;
+    private final Paint paint;
+
+    public StrokeMatteBorder(int top, int left, int bottom, int right, BasicStroke stroke, Paint paint) {
+        super(top, left, bottom, right);
+        this.stroke = stroke;
+        this.paint = paint;
+    }
+    @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        float size = stroke.getLineWidth();
+        if (size > 0f) {
+            Insets insets = getBorderInsets(c);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setStroke(this.stroke);
+            g2.setPaint(Objects.nonNull(this.paint) ? this.paint : Objects.nonNull(c) ? c.getForeground() : null);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.translate(x, y);
+
+            int s = (int) (.5f + size);
+            int sd2 = (int) (.5f + size / 2d);
+            if (insets.top > 0) {
+                g2.drawLine(0, sd2, width - s, sd2);
+            }
+            if (insets.left > 0) {
+                g2.drawLine(sd2, sd2, sd2, height - s);
+            }
+            if (insets.bottom > 0) {
+                g2.drawLine(0, height - s, width - s, height - s);
+            }
+            if (insets.right > 0) {
+                g2.drawLine(width - sd2, 0, width - sd2, height - s);
+            }
+            g2.dispose();
+        }
+    }
+}
