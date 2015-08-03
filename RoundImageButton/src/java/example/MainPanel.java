@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 //import javax.swing.plaf.basic.*;
@@ -129,7 +129,8 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundButton extends JButton {
-    protected Shape shape, base;
+    protected Shape shape;
+    protected Shape base;
 //     public RoundButton() {
 //         super();
 //     }
@@ -188,7 +189,7 @@ class RoundButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        return shape == null ? false : shape.contains(x, y);
+        return Objects.nonNull(shape) ? shape.contains(x, y) : false;
     }
 }
 

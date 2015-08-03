@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.table.*;
@@ -16,7 +17,7 @@ public final class MainPanel extends JPanel {
         return sr / dpi;
     }
     @Override public Dimension getPreferredSize() {
-        if (preferredSize == null) {
+        if (Objects.isNull(preferredSize)) {
             float sot = getSizeOfText();
             preferredSize = new Dimension((int) (defaultSize.width * sot), (int) (defaultSize.height * sot));
         }

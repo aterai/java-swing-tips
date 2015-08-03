@@ -7,6 +7,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.*;
+import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -260,7 +261,7 @@ class TransparentMenu extends JMenu {
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
     // http://bugs.java.com/view_bug.do?bug_id=4688783
     private void ensurePopupMenuCreated() {
-        if (popupMenu == null) {
+        if (Objects.isNull(popupMenu)) {
             this.popupMenu = new TranslucentPopupMenu();
             popupMenu.setInvoker(this);
             popupListener = createWinListener(popupMenu);
