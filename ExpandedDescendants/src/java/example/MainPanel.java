@@ -158,7 +158,7 @@ public final class MainPanel extends JPanel {
 //     @Override public void valueChanged(TreeSelectionEvent e) {
 //         final JTree tree = (JTree) e.getSource();
 //         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-// //         if (frame == null) {
+// //         if (Objects.isNull(frame)) {
 // //             frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
 // //             frame.setGlassPane(new LockingGlassPane());
 // //         }
@@ -167,9 +167,13 @@ public final class MainPanel extends JPanel {
 //         final DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
 //         //final TreePath path = e.getPath();
 //
-//         if (!node.isLeaf()) { return; }
+//         if (!node.isLeaf()) {
+//             return;
+//         }
 //         final File parent = (File) node.getUserObject();
-//         if (!parent.isDirectory()) return;
+//         if (!parent.isDirectory()) {
+//           return;
+//         }
 //
 //         SwingWorker<String, File> worker = new SwingWorker<String, File>() {
 //             @Override public String doInBackground() {

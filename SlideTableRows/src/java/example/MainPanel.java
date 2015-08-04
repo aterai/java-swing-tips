@@ -102,7 +102,9 @@ public final class MainPanel extends JPanel {
 
 //     public void xxx_deleteActionPerformed(ActionEvent evt) {
 //         final int[] selection = table.getSelectedRows();
-//         if (selection == null || selection.length <= 0) { return; }
+//         if (selection.length == 0) {
+//             return;
+//         }
 //         (new SwingWorker<Void, Integer>() {
 //             @Override public Void doInBackground() {
 //                 int current = END_HEIGHT;
@@ -140,8 +142,7 @@ public final class MainPanel extends JPanel {
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
-            int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l.length > 0);
+            deleteAction.setEnabled(table.getSelectedRows().length > 0);
             super.show(c, x, y);
         }
     }

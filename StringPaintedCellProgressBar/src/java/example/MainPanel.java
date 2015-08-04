@@ -93,9 +93,6 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
-            if (selection.length == 0) {
-                return;
-            }
             for (int i = 0; i < selection.length; i++) {
                 int midx = table.convertRowIndexToModel(selection[i]);
                 SwingWorker worker = model.getSwingWorker(midx);
@@ -147,8 +144,7 @@ public final class MainPanel extends JPanel {
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
-            int[] l = table.getSelectedRows();
-            boolean flag = l.length > 0;
+            boolean flag = table.getSelectedRows().length > 0;
             cancelAction.setEnabled(flag);
             deleteAction.setEnabled(flag);
             super.show(c, x, y);

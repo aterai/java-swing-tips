@@ -51,19 +51,7 @@ public final class MainPanel extends JPanel {
                 getRootPane().setDefaultButton(searchButton);
             }
         });
-
         combo.setEditable(true);
-//         combo.addItemListener(new ItemListener() {
-//             private boolean adj = false;
-//             @Override public void itemStateChanged(ItemEvent e) {
-//             //    if (combo.isPopupVisible()) { return; }
-//                 if (!adj && e.getStateChange() == ItemEvent.SELECTED) {
-//                     adj = true;
-//                     searchActionPerformed();
-//                     adj = false;
-//                 }
-//             }
-//         });
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));

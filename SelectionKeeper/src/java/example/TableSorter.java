@@ -431,11 +431,9 @@ public class TableSorter extends AbstractTableModel {
 //         private List<?> saveSelectedRow(JTable table, int keyColIndex) {
 //             List<Object> list = new ArrayList<>();
 //             int[] ilist = table.getSelectedRows();
-//             if (ilist.length > 0) {
-//                 DefaultTableModel model = (DefaultTableModel) tableModel;
-//                 for (int i = ilist.length - 1; i >= 0; i--) {
-//                     list.add(model.getValueAt(modelIndex(ilist[i]), keyColIndex));
-//                 }
+//             DefaultTableModel model = (DefaultTableModel) tableModel;
+//             for (int i = ilist.length - 1; i >= 0; i--) {
+//                 list.add(model.getValueAt(modelIndex(ilist[i]), keyColIndex));
 //             }
 //             return list;
 //         }

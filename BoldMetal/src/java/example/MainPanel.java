@@ -94,7 +94,6 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editNodeAction = new AbstractAction("edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            //if (path == null) { return; }
             Object node = path.getLastPathComponent();
             if (node instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
@@ -118,7 +117,6 @@ class TreePopupMenu extends JPopupMenu {
     private final Action removeNodeAction = new AbstractAction("remove") {
         @Override public void actionPerformed(ActionEvent e) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            //if (path.getParentPath() != null) {
             if (!node.isRoot()) {
                 JTree tree = (JTree) getInvoker();
                 DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
@@ -145,7 +143,7 @@ class TreePopupMenu extends JPopupMenu {
             JTree tree = (JTree) c;
             //TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y);
-            //if (path != null && Arrays.asList(tsp).contains(path)) {
+            //if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
             if (Objects.nonNull(path)) {
                 tree.setSelectionPath(path);
                 super.show(c, x, y);

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
       // JDK 5
       //new Box(BoxLayout.X_AXIS) {
       //    @Override protected void paintComponent(Graphics g) {
-      //        if (ui != null) {
+      //        if (Objects.nonNull(ui)) {
       //            super.paintComponent(g);
       //        } else if (isOpaque()) {
       //            g.setColor(getBackground());
@@ -200,7 +200,9 @@ class RoundButton extends JButton {
 //         clearTextShiftOffset();
 //         defaultTextShiftOffset = 0;
 //         Icon icon = b.getIcon();
-//         if (icon == null) { return; }
+//         if (Objects.isNull(icon)) {
+//             return;
+//         }
 //         b.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 //         b.setContentAreaFilled(false);
 //         b.setFocusPainted(false);
@@ -232,7 +234,7 @@ class RoundButton extends JButton {
 //                 }
 //             }
 //         };
-//         if (listener != null) {
+//         if (Objects.nonNull(listener)) {
 //             b.addMouseListener(listener);
 //             b.addMouseMotionListener(listener);
 //             b.addFocusListener(listener);

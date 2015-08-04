@@ -66,7 +66,6 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editNodeAction = new AbstractAction("edit") {
         @Override public void actionPerformed(ActionEvent e) {
-            //if (Objects.isNull(path) { return; }
             Object node = path.getLastPathComponent();
             if (node instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;

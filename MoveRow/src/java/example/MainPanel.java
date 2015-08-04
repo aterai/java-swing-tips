@@ -153,9 +153,6 @@ class DeleteAction extends AbstractAction {
             table.getCellEditor().stopCellEditing();
         }
         int[] selection = table.getSelectedRows();
-        if (selection.length == 0) {
-            return;
-        }
         TestModel model = (TestModel) table.getModel();
         for (int i = selection.length - 1; i >= 0; i--) {
             //Test ixsc = model.getTest(selection[i]);

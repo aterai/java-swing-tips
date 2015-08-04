@@ -198,9 +198,6 @@ class TablePopupMenu extends JPopupMenu {
         @Override public void actionPerformed(ActionEvent e) {
             JTable table = (JTable) getInvoker();
             int[] selection = table.getSelectedRows();
-            if (selection.length == 0) {
-                return;
-            }
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             for (int i = selection.length - 1; i >= 0; i--) {
                 model.removeRow(table.convertRowIndexToModel(selection[i]));
@@ -214,8 +211,7 @@ class TablePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
             JTable table = (JTable) c;
-            int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l.length > 0);
+            deleteAction.setEnabled(table.getSelectedRows().length > 0);
             super.show(c, x, y);
         }
     }
