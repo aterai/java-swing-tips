@@ -144,7 +144,7 @@ public final class MainPanel extends JPanel {
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
-            boolean flag = table.getSelectedRows().length > 0;
+            boolean flag = table.getSelectedRowCount() > 0;
             cancelAction.setEnabled(flag);
             deleteAction.setEnabled(flag);
             super.show(c, x, y);

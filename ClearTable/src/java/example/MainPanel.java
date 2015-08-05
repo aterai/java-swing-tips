@@ -108,8 +108,7 @@ public final class MainPanel extends JPanel {
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
-            int[] l = table.getSelectedRows();
-            deleteAction.setEnabled(l.length > 0);
+            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }

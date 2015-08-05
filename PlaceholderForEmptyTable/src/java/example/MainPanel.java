@@ -103,7 +103,7 @@ class TablePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTable) {
             JTable table = (JTable) c;
-            deleteAction.setEnabled(table.getSelectedRows().length > 0);
+            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
             super.show(c, x, y);
         }
     }
