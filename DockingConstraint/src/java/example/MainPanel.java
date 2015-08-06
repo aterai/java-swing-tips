@@ -19,7 +19,9 @@ public final class MainPanel extends JPanel {
                 return super.canDock(c, p) ? isHorizontalDockingConstraint(c, p) : false;
             }
             private boolean isHorizontalDockingConstraint(Component c, Point p) {
-                if (!c.contains(p)) { return false; }
+                if (!c.contains(p)) {
+                    return false;
+                }
                 int iv = (toolBar.getOrientation() == JToolBar.HORIZONTAL) ? toolBar.getSize().height : toolBar.getSize().width;
                 return p.x < c.getWidth() - iv && p.x >= iv;
             }

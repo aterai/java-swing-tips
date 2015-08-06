@@ -59,13 +59,17 @@ public final class MainPanel extends JPanel {
 //                 System.out.println("bbbbbbbbb");
 //                 try {
 //                     internal.setSelected(false);
-//                 } catch (PropertyVetoException ex) { ex.printStackTrace(); }
+//                 } catch (PropertyVetoException ex) {
+//                     ex.printStackTrace();
+//                 }
 //             }
 //             @Override public void windowGainedFocus(FocusEvent e) {
 //                 System.out.println("aaaaaaaa");
 //                 try {
 //                     internal.setSelected(true);
-//                 } catch (PropertyVetoException ex) { ex.printStackTrace(); }
+//                 } catch (PropertyVetoException ex) {
+//                     ex.printStackTrace();
+//                 }
 //             }
 //         });
 //         EventQueue.invokeLater(new Runnable() {

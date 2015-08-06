@@ -209,8 +209,11 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
             repaint();
         }
         @Override public void dropActionChanged(DropTargetDragEvent e) {
-            // if (isDragAcceptable(e)) { e.acceptDrag(e.getDropAction()); }
-            // else e.rejectDrag();
+            // if (isDragAcceptable(e)) {
+            //     e.acceptDrag(e.getDropAction());
+            // } else {
+            //     e.rejectDrag();
+            // }
         }
         @Override public void drop(DropTargetDropEvent e) {
 //             Transferable t = e.getTransferable();

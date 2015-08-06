@@ -120,7 +120,9 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
 //     public DotBorder(int top, int left, int bottom, int right) {
 //         super(top, left, bottom, right);
 //     }
-//     @Override public boolean isBorderOpaque() { return true; }
+//     @Override public boolean isBorderOpaque() {
+//         return true;
+//     }
 //     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setPaint(c.getForeground());

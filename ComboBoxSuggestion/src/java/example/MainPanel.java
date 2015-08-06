@@ -291,7 +291,9 @@ class ComboKeyHandler extends KeyAdapter {
 //             DefaultComboBoxModel m = new DefaultComboBoxModel();
 //             if (Objects.nonNull(text) && text.isEmpty()) {
 //                 for (String s: list) {
-//                     if (s.startsWith(text)) { m.addElement(s); }
+//                     if (s.startsWith(text)) {
+//                         m.addElement(s);
+//                     }
 //                 }
 //             }
 //             return m;

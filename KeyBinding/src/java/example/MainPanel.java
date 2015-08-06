@@ -55,7 +55,9 @@ public final class MainPanel extends JPanel {
     // modified by terai
 //     private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
 //         Hashtable<Object, ArrayList<KeyStroke>> h = new Hashtable<>();
-//         if (im.allKeys() == null) { return h; }
+//         if (Objects.isNull(im.allKeys())) {
+//             return h;
+//         }
 //         for (KeyStroke ks: im.allKeys()) {
 //             Object name = im.get(ks);
 //             if (h.containsKey(name)) {

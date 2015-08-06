@@ -149,45 +149,47 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 }
 
 // class LockingGlassPane extends JPanel {
-//   public LockingGlassPane() {
-//     setOpaque(false);
-//     setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-//       @Override public boolean accept(Component c) { return false; }
-//     });
-//     addKeyListener(new KeyAdapter() {});
-//     addMouseListener(new MouseAdapter() {});
-//     requestFocusInWindow();
-//     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//   }
-//   @Override public void setVisible(boolean flag) {
-//     super.setVisible(flag);
-//     setFocusTraversalPolicyProvider(flag);
-//   }
+//     public LockingGlassPane() {
+//         setOpaque(false);
+//         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+//             @Override public boolean accept(Component c) {
+//                 return false;
+//             }
+//         });
+//         addKeyListener(new KeyAdapter() {});
+//         addMouseListener(new MouseAdapter() {});
+//         requestFocusInWindow();
+//         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//     }
+//     @Override public void setVisible(boolean flag) {
+//         super.setVisible(flag);
+//         setFocusTraversalPolicyProvider(flag);
+//     }
 // }
-//
+
 // class LockingGlassPane extends JPanel {
-//   public LockingGlassPane() {
-//     setOpaque(false);
-//     super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//   }
-//   @Override public void setVisible(boolean isVisible) {
-//     boolean oldVisible = isVisible();
-//     super.setVisible(isVisible);
-//     JRootPane rootPane = SwingUtilities.getRootPane(this);
-//     if (rootPane != null && isVisible() != oldVisible) {
-//       rootPane.getLayeredPane().setVisible(!isVisible);
+//     public LockingGlassPane() {
+//         setOpaque(false);
+//         super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //     }
-//   }
-//   @Override public void paintComponent(Graphics g) {
-//     JRootPane rootPane = SwingUtilities.getRootPane(this);
-//     if (rootPane != null) {
-//       // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/
-//       // it is important to call print() instead of paint() here
-//       // because print() doesn't affect the frame's double buffer
-//       rootPane.getLayeredPane().print(g);
+//     @Override public void setVisible(boolean isVisible) {
+//         boolean oldVisible = isVisible();
+//         super.setVisible(isVisible);
+//         JRootPane rootPane = SwingUtilities.getRootPane(this);
+//         if (rootPane != null && isVisible() != oldVisible) {
+//             rootPane.getLayeredPane().setVisible(!isVisible);
+//         }
 //     }
-//     super.paintComponent(g);
-//   }
+//     @Override public void paintComponent(Graphics g) {
+//         JRootPane rootPane = SwingUtilities.getRootPane(this);
+//         if (rootPane != null) {
+//             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/
+//             // it is important to call print() instead of paint() here
+//             // because print() doesn't affect the frame's double buffer
+//             rootPane.getLayeredPane().print(g);
+//         }
+//         super.paintComponent(g);
+//     }
 // }
 
 // class PrintGlassPane extends JPanel {
@@ -213,10 +215,10 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 //             // because print() doesn't affect the frame's double buffer
 //             rootPane.getLayeredPane().print(g);
 //         }
-//         //     Graphics2D g2 = (Graphics2D) g.create();
-//         //     g2.setPaint(texture);
-//         //     g2.fillRect(0, 0, getWidth(), getHeight());
-//         //     g2.dispose();
+//         //Graphics2D g2 = (Graphics2D) g.create();
+//         //g2.setPaint(texture);
+//         //g2.fillRect(0, 0, getWidth(), getHeight());
+//         //g2.dispose();
 //     }
 // }
 

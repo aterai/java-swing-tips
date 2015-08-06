@@ -58,12 +58,16 @@ public final class MainPanel extends JPanel {
         }
     }
 //     private byte[] loadAudioData(final String soundFile) {
-//         if (soundFile == null) { return null; }
+//         if (soundFile == null) {
+//           return null;
+//         }
 //         byte[] buffer = (byte[])AccessController.doPrivileged(new PrivilegedAction() {
 //             public Object run() {
 //                 try {
 //                     InputStream resource = getClass().getResourceAsStream(soundFile);
-//                     if (resource == null) { return null; }
+//                     if (resource == null) {
+//                         return null;
+//                     }
 //                     BufferedInputStream in = new BufferedInputStream(resource);
 //                     ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
 //                     byte[] buffer = new byte[1024];
