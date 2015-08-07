@@ -51,7 +51,9 @@ public final class MainPanel extends JPanel {
 //                     Component c = ce.getTableCellEditorComponent(t, null, true, row, col);
 //                     Point p = SwingUtilities.convertPoint(t, pt, c);
 //                     Component b = SwingUtilities.getDeepestComponentAt(c, p.x, p.y);
-//                     if (b instanceof JRadioButton) { ((JRadioButton) b).doClick(); }
+//                     if (b instanceof JRadioButton) {
+//                         ((JRadioButton) b).doClick();
+//                     }
 //                 }
 //             }
 //         });

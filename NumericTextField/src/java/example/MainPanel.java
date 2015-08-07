@@ -200,7 +200,9 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
     static {
         //amountDisplayFormat.setMinimumFractionDigits(0);
         //amountEditFormat.setGroupingUsed(false);
-        //try { mf = new MaskFormatter("#######"); } catch (ParseException e) {}
+        //try {
+        //    mf = new MaskFormatter("#######");
+        //} catch (ParseException e) {}
         numberFormatter.setValueClass(Integer.class);
         ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
     }

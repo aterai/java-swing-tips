@@ -291,8 +291,12 @@ class DotBorder extends EmptyBorder {
 //         border.type = EnumSet.noneOf(DotBorder.Type.class);
 //         if (isLeadRow) {
 //           border.type.add(DotBorder.Type.LEAD);
-//           if (column == 0) { border.type.add(DotBorder.Type.WEST); }
-//           if (column == getColumnCount() - 1) { border.type.add(DotBorder.Type.EAST); }
+//           if (column == 0) {
+//             border.type.add(DotBorder.Type.WEST);
+//           }
+//           if (column == getColumnCount() - 1) {
+//             border.type.add(DotBorder.Type.EAST);
+//           }
 //         }
 //       }
 //       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -339,7 +343,7 @@ class DotBorder extends EmptyBorder {
 //   public EnumSet<Type> type = EnumSet.noneOf(Type.class);
 //   private static final BasicStroke dashed = new BasicStroke(
 //     1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-//     10f, (new float[] {1f}), 0f);
+//     10f, (new float[] { 1f }), 0f);
 //   private static final Color DOT_COLOR = new Color(200, 150, 150);
 //   public DotBorder(int top, int left, int bottom, int right) {
 //     super(top, left, bottom, right);

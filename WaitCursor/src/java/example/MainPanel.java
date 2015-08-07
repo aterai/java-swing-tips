@@ -120,7 +120,9 @@ class LockingGlassPane extends JComponent {
 //         public LockingGlassPane_() {
 //             setOpaque(false);
 //             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-//                 @Override public boolean accept(Component c) { return false; }
+//                 @Override public boolean accept(Component c) {
+//                     return false;
+//                 }
 //             });
 // //             Set<AWTKeyStroke> s = Collections.emptySet();
 // //             setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, s);

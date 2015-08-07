@@ -81,7 +81,9 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         if (offImage != null) { ((Graphics2D) g).drawImage(offImage, 0, 0, this); }
+//         if (Objects.nonNull(offImage)) {
+//             ((Graphics2D) g).drawImage(offImage, 0, 0, this);
+//         }
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();

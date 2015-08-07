@@ -75,7 +75,9 @@ public final class MainPanel extends JPanel {
 //             Document doc = jtp.getDocument();
 //             doc.insertString(doc.getLength(), str + SEPARATOR, sas);
 //             jtp.setCaretPosition(doc.getLength());
-//         } catch (BadLocationException e) { e.printStackTrace(); }
+//         } catch (BadLocationException e) {
+//             e.printStackTrace();
+//         }
 //     }
     private void append(String str, boolean flg) {
         String style = flg ? "regular" : "error";

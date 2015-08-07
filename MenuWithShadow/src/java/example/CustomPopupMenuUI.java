@@ -19,7 +19,9 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
     }
 //     public static JFrame frame = null;
 //     private static boolean isInRootPanel(JComponent popup, Point p) {
-//         if (frame == null) { return false; }
+//         if (Objects.isNull(frame)) {
+//             return false;
+//         }
 //         Rectangle r = frame.getBounds();
 //         Dimension d = popup.getPreferredSize();
 //         return r.contains(p.x, p.y, d.width + OFF, d.height + OFF);
