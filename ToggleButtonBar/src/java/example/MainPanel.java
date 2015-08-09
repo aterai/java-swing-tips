@@ -131,7 +131,7 @@ class ToggleButtonBarCellIcon implements Icon {
 
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Container parent = c.getParent();
-        if (parent == null) {
+        if (Objects.isNull(parent)) {
             return;
         }
         int r = 8;

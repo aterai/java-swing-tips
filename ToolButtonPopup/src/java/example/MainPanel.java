@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -64,6 +65,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class MenuArrowIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -99,9 +101,9 @@ class MenuToggleButton extends JToggleButton {
     public MenuToggleButton(String text, Icon icon) {
         super();
         Action a = new AbstractAction(text) {
-            @Override public void actionPerformed(ActionEvent ae) {
-                MenuToggleButton b = (MenuToggleButton) ae.getSource();
-                if (pop != null) {
+            @Override public void actionPerformed(ActionEvent e) {
+                Component b = (Component) e.getSource();
+                if (Objects.nonNull(pop)) {
                     pop.show(b, 0, b.getHeight());
                 }
             }
@@ -111,7 +113,7 @@ class MenuToggleButton extends JToggleButton {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
     }
-    public void setPopupMenu(final JPopupMenu pop) {
+    public void setPopupMenu(JPopupMenu pop) {
         this.pop = pop;
         pop.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
