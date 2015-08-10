@@ -45,13 +45,12 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private TreePath[] tsp;
     public TreePopupMenu() {
         super();
         add(new AbstractAction("path") {
             @Override public void actionPerformed(ActionEvent e) {
-                //for (TreePath path: tsp) System.out.println(path);
-                JOptionPane.showMessageDialog(null, tsp, "path", JOptionPane.INFORMATION_MESSAGE);
+                JTree tree = (JTree) getInvoker();
+                JOptionPane.showMessageDialog(tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         add(new JMenuItem("dummy"));
@@ -59,8 +58,7 @@ class TreePopupMenu extends JPopupMenu {
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTree) {
             JTree tree = (JTree) c;
-            tsp = tree.getSelectionPaths();
-            if (tsp != null && tsp.length > 0) {
+            if (tree.getSelectionCount() > 0) {
                 super.show(c, x, y);
             }
         }
