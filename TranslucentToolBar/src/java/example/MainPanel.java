@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -38,7 +39,33 @@ public final class MainPanel extends JPanel {
 }
 
 class LabelWithToolBox extends JLabel implements HierarchyListener {
-    private Timer animator;
+    private static final int DELAY = 8;
+    private final Timer animator = new Timer(DELAY, new ActionListener() {
+        @Override public void actionPerformed(ActionEvent e) {
+            int height = toolBox.getPreferredSize().height;
+            double h = (double) height;
+            if (isHidden) {
+                double a = AnimationUtil.easeInOut(++counter / h);
+                yy = (int) (.5 + a * h);
+                toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                if (yy >= height) {
+                    yy = height;
+                    animator.stop();
+                }
+            } else {
+                double a = AnimationUtil.easeInOut(--counter / h);
+                yy = (int) (.5 + a * h);
+                toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+                if (yy <= 0) {
+                    yy = 0;
+                    animator.stop();
+                }
+            }
+            toolBox.revalidate();
+        }
+    });
+    private boolean isHidden;
+    private int counter;
     private int yy;
     private final JToolBar toolBox = new JToolBar() {
         @Override protected void paintComponent(Graphics g) {
@@ -89,51 +116,21 @@ class LabelWithToolBox extends JLabel implements HierarchyListener {
         addHierarchyListener(this);
     }
     private class ToolBoxHandler extends MouseAdapter {
-        private static final int DELAY = 8;
-        private int count;
         @Override public void mouseEntered(MouseEvent e) {
-            if (animator != null && animator.isRunning() || yy == toolBox.getPreferredSize().height) {
-                return;
+            if (!animator.isRunning()) { // && yy != toolBox.getPreferredSize().height) {
+                isHidden = true;
+                animator.start();
             }
-            final double h = (double) toolBox.getPreferredSize().height;
-            animator = new Timer(DELAY, new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    double a = AnimationUtil.easeInOut(++count / h);
-                    yy = (int) (.5 + a * h);
-                    toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-                    if (yy >= toolBox.getPreferredSize().height) {
-                        yy = toolBox.getPreferredSize().height;
-                        animator.stop();
-                    }
-                    revalidate();
-                    repaint();
-                }
-            });
-            animator.start();
         }
         @Override public void mouseExited(MouseEvent e) {
-            if (animator != null && animator.isRunning() || contains(e.getPoint()) && yy == toolBox.getPreferredSize().height) {
-                return;
+            if (!contains(e.getPoint())) { //!animator.isRunning()) {
+                isHidden = false;
+                animator.start();
             }
-            final double h = (double) toolBox.getPreferredSize().height;
-            animator = new Timer(DELAY, new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    double a = AnimationUtil.easeInOut(--count / h);
-                    yy = (int) (.5 + a * h);
-                    toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-                    if (yy <= 0) {
-                        yy = 0;
-                        animator.stop();
-                    }
-                    revalidate();
-                    repaint();
-                }
-            });
-            animator.start();
         }
     }
     @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && animator != null && !e.getComponent().isDisplayable()) {
+        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             animator.stop();
         }
     }
@@ -184,7 +181,7 @@ class ParentDispatchMouseListener extends MouseAdapter {
     private void dispatchMouseEvent(MouseEvent e) {
         Component src = e.getComponent();
         Component tgt = SwingUtilities.getUnwrappedParent(src);
-        if (tgt != null) {
+        if (Objects.nonNull(tgt)) {
             tgt.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, tgt));
         }
     }

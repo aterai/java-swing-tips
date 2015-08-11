@@ -7,6 +7,7 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.IOException;
 import java.net.*;
+import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -79,7 +80,7 @@ public final class MainPanel extends JPanel {
     }
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (texture == null) {
+        if (Objects.isNull(texture)) {
             texture = makeTexturePaint();
         }
         Graphics2D g2 = (Graphics2D) g.create();
