@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.*;
@@ -47,19 +48,20 @@ class RowSelectionTree extends JTree {
     @Override public void paintComponent(Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
-        if (getSelectionCount() > 0) {
-            g.setColor(SELC);
-            for (int i: getSelectionRows()) {
-                Rectangle r = getRowBounds(i);
-                g.fillRect(0, r.y, getWidth(), r.height);
-            }
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setColor(SELC);
+        for (int i: getSelectionRows()) {
+            Rectangle r = getRowBounds(i);
+            g2.fillRect(0, r.y, getWidth(), r.height);
         }
         super.paintComponent(g);
-        if (getLeadSelectionPath() != null) {
-            Rectangle r = getRowBounds(getRowForPath(getLeadSelectionPath()));
-            g.setColor(hasFocus() ? SELC.darker() : SELC);
-            g.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+        TreePath path = getLeadSelectionPath();
+        if (Objects.nonNull(path)) {
+            Rectangle r = getRowBounds(getRowForPath(path));
+            g2.setColor(SELC.darker());
+            g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
         }
+        g2.dispose();
     }
     @Override public void updateUI() {
         removeFocusListener(handler);

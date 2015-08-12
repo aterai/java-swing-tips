@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.tree.*;
 //import javax.swing.plaf.nimbus.*; //JDK 1.7.0
@@ -76,19 +77,20 @@ class TransparentTree extends JTree {
     //http://ateraimemo.com/Swing/TreeRowSelection.html
     private static final Color SELC = new Color(100, 100, 255, 100);
     @Override public void paintComponent(Graphics g) {
-        if (getSelectionCount() > 0) {
-            for (int i: getSelectionRows()) {
-                Rectangle r = getRowBounds(i);
-                g.setColor(SELC);
-                g.fillRect(0, r.y, getWidth(), r.height);
-            }
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setColor(SELC);
+        for (int i: getSelectionRows()) {
+            Rectangle r = getRowBounds(i);
+            g2.fillRect(0, r.y, getWidth(), r.height);
         }
         super.paintComponent(g);
-        if (getLeadSelectionPath() != null) {
-            Rectangle r = getRowBounds(getRowForPath(getLeadSelectionPath()));
-            g.setColor(SELC.darker());
-            g.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+        TreePath path = getLeadSelectionPath();
+        if (Objects.nonNull(path)) {
+            Rectangle r = getRowBounds(getRowForPath(path));
+            g2.setColor(SELC.darker());
+            g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
         }
+        g2.dispose();
     }
     @Override public void updateUI() {
         super.updateUI();
@@ -136,7 +138,7 @@ class TransparentRootPane extends JRootPane {
 class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final Color ALPHA_OF_ZERO = new Color(0x0, true);
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, false);
         c.setOpaque(false);
         return c;
     }
