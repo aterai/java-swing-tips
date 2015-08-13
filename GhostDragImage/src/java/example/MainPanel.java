@@ -325,21 +325,20 @@ class ListItemTransferHandler extends TransferHandler {
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferSupport info) {
-        return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
-//         if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
-//             info.setShowDropLocation(true);
-//             info.setDropAction(MOVE);
-//             return true;
-//         } else {
-//             return false;
-//         }
+        //Cursor flickering? return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
+        if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
+            info.setDropAction(TransferHandler.MOVE);
+            return true;
+        } else {
+            return false;
+        }
     }
     @Override public int getSourceActions(JComponent c) {
         System.out.println("getSourceActions");
         Component glassPane = c.getRootPane().getGlassPane();
         glassPane.setCursor(DragSource.DefaultMoveDrop);
         if (!(c instanceof JList)) {
-            return NONE;
+            return TransferHandler.NONE;
         }
         JList source = (JList) c;
         setDragImage(createDragImage(source));
@@ -347,7 +346,7 @@ class ListItemTransferHandler extends TransferHandler {
         if (Objects.nonNull(pt)) {
             setDragImageOffset(pt);
         }
-        return MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     private static BufferedImage createDragImage(JList source) {
         int w = source.getWidth();
@@ -399,7 +398,7 @@ class ListItemTransferHandler extends TransferHandler {
         Component glassPane = c.getRootPane().getGlassPane();
         //glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         glassPane.setVisible(false);
-        cleanup(c, action == MOVE);
+        cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
         if (remove && Objects.nonNull(indices)) {
@@ -431,14 +430,14 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         Component glassPane = c.getRootPane().getGlassPane();
         glassPane.setCursor(DragSource.DefaultMoveDrop);
         if (!(c instanceof JList)) {
-            return NONE;
+            return TransferHandler.NONE;
         }
         JList source = (JList) c;
         int w = source.getFixedCellWidth();
         int h = source.getFixedCellHeight() - 20; //TODO
         setDragImage(createCompactDragImage(source, w, h));
         setDragImageOffset(new Point(w / 2, h));
-        return MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     private static BufferedImage createCompactDragImage(JList source, int w, int h) {
         BufferedImage br = null;
