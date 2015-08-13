@@ -146,15 +146,13 @@ class StarburstIcon implements Icon {
         return 2 * R2;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.translate(x, y);
-        g2d.setPaint(Color.YELLOW);
-        g2d.fill(star);
-        g2d.setPaint(Color.BLACK);
-        g2d.draw(star);
-        //g2d.translate(-x, -y);
-        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.translate(x, y);
+        g2.setPaint(Color.YELLOW);
+        g2.fill(star);
+        g2.setPaint(Color.BLACK);
+        g2.draw(star);
+        g2.dispose();
     }
 }

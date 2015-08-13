@@ -190,16 +190,16 @@ final class TextureFactory {
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point pt = e.getPoint();
-//         Graphics2D g2d = currentImage.createGraphics();
-//         g2d.setStroke(new BasicStroke(3f));
+//         Graphics2D g2 = currentImage.createGraphics();
+//         g2.setStroke(new BasicStroke(3f));
 //         if (isPen) {
-//             g2d.setPaint(Color.BLACK);
+//             g2.setPaint(Color.BLACK);
 //         } else {
-//             g2d.setComposite(AlphaComposite.Clear);
-//             g2d.setPaint(ERASER);
+//             g2.setComposite(AlphaComposite.Clear);
+//             g2.setPaint(ERASER);
 //         }
-//         g2d.drawLine(startPoint.x, startPoint.y, pt.x, pt.y);
-//         g2d.dispose();
+//         g2.drawLine(startPoint.x, startPoint.y, pt.x, pt.y);
+//         g2.dispose();
 //         startPoint = pt;
 //         repaint();
 //     }

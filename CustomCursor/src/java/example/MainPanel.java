@@ -14,26 +14,15 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        BufferedImage bi1 = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d1 = bi1.createGraphics();
-        g2d1.setPaint(Color.BLACK);
-        g2d1.drawString("?", 16, 28);
-        g2d1.dispose();
+        BufferedImage bi1 = makeStringBufferedImage("?");
         label1.setCursor(getToolkit().createCustomCursor(bi1, centerpt, "?"));
 
-        BufferedImage bi2 = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d2 = bi2.createGraphics();
-        g2d2.setPaint(Color.RED);
-        g2d2.drawOval(8, 8, 16, 16);
-        g2d2.dispose();
+        BufferedImage bi2 = makeOvalBufferedImage();
         label2.setCursor(getToolkit().createCustomCursor(bi2, centerpt, "oval"));
         label2.setIcon(new ImageIcon(bi2));
 
         Icon icon = new GreenBlueIcon();
-        BufferedImage bi3 = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d3 = bi3.createGraphics();
-        icon.paintIcon(null, g2d3, 0, 0);
-        g2d3.dispose();
+        BufferedImage bi3 = makeIconBufferedImage(icon);
         label3.setCursor(getToolkit().createCustomCursor(bi3, centerpt, "rect"));
         label3.setIcon(icon);
 
@@ -44,6 +33,29 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(p);
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static BufferedImage makeStringBufferedImage(String str) {
+        BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bi.createGraphics();
+        g2.setPaint(Color.BLACK);
+        g2.drawString(str, 16, 28);
+        g2.dispose();
+        return bi;
+    }
+    private static BufferedImage makeOvalBufferedImage() {
+        BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bi.createGraphics();
+        g2.setPaint(Color.RED);
+        g2.drawOval(8, 8, 16, 16);
+        g2.dispose();
+        return bi;
+    }
+    private static BufferedImage makeIconBufferedImage(Icon icon) {
+        BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bi.createGraphics();
+        icon.paintIcon(null, g2, 0, 0);
+        g2.dispose();
+        return bi;
     }
     private static JPanel makePanel(String title, JComponent c) {
         JPanel p = new JPanel(new BorderLayout());
@@ -88,7 +100,6 @@ class GreenBlueIcon implements Icon {
         g2.fillRect(8, 8, 8, 8);
         g2.setPaint(Color.BLUE);
         g2.fillRect(16, 16, 8, 8);
-        //g2.translate(-x, -y);
         g2.dispose();
     }
 }

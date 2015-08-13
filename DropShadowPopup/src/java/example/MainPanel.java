@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-//*
+/*
 class DropShadowPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
     private transient BufferedImage shadow;
@@ -176,12 +176,12 @@ class ShadowBorder extends AbstractBorder {
             }
             g2.dispose();
         }
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(screen, 0, 0, c);
-        g2d.drawImage(shadow, 0, 0, c);
-        g2d.setPaint(c.getBackground()); //??? 1.7.0_03
-        g2d.fillRect(x, y, w - xoff, h - yoff);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.drawImage(screen, 0, 0, c);
+        g2.drawImage(shadow, 0, 0, c);
+        g2.setPaint(c.getBackground()); //??? 1.7.0_03
+        g2.fillRect(x, y, w - xoff, h - yoff);
+        g2.dispose();
     }
 }
 /*/

@@ -78,32 +78,32 @@ class DraggableImageMouseListener extends MouseAdapter {
         border  = new RoundRectangle2D.Double(0d, 0d, width, height, 10d, 10d);
     }
     public void paint(Graphics g, ImageObserver ior) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         AffineTransform at = AffineTransform.getTranslateInstance(x, y);
         at.rotate(radian, centerX, centerY);
 
-        g2d.setPaint(Color.WHITE);
-        g2d.setStroke(BORDER_STROKE);
+        g2.setPaint(Color.WHITE);
+        g2.setStroke(BORDER_STROKE);
         Shape s = new Rectangle2D.Double(border.x - 2, border.y - 2, border.width + 4, border.height + 20);
-        g2d.fill(at.createTransformedShape(s));
-        g2d.draw(at.createTransformedShape(s));
+        g2.fill(at.createTransformedShape(s));
+        g2.draw(at.createTransformedShape(s));
 
-        g2d.drawImage(image, at, ior);
+        g2.drawImage(image, at, ior);
         if (rotatorHover) {
             Area donut = new Area(outer);
             donut.subtract(new Area(inner));
-            g2d.setPaint(HOVER_COLOR);
-            g2d.fill(donut);
+            g2.setPaint(HOVER_COLOR);
+            g2.fill(donut);
         } else if (moverHover) {
-            g2d.setPaint(HOVER_COLOR);
-            g2d.fill(inner);
+            g2.setPaint(HOVER_COLOR);
+            g2.fill(inner);
         }
-        g2d.setStroke(BORDER_STROKE);
-        g2d.setPaint(Color.WHITE);
-        g2d.draw(at.createTransformedShape(border));
-        g2d.dispose();
+        g2.setStroke(BORDER_STROKE);
+        g2.setPaint(Color.WHITE);
+        g2.draw(at.createTransformedShape(border));
+        g2.dispose();
     }
     @Override public void mouseMoved(MouseEvent e) {
         if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {

@@ -72,12 +72,12 @@ class WatermarkTextField extends JTextField implements FocusListener {
     @Override public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (showWatermark) {
-            Graphics2D g2d = (Graphics2D) g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             //Insets i = getMargin();
             Insets i = getInsets();
             int yy = (getHeight() - image.getIconHeight()) / 2;
-            g2d.drawImage(image.getImage(), i.left, yy, this);
-            g2d.dispose();
+            g2.drawImage(image.getImage(), i.left, yy, this);
+            g2.dispose();
         }
     }
     @Override public void focusGained(FocusEvent e) {

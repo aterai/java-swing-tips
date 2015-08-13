@@ -126,7 +126,7 @@ class LightboxGlassPane extends JPanel {
             rootPane.getLayeredPane().print(g);
         }
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
+        Graphics2D g2 = (Graphics2D) g.create();
 
         if (h < image.getIconHeight() + 5 + 5) {
             h += image.getIconHeight() / 16;
@@ -145,25 +145,25 @@ class LightboxGlassPane extends JPanel {
         rect.setLocation(screen.x + screen.width / 2  - rect.width / 2,
                          screen.y + screen.height / 2 - rect.height / 2);
 
-        g2d.setColor(new Color(100, 100, 100, 100));
-        g2d.fill(screen);
-        g2d.setColor(new Color(255, 255, 255, 200));
-        g2d.fill(rect);
+        g2.setPaint(new Color(100, 100, 100, 100));
+        g2.fill(screen);
+        g2.setPaint(new Color(255, 255, 255, 200));
+        g2.fill(rect);
 
         if (alpha > 0) {
             if (alpha > 1f) {
                 alpha = 1f;
             }
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2d.drawImage(image.getImage(), rect.x + 5, rect.y + 5,
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.drawImage(image.getImage(), rect.x + 5, rect.y + 5,
                           image.getIconWidth(),
                           image.getIconHeight(), this);
         } else {
-            animatedIcon.paintIcon(this, g2d,
+            animatedIcon.paintIcon(this, g2,
                                    screen.x + screen.width / 2  - animatedIcon.getIconWidth() / 2,
                                    screen.y + screen.height / 2 - animatedIcon.getIconHeight() / 2);
         }
-        g2d.dispose();
+        g2.dispose();
     }
 }
 
@@ -194,20 +194,19 @@ class AnimeIcon implements Icon {
         this.isRunning = isRunning;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setPaint(new Color(0x0, true));
-        g2d.fillRect(x, y, getIconWidth(), getIconHeight());
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(ELLIPSE_COLOR);
-        g2d.translate(x, y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(new Color(0x0, true));
+        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setPaint(ELLIPSE_COLOR);
+        g2.translate(x, y);
         int size = list.size();
         for (int i = 0; i < size; i++) {
             float alpha = isRunning ? (i + 1) / (float) size : .5f;
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2d.fill(list.get(i));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            g2.fill(list.get(i));
         }
-        //g2d.translate(-x, -y);
-        g2d.dispose();
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return WIDTH;

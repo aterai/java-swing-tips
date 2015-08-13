@@ -92,23 +92,25 @@ public final class MainPanel extends JPanel {
 class SimpleBorderSpinner extends JSpinner {
     @Override protected void paintComponent(Graphics g) {
         if (getUI() instanceof WindowsSpinnerUI) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
-                                     : UIManager.getColor("FormattedTextField.inactiveBackground"));
-            g2d.fillRect(0, 0, getWidth(), getHeight());
-            g2d.dispose();
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
+                                    : UIManager.getColor("FormattedTextField.inactiveBackground"));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            g2.dispose();
         }
     }
     @Override protected void paintChildren(Graphics g) {
         super.paintChildren(g);
         if (!isEnabled() && getUI() instanceof WindowsSpinnerUI) {
-            Graphics2D g2d = (Graphics2D) g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             Rectangle r = getComponent(0).getBounds();
             r.add(getComponent(1).getBounds());
-            r.width--; r.height--;
-            g2d.setPaint(UIManager.getColor("FormattedTextField.inactiveBackground"));
-            g2d.draw(r);
-            g2d.dispose();
+            r.width--;
+            r.height--;
+            //r.grow(-1, -1);
+            g2.setPaint(UIManager.getColor("FormattedTextField.inactiveBackground"));
+            g2.draw(r);
+            g2.dispose();
         }
     }
 }

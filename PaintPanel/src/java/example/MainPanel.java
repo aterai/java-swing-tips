@@ -48,11 +48,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     }
     @Override public void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setStroke(new BasicStroke(3f));
-        g2d.setPaint(Color.BLACK);
-        g2d.drawLine(startPoint.x, startPoint.y, p.x, p.y);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setStroke(new BasicStroke(3f));
+        g2.setPaint(Color.BLACK);
+        g2.drawLine(startPoint.x, startPoint.y, p.x, p.y);
+        g2.dispose();
         startPoint = p;
     }
     @Override public void mouseDragged(MouseEvent e) {
@@ -87,10 +87,11 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();
-//         Graphics2D g2d = (Graphics2D) offImage.createGraphics();
-//         g2d.setStroke(new BasicStroke(3f));
-//         g2d.setPaint(Color.BLACK);
-//         g2d.drawLine(startPoint.x, startPoint.y, p.x, p.y);
+//         Graphics2D g2 = (Graphics2D) offImage.createGraphics();
+//         g2.setStroke(new BasicStroke(3f));
+//         g2.setPaint(Color.BLACK);
+//         g2.drawLine(startPoint.x, startPoint.y, p.x, p.y);
+//         g2.dispose();
 //         //repaint();
 //         Rectangle r = getRepaintRectangle(startPoint, p);
 //         repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); //(3.0 / 2) = 1.5 < 2
@@ -137,11 +138,13 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         repaint();
 //     }
 //     @Override public void paintComponent (Graphics g) {
-//         Graphics2D g2d = (Graphics2D) g.create();
-//         g2d.setPaint(Color.BLACK);
-//         g2d.setStroke(stroke);
-//         for (Shape s: list) g2d.draw(s);
-//         g2d.dispose();
+//         Graphics2D g2 = (Graphics2D) g.create();
+//         g2.setPaint(Color.BLACK);
+//         g2.setStroke(stroke);
+//         for (Shape s: list) {
+//             g2.draw(s);
+//         }
+//         g2.dispose();
 //     }
 //     @Override public void mouseMoved(MouseEvent e) {}
 //     @Override public void mouseExited(MouseEvent e) {}

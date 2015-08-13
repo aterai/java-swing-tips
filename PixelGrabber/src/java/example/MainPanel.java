@@ -35,21 +35,21 @@ public final class MainPanel extends JPanel {
         g.dispose();
 
 //         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-//         Graphics2D g2d = bi.createGraphics();
-//         g2d.drawImage(image, 0, 0, null);
-//         g2d.setComposite(AlphaComposite.Clear);
-//         g2d.setPaint(new Color(255, 255, 255, 0));
+//         Graphics2D g2 = bi.createGraphics();
+//         g2.drawImage(image, 0, 0, null);
+//         g2.setComposite(AlphaComposite.Clear);
+//         g2.setPaint(new Color(255, 255, 255, 0));
 //         //NW
-//         g2d.drawLine(0, 0, 4, 0);
-//         g2d.drawLine(0, 1, 2, 1);
-//         g2d.drawLine(0, 2, 1, 2);
-//         g2d.drawLine(0, 3, 0, 4);
+//         g2.drawLine(0, 0, 4, 0);
+//         g2.drawLine(0, 1, 2, 1);
+//         g2.drawLine(0, 2, 1, 2);
+//         g2.drawLine(0, 3, 0, 4);
 //         //NE
-//         g2d.drawLine(width - 5, 0, width - 1, 0);
-//         g2d.drawLine(width - 3, 1, width - 1, 1);
-//         g2d.drawLine(width - 2, 2, width - 1, 2);
-//         g2d.drawLine(width - 1, 3, width - 1, 4);
-//         g2d.dispose();
+//         g2.drawLine(width - 5, 0, width - 1, 0);
+//         g2.drawLine(width - 3, 1, width - 1, 1);
+//         g2.drawLine(width - 2, 2, width - 1, 2);
+//         g2.drawLine(width - 1, 3, width - 1, 4);
+//         g2.dispose();
 
 //         try {
 //             ImageIO.write(bi, "png", File.createTempFile("screenshot", ".png"));

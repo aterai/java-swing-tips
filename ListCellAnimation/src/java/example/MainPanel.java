@@ -112,20 +112,20 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             setOpaque(false);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g.create();
+            Graphics2D g2 = (Graphics2D) g.create();
             Rectangle r = list.getVisibleRect();
             int cw = r.width - icon.getPreferredSize().width;
-            FontRenderContext frc = g2d.getFontRenderContext();
+            FontRenderContext frc = g2.getFontRenderContext();
             GlyphVector gv = getFont().createGlyphVector(frc, getText());
             if (isAnimatingCell() && gv.getVisualBounds().getWidth() > cw) {
                 LineMetrics lm = getFont().getLineMetrics(getText(), frc);
                 float yy = lm.getAscent() / 2f + (float) gv.getVisualBounds().getY();
-                g2d.drawGlyphVector(gv, cw - xx, getHeight() / 2f - yy);
+                g2.drawGlyphVector(gv, cw - xx, getHeight() / 2f - yy);
                 xx = cw + gv.getVisualBounds().getWidth() - xx > 0 ? xx + 8f : 0f;
             } else {
-                super.paintComponent(g2d);
+                super.paintComponent(g);
             }
-            g2d.dispose();
+            g2.dispose();
         }
     }
     private class AnimeIcon extends JComponent {
@@ -153,25 +153,25 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             return new Dimension(WIDTH + 2, HEIGHT);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            //g2d.setPaint(getBackground());
-            //g2d.fillRect(0, 0, getWidth(), getHeight());
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            Graphics2D g2 = (Graphics2D) g.create();
+            //g2.setPaint(getBackground());
+            //g2.fillRect(0, 0, getWidth(), getHeight());
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if (isAnimatingCell()) {
                 float alpha = .1f;
                 for (Shape s: list) {
-                    g2d.setPaint(new Color(.5f, .5f, .5f, alpha));
-                    g2d.fill(s);
+                    g2.setPaint(new Color(.5f, .5f, .5f, alpha));
+                    g2.fill(s);
                     alpha += .1f;
                 }
                 list.add(list.remove(0));
             } else {
-                g2d.setPaint(new Color(.6f, .6f, .6f));
+                g2.setPaint(new Color(.6f, .6f, .6f));
                 for (Shape s: list) {
-                    g2d.fill(s);
+                    g2.fill(s);
                 }
             }
-            g2d.dispose();
+            g2.dispose();
         }
     }
 }

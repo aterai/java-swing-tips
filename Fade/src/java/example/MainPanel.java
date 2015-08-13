@@ -52,19 +52,19 @@ public final class MainPanel extends JPanel {
             setBackground(Color.BLACK);
         }
         @Override public void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setPaint(getBackground());
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setPaint(getBackground());
+            g2.fillRect(0, 0, getWidth(), getHeight());
             if (mode && alpha < 10) {
-                alpha = alpha + 1;
+                alpha += 1;
             } else if (!mode && alpha > 0) {
-                alpha = alpha - 1;
+                alpha -= 1;
             } else {
                 animator.stop();
             }
-            g2d.setComposite(makeAlphaComposite(alpha * .1f));
-            g2d.drawImage(icon, null, 0, 0);
-            g2d.dispose();
+            g2.setComposite(makeAlphaComposite(alpha * .1f));
+            g2.drawImage(icon, null, 0, 0);
+            g2.dispose();
         }
         @Override public void actionPerformed(ActionEvent e) {
             repaint();

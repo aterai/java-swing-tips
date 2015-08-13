@@ -62,9 +62,9 @@ class StarPanel1 extends JPanel {
         p.closePath();
         //</blockquote>
         g2.translate(w / 2, h / 2);
-        g2.setColor(Color.YELLOW);
+        g2.setPaint(Color.YELLOW);
         g2.fill(p);
-        g2.setColor(Color.BLACK);
+        g2.setPaint(Color.BLACK);
         g2.draw(p);
         g2.dispose();
     }
@@ -82,9 +82,9 @@ class StarPanel2 extends JPanel {
         p.addPoint(0,                   Math.round(-h / 4f));
         p.addPoint(Math.round(+w / 6f), Math.round(+h / 4f));
         g2.translate(w / 2, h / 2);
-        g2.setColor(Color.YELLOW);
+        g2.setPaint(Color.YELLOW);
         g2.fill(p);
-        g2.setColor(Color.BLACK);
+        g2.setPaint(Color.BLACK);
         g2.draw(p);
         g2.dispose();
     }
@@ -102,9 +102,9 @@ class StarPanel3 extends JPanel {
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(0, FONTSIZE);
-        g2.setColor(Color.YELLOW);
+        g2.setPaint(Color.YELLOW);
         g2.fill(shape);
-        g2.setColor(Color.BLACK);
+        g2.setPaint(Color.BLACK);
         g2.draw(shape);
         g2.dispose();
     }
@@ -124,9 +124,9 @@ class StarPanel3 extends JPanel {
 //         p.quadTo(-w / 6.0, +h / 4.0,  -w / 4.0, -h / 12.0);
 //         p.closePath();
 //         g2.translate(w / 2, h / 2);
-//         g2.setColor(Color.YELLOW);
+//         g2.setPaint(Color.YELLOW);
 //         g2.fill(p);
-//         g2.setColor(Color.BLACK);
+//         g2.setPaint(Color.BLACK);
 //         g2.draw(p);
 //         g2.dispose();
 //     }
@@ -156,14 +156,13 @@ class StarIcon0 implements Icon {
         return 80;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.translate(x, y);
-        g2d.setPaint(Color.YELLOW);
-        g2d.fill(path);
-        g2d.setPaint(Color.BLACK);
-        g2d.draw(path);
-        //g2d.translate(-x, -y);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setPaint(Color.YELLOW);
+        g2.fill(path);
+        g2.setPaint(Color.BLACK);
+        g2.draw(path);
+        g2.dispose();
     }
 }
 
@@ -190,14 +189,13 @@ class StarIcon1 implements Icon {
         return 2 * R;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.translate(x, y);
-        g2d.setPaint(Color.YELLOW);
-        g2d.fill(star);
-        g2d.setPaint(Color.BLACK);
-        g2d.draw(star);
-        //g2d.translate(-x, -y);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setPaint(Color.YELLOW);
+        g2.fill(star);
+        g2.setPaint(Color.BLACK);
+        g2.draw(star);
+        g2.dispose();
     }
 }
 
@@ -231,14 +229,13 @@ class StarIcon2 implements Icon {
         return 2 * R2;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.translate(x, y);
-        g2d.setPaint(Color.YELLOW);
-        g2d.fill(star);
-        g2d.setPaint(Color.BLACK);
-        g2d.draw(star);
-        //g2d.translate(-x, -y);
-        g2d.dispose();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setPaint(Color.YELLOW);
+        g2.fill(star);
+        g2.setPaint(Color.BLACK);
+        g2.draw(star);
+        g2.dispose();
     }
 }
 
