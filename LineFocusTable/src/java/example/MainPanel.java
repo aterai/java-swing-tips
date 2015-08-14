@@ -262,7 +262,6 @@ class DotBorder extends EmptyBorder {
             g2.drawLine(1, 0, w, 0);
             g2.drawLine(1, h - 1, w, h - 1);
         }
-        //g2.translate(-x, -y);
         g2.dispose();
     }
 }
@@ -372,7 +371,6 @@ class DotBorder extends EmptyBorder {
 //         g2.drawLine(1, h - 1, w, h - 1);
 //       }
 //     }
-//     //g2.translate(-x, -y);
 //     g2.dispose();
 //   }
 // }

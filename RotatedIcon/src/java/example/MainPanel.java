@@ -90,7 +90,6 @@ class RotateIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.drawImage(image, trans, c);
-        g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth() {

@@ -173,7 +173,6 @@ class MenuArrowIcon implements Icon {
         g2.drawLine(2, 3, 6, 3);
         g2.drawLine(3, 4, 5, 4);
         g2.drawLine(4, 5, 4, 5);
-        //g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth() {
@@ -194,7 +193,6 @@ class MenuArrowIcon implements Icon {
 //         g2.setPaint(color);
 //         g2.translate(x, y);
 //         g2.fillOval(4, 4, 16, 16);
-//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 //     @Override public int getIconWidth() {
@@ -215,7 +213,6 @@ class MenuArrowIcon implements Icon {
 //         g2.setPaint(Color.BLACK);
 //         g2.translate(x, y);
 //         g2.drawOval(4, 4, 16, 16);
-//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 // }

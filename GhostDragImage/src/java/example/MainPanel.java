@@ -245,7 +245,6 @@ class SelectedImageFilter extends RGBImageFilter {
 //         //g2.setStroke(dashed);
 //         //g2.drawRect(0, 0, w - 1, h - 1);
 //         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 //     //@Override public Insets getBorderInsets(Component c)

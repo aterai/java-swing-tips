@@ -89,7 +89,6 @@ class IndeterminateIcon implements Icon {
         g2.setPaint(FOREGROUND);
         g2.translate(x, y);
         g2.fillRect(SIDE_MARGIN, (h - HEIGHT) / 2, w - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
-        //g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth() {

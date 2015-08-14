@@ -260,7 +260,6 @@ class FileNameRenderer implements TableCellRenderer {
 //                 g2.setPaint(getLineColor());
 //                 BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
 //             }
-//             //g2.translate(-x, -y);
 //             g2.dispose();
 //         }
 //     }

@@ -99,7 +99,6 @@ class DragHereIcon implements Icon {
         Point2D p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(ICON_SIZE / 2d - p.getX(), ICON_SIZE / 2d - p.getY());
         g2.fill(toCenterAT.createTransformedShape(ARROW));
-        g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth() {

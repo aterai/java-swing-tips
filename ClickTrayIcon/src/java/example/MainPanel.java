@@ -131,10 +131,6 @@ class StarIcon implements Icon {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(Color.PINK);
         g2.fill(star);
-        //g2.setPaint(Color.BLACK);
-        //g2.draw(star);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2.translate(-x, -y);
         g2.dispose();
     }
 }

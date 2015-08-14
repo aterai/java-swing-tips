@@ -253,7 +253,6 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 //             g2.fill(list.get(i));
 //         }
-//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 //     @Override public int getIconWidth() {
@@ -304,7 +303,6 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 //             g2.fill(list.get(i));
 //         }
-//         //g2.translate(-xx, -yy);
 //         g2.dispose();
 //     }
 //     public void next() {

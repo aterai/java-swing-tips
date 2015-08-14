@@ -234,12 +234,11 @@ class DotBorder extends LineBorder {
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
         Graphics2D g2 = (Graphics2D) g.create();
-        //g2.translate(x, y);
+        g2.translate(x, y);
         g2.setPaint(borderSelectionColor);
-        g2.drawRect(x, y, w - 1, h - 1);
+        g2.drawRect(0, 0, w - 1, h - 1);
         g2.setPaint(getLineColor());
-        BasicGraphicsUtils.drawDashedRect(g2, x, y, w, h);
-        //g2.translate(-x, -y);
+        BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
         g2.dispose();
     }
 }

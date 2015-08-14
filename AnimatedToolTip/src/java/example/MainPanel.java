@@ -181,7 +181,6 @@ class AnimeIcon implements Icon {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
             g2.fill(list.get(i));
         }
-        //g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth() {

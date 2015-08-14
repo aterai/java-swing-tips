@@ -65,7 +65,6 @@ class CheckIcon implements Icon {
             g2.setPaint(m.isSelected() ? Color.ORANGE : Color.GRAY);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.fillOval(0, 2, 10, 10);
-            //g2.translate(-x, -y);
             g2.dispose();
         }
     }

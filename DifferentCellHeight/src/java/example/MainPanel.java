@@ -105,7 +105,6 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
 //         g2.translate(x, y);
 //         g2.setPaint(getLineColor());
 //         BasicGraphicsUtils.drawDashedRect(g2, 0, 0, w, h);
-//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 // }
@@ -129,7 +128,6 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
 //         g2.setStroke(dashed);
 //         g2.translate(x, y);
 //         g2.drawRect(0, 0, w - 1, h - 1);
-//         //g2.translate(-x, -y);
 //         g2.dispose();
 //     }
 //     //@Override public Insets getBorderInsets()

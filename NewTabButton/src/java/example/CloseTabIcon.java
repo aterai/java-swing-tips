@@ -53,7 +53,6 @@ class PlusIcon implements Icon {
         g2.drawLine(a - 1, b,     a - 1, w - b);
         g2.drawLine(b,     a,     w - b, a);
         g2.drawLine(b,     a - 1, w - b, a - 1);
-        //g2.translate(-x, -y);
         g2.dispose();
     }
     @Override public int getIconWidth() {

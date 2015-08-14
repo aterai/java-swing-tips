@@ -140,8 +140,8 @@ class TriSliderUI extends MetalSliderUI {
             g2.setPaint(Color.WHITE);
             g2.drawLine(0, cy, cw - 1, cy);
 
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            g2.translate(-trackBounds.x, -(trackBounds.y + cy));
+            //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            //g2.translate(-trackBounds.x, -(trackBounds.y + cy));
             g2.dispose();
         } else {
             super.paintTrack(g);
