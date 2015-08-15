@@ -11,15 +11,16 @@ class CloseTabIcon implements Icon {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        //g.translate(x, y);
-        g.setColor(color);
-        g.drawLine(2, 2, 9, 9);
-        g.drawLine(2, 3, 8, 9);
-        g.drawLine(3, 2, 9, 8);
-        g.drawLine(9, 2, 2, 9);
-        g.drawLine(9, 3, 3, 9);
-        g.drawLine(8, 2, 2, 8);
-        //g.translate(-x, -y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setColor(color);
+        g2.drawLine(2, 2, 9, 9);
+        g2.drawLine(2, 3, 8, 9);
+        g2.drawLine(3, 2, 9, 8);
+        g2.drawLine(9, 2, 2, 9);
+        g2.drawLine(9, 3, 3, 9);
+        g2.drawLine(8, 2, 2, 8);
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return 12;
