@@ -86,6 +86,8 @@ class CellRendererTooltipList<E> extends JList<E> {
     private final JLabel label = new JLabel();
     public CellRendererTooltipList(ListModel<E> m) {
         super(m);
+        //TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
+        label.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
     }
     @Override public Point getToolTipLocation(MouseEvent event) {
         Point pt = null;
@@ -99,6 +101,8 @@ class CellRendererTooltipList<E> extends JList<E> {
             final Component rComponent = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
             if (rComponent instanceof JComponent && ((JComponent) rComponent).getToolTipText() != null) {
                 pt = cellBounds.getLocation();
+                Insets ins = label.getInsets();
+                pt.translate(-ins.left, -ins.top);
                 label.setIcon(new RendererIcon(rComponent, cellBounds));
             }
         }
@@ -140,20 +144,20 @@ class RendererIcon implements Icon {
     public RendererIcon(Component renderer, Rectangle rect) {
         this.renderer = renderer;
         this.rect = rect;
+        rect.setLocation(0, 0);
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         if (c instanceof Container) {
-            g.translate(-x, -y);
-            rect.setLocation(0, 0);
-
-            SwingUtilities.paintComponent(g, renderer, (Container) c, rect);
-            g.translate(x, y);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            SwingUtilities.paintComponent(g2, renderer, (Container) c, rect);
+            g2.dispose();
         }
     }
     @Override public int getIconWidth() {
-        return rect.width;
+        return renderer.getPreferredSize().width;
     }
     @Override public int getIconHeight() {
-        return rect.height;
+        return renderer.getPreferredSize().height;
     }
 }
