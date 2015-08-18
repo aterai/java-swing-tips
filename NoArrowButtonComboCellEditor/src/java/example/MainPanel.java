@@ -100,11 +100,8 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
         if (value instanceof LocalDateTime) {
             comboBox.setModel(new DefaultComboBoxModel<LocalDateTime>() {
                 @Override public LocalDateTime getElementAt(int index) {
-                    if (index >= 0 && index < getSize()) {
-                        return LocalDateTime.now().plusDays(index);
-                    } else {
-                        return LocalDateTime.now();
-                    }
+                    //if (index >= 0 && index < getSize()) {
+                    return LocalDateTime.now().plusDays(index);
                 }
                 @Override public int getSize() {
                     return 7;
@@ -118,11 +115,6 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
             });
             selectedDate = (LocalDateTime) value;
         }
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                comboBox.setSelectedItem(value);
-            }
-        });
         return comboBox;
     }
     @Override public Object getCellEditorValue() {
@@ -154,12 +146,11 @@ class LocalDateTimeCellRenderer<E extends LocalDateTime> extends JLabel implemen
         if (Objects.nonNull(value)) {
             setText(dateTimeFormatter.format((TemporalAccessor) value));
         }
+        setOpaque(true);
         if (isSelected) {
-            setOpaque(true);
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
         } else {
-            setOpaque(false);
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
