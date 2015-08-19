@@ -128,44 +128,48 @@ class ColorRadioButton extends JRadioButton {
             return ICON_SIZE;
         }
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.translate(x, y);
-            g.setColor(DEFAULT_COLOR);
-            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
-            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
-            g.translate(-x, -y);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            g2.setColor(DEFAULT_COLOR);
+            g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
+            g2.dispose();
         }
     }
     private static class PressedIcon extends DefaultIcon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.translate(x, y);
-            g.setColor(PRESSED_COLOR);
-            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
-            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            g2.setColor(PRESSED_COLOR);
+            g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
-            g.setColor(SELECTED_COLOR);
-            g.fillRect(4, 4, getIconWidth() - 8, getIconHeight() - 8);
-            g.translate(-x, -y);
+            g2.setColor(SELECTED_COLOR);
+            g2.fillRect(4, 4, getIconWidth() - 8, getIconHeight() - 8);
+            g2.dispose();
         }
     }
     private static class SelectedIcon extends DefaultIcon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.translate(x, y);
-            g.setColor(SELECTED_COLOR);
-            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
-            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            g2.setColor(SELECTED_COLOR);
+            g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
-            g.setColor(PRESSED_COLOR);
-            g.fillRect(6, 6, getIconWidth() - 12, getIconHeight() - 12);
-            g.translate(-x, -y);
+            g2.setColor(PRESSED_COLOR);
+            g2.fillRect(6, 6, getIconWidth() - 12, getIconHeight() - 12);
+            g2.dispose();
         }
     }
     private static class RolloverIcon extends DefaultIcon {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.translate(x, y);
-            g.setColor(ROLLOVER_COLOR);
-            g.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
-            g.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
-            g.translate(-x, -y);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            g2.setColor(ROLLOVER_COLOR);
+            g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
+            g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
+            g2.dispose();
         }
     }
 }

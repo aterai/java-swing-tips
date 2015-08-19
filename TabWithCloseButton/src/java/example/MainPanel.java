@@ -91,15 +91,16 @@ class MyJTabbedPane extends JTabbedPane {
 
 class CloseTabIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.translate(x, y);
-        g.setColor(Color.BLACK);
-        g.drawLine(4,  4, 11, 11);
-        g.drawLine(4,  5, 10, 11);
-        g.drawLine(5,  4, 11, 10);
-        g.drawLine(11, 4,  4, 11);
-        g.drawLine(11, 5,  5, 11);
-        g.drawLine(10, 4,  4, 10);
-        g.translate(-x, -y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setColor(Color.BLACK);
+        g2.drawLine(4,  4, 11, 11);
+        g2.drawLine(4,  5, 10, 11);
+        g2.drawLine(5,  4, 11, 10);
+        g2.drawLine(11, 4,  4, 11);
+        g2.drawLine(11, 5,  5, 11);
+        g2.drawLine(10, 4,  4, 10);
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return 16;

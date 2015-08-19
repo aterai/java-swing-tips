@@ -15,18 +15,19 @@ public final class MainPanel extends JPanel {
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Insets i = getInsets();
-                g.translate(i.left, i.top);
-                g.setColor(Color.RED);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.translate(i.left, i.top);
+                g2.setColor(Color.RED);
                 int w = getWidth() - i.left - i.right;
                 int px = 0;
                 int py = 0;
                 for (int x = 0; x < w; x++) {
                     int y = (int) Math.pow(x / A2, 2d);
-                    g.drawLine(px, py, x, y);
+                    g2.drawLine(px, py, x, y);
                     px = x;
                     py = y;
                 }
-                g.translate(-i.left, -i.top);
+                g2.dispose();
             }
         };
         panel2.setLayout(new FlowLayout() {

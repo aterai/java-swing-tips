@@ -72,7 +72,6 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.fillRoundRect(x + 3, y + 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
-            //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g2.dispose();
         }
     }
