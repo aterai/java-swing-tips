@@ -138,10 +138,8 @@ class RoundedCornerButton extends JButton {
             g2.setColor(getBackground());
             g2.fill(shape);
         }
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2.setColor(getBackground());
-        super.paintComponent(g2);
         g2.dispose();
+        super.paintComponent(g);
     }
     @Override protected void paintBorder(Graphics g) {
         initShape();
@@ -149,7 +147,6 @@ class RoundedCornerButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getForeground());
         g2.draw(shape);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.dispose();
     }
     @Override public boolean contains(int x, int y) {
@@ -231,17 +228,14 @@ class ShapeButton extends JButton {
             g2.setColor(getBackground());
             g2.fill(shape);
         }
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2.setColor(getBackground());
-        super.paintComponent(g2);
         g2.dispose();
+        super.paintComponent(g);
     }
     @Override protected void paintBorder(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getForeground());
         g2.draw(shape);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.dispose();
     }
     @Override public boolean contains(int x, int y) {

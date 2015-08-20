@@ -184,7 +184,6 @@ class RoundButton extends JButton {
         g2.setColor(getBackground());
         //g2.setStroke(new BasicStroke(1f));
         g2.draw(shape);
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g2.dispose();
     }
     @Override public boolean contains(int x, int y) {
@@ -251,7 +250,6 @@ class RoundButton extends JButton {
 //         g2.setColor(c.getBackground());
 //         //g2.setStroke(new BasicStroke(1f));
 //         g2.draw(shape);
-//         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 //         g2.dispose();
 //     }
 //     @Override public Dimension getPreferredSize(JComponent c) {

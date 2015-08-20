@@ -24,8 +24,6 @@ public class TriangleArrowButton extends JButton {
         Rectangle r = getBounds();
         r.grow(1, 1);
         g2.fill(r);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2.setColor(getBackground());
         g2.dispose();
 
         super.paintComponent(g);

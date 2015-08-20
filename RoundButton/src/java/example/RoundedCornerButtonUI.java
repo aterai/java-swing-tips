@@ -83,10 +83,7 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
         //Border
         g2.setPaint(c.getForeground());
         g2.draw(shape);
-
         g2.dispose();
-        //g2.setColor(c.getBackground());
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         super.paint(g, c);
     }
     private void initShape(JComponent c) {
