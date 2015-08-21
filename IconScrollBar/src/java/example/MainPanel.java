@@ -51,8 +51,7 @@ class WindowsIconScrollBarUI extends WindowsScrollBarUI {
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
         super.paintThumb(g, c, thumbBounds);
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Color oc = null;
         Color ic = null;
         JScrollBar sb = (JScrollBar) c;
@@ -83,8 +82,7 @@ class BasicIconScrollBarUI extends BasicScrollBarUI {
     @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
         super.paintThumb(g, c, thumbBounds);
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Color oc = null;
         Color ic = null;
         JScrollBar sb = (JScrollBar) c;

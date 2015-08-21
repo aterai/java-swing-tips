@@ -65,8 +65,7 @@ class TabThumbnailTabbedPane extends JTabbedPane {
             int newH = (int) (d.height * SCALE);
             BufferedImage image = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = image.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2.scale(SCALE, SCALE);
             c.paint(g2);
             g2.dispose();

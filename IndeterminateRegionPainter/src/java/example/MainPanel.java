@@ -42,10 +42,6 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 //                     return;
 //                 }
 //
-//                 Graphics2D g2 = (Graphics2D) g;
-//                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//                                     RenderingHints.VALUE_ANTIALIAS_ON);
-//
 //                 // Paint the bouncing box.
 //                 boxRect = getBox(boxRect);
 //                 if (Objects.nonNull(boxRect)) {
@@ -58,11 +54,14 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 //                     p.lineTo(boxRect.x + w * .5f, boxRect.y + boxRect.height);
 //                     p.lineTo(boxRect.x,           boxRect.y);
 //                     p.closePath();
+//                     Graphics2D g2 = (Graphics2D) g.create();
+//                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //                     g2.setColor(progressBar.getForeground());
 //                     AffineTransform at = AffineTransform.getTranslateInstance(x, 0);
 //                     for (int i = -x; i < boxRect.width; i += w) {
 //                         g2.fill(AffineTransform.getTranslateInstance(i, 0).createTransformedShape(p));
 //                     }
+//                     g2.dispose();
 //                 }
 //             }
 //         });

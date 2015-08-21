@@ -118,9 +118,9 @@ class StripedProgressBarUI extends BasicProgressBarUI {
         return availableLength; //(int)Math.round(availableLength/6.0);
     }
     @Override public void paintIndeterminate(Graphics g, JComponent c) {
-        if (!(g instanceof Graphics2D)) {
-            return;
-        }
+        //if (!(g instanceof Graphics2D)) {
+        //    return;
+        //}
 
         Insets b = progressBar.getInsets(); // area for border
         int barRectWidth  = progressBar.getWidth() - b.right - b.left;
@@ -129,9 +129,6 @@ class StripedProgressBarUI extends BasicProgressBarUI {
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }
-
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Paint the striped box.
         boxRect = getBox(boxRect);
@@ -151,6 +148,9 @@ class StripedProgressBarUI extends BasicProgressBarUI {
                 p.lineTo(boxRect.x + w * .5f, boxRect.y);
             }
             p.closePath();
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(progressBar.getForeground());
             if (slope) {
                 for (int i = boxRect.width + x; i > -w; i -= w) {
@@ -161,6 +161,7 @@ class StripedProgressBarUI extends BasicProgressBarUI {
                     g2.fill(AffineTransform.getTranslateInstance(i, 0).createTransformedShape(p));
                 }
             }
+            g2.dispose();
         }
     }
 }

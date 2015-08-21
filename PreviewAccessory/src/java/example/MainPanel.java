@@ -80,8 +80,7 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
             int newH = (int) (tmpIcon.getIconHeight() * scale);
             BufferedImage img = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = img.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2.drawImage(tmpIcon.getImage(), 0, 0, newW, newH, null);
             g2.dispose();
             thumbnail = new ImageIcon(img);
