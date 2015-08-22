@@ -4,14 +4,16 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-//import java.awt.geom.*;
+// import java.awt.geom.*;
+// import java.awt.image.*;
+// import java.util.*;
+// import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         add(new PaintPanel());
-        //add(new PaintPanel3());
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -72,7 +74,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 // class PaintPanel2 extends JPanel implements MouseMotionListener, MouseListener {
 //     private final Polygon polygon = new Polygon();
 //     private Point startPoint = new Point(-1, -1);
-//     private java.awt.image.BufferedImage offImage = null;
+//     private final transient BufferedImage offImage;
 //     public PaintPanel2() {
 //         super();
 //         addMouseMotionListener(this);
@@ -81,9 +83,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     }
 //     @Override public void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         if (Objects.nonNull(offImage)) {
-//             ((Graphics2D) g).drawImage(offImage, 0, 0, this);
-//         }
+//         g.drawImage(offImage, 0, 0, this);
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point p = e.getPoint();
@@ -111,23 +111,25 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 // //             offImage = (BufferedImage) createImage(getWidth(), getHeight());
 // //         }
 //     }
-//     @Override public void mouseMoved(MouseEvent e) {}
-//     @Override public void mouseExited(MouseEvent e) {}
-//     @Override public void mouseEntered(MouseEvent e) {}
-//     @Override public void mouseReleased(MouseEvent e) {}
-//     @Override public void mouseClicked(MouseEvent e) {}
+//     @Override public void mouseMoved(MouseEvent e)    { /* not needed */ }
+//     @Override public void mouseExited(MouseEvent e)   { /* not needed */ }
+//     @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+//     @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+//     @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
 // }
+
 // class PaintPanel3 extends JPanel implements MouseMotionListener, MouseListener {
-//     List<Shape> list = new ArrayList<>();
-//     Stroke stroke = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-//     Path2D.Double path;
+//     private static final Stroke STROKE = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+//     private final List<Shape> list = new ArrayList<>();
+//     private Path2D.Double path;
 //     public PaintPanel3() {
 //         super();
 //         addMouseMotionListener(this);
 //         addMouseListener(this);
 //     }
 //     @Override public void mousePressed(MouseEvent e) {
-//         list.add(path = new Path2D.Double());
+//         path = new Path2D.Double();
+//         list.add(path);
 //         Point p = e.getPoint();
 //         path.moveTo(p.x, p.y);
 //         repaint();
@@ -137,18 +139,18 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         path.lineTo(p.x, p.y);
 //         repaint();
 //     }
-//     @Override public void paintComponent (Graphics g) {
+//     @Override public void paintComponent(Graphics g) {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setPaint(Color.BLACK);
-//         g2.setStroke(stroke);
+//         g2.setStroke(STROKE);
 //         for (Shape s: list) {
 //             g2.draw(s);
 //         }
 //         g2.dispose();
 //     }
-//     @Override public void mouseMoved(MouseEvent e) {}
-//     @Override public void mouseExited(MouseEvent e) {}
-//     @Override public void mouseEntered(MouseEvent e) {}
-//     @Override public void mouseReleased(MouseEvent e) {}
-//     @Override public void mouseClicked(MouseEvent e) {}
+//     @Override public void mouseMoved(MouseEvent e)    { /* not needed */ }
+//     @Override public void mouseExited(MouseEvent e)   { /* not needed */ }
+//     @Override public void mouseEntered(MouseEvent e)  { /* not needed */ }
+//     @Override public void mouseReleased(MouseEvent e) { /* not needed */ }
+//     @Override public void mouseClicked(MouseEvent e)  { /* not needed */ }
 // }
