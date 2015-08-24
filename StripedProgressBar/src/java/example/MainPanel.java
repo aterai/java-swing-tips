@@ -151,7 +151,7 @@ class StripedProgressBarUI extends BasicProgressBarUI {
 
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(progressBar.getForeground());
+            g2.setPaint(progressBar.getForeground());
             if (slope) {
                 for (int i = boxRect.width + x; i > -w; i -= w) {
                     g2.fill(AffineTransform.getTranslateInstance(i, 0).createTransformedShape(p));

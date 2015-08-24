@@ -597,7 +597,7 @@ class GhostGlassPane extends JPanel {
             Rectangle rect = tabbedPane.getDropLineRect();
             if (Objects.nonNull(rect) && dl.isDropable()) {
                 Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
-                g2.setColor(Color.RED);
+                g2.setPaint(Color.RED);
                 g2.fill(r);
                 //tabbedPane.paintDropLine(g2);
             }
@@ -627,7 +627,7 @@ class GhostGlassPane extends JComponent {
         if (Objects.nonNull(rect)) {
             Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-            g2.setColor(Color.RED);
+            g2.setPaint(Color.RED);
             g2.fill(r);
             //tabbedPane.paintDropLine(g2);
         }
@@ -715,12 +715,12 @@ class GhostGlassPane extends JComponent {
 //         super.paintComponent(g);
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setStroke(new BasicStroke(2));
-//         g2.setColor(Color.BLACK);
+//         g2.setPaint(Color.BLACK);
 //         if (getModel().isRollover()) {
-//             g2.setColor(Color.ORANGE);
+//             g2.setPaint(Color.ORANGE);
 //         }
 //         if (getModel().isPressed()) {
-//             g2.setColor(Color.BLUE);
+//             g2.setPaint(Color.BLUE);
 //         }
 //         g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
 //         g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);

@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
                 Insets i = getInsets();
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.translate(i.left, i.top);
-                g2.setColor(Color.RED);
+                g2.setPaint(Color.RED);
                 int w = getWidth() - i.left - i.right;
                 int px = 0;
                 int py = 0;

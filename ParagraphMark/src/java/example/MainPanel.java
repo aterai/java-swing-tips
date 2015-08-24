@@ -84,7 +84,7 @@ class MyParagraphView extends ParagraphView {
             int h = r.height;
             //paragraphMarkIcon.paintIcon(null, g, x, y);
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.setColor(MARK_COLOR);
+            g2.setPaint(MARK_COLOR);
             g2.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
             g2.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
             g2.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
@@ -108,7 +108,7 @@ class MyParagraphView extends ParagraphView {
 //     }
 //     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //         Graphics2D g2 = (Graphics2D) g.create();
-//         g2.setColor(MARK_COLOR);
+//         g2.setPaint(MARK_COLOR);
 //         g2.translate(x, y);
 //         g2.draw(paragraphMark);
 //         g2.dispose();

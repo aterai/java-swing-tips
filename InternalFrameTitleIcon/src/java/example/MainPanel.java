@@ -57,7 +57,7 @@ class ColorIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        g2.setColor(color);
+        g2.setPaint(color);
         g2.fillRect(1, 1, 15, 15);
         g2.dispose();
     }

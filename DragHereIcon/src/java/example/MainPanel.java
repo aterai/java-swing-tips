@@ -76,7 +76,7 @@ class DragHereIcon implements Icon {
         g2.draw(BORDER);
 
         g2.setStroke(new BasicStroke(SLIT_WIDTH));
-        g2.setColor(UIManager.getColor("Panel.background"));
+        g2.setPaint(UIManager.getColor("Panel.background"));
 
         int n = SLIT_NUM + 1;
         int v = ICON_SIZE / n;

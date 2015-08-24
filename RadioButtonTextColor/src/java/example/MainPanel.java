@@ -130,7 +130,7 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
-            g2.setColor(DEFAULT_COLOR);
+            g2.setPaint(DEFAULT_COLOR);
             g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
             g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
             g2.dispose();
@@ -140,11 +140,11 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
-            g2.setColor(PRESSED_COLOR);
+            g2.setPaint(PRESSED_COLOR);
             g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
             g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
-            g2.setColor(SELECTED_COLOR);
+            g2.setPaint(SELECTED_COLOR);
             g2.fillRect(4, 4, getIconWidth() - 8, getIconHeight() - 8);
             g2.dispose();
         }
@@ -153,11 +153,11 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
-            g2.setColor(SELECTED_COLOR);
+            g2.setPaint(SELECTED_COLOR);
             g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
             g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
 
-            g2.setColor(PRESSED_COLOR);
+            g2.setPaint(PRESSED_COLOR);
             g2.fillRect(6, 6, getIconWidth() - 12, getIconHeight() - 12);
             g2.dispose();
         }
@@ -166,7 +166,7 @@ class ColorRadioButton extends JRadioButton {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.translate(x, y);
-            g2.setColor(ROLLOVER_COLOR);
+            g2.setPaint(ROLLOVER_COLOR);
             g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
             g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
             g2.dispose();

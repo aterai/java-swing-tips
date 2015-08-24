@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 //                     p.closePath();
 //                     Graphics2D g2 = (Graphics2D) g.create();
 //                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//                     g2.setColor(progressBar.getForeground());
+//                     g2.setPaint(progressBar.getForeground());
 //                     AffineTransform at = AffineTransform.getTranslateInstance(x, 0);
 //                     for (int i = -x; i < boxRect.width; i += w) {
 //                         g2.fill(AffineTransform.getTranslateInstance(i, 0).createTransformedShape(p));

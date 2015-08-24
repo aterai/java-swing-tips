@@ -78,7 +78,7 @@ class TransparentTree extends JTree {
     private static final Color SELC = new Color(100, 100, 255, 100);
     @Override public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(SELC);
+        g2.setPaint(SELC);
         for (int i: getSelectionRows()) {
             Rectangle r = getRowBounds(i);
             g2.fillRect(0, r.y, getWidth(), r.height);
@@ -87,7 +87,7 @@ class TransparentTree extends JTree {
         TreePath path = getLeadSelectionPath();
         if (Objects.nonNull(path)) {
             Rectangle r = getRowBounds(getRowForPath(path));
-            g2.setColor(SELC.darker());
+            g2.setPaint(SELC.darker());
             g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
         }
         g2.dispose();

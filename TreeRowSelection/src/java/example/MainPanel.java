@@ -49,7 +49,7 @@ class RowSelectionTree extends JTree {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(SELC);
+        g2.setPaint(SELC);
         for (int i: getSelectionRows()) {
             Rectangle r = getRowBounds(i);
             g2.fillRect(0, r.y, getWidth(), r.height);
@@ -58,7 +58,7 @@ class RowSelectionTree extends JTree {
         TreePath path = getLeadSelectionPath();
         if (Objects.nonNull(path)) {
             Rectangle r = getRowBounds(getRowForPath(path));
-            g2.setColor(SELC.darker());
+            g2.setPaint(SELC.darker());
             g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
         }
         g2.dispose();

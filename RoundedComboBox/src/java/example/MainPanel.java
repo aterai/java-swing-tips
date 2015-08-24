@@ -235,7 +235,7 @@ class RoundedCornerBorder extends AbstractBorder {
 
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
-            g2.setColor(parent.getBackground());
+            g2.setPaint(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(round);
             g2.fill(corner);
@@ -296,7 +296,7 @@ class KamabokoBorder extends RoundedCornerBorder {
 //*/
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
-            g2.setColor(parent.getBackground());
+            g2.setPaint(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(round);
             g2.fill(corner);

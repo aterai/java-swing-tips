@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         button.setPressedIcon(new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setColor(Color.BLACK);
+                g2.setPaint(Color.BLACK);
                 g2.fillRect(x, y, getIconWidth(), getIconHeight());
                 g2.dispose();
             }

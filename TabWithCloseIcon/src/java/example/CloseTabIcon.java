@@ -104,12 +104,12 @@ public class CloseTabIcon implements Icon {
 
         Graphics2D g2 = (Graphics2D) g.create();
         if (mousepressed && mouseover) {
-            g2.setColor(Color.WHITE);
+            g2.setPaint(Color.WHITE);
             g2.fillRect(x + 1, yp + 1, 12, 13);
         }
 
-        g2.setColor(mouseover ? Color.ORANGE : Color.BLACK);
-        //g2.setColor(Color.BLACK);
+        g2.setPaint(mouseover ? Color.ORANGE : Color.BLACK);
+        //g2.setPaint(Color.BLACK);
         g2.drawLine(x + 1,  yp,      x + 12, yp);
         g2.drawLine(x + 1,  yp + 13, x + 12, yp + 13);
         g2.drawLine(x,      yp + 1,  x,      yp + 12);

@@ -13,13 +13,13 @@ public class TriangleArrowButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (getModel().isArmed()) {
-            g2.setColor(new Color(220, 220, 220));
+            g2.setPaint(new Color(220, 220, 220));
         } else if (isRolloverEnabled() && getModel().isRollover()) {
-            g2.setColor(new Color(220, 220, 220));
+            g2.setPaint(new Color(220, 220, 220));
         } else if (hasFocus()) {
-            g2.setColor(new Color(220, 220, 220));
+            g2.setPaint(new Color(220, 220, 220));
         } else {
-            g2.setColor(getBackground());
+            g2.setPaint(getBackground());
         }
         Rectangle r = getBounds();
         r.grow(1, 1);

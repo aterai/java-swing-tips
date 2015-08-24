@@ -245,7 +245,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //         g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
 //         g2.fillRect(x, y, getIconWidth(), getIconHeight());
 //         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//         g2.setColor(ELLIPSE_COLOR);
+//         g2.setPaint(ELLIPSE_COLOR);
 //         g2.translate(x, y);
 //         int size = list.size();
 //         for (int i = 0; i < size; i++) {
@@ -293,7 +293,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //         g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
 //         g2.fillRect(x, y, getIconWidth(), getIconHeight());
 //         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//         g2.setColor(ELLIPSE_COLOR);
+//         g2.setPaint(ELLIPSE_COLOR);
 //         int xx = x + dim.width / 2;
 //         int yy = y + dim.height / 2;
 //         g2.translate(xx, yy);
@@ -345,7 +345,7 @@ class AnimeIcon implements Icon {
         g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(ELLIPSE_COLOR);
+        g2.setPaint(ELLIPSE_COLOR);
         int xx = x + dim.width / 2;
         int yy = y + dim.height / 2;
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), xx, yy);
@@ -404,7 +404,7 @@ class AnimeIcon implements Icon {
 //         g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
 //         g2.fillRect(x, y, getIconWidth(), getIconHeight());
 //         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//         g2.setColor(ELLIPSE_COLOR);
+//         g2.setPaint(ELLIPSE_COLOR);
 //         int size = list.size();
 //         for (int i = 0; i < size; i++) {
 //             float alpha = isRunning ? (i + 1) / (float) size : .5f;

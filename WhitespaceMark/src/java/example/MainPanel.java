@@ -147,7 +147,7 @@ class WhitespaceLabelView extends LabelView {
                 g2.drawLine(sx + 2, sy,     sx + spaceWidth - 2, sy);
             } else if ("\t".equals(s)) {
                 int tabWidth = (int) getTabExpander().nextTabStop((float) sx, i) - sx;
-                g2.setColor(MARK_COLOR);
+                g2.setPaint(MARK_COLOR);
                 g2.drawLine(sx + 2, sy - 0, sx + 2 + 2, sy - 0);
                 g2.drawLine(sx + 2, sy - 1, sx + 2 + 1, sy - 1);
                 g2.drawLine(sx + 2, sy - 2, sx + 2 + 0, sy - 2);

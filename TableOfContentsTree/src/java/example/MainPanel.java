@@ -95,7 +95,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
             super.paintComponent(g);
             if (pn != null) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setColor(isSynth ? getForeground() : getTextNonSelectionColor());
+                g2.setPaint(isSynth ? getForeground() : getTextNonSelectionColor());
                 g2.drawString(pn, pnPt.x - getX(), pnPt.y);
                 g2.setStroke(READER);
                 g2.drawLine(rxs, pnPt.y, rxe - getX(), pnPt.y);
@@ -267,10 +267,10 @@ class TableOfContentsTree extends JTree {
                 if (isSynth && isRowSelected(i)) {
                     if (tcr instanceof DefaultTreeCellRenderer) {
                         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tcr;
-                        g2.setColor(renderer.getTextSelectionColor());
+                        g2.setPaint(renderer.getTextSelectionColor());
                     }
                 } else {
-                    g2.setColor(getForeground());
+                    g2.setPaint(getForeground());
                 }
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                 Object o = node.getUserObject();

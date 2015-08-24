@@ -57,7 +57,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         iconRect.setBounds(0, 0, 0, 0); //.x = iconRect.y = iconRect.width = iconRect.height = 0;
         textRect.setBounds(0, 0, 0, 0); //.x = textRect.y = textRect.width = textRect.height = 0;
 
-        //g2.setColor(Color.CYAN); //c.getBackground());
+        //g2.setPaint(Color.CYAN); //c.getBackground());
         //g2.fillRect(0, 0, size.width - 1, size.height);
         //g2.fill(viewRect);
         tabPainter(g2, viewRect);

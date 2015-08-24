@@ -595,7 +595,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             if (Objects.nonNull(loc) && loc.isDropable() && loc.getIndex() >= 0) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-                g2.setColor(Color.RED);
+                g2.setPaint(Color.RED);
                 initLineRect(tabbedPane, loc);
                 g2.fill(lineRect);
                 g2.dispose();
@@ -702,12 +702,12 @@ class TabButton extends JButton {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setStroke(new BasicStroke(2));
-        g2.setColor(Color.BLACK);
+        g2.setPaint(Color.BLACK);
         if (getModel().isRollover()) {
-            g2.setColor(Color.ORANGE);
+            g2.setPaint(Color.ORANGE);
         }
         if (getModel().isPressed()) {
-            g2.setColor(Color.BLUE);
+            g2.setPaint(Color.BLUE);
         }
         g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
         g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);

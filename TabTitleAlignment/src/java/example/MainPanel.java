@@ -291,12 +291,12 @@ class TabButton extends JButton {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setStroke(new BasicStroke(2));
-        g2.setColor(Color.BLACK);
+        g2.setPaint(Color.BLACK);
         if (getModel().isRollover()) {
-            g2.setColor(Color.ORANGE);
+            g2.setPaint(Color.ORANGE);
         }
         if (getModel().isPressed()) {
-            g2.setColor(Color.BLUE);
+            g2.setPaint(Color.BLUE);
         }
         g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
         g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);

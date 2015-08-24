@@ -68,14 +68,14 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
             AbstractButton b = (AbstractButton) c;
             ButtonModel model = b.getModel();
             if (model.isArmed()) {
-                g2.setColor(ac);
+                g2.setPaint(ac);
                 g2.fill(shape);
             } else if (b.isRolloverEnabled() && model.isRollover()) {
                 paintFocusAndRollover(g2, c, rc);
             } else if (b.hasFocus()) {
                 paintFocusAndRollover(g2, c, fc);
             } else {
-                g2.setColor(c.getBackground());
+                g2.setPaint(c.getBackground());
                 g2.fill(shape);
             }
         }
@@ -99,7 +99,7 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
     private void paintFocusAndRollover(Graphics2D g2, JComponent c, Color color) {
         g2.setPaint(new GradientPaint(0, 0, color, c.getWidth() - 1, c.getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
-        g2.setColor(c.getBackground());
+        g2.setPaint(c.getBackground());
         g2.fill(border);
     }
 }

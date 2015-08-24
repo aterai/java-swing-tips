@@ -75,11 +75,11 @@ class CloseTabIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        g2.setColor(Color.BLACK);
+        g2.setPaint(Color.BLACK);
         if (c instanceof AbstractButton) {
             ButtonModel m = ((AbstractButton) c).getModel();
             if (m.isRollover()) {
-                g2.setColor(Color.ORANGE);
+                g2.setPaint(Color.ORANGE);
             }
         }
         g2.drawLine(4,  4, 11, 11);

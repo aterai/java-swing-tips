@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
                     int h = getHeight();
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2.setColor(UIManager.getColor("TextField.background"));
+                    g2.setPaint(UIManager.getColor("TextField.background"));
                     g2.fillRoundRect(0, 0, w - 1, h - 1, h, h);
-                    g2.setColor(Color.GRAY);
+                    g2.setPaint(Color.GRAY);
                     g2.drawRoundRect(0, 0, w - 1, h - 1, h, h);
                     g2.dispose();
                 }
@@ -86,12 +86,12 @@ class RoundedCornerBorder extends AbstractBorder {
         RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width - 1, height - 1, r, r);
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
-            g2.setColor(parent.getBackground());
+            g2.setPaint(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(new Area(round));
             g2.fill(corner);
         }
-        g2.setColor(Color.GRAY);
+        g2.setPaint(Color.GRAY);
         g2.draw(round);
         g2.dispose();
     }

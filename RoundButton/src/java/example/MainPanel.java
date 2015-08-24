@@ -119,7 +119,7 @@ class RoundedCornerButton extends JButton {
     private void paintFocusAndRollover(Graphics2D g2, Color color) {
         g2.setPaint(new GradientPaint(0, 0, color, getWidth() - 1, getHeight() - 1, color.brighter(), true));
         g2.fill(shape);
-        g2.setColor(getBackground());
+        g2.setPaint(getBackground());
         g2.fill(border);
     }
 
@@ -128,14 +128,14 @@ class RoundedCornerButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (getModel().isArmed()) {
-            g2.setColor(ac);
+            g2.setPaint(ac);
             g2.fill(shape);
         } else if (isRolloverEnabled() && getModel().isRollover()) {
             paintFocusAndRollover(g2, rc);
         } else if (hasFocus()) {
             paintFocusAndRollover(g2, fc);
         } else {
-            g2.setColor(getBackground());
+            g2.setPaint(getBackground());
             g2.fill(shape);
         }
         g2.dispose();
@@ -145,7 +145,7 @@ class RoundedCornerButton extends JButton {
         initShape();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getForeground());
+        g2.setPaint(getForeground());
         g2.draw(shape);
         g2.dispose();
     }
@@ -218,14 +218,14 @@ class ShapeButton extends JButton {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (getModel().isArmed()) {
-            g2.setColor(ac);
+            g2.setPaint(ac);
             g2.fill(shape);
         } else if (isRolloverEnabled() && getModel().isRollover()) {
             paintFocusAndRollover(g2, rc);
         } else if (hasFocus()) {
             paintFocusAndRollover(g2, fc);
         } else {
-            g2.setColor(getBackground());
+            g2.setPaint(getBackground());
             g2.fill(shape);
         }
         g2.dispose();
@@ -234,7 +234,7 @@ class ShapeButton extends JButton {
     @Override protected void paintBorder(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getForeground());
+        g2.setPaint(getForeground());
         g2.draw(shape);
         g2.dispose();
     }
