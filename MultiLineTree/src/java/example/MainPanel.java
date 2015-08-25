@@ -158,10 +158,10 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         } else {
             bColor = renderer.getBackgroundNonSelectionColor();
             fColor = renderer.getTextNonSelectionColor();
-            if (bColor == null) {
+            if (Objects.isNull(bColor)) {
                 bColor = renderer.getBackground();
             }
-            if (fColor == null) {
+            if (Objects.isNull(fColor)) {
                 fColor = renderer.getForeground();
             }
         }
@@ -184,7 +184,7 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
 class CellTextArea extends JTextArea {
     private Dimension preferredSize;
     @Override public void setPreferredSize(Dimension d) {
-        if (d != null) {
+        if (Objects.nonNull(d)) {
             preferredSize = d;
         }
     }
@@ -212,7 +212,7 @@ class CellTextArea extends JTextArea {
 //         int lines = 0;
 //         try (BufferedReader br = new BufferedReader(new StringReader(str))) {
 //             String line;
-//             while ((line = br.readLine()) != null) {
+//             while (Objects.nonNull(line = br.readLine())) {
 //                 int width = SwingUtilities.computeStringWidth(fm, line);
 //                 if (maxWidth < width) {
 //                     maxWidth = width;
@@ -234,7 +234,6 @@ class CellTextArea extends JTextArea {
 class CellTextArea2 extends JTextArea {
     @Override public Dimension getPreferredSize() {
         Dimension d = new Dimension(10, 10);
-        //d = (d == null) ? new Dimension(400, 400) : d;
         Insets i = getInsets();
         d.width  = Math.max(d.width,  getColumns() * getColumnWidth() + i.left + i.right);
         d.height = Math.max(d.height, getRows() * getRowHeight() + i.top + i.bottom);

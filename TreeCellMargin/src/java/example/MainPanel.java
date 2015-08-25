@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
@@ -99,13 +100,13 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
             bColor = getBackgroundSelectionColor();
         } else {
             bColor = getBackgroundNonSelectionColor();
-            if (bColor == null) {
+            if (Objects.isNull(bColor)) {
                 bColor = getBackground();
             }
         }
 
         int imageOffset = -1;
-        if (bColor != null && fillBackground) {
+        if (Objects.nonNull(bColor) && fillBackground) {
             imageOffset = getLabelStart();
             g.setColor(bColor);
             g.fillRect(imageOffset - MARGIN, 0, getWidth() + MARGIN - imageOffset, getHeight());
@@ -132,11 +133,11 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     private void paintFocus(Graphics g, int x, int y, int w, int h, Color notColor) {
         Color bsColor = getBorderSelectionColor();
         boolean b = selected || !drawDashedFocusIndicator;
-        if (bsColor != null && b) {
+        if (Objects.nonNull(bsColor) && b) {
             g.setColor(bsColor);
             g.drawRect(x, y, w - 1, h - 1);
         }
-        if (drawDashedFocusIndicator && notColor != null) {
+        if (drawDashedFocusIndicator && Objects.nonNull(notColor)) {
             if (!notColor.equals(treeBGColor)) {
                 treeBGColor = notColor;
                 focusBGColor = new Color(~notColor.getRGB());
@@ -147,7 +148,7 @@ class MyTreeCellRenderer extends DefaultTreeCellRenderer {
     }
     private int getLabelStart() {
         Icon currentI = getIcon();
-        if (currentI != null && getText() != null) {
+        if (Objects.nonNull(currentI) && Objects.nonNull(getText())) {
             return currentI.getIconWidth() + Math.max(0, getIconTextGap() - 1);
         }
         return 0;
@@ -204,10 +205,10 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         } else {
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
-            if (bColor == null) {
+            if (Objects.isNull(bColor)) {
                 bColor = getBackground();
             }
-            if (fColor == null) {
+            if (Objects.isNull(fColor)) {
                 fColor = getForeground();
             }
             text.setOpaque(false);

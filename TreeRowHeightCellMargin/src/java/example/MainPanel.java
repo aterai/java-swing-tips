@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
@@ -94,10 +95,10 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         } else {
             bColor = getBackgroundNonSelectionColor();
             fColor = getTextNonSelectionColor();
-            if (bColor == null) {
+            if (Objects.isNull(bColor)) {
                 bColor = getBackground();
             }
-            if (fColor == null) {
+            if (Objects.isNull(fColor)) {
                 fColor = getForeground();
             }
         }
