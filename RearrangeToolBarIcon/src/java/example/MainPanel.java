@@ -106,12 +106,12 @@ class DragHandler extends MouseAdapter {
         Point pt = e.getPoint();
         JComponent parent = (JComponent) e.getComponent();
 
-        if (startPt != null && Math.sqrt(Math.pow(pt.x - startPt.x, 2) + Math.pow(pt.y - startPt.y, 2)) > gestureMotionThreshold) {
+        if (Objects.nonNull(startPt) && Math.sqrt(Math.pow(pt.x - startPt.x, 2) + Math.pow(pt.y - startPt.y, 2)) > gestureMotionThreshold) {
             startDragging(parent, pt);
             startPt = null;
             return;
         }
-        if (!window.isVisible() || draggingComonent == null) {
+        if (!window.isVisible() || Objects.isNull(draggingComonent)) {
             return;
         }
 
@@ -140,7 +140,7 @@ class DragHandler extends MouseAdapter {
 
     @Override public void mouseReleased(MouseEvent e) {
         startPt = null;
-        if (!window.isVisible() || draggingComonent == null) {
+        if (!window.isVisible() || Objects.isNull(draggingComonent)) {
             return;
         }
         Point pt = e.getPoint();

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -64,7 +65,7 @@ public final class MainPanel extends JPanel {
     private void toggleFullScreenWindow() {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-        if (graphicsDevice.getFullScreenWindow() == null) {
+        if (Objects.isNull(graphicsDevice.getFullScreenWindow())) {
             dialog.dispose(); //destroy the native resources
             dialog.setUndecorated(true);
             dialog.setVisible(true); //rebuilding the native resources
