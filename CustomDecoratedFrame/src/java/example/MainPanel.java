@@ -171,7 +171,7 @@ enum Side {
     SE(Cursor.SE_RESIZE_CURSOR, new Dimension(4, 4));
     public final Dimension dim;
     public final int cursor;
-    private Side(int cursor, Dimension dim) {
+    Side(int cursor, Dimension dim) {
         this.cursor = cursor;
         this.dim = dim;
     }

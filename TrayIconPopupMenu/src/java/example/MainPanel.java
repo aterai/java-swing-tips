@@ -216,7 +216,7 @@ enum LookAndFeelEnum {
     GTK    ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
     Nimbus ("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
     private final String clazz;
-    private LookAndFeelEnum(String clazz) {
+    LookAndFeelEnum(String clazz) {
         this.clazz = clazz;
     }
     public String getClassName() {

@@ -179,7 +179,7 @@ enum SortAlgorithms {
     Qsort    ("Quicksort"),
     Qsort2   ("2-way Quicksort");
     private final String description;
-    private SortAlgorithms(String description) {
+    SortAlgorithms(String description) {
         this.description = description;
     }
     @Override public String toString() {

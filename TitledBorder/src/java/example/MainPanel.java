@@ -90,7 +90,7 @@ enum VerticalOrientation {
     BELOW_BOTTOM     (TitledBorder.BELOW_BOTTOM,     "Below Bottom");
     public final int mode;
     private final String description;
-    private VerticalOrientation(int mode, String description) {
+    VerticalOrientation(int mode, String description) {
         this.mode = mode;
         this.description = description;
     }
@@ -108,7 +108,7 @@ enum Justification {
     TRAILING              (TitledBorder.TRAILING,              "Trailing");
     public final int mode;
     private final String description;
-    private Justification(int mode, String description) {
+    Justification(int mode, String description) {
         this.mode = mode;
         this.description = description;
     }

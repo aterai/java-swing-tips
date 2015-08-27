@@ -150,7 +150,7 @@ enum JComponentType {
     JTextArea(new JTextArea()),
     JTextField(new JTextField());
     public final JComponent component;
-    private JComponentType(JComponent component) {
+    JComponentType(JComponent component) {
         this.component = component;
     }
 }

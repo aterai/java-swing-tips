@@ -93,7 +93,7 @@ enum JoinStyle {
     JOIN_MITER(BasicStroke.JOIN_MITER),
     JOIN_ROUND(BasicStroke.JOIN_ROUND);
     public final int style;
-    private JoinStyle(int style) {
+    JoinStyle(int style) {
         this.style = style;
     }
 }
@@ -103,7 +103,7 @@ enum EndCapStyle {
     CAP_ROUND(BasicStroke.CAP_ROUND),
     CAP_SQUARE(BasicStroke.CAP_SQUARE);
     public final int style;
-    private EndCapStyle(int style) {
+    EndCapStyle(int style) {
         this.style = style;
     }
 }

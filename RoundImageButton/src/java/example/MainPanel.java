@@ -274,7 +274,7 @@ enum ButtonAlignments {
     Bottom ("Bottom Alignment", Component.BOTTOM_ALIGNMENT);
     private final String description;
     public final float alingment;
-    private ButtonAlignments(String description, float alingment) {
+    ButtonAlignments(String description, float alingment) {
         this.description = description;
         this.alingment   = alingment;
     }

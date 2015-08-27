@@ -89,7 +89,7 @@ enum UnderlineStyle {
     UNDERLINE_LOW_TWO_PIXEL(TextAttribute.UNDERLINE_LOW_TWO_PIXEL),
     UNDERLINE_ON(TextAttribute.UNDERLINE_ON);
     public final int style;
-    private UnderlineStyle(int style) {
+    UnderlineStyle(int style) {
         this.style = style;
     }
 }

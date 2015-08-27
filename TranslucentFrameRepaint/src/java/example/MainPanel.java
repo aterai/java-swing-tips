@@ -149,7 +149,7 @@ enum TexturePaints {
     Checker (TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
     private final String description;
     private final TexturePaint texture;
-    private TexturePaints(TexturePaint texture, String description) {
+    TexturePaints(TexturePaint texture, String description) {
         this.texture = texture;
         this.description = description;
     }

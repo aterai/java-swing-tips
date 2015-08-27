@@ -71,7 +71,7 @@ enum TabPlacements {
     LEFT(JTabbedPane.LEFT),
     RIGHT(JTabbedPane.RIGHT);
     public final int tabPlacement;
-    private TabPlacements(int tabPlacement) {
+    TabPlacements(int tabPlacement) {
         this.tabPlacement = tabPlacement;
     }
 }

@@ -105,7 +105,7 @@ enum QuadrantRotate {
     VERTICAL_FLIP(2),
     COUNTER_CLOCKWISE(-1);
     private final int numquadrants;
-    private QuadrantRotate(int numquadrants) {
+    QuadrantRotate(int numquadrants) {
         this.numquadrants = numquadrants;
     }
     public int getNumQuadrants() {

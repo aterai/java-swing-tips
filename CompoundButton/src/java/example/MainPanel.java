@@ -71,7 +71,7 @@ enum ButtonLocation {
     SOUTH(225f),
     WEST(-45f);
     private final float degree;
-    private ButtonLocation(float degree) {
+    ButtonLocation(float degree) {
         this.degree = degree;
     }
     public float getStartDegree() {

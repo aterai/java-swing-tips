@@ -100,7 +100,7 @@ enum Vertical {
     CENTER(SwingConstants.CENTER),
     BOTTOM(SwingConstants.BOTTOM);
     public final int alignment;
-    private Vertical(int alignment) {
+    Vertical(int alignment) {
         this.alignment = alignment;
     }
 }
@@ -112,7 +112,7 @@ enum Horizontal {
     LEADING(SwingConstants.LEADING),
     TRAILING(SwingConstants.TRAILING);
     public final int alignment;
-    private Horizontal(int alignment) {
+    Horizontal(int alignment) {
         this.alignment = alignment;
     }
 }
