@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -37,7 +38,7 @@ public final class MainPanel extends JPanel {
                     src = sp2.getViewport();
                     tgt = sp1.getViewport();
                 }
-                if (adjflg || tgt == null || src == null) {
+                if (adjflg || Objects.isNull(tgt) || Objects.isNull(src)) {
                     return;
                 }
                 adjflg = true;

@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
 //                 } catch (UnavailableServiceException t) {
 //                     bs = null;
 //                 }
-//                 if (bs == null) {
-//                     browseCacheFile(url);
-//                 } else {
+//                 if (Objects.nonNull(bs)) {
 //                     bs.showDocument(url);
+//                 } else {
+//                     browseCacheFile(url);
 //                 }
                 browseCacheFile(url);
             }

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Objects;
 import javax.jnlp.*;
 import javax.swing.*;
 
@@ -26,9 +27,8 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("get Clipboard DataFlavor") {
             @Override public void actionPerformed(ActionEvent e) {
                 try {
-                    Transferable t = (cs == null) ? Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
-                                                  : cs.getContents();
-                    if (t == null) {
+                    Transferable t = Objects.nonNull(cs) ? cs.getContents() : Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+                    if (Objects.isNull(t)) {
                         Toolkit.getDefaultToolkit().beep();
                         return;
                     }
