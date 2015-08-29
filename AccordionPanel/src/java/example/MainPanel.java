@@ -25,10 +25,9 @@ public final class MainPanel extends JPanel {
         }
         accordion.add(Box.createVerticalGlue());
 
-        JScrollPane scroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scroll = new JScrollPane(accordion);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.getVerticalScrollBar().setUnitIncrement(25);
-        scroll.getViewport().add(accordion);
 
         JSplitPane split = new JSplitPane();
         split.setResizeWeight(.5);

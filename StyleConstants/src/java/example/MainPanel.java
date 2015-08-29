@@ -48,10 +48,9 @@ public final class MainPanel extends JPanel {
         Style error = doc.addStyle("error", regular);
         StyleConstants.setForeground(error, Color.RED);
 
-        JScrollPane scroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scroll = new JScrollPane(jtp);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.getVerticalScrollBar().setUnitIncrement(25);
-        scroll.getViewport().add(jtp);
 
         add(scroll);
         add(box, BorderLayout.SOUTH);

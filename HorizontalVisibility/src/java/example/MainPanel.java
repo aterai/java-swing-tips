@@ -33,8 +33,9 @@ public class MainPanel extends JPanel {
         scroller2.setModel(textField2.getHorizontalVisibility());
 
         Box p = Box.createVerticalBox();
-        JScrollPane scroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scroll.setViewportView(new JTextField(TEXT));
+        JScrollPane scroll = new JScrollPane(new JTextField(TEXT));
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         p.add(new JLabel("JScrollPane + VERTICAL_SCROLLBAR_NEVER"));
         p.add(scroll);
         p.add(Box.createVerticalStrut(5));

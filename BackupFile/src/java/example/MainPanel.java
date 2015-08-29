@@ -106,9 +106,9 @@ public final class MainPanel extends JPanel {
         nbox.add(new JLabel("合計バックアップ数:", SwingConstants.RIGHT));
         nbox.add(label);
 
-        JScrollPane scroll = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scroll = new JScrollPane(jtp);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.getVerticalScrollBar().setUnitIncrement(25);
-        scroll.getViewport().add(jtp);
 
         add(nbox, BorderLayout.NORTH);
         add(scroll);
