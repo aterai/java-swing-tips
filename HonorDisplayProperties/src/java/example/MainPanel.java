@@ -25,19 +25,19 @@ public final class MainPanel extends JPanel {
         //editor.setEditorKit(htmlEditorKit);
 
         StringBuilder buf = new StringBuilder(300);
-        buf.append("<html>JEditorPane#setFont(new Font('Serif', Font.PLAIN, 16));<br/>");
+        buf.append("<html>JEditorPane#setFont(new Font('Serif', Font.PLAIN, 16));<br />");
         HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
         StyleSheet styles = htmlEditorKit.getStyleSheet();
         //System.out.println(styles);
         Enumeration rules = styles.getStyleNames();
         while (rules.hasMoreElements()) {
             String name = (String) rules.nextElement();
-            Style rule = styles.getRule(name);
             if ("body".equals(name)) {
-                Enumeration sets = rule.getAttributeNames();
-                while (sets.hasMoreElements()) {
-                    Object n = sets.nextElement();
-                    buf.append(String.format("%s: %s<br />", n, rule.getAttribute(n)));
+                Style rule = styles.getRule(name);
+                Enumeration attrs = rule.getAttributeNames();
+                while (attrs.hasMoreElements()) {
+                    Object a = attrs.nextElement();
+                    buf.append(String.format("%s: %s<br />", a, rule.getAttribute(a)));
                 }
             }
         }
