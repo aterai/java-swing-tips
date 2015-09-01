@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         new ColorItem(Color.BLUE,    "Blue"),
         new ColorItem(Color.CYAN,    "Cyan"),
         new ColorItem(Color.ORANGE,  "Orange"),
-        new ColorItem(Color.MAGENTA, "Magenta"),
+        new ColorItem(Color.MAGENTA, "Magenta")
     };
     private final JComboBox<ColorItem> combo00 = new JComboBox<>(model);
     private final JComboBox<ColorItem> combo01 = new JComboBox<>(model);

@@ -41,8 +41,8 @@ public class MainPanel extends JPanel {
             new TabStop(0f,   TabStop.ALIGN_LEFT,    TabStop.LEAD_NONE),
             new TabStop(100f, TabStop.ALIGN_CENTER,  TabStop.LEAD_NONE),
             new TabStop(200f, TabStop.ALIGN_RIGHT,   TabStop.LEAD_NONE),
-            new TabStop(250f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE),
-            //new TabStop(300f, TabStop.ALIGN_BAR,     TabStop.LEAD_NONE),
+            new TabStop(250f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)
+            //new TabStop(300f, TabStop.ALIGN_BAR,     TabStop.LEAD_NONE)
         }));
         textPane.getStyledDocument().setParagraphAttributes(0, textPane.getDocument().getLength(), attr, false);
 
