@@ -129,7 +129,7 @@ public final class MainPanel extends JPanel {
 //         }
 //         return false;
 //     }
-//     @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
+//     @Override public boolean canImport(JComponent component, DataFlavor... flavors) {
 //         for (DataFlavor f: flavors) {
 //             if (DataFlavor.javaFileListFlavor.equals(f)) {
 //                 return true;

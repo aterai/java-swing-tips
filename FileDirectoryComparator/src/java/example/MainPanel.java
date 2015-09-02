@@ -213,7 +213,7 @@ class FileTransferHandler extends TransferHandler {
 //         }
 //         return false;
 //     }
-//     @Override public boolean canImport(JComponent component, DataFlavor[] flavors) {
+//     @Override public boolean canImport(JComponent component, DataFlavor... flavors) {
 //         for (DataFlavor f: flavors) {
 //             if (DataFlavor.javaFileListFlavor.equals(f)) {
 //                 return true;

@@ -125,7 +125,7 @@ public class MainPanel extends JPanel {
 //             //TableColumn column = header.getDraggedColumn();
 //             return new DataHandler(header, localObjectFlavor.getMimeType());
 //         }
-//         @Override public boolean canImport(TransferHandler.TransferSupport info) {
+//         @Override public boolean canImport(TransferSupport info) {
 //             //System.out.println("canImport");
 //             return info.isDataFlavorSupported(localObjectFlavor);
 //         }
@@ -133,7 +133,7 @@ public class MainPanel extends JPanel {
 //             System.out.println("getSourceActions");
 //             return TransferHandler.MOVE;
 //         }
-//         @Override public boolean importData(TransferHandler.TransferSupport info) {
+//         @Override public boolean importData(TransferSupport info) {
 //             System.out.println("importData");
 //             JTableHeader target = (JTableHeader) info.getComponent();
 //             //JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
