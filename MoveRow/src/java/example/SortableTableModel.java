@@ -50,7 +50,7 @@ class ColumnComparator implements Comparator, Serializable {
         }
         return 1;
     }
-//     public int compare(Number o1, Number o2) {
+//     @Override public int compare(Number o1, Number o2) {
 //         return new BigDecimal(o1.toString()).compareTo(new BigDecimal(o2.toString()));
 // //         double n1 = o1.doubleValue();
 // //         double n2 = o2.doubleValue();

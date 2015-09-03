@@ -473,7 +473,7 @@ class SortableHeaderRenderer implements TableCellRenderer {
 
 class ComparableComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
     private static final long serialVersionUID = 1L;
-    public int compare(T c1, T c2) {
+    @Override public int compare(T c1, T c2) {
         return c1.compareTo(c2);
     }
 }
