@@ -24,14 +24,12 @@ public final class MainPanel extends JPanel {
       + " This lesson ends with a set of questions and exercises\n"
       + " so you can test yourself on what you've learned.\n"
       + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
-
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextArea textArea = new JTextArea();
     private final JComboBox<String> combo = new JComboBox<>();
 
     public MainPanel() {
         super(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         textArea.setText(INIT_TXT);
         textArea.setLineWrap(true);
         textArea.setEditable(false);
@@ -39,19 +37,23 @@ public final class MainPanel extends JPanel {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("swing");
         combo.setModel(model);
+        combo.setEditable(true);
 
         JButton searchButton = new JButton(new AbstractAction("Search") {
             @Override public void actionPerformed(ActionEvent e) {
-                searchActionPerformed();
+                String pattern = (String) combo.getEditor().getItem();
+                if (addItem(combo, pattern, 4)) {
+                    setHighlight(textArea, pattern);
+                } else {
+                    textArea.getHighlighter().removeAllHighlights();
+                }
             }
         });
-        //frame.getRootPane().setDefaultButton(searchButton);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 getRootPane().setDefaultButton(searchButton);
             }
         });
-        combo.setEditable(true);
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
@@ -59,11 +61,12 @@ public final class MainPanel extends JPanel {
         p.add(combo);
         p.add(searchButton, BorderLayout.EAST);
 
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static boolean addItem(JComboBox<String> combo, String str, int max) {
+    private static boolean addItem(JComboBox<String> combo, String str, int max) {
         if (Objects.isNull(str) || str.isEmpty()) {
             return false;
         }
@@ -78,18 +81,7 @@ public final class MainPanel extends JPanel {
         combo.setVisible(true);
         return true;
     }
-    private void searchActionPerformed() {
-        String pattern = (String) combo.getEditor().getItem();
-        if (addItem(combo, pattern, 4)) {
-            //pattern = pattern.trim();
-            //combo.getEditor().setItem(pattern);
-            setHighlight(textArea, pattern);
-        } else {
-            //combo.getEditor().setItem("");
-            textArea.getHighlighter().removeAllHighlights();
-        }
-    }
-    public void setHighlight(JTextComponent jtc, String pattern) {
+    private static void setHighlight(JTextComponent jtc, String pattern) {
         Highlighter highlighter = jtc.getHighlighter();
         highlighter.removeAllHighlights();
         try {
@@ -99,17 +91,16 @@ public final class MainPanel extends JPanel {
             int pos = 0;
             while (matcher.find(pos)) {
                 pos = matcher.end();
-                highlighter.addHighlight(matcher.start(), pos, highlightPainter);
+                highlighter.addHighlight(matcher.start(), pos, HIGHLIGHT_PAINTER);
             }
-//             while ((pos = text.indexOf(pattern, pos)) >= 0) {
-//                 highlighter.addHighlight(pos, pos + pattern.length(), highlightPainter);
-//                 pos += pattern.length();
-//             }
+            //while ((pos = text.indexOf(pattern, pos)) >= 0) {
+            //    highlighter.addHighlight(pos, pos + pattern.length(), HIGHLIGHT_PAINTER);
+            //    pos += pattern.length();
+            //}
         } catch (BadLocationException | PatternSyntaxException e) {
             e.printStackTrace();
         }
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

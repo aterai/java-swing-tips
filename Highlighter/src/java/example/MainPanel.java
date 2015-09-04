@@ -24,11 +24,9 @@ public final class MainPanel extends JPanel {
       + " This lesson ends with a set of questions and exercises\n"
       + " so you can test yourself on what you've learned.\n"
       + "http://docs.oracle.com/javase/tutorial/uiswing/learn/index.html\n";
+    private static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
 
-    //    private final Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(SystemColor.textHighlight);
-    private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
         final JTextArea jta = new JTextArea();
         jta.setLineWrap(true);
@@ -52,7 +50,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    public void setHighlight(JTextComponent jtc, String pattern) {
+    private static void setHighlight(JTextComponent jtc, String pattern) {
         jtc.getHighlighter().removeAllHighlights();
         try {
             Highlighter highlighter = jtc.getHighlighter();
@@ -62,14 +60,14 @@ public final class MainPanel extends JPanel {
             int pos = 0;
             while (matcher.find(pos)) {
                 pos = matcher.end();
-                highlighter.addHighlight(matcher.start(), pos, highlightPainter);
+                highlighter.addHighlight(matcher.start(), pos, HIGHLIGHT_PAINTER);
             }
-//             int pos = text.indexOf(pattern);
-//             while (pos >= 0) {
-//                 int nextp = pos + pattern.length();
-//                 jtc.getHighlighter().addHighlight(pos, nextp, highlightPainter);
-//                 pos = text.indexOf(pattern, nextp);
-//             }
+            //int pos = text.indexOf(pattern);
+            //while (pos >= 0) {
+            //    int nextp = pos + pattern.length();
+            //    jtc.getHighlighter().addHighlight(pos, nextp, HIGHLIGHT_PAINTER);
+            //    pos = text.indexOf(pattern, nextp);
+            //}
         } catch (BadLocationException | PatternSyntaxException e) {
             e.printStackTrace();
         }
