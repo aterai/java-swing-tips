@@ -145,8 +145,8 @@ public final class MainPanel extends JPanel {
                 super.updateUI();
                 final ListCellRenderer<? super String> lcr = getRenderer();
                 setRenderer(new ListCellRenderer<String>() {
-                    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean hasFocus) {
-                        JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+                    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JLabel l = (JLabel) lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                         l.setBorder(getPaddingBorder(false));
                         return l;
                     }

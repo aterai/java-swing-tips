@@ -229,17 +229,17 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
         p.add(icon);
         p.add(label, BorderLayout.SOUTH);
     }
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E item, int index, boolean isSelected, boolean cellHasFocus) {
-        label.setText(item.title);
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        label.setText(value.title);
         //label.setBorder(cellHasFocus ? dotBorder : empBorder);
         label.setBorder(cellHasFocus ? focusCellHighlightBorder : noFocusBorder);
         if (isSelected) {
-            icon.setIcon(item.sicon);
+            icon.setIcon(value.sicon);
             label.setForeground(list.getSelectionForeground());
             label.setBackground(list.getSelectionBackground());
             label.setOpaque(true);
         } else {
-            icon.setIcon(item.nicon);
+            icon.setIcon(value.nicon);
             label.setForeground(list.getForeground());
             label.setBackground(list.getBackground());
             label.setOpaque(false);

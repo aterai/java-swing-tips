@@ -125,8 +125,8 @@ class CellRendererTooltipList<E> extends JList<E> {
 }
 
 class TooltipListCellRenderer extends DefaultListCellRenderer {
-    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+    @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Insets i = l.getInsets();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
         Rectangle rect = c.getBounds();

@@ -93,7 +93,7 @@ class LinkCellRenderer<E> implements ListCellRenderer<E> {
         p.setOpaque(true);
         check.setOpaque(false);
     }
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, final int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (isSelected) {
             p.setBackground(list.getSelectionBackground());
             p.setForeground(list.getSelectionForeground());

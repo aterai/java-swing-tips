@@ -65,9 +65,9 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
     private Border noFocusBorder;
     private Border focusCellHighlightBorder;
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E str, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         //setLineWrap(true);
-        setText(Objects.toString(str, ""));
+        setText(Objects.toString(value, ""));
         if (isSelected) {
             setBackground(new Color(list.getSelectionBackground().getRGB())); //Nimbus
             setForeground(list.getSelectionForeground());

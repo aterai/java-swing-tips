@@ -185,7 +185,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         }
         add(box, BorderLayout.EAST);
     }
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean hasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         label.setText(Objects.toString(value, ""));
         this.index = index;
         if (isSelected) {

@@ -176,8 +176,8 @@ class TableCellTransferHandler extends TransferHandler {
 
 class IconListCellRenderer<E extends Icon> implements ListCellRenderer<E> {
     private final JLabel l = new JLabel();
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E item, int index, boolean isSelected, boolean cellHasFocus) {
-        l.setIcon(item);
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        l.setIcon(value);
         return l;
     }
 }
