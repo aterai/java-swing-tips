@@ -137,9 +137,9 @@ public final class MainPanel extends JPanel {
 class HeaderRenderer implements TableCellRenderer {
     private final JCheckBox check = new JCheckBox("");
     private final JLabel label = new JLabel("Check All");
-    @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
-        if (val instanceof Status) {
-            switch ((Status) val) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (value instanceof Status) {
+            switch ((Status) value) {
               case SELECTED:      check.setSelected(true);  check.setEnabled(true);  break;
               case DESELECTED:    check.setSelected(false); check.setEnabled(true);  break;
               case INDETERMINATE: check.setSelected(true);  check.setEnabled(false); break;
@@ -149,19 +149,19 @@ class HeaderRenderer implements TableCellRenderer {
             check.setSelected(true); check.setEnabled(false);
         }
         check.setOpaque(false);
-        check.setFont(tbl.getFont());
-        TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+        check.setFont(table.getFont());
+        TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+        JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         label.setIcon(new ComponentIcon(check));
         l.setIcon(new ComponentIcon(label));
         l.setText(null); //XXX: Nimbus???
-//         System.out.println("getHeaderRect: " + tbl.getTableHeader().getHeaderRect(col));
+//         System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
 //         System.out.println("getPreferredSize: " + l.getPreferredSize());
 //         System.out.println("getMaximunSize: " + l.getMaximumSize());
 //         System.out.println("----");
 //         if (l.getPreferredSize().height > 1000) { //XXX: Nimbus???
 //             System.out.println(l.getPreferredSize().height);
-//             Rectangle rect = tbl.getTableHeader().getHeaderRect(col);
+//             Rectangle rect = table.getTableHeader().getHeaderRect(column);
 //             l.setPreferredSize(new Dimension(0, rect.height));
 //         }
         return l;

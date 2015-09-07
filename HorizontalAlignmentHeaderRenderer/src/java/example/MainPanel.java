@@ -33,8 +33,7 @@ public final class MainPanel extends JPanel {
 //         final TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
 //         table3.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 //             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//                 JLabel l = (JLabel) r.getTableCellRendererComponent(
-//                     table, value, isSelected, hasFocus, row, column);
+//                 JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 //                 if (table.convertColumnIndexToModel(column) == 0) {
 //                     l.setHorizontalAlignment(SwingConstants.CENTER);
 //                 } else {

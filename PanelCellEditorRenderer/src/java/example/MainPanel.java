@@ -127,8 +127,7 @@ class SpinnerRenderer extends SpinnerPanel implements TableCellRenderer {
         super();
         setName("Table.cellRenderer");
     }
-    @Override public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         spinner.setValue((Integer) value);
         return this;
@@ -137,8 +136,7 @@ class SpinnerRenderer extends SpinnerPanel implements TableCellRenderer {
 
 class SpinnerEditor extends SpinnerPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
-    @Override public Component getTableCellEditorComponent(
-        JTable table, Object value, boolean isSelected, int row, int column) {
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         this.setBackground(table.getSelectionBackground());
         spinner.setValue((Integer) value);
         return this;
@@ -300,8 +298,7 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
         super();
         setName("Table.cellRenderer");
     }
-    @Override public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         label.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
         label.setText(Objects.toString(value, ""));

@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
         //sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
 
         TableCellRenderer renderer = new TableCellRenderer() {
-            @Override public Component getTableCellRendererComponent(JTable t, Object v, boolean isS, boolean hasF, int row, int col) {
+            @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
-                JLabel l = (JLabel) r.getTableCellRendererComponent(t, v, isS, hasF, row, col);
+                JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 RowSorter<? extends TableModel> rs = table.getRowSorter();
                 if (rs instanceof DefaultRowSorter) {
                     l.setForeground(((DefaultRowSorter<? extends TableModel, ?>) rs).isSortable(t.convertColumnIndexToModel(col)) ? Color.BLACK : Color.GRAY);

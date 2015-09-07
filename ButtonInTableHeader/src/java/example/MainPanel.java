@@ -153,17 +153,16 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 //             System.out.println("clicked");
 //         }
 //     });
-    @Override public Component getTableCellRendererComponent(JTable tbl, Object val, boolean isS, boolean hasF, int row, int col) {
-        TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-        JLabel l = (JLabel) r.getTableCellRendererComponent(tbl, val, isS, hasF, row, col);
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+        JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setIcon(new MenuArrowIcon());
         l.removeAll();
-        int mci = tbl.convertColumnIndexToModel(col);
+        int mci = table.convertColumnIndexToModel(column);
 
         if (rolloverIndex == mci) {
-            TableColumn column = tbl.getColumnModel().getColumn(mci);
-            int w = column.getWidth();
-            int h = tbl.getTableHeader().getHeight();
+            int w = table.getColumnModel().getColumn(mci).getWidth();
+            int h = table.getTableHeader().getHeight();
             //Icon icon = new MenuArrowIcon();
             Border outside = l.getBorder();
             Border inside  = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);

@@ -96,7 +96,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
         };
         comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
     }
-    @Override public Component getTableCellEditorComponent(JTable table, final Object value, boolean isSelected, int row, int column) {
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         if (value instanceof LocalDateTime) {
             comboBox.setModel(new DefaultComboBoxModel<LocalDateTime>() {
                 @Override public LocalDateTime getElementAt(int index) {
