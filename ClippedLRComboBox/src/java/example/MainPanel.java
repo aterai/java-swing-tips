@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
         JComboBox<LRItem> combo = new JComboBox<>(model);
         if (hasMultiColumn) {
-            combo.setRenderer(new MultiColumnCellRenderer(80));
+            combo.setRenderer(new MultiColumnCellRenderer<LRItem>(80));
         }
         return combo;
     }
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class MultiColumnCellRenderer extends JPanel implements ListCellRenderer<LRItem> {
+class MultiColumnCellRenderer<E extends LRItem> extends JPanel implements ListCellRenderer<E> {
     private final JLabel leftLabel = new JLabel();
     private final JLabel rightLabel;
     public MultiColumnCellRenderer(int rightWidth) {
@@ -105,7 +105,7 @@ class MultiColumnCellRenderer extends JPanel implements ListCellRenderer<LRItem>
         this.add(leftLabel);
         this.add(rightLabel, BorderLayout.EAST);
     }
-    @Override public Component getListCellRendererComponent(JList list, LRItem value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         leftLabel.setText(value.getLeftText());
         rightLabel.setText(value.getRightText());
 

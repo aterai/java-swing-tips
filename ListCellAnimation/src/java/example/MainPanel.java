@@ -96,7 +96,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             }
         }
     }
-    @Override public Component getListCellRendererComponent(JList list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         setBackground(isSelected ? SELECTEDCOLOR : list.getBackground());
         label.setText(Objects.toString(value, ""));
         animateIndex = index;

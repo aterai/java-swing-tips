@@ -155,7 +155,7 @@ class PluginCellEditor extends DefaultCellEditor {
         super(comboBox);
         panel = new PluginPanel(comboBox);
     }
-    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         Node node = panel.extractNode(value);
         panel.setContents(node);
         this.node = node;

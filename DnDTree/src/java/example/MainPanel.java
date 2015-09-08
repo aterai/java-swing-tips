@@ -196,12 +196,12 @@ class DnDTree extends JTree {
     private class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
         private boolean isTargetNode;
         private boolean isTargetNodeLeaf;
-        @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean isExpanded, boolean isLeaf, int row, boolean hasFocus) {
+        @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             if (value instanceof TreeNode) {
                 isTargetNode     = value.equals(dropTargetNode);
                 isTargetNodeLeaf = isTargetNode && ((TreeNode) value).isLeaf();
             }
-            return super.getTreeCellRendererComponent(tree, value, isSelected, isExpanded, isLeaf, row, hasFocus);
+            return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         }
         @Override public void paintComponent(Graphics g) {
             super.paintComponent(g);
