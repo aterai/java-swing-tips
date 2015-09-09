@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     //<blockquote cite="FixedColumnExample.java">
     //@auther Nobuo Tamemasa
     private static final String ES = "";
-    private final Object[][] data = new Object[][] {
+    private final Object[][] data = {
         {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
         {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
         {3, 33,  ES,  ES, "C",  ES,  ES,  ES},

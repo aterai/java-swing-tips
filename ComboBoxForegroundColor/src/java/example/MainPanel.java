@@ -8,7 +8,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final ColorItem[] model = new ColorItem[] {
+    private final ColorItem[] model = {
         new ColorItem(Color.RED,     "Red"),
         new ColorItem(Color.GREEN,   "Green"),
         new ColorItem(Color.BLUE,    "Blue"),

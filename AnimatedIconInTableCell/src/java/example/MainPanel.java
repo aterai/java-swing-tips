@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         URL url = getClass().getResource("restore_to_background_color.gif");
-        Object[][] data = new Object[][] {
+        Object[][] data = {
             {"Default ImageIcon", new ImageIcon(url)},
             {"ImageIcon#setImageObserver", makeImageIcon(url, table, 1, 1)}
         };

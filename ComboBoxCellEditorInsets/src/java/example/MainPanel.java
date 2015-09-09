@@ -86,7 +86,7 @@ class ComboBoxPanel extends JPanel {
 }
 /*/ //TEST:
 class ComboBoxPanel extends JPanel {
-    private String[] m = new String[] {"a", "b", "c"};
+    private String[] m = {"a", "b", "c"};
     protected JComboBox<String> comboBox = new JComboBox<String>(m) {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
