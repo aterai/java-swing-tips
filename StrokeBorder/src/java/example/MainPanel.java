@@ -8,28 +8,36 @@ import java.util.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+    private static final float[] DEFAULT_DASH_ARRAY = {1f};
     private final JComboBox<? extends Enum> joinCombo   = new JComboBox<>(JoinStyle.values());
     private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
     private final JLabel label = new JLabel();
     public  final JButton button;
     private float[] getDashArray() {
-        StringTokenizer st = new StringTokenizer(field.getText(), ",");
-        float[] list = new float[st.countTokens()];
+        String[] slist = field.getText().split(",");
+        if (slist.length == 0) {
+            return DEFAULT_DASH_ARRAY;
+        }
+        float[] list = new float[slist.length];
         int i = 0;
         try {
-            while (st.hasMoreTokens()) {
-                list[i] = Float.valueOf(st.nextToken());
-                i++;
+            for (String s: slist) {
+                String ss = s.trim();
+                if (!ss.isEmpty()) {
+                    list[i++] = Float.parseFloat(ss);
+                }
             }
         } catch (NumberFormatException nfe) {
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(label, "Invalid input.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            EventQueue.invokeLater(new Runnable() {
+                @Override public void run() {
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+            return DEFAULT_DASH_ARRAY;
         }
-        if (i == 0) {
-            list = new float[] {1f};
-        }
-        return list;
+        return i == 0 ? DEFAULT_DASH_ARRAY : list;
     }
 
     public MainPanel() {
