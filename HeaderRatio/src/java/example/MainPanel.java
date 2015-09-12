@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel {
 
     private void setTableHeaderColumnRaito() {
         TableColumnModel m = table.getColumnModel();
-        List<Integer> list = getWidthRaitoArray();
+        List<Integer> list = getWidthRaitoArray(columnNames.length);
         //System.out.println("a: "+m.getTotalColumnWidth());
         //System.out.println("b: "+table.getSize().width);
         int total = table.getSize().width; //m.getTotalColumnWidth();
@@ -77,29 +78,25 @@ public final class MainPanel extends JPanel {
         table.revalidate();
     }
 
-    private int getRaitoTotal(List<Integer> list) {
-        int w = 0;
-        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-            w += list.get(i);
-        }
-        return w;
+    private static int getRaitoTotal(List<Integer> list) {
+//         int w = 0;
+//         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+//             w += list.get(i);
+//         }
+//         return w;
+        return list.stream().mapToInt(i -> i).sum();
     }
 
-    private List<Integer> getWidthRaitoArray() {
-        StringTokenizer st = new StringTokenizer(field.getText(), ":");
-        List<Integer> list = new ArrayList<>();
+    private List<Integer> getWidthRaitoArray(int length) {
         try {
-            while (st.hasMoreTokens()) {
-                list.add(Integer.valueOf(st.nextToken().trim()));
-            }
+            Stream<Integer> a = Arrays.stream(field.getText().split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
+            Stream<Integer> b = Stream.generate(() -> 1).limit(length);
+            return Stream.concat(a, b).limit(length).collect(Collectors.toList());
         } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getRootPane(), "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return Stream.generate(() -> 1).limit(length).collect(Collectors.toList());
         }
-        while (list.size() < columnNames.length) {
-            list.add(1);
-        }
-        return list;
     }
 
     public static void main(String... args) {

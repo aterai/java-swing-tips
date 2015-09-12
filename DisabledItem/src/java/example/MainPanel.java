@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -91,12 +92,9 @@ public final class MainPanel extends JPanel {
     }
 
     private void initDisableIndex(Set<Integer> set) {
-        StringTokenizer st = new StringTokenizer(field.getText(), ",");
         set.clear();
         try {
-            while (st.hasMoreTokens()) {
-                set.add(Integer.valueOf(st.nextToken().trim()));
-            }
+            set.addAll(Arrays.stream(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet()));
         } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

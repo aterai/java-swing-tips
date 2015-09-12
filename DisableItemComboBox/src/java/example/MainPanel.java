@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.stream.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -43,17 +44,13 @@ public final class MainPanel extends JPanel {
     }
 
     private Set<Integer> getDisableIndexFromTextField() {
-        StringTokenizer st = new StringTokenizer(field.getText(), ",");
-        Set<Integer> set = new HashSet<>();
         try {
-            while (st.hasMoreTokens()) {
-                set.add(Integer.valueOf(st.nextToken().trim()));
-            }
+            return Arrays.stream(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet());
         } catch (NumberFormatException nfe) {
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return Collections.<Integer>emptySet();
         }
-        return set;
     }
 
     public static void main(String... args) {
