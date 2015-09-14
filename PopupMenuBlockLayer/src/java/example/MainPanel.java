@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         for (int i = 0; i < 100; i++) {
-            model.addRow(new Object[] {"Name " + i, Integer.valueOf(i), Boolean.FALSE});
+            model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE});
         }
 
         JScrollPane scroll = new JScrollPane(table);
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {"New Name", Integer.valueOf(0), Boolean.FALSE});
+            model.addRow(new Object[] {"New Name", 0, Boolean.FALSE});
             Rectangle rect = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(rect);
         }

@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            model.addRow(new Object[] {"New row", Integer.valueOf(0), Boolean.FALSE});
+            model.addRow(new Object[] {"New row", 0, Boolean.FALSE});
             Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
             table.scrollRectToVisible(r);
         }
