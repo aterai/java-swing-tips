@@ -31,17 +31,21 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("null 05",        null);
         tabbedPane.addTab("JTabbedPane 06", sub);
         tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
-        ////ButtonTabComponent
-        //for (int i = 0; i < tab.getTabCount(); i++) tab.setTabComponentAt(i, new ButtonTabComponent(tab));
+
+        //ButtonTabComponent
+        //for (int i = 0; i < tab.getTabCount(); i++) {
+        //    tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
+        //    tabbedPane.setToolTipTextAt(i, "tooltip: " + i);
+        //}
 
         DnDTabbedPane sub2 = new DnDTabbedPane();
         sub2.addTab("Title aa", new JLabel("aaa"));
         sub2.addTab("Title bb", new JScrollPane(new JTree()));
         sub2.addTab("Title cc", new JScrollPane(makeJTextArea()));
 
-        tabbedPane.setName("000");
-        sub.setName("111");
-        sub2.setName("222");
+        tabbedPane.setName("JTabbedPane#main");
+        sub.setName("JTabbedPane#sub1");
+        sub2.setName("JTabbedPane#sub2");
 
         DropTargetListener dropTargetListener = new TabDropTargetAdapter();
         TransferHandler handler = new TabTransferHandler();
@@ -169,7 +173,7 @@ class DnDTabbedPane extends JTabbedPane {
         if (tabPlacement == TOP || tabPlacement == BOTTOM) {
             rBackward.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             rForward.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
-        } else if (tabPlacement == LEFT || tabPlacement == RIGHT) {
+        } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
             rBackward.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
             rForward.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
         }
@@ -424,7 +428,7 @@ class TabTransferHandler extends TransferHandler {
         }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
-    private Component getSourceDraggingComponent(DnDTabbedPane tabbedPane) {
+    private static Component getSourceDraggingComponent(DnDTabbedPane tabbedPane) {
         if (Objects.nonNull(tabbedPane)) {
             return tabbedPane.getComponentAt(tabbedPane.dragTabIndex);
         } else {
