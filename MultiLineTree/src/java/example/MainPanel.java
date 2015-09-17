@@ -197,8 +197,7 @@ class CellTextArea extends JTextArea {
         FontMetrics fm = getFontMetrics(getFont());
         int maxWidth = 0;
         int lineCounter = 0;
-        try (BufferedReader br = new BufferedReader(new StringReader(str));
-             Scanner sc = new Scanner(br)) {
+        try (Scanner sc = new Scanner(new BufferedReader(new StringReader(str)))) {
             while (sc.hasNextLine()) {
                 int w = SwingUtilities.computeStringWidth(fm, sc.nextLine());
                 maxWidth = Math.max(maxWidth, w);
@@ -209,22 +208,6 @@ class CellTextArea extends JTextArea {
         }
         lineCounter = Math.max(lineCounter, 1);
         int height = fm.getHeight() * lineCounter;
-//         int lines = 0;
-//         try (BufferedReader br = new BufferedReader(new StringReader(str))) {
-//             String line;
-//             while (Objects.nonNull(line = br.readLine())) {
-//                 int width = SwingUtilities.computeStringWidth(fm, line);
-//                 if (maxWidth < width) {
-//                     maxWidth = width;
-//                 }
-//                 lines++;
-//                 line = br.readLine();
-//             }
-//         } catch (IOException ex) {
-//             ex.printStackTrace();
-//         }
-//         lines = lines < 1 ? 1 : lines;
-//         int height = fm.getHeight() * lines;
         Insets i = getInsets();
         setPreferredSize(new Dimension(maxWidth + i.left + i.right, height + i.top + i.bottom));
         super.setText(str);
