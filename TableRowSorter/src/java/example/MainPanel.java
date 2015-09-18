@@ -41,11 +41,11 @@ public final class MainPanel extends JPanel {
 
         TableCellRenderer renderer = new TableCellRenderer() {
             @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
+                TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
                 JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 RowSorter<? extends TableModel> rs = table.getRowSorter();
                 if (rs instanceof DefaultRowSorter) {
-                    l.setForeground(((DefaultRowSorter<? extends TableModel, ?>) rs).isSortable(t.convertColumnIndexToModel(col)) ? Color.BLACK : Color.GRAY);
+                    l.setForeground(((DefaultRowSorter<? extends TableModel, ?>) rs).isSortable(table.convertColumnIndexToModel(column)) ? Color.BLACK : Color.GRAY);
                 }
                 return l;
             }
