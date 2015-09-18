@@ -206,7 +206,7 @@ class Task extends SwingWorker<String, Chunk> {
 //             ret = "Exception";
 //             cancel(true);
 //         }
-        try (Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(pmis, cs))) {
+        try (Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(pmis, cs)))) {
             int i = 0;
             int size = 0;
             while (scanner.hasNextLine()) {
@@ -219,7 +219,7 @@ class Task extends SwingWorker<String, Chunk> {
                 String note = String.format("%03d%% - %d/%d%n", 100 * size / length, size, length);
                 publish(new Chunk(line, note));
             }
-        } catch (InterruptedException | IOException ex) {
+        } catch (InterruptedException ex) {
             System.out.println("Exception");
             ret = "Exception";
             cancel(true);

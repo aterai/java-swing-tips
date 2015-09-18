@@ -203,8 +203,6 @@ class CellTextArea extends JTextArea {
                 maxWidth = Math.max(maxWidth, w);
                 lineCounter++;
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
         lineCounter = Math.max(lineCounter, 1);
         int height = fm.getHeight() * lineCounter;
