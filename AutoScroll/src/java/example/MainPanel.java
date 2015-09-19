@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JLabel label = new JLabel();
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
-        JScrollPane scroll = new JScrollPane(label,
-                                             ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-                                             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scroll = new JScrollPane(label);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 //*
         ViewportDragScrollListener l = new ViewportDragScrollListener(label);
