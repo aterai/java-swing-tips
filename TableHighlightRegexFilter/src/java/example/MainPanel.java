@@ -105,7 +105,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
     private String prev;
 
     public boolean setPattern(String str) {
-        if (str == null || str.equals(pattern)) {
+        if (Objects.equals(str, pattern)) {
             return false;
         } else {
             prev = pattern;
@@ -127,7 +127,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
         highlighter.removeAllHighlights();
         setText(txt);
         setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
-        if (pattern != null && !pattern.isEmpty() && !pattern.equals(prev)) {
+        if (Objects.nonNull(pattern) && !pattern.isEmpty() && !Objects.equals(pattern, prev)) {
             Matcher matcher = Pattern.compile(pattern).matcher(txt);
             int pos = 0;
             while (matcher.find(pos)) {

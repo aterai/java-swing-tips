@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -109,7 +110,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         Style s = getStyle(token);
         //if (keywords.containsKey(token)) {
         //    setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
-        if (s != null) {
+        if (Objects.nonNull(s)) {
             setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
         }
         return endOfToken + 1;
