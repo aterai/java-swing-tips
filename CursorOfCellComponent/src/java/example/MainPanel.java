@@ -101,7 +101,7 @@ class LinkCellRenderer<E> implements ListCellRenderer<E> {
             p.setBackground(list.getBackground());
             p.setForeground(list.getForeground());
         }
-        label.setText("<html><a href=''>" + value);
+        label.setText("<html><a href='#'>" + value);
         return p;
     }
 }

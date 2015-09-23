@@ -91,8 +91,8 @@ public final class MainPanel extends JPanel {
 }
 
 class URILabel extends JLabel {
-    public URILabel(String str) {
-        super("<html><a href='" + str + "'>" + str + "</a>");
+    public URILabel(String h) {
+        super(String.format("<html><a href='%s'>%s</a>", h, h));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {

@@ -221,7 +221,7 @@ class Task extends SwingWorker<File, Message> {
         if (simpleRename) {
             if (file.renameTo(testFile)) {
                 publish(new Message("古い同名ファイルをリネーム", MessageType.REGULAR));
-                publish(new Message("    " + file.getName() + " -> " + testFile.getName(), MessageType.BLUE));
+                publish(new Message(String.format("    %s -> %s", file.getName(), testFile.getName()), MessageType.BLUE));
                 return new File(newfilename);
             } else {
                 publish(new Message("ファイルのリネームに失敗", MessageType.ERROR));

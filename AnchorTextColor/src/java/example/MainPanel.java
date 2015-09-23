@@ -8,7 +8,7 @@ import javax.swing.text.html.*;
 
 public final class MainPanel extends JPanel {
     private static final String MYSITE = "http://ateraimemo.com/";
-    private static final String HREF = "<html><a href='" + MYSITE + "'>" + MYSITE + "</a>";
+    private static final String HREF = String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE);
 
     private MainPanel() {
         super(new GridLayout(3, 1));
@@ -79,8 +79,8 @@ public final class MainPanel extends JPanel {
 }
 
 // class URILabel extends JLabel {
-//     public URILabel(String str) {
-//         super("<html><a href='" + str + "'>" + str + "</a>");
+//     public URILabel(String h) {
+//         super(String.format("<html><a href='%s'>%s</a>", h, h));
 //         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //         addMouseListener(new MouseAdapter() {
 //             @Override public void mousePressed(MouseEvent e) {

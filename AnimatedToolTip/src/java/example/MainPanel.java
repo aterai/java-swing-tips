@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         l1.setToolTipText("Test1");
         l2.setToolTipText("Test2");
-        l3.setToolTipText("<html><img src='" + url + "'>Test3</html>");
+        l3.setToolTipText(String.format("<html><img src='%s'>Test3</html>", url));
 
         JPanel p1 = new JPanel(new BorderLayout());
         p1.setBorder(BorderFactory.createTitledBorder("javax.swing.Timer"));

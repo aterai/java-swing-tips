@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
         l2.setToolTipText("Test2");
 
         JLabel l3 = new JLabel("ToolTip icon using HTML tags");
-        l3.setToolTipText("<html><img src='" + url + "'>Test3</img></html>"); //align='middle'
+        l3.setToolTipText(String.format("<html><img src='%s'>Test3</img></html>", url)); //align='middle'
 
         Box box = Box.createVerticalBox();
         box.add(l1);

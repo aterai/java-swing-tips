@@ -113,11 +113,12 @@ class ComboHtmlRenderer extends DefaultListCellRenderer {
             list.setSelectionBackground(SELECTION_BACKGROUND);
         }
         JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
+        //l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
+        l.setText(String.format("<html><font color='#%06x'>%s", item.color.getRGB() & 0xffffff, item.description));
         l.setBackground(isSelected ? SELECTION_BACKGROUND : list.getBackground());
         return l;
     }
-    private static String hex(Color c) {
-        return String.format("#%06x", c.getRGB() & 0xffffff);
-    }
+//     private static String hex(Color c) {
+//         return String.format("#%06x", c.getRGB() & 0xffffff);
+//     }
 }
