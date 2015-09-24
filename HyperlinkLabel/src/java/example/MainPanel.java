@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new GridBagLayout());
 
-        JEditorPane editor = new JEditorPane("text/html", "<html><a href='" + MYSITE + "'>" + MYSITE + "</a>");
+        JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
         editor.setOpaque(false); //editor.setBackground(getBackground());
         editor.setEditable(false); //REQUIRED
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);

@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final JTextArea textArea = new JTextArea();
     public MainPanel() {
         super(new BorderLayout());
-        JEditorPane editor = new JEditorPane("text/html", "<html><a href='" + MYSITE + "'>" + MYSITE + "</a>");
+        JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
         editor.setOpaque(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor.setEditable(false);

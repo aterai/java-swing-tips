@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         styleSheet.addRule("a{color:#FF0000;}");
         add(makePanel("styleSheet.addRule(\"a{color:#FF0000;}\")", HREF));
 
-        add(makePanel("<a style='color:#00FF00'...", "<html><a style='color:#00FF00' href='" + MYSITE + "'>" + MYSITE + "</a>"));
+        add(makePanel("<a style='color:#00FF00'...", String.format("<html><a style='color:#00FF00' href='%s'>%s</a>", MYSITE, MYSITE)));
 
         setPreferredSize(new Dimension(320, 240));
     }
