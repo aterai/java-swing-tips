@@ -68,14 +68,14 @@ class RowSelectionTree extends JTree {
         super.updateUI();
         setUI(new BasicTreeUI() {
             @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
-                if (tree != null && treeState != null) {
+                if (Objects.nonNull(tree) && Objects.nonNull(treeState)) {
                     return getPathBounds(path, tree.getInsets(), new Rectangle());
                 }
                 return null;
             }
             private Rectangle getPathBounds(TreePath path, Insets insets, Rectangle bounds) {
                 Rectangle rect = treeState.getBounds(path, bounds);
-                if (rect != null) {
+                if (Objects.nonNull(rect)) {
                     rect.width = tree.getWidth();
                     rect.y += insets.top;
                 }
@@ -100,7 +100,7 @@ class RowSelectionTree extends JTree {
         @Override public void focusLost(FocusEvent e) {
             e.getComponent().repaint();
             //TEST:
-            //if (tree.getLeadSelectionPath() != null) {
+            //if (Objects.nonNull(tree.getLeadSelectionPath())) {
             //    Rectangle r = tree.getRowBounds(tree.getRowForPath(tree.getLeadSelectionPath()));
             //    r.width += r.x;
             //    r.x = 0;
