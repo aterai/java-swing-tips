@@ -54,7 +54,8 @@ public final class MainPanel extends JPanel {
         tree.setVisibleRowCount(8);
         Component c = new JScrollPane(tree);
         Dimension r = c.getPreferredSize();
-        JResizer resizer = new JResizer(c);
+        JResizer resizer = new JResizer(new BorderLayout());
+        resizer.add(c);
         resizer.setBounds(pt.x, pt.y, r.width, r.height);
         layeredPane.add(resizer);
         layeredPane.moveToFront(resizer);
@@ -64,7 +65,8 @@ public final class MainPanel extends JPanel {
         table.setPreferredScrollableViewportSize(new Dimension(160, 160));
         Component c = new JScrollPane(table);
         Dimension r = c.getPreferredSize();
-        JResizer resizer = new JResizer(c);
+        JResizer resizer = new JResizer(new BorderLayout());
+        resizer.add(c);
         resizer.setBounds(pt.x, pt.y, r.width, r.height);
         layeredPane.add(resizer);
         layeredPane.moveToFront(resizer);
@@ -95,14 +97,17 @@ public final class MainPanel extends JPanel {
 class JResizer extends JPanel { // implements Serializable {
     private transient MouseAdapter resizeListener;
 
-    public JResizer(Component comp) {
-        this(comp, new DefaultResizableBorder(6));
+    public JResizer(LayoutManager layout) {
+        super(layout);
     }
-    public JResizer(Component comp, ResizableBorder border) {
-        super(new BorderLayout());
+    @Override public void updateUI() {
+        removeMouseListener(resizeListener);
+        removeMouseMotionListener(resizeListener);
+        super.updateUI();
         resizeListener = new ResizeMouseListener();
-        setBorder(border);
-        add(comp);
+        addMouseListener(resizeListener);
+        addMouseMotionListener(resizeListener);
+        setBorder(new DefaultResizableBorder(6));
     }
 //     private void writeObject(ObjectOutputStream out) throws IOException {}
 //     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {}

@@ -44,18 +44,23 @@ public final class MainPanel extends JPanel {
 
 // https://community.oracle.com/thread/1385467 JTextPane edit mode (insert or overwrite)???
 class OvertypeTextArea extends JTextArea {
-    //private static Toolkit toolkit = Toolkit.getDefaultToolkit();
-    private boolean overtypeMode;
-    private final Caret defaultCaret;
-    private final Caret overtypeCaret;
-    public OvertypeTextArea() {
-        super();
-        //setCaretColor(Color.RED);
-        defaultCaret = getCaret();
-        overtypeCaret = new OvertypeCaret();
-        overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
-        setOvertypeMode(true);
+    private boolean overtypeMode = true;
+    private Caret defaultCaret;
+    private Caret overtypeCaret;
+
+    @Override public void updateUI() {
+        super.updateUI();
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                //setCaretColor(Color.RED);
+                defaultCaret = getCaret();
+                overtypeCaret = new OvertypeCaret();
+                overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
+                setOvertypeMode(overtypeMode);
+            }
+        });
     }
+
     public boolean isOvertypeMode() {
         return overtypeMode;
     }
