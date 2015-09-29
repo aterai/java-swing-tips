@@ -162,11 +162,8 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
                 c.setIcon(fileSystemView.getSystemIcon(file));
                 c.setText(fileSystemView.getSystemDisplayName(file));
                 c.setToolTipText(file.getPath());
-                if (file.getName().startsWith(".")) {
-                    c.setEnabled(false);
-                } else {
-                    c.setEnabled(true);
-                }
+                //c.setEnabled(!file.getName().startsWith("."));
+                c.setEnabled(file.getName().codePointAt(0) != '.');
             }
         }
         return c;

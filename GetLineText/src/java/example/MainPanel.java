@@ -33,14 +33,16 @@ public final class MainPanel extends JPanel {
                 int count = 0;
                 StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
                 while (st.hasMoreTokens()) {
-                    if (st.nextToken().startsWith("#")) {
+                    //if (st.nextToken().startsWith("#")) {
+                    //if (st.nextToken().charAt(0) == '#') {
+                    if (st.nextToken().codePointAt(0) == '#') {
                         count++;
                     }
                 }
 
 //                 //String#split >>>>
 //                 for (String line: textArea.getText().split("\\n")) {
-//                     if (line.startsWith("#")) {
+//                     if (line.codePointAt(0) == '#') {
 //                         count++;
 //                     }
 //                 }
@@ -50,7 +52,7 @@ public final class MainPanel extends JPanel {
 //                 try (LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
 //                     String line = null;
 //                     while ((line = lnr.readLine()) != null) {
-//                         if (line.startsWith("#")) {
+//                         if (line.codePointAt(0) == '#') {
 //                             count++;
 //                         }
 //                     }
@@ -66,7 +68,7 @@ public final class MainPanel extends JPanel {
 //                     for (int i = 0; i < root.getElementCount(); i++) {
 //                         Element elem = root.getElement(i);
 //                         String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
-//                         if (line.startsWith("#")) {
+//                         if (line.codePointAt(0) == '#') {
 //                             count++;
 //                         }
 //                     }

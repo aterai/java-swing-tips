@@ -74,7 +74,7 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
             setParticularCondition(value);
             c.setForeground(getTextSelectionColor());
             c.setBackground(getBackgroundSelectionColor());
-            if (leaf && value.toString().startsWith("a")) {
+            if (leaf && value.toString().codePointAt(0) == 'a') {
                 c.setOpaque(true);
                 c.setBackground(Color.RED);
             } else {
