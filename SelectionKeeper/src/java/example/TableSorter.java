@@ -154,7 +154,7 @@ public class TableSorter extends AbstractTableModel {
 //         return tableModel;
 //     }
 
-    public void setTableModel(TableModel tableModel) {
+    public final void setTableModel(TableModel tableModel) {
         if (this.tableModel != null) {
             this.tableModel.removeTableModelListener(tableModelListener);
         }
@@ -172,7 +172,7 @@ public class TableSorter extends AbstractTableModel {
 //         return tableHeader;
 //     }
 
-    public void setTableHeader(JTableHeader tableHeader) {
+    public final void setTableHeader(JTableHeader tableHeader) {
         if (this.tableHeader != null) {
             this.tableHeader.removeMouseListener(mouseListener);
             TableCellRenderer defaultRenderer = this.tableHeader.getDefaultRenderer();
