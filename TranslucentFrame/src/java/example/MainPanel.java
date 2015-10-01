@@ -60,12 +60,6 @@ public final class MainPanel extends JPanel {
         desktop.getDesktopManager().activateFrame(frame);
         return frame;
     }
-    static class MyInternalFrame extends JInternalFrame {
-        public MyInternalFrame() {
-            super("title", true, true, true, true);
-            setSize(160, 100);
-        }
-    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -96,9 +90,17 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
+class MyInternalFrame extends JInternalFrame {
+    protected MyInternalFrame() {
+        super("title", true, true, true, true);
+        setSize(160, 100);
+    }
+}
+
 class MySynthStyleFactory extends SynthStyleFactory {
     private final SynthStyleFactory wrappedFactory;
-    public MySynthStyleFactory(SynthStyleFactory factory) {
+    protected MySynthStyleFactory(SynthStyleFactory factory) {
         super();
         this.wrappedFactory = factory;
     }
@@ -111,9 +113,10 @@ class MySynthStyleFactory extends SynthStyleFactory {
         return s;
     }
 }
+
 class TranslucentSynthSytle extends SynthStyle {
     private final SynthStyle style;
-    public TranslucentSynthSytle(SynthStyle s) {
+    protected TranslucentSynthSytle(SynthStyle s) {
         super();
         style = s;
     }

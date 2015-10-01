@@ -86,8 +86,7 @@ public final class MainPanel extends JPanel {
 
         return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size - 1)));
     }
-    //private static AbstractButton makeButton(String title, Action action) { //NOPMD False negative on "Avoid unused private methods"
-    protected static AbstractButton makeButton(String title, Action action) {
+    private static AbstractButton makeButton(String title, Action action) {
         JButton b = new JButton(action);
         b.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -201,7 +200,7 @@ class ToggleButtonBarCellIcon implements Icon {
 class EditMenuLayerUI extends LayerUI<JPanel> {
     private final AbstractButton lastButton;
     private Shape shape;
-    public EditMenuLayerUI(AbstractButton button) {
+    protected EditMenuLayerUI(AbstractButton button) {
         super();
         this.lastButton = button;
     }

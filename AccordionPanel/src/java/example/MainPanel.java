@@ -118,7 +118,7 @@ abstract class AbstractExpansionPanel extends JPanel {
 
     public abstract JPanel makePanel();
 
-    public AbstractExpansionPanel(String title) {
+    AbstractExpansionPanel(String title) {
         super(new BorderLayout());
         this.title = title;
         label = new JLabel("\u25BC " + title) {

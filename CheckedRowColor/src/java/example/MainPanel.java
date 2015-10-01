@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
         }
         return table;
     }
-    static class RowColorTableRenderer extends DefaultTableCellRenderer {
+    private static class RowColorTableRenderer extends DefaultTableCellRenderer {
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             TableModel model = table.getModel();

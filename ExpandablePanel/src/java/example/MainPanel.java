@@ -124,7 +124,7 @@ abstract class AbstractExpansionPanel extends JPanel {
     private final JScrollPane scroll;
     private boolean openFlag;
 
-    public AbstractExpansionPanel(String title) {
+    AbstractExpansionPanel(String title) {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction(title) {
             @Override public void actionPerformed(ActionEvent e) {
@@ -183,7 +183,7 @@ abstract class AbstractExpansionPanel extends JPanel {
 
 class ExpansionEvent extends EventObject {
     private static final long serialVersionUID = 1L;
-    public ExpansionEvent(Object source) {
+    protected ExpansionEvent(Object source) {
         super(source);
     }
 }

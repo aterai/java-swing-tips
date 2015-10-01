@@ -87,7 +87,7 @@ class RowSelectionTree extends JTree {
         setCellRenderer(handler);
         setOpaque(false);
     }
-    static class Handler extends DefaultTreeCellRenderer implements FocusListener {
+    private static class Handler extends DefaultTreeCellRenderer implements FocusListener {
         @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
             l.setBackground(selected ? SELC : tree.getBackground());

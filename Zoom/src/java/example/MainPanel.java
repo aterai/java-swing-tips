@@ -10,7 +10,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
-        final ZoomImage zoom = new ZoomImage(icon);
+        final ZoomImage zoom = new ZoomImage(icon.getImage());
 
         JButton button1 = new JButton(new AbstractAction("Zoom In") {
             @Override public void actionPerformed(ActionEvent ae) {
@@ -38,43 +38,6 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    static class ZoomImage extends JComponent implements MouseWheelListener {
-        private final transient ImageIcon icon;
-        private final int iw;
-        private final int ih;
-        private double scale = 1d;
-        public ZoomImage(ImageIcon icon) {
-            super();
-            this.icon = icon;
-            iw = icon.getIconWidth();
-            ih = icon.getIconHeight();
-            addMouseWheelListener(this);
-        }
-        @Override public void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.scale(scale, scale);
-            g2.drawImage(icon.getImage(), 0, 0, iw, ih, this);
-            g2.dispose();
-        }
-        @Override public void mouseWheelMoved(MouseWheelEvent e) {
-            changeScale(e.getWheelRotation());
-        }
-        public void initScale() {
-            scale = 1d;
-            repaint();
-        }
-        public void changeScale(int iv) {
-            scale = Math.max(.05, Math.min(5d, scale - iv * .05));
-            repaint();
-//             double v = scale - iv * .1;
-//             if (v - 1d > -1.0e-2) {
-//                 scale = Math.min(10d, v);
-//             } else {
-//                 scale = Math.max(.01, scale - iv * .01);
-//             }
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -95,5 +58,50 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class ZoomImage extends JPanel {
+    private transient MouseWheelListener handler;
+    private final transient Image image;
+    private final int iw;
+    private final int ih;
+    private double scale = 1d;
+    protected ZoomImage(Image image) {
+        super();
+        this.image = image;
+        iw = image.getWidth(this);
+        ih = image.getHeight(this);
+    }
+    @Override public void updateUI() {
+        removeMouseWheelListener(handler);
+        super.updateUI();
+        handler = new MouseWheelListener() {
+            @Override public void mouseWheelMoved(MouseWheelEvent e) {
+                changeScale(e.getWheelRotation());
+            }
+        };
+        addMouseWheelListener(handler);
+    }
+    @Override public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.scale(scale, scale);
+        g2.drawImage(image, 0, 0, iw, ih, this);
+        g2.dispose();
+    }
+    public void initScale() {
+        scale = 1d;
+        repaint();
+    }
+    public void changeScale(int iv) {
+        scale = Math.max(.05, Math.min(5d, scale - iv * .05));
+        repaint();
+        //double v = scale - iv * .1;
+        //if (v - 1d > -1.0e-2) {
+        //    scale = Math.min(10d, v);
+        //} else {
+        //    scale = Math.max(.01, scale - iv * .01);
+        //}
     }
 }

@@ -59,10 +59,10 @@ class WavyLineSeparator extends JSeparator {
     private static final int ICONWIDTH = 3;
     private static final Icon WAVY_HLINE = new WavyLineIcon();
     private static final Icon WAVY_VLINE = new WavyLineIcon(SwingConstants.VERTICAL);
-    public WavyLineSeparator() {
+    protected WavyLineSeparator() {
         this(SwingConstants.HORIZONTAL);
     }
-    public WavyLineSeparator(int orientation) {
+    protected WavyLineSeparator(int orientation) {
         super(orientation);
         if (orientation == SwingConstants.HORIZONTAL) {
             setBorder(BorderFactory.createEmptyBorder(2, 1, 2, 1));
@@ -93,13 +93,13 @@ class WavyLineSeparator extends JSeparator {
             return new Dimension(ICONWIDTH + i.left + i.right, 30);
         }
     }
-    static class WavyLineIcon implements Icon {
+    private static class WavyLineIcon implements Icon {
         private final Color sfc = UIManager.getColor("Separator.foreground");
         private final int orientation;
-        public WavyLineIcon() {
+        protected WavyLineIcon() {
             this.orientation = SwingConstants.HORIZONTAL;
         }
-        public WavyLineIcon(int orientation) {
+        protected WavyLineIcon(int orientation) {
             this.orientation = orientation;
         }
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {

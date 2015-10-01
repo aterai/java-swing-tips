@@ -49,25 +49,6 @@ public final class MainPanel extends JPanel {
         });
         return combo;
     }
-
-    static class MyItem {
-        private final String  item;
-        private final boolean flag;
-        public MyItem(String str) {
-            this(str, false);
-        }
-        public MyItem(String str, boolean flg) {
-            item = str;
-            flag = flg;
-        }
-        public boolean hasSeparator() {
-            return flag;
-        }
-        @Override public String toString() {
-            return item;
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -88,5 +69,23 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class MyItem {
+    private final String  item;
+    private final boolean flag;
+    protected MyItem(String str) {
+        this(str, false);
+    }
+    protected MyItem(String str, boolean flg) {
+        item = str;
+        flag = flg;
+    }
+    public boolean hasSeparator() {
+        return flag;
+    }
+    @Override public String toString() {
+        return item;
     }
 }
