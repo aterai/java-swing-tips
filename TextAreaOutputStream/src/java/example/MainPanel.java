@@ -87,7 +87,7 @@ enum TextAreaLogger {
 class EnterAction extends AbstractAction {
     private final transient Logger logger = Logger.getLogger(TextAreaLogger.TEST.getClass().getName());
     private final JTextField textField;
-    public EnterAction(JTextField textField) {
+    protected EnterAction(JTextField textField) {
         super("Enter");
         this.textField = textField;
     }
@@ -100,7 +100,7 @@ class EnterAction extends AbstractAction {
 // class FIFODocumentListener implements DocumentListener {
 //     private static final int MAX_LINES = 100;
 //     private final JTextComponent textComponent;
-//     public FIFODocumentListener(JTextComponent textComponent) {
+//     protected FIFODocumentListener(JTextComponent textComponent) {
 //         this.textComponent = textComponent;
 //     }
 //     @Override public void insertUpdate(DocumentEvent e) {
@@ -132,37 +132,53 @@ class EnterAction extends AbstractAction {
 //     }
 // }
 
+// class TextAreaOutputStream extends OutputStream {
+//     private final ByteArrayOutputStream buf = new ByteArrayOutputStream();
+//     private final JTextArea textArea;
+//     protected TextAreaOutputStream(JTextArea textArea) {
+//         super();
+//         this.textArea = textArea;
+//     }
+//     @Override public void flush() throws IOException {
+//         super.flush();
+//         buf.flush();
+//     }
+//     @Override public void close() throws IOException {
+//         super.close();
+//         buf.close();
+//     }
+//     @Override public void write(int b) throws IOException {
+//         if (b == '\r') {
+//             return;
+//         }
+//         if (b == '\n') {
+//             final String text = buf.toString("UTF-8");
+//             buf.reset();
+//             EventQueue.invokeLater(new Runnable() {
+//                 @Override public void run() {
+//                     textArea.append(text + '\n');
+//                     textArea.setCaretPosition(textArea.getDocument().getLength());
+//                 }
+//             });
+//             return;
+//         }
+//         buf.write(b);
+//     }
+// }
+
 class TextAreaOutputStream extends OutputStream {
-    private final ByteArrayOutputStream buf = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     private final JTextArea textArea;
-    public TextAreaOutputStream(JTextArea textArea) {
+    protected TextAreaOutputStream(JTextArea textArea) {
         super();
         this.textArea = textArea;
     }
     @Override public void flush() throws IOException {
-        super.flush();
-        buf.flush();
-    }
-    @Override public void close() throws IOException {
-        super.close();
-        buf.close();
+        textArea.append(buffer.toString("UTF-8"));
+        buffer.reset();
     }
     @Override public void write(int b) throws IOException {
-        if (b == '\r') {
-            return;
-        }
-        if (b == '\n') {
-            final String text = buf.toString("UTF-8");
-            buf.reset();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    textArea.append(text + '\n');
-                    textArea.setCaretPosition(textArea.getDocument().getLength());
-                }
-            });
-            return;
-        }
-        buf.write(b);
+        buffer.write(b);
     }
 }
 
@@ -181,7 +197,7 @@ class TextAreaHandler extends StreamHandler {
             }
         }
     }
-    public TextAreaHandler(OutputStream os) {
+    protected TextAreaHandler(OutputStream os) {
         super();
         configure();
         setOutputStream(os);
@@ -201,7 +217,7 @@ class TextAreaHandler extends StreamHandler {
 //     private final JTextArea textArea;
 //     private final StringBuilder sb = new StringBuilder();
 //
-//     public TextAreaOutputStream(JTextArea textArea) {
+//     protected TextAreaOutputStream(JTextArea textArea) {
 //         super();
 //         this.textArea = textArea;
 //     }
@@ -234,7 +250,7 @@ class TextAreaHandler extends StreamHandler {
 //     private JTextArea textArea;
 //     private ByteArrayOutputStream buf;
 //
-//     public TextAreaOutputStream(JTextArea area) {
+//     protected TextAreaOutputStream(JTextArea area) {
 //         textArea = area;
 //         buf = new ByteArrayOutputStream();
 //     }
@@ -257,7 +273,7 @@ class TextAreaHandler extends StreamHandler {
 
 // class TextAreaOutputStream extends OutputStream {
 //     private final JTextArea textArea;
-//     public TextAreaOutputStream(JTextArea textArea) {
+//     protected TextAreaOutputStream(JTextArea textArea) {
 //         super();
 //         this.textArea = textArea;
 //     }
@@ -276,7 +292,7 @@ class TextAreaHandler extends StreamHandler {
 
 // class TextAreaOutputStream extends OutputStream {
 //     private final JTextArea textArea;
-//     public TextAreaOutputStream(JTextArea textArea) {
+//     protected TextAreaOutputStream(JTextArea textArea) {
 //         super();
 //         this.textArea = textArea;
 //     }
@@ -288,7 +304,7 @@ class TextAreaHandler extends StreamHandler {
 
 // class TextAreaOutputStream extends OutputStream {
 //     private final AbstractDocument doc;
-//     public TextAreaOutputStream(AbstractDocument doc) {
+//     protected TextAreaOutputStream(AbstractDocument doc) {
 //         super();
 //         this.doc = doc;
 //     }
