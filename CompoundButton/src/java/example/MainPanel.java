@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 
 class CompoundButtonPanel extends JComponent {
     private final Dimension d;
-    public CompoundButtonPanel(final Dimension d) {
+    protected CompoundButtonPanel(final Dimension d) {
         super();
         this.d = d;
         setLayout(new OverlayLayout(this));
@@ -87,7 +87,7 @@ class CompoundButton extends JButton {
     protected transient Shape base;
     private final ButtonLocation bl;
     private final Dimension dim;
-    public CompoundButton(Dimension d, ButtonLocation bl) {
+    protected CompoundButton(Dimension d, ButtonLocation bl) {
         super();
         this.dim = d;
         this.bl = bl;

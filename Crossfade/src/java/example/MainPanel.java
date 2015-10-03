@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         private final ImageIcon icon2;
         private int alpha = 10;
         private boolean mode = true;
-        public Crossfade(ImageIcon icon1, ImageIcon icon2) {
+        protected Crossfade(ImageIcon icon1, ImageIcon icon2) {
             super();
             this.icon1 = icon1;
             this.icon2 = icon2;

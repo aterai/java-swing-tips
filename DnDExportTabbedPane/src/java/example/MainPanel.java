@@ -138,7 +138,7 @@ class DnDTabbedPane extends JTabbedPane {
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
         private boolean dropable = true;
-        public DropLocation(Point p, int index) {
+        protected DropLocation(Point p, int index) {
             super(p);
             this.index = index;
         }
@@ -183,7 +183,7 @@ class DnDTabbedPane extends JTabbedPane {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
-    public DnDTabbedPane() {
+    protected DnDTabbedPane() {
         super();
         Handler h = new Handler();
         addMouseListener(h);
@@ -416,7 +416,7 @@ class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private DnDTabbedPane source;
 
-    public TabTransferHandler() {
+    protected TabTransferHandler() {
         super();
         System.out.println("TabTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
@@ -577,7 +577,7 @@ class TabTransferHandler extends TransferHandler {
 class GhostGlassPane extends JPanel {
     private DnDTabbedPane tabbedPane;
     private translate BufferedImage draggingGhost;
-    public GhostGlassPane(DnDTabbedPane tabbedPane) {
+    protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
         //System.out.println("new GhostGlassPane");
@@ -616,7 +616,7 @@ class GhostGlassPane extends JPanel {
 /*/ //java 1.7.0
 class GhostGlassPane extends JComponent {
     private DnDTabbedPane tabbedPane;
-    public GhostGlassPane(DnDTabbedPane tabbedPane) {
+    protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
         setOpaque(false);
@@ -646,7 +646,7 @@ class GhostGlassPane extends JComponent {
 // class ButtonTabComponent extends JPanel {
 //     private final JTabbedPane pane;
 //
-//     public ButtonTabComponent(final JTabbedPane pane) {
+//     protected ButtonTabComponent(final JTabbedPane pane) {
 //         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //         if (Objects.isNull(pane)) {
 //             throw new IllegalArgumentException("TabbedPane cannot be null");
@@ -699,7 +699,7 @@ class GhostGlassPane extends JComponent {
 //     private static final int SIZE  = 17;
 //     private static final int DELTA = 6;
 //
-//     public TabButton() {
+//     protected TabButton() {
 //         super();
 //         setUI(new BasicButtonUI());
 //         setToolTipText("close this tab");

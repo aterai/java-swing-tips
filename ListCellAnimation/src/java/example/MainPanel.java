@@ -67,7 +67,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private boolean isRunning;
     private int animateIndex = -1;
 
-    public AnimeListCellRenderer(final JList l) {
+    protected AnimeListCellRenderer(final JList l) {
         super(new BorderLayout());
         this.list = l;
         animator = new Timer(80, new ActionListener() {
@@ -107,7 +107,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     }
     private class MarqueeLabel extends JLabel {
         private float xx;
-        public MarqueeLabel() {
+        protected MarqueeLabel() {
             super();
             setOpaque(false);
         }
@@ -144,7 +144,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
             new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
-        public AnimeIcon() {
+        protected AnimeIcon() {
             super();
             setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
             setOpaque(false);

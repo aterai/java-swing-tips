@@ -55,7 +55,7 @@ class LineNumberView extends JComponent {
     private final int fontDescent;
     private final int fontLeading;
 
-    public LineNumberView(JTextArea textArea) {
+    protected LineNumberView(JTextArea textArea) {
         super();
         this.textArea = textArea;
         Font font   = textArea.getFont();

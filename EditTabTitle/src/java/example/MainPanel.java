@@ -57,7 +57,7 @@ class EditableTabbedPane extends JTabbedPane {
     private final JTextField editor = new JTextField();
     private Rectangle rect;
 
-    public EditableTabbedPane() {
+    protected EditableTabbedPane() {
         super();
         editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         editor.addFocusListener(new FocusAdapter() {
@@ -120,7 +120,7 @@ class EditableTabbedPane extends JTabbedPane {
         glassPane.setVisible(false);
     }
     private class EditorGlassPane extends JComponent {
-        public EditorGlassPane() {
+        protected EditorGlassPane() {
             super();
             setOpaque(false);
             setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {

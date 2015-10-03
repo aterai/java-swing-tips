@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 
     class FadeImage extends JComponent implements ActionListener {
         private int alpha = 10;
-        public FadeImage() {
+        protected FadeImage() {
             super();
             setBackground(Color.BLACK);
         }
