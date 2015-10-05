@@ -642,7 +642,7 @@ class GhostGlassPane extends JComponent {
 
 // a closeable tab test
 // How to Use Tabbed Panes (The Java Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
-// http://download.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
+// http://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 // class ButtonTabComponent extends JPanel {
 //     private final JTabbedPane pane;
 //

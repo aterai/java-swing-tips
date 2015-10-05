@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
 }
 
 //How to Use File Choosers
-//http://download.oracle.com/javase/tutorial/uiswing/examples/components/index.html#FileChooserDemo2
-//  http://download.oracle.com/javase/tutorial/uiswing/examples/components/FileChooserDemo2Project/src/components/ImagePreview.java
+//http://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html#FileChooserDemo2
+//  http://docs.oracle.com/javase/tutorial/uiswing/examples/components/FileChooserDemo2Project/src/components/ImagePreview.java
 class ImagePreview extends JComponent implements PropertyChangeListener {
     private static final int PREVIEW_WIDTH  = 90;
     private static final int PREVIEW_MARGIN = 5;
