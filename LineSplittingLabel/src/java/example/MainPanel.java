@@ -55,8 +55,7 @@ class TricoloreLabel extends JComponent {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Rectangle2D b = gv.getVisualBounds();
-        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - p.getX(), h / 2d - p.getY());
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
         double d = b.getHeight() / 3d;
         Rectangle2D.Double clip  = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
@@ -98,8 +97,7 @@ class LineSplittingLabel extends JComponent {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Rectangle2D b = shape.getBounds();
-        Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - p.getX(), h / 2d - p.getY());
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
         Shape s = toCenterAT.createTransformedShape(shape);
         g2.setPaint(Color.BLACK);

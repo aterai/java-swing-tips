@@ -24,8 +24,7 @@ public final class MainPanel extends JPanel {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setPaint(Color.BLACK);
                 Rectangle2D b = copyleft.getBounds();
-                Point2D.Double p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
-                AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - p.getX(), getHeight() / 2d - p.getY());
+                AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getWidth() / 2d - b.getCenterX(), getHeight() / 2d - b.getCenterY());
                 g2.fill(toCenterAT.createTransformedShape(copyleft));
                 g2.dispose();
             }

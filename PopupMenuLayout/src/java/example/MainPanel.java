@@ -99,7 +99,7 @@ class SymbolIcon implements Icon {
     private static FontRenderContext frc = new FontRenderContext(null, true, true);
     private final Shape symbol;
 
-    public SymbolIcon(String str) {
+    protected SymbolIcon(String str) {
          symbol = new TextLayout(str, font, frc).getOutline(null);
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -108,8 +108,7 @@ class SymbolIcon implements Icon {
         g2.translate(x, y);
         g2.setPaint(c.isEnabled() ? Color.BLACK : Color.GRAY);
         Rectangle2D b = symbol.getBounds();
-        Point2D p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
-        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getIconWidth() / 2d - p.getX(), getIconHeight() / 2d - p.getY());
+        AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getIconWidth() / 2d - b.getCenterX(), getIconHeight() / 2d - b.getCenterY());
         g2.fill(toCenterAT.createTransformedShape(symbol));
         g2.dispose();
     }
