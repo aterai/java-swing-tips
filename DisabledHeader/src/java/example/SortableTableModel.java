@@ -26,7 +26,7 @@ class ColumnComparator implements Comparator, Serializable {
     private static final long serialVersionUID = 1L;
     protected final int index;
     protected final boolean ascending;
-    public ColumnComparator(int index, boolean ascending) {
+    protected ColumnComparator(int index, boolean ascending) {
         this.index = index;
         this.ascending = ascending;
     }
@@ -77,7 +77,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     private final ConcurrentMap<Integer, Boolean> dmap  = new ConcurrentHashMap<>();
     private final JTableHeader header;
 
-    public SortButtonRenderer(JTableHeader header) {
+    protected SortButtonRenderer(JTableHeader header) {
         super();
         this.header = header;
         setHorizontalTextPosition(SwingConstants.LEFT);
@@ -128,7 +128,9 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         header.repaint();
     }
     public boolean isEnabledAt(int col) {
-        return dmap.containsKey(col) ? dmap.get(col) : true;
+        //return dmap.containsKey(col) ? dmap.get(col) : true;
+        //return !dmap.containsKey(col) ? true : dmap.get(col);
+        return !dmap.containsKey(col) || dmap.get(col);
     }
     public void setSelectedColumn(int col) {
         if (col < 0) {
@@ -180,7 +182,7 @@ class HeaderMouseListener extends MouseAdapter {
 
 class EmptyIcon implements Icon {
     private final Dimension size;
-    public EmptyIcon(Dimension size) {
+    protected EmptyIcon(Dimension size) {
         this.size = size;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
