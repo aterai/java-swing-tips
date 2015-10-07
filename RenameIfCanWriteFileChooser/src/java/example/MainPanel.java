@@ -104,7 +104,7 @@ class WindowsCanWriteFileChooserUI extends WindowsFileChooserUI {
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
             @Override public boolean renameFile(File oldFile, File newFile) {
-                return oldFile.canWrite() ? super.renameFile(oldFile, newFile) : false;
+                return oldFile.canWrite() && super.renameFile(oldFile, newFile);
             }
         };
     }
@@ -131,7 +131,7 @@ class MetalCanWriteFileChooserUI extends MetalFileChooserUI {
         }
         model2 = new BasicDirectoryModel(getFileChooser()) {
             @Override public boolean renameFile(File oldFile, File newFile) {
-                return oldFile.canWrite() ? super.renameFile(oldFile, newFile) : false;
+                return oldFile.canWrite() && super.renameFile(oldFile, newFile);
             }
         };
     }

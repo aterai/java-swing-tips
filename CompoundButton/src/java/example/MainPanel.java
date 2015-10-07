@@ -158,6 +158,6 @@ class CompoundButton extends JButton {
         g2.dispose();
     }
     @Override public boolean contains(int x, int y) {
-        return Objects.nonNull(shape) ? shape.contains(x, y) : false;
+        return Objects.nonNull(shape) && shape.contains(x, y);
     }
 }

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
         @Override public boolean isCellEditable(int row, int col) {
-            return (col == 0) ? false : !r4.isSelected();
+            return col != 0 && !r4.isSelected();
         }
     };
     private final JTable table = new JTable(model);

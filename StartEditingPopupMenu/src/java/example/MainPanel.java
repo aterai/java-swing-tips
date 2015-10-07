@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
 //                 return (e instanceof MouseEvent) ? false : super.canEditImmediately(e);
 //             }
             @Override public boolean isCellEditable(EventObject e) {
-                return e instanceof MouseEvent ? false : super.isCellEditable(e);
+                return !(e instanceof MouseEvent) && super.isCellEditable(e);
             }
         });
         tree.setEditable(true);
@@ -98,7 +98,7 @@ class TreePopupMenu extends JPopupMenu {
             }
         }
     };
-    public TreePopupMenu() {
+    protected TreePopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {

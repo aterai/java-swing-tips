@@ -78,20 +78,20 @@ class RoundedCornerButton extends JButton {
     protected Shape shape;
     protected Shape border;
     protected Shape base;
-    public RoundedCornerButton() {
+    protected RoundedCornerButton() {
         super();
     }
-    public RoundedCornerButton(Icon icon) {
+    protected RoundedCornerButton(Icon icon) {
         super(icon);
     }
-    public RoundedCornerButton(String text) {
+    protected RoundedCornerButton(String text) {
         super(text);
     }
-    public RoundedCornerButton(Action a) {
+    protected RoundedCornerButton(Action a) {
         super(a);
         //setAction(a);
     }
-    public RoundedCornerButton(String text, Icon icon) {
+    protected RoundedCornerButton(String text, Icon icon) {
         super(text, icon);
         //setModel(new DefaultButtonModel());
         //init(text, icon);
@@ -151,25 +151,25 @@ class RoundedCornerButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        return shape == null ? false : shape.contains(x, y);
+        return shape != null && shape.contains(x, y);
     }
 }
 
 class RoundButton extends RoundedCornerButton {
-    public RoundButton() {
+    protected RoundButton() {
         super();
     }
-    public RoundButton(Icon icon) {
+    protected RoundButton(Icon icon) {
         super(icon);
     }
-    public RoundButton(String text) {
+    protected RoundButton(String text) {
         super(text);
     }
-    public RoundButton(Action a) {
+    protected RoundButton(Action a) {
         super(a);
         //setAction(a);
     }
-    public RoundButton(String text, Icon icon) {
+    protected RoundButton(String text, Icon icon) {
         super(text, icon);
         //setModel(new DefaultButtonModel());
         //init(text, icon);
@@ -196,7 +196,7 @@ class ShapeButton extends JButton {
     protected final Color ac = new Color(230, 230, 230);
     protected final Color rc = Color.ORANGE;
     protected final Shape shape;
-    public ShapeButton(Shape s) {
+    protected ShapeButton(Shape s) {
         super();
         shape = s;
         setModel(new DefaultButtonModel());
@@ -250,7 +250,7 @@ class ShapeButton extends JButton {
 
 class DummySizeIcon implements Icon {
     private final Shape shape;
-    public DummySizeIcon(Shape s) {
+    protected DummySizeIcon(Shape s) {
         shape = s;
     }
     @Override public int getIconWidth() {

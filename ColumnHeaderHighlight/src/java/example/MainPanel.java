@@ -58,7 +58,7 @@ class ColumnHeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
         ListSelectionModel csm = table.getColumnModel().getSelectionModel();
-        boolean f = csm.getLeadSelectionIndex() == column ? true : hasFocus;
+        boolean f = csm.getLeadSelectionIndex() == column || hasFocus;
         return r.getTableCellRendererComponent(table, value, isSelected, f, row, column);
     }
 }

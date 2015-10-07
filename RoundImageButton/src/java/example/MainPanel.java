@@ -149,7 +149,7 @@ class RoundButton extends JButton {
 //         //setModel(new DefaultButtonModel());
 //         //init(text, icon);
 //     }
-    public RoundButton(Icon icon, String i2, String i3) {
+    protected RoundButton(Icon icon, String i2, String i3) {
         super(icon);
         setPressedIcon(new ImageIcon(getClass().getResource(i2)));
         setRolloverIcon(new ImageIcon(getClass().getResource(i3)));
@@ -188,7 +188,7 @@ class RoundButton extends JButton {
     }
     @Override public boolean contains(int x, int y) {
         initShape();
-        return Objects.nonNull(shape) ? shape.contains(x, y) : false;
+        return Objects.nonNull(shape) && shape.contains(x, y);
     }
 }
 
