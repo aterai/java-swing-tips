@@ -146,7 +146,7 @@ class DnDTabbedPane extends JTabbedPane {
         }
     }
 
-    public DnDTabbedPane() {
+    protected DnDTabbedPane() {
         super();
         glassPane.setName("GlassPane");
         new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
@@ -155,7 +155,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
 
     protected int getTargetTabIndex(Point glassPt) {
-        Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, DnDTabbedPane.this);
+        Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
         boolean isTB = getTabPlacement() == JTabbedPane.TOP || getTabPlacement() == JTabbedPane.BOTTOM;
         for (int i = 0; i < getTabCount(); i++) {
             Rectangle r = getBoundsAt(i);
@@ -274,7 +274,7 @@ class TabTransferable implements Transferable {
     private static final String NAME = "test";
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private final Component tabbedPane;
-    public TabTransferable(Component tabbedPane) {
+    protected TabTransferable(Component tabbedPane) {
         this.tabbedPane = tabbedPane;
     }
     @Override public Object getTransferData(DataFlavor flavor) {
@@ -422,7 +422,7 @@ class GhostGlassPane extends JPanel {
     private Point location = new Point(0, 0);
     private transient BufferedImage draggingGhost;
 
-    public GhostGlassPane(DnDTabbedPane tabbedPane) {
+    protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
         setOpaque(false);
