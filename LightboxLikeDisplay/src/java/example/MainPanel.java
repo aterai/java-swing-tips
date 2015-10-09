@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JPanel makeDummyPanel() {
-        JButton b = new JButton("Button&Mnemonic");
+        JButton b = new JButton("Button & Mnemonic");
         b.setMnemonic(KeyEvent.VK_B);
-        JTextField t = new JTextField("TextField&ToolTip");
+        JTextField t = new JTextField("TextField & ToolTip");
         t.setToolTipText("ToolTip");
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -65,6 +65,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LightboxGlassPane extends JPanel {
+    private static final int BW = 5;
     private final ImageIcon image = new ImageIcon(LightboxGlassPane.class.getResource("test.png"));
     private final transient AnimeIcon animatedIcon = new AnimeIcon();
     private float alpha;
@@ -128,13 +129,13 @@ class LightboxGlassPane extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
 
-        if (h < image.getIconHeight() + 5 + 5) {
+        if (h < image.getIconHeight() + BW + BW) {
             h += image.getIconHeight() / 16;
-        } else if (w < image.getIconWidth() + 5 + 5) {
-            h  = image.getIconHeight() + 5 + 5;
+        } else if (w < image.getIconWidth() + BW + BW) {
+            h  = image.getIconHeight() + BW + BW;
             w += image.getIconWidth() / 16;
         } else if (alpha < 1f) {
-            w  = image.getIconWidth() + 5 + 5;
+            w  = image.getIconWidth() + BW + BW;
             alpha = alpha + .1f;
         } else {
             animatedIcon.setRunning(false);
@@ -142,12 +143,12 @@ class LightboxGlassPane extends JPanel {
         }
         rect.setSize(w, h);
         Rectangle screen = getBounds();
-        rect.setLocation(screen.x + screen.width / 2  - rect.width / 2,
-                         screen.y + screen.height / 2 - rect.height / 2);
+        Point centerPt = new Point(screen.x + screen.width / 2, screen.y + screen.height / 2);
+        rect.setLocation(centerPt.x - rect.width / 2, centerPt.y - rect.height / 2);
 
-        g2.setPaint(new Color(100, 100, 100, 100));
+        g2.setPaint(new Color(0x64646464, true));
         g2.fill(screen);
-        g2.setPaint(new Color(255, 255, 255, 200));
+        g2.setPaint(new Color(0xC8FFFFFF, true));
         g2.fill(rect);
 
         if (alpha > 0) {
@@ -155,13 +156,9 @@ class LightboxGlassPane extends JPanel {
                 alpha = 1f;
             }
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            g2.drawImage(image.getImage(), rect.x + 5, rect.y + 5,
-                          image.getIconWidth(),
-                          image.getIconHeight(), this);
+            g2.drawImage(image.getImage(), rect.x + BW, rect.y + BW, image.getIconWidth(), image.getIconHeight(), this);
         } else {
-            animatedIcon.paintIcon(this, g2,
-                                   screen.x + screen.width / 2  - animatedIcon.getIconWidth() / 2,
-                                   screen.y + screen.height / 2 - animatedIcon.getIconHeight() / 2);
+            animatedIcon.paintIcon(this, g2, centerPt.x - animatedIcon.getIconWidth() / 2, centerPt.y - animatedIcon.getIconHeight() / 2);
         }
         g2.dispose();
     }
