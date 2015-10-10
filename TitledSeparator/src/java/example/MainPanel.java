@@ -59,10 +59,10 @@ class TitledSeparator extends JLabel {
     private final Color target;
     private final int height;
     private final int titlePosition;
-    public TitledSeparator(String title, int height, int titlePosition) {
+    protected TitledSeparator(String title, int height, int titlePosition) {
         this(title, null, height, titlePosition);
     }
-    public TitledSeparator(String title, Color target, int height, int titlePosition) {
+    protected TitledSeparator(String title, Color target, int height, int titlePosition) {
         super();
         this.title = title;
         this.target = target;
@@ -92,7 +92,7 @@ class TitledSeparator extends JLabel {
         @Override public void paintIcon(Component c, Graphics g, int x, int y) {
             int w = c.getWidth();
             Color color = getBackground();
-            if (w != width || painter1 == null || painter2 == null) {
+            if (w != width || Objects.isNull(painter1) || Objects.isNull(painter2)) {
                 width = w;
                 Point2D start = new Point2D.Float(0f, 0f);
                 Point2D end   = new Point2D.Float((float) width, 0f);
