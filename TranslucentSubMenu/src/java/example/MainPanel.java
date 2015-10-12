@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -36,7 +37,6 @@ public final class MainPanel extends JPanel {
         String[] menuKeys = {"File", "Edit", "Help"};
         for (String key: menuKeys) {
             JMenu m = createMenu(key);
-            //if (m != null)
             mb.add(m);
         }
         return mb;
@@ -123,13 +123,13 @@ class TranslucentPopupMenu extends JPopupMenu {
 class TransparentMenu extends JMenu {
     private JPopupMenu popupMenu;
 
-    public TransparentMenu(String title) {
+    protected TransparentMenu(String title) {
         super(title);
     }
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
     // http://bugs.java.com/view_bug.do?bug_id=4688783
     private void ensurePopupMenuCreated() {
-        if (popupMenu == null) {
+        if (Objects.isNull(popupMenu)) {
             this.popupMenu = new TranslucentPopupMenu();
             popupMenu.setInvoker(this);
             popupListener = createWinListener(popupMenu);
@@ -197,7 +197,7 @@ class TranslucentPopupFactory extends PopupFactory {
 
 class TranslucentPopup extends Popup {
     private final JWindow popupWindow;
-    public TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
+    protected TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
         super(owner, contents, ownerX, ownerY);
         // create a new heavyweight window
         this.popupWindow = new JWindow();

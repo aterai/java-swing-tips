@@ -80,7 +80,7 @@ class TreePopupMenu extends JPopupMenu {
     };
     private final Action editDialogAction = new AbstractAction("Edit Dialog") {
         @Override public void actionPerformed(ActionEvent e) {
-            if (path == null) {
+            if (Objects.isNull(path)) {
                 return;
             }
             Object node = path.getLastPathComponent();
@@ -122,7 +122,7 @@ class TreePopupMenu extends JPopupMenu {
             TreePath[] tsp = tree.getSelectionPaths();
             path = tree.getPathForLocation(x, y); //Test: path = tree.getClosestPathForLocation(x, y);
             boolean isEditable = tsp.length == 1 && tsp[0].equals(path);
-            //Test: if (path != null && Arrays.asList(tsp).contains(path)) {
+            //Test: if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
             editAction.setEnabled(isEditable);
             editDialogAction.setEnabled(isEditable);
             super.show(c, x, y);
