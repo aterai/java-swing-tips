@@ -88,7 +88,7 @@ class ToolTipHeaderRenderer implements TableCellRenderer {
             rect.width -= icon.getIconWidth() + 2; //XXX
         }
         FontMetrics fm = l.getFontMetrics(l.getFont());
-        String str = value.toString();
+        String str = Objects.toString(value, "");
         int cellTextWidth = fm.stringWidth(str);
         l.setToolTipText(cellTextWidth > rect.width ? str : null);
         return l;

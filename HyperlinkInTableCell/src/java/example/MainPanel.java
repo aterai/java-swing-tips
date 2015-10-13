@@ -128,7 +128,7 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 //         String str = SwingUtilities.layoutCompoundLabel(
 //             this,
 //             this.getFontMetrics(this.getFont()),
-//             value.toString(), //this.getText(),
+//             Objects.toString(value, ""), //this.getText(),
 //             this.getIcon(),
 //             this.getVerticalAlignment(),
 //             this.getHorizontalAlignment(),

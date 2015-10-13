@@ -85,7 +85,7 @@ class HighlightListener extends MouseAdapter {
     private int row = -1;
     private int col = -1;
     private final JTable table;
-    public HighlightListener(JTable table) {
+    protected HighlightListener(JTable table) {
         super();
         this.table = table;
     }
@@ -134,18 +134,19 @@ class HighlightListener extends MouseAdapter {
 class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
     private static final Color HIGHLIGHT = new Color(255, 150, 50);
     private final transient HighlightListener highlighter;
-    public RolloverDefaultTableCellRenderer(HighlightListener highlighter) {
+    protected RolloverDefaultTableCellRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        String str = Objects.toString(value, "");
         if (highlighter.isHighlightableCell(row, column)) {
-            setText("<html><u>" + value.toString());
+            setText("<html><u>" + str);
             setForeground(isSelected ? table.getSelectionForeground() : HIGHLIGHT);
             setBackground(isSelected ? table.getSelectionBackground().darker() : table.getBackground());
         } else {
-            setText(value.toString());
+            setText(str);
             setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
             setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         }
@@ -154,7 +155,7 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
-    public RolloverNumberRenderer(HighlightListener highlighter) {
+    protected RolloverNumberRenderer(HighlightListener highlighter) {
         super(highlighter);
         setHorizontalAlignment(SwingConstants.RIGHT);
     }
@@ -163,7 +164,7 @@ class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
 class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
     private final transient HighlightListener highlighter;
 
-    public RolloverBooleanRenderer(HighlightListener highlighter) {
+    protected RolloverBooleanRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;
         setHorizontalAlignment(SwingConstants.CENTER);

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -94,10 +95,11 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
     private int col = -1;
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        String str = Objects.toString(value, "");
         if (!table.isEditing() && this.row == row && this.col == column) {
-            setText("<html><u>" + value.toString());
+            setText("<html><u>" + str);
         } else {
-            setText(value.toString());
+            setText(str);
         }
         //setForeground(table.getForeground());
         return this;
