@@ -42,21 +42,21 @@ public final class MainPanel extends JPanel {
 
 //                 //String#split >>>>
 //                 for (String line: textArea.getText().split("\\n")) {
-//                     if (line.codePointAt(0) == '#') {
+//                     if (!line.isEmpty() && line.codePointAt(0) == '#') {
 //                         count++;
 //                     }
 //                 }
 //                 //<<<< String#split
 //
 //                 //LineNumberReader >>>>
-//                 try (LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
+//                 try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
 //                     String line = null;
 //                     while ((line = lnr.readLine()) != null) {
-//                         if (line.codePointAt(0) == '#') {
+//                         if (!line.isEmpty() && line.codePointAt(0) == '#') {
 //                             count++;
 //                         }
 //                     }
-//                 } catch (IOException ioe) {
+//                 } catch (java.io.IOException ioe) {
 //                     ioe.printStackTrace();
 //                 }
 //                 //<<<< LineNumberReader
