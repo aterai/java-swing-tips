@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-//http://www.crionics.com/products/opensource/faq/swing_ex/JTableExamples2.html
+//http://www2.gol.com/users/tame/swing/examples/JTableExamples2.html
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Integer", "Answer"};
     private final Object[][] data = {
