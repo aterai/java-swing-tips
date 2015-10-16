@@ -91,7 +91,7 @@ class TextComponentPopupMenu extends JPopupMenu {
             tc.replaceSelection(null);
         }
     };
-    public TextComponentPopupMenu(JTextComponent textComponent) {
+    protected TextComponentPopupMenu(JTextComponent textComponent) {
         super();
         add(cutAction);
         add(copyAction);
@@ -109,8 +109,8 @@ class TextComponentPopupMenu extends JPopupMenu {
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTextComponent) {
-            JTextComponent textComponent = (JTextComponent) c;
-            boolean flg = textComponent.getSelectedText() != null;
+            JTextComponent tc = (JTextComponent) c;
+            boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
             cutAction.setEnabled(flg);
             copyAction.setEnabled(flg);
             deleteAction.setEnabled(flg);
@@ -121,7 +121,7 @@ class TextComponentPopupMenu extends JPopupMenu {
 
 class UndoAction extends AbstractAction {
     private final UndoManager undoManager;
-    public UndoAction(UndoManager manager) {
+    protected UndoAction(UndoManager manager) {
         super("undo");
         this.undoManager = manager;
     }
@@ -137,7 +137,7 @@ class UndoAction extends AbstractAction {
 
 class RedoAction extends AbstractAction {
     private final UndoManager undoManager;
-    public RedoAction(UndoManager manager) {
+    protected RedoAction(UndoManager manager) {
         super("redo");
         this.undoManager = manager;
     }

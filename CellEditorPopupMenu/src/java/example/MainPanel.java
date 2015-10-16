@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -59,7 +58,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TextComponentPopupMenu extends JPopupMenu {
-    public TextComponentPopupMenu(final JTextComponent tc) {
+    protected TextComponentPopupMenu(final JTextComponent tc) {
         super();
 
         final UndoManager manager = new UndoManager();
@@ -105,8 +104,8 @@ class TextComponentPopupMenu extends JPopupMenu {
             }
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 JPopupMenu pop = (JPopupMenu) e.getSource();
-                JTextComponent field = (JTextComponent) pop.getInvoker();
-                boolean flg = Objects.nonNull(field.getSelectedText());
+                JTextComponent tc = (JTextComponent) pop.getInvoker();
+                boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
                 cutAction.setEnabled(flg);
                 copyAction.setEnabled(flg);
                 deleteAction.setEnabled(flg);
@@ -119,7 +118,7 @@ class TextComponentPopupMenu extends JPopupMenu {
 
 class UndoAction extends AbstractAction {
     private final UndoManager undoManager;
-    public UndoAction(UndoManager manager) {
+    protected UndoAction(UndoManager manager) {
         super("undo");
         this.undoManager = manager;
     }
@@ -134,7 +133,7 @@ class UndoAction extends AbstractAction {
 
 class RedoAction extends AbstractAction {
     private final UndoManager undoManager;
-    public RedoAction(UndoManager manager) {
+    protected RedoAction(UndoManager manager) {
         super("redo");
         this.undoManager = manager;
     }
@@ -148,7 +147,7 @@ class RedoAction extends AbstractAction {
 }
 
 class DeleteAction extends AbstractAction {
-    public DeleteAction() {
+    protected DeleteAction() {
         super("delete");
     }
     @Override public void actionPerformed(ActionEvent e) {

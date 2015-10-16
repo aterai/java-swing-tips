@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -46,8 +45,8 @@ public final class MainPanel extends JPanel {
 //             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
 //             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 //                 JPopupMenu p = (JPopupMenu) e.getSource();
-//                 JTextComponent c = (JTextComponent) p.getInvoker();
-//                 boolean flg = Objects.nonNull(c.getSelectedText());
+//                 JTextComponent tc = (JTextComponent) p.getInvoker();
+//                 boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
 //                 cutAction.setEnabled(flg);
 //                 copyAction.setEnabled(flg);
 //                 deleteAction.setEnabled(flg);
@@ -88,7 +87,7 @@ class TextComponentPopupMenu extends JPopupMenu {
             ((JTextComponent) getInvoker()).replaceSelection(null);
         }
     };
-    public TextComponentPopupMenu() {
+    protected TextComponentPopupMenu() {
         super();
         add(cutAction);
         add(copyAction);
@@ -104,8 +103,8 @@ class TextComponentPopupMenu extends JPopupMenu {
     }
     @Override public void show(Component c, int x, int y) {
         if (c instanceof JTextComponent) {
-            JTextComponent textArea = (JTextComponent) c;
-            boolean flg = Objects.nonNull(textArea.getSelectedText());
+            JTextComponent tc = (JTextComponent) c;
+            boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
             cutAction.setEnabled(flg);
             copyAction.setEnabled(flg);
             deleteAction.setEnabled(flg);

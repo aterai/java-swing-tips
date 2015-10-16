@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -74,7 +73,7 @@ class TextFieldPopupMenu extends JPopupMenu {
             }
         }
     };
-    public TextFieldPopupMenu() {
+    protected TextFieldPopupMenu() {
         super();
         add(cutAction);
         add(copyAction);
@@ -84,11 +83,14 @@ class TextFieldPopupMenu extends JPopupMenu {
         add(cut2Action);
     }
     @Override public void show(Component c, int x, int y) {
-        boolean f = c instanceof JTextComponent && Objects.nonNull(((JTextComponent) c).getSelectedText());
-        cutAction.setEnabled(f);
-        copyAction.setEnabled(f);
-        deleteAction.setEnabled(f);
-        cut2Action.setEnabled(f);
-        super.show(c, x, y);
+        if (c instanceof JTextComponent) {
+            JTextComponent tc = (JTextComponent) c;
+            boolean f =  tc.getSelectionStart() != tc.getSelectionEnd();
+            cutAction.setEnabled(f);
+            copyAction.setEnabled(f);
+            deleteAction.setEnabled(f);
+            cut2Action.setEnabled(f);
+            super.show(c, x, y);
+        }
     }
 }

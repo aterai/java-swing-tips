@@ -87,7 +87,7 @@ class OvertypeTextArea extends JTextArea {
         // caret position
         if (isOvertypeMode()) {
             int pos = getCaretPosition();
-            if (Objects.isNull(getSelectedText()) && pos < getDocument().getLength()) {
+            if (getSelectionStart() == getSelectionEnd() && pos < getDocument().getLength()) {
                 moveCaretPosition(pos + 1);
             }
         }
@@ -128,7 +128,7 @@ class OvertypeTextArea extends JTextArea {
                     if (isOvertypeMode()) {
                         int pos = getCaretPosition();
                         if (pos < getDocument().getLength()) {
-                            if (Objects.isNull(getSelectedText())) {
+                            if (getSelectionStart() == getSelectionEnd()) {
                                 String str = getText(pos, 1);
                                 width = g.getFontMetrics().stringWidth(str);
                             } else {
