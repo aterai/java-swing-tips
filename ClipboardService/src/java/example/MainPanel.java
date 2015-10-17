@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.jnlp.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -21,25 +22,27 @@ public final class MainPanel extends JPanel {
         }
         JTextArea textArea = new JTextArea() {
             @Override public void copy() {
-                if (cs != null) {
+                if (Objects.nonNull(cs)) {
                     cs.setContents(new StringSelection(getSelectedText()));
+                } else {
+                    super.copy();
                 }
-                super.copy();
             }
             @Override public void cut() {
-                if (cs != null) {
+                if (Objects.nonNull(cs)) {
                     cs.setContents(new StringSelection(getSelectedText()));
+                } else {
+                    super.cut();
                 }
-                super.cut();
             }
             @Override public void paste() {
-                if (cs == null) {
-                    super.paste();
-                } else {
+                if (Objects.nonNull(cs)) {
                     Transferable tr = cs.getContents();
                     if (tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                         getTransferHandler().importData(this, tr);
                     }
+                } else {
+                    super.paste();
                 }
             }
         };
