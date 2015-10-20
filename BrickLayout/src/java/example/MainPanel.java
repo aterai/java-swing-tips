@@ -6,7 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private static final int SIZE = 6;
+    private static final int XSIZE = 6;
+    private static final int YSIZE = 8;
+    private static final int WIDTH = 2;
     private MainPanel() {
         super(new BorderLayout());
 
@@ -14,26 +16,35 @@ public final class MainPanel extends JPanel {
         panel.setBorder(BorderFactory.createTitledBorder("Brick Layout"));
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        //c.weightx = 1d; c.weighty = 0d;
-        for (int i = 0; i < SIZE; i++) {
-            int x = i & 1; //= (i % 2 == 0) ? 0 : 1;
-            for (int j = 0; j < SIZE; j++) {
-                c.gridy = i;
-                c.gridx = 2 * j + x;
-                c.gridwidth = 2;
+        c.gridy = GridBagConstraints.RELATIVE;
+        for (int y = 0; y < YSIZE; y++) {
+            ////c.gridy = GridBagConstraints.RELATIVE; //c.gridy = y;
+            //int d = y & 0b1; //= y % 2 == 0 ? 0 : 1;
+            //if (d == 1) {
+            //    c.gridwidth = 1;
+            //    c.gridx = 0;
+            //    panel.add(new JButton("s"), c);
+            //}
+            c.gridx = y & 0b1; //start x offset
+            c.gridwidth = WIDTH;
+            for (int x = 0; x < XSIZE; x++) {
                 panel.add(new JButton(" "), c);
+                c.gridx += WIDTH;
             }
+            //if (d == 0) {
+            //    c.gridwidth = 1;
+            //    panel.add(new JButton("e"), c);
+            //}
         }
-        //<blockquote cite="https://community.oracle.com/thread/1357310"
-        //           title="GridBagLayout to create a board">
+        //GridBagLayout to create a board
+        //https://community.oracle.com/thread/1357310
         //<dummy-row>
         c.gridwidth = 1;
-        c.gridy = 10;
-        for (c.gridx = 0; c.gridx <= 2 * SIZE; c.gridx++) {
+        //c.gridy = GridBagConstraints.REMAINDER;
+        for (c.gridx = 0; c.gridx <= WIDTH * XSIZE; c.gridx++) {
             panel.add(Box.createHorizontalStrut(24), c);
         }
         //</dummy-row>
-        //</blockquote>
 
         add(panel);
         setPreferredSize(new Dimension(320, 240));
