@@ -54,7 +54,9 @@ public final class MainPanel extends JPanel {
         JPopupMenu pop = new JPopupMenu();
         pop.add(new JMenuItem(title));
         JButton button = new JButton(title);
-        button.setMnemonic(title.charAt(0));
+        if (title.length() > 0) {
+            button.setMnemonic(title.codePointAt(0));
+        }
         button.setToolTipText(title);
         button.setComponentPopupMenu(pop);
         return button;
@@ -141,7 +143,7 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         if (CMD_BLOCKING.equals(cmd)) {
             JButton b = (JButton) l.getView();
             b.setFocusable(!isBlocking);
-            b.setMnemonic(isBlocking ? 0 : b.getText().charAt(0));
+            b.setMnemonic(isBlocking ? 0 : b.getText().codePointAt(0));
             b.setForeground(isBlocking ? Color.RED : Color.BLACK);
             l.getGlassPane().setVisible((Boolean) pce.getNewValue());
         }

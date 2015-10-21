@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 //     };
 
     private static class NewAction extends AbstractAction {
-        public NewAction() {
+        protected NewAction() {
             super("new");
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SaveAsAction extends AbstractAction {
-    public SaveAsAction() {
+    protected SaveAsAction() {
         super("saveAs");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -89,7 +89,7 @@ class SaveAsAction extends AbstractAction {
 }
 
 class ExitAction extends AbstractAction {
-    public ExitAction() {
+    protected ExitAction() {
         super("exit");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,7 @@ class ExitAction extends AbstractAction {
 }
 
 class HelpAction extends AbstractAction {
-    public HelpAction() {
+    protected HelpAction() {
         super("help");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -134,7 +134,7 @@ class VersionAction extends AbstractAction {
     private static final String COPYRIGHT = "Copyright(C) 2006";
     private static final String VERSION   = "0.0";
     private static final int    RELEASE   = 1;
-    public VersionAction() {
+    protected VersionAction() {
         super("version");
     }
     @Override public void actionPerformed(ActionEvent e) {

@@ -74,21 +74,41 @@ public final class MainPanel extends JPanel {
                 //<blockquote cite="http://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
                 //@title Left Dot Renderer
                 //@auther Rob Camick
+                //FontMetrics fm = getFontMetrics(getFont());
+                //if (fm.stringWidth(cellText) > availableWidth) {
+                //    String dots = "...";
+                //    int textWidth = fm.stringWidth(dots);
+                //    int nChars = cellText.length() - 1;
+                //    while (nChars > 0) {
+                //        textWidth += fm.charWidth(cellText.charAt(nChars));
+                //        if (textWidth > availableWidth) {
+                //            break;
+                //        }
+                //        nChars--;
+                //    }
+                //    setText(dots + cellText.substring(nChars + 1));
+                //}
+                //</blockquote>
                 FontMetrics fm = getFontMetrics(getFont());
                 if (fm.stringWidth(cellText) > availableWidth) {
                     String dots = "...";
                     int textWidth = fm.stringWidth(dots);
-                    int nChars = cellText.length() - 1;
-                    while (nChars > 0) {
-                        textWidth += fm.charWidth(cellText.charAt(nChars));
+                    int len = cellText.length();
+                    //@see Unicode surrogate programming with the Java language
+                    //http://www.ibm.com/developerworks/library/j-unicode/index.html)
+                    //http://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
+                    int[] acp = new int[cellText.codePointCount(0, len)];
+                    int j = acp.length;
+                    for (int i = len; i > 0; i = cellText.offsetByCodePoints(i, -1)) {
+                        int cp = cellText.codePointBefore(i);
+                        textWidth += fm.charWidth(cp);
                         if (textWidth > availableWidth) {
                             break;
                         }
-                        nChars--;
+                        acp[--j] = cp;
                     }
-                    setText(dots + cellText.substring(nChars + 1));
+                    setText(dots + new String(acp, j, acp.length - j));
                 }
-                //</blockquote>
                 return this;
             }
         });

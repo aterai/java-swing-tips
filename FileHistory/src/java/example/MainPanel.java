@@ -59,8 +59,7 @@ public final class MainPanel extends JPanel {
                 String num  = Integer.toString(i + 1);
                 JMenuItem mi = new JMenuItem(new HistoryAction(new File(name).getAbsolutePath()));
                 mi.setText(num + ": " + name);
-                //byte[] bt = num.getBytes();
-                mi.setMnemonic((int) num.charAt(0));
+                mi.setMnemonic(num.codePointAt(0));
                 fileHistoryMenu.add(mi);
             }
         }
@@ -78,8 +77,7 @@ public final class MainPanel extends JPanel {
             // JMenuItem mi = new JMenuItem(new HistoryAction(new File(name)));
             JMenuItem mi = new JMenuItem(new HistoryAction(name));
             mi.setText(num + ": " + name);
-            //byte[] bt = num.getBytes();
-            mi.setMnemonic((int) num.charAt(0));
+            mi.setMnemonic(num.codePointAt(0));
             fileHistoryMenu.add(mi, i);
         }
     }
@@ -90,7 +88,7 @@ public final class MainPanel extends JPanel {
 //             this.file = file;
 //         }
         private final String fileName;
-        public HistoryAction(String fileName) {
+        protected HistoryAction(String fileName) {
             super();
             this.fileName = fileName;
         }
@@ -126,7 +124,7 @@ public final class MainPanel extends JPanel {
 //     };
 
     private static class NewAction extends AbstractAction {
-        public NewAction() {
+        protected NewAction() {
             super("new");
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -136,7 +134,7 @@ public final class MainPanel extends JPanel {
 
     private class OpenAction extends AbstractAction {
         private int count;
-        public OpenAction() {
+        protected OpenAction() {
             super("open");
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -182,7 +180,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SaveAsAction extends AbstractAction {
-    public SaveAsAction() {
+    protected SaveAsAction() {
         super("saveAs");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -191,7 +189,7 @@ class SaveAsAction extends AbstractAction {
 }
 
 class ExitAction extends AbstractAction {
-    public ExitAction() {
+    protected ExitAction() {
         super("exit");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -223,7 +221,7 @@ class ExitAction extends AbstractAction {
 }
 
 class HelpAction extends AbstractAction {
-    public HelpAction() {
+    protected HelpAction() {
         super("help");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -236,7 +234,7 @@ class VersionAction extends AbstractAction {
     private static final String COPYRIGHT = "Copyright(C) 2006";
     private static final String VERSION   = "0.0";
     private static final int    RELEASE   = 1;
-    public VersionAction() {
+    protected VersionAction() {
         super("version");
     }
     @Override public void actionPerformed(ActionEvent e) {

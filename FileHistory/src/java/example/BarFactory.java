@@ -171,12 +171,11 @@ public final class BarFactory {
         String mn = getResourceString(key + MNE_SUFFIX);
         if (Objects.nonNull(mn)) {
             String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
-            if (tmp.length() == 1) {
+            if (tmp.length() > 0) {
                 if (mitext.indexOf(tmp) < 0) {
                     menu.setText(String.format("%s (%s)", mitext, tmp));
                 }
-                //byte[] bt = tmp.getBytes();
-                menu.setMnemonic((int) tmp.charAt(0));
+                menu.setMnemonic(tmp.codePointAt(0));
             }
         }
         for (int i = 0; i < itemKeys.length; i++) {
@@ -207,13 +206,11 @@ public final class BarFactory {
         //System.out.println(mn);
         if (Objects.nonNull(mn)) {
             String tmp = mn.toUpperCase(Locale.ENGLISH).trim();
-            if (tmp.length() == 1) {
+            if (tmp.length() > 0) {
                 if (mitext.indexOf(tmp) < 0) {
                     mi.setText(String.format("%s (%s)", mitext, tmp));
                 }
-                //byte[] bt = tmp.getBytes();
-                mi.setMnemonic((int) tmp.charAt(0));
-                //System.out.println(cmd + ", " + tmp);
+                mi.setMnemonic(tmp.codePointAt(0));
             }
         }
         mi.setActionCommand(astr);

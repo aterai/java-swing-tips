@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
     private final JLabel top = new JLabel();
     private final JLabel bottom = new JLabel();
-    public TwoRowsCellRenderer() {
+    protected TwoRowsCellRenderer() {
         super(new GridLayout(2, 1, 0, 0));
         add(top);
         add(bottom);
@@ -74,19 +74,52 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
             setBackground(table.getBackground());
         }
         setFont(table.getFont());
-        FontMetrics fm  = table.getFontMetrics(table.getFont());
+        FontMetrics fm  = top.getFontMetrics(top.getFont());
         String text     = Objects.toString(value, "");
         String first    = text;
         String second   = "";
-        int columnWidth = table.getColumnModel().getColumn(column).getWidth();
+        int columnWidth = table.getCellRect(0, column, false).width;
         int textWidth   = 0;
-        for (int i = 0; i < text.length(); i++) {
-            textWidth += fm.charWidth(text.charAt(i));
+//         for (int i = 0; i < text.length(); i++) {
+//             textWidth += fm.charWidth(text.charAt(i));
+//             if (textWidth > columnWidth) {
+//                 first  = text.substring(0, i - 1);
+//                 second = text.substring(i - 1);
+//                 break;
+//             }
+//         }
+
+//         //@see Unicode surrogate programming with the Java language
+//         //http://www.ibm.com/developerworks/library/j-unicode/index.html)
+//         //http://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
+//         char[] ach = text.toCharArray();
+//         int len = ach.length;
+//         int[] acp = new int[Character.codePointCount(ach, 0, len)];
+//         int j = 0;
+//         int cp;
+//         for (int i = 0; i < len; i += Character.charCount(cp)) {
+//             cp = Character.codePointAt(ach, i);
+//             acp[j++] = cp;
+//         }
+//         for (int i = 0; i < acp.length; i++) {
+//             textWidth += fm.charWidth(acp[i]);
+//             if (textWidth > columnWidth) {
+//                 first  = new String(acp, 0, i);
+//                 second = new String(acp, i, acp.length - i);
+//                 break;
+//             }
+//         }
+
+        int i = 0;
+        while (i < text.length()) {
+            int cp = text.codePointAt(i);
+            textWidth += fm.charWidth(cp);
             if (textWidth > columnWidth) {
-                first  = text.substring(0, i - 1);
-                second = text.substring(i - 1);
+                first  = text.substring(0, i);
+                second = text.substring(i);
                 break;
             }
+            i += Character.charCount(cp);
         }
         top.setText(first);
         bottom.setText(second);
