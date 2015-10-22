@@ -266,7 +266,7 @@ final class GradientPalletFactory {
 //         }
         int i = (int) (pallet.length * x);
         int max = pallet.length - 1;
-        int index = i < 0 ? 0 : i > max ? max : i;
+        int index = Math.min(Math.max(i, 0), max);
         int pix = pallet[index] & 0x00ffffff | (0x64 << 24);
         return new Color(pix, true);
     }

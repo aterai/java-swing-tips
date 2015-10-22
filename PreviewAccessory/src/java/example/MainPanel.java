@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,17 +16,17 @@ public final class MainPanel extends JPanel {
         super(new GridBagLayout());
         JButton button = new JButton(new AbstractAction("Open JFileChooser") {
             @Override public void actionPerformed(ActionEvent e) {
-                if (fileChooser == null) {
-                    fileChooser = new JFileChooser();
-                    fileChooser.setAccessory(new ImagePreview(fileChooser));
-                }
                 fileChooser.showOpenDialog(getRootPane());
             }
         });
         add(button);
         setPreferredSize(new Dimension(320, 240));
     }
-
+    @Override public void updateUI() {
+        super.updateUI();
+        fileChooser = new JFileChooser();
+        fileChooser.setAccessory(new ImagePreview(fileChooser));
+    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -57,7 +58,7 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
     private static final int PREVIEW_MARGIN = 5;
     private ImageIcon thumbnail;
     private File file;
-    public ImagePreview(JFileChooser fc) {
+    protected ImagePreview(JFileChooser fc) {
         super();
         fc.addPropertyChangeListener(this);
         //setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, SystemColor.inactiveCaption));
@@ -66,7 +67,7 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
         return new Dimension(PREVIEW_WIDTH + PREVIEW_MARGIN * 2, 50);
     }
     private void loadImage() {
-        if (file == null) {
+        if (Objects.isNull(file)) {
             thumbnail = null;
             return;
         }
@@ -107,18 +108,12 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
         }
     }
     @Override protected void paintComponent(Graphics g) {
-        if (thumbnail == null) {
+        if (Objects.isNull(thumbnail)) {
             loadImage();
         }
-        if (thumbnail != null) {
-            int x = getWidth()  / 2 - thumbnail.getIconWidth()  / 2;
-            int y = getHeight() / 2 - thumbnail.getIconHeight() / 2;
-            if (y < 0) {
-                y = 0;
-            }
-            if (x < PREVIEW_MARGIN) {
-                x = PREVIEW_MARGIN;
-            }
+        if (Objects.nonNull(thumbnail)) {
+            int x = Math.max(PREVIEW_MARGIN, getWidth() / 2 - thumbnail.getIconWidth() / 2);
+            int y = Math.max(0, getHeight() / 2 - thumbnail.getIconHeight() / 2);
             thumbnail.paintIcon(this, g, x, y);
         }
     }

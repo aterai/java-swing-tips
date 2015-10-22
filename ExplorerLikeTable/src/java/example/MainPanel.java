@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     }
 
     protected class CreateAction extends AbstractAction {
-        public CreateAction(String label, Icon icon) {
+        protected CreateAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
     }
 
     protected class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
+        protected DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
     }
 
     protected class ClearAction extends AbstractAction {
-        public ClearAction(String label, Icon icon) {
+        protected ClearAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
 
     protected class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(new CreateAction("add", null));
             add(new ClearAction("clearSelection", null));
@@ -159,7 +159,7 @@ class FileNameRenderer implements TableCellRenderer {
     private final ImageIcon nicon;
     private final ImageIcon sicon;
 
-    public FileNameRenderer(JTable table) {
+    protected FileNameRenderer(JTable table) {
         Border b = UIManager.getBorder("Table.noFocusBorder");
         if (Objects.isNull(b)) { //Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
@@ -194,7 +194,7 @@ class FileNameRenderer implements TableCellRenderer {
         Insets i = textLabel.getInsets();
         int swidth = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
         int cwidth = table.getColumnModel().getColumn(column).getWidth();
-        dim.width = swidth > cwidth ? cwidth : swidth;
+        dim.width = Math.min(swidth, cwidth);
 
         if (isSelected) {
             textLabel.setOpaque(true);
@@ -212,7 +212,7 @@ class FileNameRenderer implements TableCellRenderer {
 }
 
 class FileListTable extends JTable {
-    public FileListTable(TableModel model) {
+    protected FileListTable(TableModel model) {
         super(model);
     }
     @Override public void updateUI() {

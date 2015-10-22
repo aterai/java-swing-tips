@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -145,11 +145,11 @@ final class TrayIconPopupMenuUtil {
         GraphicsConfiguration gc = getGraphicsConfiguration(p);
 
         // If not found and popup have invoker, ask invoker about his gc
-        if (gc == null && popup.getInvoker() != null) {
+        if (Objects.isNull(gc) && Objects.nonNull(popup.getInvoker())) {
             gc = popup.getInvoker().getGraphicsConfiguration();
         }
 
-        if (gc == null) {
+        if (Objects.isNull(gc)) {
             // If we don't have GraphicsConfiguration use primary screen
             screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         } else {
@@ -173,12 +173,8 @@ final class TrayIconPopupMenuUtil {
 
         // Change is made to the desired (X, Y) values, when the
         // PopupMenu is too tall OR too wide for the screen
-        if (p.x < screenBounds.x) {
-            p.x = screenBounds.x;
-        }
-        if (p.y < screenBounds.y) {
-            p.y = screenBounds.y;
-        }
+        p.x = Math.max(p.x, screenBounds.x);
+        p.y = Math.max(p.y, screenBounds.y);
         return p;
     }
 }
@@ -186,7 +182,7 @@ final class TrayIconPopupMenuUtil {
 class TrayIconPopupMenuHandler extends MouseAdapter {
     private final JPopupMenu popup;
     private final Window dummy;
-    public TrayIconPopupMenuHandler(JPopupMenu popup, Window dummy) {
+    protected TrayIconPopupMenuHandler(JPopupMenu popup, Window dummy) {
         super();
         this.popup = popup;
         this.dummy = dummy;

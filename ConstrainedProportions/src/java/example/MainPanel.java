@@ -16,6 +16,7 @@ public final class MainPanel extends JPanel {
     public MainPanel(final JFrame frame) {
         super(new BorderLayout());
         this.frame = frame;
+        frame.setMinimumSize(new Dimension(MW, MH)); //JDK 1.6.0
         frame.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
                 initFrameSize();
@@ -52,7 +53,7 @@ public final class MainPanel extends JPanel {
         }
         int fw = frame.getSize().width;
         int fh = MH * fw / MW;
-        frame.setSize(MW > fw ? MW : fw, MH > fh ? MH : fh);
+        frame.setSize(Math.max(MW, fw), Math.max(MH, fh));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

@@ -104,7 +104,7 @@ class Task extends SwingWorker<Void, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
@@ -120,7 +120,7 @@ class ProgressListener implements PropertyChangeListener {
 
 class GradientPalletProgressBarUI extends BasicProgressBarUI {
     private final int[] pallet;
-    public GradientPalletProgressBarUI() {
+    protected GradientPalletProgressBarUI() {
         super();
         this.pallet = makeGradientPallet();
     }
@@ -151,7 +151,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         }
         int i = (int) (pallet.length * x);
         int max = pallet.length - 1;
-        int index = i < 0 ? 0 : i > max ? max : i;
+        int index = Math.min(Math.max(i, 0), max);
         return new Color(pallet[index] & 0x00ffffff);
         //translucent
         //int pix = pallet[index] & 0x00ffffff | (0x64 << 24);
