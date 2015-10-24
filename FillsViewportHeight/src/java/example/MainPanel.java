@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -140,7 +140,7 @@ class TablePopupMenu extends JPopupMenu {
     };
     private final DefaultTableModel model;
     private final JTable table;
-    public TablePopupMenu(JTable table, DefaultTableModel model) {
+    protected TablePopupMenu(JTable table, DefaultTableModel model) {
         super();
         this.table = table;
         this.model = model;

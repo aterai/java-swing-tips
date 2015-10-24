@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
+                c.setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
             }
             return c;
         }
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     private class TablePopupMenu extends JPopupMenu {
         private final Action addAction;
         private final Action deleteAction;
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             addAction = new TestCreateAction("add", table);
             deleteAction = new DeleteAction("delete", table);
@@ -168,7 +168,7 @@ class TestModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -178,7 +178,7 @@ class TestModel extends DefaultTableModel {
 
 class Test {
     private String name, comment;
-    public Test(String name, String comment) {
+    protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
@@ -198,7 +198,7 @@ class Test {
 
 class TestCreateAction extends AbstractAction {
     private final JTable table;
-    public TestCreateAction(String label, JTable table) {
+    protected TestCreateAction(String label, JTable table) {
         super(label);
         this.table = table;
     }
@@ -210,7 +210,7 @@ class TestCreateAction extends AbstractAction {
 
 class DeleteAction extends AbstractAction {
     private final JTable table;
-    public DeleteAction(String label, JTable table) {
+    protected DeleteAction(String label, JTable table) {
         super(label);
         this.table = table;
     }

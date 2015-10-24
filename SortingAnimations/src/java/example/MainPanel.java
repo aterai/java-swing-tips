@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
             for (int i = 0; i < number; i++) {
                 int px = (int) (MINX + factorx * i);
                 int py = MAXY - (int) (factory * array.get(i));
-                g.setColor((i % 5 == 0) ? Color.RED : DRAW_COLOR);
+                g.setColor(i % 5 == 0 ? Color.RED : DRAW_COLOR);
                 g.drawOval(px, py, 4, 4);
             }
         }

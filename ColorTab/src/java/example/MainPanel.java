@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
                     if (i == sindex && jtab.getTitleAt(sindex).endsWith("1")) {
                         jtab.setForegroundAt(i, Color.GREEN);
                     } else if (i == sindex) {
-                        Color sc = (sindex % 2 == 0) ? Color.RED : Color.BLUE;
+                        Color sc = sindex % 2 == 0 ? Color.RED : Color.BLUE;
                         jtab.setForegroundAt(i, sc);
                     } else {
                         jtab.setForegroundAt(i, Color.BLACK);
@@ -61,18 +61,18 @@ public final class MainPanel extends JPanel {
     }
 
     class NewTabAction extends AbstractAction {
-        public NewTabAction(String label, Icon icon) {
+        protected NewTabAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            tab.addTab("Title: " + count, (count % 2 == 0) ? new JLabel("Tab: " + count)
-                                                           : new JScrollPane(new JTree()));
+            tab.addTab("Title: " + count, count % 2 == 0 ? new JLabel("Tab: " + count)
+                                                         : new JScrollPane(new JTree()));
             tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
     class ClosePageAction extends AbstractAction {
-        public ClosePageAction(String label, Icon icon) {
+        protected ClosePageAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class CloseAllAction extends AbstractAction {
-        public CloseAllAction(String label, Icon icon) {
+        protected CloseAllAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class CloseAllButActiveAction extends AbstractAction {
-        public CloseAllButActiveAction(String label, Icon icon) {
+        protected CloseAllButActiveAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {

@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
                 c.setForeground(getForeground());
-                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
                 return c;
             }
         };

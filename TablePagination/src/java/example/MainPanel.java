@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Year", "String", "Comment"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return (column == 0) ? Integer.class : Object.class;
+            return column == 0 ? Integer.class : Object.class;
         }
     };
     private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         table.setRowSorter(sorter);
 
         for (int i = 1; i <= 2013; i++) {
-            model.addRow(Arrays.asList(i, "Test: " + i, (i % 2 == 0) ? "" : "comment...").toArray());
+            model.addRow(Arrays.asList(i, "Test: " + i, i % 2 == 0 ? "" : "comment...").toArray());
         }
         initLinkBox(100, 1);
         box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));

@@ -142,6 +142,6 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
         });
     }
     private static Color getAlternateRowColor(int index) {
-        return (index % 2 == 0) ? EVEN_BGCOLOR : ODD_BGCOLOR;
+        return index % 2 == 0 ? EVEN_BGCOLOR : ODD_BGCOLOR;
     }
 }

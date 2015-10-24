@@ -26,7 +26,7 @@ class ColumnComparator implements Comparator, Serializable {
     private static final long serialVersionUID = 1L;
     protected final int index;
     protected final boolean ascending;
-    public ColumnComparator(int index, boolean ascending) {
+    protected ColumnComparator(int index, boolean ascending) {
         this.index = index;
         this.ascending = ascending;
     }
@@ -75,7 +75,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     private int pushedColumn = -1;
     private final ConcurrentMap<Integer, Integer> state = new ConcurrentHashMap<>();
 
-    public SortButtonRenderer() {
+    protected SortButtonRenderer() {
         super();
         setHorizontalTextPosition(SwingConstants.LEFT);
         Icon i = UIManager.getIcon("Table.ascendingSortIcon");
@@ -162,7 +162,7 @@ class HeaderMouseListener extends MouseAdapter {
 
 class EmptyIcon implements Icon {
     private final Dimension size;
-    public EmptyIcon(Dimension size) {
+    protected EmptyIcon(Dimension size) {
         this.size = size;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }

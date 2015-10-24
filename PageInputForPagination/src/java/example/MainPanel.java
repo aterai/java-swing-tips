@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Year", "String", "Comment"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
-            return (column == 0) ? Integer.class : Object.class;
+            return column == 0 ? Integer.class : Object.class;
         }
     };
     private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -201,7 +201,7 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
         List<Object[]> result = new ArrayList<Object[]>(size);
         int j = current;
         while (j < current + size) {
-            result.add(new Object[] {j, "Test: " + j, (j % 2 == 0) ? "" : "comment..."});
+            result.add(new Object[] {j, "Test: " + j, j % 2 == 0 ? "" : "comment..."});
             j++;
         }
         publish(result);

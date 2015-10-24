@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 //     public static int showOptionDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) throws HeadlessException {
 //         JOptionPane pane = new JOptionPane(message, messageType, optionType, icon, options, initialValue);
 //         pane.setInitialValue(initialValue);
-//         pane.setComponentOrientation(((parentComponent == null) ? JOptionPane.getRootFrame() : parentComponent).getComponentOrientation());
+//         pane.setComponentOrientation((parentComponent == null ? JOptionPane.getRootFrame() : parentComponent).getComponentOrientation());
 //
 //         //int style = JOptionPane.styleFromMessageType(messageType);
 //         //JDialog dialog = pane.createDialog(parentComponent, title, style);

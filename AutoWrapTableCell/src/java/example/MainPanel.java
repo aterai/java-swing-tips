@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
                     c.setBackground(getSelectionBackground());
                 } else {
                     c.setForeground(getForeground());
-                    c.setBackground((row % 2 == 0) ? evenColor : getBackground());
+                    c.setBackground(row % 2 == 0 ? evenColor : getBackground());
                 }
                 return c;
             }
@@ -107,7 +107,7 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     private final List<List<Integer>> rowAndCellHeightList = new ArrayList<>();
 
     //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
-    public TextAreaCellRenderer() {
+    protected TextAreaCellRenderer() {
         super();
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));

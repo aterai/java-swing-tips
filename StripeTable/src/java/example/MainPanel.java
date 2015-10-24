@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
 //                    c.setBackground(getSelectionBackground());
 //                } else {
 //                    c.setForeground(getForeground());
-//                    c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
+//                    c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
 //                }
 //               return c;
 //            }
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     }
 
     class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
+        protected TestCreateAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     }
 
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
+        protected DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
 
     private class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(new TestCreateAction("add", null));
             //add(new ClearAction("clearSelection", null));
@@ -126,7 +126,7 @@ class StripeTableRenderer extends DefaultTableCellRenderer {
             setBackground(table.getSelectionBackground());
         } else {
             setForeground(table.getForeground());
-            setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
+            setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
         }
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         return this;
@@ -161,7 +161,7 @@ class TestModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -171,7 +171,7 @@ class TestModel extends DefaultTableModel {
 
 class Test {
     private String name, comment;
-    public Test(String name, String comment) {
+    protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }

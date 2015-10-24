@@ -86,7 +86,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
 //             JTable table = (JTable) e.getSource();
 //             Point pt = e.getPoint();
 //             int column = table.convertColumnIndexToModel(table.columnAtPoint(pt));
-//             rollOverRowIndex = (column == 0) ? table.rowAtPoint(pt) : -1;
+//             rollOverRowIndex = column == 0 ? table.rowAtPoint(pt) : -1;
 //             table.repaint();
 //         }
 //         @Override public void mouseExited(MouseEvent e) {

@@ -94,10 +94,10 @@ class CustomTooltipEditorPane extends JEditorPane {
     //            if (s1 == null) {
     //                return false;
     //            }
-    //            Rectangle r1 = (s1 instanceof Rectangle) ? (Rectangle) s1 : s1.getBounds();
+    //            Rectangle r1 = s1 instanceof Rectangle ? (Rectangle) s1 : s1.getBounds();
     //            Shape s2 = ui.modelToView(editor, e.getEndOffset(), Position.Bias.Backward);
     //            if (s2 != null) {
-    //                Rectangle r2 = (s2 instanceof Rectangle) ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
+    //                Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
     //            }
     //            return r1.contains(x, y);
     //        } catch (BadLocationException ble) {}

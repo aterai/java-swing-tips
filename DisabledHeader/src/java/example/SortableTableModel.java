@@ -145,7 +145,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
     public int getState(int col) {
         Integer i = state.get(col);
-        return (i == null) ? NONE : i;
+        return i == null ? NONE : i;
     }
 }
 

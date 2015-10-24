@@ -23,13 +23,13 @@ public final class MainPanel extends JPanel {
         amc.put("myUp", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo.getSelectedIndex();
-                combo.setSelectedIndex((index == 0) ? combo.getItemCount() - 1 : index - 1);
+                combo.setSelectedIndex(index == 0 ? combo.getItemCount() - 1 : index - 1);
             }
         });
         amc.put("myDown", new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo.getSelectedIndex();
-                combo.setSelectedIndex((index == combo.getItemCount() - 1) ? 0 : index + 1);
+                combo.setSelectedIndex(index == combo.getItemCount() - 1 ? 0 : index + 1);
             }
         });
         amc.put("myEnt", new AbstractAction() {
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
 class EditorComboPopup extends BasicComboPopup {
     private final JTextComponent textArea;
     private transient MouseAdapter listener;
-    public EditorComboPopup(JTextComponent textArea, JComboBox cb) {
+    protected EditorComboPopup(JTextComponent textArea, JComboBox cb) {
         super(cb);
         this.textArea = textArea;
     }

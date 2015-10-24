@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -93,10 +93,10 @@ class InterIdeographJustifyCellRenderer implements TableCellRenderer {
 class JustifiedLabel extends JLabel {
     private transient TextLayout layout;
     private int prevWidth = -1;
-    public JustifiedLabel() {
+    protected JustifiedLabel() {
         this(null);
     }
-    public JustifiedLabel(String str) {
+    protected JustifiedLabel(String str) {
         super(str);
     }
     @Override public void setText(String text) {

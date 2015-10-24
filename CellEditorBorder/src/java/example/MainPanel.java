@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 //                     c.setBackground(getSelectionBackground());
 //                 } else {
 //                     c.setForeground(getForeground());
-//                     c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
+//                     c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
 //                 }
 //                 return c;
 //             }
@@ -69,8 +69,7 @@ public final class MainPanel extends JPanel {
 //         tf2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
 //         table.setDefaultEditor(Integer.class, new DefaultCellEditor(tf2) {
 //             @Override public boolean stopCellEditing() {
-//                 Object o = getCellEditorValue();
-//                 return (o == null) ? false : super.stopCellEditing();
+//                 return Objects.nonNull(getCellEditorValue()) && super.stopCellEditing();
 //             }
 //             @Override public Object getCellEditorValue() {
 //                 Object o = super.getCellEditorValue();
@@ -92,7 +91,7 @@ public final class MainPanel extends JPanel {
     }
 
     class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
+        protected TestCreateAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -102,7 +101,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
+        protected DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -114,7 +113,7 @@ public final class MainPanel extends JPanel {
     }
     private class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(new TestCreateAction("add", null));
             addSeparator();

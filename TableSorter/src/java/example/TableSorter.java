@@ -424,7 +424,7 @@ public class TableSorter extends AbstractTableModel {
 
 class SortableHeaderRenderer implements TableCellRenderer {
     protected final TableCellRenderer tableCellRenderer;
-    public SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
+    protected SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
         this.tableCellRenderer = tableCellRenderer;
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -463,7 +463,7 @@ class Arrow implements Icon, Serializable {
     private final int size;
     private final int priority;
 
-    public Arrow(boolean descending, int size, int priority) {
+    protected Arrow(boolean descending, int size, int priority) {
         this.descending = descending;
         this.size = size;
         this.priority = priority;
@@ -525,7 +525,7 @@ class Directive implements Serializable {
     private static final long serialVersionUID = 1L;
     public final int column;
     public final int direction;
-    public Directive(int column, int direction) {
+    protected Directive(int column, int direction) {
         this.column = column;
         this.direction = direction;
     }
@@ -534,7 +534,7 @@ class Directive implements Serializable {
 class Row implements Serializable {
     private static final long serialVersionUID = 1L;
     public final int modelIndex;
-    public Row(int index) {
+    protected Row(int index) {
         this.modelIndex = index;
     }
 }

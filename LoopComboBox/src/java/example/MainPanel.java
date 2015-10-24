@@ -16,13 +16,13 @@ public final class MainPanel extends JPanel {
         Action up = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo02.getSelectedIndex();
-                combo02.setSelectedIndex((index == 0) ? combo02.getItemCount() - 1 : index - 1);
+                combo02.setSelectedIndex(index == 0 ? combo02.getItemCount() - 1 : index - 1);
             }
         };
         Action down = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 int index = combo02.getSelectedIndex();
-                combo02.setSelectedIndex((index == combo02.getItemCount() - 1) ? 0 : index + 1);
+                combo02.setSelectedIndex(index == combo02.getItemCount() - 1 ? 0 : index + 1);
             }
         };
         ActionMap amc = combo02.getActionMap();

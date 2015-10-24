@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground((row % 2 == 0) ? EVEN_COLOR : getBackground());
+                c.setBackground(row % 2 == 0 ? EVEN_COLOR : getBackground());
             }
             return c;
         }
@@ -185,7 +185,7 @@ class BindingMapModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -196,7 +196,7 @@ class BindingMapModel extends DefaultTableModel {
 class Binding {
     private Integer focusType;
     private String actionName, keyDescription;
-    public Binding(Integer focusType, String actionName, String keyDescription) {
+    protected Binding(Integer focusType, String actionName, String keyDescription) {
         this.focusType = focusType;
         this.actionName = actionName;
         this.keyDescription = keyDescription;

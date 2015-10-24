@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
-            JComponent c = (count % 2 == 0) ? new JTree() : new JLabel("Tab" + count);
+            JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
             tab.addTab("Title" + count, c);
             tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;

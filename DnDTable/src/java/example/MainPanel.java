@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
                 c.setBackground(getSelectionBackground());
             } else {
                 c.setForeground(getForeground());
-                c.setBackground((row % 2 == 0) ? EVEN_COLOR : table.getBackground());
+                c.setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
             }
             return c;
         }
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     }
 
     class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
+        protected TestCreateAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     }
 
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
+        protected DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 
     private class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(new TestCreateAction("add", null));
             //add(new ClearAction("clearSelection", null));
@@ -118,7 +118,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     private int draggedIndex = -1;
     private int targetIndex  = -1;
 
-    public DnDTable(TableModel model) {
+    protected DnDTable(TableModel model) {
         super(model);
         //DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);

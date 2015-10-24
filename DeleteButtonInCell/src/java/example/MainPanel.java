@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 //         @Override public int rowAtPoint(Point pt) {
 //             // Bug ID: 6291631 JTable: rowAtPoint returns 0 for negative y
 //             // http://bugs.java.com/view_bug.do?bug_id=6291631
-//             return (pt.y < 0) ? -1 : super.rowAtPoint(pt);
+//             return pt.y < 0 ? -1 : super.rowAtPoint(pt);
 //         }
 //     };
     private final JTable table = new JTable(model);
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 //                 Point pt = e.getPoint();
 //                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
 //                 int vrow = table.rowAtPoint(e.getPoint());
-//                 int mrow = (vrow >= 0) ? table.convertRowIndexToModel(vrow) : -1;
+//                 int mrow = vrow >= 0 ? table.convertRowIndexToModel(vrow) : -1;
 //                 if (mrow >= 0 && mcol == BUTTON_COLUMN) {
 //                     targetRow = mrow;
 //                 }
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
 //                 Point pt = e.getPoint();
 //                 int mcol = table.convertColumnIndexToModel(table.columnAtPoint(pt));
 //                 int vrow = table.rowAtPoint(e.getPoint());
-//                 int mrow = (vrow >= 0) ? table.convertRowIndexToModel(vrow) : -1;
+//                 int mrow = vrow >= 0 ? table.convertRowIndexToModel(vrow) : -1;
 //                 if (targetRow == mrow && mcol == BUTTON_COLUMN) {
 //                     model.removeRow(mrow);
 //                 }
