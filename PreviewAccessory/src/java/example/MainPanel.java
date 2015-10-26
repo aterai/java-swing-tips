@@ -66,10 +66,9 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
     @Override public Dimension getPreferredSize() {
         return new Dimension(PREVIEW_WIDTH + PREVIEW_MARGIN * 2, 50);
     }
-    private void loadImage() {
+    private static ImageIcon getImageThumbnail(File file) {
         if (Objects.isNull(file)) {
-            thumbnail = null;
-            return;
+            return null;
         }
         ImageIcon tmpIcon = new ImageIcon(file.getPath());
         if (tmpIcon.getIconWidth() > PREVIEW_WIDTH) {
@@ -84,9 +83,9 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2.drawImage(tmpIcon.getImage(), 0, 0, newW, newH, null);
             g2.dispose();
-            thumbnail = new ImageIcon(img);
+            return new ImageIcon(img);
         } else {
-            thumbnail = tmpIcon;
+            return tmpIcon;
         }
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
@@ -102,14 +101,14 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
         if (update) {
             thumbnail = null;
             if (isShowing()) {
-                loadImage();
+                thumbnail = getImageThumbnail(file);
                 repaint();
             }
         }
     }
     @Override protected void paintComponent(Graphics g) {
         if (Objects.isNull(thumbnail)) {
-            loadImage();
+            thumbnail = getImageThumbnail(file);
         }
         if (Objects.nonNull(thumbnail)) {
             int x = Math.max(PREVIEW_MARGIN, getWidth() / 2 - thumbnail.getIconWidth() / 2);
