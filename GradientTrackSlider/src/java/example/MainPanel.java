@@ -261,7 +261,7 @@ final class GradientPalletFactory {
         return pallet;
     }
     public static Color getColorFromPallet(int[] pallet, float x) {
-//         if (x < 0.0 || x > 1.0) {
+//         if (x < 0f || x > 1f) {
 //             throw new IllegalArgumentException("Parameter outside of expected range");
 //         }
         int i = (int) (pallet.length * x);

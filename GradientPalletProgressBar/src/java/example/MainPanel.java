@@ -146,7 +146,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
         return pallet;
     }
     private static Color getColorFromPallet(int[] pallet, float x) {
-        if (x < 0d || x > 1d) {
+        if (x < 0f || x > 1f) {
             throw new IllegalArgumentException("Parameter outside of expected range");
         }
         int i = (int) (pallet.length * x);
