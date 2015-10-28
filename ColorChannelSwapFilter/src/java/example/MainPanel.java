@@ -139,10 +139,10 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
 
 class RedGreenChannelSwapFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int) ((argb >> 16) & 0xff);
-        int g = (int) ((argb >>  8) & 0xff);
-        int b = (int) ((argb)       & 0xff);
-        return (argb & 0xff000000) | (g << 16) | (r << 8) | (b);
+        int r = (int) ((argb >> 16) & 0xFF);
+        int g = (int) ((argb >>  8) & 0xFF);
+        int b = (int) ((argb)       & 0xFF);
+        return (argb & 0xFF000000) | (g << 16) | (r << 8) | (b);
     }
 }
 
@@ -165,7 +165,7 @@ class Task extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }

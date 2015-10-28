@@ -46,7 +46,7 @@ public class HtmlTableTransferHandler extends TransferHandler {
             String v = Objects.toString((Date) obj, "");
             htmlBuf.append("  <td><time>" + v + "</time></td>\n");
         } else if (obj instanceof Color) {
-            htmlBuf.append(String.format("  <td style='background-color:#%06x'>&nbsp;</td>%n", ((Color) obj).getRGB() & 0xffffff));
+            htmlBuf.append(String.format("  <td style='background-color:#%06X'>&nbsp;</td>%n", ((Color) obj).getRGB() & 0xFFFFFF));
         } else {
             htmlBuf.append("  <td>" + Objects.toString(obj, "") + "</td>\n");
         }

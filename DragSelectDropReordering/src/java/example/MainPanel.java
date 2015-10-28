@@ -66,7 +66,7 @@ class ListItem {
     public final ImageIcon nicon;
     public final ImageIcon sicon;
     public final String title;
-    public ListItem(String title, String iconfile) {
+    protected ListItem(String title, String iconfile) {
         this.nicon = new ImageIcon(getClass().getResource(iconfile));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
@@ -80,7 +80,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
     private Color rubberBandColor;
     private final Path2D rubberBand = new Path2D.Double();
 
-    public ReorderbleList(ListModel<E> model) {
+    protected ReorderbleList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -210,7 +210,7 @@ class SelectedImageFilter extends RGBImageFilter {
         //float[] array = new float[4];
         //color.getComponents(array);
         //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
-        return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
+        return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
 
@@ -247,7 +247,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
-    public ListItemListCellRenderer() {
+    protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
         if (Objects.isNull(b)) { //Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(label);
@@ -288,7 +288,7 @@ class ListItemTransferHandler extends TransferHandler {
     private int addIndex = -1; //Location where items were added
     private int addCount; //Number of items added.
 
-    public ListItemTransferHandler() {
+    protected ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }

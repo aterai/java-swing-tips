@@ -36,7 +36,7 @@ class BasicTransferable implements Transferable {
         }
     }
 
-    public BasicTransferable(String plainData, String htmlData) {
+    protected BasicTransferable(String plainData, String htmlData) {
         this.plainData = plainData;
         this.htmlData = htmlData;
     }

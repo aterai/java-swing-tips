@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
 class ScalingButton extends JButton {
     private final transient BufferedImage image;
 
-    public ScalingButton(String title, BufferedImage image) {
+    protected ScalingButton(String title, BufferedImage image) {
         super();
         this.image = image;
         setModel(new DefaultButtonModel());
@@ -122,7 +122,7 @@ class ScalingButton extends JButton {
 class NineSliceScalingButton extends JButton {
     private final transient BufferedImage image;
 
-    public NineSliceScalingButton(String title, BufferedImage image) {
+    protected NineSliceScalingButton(String title, BufferedImage image) {
         super();
         this.image = image;
         setModel(new DefaultButtonModel());
@@ -170,7 +170,7 @@ class NineSliceScalingIcon implements Icon {
     private final BufferedImage image;
     private final int a, b, c, d;
     private int width, height;
-    public NineSliceScalingIcon(BufferedImage image, int a, int b, int c, int d) {
+    protected NineSliceScalingIcon(BufferedImage image, int a, int b, int c, int d) {
         this.image = image;
         this.a = a;
         this.b = b;
@@ -220,17 +220,17 @@ class NineSliceScalingIcon implements Icon {
 }
 class PressedImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int) (((argb >> 16) & 0xff) * .6);
-        int g = (int) (((argb >>  8) & 0xff) * 1d);
-        int b = (int) (((argb)       & 0xff) * 1d);
-        return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
+        int r = (int) (((argb >> 16) & 0xFF) * .6);
+        int g = (int) (((argb >>  8) & 0xFF) * 1d);
+        int b = (int) (((argb)       & 0xFF) * 1d);
+        return (argb & 0xFF000000) | (r << 16) | (g << 8) | (b);
     }
 }
 class RolloverImageFilter extends RGBImageFilter {
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (int) Math.min(0xff, ((argb >> 16) & 0xff) * 1.0);
-        int g = (int) Math.min(0xff, ((argb >>  8) & 0xff) * 1.5);
-        int b = (int) Math.min(0xff, ((argb)       & 0xff) * 1.5);
-        return (argb & 0xff000000) | (r << 16) | (g << 8) | (b);
+        int r = (int) Math.min(0xFF, ((argb >> 16) & 0xFF) * 1.0);
+        int g = (int) Math.min(0xFF, ((argb >>  8) & 0xFF) * 1.5);
+        int b = (int) Math.min(0xFF, ((argb)       & 0xFF) * 1.5);
+        return (argb & 0xFF000000) | (r << 16) | (g << 8) | (b);
     }
 }

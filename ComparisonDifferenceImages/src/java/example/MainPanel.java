@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
         source = new MemoryImageSource(w, h, pixelsA, 0, w);
         for (int i = 0; i < pixelsA.length; i++) {
             if (pixelsA[i] == pixelsB[i]) {
-                pixelsA[i] = pixelsA[i] & 0x44ffffff;
+                pixelsA[i] = pixelsA[i] & 0x44FFFFFF;
             }
         }
 

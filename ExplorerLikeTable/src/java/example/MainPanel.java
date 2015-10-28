@@ -137,10 +137,10 @@ class SelectedImageFilter extends RGBImageFilter {
     //    canFilterIndexColorModel = false;
     //}
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (argb >> 16) & 0xff;
-        int g = (argb >>  8) & 0xff;
-        return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);
-        //return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
+        int r = (argb >> 16) & 0xFF;
+        int g = (argb >>  8) & 0xFF;
+        return (argb & 0xFF0000FF) | ((r >> 1) << 16) | ((g >> 1) << 8);
+        //return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
 

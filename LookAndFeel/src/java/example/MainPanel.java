@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         return box;
     }
     private static JComponent makeSystemColor(Color color, String text) {
-        JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xffffff));
+        JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFFFFFF));
         field.setEditable(false);
         JLabel c = new JLabel() {
             @Override public Dimension getPreferredSize() {

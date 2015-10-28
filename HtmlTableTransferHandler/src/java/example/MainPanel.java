@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
 
 class PropertyTable extends JTable {
     private Class<?> editingClass;
-    public PropertyTable(TableModel model) {
+    protected PropertyTable(TableModel model) {
         super(model);
     }
     //public PropertyTable(Object[][] data, String[] columnNames) {
@@ -116,7 +116,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
     private final JSpinner spinner;
     private final JSpinner.DateEditor editor;
 
-    public DateEditor() {
+    protected DateEditor() {
         super();
         spinner = new JSpinner(new SpinnerDateModel());
         editor = new JSpinner.DateEditor(spinner, "yyyy/MM/dd");
@@ -314,7 +314,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
     private final JDialog dialog;
     private Color currentColor;
 
-    public ColorEditor() {
+    protected ColorEditor() {
         super();
         //Set up the editor (from the table's point of view),
         //which is a button.
@@ -368,7 +368,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
 class ColorIcon implements Icon {
     private final Color color;
-    public ColorIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

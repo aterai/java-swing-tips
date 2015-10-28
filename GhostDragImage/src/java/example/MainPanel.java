@@ -85,7 +85,7 @@ class ListItemTransferHandler extends TransferHandler {
         }
     };
 
-    public ListItemTransferHandler() {
+    protected ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
         LABEL.setOpaque(true);

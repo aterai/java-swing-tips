@@ -169,7 +169,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     private final Border focusCellHighlightBorder = UIManager.getBorder("List.focusCellHighlightBorder");
     private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
-    public ListItemListCellRenderer() {
+    protected ListItemListCellRenderer() {
         Border b = UIManager.getBorder("List.noFocusBorder");
         if (Objects.isNull(b)) { //Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(label);
@@ -208,7 +208,7 @@ class ListItem {
     public final ImageIcon nicon;
     public final ImageIcon sicon;
     public final String title;
-    public ListItem(String title, String iconfile) {
+    protected ListItem(String title, String iconfile) {
         this.nicon = new ImageIcon(getClass().getResource(iconfile));
         ImageProducer ip = new FilteredImageSource(nicon.getImage().getSource(), new SelectedImageFilter());
         this.sicon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
@@ -225,6 +225,6 @@ class SelectedImageFilter extends RGBImageFilter {
         //float[] array = new float[4];
         //color.getComponents(array);
         //return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
-        return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
+        return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }

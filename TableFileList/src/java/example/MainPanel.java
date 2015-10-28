@@ -80,10 +80,10 @@ class SelectedImageFilter extends RGBImageFilter {
     //    canFilterIndexColorModel = false;
     //}
     @Override public int filterRGB(int x, int y, int argb) {
-        int r = (argb >> 16) & 0xff;
-        int g = (argb >>  8) & 0xff;
-        return (argb & 0xff0000ff) | ((r >> 1) << 16) | ((g >> 1) << 8);
-        //return (argb & 0xffffff00) | ((argb & 0xff) >> 1);
+        int r = (argb >> 16) & 0xFF;
+        int g = (argb >>  8) & 0xFF;
+        return (argb & 0xFF0000FF) | ((r >> 1) << 16) | ((g >> 1) << 8);
+        //return (argb & 0xFFFFFF00) | ((argb & 0xFF) >> 1);
     }
 }
 
@@ -102,7 +102,7 @@ class FileNameRenderer implements TableCellRenderer {
     private final ImageIcon nicon;
     private final ImageIcon sicon;
 
-    public FileNameRenderer(JTable table) {
+    protected FileNameRenderer(JTable table) {
         Border b = UIManager.getBorder("Table.noFocusBorder");
         if (Objects.isNull(b)) { //Nimbus???
             Insets i = focusCellHighlightBorder.getBorderInsets(textLabel);
@@ -300,7 +300,7 @@ class FileListTable extends JTable {
     private final Path2D rubberBand = new Path2D.Double();
     private transient RubberBandingListener rbl;
 
-    public FileListTable(TableModel model) {
+    protected FileListTable(TableModel model) {
         super(model);
     }
     @Override public void updateUI() {

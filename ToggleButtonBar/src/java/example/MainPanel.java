@@ -12,11 +12,11 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super();
 
-        add(makeToggleButtonBar(0xff7400, true));
+        add(makeToggleButtonBar(0xFF7400, true));
         add(makeToggleButtonBar(0x555555, false));
         add(makeToggleButtonBar(0x006400, true));
-        add(makeToggleButtonBar(0x8b0000, false));
-        add(makeToggleButtonBar(0x001e43, true));
+        add(makeToggleButtonBar(0x8B0000, false));
+        add(makeToggleButtonBar(0x001E43, true));
 
         setPreferredSize(new Dimension(320, 240));
     }
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
             bg.add(r);
             p.add(r);
         }
-        p.setBorder(BorderFactory.createTitledBorder(String.format("Color: #%06x", cc)));
+        p.setBorder(BorderFactory.createTitledBorder(String.format("Color: #%06X", cc)));
         return p;
     }
     public static void main(String... args) {

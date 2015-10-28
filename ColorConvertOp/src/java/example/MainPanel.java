@@ -111,12 +111,12 @@ class GrayImageFilter extends RGBImageFilter {
     //    canFilterIndexColorModel = false;
     //}
     @Override public int filterRGB(int x, int y, int argb) {
-        //int a = (argb >> 24) & 0xff;
-        int r = (argb >> 16) & 0xff;
-        int g = (argb >>  8) & 0xff;
-        int b = (argb)       & 0xff;
+        //int a = (argb >> 24) & 0xFF;
+        int r = (argb >> 16) & 0xFF;
+        int g = (argb >>  8) & 0xFF;
+        int b = (argb)       & 0xFF;
         int m = (2 * r + 4 * g + b) / 7; //NTSC Coefficients
         //return new Color(m, m, m, a).getRGB();
-        return (argb & 0xff000000) | (m << 16) | (m << 8) | (m);
+        return (argb & 0xFF000000) | (m << 16) | (m << 8) | (m);
     }
 }

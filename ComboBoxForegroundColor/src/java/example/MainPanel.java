@@ -68,7 +68,7 @@ class ColorItem implements Serializable {
     private static final long serialVersionUID = 1L;
     public final Color color;
     public final String description;
-    public ColorItem(Color color, String description) {
+    protected ColorItem(Color color, String description) {
         this.color = color;
         this.description = description;
     }
@@ -80,7 +80,7 @@ class ColorItem implements Serializable {
 class ComboForegroundRenderer extends DefaultListCellRenderer {
     private static final Color SELECTION_BACKGROUND = new Color(240, 245, 250);
     private final JComboBox combo;
-    public ComboForegroundRenderer(JComboBox combo) {
+    protected ComboForegroundRenderer(JComboBox combo) {
         super();
         this.combo = combo;
     }
@@ -114,11 +114,11 @@ class ComboHtmlRenderer extends DefaultListCellRenderer {
         }
         JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         //l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
-        l.setText(String.format("<html><font color='#%06x'>%s", item.color.getRGB() & 0xffffff, item.description));
+        l.setText(String.format("<html><font color='#%06X'>%s", item.color.getRGB() & 0xFFFFFF, item.description));
         l.setBackground(isSelected ? SELECTION_BACKGROUND : list.getBackground());
         return l;
     }
 //     private static String hex(Color c) {
-//         return String.format("#%06x", c.getRGB() & 0xffffff);
+//         return String.format("#%06X", c.getRGB() & 0xFFFFFF);
 //     }
 }
