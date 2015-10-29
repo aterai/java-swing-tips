@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
 }
 
 class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
-    public WindowsJumpToClickedPositionSliderUI(JSlider slider) {
+    protected WindowsJumpToClickedPositionSliderUI(JSlider slider) {
         super(slider);
     }
 //     // JSlider question: Position after leftclick - Stack Overflow
@@ -94,19 +94,23 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider) e.getComponent();
-                switch (slider.getOrientation()) {
-                  case SwingConstants.VERTICAL:
-                    slider.setValue(valueForYPosition(e.getY()));
-                    break;
-                  case SwingConstants.HORIZONTAL:
-                    slider.setValue(valueForXPosition(e.getX()));
-                    break;
-                  default:
-                    throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+                    JSlider slider = (JSlider) e.getComponent();
+                    switch (slider.getOrientation()) {
+                      case SwingConstants.VERTICAL:
+                        slider.setValue(valueForYPosition(e.getY()));
+                        break;
+                      case SwingConstants.HORIZONTAL:
+                        slider.setValue(valueForXPosition(e.getX()));
+                        break;
+                      default:
+                        throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                    }
+                    super.mousePressed(e); //isDragging = true;
+                    super.mouseDragged(e);
+                } else {
+                    super.mousePressed(e);
                 }
-                super.mousePressed(e); //isDragging = true;
-                super.mouseDragged(e);
             }
             @Override public boolean shouldScroll(int direction) {
                 return false;
@@ -119,19 +123,23 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
     @Override protected TrackListener createTrackListener(JSlider slider) {
         return new TrackListener() {
             @Override public void mousePressed(MouseEvent e) {
-                JSlider slider = (JSlider) e.getComponent();
-                switch (slider.getOrientation()) {
-                  case SwingConstants.VERTICAL:
-                    slider.setValue(valueForYPosition(e.getY()));
-                    break;
-                  case SwingConstants.HORIZONTAL:
-                    slider.setValue(valueForXPosition(e.getX()));
-                    break;
-                  default:
-                    throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+                    JSlider slider = (JSlider) e.getComponent();
+                    switch (slider.getOrientation()) {
+                      case SwingConstants.VERTICAL:
+                        slider.setValue(valueForYPosition(e.getY()));
+                        break;
+                      case SwingConstants.HORIZONTAL:
+                        slider.setValue(valueForXPosition(e.getX()));
+                        break;
+                      default:
+                        throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+                    }
+                    super.mousePressed(e); //isDragging = true;
+                    super.mouseDragged(e);
+                } else {
+                    super.mousePressed(e);
                 }
-                super.mousePressed(e); //isDragging = true;
-                super.mouseDragged(e);
             }
             @Override public boolean shouldScroll(int direction) {
                 return false;
