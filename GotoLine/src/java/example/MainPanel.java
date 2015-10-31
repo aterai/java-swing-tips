@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -15,10 +16,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        String dummyStr = "aaaaaaaaaaaaa\n";
-        for (int i = 0; i < 2000; i++) {
-            textArea.append(dummyStr);
-        }
+        textArea.setText(Collections.nCopies(2000, "aaaaaaaaaaaaa\n").toString());
 
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));

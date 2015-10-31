@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -15,12 +16,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        StringBuilder sb = new StringBuilder();
-        String dummyStr = "aaaaaaaaaaaaa\n";
-        for (int i = 0; i < 2000; i++) {
-            sb.append(dummyStr);
-        }
-        textArea.setText(sb.toString());
+        textArea.setText(Collections.nCopies(2000, "aaaaaaaaaaaaa\n").toString());
 
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
@@ -50,10 +46,6 @@ public final class MainPanel extends JPanel {
         Document doc = textArea.getDocument();
         Element root = doc.getDefaultRootElement();
         int ln = getDestLineNumber(textField, root);
-//         if (ln < 0) {
-//             Toolkit.getDefaultToolkit().beep();
-//             return;
-//         }
         try {
             final Element elem = root.getElement(ln - 1);
             final Rectangle dest = textArea.modelToView(elem.getStartOffset());
@@ -83,11 +75,6 @@ public final class MainPanel extends JPanel {
     private static int getDestLineNumber(JTextField textField, Element root) {
         int lineNumber = Integer.parseInt(textField.getText().trim());
         return Math.max(1, Math.min(root.getElementCount(), lineNumber));
-//         } catch (NumberFormatException nfe) {
-//             //nfe.printStackTrace();
-//             lineNumber = -1;
-//         }
-//         return lineNumber;
     }
 
     public static void main(String... args) {
@@ -123,7 +110,7 @@ class LineNumberView extends JComponent {
     private final int fontDescent;
     private final int fontLeading;
 
-    public LineNumberView(JTextArea textArea) {
+    protected LineNumberView(JTextArea textArea) {
         super();
         this.textArea = textArea;
         Font font   = textArea.getFont();
