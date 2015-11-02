@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
-        public NewTabAction(String label, Icon icon) {
+        protected NewTabAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class CloseAllAction extends AbstractAction {
-        public CloseAllAction(String label, Icon icon) {
+        protected CloseAllAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -73,10 +73,10 @@ public final class MainPanel extends JPanel {
 class HoverCloseButtonTabbedPane extends JTabbedPane {
     //private final Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
     private transient MouseMotionListener hoverHandler;
-    public HoverCloseButtonTabbedPane() {
+    protected HoverCloseButtonTabbedPane() {
         super(TOP, SCROLL_TAB_LAYOUT);
     }
-    public HoverCloseButtonTabbedPane(int tabPlacement) {
+    protected HoverCloseButtonTabbedPane(int tabPlacement) {
         super(tabPlacement, SCROLL_TAB_LAYOUT);
     }
 //     public HoverCloseButtonTabbedPane(int tabPlacement, int tabLayoutPolicy) {
@@ -110,6 +110,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
 }
 
 class TabPanel extends JPanel {
+    private static final int PREFERRED_TAB_WIDTH = 80;
     private final JButton button = new JButton(new CloseTabIcon()) {
         @Override public void updateUI() {
             super.updateUI();
@@ -124,11 +125,11 @@ class TabPanel extends JPanel {
     private final JLabel label = new JLabel() {
         @Override public Dimension getPreferredSize() {
             Dimension dim = super.getPreferredSize();
-            int w = button.isVisible() ? 80 - button.getPreferredSize().width : 80;
-            return new Dimension(w, dim.height);
+            int bw = button.isVisible() ? button.getPreferredSize().width : 0;
+            return new Dimension(PREFERRED_TAB_WIDTH - bw, dim.height);
         }
     };
-    public TabPanel(final JTabbedPane pane, String title, final Component content) {
+    protected TabPanel(final JTabbedPane pane, String title, final Component content) {
         super(new BorderLayout(0, 0));
         setOpaque(false);
 
