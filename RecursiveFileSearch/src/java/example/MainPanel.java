@@ -151,7 +151,7 @@ public final class MainPanel extends JPanel {
         }
     }
 //     private boolean isCancelled() {
-//         return (Objects.nonNull(worker)) ? worker.isCancelled() : true;
+//         return Objects.isNull(worker) && worker.isCancelled();
 //     }
     class OpenAction extends AbstractAction {
         public OpenAction() {

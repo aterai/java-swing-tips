@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
     }
 
 //     private boolean isCancelled() {
-//         return Objects.nonNull(worker) ? worker.isCancelled() : true;
+//         return Objects.isNull(worker) && worker.isCancelled();
 //     }
 
     private void appendLine(String str) {
