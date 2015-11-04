@@ -73,7 +73,7 @@ class CardLayoutTabbedPane extends JPanel {
         new ImageIcon(getClass().getResource("wi0126-16.png"))
     );
 
-    public CardLayoutTabbedPane() {
+    protected CardLayoutTabbedPane() {
         super(new BorderLayout());
         int left  = 0;
         int right = 0;
@@ -184,24 +184,24 @@ class TabButton extends JRadioButton {
 //     @Override public void setUI(TabViewButtonUI ui) {
 //         super.setUI(ui);
 //     }
-    public TabViewButtonUI getUI() {
+    @Override public TabViewButtonUI getUI() {
         return (TabViewButtonUI) ui;
     }
-    public TabButton() {
+    protected TabButton() {
         super(null, null);
     }
-    public TabButton(Icon icon) {
+    protected TabButton(Icon icon) {
         super(null, icon);
     }
-    public TabButton(String text) {
+    protected TabButton(String text) {
         super(text, null);
     }
-    public TabButton(Action a) {
+    protected TabButton(Action a) {
         super(a);
         //super.setAction(a);
         //updateUI();
     }
-    public TabButton(String text, Icon icon) {
+    protected TabButton(String text, Icon icon) {
         super(text, icon);
         //updateUI();
     }
@@ -256,6 +256,7 @@ class TabButton extends JRadioButton {
 
 class TabLayout implements LayoutManager, Serializable {
     private static final long serialVersionUID = 1L;
+    private static final int TAB_WIDTH = 100;
     @Override public void addLayoutComponent(String name, Component comp) { /* not needed */ }
     @Override public void removeLayoutComponent(Component comp)           { /* not needed */ }
     @Override public Dimension preferredLayoutSize(Container parent) {
@@ -294,7 +295,7 @@ class TabLayout implements LayoutManager, Serializable {
             int lastw = parent.getComponent(ncomponents - 1).getPreferredSize().width;
             int width = parent.getWidth() - insets.left - insets.right - lastw;
             int h = parent.getHeight() - insets.top - insets.bottom;
-            int w = width > 100 * ncols ? 100 : width / ncols;
+            int w = width > TAB_WIDTH * ncols ? TAB_WIDTH : width / ncols;
             int gap = width - w * ncols;
             int x = insets.left;
             int y = insets.top;

@@ -116,7 +116,8 @@ public final class MainPanel extends JPanel {
 //http://java-swing-tips.blogspot.com/2012/11/make-togglebuttonbar-with-jradiobuttons.html
 class ToggleButtonBarCellIcon implements Icon {
     public static final int TH = 10; //The height of a triangle
-    private static final int H = TH * 2 + 1;
+    private static final int HEIGHT = TH * 2 + 1;
+    private static final int WIDTH = 100;
     private Shape shape;
     public Shape getShape() {
         return shape;
@@ -162,9 +163,9 @@ class ToggleButtonBarCellIcon implements Icon {
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return 100;
+        return WIDTH;
     }
     @Override public int getIconHeight() {
-        return H;
+        return HEIGHT;
     }
 }

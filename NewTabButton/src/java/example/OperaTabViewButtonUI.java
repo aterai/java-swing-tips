@@ -83,7 +83,7 @@ public class OperaTabViewButtonUI extends BasicTabViewButtonUI {
 
         ButtonModel model = b.getModel();
         if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {
-            g2.setPaint(new Color(0, 0, 0, 100));
+            g2.setPaint(new Color(0x64000000, true));
             g2.fillRect(0, 0, size.width, size.height);
             //g2.fill(viewRect);
         }

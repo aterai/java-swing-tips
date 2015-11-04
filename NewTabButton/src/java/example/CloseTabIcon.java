@@ -7,7 +7,7 @@ import javax.swing.*;
 
 class CloseTabIcon implements Icon {
     private final Color color;
-    public CloseTabIcon(Color color) {
+    protected CloseTabIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
