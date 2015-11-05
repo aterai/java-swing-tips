@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     }
 
     class ProgressValueCreateAction extends AbstractAction {
-        public ProgressValueCreateAction(String label) {
+        protected ProgressValueCreateAction(String label) {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     }
 
     class CancelAction extends AbstractAction {
-        public CancelAction(String label, Icon icon) {
+        protected CancelAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -110,7 +110,7 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         private final Set<Integer> deleteRowSet = new TreeSet<>();
-        public DeleteAction(String label, Icon icon) {
+        protected DeleteAction(String label, Icon icon) {
             super(label, icon);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -140,7 +140,7 @@ public final class MainPanel extends JPanel {
     private class TablePopupMenu extends JPopupMenu {
         private final Action cancelAction = new CancelAction("cancel", null);
         private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(new ProgressValueCreateAction("add"));
             //add(new ClearAction("clearSelection", null));
@@ -233,7 +233,7 @@ class WorkerModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -244,7 +244,7 @@ class WorkerModel extends DefaultTableModel {
 class ProgressRenderer extends DefaultTableCellRenderer {
     private final JProgressBar b = new JProgressBar();
     private final JPanel p = new JPanel(new BorderLayout());
-    public ProgressRenderer() {
+    protected ProgressRenderer() {
         super();
         setOpaque(true);
         p.add(b);
@@ -253,9 +253,9 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Integer i = (Integer) value;
         String text = "Done";
-        if (i < 0) {
+        if (i < b.getMinimum()) {
             text = "Canceled";
-        } else if (i < 100) {
+        } else if (i < b.getMaximum()) {
             b.setValue(i);
             return p;
         }

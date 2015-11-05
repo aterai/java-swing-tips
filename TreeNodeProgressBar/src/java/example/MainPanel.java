@@ -112,7 +112,7 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
     private final JTree tree;
     private final DefaultTreeModel model;
     private final DefaultMutableTreeNode treeNode;
-    public NodeProgressWorker(JTree tree, DefaultMutableTreeNode treeNode) {
+    protected NodeProgressWorker(JTree tree, DefaultMutableTreeNode treeNode) {
         super();
         this.lengthOfTask = 120;
         this.tree = tree;
@@ -165,13 +165,13 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
         }
     };
     private final JPanel p = new JPanel(new BorderLayout());
-    public ProgressBarRenderer() {
+    protected ProgressBarRenderer() {
         super();
         b.setOpaque(false);
         p.setOpaque(false);
         b.setStringPainted(true);
         b.setString("");
-        b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        b.setBorder(BorderFactory.createEmptyBorder());
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -187,7 +187,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 
             p.removeAll();
             p.add(c);
-            p.add(i < 100 ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
+            p.add(i < b.getMaximum() ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
             c = p;
         }
         return c;
@@ -197,10 +197,10 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 class ProgressObject {
     public final String title;
     public int value;
-    public ProgressObject() {
+    protected ProgressObject() {
         this("", 0);
     }
-    public ProgressObject(String title, int value) {
+    protected ProgressObject(String title, int value) {
         this.title = title;
         this.value = value;
     }

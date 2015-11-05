@@ -210,7 +210,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
                 });
             }
         });
-        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        setBorder(BorderFactory.createEmptyBorder());
     }
     private void setArrowButtonEnabled(boolean flag) {
         for (Component c: getComponents()) {

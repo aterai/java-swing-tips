@@ -62,7 +62,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
     private final JSpinner.DateEditor editor;
 
-    public SpinnerCellEditor() {
+    protected SpinnerCellEditor() {
         super(new SpinnerDateModel());
         editor = new JSpinner.DateEditor(this, "yyyy/MM/dd");
         setEditor(editor);
@@ -91,7 +91,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
                 });
             }
         });
-        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        setBorder(BorderFactory.createEmptyBorder());
     }
     private void setArrowButtonEnabled(boolean flag) {
         for (Component c: getComponents()) {

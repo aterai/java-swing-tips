@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
         @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             if (index < 0 && Objects.nonNull(worker) && !worker.isDone()) {
                 bar.setFont(list.getFont());
-                bar.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+                bar.setBorder(BorderFactory.createEmptyBorder());
                 bar.setValue(counter);
                 return bar;
             }
