@@ -12,8 +12,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < 100; i++) {
-            String s = i + LF;
-            buf.append(s);
+            buf.append(i + LF);
         }
 
         final JScrollPane scrollPane = new JScrollPane(new JTextArea(buf.toString()));

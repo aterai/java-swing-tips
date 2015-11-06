@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     }
 
     class RunAction extends AbstractAction {
-        public RunAction() {
+        protected RunAction() {
             super("run");
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
     }
 
     class CancelAction extends AbstractAction {
-        public CancelAction() {
+        protected CancelAction() {
             super("cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -170,7 +170,7 @@ class Task extends SwingWorker<String, String> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
@@ -187,7 +187,7 @@ class ProgressListener implements PropertyChangeListener {
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
     private final transient AnimeIcon icon = new AnimeIcon();
-    public AnimatedLabel() {
+    protected AnimatedLabel() {
         super();
         animator = new Timer(100, this);
         setIcon(icon);
@@ -322,7 +322,7 @@ class AnimeIcon implements Icon {
     private final Dimension dim;
     private boolean isRunning;
     private int rotate = 45;
-    public AnimeIcon() {
+    protected AnimeIcon() {
         super();
         int r = 4;
         Shape s = new Ellipse2D.Float(0, 0, 2 * r, 2 * r);

@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         dirCombo.setVisible(true);
     }
     class RunAction extends AbstractAction {
-        public RunAction() {
+        protected RunAction() {
             super("Run");
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class UITask extends RecursiveFileSearchTask {
-        public UITask(File dir) {
+        protected UITask(File dir) {
             super(dir);
         }
         @Override protected void process(List<Message> chunks) {
@@ -140,7 +140,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class CancelAction extends AbstractAction {
-        public CancelAction() {
+        protected CancelAction() {
             super("Cancel");
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -154,7 +154,7 @@ public final class MainPanel extends JPanel {
 //         return Objects.isNull(worker) && worker.isCancelled();
 //     }
     class OpenAction extends AbstractAction {
-        public OpenAction() {
+        protected OpenAction() {
             super("Choose...");
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -283,7 +283,7 @@ public final class MainPanel extends JPanel {
 class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     private int scount;
     private final File dir;
-    public RecursiveFileSearchTask(File dir) {
+    protected RecursiveFileSearchTask(File dir) {
         super();
         this.dir = dir;
     }
@@ -343,7 +343,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
@@ -360,7 +360,7 @@ class ProgressListener implements PropertyChangeListener {
 class Message {
     public final String text;
     public final boolean append;
-    public Message(String text, boolean append) {
+    protected Message(String text, boolean append) {
         this.text = text;
         this.append = append;
     }

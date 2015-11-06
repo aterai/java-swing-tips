@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     }
     class NewTabAction extends AbstractAction {
         private int count;
-        public NewTabAction(String label) {
+        protected NewTabAction(String label) {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         }
     }
     class CloseAllAction extends AbstractAction {
-        public CloseAllAction(String label) {
+        protected CloseAllAction(String label) {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent evt) {
@@ -138,15 +138,15 @@ class Task extends SwingWorker<String, Integer> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
-    @Override public void propertyChange(PropertyChangeEvent evt) {
-        String strPropertyName = evt.getPropertyName();
+    @Override public void propertyChange(PropertyChangeEvent e) {
+        String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer) evt.getNewValue();
+            int progress = (Integer) e.getNewValue();
             progressBar.setValue(progress);
         }
     }

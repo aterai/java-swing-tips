@@ -109,7 +109,7 @@ public class MainPanel extends JPanel implements HierarchyListener {
 class StripedProgressBarUI extends BasicProgressBarUI {
     private final boolean dir;
     private final boolean slope;
-    public StripedProgressBarUI(boolean dir, boolean slope) {
+    protected StripedProgressBarUI(boolean dir, boolean slope) {
         super();
         this.dir = dir;
         this.slope = slope;
@@ -190,15 +190,15 @@ class Task extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    public ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
-    @Override public void propertyChange(PropertyChangeEvent evt) {
-        String strPropertyName = evt.getPropertyName();
+    @Override public void propertyChange(PropertyChangeEvent e) {
+        String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer) evt.getNewValue();
+            int progress = (Integer) e.getNewValue();
             progressBar.setValue(progress);
         }
     }

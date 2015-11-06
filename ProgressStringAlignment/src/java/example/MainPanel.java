@@ -95,7 +95,7 @@ class StringAlignmentProgressBar extends JProgressBar {
     private final JLabel label;
     private transient ChangeListener changeListener;
 
-    public StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
+    protected StringAlignmentProgressBar(BoundedRangeModel model, int halign) {
         super(model);
         label = new JLabel(getString(), halign);
     }
@@ -139,15 +139,15 @@ class Task extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
-    @Override public void propertyChange(PropertyChangeEvent evt) {
-        String strPropertyName = evt.getPropertyName();
+    @Override public void propertyChange(PropertyChangeEvent e) {
+        String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer) evt.getNewValue();
+            int progress = (Integer) e.getNewValue();
             progressBar.setValue(progress);
         }
     }

@@ -82,10 +82,10 @@ public final class MainPanel extends JPanel {
     }
 
     class RunAction extends AbstractAction {
-        public RunAction() {
+        protected RunAction() {
             super("run");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             canButton.setEnabled(true);
@@ -99,10 +99,10 @@ public final class MainPanel extends JPanel {
     }
 
     class CancelAction extends AbstractAction {
-        public CancelAction() {
+        protected CancelAction() {
             super("cancel");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -168,19 +168,19 @@ class Task extends SwingWorker<String, String> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
-    @Override public void propertyChange(PropertyChangeEvent evt) {
-        if (!progressBar.isDisplayable() && evt.getSource() instanceof SwingWorker) {
+    @Override public void propertyChange(PropertyChangeEvent e) {
+        if (!progressBar.isDisplayable() && e.getSource() instanceof SwingWorker) {
             System.out.println("progress: DISPOSE_ON_CLOSE");
-            ((SwingWorker) evt.getSource()).cancel(true);
+            ((SwingWorker) e.getSource()).cancel(true);
         }
-        String strPropertyName = evt.getPropertyName();
+        String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer) evt.getNewValue();
+            int progress = (Integer) e.getNewValue();
             progressBar.setValue(progress);
         }
     }
@@ -189,7 +189,7 @@ class ProgressListener implements PropertyChangeListener {
 class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener {
     private final Timer animator;
     private final transient AnimeIcon icon = new AnimeIcon();
-    public AnimatedLabel() {
+    protected AnimatedLabel() {
         super();
         animator = new Timer(100, this);
         setIcon(icon);

@@ -131,15 +131,15 @@ class Task extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
-    ProgressListener(JProgressBar progressBar) {
+    protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
-    @Override public void propertyChange(PropertyChangeEvent evt) {
-        String strPropertyName = evt.getPropertyName();
+    @Override public void propertyChange(PropertyChangeEvent e) {
+        String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);
-            int progress = (Integer) evt.getNewValue();
+            int progress = (Integer) e.getNewValue();
             progressBar.setValue(progress);
         }
     }
@@ -149,7 +149,7 @@ class TextLabelProgressBar extends JProgressBar {
     private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
     private transient ChangeListener changeListener;
 
-    public TextLabelProgressBar(BoundedRangeModel model) {
+    protected TextLabelProgressBar(BoundedRangeModel model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -183,7 +183,7 @@ class TextLabelProgressBar extends JProgressBar {
 class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     private final JPanel rubberStamp = new JPanel();
     private final JLabel label;
-    public ProgressBarLayerUI(JLabel label) {
+    protected ProgressBarLayerUI(JLabel label) {
         super();
         this.label = label;
     }

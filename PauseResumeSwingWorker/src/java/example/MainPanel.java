@@ -379,7 +379,7 @@ class Task extends SwingWorker<String, Progress> {
 //
 // class MainProgressListener implements PropertyChangeListener {
 //     protected final JProgressBar progressBar;
-//     public MainProgressListener(JProgressBar progressBar) {
+//     protected MainProgressListener(JProgressBar progressBar) {
 //         this.progressBar = progressBar;
 //         this.progressBar.setValue(0);
 //     }
@@ -394,7 +394,7 @@ class Task extends SwingWorker<String, Progress> {
 // }
 // class SubProgressListener implements PropertyChangeListener {
 //     private final JProgressBar progressBar;
-//     public SubProgressListener(JProgressBar progressBar) {
+//     protected SubProgressListener(JProgressBar progressBar) {
 //         this.progressBar = progressBar;
 //         this.progressBar.setValue(0);
 //     }
