@@ -75,8 +75,8 @@ public final class MainPanel extends JPanel {
         AbstractButton b = new JRadioButton(path.getLastPathComponent().toString()) {
             @Override public boolean contains(int x, int y) {
                 Icon i = getIcon();
-                if (i instanceof ToggleButtonBarCellIcon) {
-                    return ((ToggleButtonBarCellIcon) i).getShape().contains(x, y);
+                if (i instanceof ArrowToggleButtonBarCellIcon) {
+                    return ((ArrowToggleButtonBarCellIcon) i).getShape().contains(x, y);
                 } else {
                     return super.contains(x, y);
                 }
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
                 }
             });
         }
-        b.setIcon(new ToggleButtonBarCellIcon());
+        b.setIcon(new ArrowToggleButtonBarCellIcon());
         b.setContentAreaFilled(false);
         b.setBorder(BorderFactory.createEmptyBorder());
         b.setVerticalAlignment(SwingConstants.CENTER);
@@ -127,14 +127,15 @@ public final class MainPanel extends JPanel {
 }
 
 //http://ateraimemo.com/Swing/ToggleButtonBar.html
-class ToggleButtonBarCellIcon implements Icon {
+class ArrowToggleButtonBarCellIcon implements Icon {
     public static final int TH = 10; //The height of a triangle
-    private static final int H = TH * 2 + 1;
-    private transient Shape shape;
+    private static final int HEIGHT = TH * 2 + 1;
+    private static final int WIDTH = 100;
+    private Shape shape;
     public Shape getShape() {
         return shape;
     }
-    private Shape makeShape(Container parent, Component c, int x, int y) {
+    protected Shape makeShape(Container parent, Component c, int x, int y) {
         int w = c.getWidth() - 1;
         int h = c.getHeight() - 1;
         int h2 = (int) (h * .5 + .5);
@@ -175,10 +176,10 @@ class ToggleButtonBarCellIcon implements Icon {
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return 100;
+        return WIDTH;
     }
     @Override public int getIconHeight() {
-        return H;
+        return HEIGHT;
     }
 }
 
@@ -213,8 +214,8 @@ class BreadcrumbLayerUI extends LayerUI<JPanel> {
             Component c = e.getComponent();
             if (c instanceof AbstractButton) {
                 AbstractButton b = (AbstractButton) c;
-                if (b.getIcon() instanceof ToggleButtonBarCellIcon) {
-                    ToggleButtonBarCellIcon icon = (ToggleButtonBarCellIcon) b.getIcon();
+                if (b.getIcon() instanceof ArrowToggleButtonBarCellIcon) {
+                    ArrowToggleButtonBarCellIcon icon = (ArrowToggleButtonBarCellIcon) b.getIcon();
                     Rectangle r = c.getBounds();
                     AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
                     s = at.createTransformedShape(icon.getShape());

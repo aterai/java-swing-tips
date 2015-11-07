@@ -122,7 +122,7 @@ class ToggleButtonBarCellIcon implements Icon {
     public Shape getShape() {
         return shape;
     }
-    private Shape makeShape(Container parent, Component c, int x, int y) {
+    protected Shape makeShape(Container parent, Component c, int x, int y) {
         int w = c.getWidth() - 1;
         int h = c.getHeight() - 1;
         int h2 = (int) (h * .5 + .5);
