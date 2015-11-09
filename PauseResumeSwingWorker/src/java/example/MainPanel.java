@@ -27,14 +27,7 @@ public final class MainPanel extends JPanel {
         pauseButton.setEnabled(false);
         canButton.setEnabled(false);
 
-        JPanel p = new JPanel(new GridLayout(1, 3, 2, 2));
-        p.add(runButton);
-        p.add(canButton);
-        p.add(pauseButton);
-        Box box = Box.createHorizontalBox();
-        box.add(Box.createHorizontalGlue());
-        box.add(p);
-        box.add(Box.createHorizontalStrut(2));
+        JComponent box = createRightAlignButtonBox4(Arrays.asList(pauseButton, canButton, runButton), 80, 5);
         add(new JScrollPane(area));
         add(box, BorderLayout.NORTH);
         add(statusPanel, BorderLayout.SOUTH);
@@ -146,11 +139,37 @@ public final class MainPanel extends JPanel {
             }
         }
     }
+    //@see http://ateraimemo.com/Swing/ButtonWidth.html
+    private static JComponent createRightAlignButtonBox4(final List<JButton> list, final int buttonWidth, final int gap) {
+        SpringLayout layout = new SpringLayout();
+        JPanel p = new JPanel(layout) {
+            @Override public Dimension getPreferredSize() {
+                int maxHeight = 0;
+                for (JButton b: list) {
+                    maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
+                }
+                return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
+            }
+        };
+        Spring x = layout.getConstraint(SpringLayout.WIDTH, p);
+        Spring y = Spring.constant(gap);
+        Spring g = Spring.minus(Spring.constant(gap));
+        Spring w = Spring.constant(buttonWidth);
+        for (JButton b: list) {
+            SpringLayout.Constraints constraints = layout.getConstraints(b);
+            x = Spring.sum(x, g);
+            constraints.setConstraint(SpringLayout.EAST, x);
+            constraints.setY(y);
+            constraints.setWidth(w);
+            p.add(b);
+            x = Spring.sum(x, Spring.minus(w));
+        }
+        return p;
+    }
 //     private void appendLine(String str) {
 //         area.append(str);
 //         area.setCaretPosition(area.getDocument().getLength());
 //     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
