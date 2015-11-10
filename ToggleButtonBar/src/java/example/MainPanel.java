@@ -136,7 +136,7 @@ class ToggleButtonBarCellIcon implements Icon {
         }
         int r = 8;
         int w = c.getWidth();
-        int h = c.getHeight();
+        int h = c.getHeight() - 1;
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -152,6 +152,7 @@ class ToggleButtonBarCellIcon implements Icon {
             p.quadTo(x, y + h, x, y + h - r);
         } else if (c == parent.getComponent(parent.getComponentCount() - 1)) {
             //:last-child
+            w--;
             p.moveTo(x, y);
             p.lineTo(x + w - r, y);
             p.quadTo(x + w, y, x + w, y + r);
@@ -181,10 +182,8 @@ class ToggleButtonBarCellIcon implements Icon {
         }
         g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fill(area);
-
         g2.setPaint(BR);
         g2.draw(area);
-
         g2.dispose();
     }
     @Override public int getIconWidth() {
