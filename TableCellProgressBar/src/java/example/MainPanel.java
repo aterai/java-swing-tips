@@ -91,8 +91,8 @@ public final class MainPanel extends JPanel {
     }
 
     class CancelAction extends AbstractAction {
-        protected CancelAction(String label, Icon icon) {
-            super(label, icon);
+        protected CancelAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
@@ -110,10 +110,10 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         private final Set<Integer> deleteRowSet = new TreeSet<>();
-        protected DeleteAction(String label, Icon icon) {
-            super(label, icon);
+        protected DeleteAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
             if (selection.length == 0) {
                 return;
@@ -138,8 +138,8 @@ public final class MainPanel extends JPanel {
     }
 
     private class TablePopupMenu extends JPopupMenu {
-        private final Action cancelAction = new CancelAction("cancel", null);
-        private final Action deleteAction = new DeleteAction("delete", null);
+        private final Action cancelAction = new CancelAction("cancel");
+        private final Action deleteAction = new DeleteAction("delete");
         protected TablePopupMenu() {
             super();
             add(new ProgressValueCreateAction("add"));

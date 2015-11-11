@@ -62,35 +62,25 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            int i = model.getRowCount();
-            model.addRow(new Object[] {i, "", i % 2 == 0});
-            Rectangle r = table.getCellRect(table.convertRowIndexToView(i - 1), 0, true);
-            table.scrollRectToVisible(r);
-        }
-    }
-
-    private class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
-
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action deleteAction = new AbstractAction("delete") {
+            @Override public void actionPerformed(ActionEvent e) {
+                int[] selection = table.getSelectedRows();
+                for (int i = selection.length - 1; i >= 0; i--) {
+                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                }
+            }
+        };
+        protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
+            add(new AbstractAction("add") {
+                @Override public void actionPerformed(ActionEvent e) {
+                    int i = model.getRowCount();
+                    model.addRow(new Object[] {i, "", i % 2 == 0});
+                    Rectangle r = table.getCellRect(table.convertRowIndexToView(i - 1), 0, true);
+                    table.scrollRectToVisible(r);
+                }
+            });
             addSeparator();
             add(deleteAction);
         }

@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         protected RunAction() {
             super("run");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             runButton.setEnabled(false);
             canButton.setEnabled(true);
             anil.startAnimation();
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
         protected CancelAction() {
             super("cancel");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }

@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
         protected RunAction() {
             super("Run");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             addItem(dirCombo, (String) dirCombo.getEditor().getItem(), 4);
             statusPanel.setVisible(true);
             dirCombo.setEnabled(false);
@@ -143,7 +143,7 @@ public final class MainPanel extends JPanel {
         protected CancelAction() {
             super("Cancel");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }

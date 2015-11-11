@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    protected ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
@@ -107,7 +107,7 @@ class TabButton extends JButton {
     private static final int SIZE  = 17;
     private static final int DELTA = 6;
 
-    public TabButton() {
+    protected TabButton() {
         super();
         setUI(new BasicButtonUI());
         setToolTipText("close this tab");
@@ -161,7 +161,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         }
     };
     private final Action newTabAction = new AbstractAction("new tab") {
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane t = (JTabbedPane) getInvoker();
             int count = t.getTabCount();
             String title = "Tab " + count;
@@ -170,12 +170,12 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
         }
     };
     private final Action closeAllAction = new AbstractAction("close all") {
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             JTabbedPane t = (JTabbedPane) getInvoker();
             t.removeAll();
         }
     };
-    public TabTitleRenamePopupMenu() {
+    protected TabTitleRenamePopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {

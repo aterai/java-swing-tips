@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class RunAction extends AbstractAction {
-        public RunAction() {
+        protected RunAction() {
             super("run");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
             runButton.setEnabled(false);
             monitor.setProgress(0);
@@ -115,7 +115,7 @@ class Task extends SwingWorker<String, String> {
 
 class ProgressListener implements PropertyChangeListener {
     private final ProgressMonitor monitor;
-    public ProgressListener(ProgressMonitor monitor) {
+    protected ProgressListener(ProgressMonitor monitor) {
         this.monitor = monitor;
         this.monitor.setProgress(0);
     }

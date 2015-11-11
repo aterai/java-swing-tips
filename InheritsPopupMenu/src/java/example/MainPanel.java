@@ -75,37 +75,27 @@ public final class MainPanel extends JPanel {
     }
 
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action deleteAction = new AbstractAction("delete") {
+            @Override public void actionPerformed(ActionEvent e) {
+                int[] selection = table.getSelectedRows();
+                for (int i = selection.length - 1; i >= 0; i--) {
+                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                }
+            }
+        };
+        protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
-            //add(new ClearAction("clearSelection", null));
+            add(new AbstractAction("add") {
+                @Override public void actionPerformed(ActionEvent e) {
+                    model.addRow(new Object[] {"example", 0, false});
+                }
+            });
             addSeparator();
             add(deleteAction);
         }
         @Override public void show(Component c, int x, int y) {
             deleteAction.setEnabled(table.getSelectedRowCount() > 0);
             super.show(c, x, y);
-        }
-    }
-
-    class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            model.addRow(new Object[] {"example", 0, false});
-        }
-    }
-    class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
         }
     }
 

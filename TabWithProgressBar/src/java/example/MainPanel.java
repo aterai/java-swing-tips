@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         protected CloseAllAction(String label) {
             super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             tab.removeAll();
         }
     }

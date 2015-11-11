@@ -87,20 +87,16 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-        }
-    }
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action deleteAction = new AbstractAction("delete") {
+            @Override public void actionPerformed(ActionEvent e) {
+                int[] selection = table.getSelectedRows();
+                for (int i = selection.length - 1; i >= 0; i--) {
+                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                }
+            }
+        };
+        protected TablePopupMenu() {
             super();
             add(deleteAction);
         }
@@ -135,7 +131,7 @@ public final class MainPanel extends JPanel {
 
 class FileIconTableCellRenderer extends DefaultTableCellRenderer {
     private final FileSystemView fileSystemView;
-    public FileIconTableCellRenderer(FileSystemView fileSystemView) {
+    protected FileIconTableCellRenderer(FileSystemView fileSystemView) {
         super();
         this.fileSystemView = fileSystemView;
     }
@@ -229,7 +225,7 @@ class FileTransferHandler extends TransferHandler {
 class DefaultFileComparator implements Comparator<File>, Serializable {
     private static final long serialVersionUID = 1L;
     protected final int column;
-    public DefaultFileComparator(int column) {
+    protected DefaultFileComparator(int column) {
         this.column = column;
     }
     @Override public int compare(File a, File b) {
@@ -243,7 +239,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
 
 class FileComparator extends DefaultFileComparator {
     private static final long serialVersionUID = 1L;
-    public FileComparator(int column) {
+    protected FileComparator(int column) {
         super(column);
     }
     @Override public int compare(File a, File b) {
@@ -262,7 +258,7 @@ class FileComparator extends DefaultFileComparator {
 class FileGroupComparator extends DefaultFileComparator {
     private static final long serialVersionUID = 1L;
     private final JTable table;
-    public FileGroupComparator(JTable table, int column) {
+    protected FileGroupComparator(JTable table, int column) {
         super(column);
         this.table = table;
     }
@@ -288,7 +284,7 @@ class FileGroupComparator extends DefaultFileComparator {
 // class FileTableModel extends AbstractTableModel {
 //     private final String[] columnNames = {"Name", "Size", "Full Path"};
 //     private File[] files;
-//     public FileTableModel() {
+//     protected FileTableModel() {
 //         this(new File[0]);
 //     }
 //     public FileTableModel(File[] files) {

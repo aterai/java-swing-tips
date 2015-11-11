@@ -9,13 +9,23 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JTabbedPane tabbedPane = new HoverCloseButtonTabbedPane();
     private final JPopupMenu pop = new JPopupMenu();
-    private static int count;
+    private int count;
 
     public MainPanel() {
         super(new BorderLayout());
-        pop.add(new NewTabAction("Add", null));
+        pop.add(new AbstractAction("Add") {
+            @Override public void actionPerformed(ActionEvent e) {
+                tabbedPane.addTab("Title" + count, new JLabel("Tab" + count));
+                tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                count++;
+            }
+        });
         pop.addSeparator();
-        pop.add(new CloseAllAction("Close All", null));
+        pop.add(new AbstractAction("Close All") {
+            @Override public void actionPerformed(ActionEvent e) {
+                tabbedPane.removeAll();
+            }
+        });
         tabbedPane.setComponentPopupMenu(pop);
         tabbedPane.addTab("aaaaaa", new JScrollPane(new JTree()));
         tabbedPane.addTab("12345678901234567890", new JScrollPane(new JLabel("asdfasdfsadf")));
@@ -28,25 +38,6 @@ public final class MainPanel extends JPanel {
         add(tabbedPane);
         setPreferredSize(new Dimension(320, 240));
     }
-    class NewTabAction extends AbstractAction {
-        protected NewTabAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            tabbedPane.addTab("Title" + count, new JLabel("Tab" + count));
-            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-            count++;
-        }
-    }
-    class CloseAllAction extends AbstractAction {
-        protected CloseAllAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            tabbedPane.removeAll();
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

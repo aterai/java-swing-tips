@@ -48,13 +48,13 @@ public final class MainPanel extends JPanel {
         scroll.setComponentPopupMenu(new TablePopupMenu());
         table.setInheritsPopupMenu(true);
         add(scroll);
-        add(new JButton(new TestCreateAction("add", null)), BorderLayout.SOUTH);
+        add(new JButton(new TestCreateAction("add")), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
     class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label, icon);
+        protected TestCreateAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New name", model.getRowCount(), false});
@@ -73,8 +73,8 @@ public final class MainPanel extends JPanel {
     }
 
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
+        protected DeleteAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             final int[] selection = table.getSelectedRows();
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
         }
     }
 
-//     public void xxx_deleteActionPerformed(ActionEvent evt) {
+//     public void xxx_deleteActionPerformed(ActionEvent e) {
 //         final int[] selection = table.getSelectedRows();
 //         if (selection.length == 0) {
 //             return;
@@ -134,10 +134,10 @@ public final class MainPanel extends JPanel {
 //     }
 
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action deleteAction = new DeleteAction("delete");
+        protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
+            add(new TestCreateAction("add"));
             addSeparator();
             add(deleteAction);
         }

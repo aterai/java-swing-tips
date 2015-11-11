@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
         statusPanel.revalidate();
     }
     class RunAction extends AbstractAction {
-        public RunAction() {
+        protected RunAction() {
             super("run");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             initStatusPanel(true);
             worker = new ProgressTask();
             worker.execute();
@@ -89,10 +89,10 @@ public final class MainPanel extends JPanel {
         }
     }
     class CancelAction extends AbstractAction {
-        public CancelAction() {
+        protected CancelAction() {
             super("cancel");
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             if (Objects.nonNull(worker) && !worker.isDone()) {
                 worker.cancel(true);
             }
@@ -134,7 +134,7 @@ enum Component { TOTAL, FILE, LOG }
 class Progress {
     public final Object value;
     public final Component component;
-    public Progress(Component component, Object value) {
+    protected Progress(Component component, Object value) {
         this.component = component;
         this.value = value;
     }
@@ -196,10 +196,10 @@ class Task extends SwingWorker<String, Progress> {
 //     }
 //
 //     class RunAction extends AbstractAction {
-//         public RunAction() {
+//         protected RunAction() {
 //             super("run");
 //         }
-//         @Override public void actionPerformed(ActionEvent evt) {
+//         @Override public void actionPerformed(ActionEvent e) {
 //             //System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
 //             final JProgressBar bar1 = new JProgressBar(0, 100);
 //             final JProgressBar bar2 = new JProgressBar(0, 100);
@@ -280,10 +280,10 @@ class Task extends SwingWorker<String, Progress> {
 //         }
 //     }
 //     class CancelAction extends AbstractAction {
-//         public CancelAction() {
+//         protected CancelAction() {
 //             super("cancel");
 //         }
-//         @Override public void actionPerformed(ActionEvent evt) {
+//         @Override public void actionPerformed(ActionEvent e) {
 //             if (Objects.nonNull(worker) && !worker.isDone()) {
 //                 worker.cancel(true);
 //             }

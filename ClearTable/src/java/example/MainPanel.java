@@ -66,43 +66,34 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            if (DEBUG && model.getRowCount() == 0) {
-                //table.setRowSorter(new TableRowSorter<TableModel>(model));
-                table.setRowSorter(sorter);
-                model.fireTableDataChanged();
-            }
-            model.addRow(new Object[] {"", model.getRowCount(), false});
-            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(r);
-        }
-    }
-
-    private class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(table.convertRowIndexToModel(selection[i]));
-            }
-            if (DEBUG && model.getRowCount() == 0) {
-                table.setRowSorter(null);
-                table.getTableHeader().repaint();
-            }
-        }
-    }
-
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action addAction = new AbstractAction("add") {
+            @Override public void actionPerformed(ActionEvent e) {
+                if (DEBUG && model.getRowCount() == 0) {
+                    //table.setRowSorter(new TableRowSorter<TableModel>(model));
+                    table.setRowSorter(sorter);
+                    model.fireTableDataChanged();
+                }
+                model.addRow(new Object[] {"", model.getRowCount(), false});
+                Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+                table.scrollRectToVisible(r);
+            }
+        };
+        private final Action deleteAction = new AbstractAction("delete") {
+            @Override public void actionPerformed(ActionEvent e) {
+                int[] selection = table.getSelectedRows();
+                for (int i = selection.length - 1; i >= 0; i--) {
+                    model.removeRow(table.convertRowIndexToModel(selection[i]));
+                }
+                if (DEBUG && model.getRowCount() == 0) {
+                    table.setRowSorter(null);
+                    table.getTableHeader().repaint();
+                }
+            }
+        };
+        protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
+            add(addAction);
             //add(new ClearAction("clearSelection", null));
             addSeparator();
             add(deleteAction);

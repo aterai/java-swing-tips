@@ -12,12 +12,28 @@ public final class MainPanel extends JPanel {
     private static final String MENUITEM_CLOSEPAGE = "Close";
     private static final String MENUITEM_CLOSEALL  = "Close all";
     private static final String MENUITEM_CLOSEALLBUTACTIVE = "Close all bat active";
-    private static int count;
+    private int count;
 
     private final JTabbedPane tab = new JTabbedPane();
-    private final AbstractAction closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE, null);
-    private final AbstractAction closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL, null);
-    private final AbstractAction closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE, null);
+    private final Action closePageAction = new AbstractAction(MENUITEM_CLOSEPAGE) {
+        @Override public void actionPerformed(ActionEvent e) {
+            tab.remove(tab.getSelectedIndex());
+        }
+    };
+    private final Action closeAllAction  = new AbstractAction(MENUITEM_CLOSEALL) {
+        @Override public void actionPerformed(ActionEvent e) {
+            tab.removeAll();
+        }
+    };
+    private final Action closeAllButActiveAction = new AbstractAction(MENUITEM_CLOSEALLBUTACTIVE) {
+        @Override public void actionPerformed(ActionEvent e) {
+            int tabidx = tab.getSelectedIndex();
+            String title = tab.getTitleAt(tabidx);
+            Component cmp = tab.getComponentAt(tabidx);
+            tab.removeAll();
+            tab.addTab(title, cmp);
+        }
+    };
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
             closePageAction.setEnabled(tab.indexAtLocation(x, y) >= 0);
@@ -29,77 +45,24 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        pop.add(new NewTabAction(MENUITEM_NEWTAB, null));
+        pop.add(new AbstractAction(MENUITEM_NEWTAB) {
+            @Override public void actionPerformed(ActionEvent e) {
+                tab.addTab("Title: " + count, count % 2 == 0 ? new JLabel("Tab: " + count) : new JScrollPane(new JTree()));
+                tab.setSelectedIndex(tab.getTabCount() - 1);
+                count++;
+            }
+        });
         pop.addSeparator();
         pop.add(closePageAction);
         pop.addSeparator();
         pop.add(closeAllAction);
         pop.add(closeAllButActiveAction);
         tab.setComponentPopupMenu(pop);
-        tab.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane jtab = (JTabbedPane) e.getSource();
-                if (jtab.getTabCount() <= 0) {
-                    return;
-                }
-                int sindex = jtab.getSelectedIndex();
-                for (int i = 0; i < jtab.getTabCount(); i++) {
-                    if (i == sindex && jtab.getTitleAt(sindex).endsWith("1")) {
-                        jtab.setForegroundAt(i, Color.GREEN);
-                    } else if (i == sindex) {
-                        Color sc = sindex % 2 == 0 ? Color.RED : Color.BLUE;
-                        jtab.setForegroundAt(i, sc);
-                    } else {
-                        jtab.setForegroundAt(i, Color.BLACK);
-                    }
-                }
-            }
-        });
+        tab.addChangeListener(new TabChangeListener());
         tab.addTab("Title", new JLabel("Tab"));
         add(tab);
         setPreferredSize(new Dimension(320, 240));
     }
-
-    class NewTabAction extends AbstractAction {
-        protected NewTabAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            tab.addTab("Title: " + count, count % 2 == 0 ? new JLabel("Tab: " + count)
-                                                         : new JScrollPane(new JTree()));
-            tab.setSelectedIndex(tab.getTabCount() - 1);
-            count++;
-        }
-    }
-    class ClosePageAction extends AbstractAction {
-        protected ClosePageAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            tab.remove(tab.getSelectedIndex());
-        }
-    }
-    class CloseAllAction extends AbstractAction {
-        protected CloseAllAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            tab.removeAll();
-        }
-    }
-    class CloseAllButActiveAction extends AbstractAction {
-        protected CloseAllButActiveAction(String label, Icon icon) {
-            super(label, icon);
-        }
-        @Override public void actionPerformed(ActionEvent evt) {
-            int tabidx = tab.getSelectedIndex();
-            String title = tab.getTitleAt(tabidx);
-            Component cmp = tab.getComponentAt(tabidx);
-            tab.removeAll();
-            tab.addTab(title, cmp);
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -120,5 +83,25 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TabChangeListener implements ChangeListener {
+    @Override public void stateChanged(ChangeEvent e) {
+        JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+        if (tabbedPane.getTabCount() <= 0) {
+            return;
+        }
+        int sindex = tabbedPane.getSelectedIndex();
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if (i == sindex && tabbedPane.getTitleAt(sindex).endsWith("1")) {
+                tabbedPane.setForegroundAt(i, Color.GREEN);
+            } else if (i == sindex) {
+                Color sc = sindex % 2 == 0 ? Color.RED : Color.BLUE;
+                tabbedPane.setForegroundAt(i, sc);
+            } else {
+                tabbedPane.setForegroundAt(i, Color.BLACK);
+            }
+        }
     }
 }

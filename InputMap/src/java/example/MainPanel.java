@@ -12,17 +12,17 @@ public final class MainPanel extends JPanel {
         JPanel p1 = new JPanel();
         p1.setBorder(BorderFactory.createTitledBorder("JOptionPane"));
         p1.add(new JButton(new AbstractAction("JOptionPane.showMessageDialog") {
-            @Override public void actionPerformed(ActionEvent evt) {
+            @Override public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(getRootPane(), "showMessageDialog");
             }
         }));
         JPanel p2 = new JPanel();
         p2.setBorder(BorderFactory.createTitledBorder("JDialog"));
         p2.add(new JButton(new AbstractAction("Default") {
-            @Override public void actionPerformed(ActionEvent evt) {
+            @Override public void actionPerformed(ActionEvent e) {
                 final JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
-                AbstractAction act = new AbstractAction("OK") {
-                    @Override public void actionPerformed(ActionEvent evt) {
+                Action act = new AbstractAction("OK") {
+                    @Override public void actionPerformed(ActionEvent e) {
                         dialog.dispose();
                     }
                 };
@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
             }
         }));
         p2.add(new JButton(new AbstractAction("close JDialog with ESC key") {
-            @Override public void actionPerformed(ActionEvent evt) {
+            @Override public void actionPerformed(ActionEvent e) {
                 final JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
-                AbstractAction act = new AbstractAction("OK") {
-                    @Override public void actionPerformed(ActionEvent evt) {
+                Action act = new AbstractAction("OK") {
+                    @Override public void actionPerformed(ActionEvent e) {
                         dialog.dispose();
                     }
                 };

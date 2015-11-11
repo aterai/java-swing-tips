@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
     private static int count;
 
     private final JTabbedPane tab = new JTabbedPane();
-    private final AbstractAction closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE, null);
-    private final AbstractAction closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL, null);
-    private final AbstractAction closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE, null);
+    private final AbstractAction closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
+    private final AbstractAction closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
+    private final AbstractAction closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
             //JDK 1.3 tabindex = tab.getUI().tabForCoordinate(tab, x, y);
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        pop.add(new NewTabAction(MENUITEM_NEWTAB, null));
+        pop.add(new NewTabAction(MENUITEM_NEWTAB));
         pop.addSeparator();
         pop.add(closePageAction);
         pop.addSeparator();
@@ -41,36 +41,36 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
-        public NewTabAction(String label, Icon icon) {
-            super(label, icon);
+        protected NewTabAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             tab.addTab("Title: " + count, new JLabel("Tab: " + count));
             tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
     class ClosePageAction extends AbstractAction {
-        public ClosePageAction(String label, Icon icon) {
-            super(label, icon);
+        protected ClosePageAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             tab.remove(tab.getSelectedIndex());
         }
     }
     class CloseAllAction extends AbstractAction {
-        public CloseAllAction(String label, Icon icon) {
-            super(label, icon);
+        protected CloseAllAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             tab.removeAll();
         }
     }
     class CloseAllButActiveAction extends AbstractAction {
-        public CloseAllButActiveAction(String label, Icon icon) {
-            super(label, icon);
+        protected CloseAllButActiveAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             int tabidx = tab.getSelectedIndex();
             String title = tab.getTitleAt(tabidx);
             Component cmp = tab.getComponentAt(tabidx);

@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     }
 
     class ProgressValueCreateAction extends AbstractAction {
-        public ProgressValueCreateAction(String label) {
+        protected ProgressValueCreateAction(String label) {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -88,8 +88,8 @@ public final class MainPanel extends JPanel {
     }
 
     class CancelAction extends AbstractAction {
-        public CancelAction(String label, Icon icon) {
-            super(label, icon);
+        protected CancelAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
@@ -107,10 +107,10 @@ public final class MainPanel extends JPanel {
 
     class DeleteAction extends AbstractAction {
         private final Set<Integer> deleteRowSet = new TreeSet<>();
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
+        protected DeleteAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
             if (selection.length == 0) {
                 return;
@@ -134,9 +134,9 @@ public final class MainPanel extends JPanel {
     }
 
     private class TablePopupMenu extends JPopupMenu {
-        private final Action cancelAction = new CancelAction("cancel", null);
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action cancelAction = new CancelAction("cancel");
+        private final Action deleteAction = new DeleteAction("delete");
+        protected TablePopupMenu() {
             super();
             add(new ProgressValueCreateAction("add"));
             addSeparator();
@@ -178,7 +178,7 @@ public final class MainPanel extends JPanel {
 class Task extends SwingWorker<Integer, ProgressValue> {
     private final int lengthOfTask;
     private final int sleepDummy = new Random().nextInt(100) + 1;
-    public Task(int lengthOfTask) {
+    protected Task(int lengthOfTask) {
         super();
         this.lengthOfTask = lengthOfTask;
     }
@@ -233,7 +233,7 @@ class WorkerModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -244,7 +244,7 @@ class WorkerModel extends DefaultTableModel {
 class ProgressValue {
     private final Integer progress;
     private final Integer lengthOfTask;
-    public ProgressValue(Integer lengthOfTask, Integer progress) {
+    protected ProgressValue(Integer lengthOfTask, Integer progress) {
         this.progress = progress;
         this.lengthOfTask = lengthOfTask;
     }
@@ -259,7 +259,7 @@ class ProgressValue {
 class ProgressRenderer extends DefaultTableCellRenderer {
     private final JProgressBar b = new JProgressBar();
     private final JPanel p = new JPanel(new BorderLayout());
-    public ProgressRenderer() {
+    protected ProgressRenderer() {
         super();
         setOpaque(true);
         b.setStringPainted(true);

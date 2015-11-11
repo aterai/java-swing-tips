@@ -13,9 +13,9 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        pop.add(new NewTabAction("Add", null));
+        pop.add(new NewTabAction("Add"));
         pop.addSeparator();
-        pop.add(new CloseAllAction("Close All", null));
+        pop.add(new CloseAllAction("Close All"));
         tab.setComponentPopupMenu(pop);
         tab.addTab("JLabel", new JLabel("JDK 6"));
         tab.addTab("JTree",  new JScrollPane(new JTree()));
@@ -23,20 +23,20 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {
-        public NewTabAction(String label, Icon icon) {
-            super(label, icon);
+        protected NewTabAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             tab.addTab("Title" + count, new JLabel("Tab" + count));
             tab.setSelectedIndex(tab.getTabCount() - 1);
             count++;
         }
     }
     class CloseAllAction extends AbstractAction {
-        public CloseAllAction(String label, Icon icon) {
-            super(label, icon);
+        protected CloseAllAction(String label) {
+            super(label);
         }
-        @Override public void actionPerformed(ActionEvent evt) {
+        @Override public void actionPerformed(ActionEvent e) {
             tab.removeAll();
         }
     }
