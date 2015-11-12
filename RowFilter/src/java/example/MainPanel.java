@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
             addAction = new TestCreateAction("add", table);
             deleteAction = new DeleteAction("delete", table);
             add(addAction);
-            //add(new ClearAction("clearSelection", null));
+            //add(new ClearAction("clearSelection"));
             addSeparator();
             add(deleteAction);
         }

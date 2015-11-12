@@ -57,8 +57,8 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label, icon);
+        protected TestCreateAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", 0, true});
@@ -67,8 +67,8 @@ public final class MainPanel extends JPanel {
         }
     }
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
+        protected DeleteAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
@@ -78,19 +78,19 @@ public final class MainPanel extends JPanel {
         }
     }
     class ClearAction extends AbstractAction {
-        public ClearAction(String label, Icon icon) {
-            super(label, icon);
+        protected ClearAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             table.clearSelection();
         }
     }
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action deleteAction = new DeleteAction("delete");
+        protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
-            add(new ClearAction("clearSelection", null));
+            add(new TestCreateAction("add"));
+            add(new ClearAction("clearSelection"));
             addSeparator();
             add(deleteAction);
         }
@@ -140,7 +140,7 @@ public final class MainPanel extends JPanel {
 class LineFocusTable extends JTable {
     private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
     private final Border emptyBorder  = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-    public LineFocusTable(DefaultTableModel model) {
+    protected LineFocusTable(DefaultTableModel model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -238,7 +238,7 @@ class DotBorder extends EmptyBorder {
     private static final Color DOT_COLOR = new Color(200, 150, 150);
     public EnumSet<Type> type = EnumSet.noneOf(Type.class);
 
-    public DotBorder(int top, int left, int bottom, int right) {
+    protected DotBorder(int top, int left, int bottom, int right) {
         super(top, left, bottom, right);
     }
     @Override public boolean isBorderOpaque() {

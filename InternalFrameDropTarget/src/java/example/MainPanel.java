@@ -55,7 +55,7 @@ public class MainPanel extends JPanel {
 
         //Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
-        AbstractAction dummy = new AbstractAction() {
+        Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
                 /* Dummy action */
             }
@@ -198,7 +198,7 @@ class TableRowTransferHandler extends TransferHandler {
     private int addCount; //Number of items added.
     private JComponent source;
 
-    public TableRowTransferHandler() {
+    protected TableRowTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }

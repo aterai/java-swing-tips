@@ -17,10 +17,10 @@ public final class MainPanel extends JPanel {
     private static int count;
 
     private final JTabbedPane tab;
-    private final AbstractAction closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
-    private final AbstractAction closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
-    private final AbstractAction closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
-    private final AbstractAction sortAction = new SortAction(MENUITEM_SORT);
+    private final Action closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
+    private final Action closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
+    private final Action closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
+    private final Action sortAction = new SortAction(MENUITEM_SORT);
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
             sortAction.setEnabled(tab.getTabCount() > 1);

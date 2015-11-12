@@ -91,8 +91,8 @@ public final class MainPanel extends JPanel {
     }
 
     class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label, Icon icon) {
-            super(label, icon);
+        protected TestCreateAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addRow(new Object[] {"New row", 0, true});
@@ -101,8 +101,8 @@ public final class MainPanel extends JPanel {
         }
     }
     class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label, Icon icon) {
-            super(label, icon);
+        protected DeleteAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
@@ -112,10 +112,10 @@ public final class MainPanel extends JPanel {
         }
     }
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
+        private final Action deleteAction = new DeleteAction("delete");
         protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
+            add(new TestCreateAction("add"));
             addSeparator();
             add(deleteAction);
         }

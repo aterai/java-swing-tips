@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
     }
 
     class TestCreateAction extends AbstractAction {
-        public TestCreateAction(String label, Icon icon) {
-            super(label, icon);
+        protected TestCreateAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             model.addTest(new Test("add row", ""));
@@ -72,8 +72,8 @@ public final class MainPanel extends JPanel {
     }
 
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label, Icon icon) {
-            super(label, icon);
+        protected DeleteAction(String label) {
+            super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
             int[] selection = table.getSelectedRows();
@@ -84,11 +84,11 @@ public final class MainPanel extends JPanel {
     }
 
     private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete", null);
-        public TablePopupMenu() {
+        private final Action deleteAction = new DeleteAction("delete");
+        protected TablePopupMenu() {
             super();
-            add(new TestCreateAction("add", null));
-            //add(new ClearAction("clearSelection", null));
+            add(new TestCreateAction("add"));
+            //add(new ClearAction("clearSelection"));
             addSeparator();
             add(deleteAction);
         }
@@ -128,7 +128,7 @@ class RowHeaderList<E> extends JList<E> {
     private int rollOverRowIndex = -1;
     private int pressedRowIndex  = -1;
 
-    public RowHeaderList(ListModel<E> model, JTable table) {
+    protected RowHeaderList(ListModel<E> model, JTable table) {
         super(model);
         this.table = table;
         setFixedCellHeight(table.getRowHeight());
@@ -144,7 +144,7 @@ class RowHeaderList<E> extends JList<E> {
     }
     class RowHeaderRenderer<E> extends JLabel implements ListCellRenderer<E> {
         private final JTableHeader header; // = table.getTableHeader();
-        public RowHeaderRenderer(JTableHeader header) {
+        protected RowHeaderRenderer(JTableHeader header) {
             super();
             this.header = header;
             this.setOpaque(true);
@@ -234,7 +234,7 @@ class TestModel extends DefaultTableModel {
     };
     private int number;
     private final DefaultListModel<String> rowListModel;
-    public TestModel(DefaultListModel<String> lm) {
+    protected TestModel(DefaultListModel<String> lm) {
         super();
         rowListModel = lm;
     }
@@ -264,7 +264,7 @@ class TestModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -274,7 +274,7 @@ class TestModel extends DefaultTableModel {
 
 class Test {
     private String name, comment;
-    public Test(String name, String comment) {
+    protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }

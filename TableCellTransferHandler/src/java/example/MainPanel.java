@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
         //Disable row Cut, Copy, Paste
         ActionMap map = table.getActionMap();
-        AbstractAction dummy = new AbstractAction() {
+        Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
 
 class CellIconTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    public CellIconTransferHandler(DataFlavor flavor) {
+    protected CellIconTransferHandler(DataFlavor flavor) {
         super();
         localObjectFlavor = flavor;
     }
@@ -139,7 +139,7 @@ class CellIconTransferHandler extends TransferHandler {
 
 class TableCellTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
-    public TableCellTransferHandler(DataFlavor flavor) {
+    protected TableCellTransferHandler(DataFlavor flavor) {
         super();
         localObjectFlavor = flavor;
     }
@@ -184,7 +184,7 @@ class IconListCellRenderer<E extends Icon> implements ListCellRenderer<E> {
 
 class ColorIcon implements Icon {
     private final Color color;
-    public ColorIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

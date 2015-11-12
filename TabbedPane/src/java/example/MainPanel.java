@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
     private static int count;
 
     private final JTabbedPane tab = new JTabbedPane();
-    private final AbstractAction closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
-    private final AbstractAction closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
-    private final AbstractAction closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
+    private final Action closePageAction = new ClosePageAction(MENUITEM_CLOSEPAGE);
+    private final Action closeAllAction  = new CloseAllAction(MENUITEM_CLOSEALL);
+    private final Action closeAllButActiveAction = new CloseAllButActiveAction(MENUITEM_CLOSEALLBUTACTIVE);
     private final JPopupMenu pop = new JPopupMenu() {
         @Override public void show(Component c, int x, int y) {
             //JDK 1.3 tabindex = tab.getUI().tabForCoordinate(tab, x, y);

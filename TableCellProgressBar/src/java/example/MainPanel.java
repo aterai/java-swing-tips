@@ -143,7 +143,7 @@ public final class MainPanel extends JPanel {
         protected TablePopupMenu() {
             super();
             add(new ProgressValueCreateAction("add"));
-            //add(new ClearAction("clearSelection", null));
+            //add(new ClearAction("clearSelection"));
             addSeparator();
             add(deleteAction);
         }

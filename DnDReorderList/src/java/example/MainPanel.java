@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 
         //Disable row Cut, Copy, Paste
         ActionMap map = list.getActionMap();
-        AbstractAction dummy = new AbstractAction() {
+        Action dummy = new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
         };
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),   dummy);
@@ -92,7 +92,7 @@ class ListItemTransferHandler extends TransferHandler {
     private int addIndex = -1; //Location where items were added
     private int addCount; //Number of items added.
 
-    public ListItemTransferHandler() {
+    protected ListItemTransferHandler() {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
