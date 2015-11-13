@@ -104,7 +104,7 @@ class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
         DefaultTableModel m = (DefaultTableModel) oldInstance;
         for (int row = 0; row < m.getRowCount(); row++) {
             for (int col = 0; col < m.getColumnCount(); col++) {
-                Object[] o = new Object[] {m.getValueAt(row, col), row, col};
+                Object[] o = {m.getValueAt(row, col), row, col};
                 encoder.writeStatement(new Statement(oldInstance, "setValueAt", o));
             }
         }
