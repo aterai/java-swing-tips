@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
-        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setIntercellSpacing(new Dimension());
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JCheckBox(new AbstractAction("setShowVerticalLines") {

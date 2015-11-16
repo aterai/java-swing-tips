@@ -57,8 +57,8 @@ public final class MainPanel extends JPanel {
             });
         }
 //         } else {
-// //             s1.setMinimumSize(new Dimension(0, 0));
-// //             s2.setMinimumSize(new Dimension(0, 0));
+// //             s1.setMinimumSize(new Dimension());
+// //             s2.setMinimumSize(new Dimension());
 // //             EventQueue.invokeLater(new Runnable() {
 // //                 @Override public void run() {
 // //                     splitPane.setDividerLocation(1d);
