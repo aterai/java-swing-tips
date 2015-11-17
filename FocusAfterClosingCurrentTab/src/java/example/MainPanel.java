@@ -98,10 +98,10 @@ public class MainPanel extends JPanel {
 class ClippedTitleTabbedPane extends JTabbedPane {
     private static final int MAX_TAB_WIDTH = 200;
     private static final int MIN_TAB_WIDTH = 50;
-    public ClippedTitleTabbedPane() {
+    protected ClippedTitleTabbedPane() {
         super();
     }
-    public ClippedTitleTabbedPane(int tabPlacement) {
+    protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
     private Insets getTabInsets() {
@@ -179,8 +179,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
-        super(new BorderLayout(0, 0));
+    protected ButtonTabComponent(final JTabbedPane pane) {
+        super(new BorderLayout());
         if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
@@ -237,7 +237,7 @@ class ButtonTabComponent extends JPanel {
 
 class CloseTabIcon implements Icon {
     private final Color color;
-    public CloseTabIcon(Color color) {
+    protected CloseTabIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

@@ -53,7 +53,7 @@ class TableHeaderTabbedPane extends JPanel {
     private Object selectedColumn;
     private int rolloverColumn = -1;
 
-    public TableHeaderTabbedPane() {
+    protected TableHeaderTabbedPane() {
         super(new BorderLayout());
 
         int left  = 1;
@@ -88,7 +88,7 @@ class TableHeaderTabbedPane extends JPanel {
         vp.setView(table);
         sp.setViewport(vp);
 
-        //JPanel wrapPanel = new JPanel(new BorderLayout(0, 0));
+        //JPanel wrapPanel = new JPanel(new BorderLayout());
         //wrapPanel.add(sp);
         //add(wrapPanel, BorderLayout.NORTH);
         add(sp, BorderLayout.NORTH);
@@ -166,19 +166,19 @@ class TabButton extends JRadioButton {
     public TabViewButtonUI getUI() {
         return (TabViewButtonUI) ui;
     }
-    public TabButton() {
+    protected TabButton() {
         super(null, null);
     }
-    public TabButton(Icon icon) {
+    protected TabButton(Icon icon) {
         super(null, icon);
     }
-    public TabButton(String text) {
+    protected TabButton(String text) {
         super(text, null);
     }
-    public TabButton(Action a) {
+    protected TabButton(Action a) {
         super(a);
     }
-    public TabButton(String text, Icon icon) {
+    protected TabButton(String text, Icon icon) {
         super(text, icon);
     }
     @Override protected void fireStateChanged() {

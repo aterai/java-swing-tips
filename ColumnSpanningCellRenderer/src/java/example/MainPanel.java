@@ -73,8 +73,8 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
     private final JLabel iconLabel = new JLabel();
     private final JScrollPane scroll = new JScrollPane(textArea);
 
-    public ColumnSpanningCellRenderer() {
-        super(new BorderLayout(0, 0));
+    protected ColumnSpanningCellRenderer() {
+        super(new BorderLayout());
 
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -151,7 +151,7 @@ class Test {
     public final String title;
     public final Icon icon;
     public final String text;
-    public Test(String title, Icon icon, String text) {
+    protected Test(String title, Icon icon, String text) {
         this.title = title;
         this.icon  = icon;
         this.text  = text;

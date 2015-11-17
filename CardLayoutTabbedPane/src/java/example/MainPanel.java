@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
 class CardLayoutTabbedPane extends JPanel {
     protected final CardLayout cardLayout = new CardLayout();
     protected final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
-    protected final JPanel wrapPanel = new JPanel(new BorderLayout(0, 0));
+    protected final JPanel wrapPanel = new JPanel(new BorderLayout());
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final ButtonGroup bg = new ButtonGroup();
-    public CardLayoutTabbedPane() {
+    protected CardLayoutTabbedPane() {
         super(new BorderLayout());
         int left  = 1;
         int right = 3;
@@ -159,19 +159,19 @@ class TabButton extends JRadioButton {
     public TabViewButtonUI getUI() {
         return (TabViewButtonUI) ui;
     }
-    public TabButton() {
+    protected TabButton() {
         super(null, null);
     }
-    public TabButton(Icon icon) {
+    protected TabButton(Icon icon) {
         super(null, icon);
     }
-    public TabButton(String text) {
+    protected TabButton(String text) {
         super(text, null);
     }
-    public TabButton(Action a) {
+    protected TabButton(Action a) {
         super(a);
     }
-    public TabButton(String text, Icon icon) {
+    protected TabButton(String text, Icon icon) {
         super(text, icon);
     }
     @Override protected void fireStateChanged() {
@@ -225,7 +225,7 @@ class TabButton extends JRadioButton {
 
 class CloseTabIcon implements Icon {
     private final Color color;
-    public CloseTabIcon(Color color) {
+    protected CloseTabIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

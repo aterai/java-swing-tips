@@ -105,11 +105,11 @@ public final class MainPanel extends JPanel {
             l.addMouseMotionListener(rwl);
         }
 
-        JPanel titlePanel = new JPanel(new BorderLayout(0, 0));
+        JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.add(top,           BorderLayout.NORTH);
         titlePanel.add(title,         BorderLayout.CENTER);
 
-        JPanel northPanel = new JPanel(new BorderLayout(0, 0));
+        JPanel northPanel = new JPanel(new BorderLayout());
         northPanel.add(topleft,       BorderLayout.WEST);
         northPanel.add(titlePanel,    BorderLayout.CENTER);
         northPanel.add(topright,      BorderLayout.EAST);
@@ -179,7 +179,7 @@ enum Side {
 
 class SideLabel extends JLabel {
     public final Side side;
-    public SideLabel(Side side) {
+    protected SideLabel(Side side) {
         super();
         this.side = side;
         setCursor(Cursor.getPredefinedCursor(side.cursor));
@@ -198,7 +198,7 @@ class SideLabel extends JLabel {
 class ResizeWindowListener extends MouseAdapter {
     private final JFrame frame;
     private Rectangle rect;
-    public ResizeWindowListener(JFrame frame) {
+    protected ResizeWindowListener(JFrame frame) {
         super();
         this.frame = frame;
         this.rect  = frame.getBounds();

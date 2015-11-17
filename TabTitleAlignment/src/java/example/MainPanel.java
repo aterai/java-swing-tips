@@ -76,10 +76,10 @@ public final class MainPanel extends JPanel {
 }
 
 class ClippedTitleTabbedPane extends JTabbedPane {
-    public ClippedTitleTabbedPane() {
+    protected ClippedTitleTabbedPane() {
         super();
     }
-    public ClippedTitleTabbedPane(int tabPlacement) {
+    protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
     private Insets getTabInsets() {
@@ -218,8 +218,8 @@ class MyTabbedPaneUI extends MetalTabbedPaneUI {
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
-        super(new BorderLayout(0, 0)); //FlowLayout(FlowLayout.LEFT, 0, 0));
+    protected ButtonTabComponent(final JTabbedPane pane) {
+        super(new BorderLayout()); //FlowLayout(FlowLayout.LEFT, 0, 0));
         if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
         }
@@ -271,7 +271,7 @@ class TabButton extends JButton {
     private static final int SIZE  = 17;
     private static final int DELTA = 6;
 
-    public TabButton() {
+    protected TabButton() {
         super();
         setUI(new BasicButtonUI());
         setToolTipText("close this tab");

@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
     private final JTextField field = new JTextField("b", 10);
     private boolean isHidden = true;
-    private final JPanel searchBox = new JPanel(new BorderLayout(0, 0));
+    private final JPanel searchBox = new JPanel(new BorderLayout());
     private int yy;
     private final Timer animator = new Timer(5, new ActionListener() {
         private int counter;
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
                 return false;
             }
         };
-        p.setLayout(new BorderLayout(0, 0) {
+        p.setLayout(new BorderLayout() {
             @Override public void layoutContainer(Container parent) {
                 synchronized (parent.getTreeLock()) {
                     Insets insets = parent.getInsets();
@@ -151,7 +151,7 @@ class FindNextAction extends AbstractAction {
     private final JTree tree;
     private final JTextField field;
     private final List<TreePath> rollOverPathLists = new ArrayList<>();
-    public FindNextAction(JTree tree, JTextField field) {
+    protected FindNextAction(JTree tree, JTextField field) {
         super();
         this.tree = tree;
         this.field = field;

@@ -121,7 +121,7 @@ class TabPanel extends JPanel {
         }
     };
     protected TabPanel(final JTabbedPane pane, String title, final Component content) {
-        super(new BorderLayout(0, 0));
+        super(new BorderLayout());
         setOpaque(false);
 
         label.setText(title);

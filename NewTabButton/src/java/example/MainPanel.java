@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 class CardLayoutTabbedPane extends JPanel {
     protected final CardLayout cardLayout = new CardLayout();
     protected final JPanel tabPanel = new JPanel(new TabLayout());
-    protected final JPanel wrapPanel = new JPanel(new BorderLayout(0, 0));
+    protected final JPanel wrapPanel = new JPanel(new BorderLayout());
     protected final JPanel contentsPanel = new JPanel(cardLayout);
     protected final ButtonGroup bg = new ButtonGroup();
     private final JButton button = new JButton(new PlusIcon());

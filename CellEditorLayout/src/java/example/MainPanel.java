@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
 class CustomCellEditor extends DefaultCellEditor {
     private static final int BUTTON_WIDTH = 20;
     protected final JButton button = new JButton();
-    public CustomCellEditor(final JTextField field) {
+    protected CustomCellEditor(final JTextField field) {
         super(field);
         field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, BUTTON_WIDTH));
         field.addHierarchyListener(new HierarchyListener() {
@@ -76,7 +76,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
     protected final JTextField field;
     protected JButton button;
     private final JPanel panel = new JPanel(new BorderLayout());
-    public CustomComponentCellEditor(JTextField field) {
+    protected CustomComponentCellEditor(JTextField field) {
         super(field);
         this.field = field;
         button = new JButton() {
@@ -147,8 +147,8 @@ class CustomComponent extends JPanel {
 //     public final CustomTextField field = new CustomTextField();
     public final JTextField field = new JTextField();
     protected JButton button;
-    public CustomComponent() {
-        super(new BorderLayout(0, 0));
+    protected CustomComponent() {
+        super(new BorderLayout());
         button = new JButton();
         //this.setFocusable(false);
         this.add(field);
@@ -170,7 +170,7 @@ class CustomComponent extends JPanel {
 }
 class CustomComponentCellEditor2 extends DefaultCellEditor {
     private final CustomComponent component;
-    public CustomComponentCellEditor2(CustomComponent component) {
+    protected CustomComponentCellEditor2(CustomComponent component) {
         super(component.field);
         this.component = component;
     }

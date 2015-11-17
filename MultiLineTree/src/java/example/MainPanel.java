@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LeafTreeCellEditor extends DefaultTreeCellEditor {
-    public LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
+    protected LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
     }
     @Override public boolean isCellEditable(EventObject e) {
@@ -130,8 +130,8 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
     private final JLabel icon = new JLabel();
     private final JTextArea text = new CellTextArea2();
 
-    public MultiLineCellRenderer() {
-        super(new BorderLayout(0, 0));
+    protected MultiLineCellRenderer() {
+        super(new BorderLayout());
         //text.setLineWrap(true);
         //text.setWrapStyleWord(true);
         text.setOpaque(true);

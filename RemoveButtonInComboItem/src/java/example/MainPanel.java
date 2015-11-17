@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
 
 class RemoveButtonComboBox<E> extends JComboBox<E> {
     private transient CellButtonsMouseListener cbml;
-    public RemoveButtonComboBox(ComboBoxModel<E> aModel) {
+    protected RemoveButtonComboBox(ComboBoxModel<E> aModel) {
         super(aModel);
     }
     @Override public void updateUI() {
@@ -226,8 +226,8 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
             return new Dimension(16, 16);
         }
     };
-    public ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
-        super(new BorderLayout(0, 0));
+    protected ButtonsRenderer(RemoveButtonComboBox<E> comboBox) {
+        super(new BorderLayout());
         this.comboBox = comboBox;
         label.setOpaque(false);
         setOpaque(true);
