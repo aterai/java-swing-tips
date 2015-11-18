@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     private final URL url02     = getClass().getResource("02.png");
     public MainPanel() {
         super(new BorderLayout());
-        Point pt = new Point(0, 0);
+        Point pt = new Point();
         list[0] = tk.createCustomCursor(tk.createImage(url00), pt, "00");
         list[1] = tk.createCustomCursor(tk.createImage(url01), pt, "01");
         list[2] = tk.createCustomCursor(tk.createImage(url02), pt, "02");

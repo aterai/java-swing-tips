@@ -419,7 +419,7 @@ class GhostGlassPane extends JPanel {
     public final DnDTabbedPane tabbedPane;
     private final Rectangle lineRect  = new Rectangle();
     private final Color     lineColor = new Color(0, 100, 255);
-    private Point location = new Point(0, 0);
+    private Point location = new Point();
     private transient BufferedImage draggingGhost;
 
     protected GhostGlassPane(DnDTabbedPane tabbedPane) {

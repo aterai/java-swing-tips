@@ -7,7 +7,7 @@ import java.io.*;
 
 public class WindowState implements Serializable {
     private static final long serialVersionUID = 1415435143L;
-    private Point location = new Point(0, 0);
+    private Point location = new Point();
     private Dimension size = new Dimension(320, 240);
 //     public WindowState() {}
     public final Point getLocation() {

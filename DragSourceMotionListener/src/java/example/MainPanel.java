@@ -71,10 +71,10 @@ public final class MainPanel {
 
 class DragPanel extends JPanel {
     public JLabel draggingLabel;
-    public DragPanel() {
+    protected DragPanel() {
         super();
     }
-    public DragPanel(LayoutManager lm) {
+    protected DragPanel(LayoutManager lm) {
         super(lm);
     }
 }
@@ -98,7 +98,7 @@ class LabelTransferHandler extends TransferHandler {
         }
     };
     private final JWindow window = new JWindow();
-    public LabelTransferHandler() {
+    protected LabelTransferHandler() {
         super("Text");
         //System.out.println("LabelTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(DragPanel.class, DataFlavor.javaJVMLocalObjectMimeType, "JLabel");
@@ -173,9 +173,6 @@ class LabelTransferHandler extends TransferHandler {
         }
         src.draggingLabel = null;
         window.setVisible(false);
-        //TEST:
-        //window.setLocation(new Point(-100, -100));
-        //window.setLocation(new Point(0, 0));
     }
 }
 
@@ -184,7 +181,7 @@ class LabelTransferable implements Transferable {
     private final DataFlavor localObjectFlavor;
     private final StringSelection ss;
 
-    public LabelTransferable(DataHandler dh, DataFlavor localObjectFlavor, String text) {
+    protected LabelTransferable(DataHandler dh, DataFlavor localObjectFlavor, String text) {
         this.dh = dh;
         this.localObjectFlavor = localObjectFlavor;
         this.ss = new StringSelection(text + "\n");
