@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0, 0, sz, sz));
+        return new TexturePaint(img, new Rectangle(sz, sz));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

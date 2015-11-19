@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0, 0, sz, sz));
+        return new TexturePaint(img, new Rectangle(sz, sz));
     }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -151,10 +151,10 @@ class TranslucentButton extends JButton {
     private static final Color ST = new Color(1f, 1f, 1f, .2f);
     private static final Color SB = new Color(1f, 1f, 1f, .1f);
     private static final int R = 8;
-    public TranslucentButton(String text) {
+    protected TranslucentButton(String text) {
         super(text);
     }
-    public TranslucentButton(String text, Icon icon) {
+    protected TranslucentButton(String text, Icon icon) {
         super(text, icon);
     }
     @Override public void updateUI() {
@@ -200,7 +200,7 @@ class TranslucentButtonIcon implements Icon {
     private static final int R = 8;
     private int width;
     private int height;
-    public TranslucentButtonIcon(JComponent c) {
+    protected TranslucentButtonIcon(JComponent c) {
         Insets i = c.getBorder().getBorderInsets(c);
         Dimension d = c.getPreferredSize();
         width  = d.width - i.left - i.right;
@@ -248,7 +248,7 @@ class TranslucentButtonIcon implements Icon {
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
-    public CentredBackgroundBorder(BufferedImage image) {
+    protected CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {

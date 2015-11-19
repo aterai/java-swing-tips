@@ -191,7 +191,7 @@ class ComboRolloverHandler extends MouseAdapter {
 
 class ArrowIcon implements Icon {
     private final Color color, rollover;
-    public ArrowIcon(Color color, Color rollover) {
+    protected ArrowIcon(Color color, Color rollover) {
         this.color = color;
         this.rollover = rollover;
     }
@@ -269,7 +269,7 @@ class KamabokoBorder extends RoundedCornerBorder {
 //             }
 //         }
 //         g2.dispose();
-//         return new TexturePaint(bi, new Rectangle(0, 0, sz, sz));
+//         return new TexturePaint(bi, new Rectangle(sz, sz));
 //     }
 //     private static TexturePaint tp = makeCheckerTexture();
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {

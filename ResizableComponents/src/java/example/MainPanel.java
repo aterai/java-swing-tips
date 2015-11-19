@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
 class JResizer extends JPanel { // implements Serializable {
     private transient MouseAdapter resizeListener;
 
-    public JResizer(LayoutManager layout) {
+    protected JResizer(LayoutManager layout) {
         super(layout);
     }
     @Override public void updateUI() {
@@ -165,7 +165,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
         Cursor.DEFAULT_CURSOR,
     };
 
-    public DefaultResizableBorder(int dist) {
+    protected DefaultResizableBorder(int dist) {
         super();
         this.dist = dist;
     }
@@ -211,7 +211,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
         int h = c.getHeight();
         Point pt = e.getPoint();
 
-        Rectangle bounds = new Rectangle(0, 0, w, h);
+        Rectangle bounds = new Rectangle(w, h);
         if (!bounds.contains(pt)) {
             return Cursor.DEFAULT_CURSOR;
         }

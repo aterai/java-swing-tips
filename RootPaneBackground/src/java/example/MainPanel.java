@@ -166,13 +166,13 @@ final class ImageUtil {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0, 0, sz, sz));
+        return new TexturePaint(img, new Rectangle(sz, sz));
     }
 }
 
 class TranslucentTexturePanel extends JPanel {
     private final transient TexturePaint texture;
-    public TranslucentTexturePanel(TexturePaint texture) {
+    protected TranslucentTexturePanel(TexturePaint texture) {
         super();
         this.texture = texture;
     }
@@ -190,7 +190,7 @@ class TranslucentTexturePanel extends JPanel {
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
-    public CentredBackgroundBorder(BufferedImage image) {
+    protected CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -255,7 +255,7 @@ class TranslucentPopupMenu extends JPopupMenu {
 class TransparentMenu extends JMenu {
     private JPopupMenu popupMenu;
 
-    public TransparentMenu(String title) {
+    protected TransparentMenu(String title) {
         super(title);
     }
     // Bug ID: JDK-4688783 JPopupMenu hardcoded i JMenu
@@ -329,7 +329,7 @@ class TranslucentPopupFactory extends PopupFactory {
 
 class TranslucentPopup extends Popup {
     private final JWindow popupWindow;
-    public TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
+    protected TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
         super(owner, contents, ownerX, ownerY);
         // create a new heavyweight window
         this.popupWindow = new JWindow();

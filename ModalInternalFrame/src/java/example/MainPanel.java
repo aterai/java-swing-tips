@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
     //menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Nomal)"));
     //menuItem.setMnemonic(KeyEvent.VK_1);
     class ModalInternalFrameAction1 extends AbstractAction {
-        public ModalInternalFrameAction1(String label) {
+        protected ModalInternalFrameAction1(String label) {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
     //menuItem.setMnemonic(KeyEvent.VK_2);
     class ModalInternalFrameAction2 extends AbstractAction {
         private final JPanel glass = new MyGlassPane();
-        public ModalInternalFrameAction2(String label) {
+        protected ModalInternalFrameAction2(String label) {
             super(label);
             glass.setOpaque(false);
             glass.setVisible(false);
@@ -129,7 +129,7 @@ public final class MainPanel extends JPanel {
     //http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
     class ModalInternalFrameAction3 extends AbstractAction {
         private final JPanel glass = new PrintGlassPane();
-        public ModalInternalFrameAction3(String label) {
+        protected ModalInternalFrameAction3(String label) {
             super(label);
             glass.setVisible(false);
         }
@@ -223,7 +223,7 @@ public final class MainPanel extends JPanel {
 
 class MyGlassPane extends JPanel {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6);
-    public MyGlassPane() {
+    protected MyGlassPane() {
         super((LayoutManager) null);
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
             @Override public boolean accept(Component c) {
@@ -241,7 +241,7 @@ class MyGlassPane extends JPanel {
 
 class PrintGlassPane extends JPanel {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(4);
-    public PrintGlassPane() {
+    protected PrintGlassPane() {
         super((LayoutManager) null);
     }
     @Override public void setVisible(boolean isVisible) {
@@ -284,7 +284,7 @@ final class TextureFactory {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0, 0, size, size));
+        return new TexturePaint(img, new Rectangle(size, size));
     }
     public static TexturePaint createCheckerTexture(int cs) {
         return createCheckerTexture(cs, DEFAULT_COLOR);

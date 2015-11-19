@@ -288,6 +288,6 @@ final class TextureFactory {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0, 0, size, size));
+        return new TexturePaint(img, new Rectangle(size, size));
     }
 }

@@ -119,7 +119,7 @@ class TransparentRootPane extends JRootPane {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle(0, 0, sz, sz));
+        return new TexturePaint(img, new Rectangle(sz, sz));
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

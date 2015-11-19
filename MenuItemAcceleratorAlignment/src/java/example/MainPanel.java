@@ -291,7 +291,7 @@ class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
         JMenuItem mi = (JMenuItem) c;
         g.setFont(mi.getFont());
 
-        Rectangle viewRect = new Rectangle(0, 0, mi.getWidth(), mi.getHeight());
+        Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
         MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
 
         sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(
@@ -334,7 +334,7 @@ class RAABasicMenuItemUI extends BasicMenuItemUI {
         JMenuItem mi = (JMenuItem) c;
         g.setFont(mi.getFont());
 
-        Rectangle viewRect = new Rectangle(0, 0, mi.getWidth(), mi.getHeight());
+        Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
         MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
 
         sun.swing.MenuItemLayoutHelper lh = new sun.swing.MenuItemLayoutHelper(

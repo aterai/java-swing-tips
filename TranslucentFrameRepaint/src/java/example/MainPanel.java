@@ -121,10 +121,10 @@ public final class MainPanel extends JPanel {
 
 class TexturePanel extends JPanel {
     protected transient TexturePaint texture;
-    public TexturePanel() {
+    protected TexturePanel() {
         super();
     }
-    public TexturePanel(LayoutManager lm) {
+    protected TexturePanel(LayoutManager lm) {
         super(lm);
     }
     public void setTexturePaint(TexturePaint texture) {
@@ -190,7 +190,7 @@ final class TextureUtil {
             }
         }
         g2.dispose();
-        return new TexturePaint(bi, new Rectangle(0, 0, sz, sz));
+        return new TexturePaint(bi, new Rectangle(sz, sz));
     }
 
     public static TexturePanel makeTexturePanel(JLabel label, URL url) {

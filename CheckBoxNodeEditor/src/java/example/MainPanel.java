@@ -104,11 +104,11 @@ enum Status { SELECTED, DESELECTED, INDETERMINATE }
 class CheckBoxNode {
     public final String label;
     public final Status status;
-    public CheckBoxNode(String label) {
+    protected CheckBoxNode(String label) {
         this.label = label;
         status = Status.INDETERMINATE;
     }
-    public CheckBoxNode(String label, Status status) {
+    protected CheckBoxNode(String label, Status status) {
         this.label = label;
         this.status = status;
     }
@@ -196,7 +196,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final TriStateCheckBox checkBox = new TriStateCheckBox();
 
-    public CheckBoxNodeRenderer() {
+    protected CheckBoxNodeRenderer() {
         super();
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
@@ -234,7 +234,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final TriStateCheckBox checkBox = new TriStateCheckBox();
     private String str;
 
-    public CheckBoxNodeEditor() {
+    protected CheckBoxNodeEditor() {
         super();
         checkBox.setOpaque(false);
         checkBox.setFocusable(false);
@@ -426,7 +426,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //                 //       http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8023474
 //                 //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
 //                 //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
-//                 //    setBounds(new Rectangle(0, 0, d.width, r.height));
+//                 //    setBounds(new Rectangle(d.width, r.height));
 //                 //}
 //                 //System.out.println(getBounds());
 //                 return true;
@@ -620,7 +620,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //                 //       http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8023474
 //                 //if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
 //                 //    System.out.println("XXX: Java 7, only on first run\n" + getBounds());
-//                 //    check.setBounds(new Rectangle(0, 0, d.width, r.height));
+//                 //    check.setBounds(new Rectangle(d.width, r.height));
 //                 //}
 //                 //System.out.println(getBounds());
 //                 return true;
