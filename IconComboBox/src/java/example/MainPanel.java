@@ -52,8 +52,11 @@ public final class MainPanel extends JPanel {
             }
         };
 
-        add(makeTitlePanel("setEditable(false)", Arrays.asList(combo02)), BorderLayout.NORTH);
-        add(makeTitlePanel("setEditable(true)",  Arrays.asList(combo03, combo05, combo06)), BorderLayout.SOUTH);
+        Box box = Box.createVerticalBox();
+        box.add(makeTitlePanel("setEditable(false)", Arrays.asList(combo02)));
+        box.add(Box.createVerticalStrut(5));
+        box.add(makeTitlePanel("setEditable(true)",  Arrays.asList(combo03, combo05, combo06)));
+        add(box, BorderLayout.NORTH);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -74,10 +77,9 @@ public final class MainPanel extends JPanel {
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.insets  = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
-        c.gridy   = 0;
+        c.gridx   = GridBagConstraints.REMAINDER;
         for (JComponent cmp: list) {
             p.add(cmp, c);
-            c.gridy++;
         }
         return p;
     }

@@ -47,15 +47,14 @@ public final class MainPanel extends JPanel {
         }
 
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth  = 2;
-        c.gridheight = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 0, 0, 0);
-        p.add(field, c);
 
         c.gridy++;
+        c.gridwidth = 2;
+        p.add(field, c);
+
+        c.gridy = 1;
         c.gridwidth = 1;
         p.add(new JButton(new AbstractAction("setCurrentDirectory") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -68,11 +67,9 @@ public final class MainPanel extends JPanel {
                 }
             }
         }), c);
-        c.gridx++;
         p.add(check1, c);
 
         c.gridy++;
-        c.gridx = 0;
         p.add(new JButton(new AbstractAction("setSelectedFile") {
             @Override public void actionPerformed(ActionEvent e) {
                 File f = new File(field.getText().trim());
@@ -90,7 +87,6 @@ public final class MainPanel extends JPanel {
                 }
             }
         }), c);
-        c.gridx++;
         p.add(check2, c);
 
         add(p, BorderLayout.NORTH);

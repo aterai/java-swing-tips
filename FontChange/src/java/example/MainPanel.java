@@ -18,7 +18,8 @@ public final class MainPanel extends JPanel {
     private final JButton button = new JButton(new AbstractAction("Dialog") {
         @Override public void actionPerformed(ActionEvent e) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(button, "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
+            JComponent c = (JComponent) e.getSource();
+            JOptionPane.showMessageDialog(c.getRootPane(), "MessageDialog", "Change All Font Size", JOptionPane.ERROR_MESSAGE);
         }
     });
     public MainPanel() {
@@ -78,26 +79,21 @@ public final class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         JPanel panel = new JPanel(new GridBagLayout());
 
-        c.gridheight = 1;
-        c.gridwidth  = 1;
-        c.gridy = 0;
+        c.gridx   = GridBagConstraints.RELATIVE;
+        c.gridy   = GridBagConstraints.REMAINDER;
 
-        c.gridx = 0;
         c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 0);
-        c.anchor = GridBagConstraints.WEST;
+        c.anchor = GridBagConstraints.LINE_START;
         panel.add(label, c);
 
-        c.gridx = 1;
         c.weightx = 1d;
-        c.insets = new Insets(5, 5, 5, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(combo, c);
 
-        c.gridx = 2;
         c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 5);
-        c.anchor = GridBagConstraints.WEST;
+        c.anchor = GridBagConstraints.LINE_END;
         panel.add(button, c);
 
         return panel;

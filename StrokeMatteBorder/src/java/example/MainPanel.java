@@ -23,18 +23,18 @@ public final class MainPanel extends JPanel {
         BasicStroke dashedStroke = new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 2f, array, 0f);
 
         JPanel p = new JPanel(new GridBagLayout());
-        GridBagConstraints gc = new GridBagConstraints();
-        gc.fill = GridBagConstraints.BOTH;
-        gc.weighty = 1;
-        gc.weightx = 1;
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weighty = 1;
+        c.weightx = 1;
         Border dashed = new StrokeMatteBorder(0, 0, 1, 1, dashedStroke, Color.BLACK);
-        for (gc.gridy = 0; gc.gridy < row; gc.gridy++) {
-            for (gc.gridx = 0; gc.gridx < column; gc.gridx++) {
-                JLabel l = new JLabel(String.format(Locale.ENGLISH, "%d%d", gc.gridx, gc.gridy), SwingConstants.CENTER);
+        for (c.gridy = 0; c.gridy < row; c.gridy++) {
+            for (c.gridx = 0; c.gridx < column; c.gridx++) {
+                JLabel l = new JLabel(String.format(Locale.ENGLISH, "%d%d", c.gridx, c.gridy), SwingConstants.CENTER);
                 l.setBorder(BorderFactory.createCompoundBorder(
                     dashed,
                     BorderFactory.createEmptyBorder(1, 1, 0, 0)));
-                p.add(l, gc);
+                p.add(l, c);
             }
         }
         p.setBorder(BorderFactory.createCompoundBorder(
@@ -70,7 +70,7 @@ class StrokeMatteBorder extends EmptyBorder {
     private final transient BasicStroke stroke;
     private final Paint paint;
 
-    public StrokeMatteBorder(int top, int left, int bottom, int right, BasicStroke stroke, Paint paint) {
+    protected StrokeMatteBorder(int top, int left, int bottom, int right, BasicStroke stroke, Paint paint) {
         super(top, left, bottom, right);
         this.stroke = stroke;
         this.paint = paint;

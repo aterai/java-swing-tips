@@ -50,10 +50,10 @@ public final class MainPanel extends JPanel {
         c.fill    = GridBagConstraints.HORIZONTAL;
         c.insets  = new Insets(5, 5, 5, 5);
         c.weightx = 1d;
-        c.gridy   = 0;
+        c.gridx   = GridBagConstraints.REMAINDER;
+        c.gridy   = GridBagConstraints.RELATIVE;
         for (JComponent cmp: list) {
             p.add(cmp, c);
-            c.gridy++;
         }
         return p;
     }

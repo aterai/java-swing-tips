@@ -54,18 +54,13 @@ public final class MainPanel extends JPanel {
 
         GridBagConstraints c = new GridBagConstraints();
         item.setLayout(new GridBagLayout());
-        c.gridheight = 1;
-        c.gridwidth  = 1;
-        c.gridy = 0;
-        c.gridx = 0;
-
+        c.anchor  = GridBagConstraints.LINE_END;
+        //c.gridx   = GridBagConstraints.RELATIVE;
         c.weightx = 1d;
+
         c.fill = GridBagConstraints.HORIZONTAL;
         item.add(Box.createHorizontalGlue(), c);
-        c.gridx = 1;
         c.fill = GridBagConstraints.NONE;
-        c.weightx = 0d;
-        c.anchor = GridBagConstraints.EAST;
         item.add(edit, c);
 
         return item;
