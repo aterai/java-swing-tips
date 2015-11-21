@@ -51,21 +51,22 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
+
         c.gridx   = 0;
         c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p2.add(new JLabel("setVerticalAlignment:"), c);
-        c.gridy   = 1; p2.add(new JLabel("setVerticalTextPosition:"), c);
-        c.gridy   = 2; p2.add(new JLabel("setHorizontalAlignment:"), c);
-        c.gridy   = 3; p2.add(new JLabel("setHorizontalTextPosition:"), c);
+        c.anchor  = GridBagConstraints.LINE_END;
+        p2.add(new JLabel("setVerticalAlignment:"), c);
+        p2.add(new JLabel("setVerticalTextPosition:"), c);
+        p2.add(new JLabel("setHorizontalAlignment:"), c);
+        p2.add(new JLabel("setHorizontalTextPosition:"), c);
+
         c.gridx   = 1;
         c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p2.add(verticalAlignmentChoices, c);
-        c.gridy   = 1; p2.add(verticalTextPositionChoices, c);
-        c.gridy   = 2; p2.add(horizontalAlignmentChoices, c);
-        c.gridy   = 3; p2.add(horizontalTextPositionChoices, c);
+        p2.add(verticalAlignmentChoices, c);
+        p2.add(verticalTextPositionChoices, c);
+        p2.add(horizontalAlignmentChoices, c);
+        p2.add(horizontalTextPositionChoices, c);
 
         add(p1);
         add(p2, BorderLayout.NORTH);
@@ -122,7 +123,7 @@ class StarburstIcon implements Icon {
     private static final int R1 = 20;
     private static final int VC = 18;
     private final Shape star;
-    public StarburstIcon() {
+    protected StarburstIcon() {
         double agl = 0d;
         double add = 2 * Math.PI / (VC * 2);
         Path2D.Double p = new Path2D.Double();

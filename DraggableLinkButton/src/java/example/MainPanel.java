@@ -33,19 +33,10 @@ public final class MainPanel extends JPanel {
         });
         label.setUI(LinkViewButtonUI.createUI(label, MYSITE));
 
-        JPanel p = new JPanel(new GridBagLayout());
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
         p.setBorder(BorderFactory.createTitledBorder("Draggable Hyperlink"));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
-
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.EAST;
-        c.gridy   = 0; p.add(new JLabel("D&D->Brouser: "), c);
-        c.gridx   = 1;
-        c.weightx = 1d;
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p.add(label, c);
+        p.add(new JLabel("D&D->Brouser:"));
+        p.add(label);
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(textArea));
@@ -162,7 +153,7 @@ class LinkViewButtonUI extends BasicButtonUI {
         });
         return LINK_VIEW_BUTTON_UI;
     }
-    public LinkViewButtonUI() {
+    protected LinkViewButtonUI() {
         super();
         size = new Dimension();
         viewRect = new Rectangle();

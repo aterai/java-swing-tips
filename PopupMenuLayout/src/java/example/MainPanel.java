@@ -20,30 +20,30 @@ public final class MainPanel extends JPanel {
         JPopupMenu popup = new JPopupMenu();
         GridBagConstraints c = new GridBagConstraints();
         popup.setLayout(new GridBagLayout());
-        c.gridheight = 1;
 
         c.weightx = 1d;
         c.weighty = 0d;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.CENTER;
 
-        c.gridwidth = 1;
         c.gridy = 0;
-        c.gridx = 0; popup.add(makeButton("\u21E6"), c);
-        c.gridx = 1; popup.add(makeButton("\u21E8"), c);
-        c.gridx = 2; popup.add(makeButton("\u21BB"), c);
-        c.gridx = 3; popup.add(makeButton("\u2729"), c);
+        popup.add(makeButton("\u21E6"), c);
+        popup.add(makeButton("\u21E8"), c);
+        popup.add(makeButton("\u21BB"), c);
+        popup.add(makeButton("\u2729"), c);
 
+        c.insets = new Insets(2, 0, 2, 0);
         c.gridwidth = 4;
         c.gridx = 0;
-        c.insets = new Insets(2, 0, 2, 0);
-        c.gridy = 1; popup.add(new JSeparator(), c);
+        c.gridy = GridBagConstraints.RELATIVE;
+        popup.add(new JSeparator(), c);
+
         c.insets = new Insets(0, 0, 0, 0);
-        c.gridy = 2; popup.add(new JMenuItem("aaaaaaaaaa"), c);
-        c.gridy = 3; popup.add(new JPopupMenu.Separator(), c);
-        c.gridy = 4; popup.add(new JMenuItem("bbbb"), c);
-        c.gridy = 5; popup.add(new JMenuItem("ccccccccccccccccccccc"), c);
-        c.gridy = 6; popup.add(new JMenuItem("dddddddddd"), c);
+        popup.add(new JMenuItem("aaaaaaaaaa"), c);
+        popup.add(new JPopupMenu.Separator(), c);
+        popup.add(new JMenuItem("bbbb"), c);
+        popup.add(new JMenuItem("ccccccccccccccccccccc"), c);
+        popup.add(new JMenuItem("dddddddddd"), c);
 
         return popup;
     }

@@ -27,21 +27,16 @@ public final class MainPanel extends JPanel {
         progressBar.setOpaque(false);
         progressBar.setUI(new GradientPalletProgressBarUI());
 
-        GridBagConstraints c = new GridBagConstraints();
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createEmptyBorder(32, 8, 0, 8));
 
-        c.gridheight = 1;
-        c.gridwidth  = 1;
-        c.gridy = 0;
+        GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx = 0;
         c.insets = new Insets(0, 0, 0, 4);
         c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(progressBar, c);
 
-        c.gridx = 1;
         c.weightx = 0d;
         p.add(new JButton(new AbstractAction("Start") {
             @Override public void actionPerformed(ActionEvent e) {

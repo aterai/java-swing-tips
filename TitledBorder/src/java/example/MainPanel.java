@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     private final JPanel panel = new JPanel();
 
     public MainPanel() {
-        super(new BorderLayout());
+        super(new BorderLayout(5, 5));
         verticalOrientationChoices.addItemListener(new ItemListener() {
             @Override public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -33,20 +33,21 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
         c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p2.add(new JLabel(" TitlePosition"), c);
-        c.gridy   = 1; p2.add(new JLabel(" TitleJustification"), c);
+        c.insets  = new Insets(5, 5, 5, 5);
+        c.anchor  = GridBagConstraints.LINE_END;
+        p2.add(new JLabel("TitlePosition:"), c);
+        p2.add(new JLabel("TitleJustification:"), c);
+
         c.gridx   = 1;
         c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p2.add(verticalOrientationChoices, c);
-        c.gridy   = 1; p2.add(justificationChoices, c);
+        p2.add(verticalOrientationChoices, c);
+        p2.add(justificationChoices, c);
 
-        add(p2, BorderLayout.NORTH); add(panel);
-        setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        add(p2, BorderLayout.NORTH);
+        add(panel);
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private void initTitleBorder() {

@@ -47,21 +47,20 @@ public final class MainPanel extends JPanel {
         Border outside = BorderFactory.createTitledBorder("setBackground(1.0, 0.8, 0.8, 0.2)");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
 
         c.gridx   = 0;
         c.insets  = new Insets(15, 15, 15, 0);
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; add(new JLabel("0. setOpaque(true)"), c);
-        c.gridy   = 1; add(new JLabel("1. setOpaque(false)"), c);
-        c.gridy   = 2; add(new JLabel("2. 1+paintComponent"), c);
+        c.anchor  = GridBagConstraints.LINE_START;
+        add(new JLabel("0. setOpaque(true)"), c);
+        add(new JLabel("1. setOpaque(false)"), c);
+        add(new JLabel("2. 1+paintComponent"), c);
 
         c.gridx   = 1;
         c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; add(field0, c);
-        c.gridy   = 1; add(field1, c);
-        c.gridy   = 2; add(field2, c);
+        add(field0, c);
+        add(field1, c);
+        add(field2, c);
     }
     private TexturePaint makeTexturePaint() {
         //Viva! edo>http://www.viva-edo.com/komon/edokomon.html

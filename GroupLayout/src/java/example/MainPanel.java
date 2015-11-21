@@ -45,19 +45,18 @@ public final class MainPanel extends JPanel {
         Border outside = BorderFactory.createTitledBorder("GridBagLayout");
         p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
 
-        c.gridx   = 0;
         c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p2.add(label3, c);
-        c.gridy   = 1; p2.add(label4, c);
+        c.anchor  = GridBagConstraints.LINE_START;
+        c.gridx   = 0;
+        p2.add(label3, c);
+        p2.add(label4, c);
 
-        c.gridx   = 1;
-        c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p2.add(tf3, c);
-        c.gridy   = 1; p2.add(tf4, c);
+        c.weightx = 1d;
+        c.gridx   = 1;
+        p2.add(tf3, c);
+        p2.add(tf4, c);
 
         add(p1);
         add(p2);

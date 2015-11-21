@@ -27,17 +27,16 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
         c.gridx   = 0;
         c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.EAST;
-        c.gridy   = 0; p.add(new JLabel("MillisToDecideToPopup:"), c);
-        c.gridy   = 1; p.add(new JLabel("MillisToPopup:"), c);
+        c.anchor  = GridBagConstraints.LINE_END;
+        p.add(new JLabel("MillisToDecideToPopup:"), c);
+        p.add(new JLabel("MillisToPopup:"), c);
         c.gridx   = 1;
         c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p.add(millisToDecideToPopup, c);
-        c.gridy   = 1; p.add(millisToPopup, c);
+        p.add(millisToDecideToPopup, c);
+        p.add(millisToPopup, c);
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());

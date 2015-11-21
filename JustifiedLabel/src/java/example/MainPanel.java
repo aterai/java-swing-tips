@@ -23,27 +23,26 @@ public final class MainPanel extends JPanel {
         Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("JLabel text-align:justify");
         p.setBorder(BorderFactory.createCompoundBorder(outside, inside));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
 
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p.add(l0, c);
-        c.gridy   = 1; p.add(l1, c);
-        c.gridy   = 2; p.add(l2, c);
-        c.gridy   = 3; p.add(l3, c);
-        c.gridy   = 4; p.add(l4, c);
-        c.gridy   = 5; p.add(l5, c);
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5, 5, 5, 0);
+        c.fill   = GridBagConstraints.HORIZONTAL;
+        c.gridx  = 0;
+        p.add(l0, c);
+        p.add(l1, c);
+        p.add(l2, c);
+        p.add(l3, c);
+        p.add(l4, c);
+        p.add(l5, c);
 
         c.gridx   = 1;
         c.weightx = 1d;
-        c.gridy   = 0; p.add(new JTextField(), c);
-        c.gridy   = 1; p.add(new JTextField(), c);
-        c.gridy   = 2; p.add(new JTextField(), c);
-        c.gridy   = 3; p.add(new JTextField(), c);
-        c.gridy   = 4; p.add(new JTextField(), c);
-        c.gridy   = 5; p.add(new JTextField(), c);
+        p.add(new JTextField(), c);
+        p.add(new JTextField(), c);
+        p.add(new JTextField(), c);
+        p.add(new JTextField(), c);
+        p.add(new JTextField(), c);
+        p.add(new JTextField(), c);
 
         add(p);
         add(new JustifiedLabel("あいうえおかきくけこ"), BorderLayout.SOUTH);
@@ -77,10 +76,10 @@ public final class MainPanel extends JPanel {
 class JustifiedLabel extends JLabel {
     private GlyphVector gvtext;
     private int prevWidth = -1;
-    public JustifiedLabel() {
+    protected JustifiedLabel() {
         this(null);
     }
-    public JustifiedLabel(String str) {
+    protected JustifiedLabel(String str) {
         super(str);
     }
     @Override public void setText(String text) {

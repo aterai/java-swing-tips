@@ -28,19 +28,18 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("JComboBox"));
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
 
         c.gridx   = 0;
         c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p.add(new JLabel("Wheel:"), c);
-        c.gridy   = 1; p.add(new JLabel("Nomal:"), c);
+        c.anchor  = GridBagConstraints.LINE_END;
+        p.add(new JLabel("Wheel:"), c);
+        p.add(new JLabel("Nomal:"), c);
 
         c.gridx   = 1;
         c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p.add(combo, c);
-        c.gridy   = 1; p.add(makeComboBox(), c);
+        p.add(combo, c);
+        p.add(makeComboBox(), c);
 
         textArea.setText("dummy");
         add(p, BorderLayout.NORTH);

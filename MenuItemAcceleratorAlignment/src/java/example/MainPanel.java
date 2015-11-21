@@ -116,21 +116,17 @@ public final class MainPanel {
             return item;
         }
 
-        GridBagConstraints c = new GridBagConstraints();
         item.setLayout(new GridBagLayout());
-        c.gridheight = 1;
-        c.gridwidth  = 1;
-        c.gridy = 0;
-        c.gridx = 0;
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.LINE_END;
         c.insets = new Insets(0, 0, 0, 4);
 
         c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
         item.add(Box.createHorizontalGlue(), c);
-        c.gridx = 1;
-        c.fill = GridBagConstraints.NONE;
+
         c.weightx = 0d;
-        c.anchor = GridBagConstraints.EAST;
+        c.fill = GridBagConstraints.NONE;
         item.add(label, c);
 
         item.setMnemonic(mi.getMnemonic());

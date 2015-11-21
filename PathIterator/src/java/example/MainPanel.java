@@ -63,21 +63,20 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createTitledBorder("Preferences"));
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
 
         c.gridx   = 0;
         c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p.add(new JLabel("Addendum Circle Radius:"), c);
-        c.gridy   = 1; p.add(new JLabel("Dedendum Circle Radius:"), c);
-        c.gridy   = 2; p.add(new JLabel("Count of Teeth:"), c);
+        c.anchor  = GridBagConstraints.LINE_END;
+        p.add(new JLabel("Addendum Circle Radius:"), c);
+        p.add(new JLabel("Dedendum Circle Radius:"), c);
+        p.add(new JLabel("Count of Teeth:"), c);
 
         c.gridx   = 1;
         c.weightx = 1d;
         c.fill    = GridBagConstraints.HORIZONTAL;
-        c.gridy   = 0; p.add(spinner1,  c);
-        c.gridy   = 1; p.add(spinner2,  c);
-        c.gridy   = 2; p.add(vcSpinner, c);
+        p.add(spinner1,  c);
+        p.add(spinner2,  c);
+        p.add(vcSpinner, c);
         return p;
     }
     private JComponent makeSVGPanel() {

@@ -38,17 +38,18 @@ public final class MainPanel extends JPanel {
         Border inside  = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
         Border outside = BorderFactory.createTitledBorder("JComboBox Padding Test");
         p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets  = new Insets(5, 5, 5, 0);
+        c.anchor  = GridBagConstraints.LINE_END;
         for (int i = 0; i < list.size(); i++) {
-            GridBagConstraints c = new GridBagConstraints();
-            c.gridheight = 1;
             c.gridx   = 0;
-            c.insets  = new Insets(5, 5, 5, 0);
-            c.anchor  = GridBagConstraints.WEST;
-            c.gridy   = i; p2.add(new JLabel(String.format("%d:", i)), c);
+            c.weightx = 0d;
+            c.fill    = GridBagConstraints.NONE;
+            p2.add(new JLabel(String.format("%d:", i)), c);
             c.gridx   = 1;
             c.weightx = 1d;
             c.fill    = GridBagConstraints.HORIZONTAL;
-            c.gridy   = i; p2.add(list.get(i), c);
+            p2.add(list.get(i), c);
         }
         p2.revalidate(); //??? JDK 1.7.0 Nimbus ???
     }

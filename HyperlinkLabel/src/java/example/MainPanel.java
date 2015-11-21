@@ -47,23 +47,21 @@ public final class MainPanel extends JPanel {
         Border outside = BorderFactory.createTitledBorder("HyperlinkLabel");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
+        c.insets  = new Insets(5, 5, 5, 0);
 
         c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.EAST;
-        c.gridy   = 0; add(new JLabel("JLabel+MouseListener: "), c);
-        c.gridy   = 1; add(new JLabel("JButton: "), c);
-        c.gridy   = 2; add(new JLabel("JButton+ButtonUI: "), c);
-        c.gridy   = 3; add(new JLabel("JEditorPane+HyperlinkListener: "), c);
+        c.anchor  = GridBagConstraints.LINE_END;
+        add(new JLabel("JLabel+MouseListener: "), c);
+        add(new JLabel("JButton: "), c);
+        add(new JLabel("JButton+ButtonUI: "), c);
+        add(new JLabel("JEditorPane+HyperlinkListener: "), c);
 
         c.gridx   = 1;
-        c.weightx = 1d;
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; add(new URILabel(MYSITE), c);
-        c.gridy   = 1; add(new JButton(browseAction), c);
-        c.gridy   = 2; add(new HyperlinkButton(browseAction), c);
-        c.gridy   = 3; add(editor, c);
+        c.anchor  = GridBagConstraints.LINE_START;
+        add(new URILabel(MYSITE), c);
+        add(new JButton(browseAction), c);
+        add(new HyperlinkButton(browseAction), c);
+        add(editor, c);
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -91,7 +89,7 @@ public final class MainPanel extends JPanel {
 }
 
 class URILabel extends JLabel {
-    public URILabel(String h) {
+    protected URILabel(String h) {
         super(String.format("<html><a href='%s'>%s</a>", h, h));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {
@@ -121,23 +119,23 @@ class HyperlinkButton extends JButton {
         setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-    public LinkViewButtonUI getUI() {
+    @Override public LinkViewButtonUI getUI() {
         return BasicLinkViewButtonUI.createUI(this);
     }
-    public HyperlinkButton() {
+    protected HyperlinkButton() {
         this(null, null);
     }
-    public HyperlinkButton(Icon icon) {
+    protected HyperlinkButton(Icon icon) {
         this(null, icon);
     }
-    public HyperlinkButton(String text) {
+    protected HyperlinkButton(String text) {
         this(text, null);
     }
-    public HyperlinkButton(Action a) {
+    protected HyperlinkButton(Action a) {
         this();
         super.setAction(a);
     }
-    public HyperlinkButton(String text, Icon icon) {
+    protected HyperlinkButton(String text, Icon icon) {
         super(text, icon);
     }
 }
@@ -157,7 +155,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
 //         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return LINKVIEW_BUTTON_UI;
     }
-    public BasicLinkViewButtonUI() {
+    protected BasicLinkViewButtonUI() {
         super();
         size = new Dimension();
         viewRect = new Rectangle();

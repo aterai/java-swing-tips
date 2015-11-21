@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     private SwingWorker<String[], Integer> worker;
     private int counter;
     public MainPanel() {
-        super(new BorderLayout());
+        super(new BorderLayout(5, 5));
         combo.setRenderer(new ProgressCellRenderer());
         button = new JButton(new AbstractAction("load") {
             @Override public void actionPerformed(ActionEvent e) {
@@ -28,6 +28,7 @@ public final class MainPanel extends JPanel {
         });
         add(createPanel(combo, button, "ProgressComboBox: "), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -92,38 +93,22 @@ public final class MainPanel extends JPanel {
     }
 
     public JPanel createPanel(JComponent cmp, JButton btn, String str) {
-//         JPanel panel = new JPanel(new BorderLayout(5, 5));
-//         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-//         panel.add(new JLabel(str), BorderLayout.WEST);
-//         panel.add(cmp);
-//         panel.add(btn, BorderLayout.EAST);
-
         GridBagConstraints c = new GridBagConstraints();
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel p = new JPanel(new GridBagLayout());
 
-        c.gridheight = 1;
-        c.gridwidth  = 1;
-        c.gridy = 0;
-
-        c.gridx = 0;
-        c.weightx = 0d;
         c.insets = new Insets(5, 5, 5, 0);
-        c.anchor = GridBagConstraints.WEST;
-        panel.add(new JLabel(str), c);
+        p.add(new JLabel(str), c);
 
-        c.gridx = 1;
         c.weightx = 1d;
-        //c.insets = new Insets(5, 5, 5, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(cmp, c);
+        p.add(cmp, c);
 
-        c.gridx = 2;
         c.weightx = 0d;
+        c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(5, 5, 5, 5);
-        c.anchor = GridBagConstraints.WEST;
-        panel.add(btn, c);
+        p.add(btn, c);
 
-        return panel;
+        return p;
     }
 
     public static void main(String... args) {

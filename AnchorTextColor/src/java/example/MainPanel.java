@@ -38,19 +38,18 @@ public final class MainPanel extends JPanel {
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1;
+        c.insets  = new Insets(5, 5, 5, 0);
 
         c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.EAST;
-        c.gridy   = 0; p.add(new JLabel("JLabel: "), c);
-        c.gridy   = 2; p.add(new JLabel("JEditorPane: "), c);
+        c.anchor  = GridBagConstraints.LINE_END;
+        p.add(new JLabel("JLabel:"), c);
+        p.add(new JLabel("JEditorPane:"), c);
 
         c.gridx   = 1;
         c.weightx = 1d;
-        c.anchor  = GridBagConstraints.WEST;
-        c.gridy   = 0; p.add(label, c);
-        c.gridy   = 2; p.add(editor, c);
+        c.anchor  = GridBagConstraints.LINE_START;
+        p.add(label, c);
+        p.add(editor, c);
 
         return p;
     }
