@@ -2,7 +2,7 @@
 <!-- Encoding Hint: 雀の往来 -->
 <project>
  <property name="jnlp.title"    value="JST JSpinnerで日付を表示" />
- <property name="jnlp.Name"     value="SpinnerDateModel " />
+ <property name="jnlp.Name"     value="SpinnerDateModel" />
  <property name="jnlp.name"     value="spinnerdatemodel" />
  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />

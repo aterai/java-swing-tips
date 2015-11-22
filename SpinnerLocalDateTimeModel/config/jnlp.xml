@@ -2,7 +2,7 @@
 <!-- Encoding Hint: 雀の往来 -->
 <project>
  <property name="jnlp.title"    value="JST LocalDateTimeでJSpinner作成" />
- <property name="jnlp.Name"     value="SpinnerLocalDateTimeModel " />
+ <property name="jnlp.Name"     value="SpinnerLocalDateTimeModel" />
  <property name="jnlp.name"     value="spinnerlocaldatetimemodel" />
  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />

@@ -2,7 +2,7 @@
 <!-- Encoding Hint: 雀の往来 -->
 <project>
  <property name="jnlp.title"    value="JST JSpinnerの一部を編集不可に" />
- <property name="jnlp.Name"     value="ParticularyNonEditableSpinner " />
+ <property name="jnlp.Name"     value="ParticularyNonEditableSpinner" />
  <property name="jnlp.name"     value="particularynoneditablespinner" />
  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
