@@ -12,8 +12,8 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(makeTestPanel("JSeparator", new JSeparator()));
-        p.add(makeTestPanel("GradientSeparator", new GradientSeparator()));
+        p.add(makeTestPanel("JSeparator", new JSeparator(), 10));
+        p.add(makeTestPanel("GradientSeparator", new GradientSeparator(), 10));
 
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -28,37 +28,27 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JPanel makeTestPanel(String title, JSeparator sp) {
+    private static JPanel makeTestPanel(String title, JSeparator sp, int indent) {
         JPanel p = new JPanel(new GridBagLayout());
         p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(2, 2, 2, 2);
-        c.gridheight = 1;
-
-        c.gridwidth = 3;
-        c.gridx = 0;
-        c.gridy = 0;
+        c.gridwidth = 2;
         c.weightx = 1d;
-        c.anchor = GridBagConstraints.EAST;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill    = GridBagConstraints.HORIZONTAL;
+        c.anchor  = GridBagConstraints.LINE_START;
         p.add(makeTitlePanel(title, sp), c);
 
+        c.insets = new Insets(2, 2 + indent, 2, 2);
         c.gridwidth = 1;
-        c.gridx = 2;
         c.gridy = 1;
+        p.add(new JTextField(), c);
+
+        c.insets = new Insets(2, 0, 2, 2);
         c.weightx = 0d;
-        c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
         p.add(new JButton("dummy"), c);
-
-        c.insets = new Insets(2, 10, 2, 2);
-        c.gridwidth = 2;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1d;
-        c.anchor = GridBagConstraints.EAST;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        p.add(new JTextField(), c);
 
         return p;
     }
@@ -67,15 +57,8 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(2, 2, 2, 2);
-        c.gridheight = 1;
-        c.gridy = 0;
-
-        c.gridwidth = 1;
-        c.gridx = 0;
         p.add(new JLabel(title), c);
 
-        c.gridwidth = 2;
-        c.gridx = 1;
         c.weightx = 1d;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(separator, c);
@@ -107,10 +90,10 @@ public final class MainPanel extends JPanel {
 }
 
 class GradientSeparator extends JSeparator {
-    public GradientSeparator() {
+    protected GradientSeparator() {
         super();
     }
-    public GradientSeparator(int orientation) {
+    protected GradientSeparator(int orientation) {
         super(orientation);
     }
     @Override public void updateUI() {
