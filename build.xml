@@ -106,7 +106,10 @@
     </copy>
   </target>
 
-  <target name="prepare-web" depends="prepare">
+  <condition property="have.web">
+    <available file="${web.dir}" />
+  </condition>
+  <target name="prepare-web" depends="prepare" if="have.web">
     <filter token="codebase"       value="${jnlp.codebase}" />
     <filter token="title"          value="${jnlp.title}" />
     <filter token="homepage"       value="${jnlp.homepage}" />
