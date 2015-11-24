@@ -10,42 +10,53 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final JTextField field = new JTextField(30);
-    private final JTextArea  outf  = new JTextArea();
+    private final JTextArea textArea = new JTextArea();
     private final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
     private final DateFormat df = DateFormat.getDateTimeInstance();
     public MainPanel() {
         super(new BorderLayout());
 
-        field.setText("Mon, 19 Apr 2004 16:31:41 +0900");
-        outf.setEditable(false);
+        field.setText(format.format(new Date()));
+        textArea.setEditable(false);
         df.setTimeZone(TimeZone.getTimeZone("JST"));
 
-        JButton button = new JButton(new AbstractAction("Convert") {
+        JPanel bp = new JPanel(new GridLayout(1, 0, 2, 2));
+        bp.add(new JButton(new AbstractAction("format") {
+            @Override public void actionPerformed(ActionEvent e) {
+                field.setText(format.format(new Date()));
+            }
+        }));
+        bp.add(new JButton(new AbstractAction("parse") {
             @Override public void actionPerformed(ActionEvent e) {
                 String str = field.getText().trim();
                 ParsePosition pp = new ParsePosition(0);
                 Date date = format.parse(str, pp);
-                if (Objects.nonNull(date)) {
-                    outf.append(df.format(date) + "\n");
-                } else {
-                    outf.append("error\n");
-                }
+                String o = Objects.nonNull(date) ? df.format(date) : "error";
+                textArea.append(o + "\n");
             }
-        });
+        }));
 
-        Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createTitledBorder("DateFormat"));
-        box.add(field);
-        box.add(Box.createVerticalStrut(5));
-        box.add(button);
-        button.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        GridBagConstraints c = new GridBagConstraints();
+        JPanel p = new JPanel(new GridBagLayout());
+        p.setBorder(BorderFactory.createTitledBorder("DateFormat"));
 
-        add(box, BorderLayout.NORTH);
-        add(new JScrollPane(outf));
+        c.insets  = new Insets(2, 2, 2, 2);
+        c.fill    = GridBagConstraints.HORIZONTAL;
+        c.anchor  = GridBagConstraints.LINE_END;
+        c.weightx = 1d;
+        p.add(field, c);
+
+        c.insets  = new Insets(2, 0, 2, 2);
+        c.fill    = GridBagConstraints.NONE;
+        c.weightx = 0d;
+        c.gridy   = 1;
+        p.add(bp, c);
+
+        add(p, BorderLayout.NORTH);
+        add(new JScrollPane(textArea));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
