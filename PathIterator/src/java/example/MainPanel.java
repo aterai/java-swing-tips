@@ -4,8 +4,12 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
+//import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+// import java.io.*;
+// import java.nio.charset.StandardCharsets;
+// import java.util.Arrays;
 import java.util.Objects;
 import javax.jnlp.*;
 import javax.swing.*;
@@ -100,6 +104,44 @@ public final class MainPanel extends JPanel {
 //         p.add(l, BorderLayout.NORTH);
         return p;
     }
+//     class MyDragGestureListener implements DragGestureListener {
+//         @Override public void dragGestureRecognized(DragGestureEvent dge) {
+//             File outfile;
+//             try {
+//                 outfile = File.createTempFile("starburst", ".svg");
+//                 FileWriter w = new FileWriter(outfile);
+//                 w.writeData(textArea.getText());
+//                 //outfile.deleteOnExit();
+//             } catch (IOException ioe) {
+//                 Toolkit.getDefaultToolkit().beep();
+//                 JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
+//                 return;
+//             }
+//             if (Objects.isNull(outfile)) {
+//                 return;
+//             }
+//             final File tmpfile = outfile;
+//             Transferable tran = new Transferable() {
+//                 @Override public Object getTransferData(DataFlavor flavor) {
+//                     return Arrays.asList(tmpfile);
+//                 }
+//                 @Override public DataFlavor[] getTransferDataFlavors() {
+//                     return new DataFlavor[] {DataFlavor.javaFileListFlavor};
+//                 }
+//                 @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+//                     return flavor.equals(DataFlavor.javaFileListFlavor);
+//                 }
+//             };
+//             DragSourceAdapter dsa = new DragSourceAdapter() {
+//                 @Override public void dragDropEnd(DragSourceDropEvent dsde) {
+//                     if (dsde.getDropSuccess()) {
+//                         System.out.println(dsde);
+//                     }
+//                 }
+//             };
+//             dge.startDrag(DragSource.DefaultMoveDrop, tran, dsa);
+//         }
+//     }
     private void initStar() {
         int r1 = outer.getNumber().intValue();
         int r2 = inner.getNumber().intValue();
@@ -189,44 +231,6 @@ final class StarburstSVGMaker {
         AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, or, 0);
         return new Path2D.Double(p, at);
     }
-//     class MyDragGestureListener implements DragGestureListener {
-//         @Override public void dragGestureRecognized(DragGestureEvent dge) {
-//             File outfile;
-//             try {
-//                 outfile = File.createTempFile("starburst", ".svg");
-//                 FileWriter w = new FileWriter(outfile);
-//                 w.writeData(textArea.getText());
-//                 //outfile.deleteOnExit();
-//             } catch (IOException ioe) {
-//                 Toolkit.getDefaultToolkit().beep();
-//                 JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
-//                 return;
-//             }
-//             if (Objects.isNull(outfile)) {
-//                 return;
-//             }
-//             final File tmpfile = outfile;
-//             Transferable tran = new Transferable() {
-//                 @Override public Object getTransferData(DataFlavor flavor) {
-//                     return Arrays.asList(tmpfile);
-//                 }
-//                 @Override public DataFlavor[] getTransferDataFlavors() {
-//                     return new DataFlavor[] {DataFlavor.javaFileListFlavor};
-//                 }
-//                 @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-//                     return flavor.equals(DataFlavor.javaFileListFlavor);
-//                 }
-//             };
-//             DragSourceAdapter dsa = new DragSourceAdapter() {
-//                 @Override public void dragDropEnd(DragSourceDropEvent dsde) {
-//                     if (dsde.getDropSuccess()) {
-//                         System.out.println(dsde);
-//                     }
-//                 }
-//             };
-//             dge.startDrag(DragSource.DefaultMoveDrop, tran, dsa);
-//         }
-//     }
 }
 
 class StarIcon implements Icon {
@@ -260,19 +264,10 @@ class StarIcon implements Icon {
 //         this.file = file;
 //     }
 //     public void writeData(String str) {
-//         BufferedWriter bufferedWriter = null;
-//         try {
-//             bufferedWriter = new BufferedWriter(
-//                 new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-//             bufferedWriter.write(str, 0, str.length());
+//         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+//             writer.write(str, 0, str.length());
 //         } catch (IOException e) {
 //             e.printStackTrace();
-//         } finally {
-//             try {
-//                 bufferedWriter.close();
-//             } catch (IOException e) {
-//                 e.printStackTrace();
-//             }
 //         }
 //     }
 // }

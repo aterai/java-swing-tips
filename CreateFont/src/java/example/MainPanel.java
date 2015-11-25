@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -23,7 +24,7 @@ public final class MainPanel extends JPanel {
         }
 
         URL url = getClass().getResource("bar.utf8.txt");
-        try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
              textpane.read(reader, "text");
         } catch (IOException ex) {
             ex.printStackTrace();

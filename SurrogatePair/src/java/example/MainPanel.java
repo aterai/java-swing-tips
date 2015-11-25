@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 //import javax.jnlp.*;
 import javax.swing.*;
@@ -23,7 +24,7 @@ public final class MainPanel extends JPanel {
         editor1.setEditorKit(htmlEditorKit);
 
         final URL url = getClass().getResource("SurrogatePair.html");
-        try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
             editor1.read(reader, "html");
         } catch (IOException ex) {
             editor1.setText("<html><p>(&#xD85B;&#xDE40;) (&#x26E40;)<br />(&#xD842;&#xDF9F;) (&#x00020B9F;)</p></html>");

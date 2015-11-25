@@ -105,36 +105,18 @@ class CopyOnSelectListener extends MouseAdapter implements CaretListener {
 }
 
 class TextAreaOutputStream extends OutputStream {
-    private final ByteArrayOutputStream buf = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     private final JTextArea textArea;
-    public TextAreaOutputStream(JTextArea textArea) {
+    protected TextAreaOutputStream(JTextArea textArea) {
         super();
         this.textArea = textArea;
     }
     @Override public void flush() throws IOException {
-        super.flush();
-        buf.flush();
-    }
-    @Override public void close() throws IOException {
-        super.close();
-        buf.close();
+        textArea.append(buffer.toString("UTF-8"));
+        buffer.reset();
     }
     @Override public void write(int b) throws IOException {
-        if (b == '\r') {
-            return;
-        }
-        if (b == '\n') {
-            final String text = buf.toString("UTF-8");
-            buf.reset();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    textArea.append(text + '\n');
-                    textArea.setCaretPosition(textArea.getDocument().getLength());
-                }
-            });
-            return;
-        }
-        buf.write(b);
+        buffer.write(b);
     }
 }
 
@@ -153,7 +135,7 @@ class TextAreaHandler extends StreamHandler {
             }
         }
     }
-    public TextAreaHandler(OutputStream os) {
+    protected TextAreaHandler(OutputStream os) {
         super();
         configure();
         setOutputStream(os);

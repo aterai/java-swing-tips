@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
@@ -276,7 +277,7 @@ class UTF8ResourceBundleControl extends ResourceBundle.Control {
             }
             if (Objects.nonNull(stream)) {
                 //BufferedInputStream bis = new BufferedInputStream(stream);
-                try (Reader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+                try (Reader r = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
                     bundle = new PropertyResourceBundle(r);
                 }
             }
