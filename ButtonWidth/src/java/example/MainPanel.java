@@ -18,19 +18,33 @@ public final class MainPanel extends JPanel {
         box1.add(new JButton("a"));
         box1.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
-        JComponent box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")), 120, 5);
-        JComponent box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, 5);
-        JComponent box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, 2);
-        JComponent box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"), new JButton("gap:2")), 2);
+        JComponent box2 = createRightAlignButtonBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")),    120, 5);
+        JComponent box3 = createRightAlignButtonBox3(Arrays.asList(new JButton("Spring+Box"),       new JButton("Layout")), 100, 5);
+        JComponent box4 = createRightAlignButtonBox4(Arrays.asList(new JButton("SpringLayout"),     new JButton("gap:2")),  120, 2);
+        JComponent box5 = createRightAlignButtonBox5(Arrays.asList(new JButton("GridLayout+Box"),   new JButton("gap:2")),  2);
+        JComponent box6 = createRightAlignButtonBox6(Arrays.asList(new JButton("GridBugLayout"),    new JButton("gap:2")),  120, 2);
 
         Box box = Box.createVerticalBox();
-        box.add(new JSeparator()); box.add(box5);
-        box.add(new JSeparator()); box.add(box4);
-        box.add(new JSeparator()); box.add(box3);
-        box.add(new JSeparator()); box.add(box2);
-        box.add(new JSeparator()); box.add(box1);
+        for (JComponent c: Arrays.asList(box6, box5, box4, box3, box2, box1)) {
+            box.add(new JSeparator());
+            box.add(c);
+        }
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
+    }
+
+    private static JComponent createRightAlignButtonBox6(final List<JButton> list, final int buttonWidth, final int gap) {
+        JPanel p = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(0, gap, 0, 0);
+        for (JButton b: list) {
+            c.ipadx = buttonWidth - b.getPreferredSize().width;
+            p.add(b, c);
+        }
+        p.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
+        JPanel pp = new JPanel(new BorderLayout());
+        pp.add(p, BorderLayout.EAST);
+        return pp;
     }
 
     private static JComponent createRightAlignButtonBox5(List<JButton> list, int gap) {
