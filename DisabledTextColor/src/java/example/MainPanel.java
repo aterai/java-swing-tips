@@ -49,10 +49,11 @@ public final class MainPanel extends JPanel {
         combo2.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (index == -1 && !combo2.isEnabled()) {
+                if (index < 0 && !combo2.isEnabled()) {
                     JLabel l = (JLabel) c;
                     l.setText("<html><font color='red'>" + l.getText());
-                    //c.setForeground(Color.RED);
+                    l.setOpaque(false);
+                    //l.setForeground(Color.RED);
                 }
                 return c;
             }
