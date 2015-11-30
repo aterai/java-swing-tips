@@ -158,12 +158,12 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
         }
         super.uninstallUI(c);
     }
-    @Override public void eventDispatched(AWTEvent e, JLayer l) {
+    @Override public void eventDispatched(AWTEvent e, JLayer<? extends JComponent> l) {
         if (isBlocking && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
     }
-    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer l) {
+    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends JComponent> l) {
         String cmd = pce.getPropertyName();
         if (CMD_REPAINT.equals(cmd)) {
             l.getGlassPane().setVisible((Boolean) pce.getNewValue());

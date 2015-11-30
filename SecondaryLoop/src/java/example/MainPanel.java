@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DisableInputLayerUI<E extends JComponent> extends LayerUI<E> {
+class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
     private static final String CMD_REPAINT = "repaint";
     private boolean isRunning;
     public void setInputBlock(boolean block) {
@@ -99,12 +99,12 @@ class DisableInputLayerUI<E extends JComponent> extends LayerUI<E> {
         }
         super.uninstallUI(c);
     }
-    @Override public void eventDispatched(AWTEvent e, JLayer l) {
+    @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
         if (isRunning && e instanceof InputEvent) {
             ((InputEvent) e).consume();
         }
     }
-    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer l) {
+    @Override public void applyPropertyChange(PropertyChangeEvent pce, JLayer<? extends V> l) {
         String cmd = pce.getPropertyName();
         if (CMD_REPAINT.equals(cmd)) {
             l.getGlassPane().setVisible((Boolean) pce.getNewValue());
