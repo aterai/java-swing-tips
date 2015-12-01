@@ -7,13 +7,17 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.plaf.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "List<Icon>"};
     private final Object[][] data = {
-        {"aaa", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.errorIcon"))},
-        {"bbb", Arrays.asList(getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))}
+        {"aa", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.errorIcon"))},
+        {"bb", Arrays.asList(getOptionPaneIcon("OptionPane.errorIcon"), getOptionPaneIcon("OptionPane.informationIcon"), getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))},
+        {"cc", Arrays.asList(getOptionPaneIcon("OptionPane.questionIcon"), getOptionPaneIcon("OptionPane.errorIcon"), getOptionPaneIcon("OptionPane.warningIcon"))},
+        {"dd", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"))},
+        {"ee", Arrays.asList(getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
@@ -45,15 +49,21 @@ public final class MainPanel extends JPanel {
             }
             return super.getToolTipText(e);
         }
+        @Override public void updateUI() {
+            // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+            // http://bugs.java.com/view_bug.do?bug_id=6788475
+            // XXX: set dummy ColorUIResource
+            setSelectionForeground(new ColorUIResource(Color.RED));
+            setSelectionBackground(new ColorUIResource(Color.RED));
+            super.updateUI();
+            getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
+            getColumnModel().getColumn(1).setCellRenderer(new ListIconRenderer());
+            setRowHeight(40);
+        }
     };
-
     public MainPanel() {
         super(new BorderLayout());
-
         table.setAutoCreateRowSorter(true);
-        table.getColumnModel().getColumn(1).setCellRenderer(new ListIconRenderer());
-        table.setRowHeight(40);
-
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -84,20 +94,27 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
-class ListIconRenderer extends JPanel implements TableCellRenderer {
+class ListIconRenderer implements TableCellRenderer {
+    private final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        removeAll();
-        setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+        p.removeAll();
+        if (isSelected) {
+            p.setOpaque(true);
+            p.setBackground(table.getSelectionBackground());
+        } else {
+            p.setOpaque(false);
+            //p.setBackground(table.getBackground());
+        }
         if (value instanceof List<?>) {
             for (Object o: (List<?>) value) {
                 if (o instanceof Icon) {
                     Icon icon = (Icon) o;
                     JLabel label = new JLabel(icon);
                     label.setToolTipText(icon.toString());
-                    add(label);
+                    p.add(label);
                 }
             }
         }
-        return this;
+        return p;
     }
 }
