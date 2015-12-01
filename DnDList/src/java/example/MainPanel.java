@@ -71,14 +71,14 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     private final Rectangle2D targetLine = new Rectangle2D.Float();
     private int draggedIndex = -1;
     private int targetIndex  = -1;
-    public DnDList() {
+    protected DnDList() {
         super();
         //DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
         //DragSource dragSource = new DragSource();
         new DragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (targetIndex >= 0) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -89,8 +89,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
     }
     private void initTargetLine(Point p) {
         Rectangle2D testArea = new Rectangle2D.Float();
-        int cellHeight = (int) getCellBounds(0, 0).getHeight();
-        int lineWidht  = (int) getCellBounds(0, 0).getWidth();
+        int cellHeight = getCellBounds(0, 0).height;
+        int lineWidht  = getCellBounds(0, 0).width;
         int lineHeight = 2;
         int modelSize  = getModel().getSize();
         targetIndex = -1;
