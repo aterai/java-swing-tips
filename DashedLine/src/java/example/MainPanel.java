@@ -47,21 +47,25 @@ public final class MainPanel extends JPanel {
             }
         });
         label = new JLabel() {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (Objects.isNull(dashedStroke)) {
                     dashedStroke = new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, getDashArray(), 0f);
                 }
+                Insets i = getInsets();
+                int w = getWidth();
+                int h = getHeight() / 2;
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setStroke(dashedStroke);
-                g2.drawLine(5, label.getHeight() / 2, label.getWidth() - 10, label.getHeight() / 2);
+                g2.drawLine(i.left, h, w - i.right, h);
                 g2.dispose();
             }
         };
-        label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
 
-        JPanel p = new JPanel(new BorderLayout(2, 2));
-        p.add(field); p.add(button, BorderLayout.EAST);
+        JPanel p = new JPanel(new BorderLayout(5, 5));
+        p.add(field);
+        p.add(button, BorderLayout.EAST);
         p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 
         add(p, BorderLayout.NORTH);
