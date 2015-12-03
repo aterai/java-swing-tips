@@ -67,6 +67,7 @@ public final class MainPanel extends JPanel {
 class TranslucentTree extends JTree {
     @Override public void updateUI() {
         super.updateUI();
+        UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
         setCellRenderer(new TranslucentTreeCellRenderer());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -84,16 +85,19 @@ class TransparentTree extends JTree {
             g2.fillRect(0, r.y, getWidth(), r.height);
         }
         super.paintComponent(g);
-        TreePath path = getLeadSelectionPath();
-        if (Objects.nonNull(path)) {
-            Rectangle r = getRowBounds(getRowForPath(path));
-            g2.setPaint(SELC.darker());
-            g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+        if (hasFocus()) {
+            TreePath path = getLeadSelectionPath();
+            if (Objects.nonNull(path)) {
+                Rectangle r = getRowBounds(getRowForPath(path));
+                g2.setPaint(SELC.darker());
+                g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+            }
         }
         g2.dispose();
     }
     @Override public void updateUI() {
         super.updateUI();
+        UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
         setCellRenderer(new TransparentTreeCellRenderer());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
