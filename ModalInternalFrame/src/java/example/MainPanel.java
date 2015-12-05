@@ -231,7 +231,7 @@ class MyGlassPane extends JPanel {
             }
         });
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(TEXTURE);
         g2.fillRect(0, 0, getWidth(), getHeight());
@@ -252,7 +252,7 @@ class PrintGlassPane extends JPanel {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
         if (Objects.nonNull(rootPane)) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html

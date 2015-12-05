@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 class PressAndHoldButton extends JButton {
     private static final Icon ARROW_ICON = new MenuArrowIcon();
     private PressAndHoldHandler handler;
-    public PressAndHoldButton(Icon icon) {
+    protected PressAndHoldButton(Icon icon) {
         super(icon);
         //getAction().putValue(Action.NAME, text);
         getAction().putValue(Action.SMALL_ICON, icon);
@@ -62,7 +62,7 @@ class PressAndHoldButton extends JButton {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension dim = getSize();
         Insets ins = getInsets();
@@ -86,7 +86,7 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
             }
         }
     });
-    public PressAndHoldHandler() {
+    protected PressAndHoldHandler() {
         super();
         holdTimer.setInitialDelay(1000);
         pop.setLayout(new GridLayout(0, 3, 5, 5));
@@ -157,7 +157,7 @@ class MenuContext {
     public final Color color;
 //     public final Icon small;
 //     public final Icon rollover;
-    public MenuContext(String cmd, Color c) {
+    protected MenuContext(String cmd, Color c) {
         command = cmd;
         color = c;
 //         small = new DummyIcon(c);

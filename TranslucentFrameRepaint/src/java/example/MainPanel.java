@@ -132,7 +132,7 @@ class TexturePanel extends JPanel {
         //setOpaque(false);
         setOpaque(Objects.isNull(texture));
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         if (Objects.nonNull(texture)) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(texture);

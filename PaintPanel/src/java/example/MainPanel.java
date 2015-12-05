@@ -43,12 +43,12 @@ public final class MainPanel extends JPanel {
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Point startPoint = new Point(-10, -10);
     private Point p = new Point(-10, -10);
-    public PaintPanel() {
+    protected PaintPanel() {
         super();
         addMouseMotionListener(this);
         addMouseListener(this);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setStroke(new BasicStroke(3f));
@@ -81,7 +81,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         addMouseListener(this);
 //         offImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 //     }
-//     @Override public void paintComponent(Graphics g) {
+//     @Override protected void paintComponent(Graphics g) {
 //         super.paintComponent(g);
 //         g.drawImage(offImage, 0, 0, this);
 //     }
@@ -139,7 +139,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //         path.lineTo(p.x, p.y);
 //         repaint();
 //     }
-//     @Override public void paintComponent(Graphics g) {
+//     @Override protected void paintComponent(Graphics g) {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         g2.setPaint(Color.BLACK);
 //         g2.setStroke(STROKE);

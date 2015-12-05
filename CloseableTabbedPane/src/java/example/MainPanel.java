@@ -130,7 +130,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 //             return new Dimension(16, 16);
 //         }
 //     };
-    public CloseableTabbedPaneLayerUI() {
+    protected CloseableTabbedPaneLayerUI() {
         super();
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setFocusPainted(false);
@@ -231,7 +231,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 //         button.setContentAreaFilled(false);
 //         button.setRolloverEnabled(false);
 //     }
-//     @Override public void paintComponent(Graphics g) {
+//     @Override protected void paintComponent(Graphics g) {
 //         Point glassPt = SwingUtilities.convertPoint(tabbedPane, 0, 0, this);
 //         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 //             Rectangle tabRect = tabbedPane.getBoundsAt(i);

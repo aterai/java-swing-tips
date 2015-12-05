@@ -103,11 +103,11 @@ public final class MainPanel extends JPanel {
 
 class MyGlassPane extends JPanel {
     private static final Color BACKGROUND_COLOR = new Color(200, 100, 100, 100);
-    public MyGlassPane() {
+    protected MyGlassPane() {
         super(new BorderLayout());
         setOpaque(false);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         g.setColor(BACKGROUND_COLOR);
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);

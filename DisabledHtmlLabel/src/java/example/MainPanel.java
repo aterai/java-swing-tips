@@ -97,7 +97,7 @@ class DisabledHtmlLabel extends JLabel {
     private static final ColorConvertOp COLOR_CONVERT = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
     private transient BufferedImage shadow;
 
-    public DisabledHtmlLabel(String text) {
+    protected DisabledHtmlLabel(String text) {
         super(text);
     }
     @Override public void setEnabled(boolean b) {
@@ -115,7 +115,7 @@ class DisabledHtmlLabel extends JLabel {
         }
         super.setEnabled(b);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         if (!isEnabled() && Objects.nonNull(shadow)) {
             g.drawImage(shadow, 0, 0, this);
         } else {

@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
 class TableOfContents {
     public final String title;
     public final Integer page;
-    public TableOfContents(String title, int page) {
+    protected TableOfContents(String title, int page) {
         this.title = title;
         this.page  = page;
     }
@@ -91,7 +91,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
     private int rxs, rxe;
     private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (pn != null) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -108,7 +108,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
             return d;
         }
     };
-    public TableOfContentsTreeCellRenderer() {
+    protected TableOfContentsTreeCellRenderer() {
         super();
         p.setOpaque(false);
     }
@@ -159,7 +159,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
     private int pnx = -1, pny = -1;
     private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (pn != null) {
                 g.setColor(isSynth ? getForeground() : getTextNonSelectionColor());
@@ -172,7 +172,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
             return d;
         }
     };
-    public TableOfContentsTreeCellRenderer1() {
+    protected TableOfContentsTreeCellRenderer1() {
         super();
         p.setOpaque(false);
     }
@@ -216,7 +216,7 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
 class TableOfContentsTree extends JTree {
     private static final BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
     private boolean isSynth;
-    public TableOfContentsTree(TreeModel model) {
+    protected TableOfContentsTree(TreeModel model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -249,7 +249,7 @@ class TableOfContentsTree extends JTree {
         }
         return visRect;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);

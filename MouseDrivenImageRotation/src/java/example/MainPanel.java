@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         addMouseMotionListener(di);
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(new GradientPaint(50, 0, new Color(200, 200, 200), getWidth(), getHeight(), new Color(100, 100, 100), true));
@@ -64,7 +64,7 @@ class DraggableImageMouseListener extends MouseAdapter {
     public double startX, startY, startA;
     private boolean moverHover, rotatorHover;
 
-    public DraggableImageMouseListener(ImageIcon ii) {
+    protected DraggableImageMouseListener(ImageIcon ii) {
         super();
         image   = ii.getImage();
         width   = ii.getIconWidth();

@@ -57,7 +57,7 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
         g2.fill(r);
         g2.dispose();
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (backImage != null) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -181,7 +181,7 @@ final class TextureFactory {
 //         Rectangle2D r2d = new Rectangle2D.Float(0, 0, w, h);
 //         return new TexturePaint(img, r2d);
 //     }
-//     @Override public void paintComponent(Graphics g) {
+//     @Override protected void paintComponent(Graphics g) {
 //         super.paintComponent(g);
 //         if (backImage != null) {
 //             g.drawImage(backImage, 0, 0, this);

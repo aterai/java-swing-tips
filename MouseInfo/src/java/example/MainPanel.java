@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
             }
         }
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         racket.draw(g);
     }
@@ -83,7 +83,7 @@ class Racket implements Serializable {
     private int centerPos;
     private final Dimension parentSize;
 
-    public Racket(Dimension parentSize) {
+    protected Racket(Dimension parentSize) {
         this.parentSize = parentSize;
         centerPos = parentSize.width / 2;
     }

@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MyIconTableModel extends DefaultTableModel {
-    public MyIconTableModel(ListModel<?> list) {
+    protected MyIconTableModel(ListModel<?> list) {
         super();
         addRow(new Object[] {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2) });
         addRow(new Object[] {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5) });
@@ -80,15 +80,15 @@ class MyIconTableModel extends DefaultTableModel {
 class MyIcon {
     public final ImageIcon large;
     public final ImageIcon small;
-    public MyIcon(String str) {
+    protected MyIcon(String str) {
         large = new ImageIcon(getClass().getResource(str + "-48.png"));
         small = new ImageIcon(getClass().getResource(str + "-24.png"));
     }
 }
 
 class MyIconRenderer extends DefaultTableCellRenderer {
-    public MyIconRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setHorizontalAlignment(SwingConstants.CENTER);
         //setOpaque(true);
         //setBorder(BorderFactory.createEmptyBorder());
@@ -102,7 +102,7 @@ class MyIconRenderer extends DefaultTableCellRenderer {
 class MyIconTable extends JTable {
     private static final int XOFF = 4;
     private final MyGlassPane panel = new MyGlassPane() {
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             g.setColor(new Color(0x64FFFFFF, true));
             g.fillRect(0, 0, getWidth(), getHeight());
             BufferedImage bufimg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -120,7 +120,7 @@ class MyIconTable extends JTable {
     private final EditorFromList editor;
     private Rectangle rect;
 
-    public MyIconTable(TableModel model, ListModel<MyIcon> list) {
+    protected MyIconTable(TableModel model, ListModel<MyIcon> list) {
         super(model);
         setDefaultRenderer(Object.class, new MyIconRenderer());
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -206,7 +206,7 @@ class EditorFromList extends JList<MyIcon> {
     private int rollOverRowIndex = -1;
     private final Dimension dim;
 
-    public EditorFromList(ListModel<MyIcon> model) {
+    protected EditorFromList(ListModel<MyIcon> model) {
         super(model);
         ImageIcon icon = model.getElementAt(0).small;
         int iw = INS + icon.getIconWidth();
@@ -266,7 +266,7 @@ class EditorFromList extends JList<MyIcon> {
 }
 
 class MyGlassPane extends JPanel {
-    public MyGlassPane() {
+    protected MyGlassPane() {
         super((LayoutManager) null);
         setOpaque(false);
     }

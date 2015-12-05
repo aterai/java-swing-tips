@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
         table.setSelectionBackground(new Color(0, 0, 100, 50));
 
         JCheckBox checkBox = new JCheckBox() {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 g.setColor(new Color(0, 0, 100, 50));
                 g.fillRect(0, 0, getWidth(), getHeight());
                 super.paintComponent(g);
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
         table.setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
 
         JScrollPane scroll = new JScrollPane(table) {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 if (Objects.nonNull(TEXTURE)) {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setPaint(TEXTURE);
@@ -170,8 +170,8 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
 
 class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
     private static final Color SELECTION_BACKGROUND = new Color(0, 0, 100, 50);
-    public TranslucentBooleanRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));

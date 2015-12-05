@@ -45,7 +45,7 @@ class RowSelectionTree extends JTree {
     private static final Color SELC = new Color(100, 150, 200);
     //private Handler handler;
 
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         Graphics2D g2 = (Graphics2D) g.create();

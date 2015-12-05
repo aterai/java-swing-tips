@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         };
         //tree.setRowHeight(0);
         JSplitPane sp = new JSplitPane() {
-//             @Override public void paintComponent(Graphics g) {
+//             @Override protected void paintComponent(Graphics g) {
 //                 //TEST
 //                 Graphics2D g2 = (Graphics2D) g.create();
 //                 GraphicsConfiguration gc = g2.getDeviceConfiguration();

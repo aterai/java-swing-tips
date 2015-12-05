@@ -70,7 +70,7 @@ class DnDTree extends JTree {
     private TreeNode dropTargetNode; // = null;
     private TreeNode draggedNode; // = null;
 
-    public DnDTree() {
+    protected DnDTree() {
         super();
         setCellRenderer(new DnDTreeCellRenderer());
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode("default")));
@@ -203,7 +203,7 @@ class DnDTree extends JTree {
             }
             return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         }
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (isTargetNode) {
                 g.setColor(Color.BLACK);
@@ -222,7 +222,7 @@ class RJLTransferable implements Transferable {
     private static final DataFlavor LOCAL_OBJECT_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     //private static final DataFlavor[] supportedFlavors = {LOCAL_OBJECT_FLAVOR};
     private final Object object;
-    public RJLTransferable(Object o) {
+    protected RJLTransferable(Object o) {
         object = o;
     }
     @Override public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {

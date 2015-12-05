@@ -111,7 +111,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
             super();
             setOpaque(false);
         }
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             Rectangle r = list.getVisibleRect();
             int cw = r.width - icon.getPreferredSize().width;
@@ -152,7 +152,7 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
         @Override public Dimension getPreferredSize() {
             return new Dimension(WIDTH + 2, HEIGHT);
         }
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             //g2.setPaint(getBackground());
             //g2.fillRect(0, 0, getWidth(), getHeight());

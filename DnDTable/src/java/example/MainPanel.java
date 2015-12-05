@@ -125,7 +125,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         //DragSource dragSource = new DragSource();
         new DragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (targetIndex >= 0) {
             Graphics2D g2 = (Graphics2D) g.create();

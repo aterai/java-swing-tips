@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         add(combo);
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         if (Objects.nonNull(texture)) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(texture);

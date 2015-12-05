@@ -439,7 +439,7 @@ class GhostGlassPane extends JPanel {
     public void setPoint(Point location) {
         this.location = location;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(ALPHA);
         if (tabbedPane.isPaintScrollArea && tabbedPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {

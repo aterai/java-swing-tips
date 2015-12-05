@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 }
 
 class StarPanel1 extends JPanel {
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
@@ -71,7 +71,7 @@ class StarPanel1 extends JPanel {
 }
 
 class StarPanel2 extends JPanel {
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         int h = getHeight();
@@ -93,13 +93,13 @@ class StarPanel2 extends JPanel {
 class StarPanel3 extends JPanel {
     private static final int FONTSIZE = 80;
     private final Shape shape;
-    public StarPanel3() {
+    protected StarPanel3() {
         super();
         FontRenderContext frc = new FontRenderContext(null, true, true);
         Font font = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
         shape = new TextLayout("\u2605", font, frc).getOutline(null);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(0, FONTSIZE);
         g2.setPaint(Color.YELLOW);
@@ -111,7 +111,7 @@ class StarPanel3 extends JPanel {
 }
 
 // class StarPanel4 extends JPanel {
-//     @Override public void paintComponent(Graphics g) {
+//     @Override protected void paintComponent(Graphics g) {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         int w = getWidth();
 //         int h = getHeight();
@@ -134,7 +134,7 @@ class StarPanel3 extends JPanel {
 
 class StarIcon0 implements Icon {
     private final GeneralPath path = new GeneralPath();
-    public StarIcon0() {
+    protected StarIcon0() {
         //<blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
         path.moveTo(50     * .8, 0      * .8);
         path.lineTo(61.803 * .8, 38.196 * .8);
@@ -169,7 +169,7 @@ class StarIcon0 implements Icon {
 class StarIcon1 implements Icon {
     private static final int R = 40;
     private final Shape star;
-    public StarIcon1() {
+    protected StarIcon1() {
         double agl = 0d;
         double add = 2 * Math.PI / 5d;
         Path2D.Double p = new Path2D.Double();
@@ -205,7 +205,7 @@ class StarIcon2 implements Icon {
     //private static final double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); //=15.0;
     private static final int VC = 5; //16;
     private final Shape star;
-    public StarIcon2() {
+    protected StarIcon2() {
         double agl = 0d;
         double add = 2 * Math.PI / (VC * 2);
         Path2D.Double p = new Path2D.Double();

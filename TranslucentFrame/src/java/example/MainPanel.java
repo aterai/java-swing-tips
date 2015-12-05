@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         JPanel p1 = new JPanel();
         p1.setOpaque(false);
         JPanel p2 = new JPanel() {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 //super.paintComponent(g);
                 g.setColor(new Color(100, 50, 50, 100));
                 g.fillRect(0, 0, getWidth(), getHeight());

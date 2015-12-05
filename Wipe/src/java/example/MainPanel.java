@@ -15,6 +15,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         icon = new ImageIcon(getClass().getResource("test.png"));
         WipeImage wipe = new WipeImage();
+        wipe.setBackground(Color.BLACK);
         animator = new Timer(5, wipe);
 
         JButton button1 = new JButton(new AbstractAction("Wipe In") {
@@ -39,11 +40,7 @@ public final class MainPanel extends JPanel {
 
     class WipeImage extends JComponent implements ActionListener {
         private int ww;
-        public WipeImage() {
-            super();
-            setBackground(Color.BLACK);
-        }
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
             if (mode) {

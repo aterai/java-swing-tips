@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         }
     });
     private final JPanel panel = new JPanel() {
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             //g.setColor(DRAW_COLOR);
             for (int i = 0; i < number; i++) {
@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
         }
     }
     private class UITask extends SortingTask {
-        public UITask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
+        protected UITask(SortAlgorithms sortAlgorithm, int number, List<Double> array, Rectangle rect, double factorx, double factory) {
             super(sortAlgorithm, number, array, rect, factorx, factory);
         }
         @Override protected void process(List<Rectangle> chunks) {

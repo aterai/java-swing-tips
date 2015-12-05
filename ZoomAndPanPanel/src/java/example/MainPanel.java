@@ -50,12 +50,12 @@ class ZoomAndPanePanel extends JPanel {
     private transient ZoomHandler handler;
     private transient DragScrollListener listener;
 
-    public ZoomAndPanePanel(Image img) {
+    protected ZoomAndPanePanel(Image img) {
         super();
         this.img = img;
-        this.imgrect = new Rectangle(img.getWidth(null), img.getHeight(null));
+        this.imgrect = new Rectangle(img.getWidth(this), img.getHeight(this));
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(new Color(0x55FF0000, true));

@@ -88,16 +88,16 @@ class MenuToggleButton extends JToggleButton {
     private static final Icon ARROW_ICON = new MenuArrowIcon();
     protected JPopupMenu pop;
 
-    public MenuToggleButton() {
+    protected MenuToggleButton() {
         this("", null);
     }
-    public MenuToggleButton(Icon icon) {
+    protected MenuToggleButton(Icon icon) {
         this("", icon);
     }
-    public MenuToggleButton(String text) {
+    protected MenuToggleButton(String text) {
         this(text, null);
     }
-    public MenuToggleButton(String text, Icon icon) {
+    protected MenuToggleButton(String text, Icon icon) {
         super();
         Action a = new AbstractAction(text) {
             @Override public void actionPerformed(ActionEvent e) {
@@ -122,7 +122,7 @@ class MenuToggleButton extends JToggleButton {
             }
         });
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension dim = getSize();
         Insets ins = getInsets();

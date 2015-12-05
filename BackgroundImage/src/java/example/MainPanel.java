@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Dimension d = getSize();
         int w = bgimage.getIconWidth();
         int h = bgimage.getIconHeight();

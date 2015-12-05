@@ -11,7 +11,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTabbedPane tab = new JTabbedPane() {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 FontMetrics fm = getFontMetrics(getFont());
                 int stringWidth = fm.stringWidth(TEXT) + 10;

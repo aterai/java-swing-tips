@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
             @Override public Dimension getPreferredSize() {
                 return d;
             }
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Dimension cd = getSize();
                 Dimension pd = getPreferredSize();

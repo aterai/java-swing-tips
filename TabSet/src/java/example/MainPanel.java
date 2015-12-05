@@ -10,7 +10,7 @@ import javax.swing.text.*;
 public class MainPanel extends JPanel {
     private final JCheckBox check = new JCheckBox("vertical grid lines", true);
     private final JTextPane textPane = new JTextPane() {
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (check.isSelected()) {
                 int ox = getInsets().left;

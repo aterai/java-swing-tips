@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
 class DragMouseListener extends MouseAdapter {
     private final JLayeredPane parent;
     private final Point origin = new Point();
-    public DragMouseListener(JLayeredPane parent) {
+    protected DragMouseListener(JLayeredPane parent) {
         super();
         this.parent = parent;
     }
@@ -123,14 +123,14 @@ class DragMouseListener extends MouseAdapter {
 //背景画像を描画する JLayeredPane
 class BGImageLayeredPane extends JLayeredPane {
     private final Image bgImage;
-    public BGImageLayeredPane(Image img) {
+    protected BGImageLayeredPane(Image img) {
         super();
         this.bgImage = img;
     }
     @Override public boolean isOptimizedDrawingEnabled() {
         return false;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (Objects.nonNull(bgImage)) {
             int imageh = bgImage.getHeight(this);

@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         p1.setOpaque(false);
 
         JPanel p2 = new JPanel() {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 //super.paintComponent(g);
                 g.setColor(new Color(100, 50, 50, 100));
                 g.fillRect(0, 0, getWidth(), getHeight());
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         };
 
         JPanel p3 = new JPanel() {
-            @Override public void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(TEXTURE);
                 g2.fillRect(0, 0, getWidth(), getHeight());
@@ -150,7 +150,7 @@ public final class MainPanel extends JPanel {
 class CentredBackgroundBorder implements Border {
     private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
-    public CentredBackgroundBorder(BufferedImage image) {
+    protected CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {

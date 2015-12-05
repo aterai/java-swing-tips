@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         private final TexturePaint texture = makeImageTexture();
         @Override protected JViewport createViewport() {
             return new JViewport() {
-                @Override public void paintComponent(Graphics g) {
+                @Override protected void paintComponent(Graphics g) {
                     if (Objects.nonNull(texture)) {
                         Graphics2D g2 = (Graphics2D) g.create();
                         g2.setPaint(texture);
@@ -128,8 +128,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer {
-    public TranslucentBooleanRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));

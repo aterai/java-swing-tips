@@ -592,7 +592,7 @@ class GhostGlassPane extends JPanel {
     public void setTargetTabbedPane(DnDTabbedPane tab) {
         tabbedPane = tab;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         DnDTabbedPane.DropLocation dl = tabbedPane.getDropLocation();
         Point p = getMousePosition(true); //dl.getDropPoint();
         if (Objects.nonNull(draggingGhost) && Objects.nonNull(dl) && Objects.nonNull(p)) {
@@ -624,7 +624,7 @@ class GhostGlassPane extends JComponent {
     public void setTargetTabbedPane(DnDTabbedPane tab) {
         tabbedPane = tab;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         //tabbedPane.paintDropLine(g2);
         Rectangle rect = tabbedPane.getDropLineRect();

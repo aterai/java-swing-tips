@@ -64,12 +64,12 @@ public final class MainPanel extends JPanel {
 class WatermarkTextField extends JTextField implements FocusListener {
     private final ImageIcon image;
     private boolean showWatermark = true;
-    public WatermarkTextField() {
+    protected WatermarkTextField() {
         super();
         image = new ImageIcon(getClass().getResource("watermark.png"));
         addFocusListener(this);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (showWatermark) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -93,7 +93,7 @@ class GhostFocusListener implements FocusListener {
     private static final Color INACTIVE_COLOR = UIManager.getColor("TextField.inactiveForeground");
     private static final Color ORIGINAL_COLOR = UIManager.getColor("TextField.foreground");
     private final String ghostMessage;
-    public GhostFocusListener(final JTextComponent tf) {
+    protected GhostFocusListener(final JTextComponent tf) {
         ghostMessage = tf.getText();
         tf.setForeground(INACTIVE_COLOR);
     }

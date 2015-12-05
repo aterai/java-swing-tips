@@ -109,7 +109,7 @@ class ReorderbleList<E extends ListItem> extends JList<E> {
         setTransferHandler(new ListItemTransferHandler());
         setDropMode(DropMode.INSERT);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (getDragEnabled()) {
             return;

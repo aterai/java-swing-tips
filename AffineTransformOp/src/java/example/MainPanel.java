@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private final transient BufferedImage bufferedImage;
     private final ButtonGroup bg = new ButtonGroup();
     private final JPanel p = new JPanel() {
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
             int w = bufferedImage.getWidth(this);

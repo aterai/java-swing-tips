@@ -45,7 +45,7 @@ class MarqueePanel extends JComponent implements ActionListener {
     private float xx;
     private float baseline;
 
-    public MarqueePanel() {
+    protected MarqueePanel() {
         super();
         addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
@@ -66,7 +66,7 @@ class MarqueePanel extends JComponent implements ActionListener {
         xheight = (float) xgm.getBounds2D().getHeight();
         animator.start();
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

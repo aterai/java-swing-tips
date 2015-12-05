@@ -59,12 +59,12 @@ public final class MainPanel extends JPanel {
 
 class WatermarkPasswordField extends JPasswordField implements FocusListener, DocumentListener {
     private boolean showWatermark = true;
-    public WatermarkPasswordField() {
+    protected WatermarkPasswordField() {
         super();
         addFocusListener(this);
         getDocument().addDocumentListener(this);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (showWatermark) {
             Graphics2D g2 = (Graphics2D) g.create();

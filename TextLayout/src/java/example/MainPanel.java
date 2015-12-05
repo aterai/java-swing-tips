@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 class TextLayoutPanel extends JComponent {
     private static final String TEXT = "abcdefthijklmnopqrstuvwxyz";
     private static final TextLayout TEXT_LAYOUT = new TextLayout(TEXT, new Font(Font.SERIF, Font.ITALIC, 64), new FontRenderContext(null, true, true));
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         float baseline = getHeight() / 2f;
@@ -77,7 +77,7 @@ class GlyphVectorPanel extends JComponent {
     private final GlyphVector gv = font.createGlyphVector(FRC, TEXT);
     private final LineMetrics lm = font.getLineMetrics(TEXT, FRC);
 
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         int w = getWidth();
         float baseline = getHeight() / 2f;

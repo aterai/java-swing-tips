@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         addMouseMotionListener(zoomAndPanHandler);
         addMouseWheelListener(zoomAndPanHandler);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setTransform(zoomAndPanHandler.getCoordTransform());

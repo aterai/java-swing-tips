@@ -176,7 +176,7 @@ class TranslucentTexturePanel extends JPanel {
         super();
         this.texture = texture;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(texture);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .6f));

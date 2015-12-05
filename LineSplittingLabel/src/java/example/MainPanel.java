@@ -45,7 +45,7 @@ class TricoloreLabel extends JComponent {
         FontRenderContext frc = new FontRenderContext(null, true, true);
         gv = font.createGlyphVector(frc, str);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         int w = getWidth();
         int h = getHeight();
@@ -87,7 +87,7 @@ class LineSplittingLabel extends JComponent {
         FontRenderContext frc = new FontRenderContext(null, true, true);
         shape = new TextLayout(str, font, frc).getOutline(null);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         int w = getWidth();
         int h = getHeight();

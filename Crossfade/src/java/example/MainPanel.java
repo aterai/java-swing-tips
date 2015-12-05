@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
             mode ^= true;
             animator.start();
         }
-        @Override public void paintComponent(Graphics g) {
+        @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());

@@ -85,7 +85,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
     private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
 //     private final String hintMessage;
     private final JLabel hint;
-    public PlaceholderLayerUI(String hintMessage) {
+    protected PlaceholderLayerUI(String hintMessage) {
         super();
         this.hint = new JLabel(hintMessage);
         hint.setForeground(INACTIVE);
@@ -122,7 +122,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
             ((JLayer) c).setLayerEventMask(0);
         }
     }
-    @Override public void processFocusEvent(FocusEvent e, JLayer<? extends JTextComponent> l) {
+    @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends JTextComponent> l) {
         l.getView().repaint();
     }
 }

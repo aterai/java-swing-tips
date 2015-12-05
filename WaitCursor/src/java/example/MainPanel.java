@@ -90,11 +90,11 @@ class Task extends SwingWorker<String, Void> {
     }
 }
 
-class LockingGlassPane extends JComponent {
-    public LockingGlassPane() {
-        super();
+class LockingGlassPane extends JPanel {
+    @Override public void updateUI() {
+        super.updateUI();
         setOpaque(false);
-        super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
@@ -104,7 +104,7 @@ class LockingGlassPane extends JComponent {
             rootPane.getLayeredPane().setVisible(!isVisible);
         }
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
         if (Objects.nonNull(rootPane)) {
             // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html

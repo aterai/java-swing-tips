@@ -121,7 +121,7 @@ class LightboxGlassPane extends JPanel {
         }
         animatedIcon.setRunning(isVisible);
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         JRootPane rootPane = getRootPane();
         if (Objects.nonNull(rootPane)) {
             rootPane.getLayeredPane().print(g);

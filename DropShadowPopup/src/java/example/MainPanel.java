@@ -93,7 +93,7 @@ class DropShadowPopupMenu extends JPopupMenu {
         setBorder(null);
         super.updateUI();
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         //super.paintComponent(g); //???: Windows LnF
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);
@@ -198,7 +198,7 @@ class DropShadowPopupMenu extends JPopupMenu {
         super.updateUI();
         border = null;
     }
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.drawImage(shadow, 0, 0, this);

@@ -107,7 +107,7 @@ public class MainPanel extends JPanel {
 }
 
 class TestPanel extends JPanel {
-    @Override public void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
         g.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
