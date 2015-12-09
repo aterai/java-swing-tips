@@ -56,68 +56,56 @@ class EditableTabbedPane extends JTabbedPane {
     private final JComponent glassPane = new EditorGlassPane();
     private final JTextField editor = new JTextField();
     private Rectangle rect;
-
+    private final Action startEditing = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            getRootPane().setGlassPane(glassPane);
+            rect = getUI().getTabBounds(EditableTabbedPane.this, getSelectedIndex());
+            Point p = SwingUtilities.convertPoint(EditableTabbedPane.this, rect.getLocation(), glassPane);
+            rect.setRect(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
+            editor.setBounds(rect);
+            editor.setText(getTitleAt(getSelectedIndex()));
+            editor.selectAll();
+            glassPane.add(editor);
+            glassPane.setVisible(true);
+            editor.requestFocusInWindow();
+        }
+    };
+    private final Action cancelEditing = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            glassPane.setVisible(false);
+        }
+    };
+    private final Action renameTab = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            if (!editor.getText().trim().isEmpty()) {
+                setTitleAt(getSelectedIndex(), editor.getText());
+                //java 1.6.0 ---->
+                //Component c = getTabComponentAt(getSelectedIndex());
+                //if (c instanceof JComponent) {
+                //    ((JComponent) c).revalidate();
+                //}
+                //<----
+            }
+            glassPane.setVisible(false);
+        }
+    };
     protected EditableTabbedPane() {
         super();
         editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
-        editor.addFocusListener(new FocusAdapter() {
-            @Override public void focusGained(FocusEvent e) {
-                ((JTextField) e.getComponent()).selectAll();
-            }
-        });
-        editor.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    renameTab();
-                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    cancelEditing();
-                }
-            }
-        });
+        editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
+        editor.getActionMap().put("rename-tab", renameTab);
+        editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+        editor.getActionMap().put("cancel-editing", cancelEditing);
+
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    startEditing();
+                    startEditing.actionPerformed(null);
                 }
             }
         });
-        addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    startEditing();
-                }
-            }
-        });
-        glassPane.add(editor);
-        glassPane.setVisible(false);
-    }
-    private void initEditor() {
-        rect = getUI().getTabBounds(this, getSelectedIndex());
-        Point p = SwingUtilities.convertPoint(this, rect.getLocation(), glassPane);
-        rect.setRect(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
-        editor.setBounds(rect);
-        editor.setText(getTitleAt(getSelectedIndex()));
-    }
-    private void startEditing() {
-        getRootPane().setGlassPane(glassPane);
-        initEditor();
-        glassPane.setVisible(true);
-        editor.requestFocusInWindow();
-    }
-    private void cancelEditing() {
-        glassPane.setVisible(false);
-    }
-    private void renameTab() {
-        if (!editor.getText().trim().isEmpty()) {
-            setTitleAt(getSelectedIndex(), editor.getText());
-            //java 1.6.0 ---->
-            Component c = getTabComponentAt(getSelectedIndex());
-            if (c instanceof JComponent) {
-                ((JComponent) c).revalidate();
-            }
-            //<----
-        }
-        glassPane.setVisible(false);
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
+        getActionMap().put("start-editing", startEditing);
     }
     private class EditorGlassPane extends JComponent {
         protected EditorGlassPane() {
@@ -133,7 +121,7 @@ class EditableTabbedPane extends JTabbedPane {
                     if (Objects.isNull(rect) || rect.contains(me.getPoint())) {
                         return;
                     }
-                    renameTab();
+                    renameTab.actionPerformed(null);
                 }
             });
             requestFocusInWindow();
