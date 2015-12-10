@@ -108,15 +108,15 @@ class MySynthStyleFactory extends SynthStyleFactory {
         SynthStyle s = wrappedFactory.getStyle(c, id);
         //if (id == Region.INTERNAL_FRAME_TITLE_PANE || id == Region.INTERNAL_FRAME) {
         if (id == Region.INTERNAL_FRAME) {
-            s = new TranslucentSynthSytle(s);
+            s = new TranslucentSynthStyle(s);
         }
         return s;
     }
 }
 
-class TranslucentSynthSytle extends SynthStyle {
+class TranslucentSynthStyle extends SynthStyle {
     private final SynthStyle style;
-    protected TranslucentSynthSytle(SynthStyle s) {
+    protected TranslucentSynthStyle(SynthStyle s) {
         super();
         style = s;
     }
