@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
@@ -52,7 +53,8 @@ public final class MainPanel extends JPanel {
         menuItem.setActionCommand("quit");
         menuItem.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                SwingUtilities.getWindowAncestor(desktop).dispose();
+                //SwingUtilities.getWindowAncestor(desktop).dispose();
+                Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(w -> w.dispose());
             }
         });
         menu.add(menuItem);
@@ -86,7 +88,7 @@ class MyInternalFrame extends JInternalFrame {
     private static final int XOFFSET = 30;
     private static final int YOFFSET = 30;
     private static AtomicInteger openFrameCount = new AtomicInteger();
-    public MyInternalFrame() {
+    protected MyInternalFrame() {
         //title, resizable, closable, maximizable, iconifiable
         super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
         setSize(180, 100);

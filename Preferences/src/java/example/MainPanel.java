@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.prefs.*;
 import javax.swing.*;
 
@@ -16,10 +16,7 @@ public final class MainPanel extends JPanel {
     private final JButton exitButton = new JButton(new AbstractAction("exit") {
         @Override public void actionPerformed(ActionEvent e) {
             saveLocation();
-            Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
-            if (Objects.nonNull(window)) {
-                window.dispose();
-            }
+            Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(w -> w.dispose());
         }
     });
     private final JButton clearButton = new JButton(new AbstractAction("Preferences#clear() and JFrame#dispose()") {
@@ -30,10 +27,7 @@ public final class MainPanel extends JPanel {
             } catch (BackingStoreException ex) {
                 ex.printStackTrace();
             }
-            Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
-            if (Objects.nonNull(window)) {
-                window.dispose();
-            }
+            Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(w -> w.dispose());
         }
     });
 

@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.ColorUIResource;
@@ -66,8 +67,7 @@ public final class MainPanel extends JPanel {
                     UIManager.put(key, new ColorUIResource(color));
                     EventQueue.invokeLater(new Runnable() {
                         @Override public void run() {
-                            Window w = SwingUtilities.getWindowAncestor(table);
-                            SwingUtilities.updateComponentTreeUI(w);
+                            Optional.ofNullable(SwingUtilities.getWindowAncestor(table)).ifPresent(SwingUtilities::updateComponentTreeUI);
                         }
                     });
                 }
@@ -121,7 +121,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
     private final JDialog dialog;
     private Color currentColor;
 
-    public ColorEditor() {
+    protected ColorEditor() {
         super();
         //Set up the editor (from the table's point of view),
         //which is a button.
@@ -175,7 +175,7 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
 class ColorIcon implements Icon {
     private final Color color;
-    public ColorIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
