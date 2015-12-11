@@ -9,7 +9,14 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    private final JComponent glass = new MyGlassPane();
+    private static final Color BACKGROUND_COLOR = new Color(200, 100, 100, 100);
+    private final JComponent glass = new JPanel(new BorderLayout()) {
+        @Override protected void paintComponent(Graphics g) {
+            g.setColor(BACKGROUND_COLOR);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            super.paintComponent(g);
+        }
+    };
     private final JLabel label1 = makeLabel("Default: setToolTipText");
     private final JLabel label2 = makeLabel("FORCE_HEAVYWEIGHT_POPUP");
     public MainPanel() {
@@ -38,6 +45,7 @@ public final class MainPanel extends JPanel {
 
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
+                glass.setOpaque(false);
                 glass.add(label1, BorderLayout.WEST);
                 glass.add(label2, BorderLayout.EAST);
                 glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
@@ -45,28 +53,6 @@ public final class MainPanel extends JPanel {
                 getRootPane().getGlassPane().setVisible(true);
             }
         });
-
-//         add(new JButton(new AbstractAction("show GlassPane") {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 final JButton button = (JButton) e.getSource();
-//                 button.setEnabled(false);
-//                 frame.getGlassPane().setVisible(true);
-//                 new SwingWorker() {
-//                     @Override public Object doInBackground() {
-//                         try {
-//                             Thread.sleep(8000);
-//                         } catch (Exception ex) {
-//                             ex.printStackTrace();
-//                         }
-//                         return "Done";
-//                     }
-//                     @Override public void done() {
-//                         frame.getGlassPane().setVisible(false);
-//                         button.setEnabled(true);
-//                     }
-//                 }.execute();
-//             }
-//         }));
         setPreferredSize(new Dimension(320, 240));
     }
     private static JLabel makeLabel(String title) {
@@ -98,18 +84,5 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
-
-class MyGlassPane extends JPanel {
-    private static final Color BACKGROUND_COLOR = new Color(200, 100, 100, 100);
-    protected MyGlassPane() {
-        super(new BorderLayout());
-        setOpaque(false);
-    }
-    @Override protected void paintComponent(Graphics g) {
-        g.setColor(BACKGROUND_COLOR);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        super.paintComponent(g);
     }
 }
