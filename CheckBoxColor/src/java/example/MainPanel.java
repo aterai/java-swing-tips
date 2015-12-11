@@ -3,7 +3,6 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalCheckBoxIcon;
 
@@ -111,18 +110,11 @@ class CheckBoxIcon2 implements Icon {
 class CheckBoxIcon implements Icon {
     //com/sun/java/swing/plaf/windows/WindowsIconFactory.java
     private static final int CSIZE = 13;
-    private static JCheckBox getCheckBox(Component c) {
-        if (c instanceof JCheckBox) {
-            return (JCheckBox) c;
-        } else {
-            return null;
-        }
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        JCheckBox cb = getCheckBox(c);
-        if (Objects.isNull(cb)) {
+        if (!(c instanceof JCheckBox)) {
             return;
         }
+        JCheckBox cb = (JCheckBox) c;
         ButtonModel model = cb.getModel();
 
         // outer bevel
