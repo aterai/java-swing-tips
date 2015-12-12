@@ -88,28 +88,25 @@ class RemoveButtonComboBox<E> extends JComboBox<E> {
     }
     @Override public void updateUI() {
         if (Objects.nonNull(cbml)) {
-            JList<?> list = getList();
-            if (Objects.nonNull(list)) {
+            getList().ifPresent(list -> {
                 list.removeMouseListener(cbml);
                 list.removeMouseMotionListener(cbml);
-            }
+            });
         }
         super.updateUI();
         setRenderer(new ButtonsRenderer<E>(this));
-        JList<?> list = getList();
-        if (Objects.nonNull(list)) {
+        getList().ifPresent(list -> {
             cbml = new CellButtonsMouseListener();
             list.addMouseListener(cbml);
             list.addMouseMotionListener(cbml);
-        }
+        });
     }
-    protected JList<?> getList() {
+    protected Optional<? extends JList> getList() {
         Accessible a = getAccessibleContext().getAccessibleChild(0);
         if (a instanceof BasicComboPopup) {
-            return ((BasicComboPopup) a).getList();
-        } else {
-            return null;
+            return Optional.of(((BasicComboPopup) a).getList());
         }
+        return Optional.empty();
     }
 }
 
