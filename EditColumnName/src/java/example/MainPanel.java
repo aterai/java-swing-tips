@@ -64,7 +64,7 @@ class TablePopupMenu extends JPopupMenu {
             TableColumn column = header.getColumnModel().getColumn(index);
             String name = column.getHeaderValue().toString();
             textField.setText(name);
-            int result = JOptionPane.showConfirmDialog(header.getTable(), textField, getValue(NAME).toString(),
+            int result = JOptionPane.showConfirmDialog(header.getTable(), textField, getValue(Action.NAME).toString(),
                                                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 String str = textField.getText().trim();
@@ -82,7 +82,7 @@ class TablePopupMenu extends JPopupMenu {
             final DefaultTableModel model = (DefaultTableModel) table.getModel();
             String name = table.getColumnName(index);
             textField.setText(name);
-            int result = JOptionPane.showConfirmDialog(table, textField, getValue(NAME).toString(),
+            int result = JOptionPane.showConfirmDialog(table, textField, getValue(Action.NAME).toString(),
                                                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 String str = textField.getText().trim();
@@ -95,15 +95,11 @@ class TablePopupMenu extends JPopupMenu {
             }
         }
     });
-
     private int index = -1;
-    public TablePopupMenu(String... arrays) {
+    protected TablePopupMenu(String... arrays) {
         super();
         columnNames = new String[arrays.length];
         System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
-//         for (int i = 0; i < arrays.length; i++) {
-//             columnNames[i] = arrays[i];
-//         }
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 textField.requestFocusInWindow();
