@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 /*/     //JDK 1.6.0
         label.setTransferHandler(new TransferHandler() {
             @Override public int getSourceActions(JComponent c) {
-                return COPY_OR_MOVE;
+                return TransferHandler.COPY_OR_MOVE;
             }
             @Override protected Transferable createTransferable(JComponent c) {
                 File tmpfile = getFile();
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
                 }
             }
             @Override protected void exportDone(JComponent c, Transferable data, int action) {
-                cleanup(c, action == MOVE);
+                cleanup(c, action == TransferHandler.MOVE);
             }
             private void cleanup(JComponent c, boolean isMoved) {
                 if (isMoved) {
@@ -143,7 +143,7 @@ public final class MainPanel extends JPanel {
 
 class TempFileTransferable implements Transferable {
     private final File file;
-    public TempFileTransferable(File file) {
+    protected TempFileTransferable(File file) {
         this.file = file;
     }
     @Override public Object getTransferData(DataFlavor flavor) {

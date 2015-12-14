@@ -106,7 +106,7 @@ class ListItemTransferHandler extends TransferHandler {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
     }
     @Override public int getSourceActions(JComponent c) {
-        return MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("unchecked")
     @Override public boolean importData(TransferSupport info) {
@@ -149,7 +149,7 @@ class ListItemTransferHandler extends TransferHandler {
         return false;
     }
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
-        cleanup(c, action == MOVE);
+        cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
         if (remove && indices != null) {

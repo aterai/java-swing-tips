@@ -127,7 +127,7 @@ class TableRowTransferHandler extends TransferHandler {
         return isDropable;
     }
     @Override public int getSourceActions(JComponent c) {
-        return MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @Override public boolean importData(TransferSupport info) {
         if (!canImport(info)) {
@@ -165,7 +165,7 @@ class TableRowTransferHandler extends TransferHandler {
         return false;
     }
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
-        cleanup(c, action == MOVE);
+        cleanup(c, action == TransferHandler.MOVE);
     }
     private void cleanup(JComponent c, boolean remove) {
         if (remove && indices != null) {

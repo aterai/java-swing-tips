@@ -455,7 +455,7 @@ class TabTransferHandler extends TransferHandler {
             System.out.println("canImport:" + support.isDrop() + " " + support.isDataFlavorSupported(localObjectFlavor));
             return false;
         }
-        support.setDropAction(MOVE);
+        support.setDropAction(TransferHandler.MOVE);
         DropLocation tdl = support.getDropLocation();
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
@@ -527,7 +527,7 @@ class TabTransferHandler extends TransferHandler {
             DnDTabbedPane src = (DnDTabbedPane) c;
             c.getRootPane().setGlassPane(new GhostGlassPane(src));
             if (src.dragTabIndex < 0) {
-                return NONE;
+                return TransferHandler.NONE;
             }
 /*
             glassPane.setImage(makeDragTabImage(src));
@@ -535,9 +535,9 @@ class TabTransferHandler extends TransferHandler {
             setDragImage(makeDragTabImage(src)); //java 1.7.0
 //*/
             c.getRootPane().getGlassPane().setVisible(true);
-            return MOVE;
+            return TransferHandler.MOVE;
         }
-        return NONE;
+        return TransferHandler.NONE;
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");

@@ -133,7 +133,7 @@ class CellIconTransferHandler extends TransferHandler {
         return false;
     }
     @Override public int getSourceActions(JComponent c) {
-        return COPY;
+        return TransferHandler.COPY;
     }
 }
 

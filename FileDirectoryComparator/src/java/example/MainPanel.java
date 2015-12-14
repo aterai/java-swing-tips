@@ -218,7 +218,7 @@ class FileTransferHandler extends TransferHandler {
 //         return false;
 //     }
     @Override public int getSourceActions(JComponent component) {
-        return COPY;
+        return TransferHandler.COPY;
     }
 }
 

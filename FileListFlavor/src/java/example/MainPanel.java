@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         };
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(deleteAction);
         }
@@ -138,7 +138,7 @@ public final class MainPanel extends JPanel {
 //         return false;
 //     }
 //     @Override public int getSourceActions(JComponent component) {
-//         return COPY;
+//         return TransferHandler.COPY;
 //     }
 // }
 
@@ -170,7 +170,7 @@ class FileModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -179,7 +179,7 @@ class FileModel extends DefaultTableModel {
 }
 class FileName {
     private String name, absolutePath;
-    public FileName(String name, String absolutePath) {
+    protected FileName(String name, String absolutePath) {
         this.name = name;
         this.absolutePath = absolutePath;
     }

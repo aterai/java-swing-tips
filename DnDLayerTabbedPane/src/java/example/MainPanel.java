@@ -162,7 +162,7 @@ class DnDTabbedPane extends JTabbedPane {
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
         private boolean dropable = true;
-        public DropLocation(Point p, int index) {
+        protected DropLocation(Point p, int index) {
             super(p);
             this.index = index;
         }
@@ -207,7 +207,7 @@ class DnDTabbedPane extends JTabbedPane {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
-    public DnDTabbedPane() {
+    protected DnDTabbedPane() {
         super();
         Handler h = new Handler();
         addMouseListener(h);
@@ -424,7 +424,7 @@ class TabTransferHandler extends TransferHandler {
         this.mode = mode;
         setDragImage(null);
     }
-    public TabTransferHandler() {
+    protected TabTransferHandler() {
         super();
         System.out.println("TabTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
@@ -474,7 +474,7 @@ class TabTransferHandler extends TransferHandler {
             System.out.println("canImport:" + support.isDrop() + " " + support.isDataFlavorSupported(localObjectFlavor));
             return false;
         }
-        support.setDropAction(MOVE);
+        support.setDropAction(TransferHandler.MOVE);
         DropLocation tdl = support.getDropLocation();
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
@@ -537,7 +537,7 @@ class TabTransferHandler extends TransferHandler {
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane src = (DnDTabbedPane) c;
             if (src.dragTabIndex < 0) {
-                return NONE;
+                return TransferHandler.NONE;
             }
             if (mode == DragImageMode.Heavyweight) {
                 label.setIcon(new ImageIcon(makeDragTabImage(src)));
@@ -546,9 +546,9 @@ class TabTransferHandler extends TransferHandler {
             } else {
                 setDragImage(makeDragTabImage(src));
             }
-            return MOVE;
+            return TransferHandler.MOVE;
         }
-        return NONE;
+        return TransferHandler.NONE;
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
@@ -629,7 +629,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    protected ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if (Objects.isNull(pane)) {
             throw new IllegalArgumentException("TabbedPane cannot be null");
@@ -682,7 +682,7 @@ class TabButton extends JButton {
     private static final int SIZE  = 17;
     private static final int DELTA = 6;
 
-    public TabButton() {
+    protected TabButton() {
         super();
         setUI(new BasicButtonUI());
         setToolTipText("close this tab");

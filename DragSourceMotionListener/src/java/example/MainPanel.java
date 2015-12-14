@@ -142,7 +142,7 @@ class LabelTransferHandler extends TransferHandler {
             window.setLocation(pt);
             window.setVisible(true);
         }
-        return MOVE;
+        return TransferHandler.MOVE;
     }
     @Override public boolean importData(TransferSupport support) {
         System.out.println("importData");
