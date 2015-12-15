@@ -216,14 +216,12 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     private static BufferedImage createCompactDragImage(JList source, int w, int h) {
-        BufferedImage br = null;
-        if (w > 0 && h > 0) {
-            br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
-        } else {
+        if (w <= 0 || h <= 0) {
             return null;
         }
         int[] selectedIndices = source.getSelectedIndices();
         int length = selectedIndices.length;
+        BufferedImage br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
         Graphics2D g2 = br.createGraphics();
         ListCellRenderer renderer = source.getCellRenderer();
         int idx = selectedIndices[0];
