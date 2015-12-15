@@ -135,7 +135,9 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             JOptionPane optionPane = new JOptionPane();
+            //TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.FALSE);
             JInternalFrame modal = optionPane.createInternalFrame(desktop, "modal3");
+            //TEST: UIManager.put("InternalFrame.titleButtonToolTipsOn", Boolean.TRUE);
 //*
             optionPane.setMessage("Hello, World");
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
