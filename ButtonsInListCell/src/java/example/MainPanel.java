@@ -54,7 +54,7 @@ class CellButtonsMouseListener extends MouseAdapter {
     private int prevIndex = -1;
     private JButton prevButton;
     private final JList<String> list;
-    public CellButtonsMouseListener(JList<String> list) {
+    protected CellButtonsMouseListener(JList<String> list) {
         super();
         this.list = list;
     }
@@ -74,7 +74,13 @@ class CellButtonsMouseListener extends MouseAdapter {
             JButton button = getButton(list, pt, index);
             ButtonsRenderer renderer = (ButtonsRenderer) list.getCellRenderer();
             renderer.button = button;
-            if (Objects.isNull(button)) {
+            if (Objects.nonNull(button)) {
+                button.getModel().setRollover(true);
+                renderer.rolloverIndex = index;
+                if (!button.equals(prevButton)) {
+                    listRepaint(list, list.getCellBounds(prevIndex, index));
+                }
+            } else {
                 renderer.rolloverIndex = -1;
                 Rectangle r = null;
                 if (prevIndex == index) {
@@ -86,12 +92,6 @@ class CellButtonsMouseListener extends MouseAdapter {
                 }
                 listRepaint(list, r);
                 prevIndex = -1;
-            } else {
-                button.getModel().setRollover(true);
-                renderer.rolloverIndex = index;
-                if (!button.equals(prevButton)) {
-                    listRepaint(list, list.getCellBounds(prevIndex, index));
-                }
             }
             prevButton = button;
         }
@@ -167,7 +167,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     public int rolloverIndex = -1;
     public JButton button;
 
-    public ButtonsRenderer(DefaultListModel<E> model) {
+    protected ButtonsRenderer(DefaultListModel<E> model) {
         super(new BorderLayout());
         this.model = model;
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
