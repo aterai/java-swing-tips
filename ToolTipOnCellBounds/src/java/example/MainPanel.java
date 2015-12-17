@@ -60,53 +60,50 @@ public final class MainPanel extends JPanel {
 }
 
 class TooltipList<E> extends JList<E> {
-    public TooltipList(ListModel<E> m) {
+    protected TooltipList(ListModel<E> m) {
         super(m);
     }
-    @Override public Point getToolTipLocation(MouseEvent event) {
-        Point pt = null;
-        if (event != null) {
-            Point p = event.getPoint();
-            ListCellRenderer<? super E> r = getCellRenderer();
-            int i = locationToIndex(p);
-            Rectangle cellBounds = getCellBounds(i, i);
-            if (i != -1 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
-                ListSelectionModel lsm = getSelectionModel();
-                Component rComponent = r.getListCellRendererComponent(this, getModel().getElementAt(i), i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
-                if (rComponent instanceof JComponent && ((JComponent) rComponent).getToolTipText() != null) {
-                    pt = cellBounds.getLocation();
-                }
+    @Override public Point getToolTipLocation(MouseEvent e) {
+        Point p = e.getPoint();
+        ListCellRenderer<? super E> r = getCellRenderer();
+        int i = locationToIndex(p);
+        Rectangle cellBounds = getCellBounds(i, i);
+        if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
+            ListSelectionModel lsm = getSelectionModel();
+            Component rComponent = r.getListCellRendererComponent(this, getModel().getElementAt(i), i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
+            if (rComponent instanceof JComponent && Objects.nonNull(((JComponent) rComponent).getToolTipText())) {
+                return cellBounds.getLocation();
             }
         }
-        return pt;
+        return null;
     }
 }
 
 class CellRendererTooltipList<E> extends JList<E> {
     private final JLabel label = new JLabel();
-    public CellRendererTooltipList(ListModel<E> m) {
+    protected CellRendererTooltipList(ListModel<E> m) {
         super(m);
         //TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
         label.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
     }
-    @Override public Point getToolTipLocation(MouseEvent event) {
-        Point pt = null;
-        Point p = event.getPoint();
+    @Override public Point getToolTipLocation(MouseEvent e) {
+        Point p = e.getPoint();
         int i = locationToIndex(p);
         ListCellRenderer<? super E> r = getCellRenderer();
         final Rectangle cellBounds = getCellBounds(i, i);
-        if (i != -1 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
+        if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
             ListSelectionModel lsm = getSelectionModel();
             E str = getModel().getElementAt(i);
-            final Component rComponent = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
-            if (rComponent instanceof JComponent && ((JComponent) rComponent).getToolTipText() != null) {
-                pt = cellBounds.getLocation();
+            Component rComponent = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus() && lsm.getLeadSelectionIndex() == i);
+            if (rComponent instanceof JComponent && Objects.nonNull(((JComponent) rComponent).getToolTipText())) {
+                Point pt = cellBounds.getLocation();
                 Insets ins = label.getInsets();
                 pt.translate(-ins.left, -ins.top);
                 label.setIcon(new RendererIcon(rComponent, cellBounds));
+                return pt;
             }
         }
-        return pt;
+        return null;
     }
     @Override public JToolTip createToolTip() {
         JToolTip tip = new JToolTip() {
@@ -141,7 +138,7 @@ class TooltipListCellRenderer extends DefaultListCellRenderer {
 class RendererIcon implements Icon {
     private final Component renderer;
     private final Rectangle rect;
-    public RendererIcon(Component renderer, Rectangle rect) {
+    protected RendererIcon(Component renderer, Rectangle rect) {
         this.renderer = renderer;
         this.rect = rect;
         rect.setLocation(0, 0);
