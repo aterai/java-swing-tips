@@ -140,8 +140,8 @@
            includeAntRuntime="no"
            fork="true"
            classpathref="project.class.path">
-      <compilerarg value="-J-Dfile.encoding=${compile.encoding}"/>
-      <compilerarg value="-J-Duser.language=${user.language}"/>
+      <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
+      <compilerarg value="-J-Duser.language=${user.language}" />
       <!-- compilerarg value="-Xlint:unchecked" / -->
     </javac>
   </target>
@@ -149,7 +149,7 @@
   <target name="run" depends="compile">
     <java classname="${main.class}" classpathref="project.class.path" fork="true" />
   </target>
-  
+
   <!-- =================================================================== -->
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
@@ -357,11 +357,20 @@
     </findbugs>
   </target>
 
-  <target name="pmd">
-    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
+  <condition property="have.pmd">
+    <available file="${env.PMD_HOME}" />
+  </condition>
+  <target name="pmd" if="have.pmd">
+    <echo>${env.PMD_HOME}</echo>
+    <path id="pmd.classpath">
+      <fileset dir="${env.PMD_HOME}/lib">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
     <pmd rulesetfiles="ruleset.xml" encoding="${compile.encoding}">
-      <sourceLanguage name="java" version="${compile.source}"/>
+      <sourceLanguage name="java" version="${compile.source}" />
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <formatter type="text" toConsole="true" />
@@ -371,8 +380,11 @@
     </pmd>
   </target>
 
-  <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
-  <target name="checkstyle">
+  <condition property="have.checkstyle">
+    <available file="${env.CHECKSTYLE_JAR}" />
+  </condition>
+  <target name="checkstyle" if="have.checkstyle">
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
     <mkdir dir="${build.reports}" />
     <checkstyle config="${user.dir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
