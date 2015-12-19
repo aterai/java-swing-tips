@@ -113,8 +113,8 @@ public final class MainPanel extends JPanel {
 //     @Override public boolean importData(JComponent component, Transferable transferable) {
 //         try {
 //             if (canImport(component, transferable.getTransferDataFlavors())) {
-//                 //DefaultTableModel model = (DefaultTableModel)((JTable) component).getModel();
-//                 FileModel model = (FileModel)((JTable) component).getModel();
+//                 //DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
+//                 FileModel model = (FileModel) ((JTable) component).getModel();
 //                 for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
 //                     if (o instanceof File) {
 //                         File file = (File) o;

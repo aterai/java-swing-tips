@@ -103,7 +103,7 @@ class RandomDissolve extends JComponent implements ActionListener {
         WritableRaster wr = image.getRaster();
         DataBufferInt dbi = (DataBufferInt) wr.getDataBuffer();
         return dbi.getData();
-        //return ((DataBufferInt)(image.getRaster().getDataBuffer())).getData();
+        //return ((DataBufferInt) (image.getRaster().getDataBuffer())).getData();
     }
     public void animationStart() {
         currentStage = STAGES;

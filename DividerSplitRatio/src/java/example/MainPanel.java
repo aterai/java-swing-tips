@@ -7,18 +7,18 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel() {
+    private final JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio", true);
+    private final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTextArea()), new JScrollPane(new JTree()));
+    private final SplitPaneWrapper spw = new SplitPaneWrapper(splitPane);
+    public MainPanel() {
         super(new BorderLayout());
-        final SplitPaneWrapper sp = new SplitPaneWrapper();
-        final JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio");
-        check.setSelected(true);
         check.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                sp.setTestFlag(check.isSelected());
+                spw.setTestFlag(check.isSelected());
             }
         });
         add(check, BorderLayout.NORTH);
-        add(sp);
+        add(spw);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -45,45 +45,14 @@ public final class MainPanel extends JPanel {
 }
 
 class SplitPaneWrapper extends JPanel {
-    private final JSplitPane splitPane;
-    private final JTextArea log = new JTextArea();
     private boolean flag = true;
     private int prevState = Frame.NORMAL;
-//     private final JSplitPane splitPane = new JSplitPane() {
-//         @Override public void setDividerLocation(double proportionalLocation) {
-//             if (proportionalLocation < 0d || proportionalLocation > 1d) {
-//                 throw new IllegalArgumentException("proportional location must be between 0.0 and 1.0.");
-//             }
-//             int s = (getOrientation() == VERTICAL_SPLIT ? getHeight() : getWidth()) - getDividerSize();
-//             setDividerLocation((int)Math.round(s * proportionalLocation));
-//         }
-// //         @Override public void setDividerLocation(double proportionalLocation) {
-// //             if (proportionalLocation < 0d || proportionalLocation > 1d) {
-// //                 throw new IllegalArgumentException("proportional location must be between 0.0 and 1.0.");
-// //             }
-// //             if (getOrientation() == VERTICAL_SPLIT) {
-// //                 setDividerLocation((int) ((double)(getHeight() - getDividerSize()) *
-// //                                          proportionalLocation));
-// //             } else {
-// //                 setDividerLocation((int) ((double)(getWidth() - getDividerSize()) *
-// //                                          proportionalLocation));
-// //             }
-// //         }
-//     };
-    public SplitPaneWrapper() {
+    private final JSplitPane splitPane;
+
+    protected SplitPaneWrapper(JSplitPane splitPane) {
         super(new BorderLayout());
-        this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(log), new JScrollPane(new JTree()));
+        this.splitPane = splitPane;
         add(splitPane);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                splitPane.setDividerLocation(.5);
-            }
-        });
-    }
-    public SplitPaneWrapper(JSplitPane sp) {
-        super(new BorderLayout());
-        this.splitPane = sp;
-        add(sp);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 splitPane.setDividerLocation(.5);
@@ -109,7 +78,7 @@ class SplitPaneWrapper extends JPanel {
                     @Override public void run() {
                         int s = getOrientedSize(splitPane);
                         int iv = (int) Math.round(s * proportionalLocation);
-                        log.append(String.format("DividerLocation: %d%n", iv));
+                        System.out.format("DividerLocation: %d%n", iv);
                         splitPane.setDividerLocation(iv);
                     }
                 });

@@ -171,7 +171,7 @@ class FileTransferHandler extends TransferHandler {
     @Override public boolean importData(TransferSupport support) {
         try {
             if (canImport(support)) {
-                //FileTableModel model = (FileTableModel)((JTable) support.getComponent()).getModel();
+                //FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
                 //List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
                 //model.setFiles((File[]) list.toArray(new File[list.size()]));
                 DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
@@ -195,7 +195,7 @@ class FileTransferHandler extends TransferHandler {
 //     @Override public boolean importData(JComponent component, Transferable transferable) {
 //         try {
 //             if (canImport(component, transferable.getTransferDataFlavors())) {
-//                 DefaultTableModel model = (DefaultTableModel)((JTable) component).getModel();
+//                 DefaultTableModel model = (DefaultTableModel) ((JTable) component).getModel();
 //                 for (Object o: (List) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
 //                     if (o instanceof File) {
 //                         File file = (File) o;
