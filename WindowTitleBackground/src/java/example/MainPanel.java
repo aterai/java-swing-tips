@@ -65,10 +65,8 @@ public final class MainPanel extends JPanel {
                     String key = (String) model.getValueAt(row, 0);
                     Color color = (Color) model.getValueAt(row, 1);
                     UIManager.put(key, new ColorUIResource(color));
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override public void run() {
-                            Optional.ofNullable(SwingUtilities.getWindowAncestor(table)).ifPresent(SwingUtilities::updateComponentTreeUI);
-                        }
+                    EventQueue.invokeLater(() -> {
+                        Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI);
                     });
                 }
             }

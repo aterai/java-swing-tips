@@ -17,8 +17,11 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(new JTree()));
         p.add(new JButton(new AbstractAction("close") {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
-                w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+                Container c = getTopLevelAncestor();
+                if (c instanceof Window) {
+                    Window w = (Window) c;
+                    w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+                }
             }
         }), BorderLayout.SOUTH);
 
@@ -145,7 +148,7 @@ class DragWindowListener extends MouseAdapter {
 }
 
 class DraggableInternalFrame extends JInternalFrame {
-    public DraggableInternalFrame(String title) {
+    protected DraggableInternalFrame(String title) {
         super(title);
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         focusManager.addPropertyChangeListener(new PropertyChangeListener() {

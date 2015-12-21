@@ -12,10 +12,13 @@ public final class MainPanel extends JPanel {
         add(new JButton(new AbstractAction("show frame title") {
             @Override public void actionPerformed(ActionEvent e) {
                 JButton btn  = (JButton) e.getSource();
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(btn);
-                //JFrame frame = (JFrame) btn.getTopLevelAncestor();
-                //JFrame frame = (JFrame)JOptionPane.getFrameForComponent(btn);
-                JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);
+                Window w = SwingUtilities.getWindowAncestor(btn);
+                //Container c = btn.getTopLevelAncestor();
+                //Frame f = JOptionPane.getFrameForComponent(btn);
+                if (w instanceof JFrame) {
+                    JFrame frame = (JFrame) w;
+                    JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }));
         setPreferredSize(new Dimension(320, 100));

@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -54,9 +53,9 @@ public final class MainPanel extends JPanel {
         MenuItem item1 = new MenuItem("Open:Frame");
         item1.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.getWindowAncestor(getRootPane());
-                if (Objects.nonNull(w)) {
-                    w.setVisible(true);
+                Container c = getTopLevelAncestor();
+                if (c instanceof Window) {
+                    ((Window) c).setVisible(true);
                 }
             }
         });

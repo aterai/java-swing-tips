@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -55,8 +55,9 @@ public final class MainPanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 JComponent b = (JComponent) e.getSource();
-                Window w = SwingUtilities.getWindowAncestor(b);
-                if (Objects.nonNull(w)) {
+                Container c = b.getTopLevelAncestor();
+                if (c instanceof Window) {
+                    Window w = (Window) c;
                     w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
                 }
             }
@@ -197,17 +198,17 @@ class SideLabel extends JLabel {
 
 class ResizeWindowListener extends MouseAdapter {
     private final JFrame frame;
-    private Rectangle rect;
+    private final Rectangle rect = new Rectangle();
     protected ResizeWindowListener(JFrame frame) {
         super();
         this.frame = frame;
-        this.rect  = frame.getBounds();
+        this.rect.setBounds(frame.getBounds());
     }
     @Override public void mousePressed(MouseEvent e) {
-        rect = frame.getBounds();
+        rect.setBounds(frame.getBounds());
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if (Objects.isNull(rect)) {
+        if (rect.isEmpty()) {
             return;
         }
         Side side = ((SideLabel) e.getComponent()).side;

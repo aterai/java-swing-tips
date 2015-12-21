@@ -75,24 +75,21 @@ class TranslucentPopupMenu extends JPopupMenu {
         return super.add(menuItem);
     }
     @Override public void show(Component c, int x, int y) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Window p = SwingUtilities.getWindowAncestor(TranslucentPopupMenu.this);
-                if (p instanceof JWindow) {
-                    System.out.println("Heavy weight");
-                    JWindow w = (JWindow) p;
-//                     if (System.getProperty("java.version").startsWith("1.6.0")) {
-//                         w.dispose();
-//                         if (AWTUtilities.isWindowOpaque(w)) {
-//                             AWTUtilities.setWindowOpaque(w, false);
-//                         }
-//                         w.setVisible(true);
-//                     } else {
-                        w.setBackground(ALPHA_ZERO);
-//                     }
-                } else {
-                    System.out.println("Light weight");
-                }
+        EventQueue.invokeLater(() -> {
+            Container p = getTopLevelAncestor();
+            if (p instanceof JWindow) {
+                System.out.println("Heavy weight");
+                JWindow w = (JWindow) p;
+                //if (System.getProperty("java.version").startsWith("1.6.0")) {
+                //    w.dispose();
+                //    if (AWTUtilities.isWindowOpaque(w)) {
+                //        AWTUtilities.setWindowOpaque(w, false);
+                //    }
+                //    w.setVisible(true);
+                //}
+                w.setBackground(ALPHA_ZERO);
+            } else {
+                System.out.println("Light weight");
             }
         });
         super.show(c, x, y);

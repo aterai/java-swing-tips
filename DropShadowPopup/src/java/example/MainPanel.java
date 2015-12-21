@@ -44,9 +44,9 @@ public final class MainPanel extends JPanel {
                 @Override public void actionPerformed(ActionEvent e) {
                     JMenuItem m = (JMenuItem) e.getSource();
                     JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
-                    Window w = SwingUtilities.getWindowAncestor(pop.getInvoker());
-                    if (w != null) {
-                        w.dispose();
+                    Container top = ((JComponent) pop.getInvoker()).getTopLevelAncestor();
+                    if (top instanceof Window) {
+                        ((Window) top).dispose();
                     }
                 }
             }))) {
@@ -227,12 +227,10 @@ class DropShadowPopupMenu extends JPopupMenu {
             }
             g2.dispose();
         }
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Window pop = SwingUtilities.getWindowAncestor(DropShadowPopupMenu.this);
-                if (pop instanceof JWindow) {
-                    pop.setBackground(new Color(0x0, true)); //JDK 1.7.0
-                }
+        EventQueue.invokeLater(() -> {
+            Container top = getTopLevelAncestor();
+            if (top instanceof JWindow) {
+                ((JWindow) top).setBackground(new Color(0x0, true)); //JDK 1.7.0
             }
         });
         super.show(c, x, y);

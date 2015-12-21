@@ -14,8 +14,7 @@ public final class MainPanel extends JPanel {
             @Override public void actionPerformed(ActionEvent e) {
                 Window w = SwingUtilities.getWindowAncestor(getRootPane());
                 if (w instanceof JFrame) {
-                    JFrame frame = (JFrame) w;
-                    frame.setResizable(checkbox.isSelected());
+                    ((JFrame) w).setResizable(checkbox.isSelected());
                 }
             }
         });

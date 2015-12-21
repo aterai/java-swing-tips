@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,9 +12,9 @@ public final class MainPanel extends JPanel {
         JCheckBox checkbox = new JCheckBox(new AbstractAction("Always On Top") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox) e.getSource();
-                Window w = SwingUtilities.getWindowAncestor(c);
-                if (Objects.nonNull(w)) {
-                    w.setAlwaysOnTop(c.isSelected());
+                Container w = c.getTopLevelAncestor();
+                if (w instanceof Window) {
+                    ((Window) w).setAlwaysOnTop(c.isSelected());
                 }
             }
         });
