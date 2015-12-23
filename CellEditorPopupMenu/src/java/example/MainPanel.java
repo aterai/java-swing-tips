@@ -103,8 +103,7 @@ class TextComponentPopupMenu extends JPopupMenu {
                 redoAction.setEnabled(true);
             }
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                JPopupMenu pop = (JPopupMenu) e.getSource();
-                JTextComponent tc = (JTextComponent) pop.getInvoker();
+                JTextComponent tc = (JTextComponent) getInvoker();
                 boolean flg = tc.getSelectionStart() != tc.getSelectionEnd();
                 cutAction.setEnabled(flg);
                 copyAction.setEnabled(flg);
@@ -151,7 +150,8 @@ class DeleteAction extends AbstractAction {
         super("delete");
     }
     @Override public void actionPerformed(ActionEvent e) {
-        Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
+        //Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
+        Container c = SwingUtilities.getUnwrappedParent((Component) e.getSource());
         if (c instanceof JPopupMenu) {
             JPopupMenu pop = (JPopupMenu) c;
             ((JTextComponent) pop.getInvoker()).replaceSelection(null);

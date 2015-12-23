@@ -44,9 +44,9 @@ public final class MainPanel extends JPanel {
                 @Override public void actionPerformed(ActionEvent e) {
                     JMenuItem m = (JMenuItem) e.getSource();
                     JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
-                    Container top = ((JComponent) pop.getInvoker()).getTopLevelAncestor();
-                    if (top instanceof Window) {
-                        ((Window) top).dispose();
+                    Component w = SwingUtilities.getRoot(pop.getInvoker());
+                    if (w instanceof Window) {
+                        ((Window) w).dispose();
                     }
                 }
             }))) {

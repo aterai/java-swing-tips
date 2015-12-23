@@ -98,7 +98,7 @@ class TreePopupMenu extends JPopupMenu {
     private TreePath path;
     private final Action addFolderAction = new AbstractAction("add folder") {
         @Override public void actionPerformed(ActionEvent e) {
-            final JTree tree = (JTree) getInvoker();
+            JTree tree = (JTree) getInvoker();
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New Folder", true);
@@ -123,9 +123,7 @@ class TreePopupMenu extends JPopupMenu {
                 DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
                 textField.setText(leaf.getUserObject().toString());
                 JTree tree = (JTree) getInvoker();
-                int result = JOptionPane.showConfirmDialog(
-                    tree, textField, "edit",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                int result = JOptionPane.showConfirmDialog(tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     String str = textField.getText();
                     if (!str.trim().isEmpty()) {
@@ -148,7 +146,7 @@ class TreePopupMenu extends JPopupMenu {
             }
         }
     };
-    public TreePopupMenu() {
+    protected TreePopupMenu() {
         super();
         textField.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {

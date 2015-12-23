@@ -193,28 +193,23 @@ class ExitAction extends AbstractAction {
         super("exit");
     }
     @Override public void actionPerformed(ActionEvent e) {
-        //exitActionPerformed();
-        //saveLocation(prefs);
-        JComponent c = (JComponent) e.getSource();
-        Window window = null;
-        //Container parent = c.getParent();
-        Container parent = SwingUtilities.getUnwrappedParent(c);
+        Component root = null;
+        Container parent = SwingUtilities.getUnwrappedParent((Component) e.getSource());
         if (parent instanceof JPopupMenu) {
             JPopupMenu popup = (JPopupMenu) parent;
-            JComponent invoker = (JComponent) popup.getInvoker();
-            window = SwingUtilities.getWindowAncestor(invoker);
+            root = SwingUtilities.getRoot(popup.getInvoker());
         } else if (parent instanceof JToolBar) {
             JToolBar toolbar = (JToolBar) parent;
             if (((BasicToolBarUI) toolbar.getUI()).isFloating()) {
-                window = SwingUtilities.getWindowAncestor(toolbar).getOwner();
+                root = SwingUtilities.getWindowAncestor(toolbar).getOwner();
             } else {
-                window = SwingUtilities.getWindowAncestor(toolbar);
+                root = SwingUtilities.getRoot(toolbar);
             }
         } else {
-            window = SwingUtilities.getWindowAncestor(parent);
+            root = SwingUtilities.getRoot(parent);
         }
-        if (Objects.nonNull(window)) {
-            //window.dispose();
+        if (root instanceof Window) {
+            Window window = (Window) root;
             window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
         }
     }
