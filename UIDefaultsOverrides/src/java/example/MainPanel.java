@@ -142,7 +142,7 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
 //     public static final int CHECKICON_MOUSEOVER          = 9;
     private final CheckIcon state;
     private final PaintContext ctx;
-    public MyCheckBoxMenuItemPainter(CheckIcon state) {
+    protected MyCheckBoxMenuItemPainter(CheckIcon state) {
         super();
         this.state = state;
         this.ctx = new AbstractRegionPainter.PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1d, 1d);
@@ -184,18 +184,18 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
 
 class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer {
     private final List<List<Integer>> rowColHeight = new ArrayList<>();
-    private final Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
+    private Border fhb; // = UIManager.getBorder("Table.focusCellHighlightBorder");
     private final Border epb = BorderFactory.createEmptyBorder(2, 5, 2, 5);
-    public MultiLineTableCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        setBorder(null);
+        super.updateUI();
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        setOpaque(true);
 
         //System.out.println(UIManager.get("nimbusFocus"));
         Border b = BorderFactory.createLineBorder(new Color(115, 164, 209));
         fhb = BorderFactory.createCompoundBorder(b, BorderFactory.createEmptyBorder(1, 4, 1, 4));
-
-        setLineWrap(true);
-        setWrapStyleWord(true);
-        setOpaque(true);
         setBorder(epb);
         //setMargin(new Insets(0, 0, 0, 0));
     }
