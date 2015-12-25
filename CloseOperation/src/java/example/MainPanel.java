@@ -30,14 +30,16 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("New Frame") {
-            @Override public void actionPerformed(final ActionEvent ae) {
-                JButton button = (JButton) ae.getSource();
+            @Override public void actionPerformed(final ActionEvent e) {
+                JButton button = (JButton) e.getSource();
                 JFrame frame   = createFrame(null);
                 frame.getContentPane().add(new MainPanel());
                 frame.pack();
-                JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(button);
-                Point pt = parent.getLocation();
-                frame.setLocation(pt.x, pt.y + frame.getSize().height);
+                Container c = button.getTopLevelAncestor();
+                if (c instanceof Window) {
+                    Point pt = ((Window) c).getLocation();
+                    frame.setLocation(pt.x, pt.y + frame.getSize().height);
+                }
                 //frame.setLocationByPlatform(true);
                 frame.setVisible(true);
             }

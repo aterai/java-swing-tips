@@ -18,7 +18,6 @@ public final class MainPanel extends JPanel {
         private JFrame frame;
         @Override public void actionPerformed(ActionEvent e) {
             AbstractButton button = (AbstractButton) e.getSource();
-            Window parent = SwingUtilities.getWindowAncestor(button);
             if (Objects.isNull(frame)) {
                 frame = new JFrame();
                 frame.setUndecorated(true);
@@ -51,7 +50,7 @@ public final class MainPanel extends JPanel {
                 //frame.setSize(shape.getBounds().width, shape.getBounds().height);
                 //AWTUtilities.setWindowShape(frame, shape); //JDK 1.6.0
                 frame.setShape(shape); //JDK 1.7.0
-                frame.setLocationRelativeTo(parent);
+                frame.setLocationRelativeTo(button.getTopLevelAncestor());
                 frame.setVisible(true);
             } else {
                 frame.setVisible(false);

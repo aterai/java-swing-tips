@@ -17,8 +17,10 @@ public final class MainPanel extends JPanel {
         p.add(new JCheckBox(new AbstractAction("setIconImage") {
             @Override public void actionPerformed(ActionEvent e) {
                 JCheckBox c = (JCheckBox) e.getSource();
-                Window w = SwingUtilities.getWindowAncestor(c);
-                w.setIconImage(c.isSelected() ? icon : null);
+                Container w = c.getTopLevelAncestor();
+                if (w instanceof Window) {
+                    ((Window) w).setIconImage(c.isSelected() ? icon : null);
+                }
             }
         }));
         add(p, BorderLayout.NORTH);

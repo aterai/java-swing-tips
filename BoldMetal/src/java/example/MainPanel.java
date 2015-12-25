@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
                 }
                 // Update the ComponentUIs for all Components. This
                 // needs to be invoked for all windows.
-                SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(c));
+                SwingUtilities.updateComponentTreeUI(c.getTopLevelAncestor());
             }
         });
 

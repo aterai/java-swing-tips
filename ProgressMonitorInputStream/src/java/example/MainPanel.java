@@ -76,11 +76,12 @@ public final class MainPanel extends JPanel {
     }
 
     class RunAction extends AbstractAction {
-        public RunAction() {
+        protected RunAction() {
             super("Load");
         }
         @Override public void actionPerformed(ActionEvent e) {
-            runButton.setEnabled(false);
+            JButton b = (JButton) e.getSource();
+            b.setEnabled(false);
             textArea.setText("");
 
             URLConnection urlConnection = getURLConnection();
@@ -89,11 +90,10 @@ public final class MainPanel extends JPanel {
             }
             Charset cs = getCharset(urlConnection, "UTF-8");
             int length = urlConnection.getContentLength();
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 
             try {
                 InputStream is = urlConnection.getInputStream();
-                ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(frame, "Loading", is);
+                ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(b.getTopLevelAncestor(), "Loading", is);
                 monitor = pmis.getProgressMonitor();
                 monitor.setNote(" "); //Need for JLabel#getPreferredSize
                 monitor.setMillisToDecideToPopup(0);
@@ -110,7 +110,7 @@ public final class MainPanel extends JPanel {
     }
 
     private class MonitorTask extends Task {
-        public MonitorTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
+        protected MonitorTask(ProgressMonitorInputStream pmis, Charset cs, int length) {
             super(pmis, cs, length);
         }
         @Override protected void process(List<Chunk> chunks) {
@@ -170,7 +170,7 @@ public final class MainPanel extends JPanel {
 class Chunk {
     public final String line;
     public final String note;
-    public Chunk(String line, String note) {
+    protected Chunk(String line, String note) {
         this.line = line;
         this.note = note;
     }
@@ -180,7 +180,7 @@ class Task extends SwingWorker<String, Chunk> {
     protected final ProgressMonitorInputStream pmis;
     protected final Charset cs;
     protected final int length;
-    public Task(ProgressMonitorInputStream pmis, Charset cs, int length) {
+    protected Task(ProgressMonitorInputStream pmis, Charset cs, int length) {
         super();
         this.pmis = pmis;
         this.cs = cs;

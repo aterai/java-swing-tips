@@ -30,9 +30,12 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(new JTree()));
         p.add(new JButton(new AbstractAction("close") {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
-                //w.dispose();
-                w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+                Component c = SwingUtilities.getRoot((Component) e.getSource());
+                if (c instanceof Window) {
+                    Window w = (Window) c;
+                    //w.dispose();
+                    w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+                }
             }
         }), BorderLayout.SOUTH);
         internal.getContentPane().add(p);
