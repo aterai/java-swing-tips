@@ -7,6 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -420,7 +421,7 @@ class GhostGlassPane extends JPanel {
     private final Rectangle lineRect  = new Rectangle();
     private final Color     lineColor = new Color(0, 100, 255);
     private Point location = new Point();
-    private transient BufferedImage draggingGhost;
+    private transient Optional<BufferedImage> draggingGhostOp;
 
     protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
@@ -434,7 +435,7 @@ class GhostGlassPane extends JPanel {
         lineRect.setRect(x, y, width, height);
     }
     public void setImage(BufferedImage draggingGhost) {
-        this.draggingGhost = draggingGhost;
+        this.draggingGhostOp = Optional.ofNullable(draggingGhost);
     }
     public void setPoint(Point location) {
         this.location = location;
@@ -447,11 +448,11 @@ class GhostGlassPane extends JPanel {
             g2.fill(tabbedPane.rBackward);
             g2.fill(tabbedPane.rForward);
         }
-        if (draggingGhost != null) {
-            double xx = location.getX() - draggingGhost.getWidth(this)  / 2d;
-            double yy = location.getY() - draggingGhost.getHeight(this) / 2d;
-            g2.drawImage(draggingGhost, (int) xx, (int) yy, null);
-        }
+        draggingGhostOp.ifPresent(img -> {
+            double xx = location.getX() - img.getWidth(this)  / 2d;
+            double yy = location.getY() - img.getHeight(this) / 2d;
+            g2.drawImage(img, (int) xx, (int) yy, null);
+        });
         if (tabbedPane.dragTabIndex >= 0) {
             g2.setPaint(lineColor);
             g2.fill(lineRect);

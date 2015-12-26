@@ -5,7 +5,7 @@ package example;
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 }
 
 class JustifiedLabel extends JLabel {
-    private GlyphVector gvtext;
+    private transient Optional<GlyphVector> gvtext;
     private int prevWidth = -1;
     protected JustifiedLabel() {
         this(null);
@@ -87,6 +87,7 @@ class JustifiedLabel extends JLabel {
         prevWidth = -1;
     }
     @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         Font font = getFont();
         Dimension d = getSize();
@@ -96,17 +97,15 @@ class JustifiedLabel extends JLabel {
             gvtext = getJustifiedGlyphVector(w, getText(), font, g2.getFontRenderContext());
             prevWidth = w;
         }
-        if (Objects.nonNull(gvtext)) {
+        gvtext.ifPresent(gv -> {
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, d.width, d.height);
             g2.setPaint(getForeground());
-            g2.drawGlyphVector(gvtext, ins.left, ins.top + font.getSize());
-        } else {
-            super.paintComponent(g);
-        }
+            g2.drawGlyphVector(gv, ins.left, ins.top + font.getSize());
+        });
         g2.dispose();
     }
-    private GlyphVector getJustifiedGlyphVector(int width, String str, Font font, FontRenderContext frc) {
+    private static Optional<GlyphVector> getJustifiedGlyphVector(int width, String str, Font font, FontRenderContext frc) {
         GlyphVector gv = font.createGlyphVector(frc, str);
         Rectangle2D r = gv.getVisualBounds();
         float jwidth = (float) width;
@@ -122,8 +121,8 @@ class JustifiedLabel extends JLabel {
                 gv.setGlyphPosition(i, gmPos);
                 xpos += gm.getAdvance() + xx;
             }
-            return gv;
+            return Optional.of(gv);
         }
-        return null;
+        return Optional.empty();
     }
 }
