@@ -6,11 +6,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.*;
 
 public class MainPanel extends JPanel {
+    private static final String ENTER_PRESSED = "enterPressed";
     private final String[] model = {"123456", "7890"};
     public MainPanel() {
         super(new BorderLayout());
@@ -19,19 +21,26 @@ public class MainPanel extends JPanel {
 
         JComboBox<String> comboBox = new JComboBox<String>(model) {
             @Override public void updateUI() {
+                getActionMap().put(ENTER_PRESSED, null);
                 super.updateUI();
                 final JComboBox<String> cb = this;
-                getActionMap().put("enterPressed", new AbstractAction() {
+                final Action defalutEnterPressedAction = getActionMap().get(ENTER_PRESSED);
+                getActionMap().put(ENTER_PRESSED, new AbstractAction() {
                     @Override public void actionPerformed(ActionEvent e) {
-                        if (getInputVerifier().verify(cb)) {
-                            String str = Objects.toString(getEditor().getItem(), "");
-                            DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) getModel();
+                        boolean isPopupVisible = isPopupVisible();
+                        setPopupVisible(false);
+                        DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) getModel();
+                        String str = Objects.toString(getEditor().getItem(), "");
+                        if (m.getIndexOf(str) < 0 && getInputVerifier().verify(cb)) {
                             m.removeElement(str);
                             m.insertElementAt(str, 0);
                             if (m.getSize() > 10) {
                                 m.removeElementAt(10);
                             }
                             setSelectedIndex(0);
+                            setPopupVisible(isPopupVisible);
+                        } else {
+                            defalutEnterPressedAction.actionPerformed(e);
                         }
                     }
                 });
@@ -55,6 +64,7 @@ public class MainPanel extends JPanel {
                 return editorComponent;
             }
         });
+        comboBox.addPopupMenuListener(new SelectItemMenuListener());
 
         JPanel p = new JPanel(new GridLayout(5, 1));
         p.add(new JLabel("Default:", SwingConstants.LEFT));
@@ -87,6 +97,15 @@ public class MainPanel extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+}
+
+class SelectItemMenuListener implements PopupMenuListener {
+    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        JComboBox c = (JComboBox) e.getSource();
+        c.setSelectedItem(c.getEditor().getItem());
+    }
+    @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { /* not needed */ }
+    @Override public void popupMenuCanceled(PopupMenuEvent e) { /* not needed */ }
 }
 
 //@see http://docs.oracle.com/javase/tutorial/uiswing/examples/misc/FieldValidatorProject/src/FieldValidator.java
