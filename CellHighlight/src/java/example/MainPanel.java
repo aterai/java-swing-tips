@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -57,19 +57,19 @@ class HighlightListener extends MouseAdapter {
     private int col = -1;
     private final JTable table;
 
-    public HighlightListener(JTable table) {
+    protected HighlightListener(JTable table) {
         super();
         this.table = table;
     }
-    public Color getHighlightableCellColor(int row, int column) {
+    public Optional<? extends Color> getHighlightableCellColor(int row, int column) {
         if (this.row == row || this.col == column) {
             if (this.row == row && this.col == column) {
-                return HIGHLIGHT1;
+                return Optional.of(HIGHLIGHT1);
             } else {
-                return HIGHLIGHT2;
+                return Optional.of(HIGHLIGHT2);
             }
         }
-        return null;
+        return Optional.empty();
     }
     private void setHighlighTableCell(Point pt) {
         row = table.rowAtPoint(pt);
@@ -96,26 +96,22 @@ class HighlightListener extends MouseAdapter {
 class HighlightRenderer extends DefaultTableCellRenderer {
     private final transient HighlightListener highlighter;
 
-    public HighlightRenderer(HighlightListener highlighter) {
+    protected HighlightRenderer(HighlightListener highlighter) {
         super();
         this.highlighter = highlighter;
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
-        Color highlight = highlighter.getHighlightableCellColor(row, column);
-        if (Objects.nonNull(highlight)) {
-            setBackground(highlight);
-        } else {
-            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-        }
+        setBackground(table.getBackground());
+        highlighter.getHighlightableCellColor(row, column).ifPresent(c -> setBackground(c));
         return this;
     }
 }
 
 // class HighlightableTable extends JTable {
 //     private final HighlightListener highlighter;
-//     public HighlightableTable(TableModel model) {
+//     protected HighlightableTable(TableModel model) {
 //         super(model);
 //         highlighter = new HighlightListener(this);
 //         addMouseListener(highlighter);
