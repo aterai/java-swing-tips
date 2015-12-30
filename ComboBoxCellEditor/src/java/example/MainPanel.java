@@ -78,7 +78,7 @@ class Node {
     protected final String[] plugins;
     private int selectedPluginIndex;
 
-    public Node(String name, String... plugins) {
+    protected Node(String name, String... plugins) {
         this.name = name;
         this.plugins = plugins;
     }
@@ -96,7 +96,7 @@ class Node {
 class PluginPanel extends JPanel {
     protected final JLabel pluginName = new JLabel();
     protected final JComboBox<String> comboBox;
-    public PluginPanel(JComboBox<String> comboBox) {
+    protected PluginPanel(JComboBox<String> comboBox) {
         super();
         this.comboBox = comboBox;
         comboBox.setPrototypeDisplayValue("Debug mode x");
@@ -104,45 +104,39 @@ class PluginPanel extends JPanel {
         add(pluginName);
         add(comboBox);
     }
-    protected static Node extractNode(Object value) {
+    protected Node extractNode(Object value) {
         if (value instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-            Object userObject = node.getUserObject();
+            Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof Node) {
-                return (Node) userObject;
+                Node node = (Node) userObject;
+                pluginName.setText(node.toString());
+                DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
+                model.removeAllElements();
+                if (node.plugins.length > 0) {
+                    add(comboBox);
+                    for (String s: node.plugins) {
+                        model.addElement(s);
+                    }
+                    comboBox.setSelectedIndex(node.getSelectedPluginIndex());
+                } else {
+                    remove(comboBox);
+                }
+                return node;
             }
         }
         return null;
-    }
-    protected void setContents(Node node) {
-        if (node == null) {
-            return;
-        }
-        pluginName.setText(node.toString());
-        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
-        model.removeAllElements();
-        if (node.plugins.length > 0) {
-            add(comboBox);
-            for (String s: node.plugins) {
-                model.addElement(s);
-            }
-            comboBox.setSelectedIndex(node.getSelectedPluginIndex());
-        } else {
-            remove(comboBox);
-        }
     }
 }
 
 class PluginCellRenderer implements TreeCellRenderer {
     private final PluginPanel panel;
 
-    public PluginCellRenderer(JComboBox<String> comboBox) {
+    protected PluginCellRenderer(JComboBox<String> comboBox) {
         super();
         panel = new PluginPanel(comboBox);
     }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        Node node = panel.extractNode(value);
-        panel.setContents(node);
+        panel.extractNode(value);
         return panel;
     }
 }
@@ -151,18 +145,17 @@ class PluginCellEditor extends DefaultCellEditor {
     private final PluginPanel panel;
     private transient Node node;
 
-    public PluginCellEditor(JComboBox<String> comboBox) {
+    protected PluginCellEditor(JComboBox<String> comboBox) {
         super(comboBox);
         panel = new PluginPanel(comboBox);
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-        Node node = panel.extractNode(value);
-        panel.setContents(node);
-        this.node = node;
+        this.node = panel.extractNode(value);
         return panel;
     }
     @Override public Object getCellEditorValue() {
         Object o = super.getCellEditorValue();
+        //FindBugs? if (Objects.isNull(node)) {
         if (node == null) {
             return o;
         }
@@ -179,7 +172,7 @@ class PluginCellEditor extends DefaultCellEditor {
         JTree tree = (JTree) source;
         MouseEvent me = (MouseEvent) e;
         TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-        if (path == null) {
+        if (Objects.isNull(path)) {
             return false;
         }
         Object node = path.getLastPathComponent();
@@ -187,7 +180,7 @@ class PluginCellEditor extends DefaultCellEditor {
             return false;
         }
         Rectangle r = tree.getPathBounds(path);
-        if (r == null) {
+        if (Objects.isNull(r)) {
             return false;
         }
         Dimension d = panel.getPreferredSize();
@@ -205,7 +198,7 @@ class PluginCellEditor extends DefaultCellEditor {
                 Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
                 if (o instanceof JComboBox) {
                     panel.comboBox.showPopup();
-                } else if (o != null) {
+                } else if (Objects.nonNull(o)) {
                     Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, (Component) o);
                     if (c instanceof JComboBox) {
                         panel.comboBox.showPopup();
