@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
             }
         });
         Box box = Box.createHorizontalBox();
-        box.add(cb1); box.add(cb2);
+        box.add(cb1);
+        box.add(cb2);
         add(box, BorderLayout.NORTH);
         add(scroll);
         setPreferredSize(new Dimension(320, 240));

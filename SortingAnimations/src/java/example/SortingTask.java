@@ -38,13 +38,26 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     @Override public String doInBackground() {
         try {
             switch (sortAlgorithm) {
-              case Isort:     isort(number);         break;
-              case Selsort:   ssort(number);         break;
-              case Shellsort: shellsort(number);     break;
-              case Hsort:     heapsort(number);      break;
-              case Qsort:     qsort(0, number - 1);  break;
-              case Qsort2:    qsort2(0, number - 1); break;
-              default:        throw new AssertionError("Unknown SortAlgorithms");
+              case Isort:
+                isort(number);
+                break;
+              case Selsort:
+                ssort(number);
+                break;
+              case Shellsort:
+                shellsort(number);
+                break;
+              case Hsort:
+                heapsort(number);
+                break;
+              case Qsort:
+                qsort(0, number - 1);
+                break;
+              case Qsort2:
+                qsort2(0, number - 1);
+                break;
+              default:
+                throw new AssertionError("Unknown SortAlgorithms");
             }
         } catch (InterruptedException ie) {
             return "Interrupted";

@@ -79,15 +79,30 @@ public final class MainPanel extends JPanel {
         }
 
         ButtonGroup bg = new ButtonGroup();
-        JRadioButton f = makePrevNextRadioButton(itemsPerPage, 1, "|<", currentPageIndex > 1); box.add(f); bg.add(f);
-        JRadioButton p = makePrevNextRadioButton(itemsPerPage, currentPageIndex - 1, "<", currentPageIndex > 1); box.add(p); bg.add(p);
+        JRadioButton f = makePrevNextRadioButton(itemsPerPage, 1, "|<", currentPageIndex > 1);
+        box.add(f);
+        bg.add(f);
+
+        JRadioButton p = makePrevNextRadioButton(itemsPerPage, currentPageIndex - 1, "<", currentPageIndex > 1);
+        box.add(p);
+        bg.add(p);
+
         box.add(Box.createHorizontalGlue());
         for (int i = startPageIndex; i <= endPageIndex; i++) {
-            JRadioButton c = makeRadioButton(itemsPerPage, currentPageIndex, i); box.add(c); bg.add(c);
+            JRadioButton c = makeRadioButton(itemsPerPage, currentPageIndex, i);
+            box.add(c);
+            bg.add(c);
         }
         box.add(Box.createHorizontalGlue());
-        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", currentPageIndex < maxPageIndex); box.add(n); bg.add(n);
-        JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex < maxPageIndex); box.add(l); bg.add(l);
+
+        JRadioButton n = makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", currentPageIndex < maxPageIndex);
+        box.add(n);
+        bg.add(n);
+
+        JRadioButton l = makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", currentPageIndex < maxPageIndex);
+        box.add(l);
+        bg.add(l);
+
         box.revalidate();
         box.repaint();
     }

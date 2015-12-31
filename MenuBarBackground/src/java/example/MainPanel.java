@@ -61,7 +61,9 @@ public final class MainPanel extends JPanel {
         if ("Windows XP".equals(System.getProperty("os.name"))) {
             menu.setBackground(new Color(0x0, true)); //XXX Windows XP lnf?
         }
-        menu.add("dummy1"); menu.add("dummy2"); menu.add("dummy3");
+        menu.add("dummy1");
+        menu.add("dummy2");
+        menu.add("dummy3");
         return menu;
     }
     private TexturePaint makeCheckerTexture() {

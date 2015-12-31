@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
+public class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
     private final JTable table;
     private final int targetColumnIndex;
     public HeaderCheckBoxHandler(JTable table, int index) {

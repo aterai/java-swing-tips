@@ -79,7 +79,9 @@ public final class MainPanel extends JPanel {
                     JRadioButton b3 = new JRadioButton("ccc");
                     JRadioButton b4 = new JRadioButton("ddd");
                     for (JRadioButton b: Arrays.asList(b1, b2, b3, b4)) {
-                        b.setOpaque(false); pnl.add(b); bg.add(b);
+                        b.setOpaque(false);
+                        pnl.add(b);
+                        bg.add(b);
                     }
                     b1.setSelected(true);
                     return pnl;
@@ -118,7 +120,7 @@ abstract class AbstractExpansionPanel extends JPanel {
 
     public abstract JPanel makePanel();
 
-    AbstractExpansionPanel(String title) {
+    protected AbstractExpansionPanel(String title) {
         super(new BorderLayout());
         this.title = title;
         label = new JLabel("\u25BC " + title) {
@@ -195,11 +197,11 @@ abstract class AbstractExpansionPanel extends JPanel {
 }
 
 // class ExpansionEvent extends EventObject {
-//     public ExpansionEvent(Object source) {
+//     protected ExpansionEvent(Object source) {
 //         super(source);
 //     }
 // }
 //
 // interface ExpansionListener {
-//     public void expansionStateChanged(ExpansionEvent e);
+//     void expansionStateChanged(ExpansionEvent e);
 // }

@@ -16,8 +16,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         Box box = Box.createHorizontalBox();
         ButtonGroup bg = new ButtonGroup();
-        box.add(r1); bg.add(r1);
-        box.add(r2); bg.add(r2);
+        box.add(r1);
+        bg.add(r1);
+        box.add(r2);
+        bg.add(r2);
         r1.setSelected(true);
 
         label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/

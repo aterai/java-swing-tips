@@ -42,10 +42,12 @@ public final class MainPanel extends JPanel {
             Point pt = SwingUtilities.convertPoint(vport, 0, 0, label);
             rect.setRect(pt.x - x + startX, pt.y - y + startY, w, h);
             label.scrollRectToVisible(rect);
-            startX = x; startY = y;
+            startX = x;
+            startY = y;
         }
         @Override public void mousePressed(MouseEvent e) {
-            startX = e.getX(); startY = e.getY();
+            startX = e.getX();
+            startY = e.getY();
             label.setCursor(hndCursor);
         }
         @Override public void mouseReleased(MouseEvent e) {

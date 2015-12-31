@@ -52,8 +52,10 @@ public final class MainPanel extends JPanel {
         };
         for (String key: map.keySet()) {
             JRadioButton r = new JRadioButton(key);
-            r.setActionCommand(key); r.addActionListener(al);
-            bg.add(r); box.add(r);
+            r.setActionCommand(key);
+            r.addActionListener(al);
+            bg.add(r);
+            box.add(r);
         }
         box.add(Box.createHorizontalGlue());
         box.setBorder(BorderFactory.createTitledBorder("JRootPane#setDefaultButton: "));

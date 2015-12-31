@@ -107,7 +107,8 @@ class DraggableImageMouseListener extends MouseAdapter {
     }
     @Override public void mouseMoved(MouseEvent e) {
         if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
-            moverHover = false; rotatorHover = true;
+            moverHover = false;
+            rotatorHover = true;
         } else if (inner.contains(e.getX(), e.getY())) {
             moverHover = true;
             rotatorHover = false;

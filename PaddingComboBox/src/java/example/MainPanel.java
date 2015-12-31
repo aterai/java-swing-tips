@@ -25,7 +25,8 @@ public final class MainPanel extends JPanel {
         layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
 
         Box box = Box.createHorizontalBox();
-        box.add(check); box.add(Box.createHorizontalGlue());
+        box.add(check);
+        box.add(Box.createHorizontalGlue());
 
         add(panel);
         add(box, BorderLayout.SOUTH);

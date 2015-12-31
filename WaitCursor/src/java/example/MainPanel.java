@@ -46,8 +46,10 @@ public final class MainPanel extends JPanel {
         JTextField t = new JTextField("TextField&ToolTip");
         t.setToolTipText("ToolTip");
 
-        box.add(b); box.add(Box.createHorizontalStrut(5));
-        box.add(t); box.add(Box.createHorizontalStrut(5));
+        box.add(b);
+        box.add(Box.createHorizontalStrut(5));
+        box.add(t);
+        box.add(Box.createHorizontalStrut(5));
 
         add(box, BorderLayout.NORTH);
         add(button, BorderLayout.SOUTH);

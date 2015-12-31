@@ -55,7 +55,9 @@ public final class MainPanel extends JPanel implements ActionListener {
 
         JPanel p = new JPanel();
         for (JRadioButton r: Arrays.asList(leftRadio, centerRadio, rightRadio, customRadio)) {
-            bg.add(r); p.add(r); r.addActionListener(this);
+            bg.add(r);
+            p.add(r);
+            r.addActionListener(this);
         }
 
         add(p, BorderLayout.NORTH);

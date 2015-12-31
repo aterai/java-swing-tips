@@ -150,13 +150,17 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object... eckey) {
         switch (state) {
           case ENABLED:
-            paintcheckIconEnabled(g);              break;
+            paintcheckIconEnabled(g);
+            break;
           case MOUSEOVER:
-            paintcheckIconMouseOver(g);            break;
+            paintcheckIconMouseOver(g);
+            break;
           case ENABLED_SELECTED:
-            paintcheckIconEnabledAndSelected(g);   break;
+            paintcheckIconEnabledAndSelected(g);
+            break;
           case SELECTED_MOUSEOVER:
-            paintcheckIconSelectedAndMouseOver(g); break;
+            paintcheckIconSelectedAndMouseOver(g);
+            break;
           default:
             break;
         }

@@ -26,9 +26,11 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         ButtonGroup bg = new ButtonGroup();
-        bg.add(check1); bg.add(check2);
+        bg.add(check1);
+        bg.add(check2);
         JPanel p = new JPanel(new GridLayout(2, 1));
-        p.add(check1); p.add(check2);
+        p.add(check1);
+        p.add(check2);
 
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
             @Override public void toggleSortOrder(int column) {

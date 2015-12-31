@@ -19,8 +19,10 @@ public final class MainPanel extends JPanel {
         initComboBox(combo01);
         int g = 5;
         JPanel p = new JPanel(new GridLayout(2, 2, g, g));
-        p.add(combo00); p.add(new JLabel("<- default"));
-        p.add(combo01); p.add(new JLabel("<- RightPopupMenuListener"));
+        p.add(combo00);
+        p.add(new JLabel("<- default"));
+        p.add(combo01);
+        p.add(new JLabel("<- RightPopupMenuListener"));
         setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

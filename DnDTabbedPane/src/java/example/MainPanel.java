@@ -61,12 +61,18 @@ public final class MainPanel extends JPanel {
                 tab.isPaintScrollArea = debugp.isSelected();
             }
         });
+
         JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p1.add(gcheck); p1.add(tcheck);
+        p1.add(gcheck);
+        p1.add(tcheck);
+
         JPanel p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p2.add(scheck); p2.add(debugp);
+        p2.add(scheck);
+        p2.add(debugp);
+
         JPanel p = new JPanel(new BorderLayout());
-        p.add(p1, BorderLayout.NORTH); p.add(p2, BorderLayout.SOUTH);
+        p.add(p1, BorderLayout.NORTH);
+        p.add(p2, BorderLayout.SOUTH);
         return p;
     }
     private JTable makeJTable() {

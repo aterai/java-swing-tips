@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
 
     class AddRowAction extends AbstractAction {
         private final boolean isSelected;
-        public AddRowAction(String label, boolean isSelected) {
+        protected AddRowAction(String label, boolean isSelected) {
             super(label);
             this.isSelected = isSelected;
         }
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     }
 
     class DeleteAction extends AbstractAction {
-        public DeleteAction(String label) {
+        protected DeleteAction(String label) {
             super(label);
         }
         @Override public void actionPerformed(ActionEvent e) {
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
 
     private class TablePopupMenu extends JPopupMenu {
         private final Action deleteAction = new DeleteAction("delete");
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             add(new AddRowAction("add(true)", true));
             add(new AddRowAction("add(false)", false));
@@ -140,13 +140,24 @@ class HeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value instanceof Status) {
             switch ((Status) value) {
-              case SELECTED:      check.setSelected(true);  check.setEnabled(true);  break;
-              case DESELECTED:    check.setSelected(false); check.setEnabled(true);  break;
-              case INDETERMINATE: check.setSelected(true);  check.setEnabled(false); break;
-              default:            throw new AssertionError("Unknown Status");
+              case SELECTED:
+                check.setSelected(true);
+                check.setEnabled(true);
+                break;
+              case DESELECTED:
+                check.setSelected(false);
+                check.setEnabled(true);
+                break;
+              case INDETERMINATE:
+                check.setSelected(true);
+                check.setEnabled(false);
+                break;
+              default:
+                throw new AssertionError("Unknown Status");
             }
         } else {
-            check.setSelected(true); check.setEnabled(false);
+            check.setSelected(true);
+            check.setEnabled(false);
         }
         check.setOpaque(false);
         check.setFont(table.getFont());
@@ -170,7 +181,7 @@ class HeaderRenderer implements TableCellRenderer {
 
 class ComponentIcon implements Icon {
     private final JComponent cmp;
-    public ComponentIcon(JComponent cmp) {
+    protected ComponentIcon(JComponent cmp) {
         this.cmp = cmp;
     }
     @Override public int getIconWidth() {

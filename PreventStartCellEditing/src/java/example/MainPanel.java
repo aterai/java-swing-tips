@@ -59,7 +59,9 @@ public final class MainPanel extends JPanel {
         r0.setSelected(true);
         Box p = Box.createVerticalBox();
         for (AbstractButton b: Arrays.asList(r0, r1, r2, r3, r4)) {
-            b.addActionListener(al); bg.add(b); p.add(b);
+            b.addActionListener(al);
+            bg.add(b);
+            p.add(b);
         }
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));

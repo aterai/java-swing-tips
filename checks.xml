@@ -207,6 +207,8 @@
             <property name="ordered" value="true"/>
         </module>
 
+
+        <module name="OneStatementPerLine"/>
     </module>
 
 </module>

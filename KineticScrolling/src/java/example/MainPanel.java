@@ -65,8 +65,14 @@ public final class MainPanel extends JPanel {
         };
         Box box = Box.createHorizontalBox();
         ButtonGroup bg = new ButtonGroup();
-        box.add(r1); bg.add(r1); r1.addActionListener(al);
-        box.add(r2); bg.add(r2); r2.addActionListener(al);
+        box.add(r1);
+        bg.add(r1);
+        r1.addActionListener(al);
+
+        box.add(r2);
+        bg.add(r2);
+        r2.addActionListener(al);
+
         r1.setSelected(true);
         viewport.addMouseMotionListener(l1);
         viewport.addMouseListener(l1);
@@ -113,7 +119,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     private final Point startPt = new Point();
     private final Point delta   = new Point();
 
-    public KineticScrollingListener1(JComponent comp) {
+    protected KineticScrollingListener1(JComponent comp) {
         super();
         this.label = comp;
         this.dc = comp.getCursor();
@@ -219,7 +225,7 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
         return vp.x >= 0 && vp.x + vport.getWidth()  - comp.getWidth()  <= 0
             && vp.y >= 0 && vp.y + vport.getHeight() - comp.getHeight() <= 0;
     }
-    public KineticScrollingListener2(JComponent comp) {
+    protected KineticScrollingListener2(JComponent comp) {
         super();
         this.label = comp;
         this.dc = comp.getCursor();

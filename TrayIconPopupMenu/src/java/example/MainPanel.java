@@ -27,7 +27,8 @@ public final class MainPanel extends JPanel {
         Box box = Box.createVerticalBox();
         for (LookAndFeelEnum lnf: LookAndFeelEnum.values()) {
             JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
-            group.add(rb); box.add(rb);
+            group.add(rb);
+            box.add(rb);
         }
         box.add(Box.createVerticalGlue());
         box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));

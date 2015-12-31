@@ -46,7 +46,9 @@ public final class MainPanel extends JPanel {
         s2.add(new DefaultMutableTreeNode(new TableOfContents("eee",     24)));
         s2.add(new DefaultMutableTreeNode(new TableOfContents("f",       38)));
 
-        root.add(s0); root.add(s1); root.add(s2);
+        root.add(s0);
+        root.add(s1);
+        root.add(s2);
         return new DefaultTreeModel(root);
     }
     public static void main(String... args) {

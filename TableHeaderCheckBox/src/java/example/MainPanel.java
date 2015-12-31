@@ -101,13 +101,24 @@ class HeaderRenderer implements TableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value instanceof Status) {
             switch ((Status) value) {
-              case SELECTED:      check.setSelected(true);  check.setEnabled(true);  break;
-              case DESELECTED:    check.setSelected(false); check.setEnabled(true);  break;
-              case INDETERMINATE: check.setSelected(true);  check.setEnabled(false); break;
-              default:            throw new AssertionError("Unknown Status");
+              case SELECTED:
+                check.setSelected(true);
+                check.setEnabled(true);
+                break;
+              case DESELECTED:
+                check.setSelected(false);
+                check.setEnabled(true);
+                break;
+              case INDETERMINATE:
+                check.setSelected(true);
+                check.setEnabled(false);
+                break;
+              default:
+                throw new AssertionError("Unknown Status");
             }
         } else {
-            check.setSelected(true); check.setEnabled(false);
+            check.setSelected(true);
+            check.setEnabled(false);
         }
         check.setOpaque(false);
         check.setFont(table.getFont());
@@ -132,7 +143,7 @@ class HeaderRenderer implements TableCellRenderer {
 class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
     private final JTable table;
     private final int targetColumnIndex;
-    public HeaderCheckBoxHandler(JTable table, int index) {
+    protected HeaderCheckBoxHandler(JTable table, int index) {
         super();
         this.table = table;
         this.targetColumnIndex = index;
@@ -195,7 +206,7 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
 
 class ComponentIcon implements Icon {
     private final JComponent cmp;
-    public ComponentIcon(JComponent cmp) {
+    protected ComponentIcon(JComponent cmp) {
         this.cmp = cmp;
     }
     @Override public int getIconWidth() {

@@ -95,8 +95,13 @@ public final class MainPanel extends JPanel {
             }
         };
         p.add(new JLabel("table.setBackground: "));
-        bg.add(r1); p.add(r1); r1.addActionListener(al);
-        bg.add(r2); p.add(r2); r2.addActionListener(al);
+        bg.add(r1);
+        p.add(r1);
+        r1.addActionListener(al);
+
+        bg.add(r2);
+        p.add(r2);
+        r2.addActionListener(al);
         r1.setSelected(true);
         return p;
     }

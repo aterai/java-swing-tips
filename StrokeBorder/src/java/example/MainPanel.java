@@ -53,7 +53,8 @@ public final class MainPanel extends JPanel {
         });
 
         JPanel p = new JPanel(new BorderLayout(2, 2));
-        p.add(field); p.add(button, BorderLayout.EAST);
+        p.add(field);
+        p.add(button, BorderLayout.EAST);
         p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 
         JPanel p1 = new JPanel(new GridLayout(2, 1));

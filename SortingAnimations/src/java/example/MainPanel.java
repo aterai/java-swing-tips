@@ -53,9 +53,12 @@ public final class MainPanel extends JPanel {
 
     private static final Color DRAW_COLOR = Color.BLACK;
     private static final Color BACK_COLOR = Color.WHITE;
-    private static final int MINX = 5,  MAXX = 315;
-    private static final int MINY = 5,  MAXY = 175;
-    private static final int MINN = 50, MAXN = 500;;
+    private static final int MINX = 5;
+    private static final int MAXX = 315;
+    private static final int MINY = 5;
+    private static final int MAXY = 175;
+    private static final int MINN = 50;
+    private static final int MAXN = 500;
     private final List<Double> array = new ArrayList<>(MAXN);
     private int number = 150;
     private double factorx, factory;
@@ -78,18 +81,24 @@ public final class MainPanel extends JPanel {
         panel.setBackground(BACK_COLOR);
         Box box1 = Box.createHorizontalBox();
         box1.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        box1.add(new JLabel(" Number:"));    box1.add(spinner);
-        box1.add(new JLabel(" Input:"));     box1.add(distributionsChoices);
+        box1.add(new JLabel(" Number:"));
+        box1.add(spinner);
+        box1.add(new JLabel(" Input:"));
+        box1.add(distributionsChoices);
 
         Box box2 = Box.createHorizontalBox();
         box2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        box2.add(new JLabel(" Algorithm:")); box2.add(algorithmsChoices);
-        box2.add(startButton); box2.add(cancelButton);
+        box2.add(new JLabel(" Algorithm:"));
+        box2.add(algorithmsChoices);
+        box2.add(startButton);
+        box2.add(cancelButton);
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        p.add(box1); p.add(box2);
-        add(p, BorderLayout.NORTH); add(panel);
+        p.add(box1);
+        p.add(box2);
+        add(p, BorderLayout.NORTH);
+        add(panel);
         setPreferredSize(new Dimension(320, 240));
     }
     private void setComponentEnabled(boolean flag) {
@@ -106,10 +115,17 @@ public final class MainPanel extends JPanel {
         GenerateInputs gi = (GenerateInputs) distributionsChoices.getSelectedItem();
         for (int i = 0; i < n; i++) {
             switch (gi) {
-              case Random:     array.add((double) Math.random()); break;
-              case Ascending:  array.add(i / (double) n);         break;
-              case Descending: array.add(1d - i / (double) n);    break;
-              default:         throw new AssertionError("Unknown GenerateInputs");
+              case Random:
+                array.add((double) Math.random());
+                break;
+              case Ascending:
+                array.add(i / (double) n);
+                break;
+              case Descending:
+                array.add(1d - i / (double) n);
+                break;
+              default:
+                throw new AssertionError("Unknown GenerateInputs");
             }
         }
     }

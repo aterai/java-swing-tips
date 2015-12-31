@@ -28,7 +28,8 @@ public final class MainPanel extends JPanel {
         p2.add(new JLayer<JPanel>(makeBreadcrumbList2(list, Color.ORANGE, 11), new BreadcrumbLayerUI()));
 
         JPanel p = new JPanel(new GridLayout(0, 1));
-        p.add(p1); p.add(p2);
+        p.add(p1);
+        p.add(p2);
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }

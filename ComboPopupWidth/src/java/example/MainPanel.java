@@ -22,10 +22,14 @@ public final class MainPanel extends JPanel {
 
         int g = 5;
         JPanel p = new JPanel(new GridLayout(4, 2, g, g));
-        p.add(combo00); p.add(new JLabel("<- nomal"));
-        p.add(combo01); p.add(new JLabel("<- nomal, editable"));
-        p.add(combo02); p.add(new JLabel("<- wide"));
-        p.add(combo03); p.add(new JLabel("<- wide, editable"));
+        p.add(combo00);
+        p.add(new JLabel("<- nomal"));
+        p.add(combo01);
+        p.add(new JLabel("<- nomal, editable"));
+        p.add(combo02);
+        p.add(new JLabel("<- wide"));
+        p.add(combo03);
+        p.add(new JLabel("<- wide, editable"));
         setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
         add(p, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

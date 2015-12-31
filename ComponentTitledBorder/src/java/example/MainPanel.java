@@ -30,7 +30,9 @@ public final class MainPanel extends JPanel {
         JLabel l3 = new JLabel("ccccccccccccccc");
         l3.setBorder(new ComponentTitledBorder(b, l3, BorderFactory.createEtchedBorder()));
 
-        add(l1); add(l2); add(l3);
+        add(l1);
+        add(l2);
+        add(l3);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -62,9 +64,9 @@ class ComponentTitledBorder implements Border, MouseListener, MouseMotionListene
     private final Component comp;
     private final Border border;
 
-    public ComponentTitledBorder(Component comp, JComponent container, Border border) {
-        this.comp      = comp;
-        this.border    = border;
+    protected ComponentTitledBorder(Component comp, JComponent container, Border border) {
+        this.comp   = comp;
+        this.border = border;
         if (comp instanceof JComponent) {
             ((JComponent) comp).setOpaque(true);
         }

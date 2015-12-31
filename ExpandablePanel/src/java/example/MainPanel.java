@@ -86,9 +86,10 @@ public final class MainPanel extends JPanel {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     ButtonGroup bg = new ButtonGroup();
-                    for (JRadioButton b: Arrays.<JRadioButton>asList(
-                        new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc"))) {
-                        p.add(b); bg.add(b); b.setSelected(true);
+                    for (JRadioButton b: Arrays.<JRadioButton>asList(new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc"))) {
+                        p.add(b);
+                        bg.add(b);
+                        b.setSelected(true);
                     }
                     return p;
                 }
@@ -124,7 +125,7 @@ abstract class AbstractExpansionPanel extends JPanel {
     private final JScrollPane scroll;
     private boolean openFlag;
 
-    AbstractExpansionPanel(String title) {
+    protected AbstractExpansionPanel(String title) {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction(title) {
             @Override public void actionPerformed(ActionEvent e) {

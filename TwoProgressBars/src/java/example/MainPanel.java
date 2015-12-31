@@ -67,10 +67,17 @@ public final class MainPanel extends JPanel {
             }
             for (Progress s: chunks) {
                 switch (s.component) {
-                  case TOTAL: bar1.setValue((Integer) s.value); break;
-                  case FILE:  bar2.setValue((Integer) s.value); break;
-                  case LOG:   area.append((String) s.value);    break;
-                  default:    throw new AssertionError("Unknown Progress");
+                  case TOTAL:
+                    bar1.setValue((Integer) s.value);
+                    break;
+                  case FILE:
+                    bar2.setValue((Integer) s.value);
+                    break;
+                  case LOG:
+                    area.append((String) s.value);
+                    break;
+                  default:
+                    throw new AssertionError("Unknown Progress");
                 }
             }
         }

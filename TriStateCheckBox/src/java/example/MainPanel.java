@@ -150,15 +150,25 @@ class TriStateActionListener implements ActionListener {
 class TriStateCheckBox extends JCheckBox {
     protected transient TriStateActionListener listener;
     private transient Icon icon;
-    public TriStateCheckBox(String title) {
+    protected TriStateCheckBox(String title) {
         super(title);
     }
     public void updateStatus(Status s) {
         switch (s) {
-          case SELECTED:      setSelected(true);  setIcon(null); break;
-          case DESELECTED:    setSelected(false); setIcon(null); break;
-          case INDETERMINATE: setSelected(false); setIcon(icon); break;
-          default:            throw new AssertionError("Unknown Status");
+          case SELECTED:
+            setSelected(true);
+            setIcon(null);
+            break;
+          case DESELECTED:
+            setSelected(false);
+            setIcon(null);
+            break;
+          case INDETERMINATE:
+            setSelected(false);
+            setIcon(icon);
+            break;
+          default:
+            throw new AssertionError("Unknown Status");
         }
     }
     @Override public void updateUI() {
@@ -201,7 +211,7 @@ class IndeterminateIcon implements Icon {
 
 class ComponentIcon implements Icon {
     private final JComponent cmp;
-    public ComponentIcon(JComponent cmp) {
+    protected ComponentIcon(JComponent cmp) {
         this.cmp = cmp;
     }
     @Override public int getIconWidth() {

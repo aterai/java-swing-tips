@@ -57,7 +57,8 @@ public final class MainPanel extends JPanel {
         });
 
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.add(check1); p.add(check2);
+        p.add(check1);
+        p.add(check2);
 
         add(p, BorderLayout.NORTH);
         add(new JScrollPane(table));
