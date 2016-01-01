@@ -206,12 +206,12 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
 }
 
 enum LookAndFeelEnum {
-    Metal  ("javax.swing.plaf.metal.MetalLookAndFeel"),
-    Mac    ("com.sun.java.swing.plaf.mac.MacLookAndFeel"),
-    Motif  ("com.sun.java.swing.plaf.motif.MotifLookAndFeel"),
+    Metal("javax.swing.plaf.metal.MetalLookAndFeel"),
+    Mac("com.sun.java.swing.plaf.mac.MacLookAndFeel"),
+    Motif("com.sun.java.swing.plaf.motif.MotifLookAndFeel"),
     Windows("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"),
-    GTK    ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
-    Nimbus ("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+    GTK("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
+    Nimbus("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
     private final String clazz;
     LookAndFeelEnum(String clazz) {
         this.clazz = clazz;

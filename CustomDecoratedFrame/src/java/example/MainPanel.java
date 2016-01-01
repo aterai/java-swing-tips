@@ -162,10 +162,10 @@ public final class MainPanel extends JPanel {
 }
 
 enum Side {
-    N (Cursor.N_RESIZE_CURSOR,  new Dimension(0, 4)),
-    W (Cursor.W_RESIZE_CURSOR,  new Dimension(4, 0)),
-    E (Cursor.E_RESIZE_CURSOR,  new Dimension(4, 0)),
-    S (Cursor.S_RESIZE_CURSOR,  new Dimension(0, 4)),
+    N(Cursor.N_RESIZE_CURSOR,   new Dimension(0, 4)),
+    W(Cursor.W_RESIZE_CURSOR,   new Dimension(4, 0)),
+    E(Cursor.E_RESIZE_CURSOR,   new Dimension(4, 0)),
+    S(Cursor.S_RESIZE_CURSOR,   new Dimension(0, 4)),
     NW(Cursor.NW_RESIZE_CURSOR, new Dimension(4, 4)),
     NE(Cursor.NE_RESIZE_CURSOR, new Dimension(4, 4)),
     SW(Cursor.SW_RESIZE_CURSOR, new Dimension(4, 4)),

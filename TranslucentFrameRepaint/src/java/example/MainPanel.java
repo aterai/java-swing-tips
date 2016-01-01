@@ -144,9 +144,9 @@ class TexturePanel extends JPanel {
 }
 
 enum TexturePaints {
-    Null    (null, "Color(.5f, .8f, .5f, .5f)"),
-    Image   (TextureUtil.makeImageTexture(), "Image TexturePaint"),
-    Checker (TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
+    Null(null,                                "Color(.5f, .8f, .5f, .5f)"),
+    Image(TextureUtil.makeImageTexture(),     "Image TexturePaint"),
+    Checker(TextureUtil.makeCheckerTexture(), "Checker TexturePaint");
     private final String description;
     private final TexturePaint texture;
     TexturePaints(TexturePaint texture, String description) {

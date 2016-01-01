@@ -188,12 +188,12 @@ public final class MainPanel extends JPanel {
 }
 
 enum SortAlgorithms {
-    Isort    ("Insertion Sort"),
-    Selsort  ("Selection Sort"),
+    Isort("Insertion Sort"),
+    Selsort("Selection Sort"),
     Shellsort("Shell Sort"),
-    Hsort    ("Heap Sort"),
-    Qsort    ("Quicksort"),
-    Qsort2   ("2-way Quicksort");
+    Hsort("Heap Sort"),
+    Qsort("Quicksort"),
+    Qsort2("2-way Quicksort");
     private final String description;
     SortAlgorithms(String description) {
         this.description = description;

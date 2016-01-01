@@ -269,9 +269,9 @@ class RoundButton extends JButton {
 // }
 
 enum ButtonAlignments {
-    Top    ("Top Alignment", Component.TOP_ALIGNMENT),
-    Center ("Center Alignment", Component.CENTER_ALIGNMENT),
-    Bottom ("Bottom Alignment", Component.BOTTOM_ALIGNMENT);
+    Top("Top Alignment",       Component.TOP_ALIGNMENT),
+    Center("Center Alignment", Component.CENTER_ALIGNMENT),
+    Bottom("Bottom Alignment", Component.BOTTOM_ALIGNMENT);
     private final String description;
     public final float alingment;
     ButtonAlignments(String description, float alingment) {
