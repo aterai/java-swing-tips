@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TextComponentPopupMenu extends JPopupMenu {
-    protected TextComponentPopupMenu(final JTextComponent tc) {
+    protected TextComponentPopupMenu(JTextComponent tc) {
         super();
 
         final UndoManager manager = new UndoManager();
@@ -76,7 +76,7 @@ class TextComponentPopupMenu extends JPopupMenu {
         tc.addAncestorListener(new AncestorListener() {
             @Override public void ancestorAdded(AncestorEvent e) {
                 manager.discardAllEdits();
-                tc.requestFocusInWindow();
+                e.getComponent().requestFocusInWindow();
             }
             @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
             @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }

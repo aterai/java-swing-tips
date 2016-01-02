@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("New Frame") {
-            @Override public void actionPerformed(final ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 JButton button = (JButton) e.getSource();
                 JFrame frame   = createFrame(null);
                 frame.getContentPane().add(new MainPanel());

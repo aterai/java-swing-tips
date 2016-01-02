@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private final URL url = getClass().getResource("16x16transparent.png");
-    public MainPanel(final JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
         final JRadioButton r1 = new JRadioButton("img=null");
         final JRadioButton r2 = new JRadioButton("img=new ImageIcon(\"\").getImage()");
@@ -32,12 +32,22 @@ public final class MainPanel extends JPanel {
                     //16x16transparent.png
                     image = Toolkit.getDefaultToolkit().createImage(url);
                 }
-                frame.setIconImage(image);
+                Container c = b.getTopLevelAncestor();
+                if (c instanceof JFrame) {
+                    ((JFrame) c).setIconImage(image);
+                }
             }
         };
         r4.setSelected(true);
-        Image image = Toolkit.getDefaultToolkit().createImage(url);
-        frame.setIconImage(image);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Image image = Toolkit.getDefaultToolkit().createImage(url);
+                Container c = getTopLevelAncestor();
+                if (c instanceof JFrame) {
+                    ((JFrame) c).setIconImage(image);
+                }
+            }
+        });
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createTitledBorder("frame.setIconImage(img)"));
@@ -67,7 +77,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

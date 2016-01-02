@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 
 class AnimatedToolTip extends JToolTip {
     private final JLabel iconlabel;
-    public AnimatedToolTip(JLabel label) {
+    protected AnimatedToolTip(JLabel label) {
         super();
         this.iconlabel = label;
         LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
@@ -98,7 +98,7 @@ class AnimatedToolTip extends JToolTip {
 //         d.height += i.top + i.bottom;
 //         return d;
 //     }
-    @Override public void setTipText(final String tipText) {
+    @Override public void setTipText(String tipText) {
         String oldValue = iconlabel.getText();
         iconlabel.setText(tipText);
         firePropertyChange("tiptext", oldValue, tipText);
@@ -111,7 +111,7 @@ class AnimatedToolTip extends JToolTip {
 class AnimatedLabel extends JLabel implements ActionListener {
     private final Timer animator;
     private final transient AnimeIcon icon = new AnimeIcon();
-    public AnimatedLabel(String title) {
+    protected AnimatedLabel(String title) {
         super(title);
         setOpaque(true);
         animator = new Timer(100, this);

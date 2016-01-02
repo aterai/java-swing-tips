@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
 //                         return d;
                         return getLayout().preferredLayoutSize(this);
                     }
-                    @Override public void setTipText(final String tipText) {
+                    @Override public void setTipText(String tipText) {
                         String oldValue = iconlabel.getText();
                         iconlabel.setText(tipText);
                         firePropertyChange("tiptext", oldValue, tipText);

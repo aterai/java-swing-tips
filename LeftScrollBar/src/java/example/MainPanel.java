@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
         private int startX, startY;
-        @Override public void mouseDragged(final MouseEvent e) {
+        @Override public void mouseDragged(MouseEvent e) {
             Rectangle vr = vport.getViewRect();
             int w = vr.width;
             int h = vr.height;

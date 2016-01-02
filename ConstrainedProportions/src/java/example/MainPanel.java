@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final JLabel label = new JLabel();
     private final JCheckBox checkbox = new JCheckBox();
 
-    public MainPanel(final JFrame frame) {
+    public MainPanel(JFrame frame) {
         super(new BorderLayout());
         this.frame = frame;
         frame.setMinimumSize(new Dimension(MW, MH)); //JDK 1.6.0

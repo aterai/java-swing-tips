@@ -46,21 +46,24 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class CustomCellEditor extends DefaultCellEditor {
     private static final int BUTTON_WIDTH = 20;
     protected final JButton button = new JButton();
-    protected CustomCellEditor(final JTextField field) {
+    protected CustomCellEditor(JTextField field) {
         super(field);
         field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, BUTTON_WIDTH));
         field.addHierarchyListener(new HierarchyListener() {
             @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && e.getComponent().isShowing()) {
+                Component c = e.getComponent();
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c instanceof JTextField && c.isShowing()) {
                     //System.out.println("hierarchyChanged: SHOWING_CHANGED");
-                    field.removeAll();
-                    field.add(button);
-                    Rectangle r = field.getBounds();
+                    JTextField tc = (JTextField) c;
+                    tc.removeAll();
+                    tc.add(button);
+                    Rectangle r = tc.getBounds();
                     button.setBounds(r.width - BUTTON_WIDTH, 0, BUTTON_WIDTH, r.height);
-                    //field.requestFocusInWindow();
+                    //tc.requestFocusInWindow();
                 }
             }
         });
@@ -71,6 +74,7 @@ class CustomCellEditor extends DefaultCellEditor {
         return super.getComponent();
     }
 }
+
 //class CustomComponentCellEditor extends AbstractCellEditor implements TableCellEditor {
 class CustomComponentCellEditor extends DefaultCellEditor {
     protected final JTextField field;
@@ -168,6 +172,7 @@ class CustomComponent extends JPanel {
 //         return field.processKeyBinding(ks, e, condition, pressed);
     }
 }
+
 class CustomComponentCellEditor2 extends DefaultCellEditor {
     private final CustomComponent component;
     protected CustomComponentCellEditor2(CustomComponent component) {

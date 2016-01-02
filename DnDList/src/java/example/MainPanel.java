@@ -150,7 +150,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
                 e.rejectDrag();
             }
         }
-        @Override public void dragOver(final DropTargetDragEvent e) {
+        @Override public void dragOver(DropTargetDragEvent e) {
             if (isDragAcceptable(e)) {
                 e.acceptDrag(e.getDropAction());
             } else {

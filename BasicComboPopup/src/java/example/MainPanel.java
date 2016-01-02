@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(jtp));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void append(final String str) {
+    private void append(String str) {
         popup.hide();
         try {
             Document doc = jtp.getDocument();

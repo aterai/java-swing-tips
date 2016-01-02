@@ -67,15 +67,15 @@ class AnimeListCellRenderer extends JPanel implements ListCellRenderer<String>, 
     private boolean isRunning;
     private int animateIndex = -1;
 
-    protected AnimeListCellRenderer(final JList l) {
+    protected AnimeListCellRenderer(JList l) {
         super(new BorderLayout());
         this.list = l;
         animator = new Timer(80, new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                int i = l.getSelectedIndex();
+                int i = list.getSelectedIndex();
                 if (i >= 0) {
                     isRunning = true;
-                    l.repaint(l.getCellBounds(i, i));
+                    list.repaint(list.getCellBounds(i, i));
                 } else {
                     isRunning = false;
                 }

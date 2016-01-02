@@ -94,7 +94,7 @@ class TableHeaderTabbedPane extends JPanel {
         add(sp, BorderLayout.NORTH);
         add(contentsPanel);
     }
-    public void addTab(final String title, final Component comp) {
+    public void addTab(String title, Component comp) {
         contentsPanel.add(comp, title);
         TableColumn tc = new TableColumn(model.getColumnCount(), 75, header.getDefaultRenderer(), null);
         tc.setHeaderValue(title);

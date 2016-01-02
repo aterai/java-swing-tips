@@ -93,7 +93,7 @@ class GhostFocusListener implements FocusListener {
     private static final Color INACTIVE_COLOR = UIManager.getColor("TextField.inactiveForeground");
     private static final Color ORIGINAL_COLOR = UIManager.getColor("TextField.foreground");
     private final String ghostMessage;
-    protected GhostFocusListener(final JTextComponent tf) {
+    protected GhostFocusListener(JTextComponent tf) {
         ghostMessage = tf.getText();
         tf.setForeground(INACTIVE_COLOR);
     }

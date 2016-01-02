@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createRightAlignButtonBox6(final List<JButton> list, final int buttonWidth, final int gap) {
+    private static JComponent createRightAlignButtonBox6(List<JButton> list, int buttonWidth, int gap) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(0, gap, 0, 0);

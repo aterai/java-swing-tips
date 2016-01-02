@@ -376,7 +376,7 @@ class TabDropTargetListener implements DropTargetListener {
         System.out.println("DropTargetListener#dragExit: " + c.getName());
     }
     @Override public void dropActionChanged(DropTargetDragEvent e) { /* not needed */ }
-    @Override public void dragOver(final DropTargetDragEvent e) {
+    @Override public void dragOver(DropTargetDragEvent e) {
         Component c = e.getDropTargetContext().getComponent();
         if (!(c instanceof GhostGlassPane)) {
             return;

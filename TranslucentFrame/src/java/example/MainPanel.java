@@ -146,8 +146,7 @@ class TranslucentSynthStyle extends SynthStyle {
     }
     @Override public SynthPainter getPainter(final SynthContext context) {
         return new SynthPainter() {
-            @Override public void paintInternalFrameBackground(SynthContext context, Graphics g,
-                                                               int x, int y, int w, int h) {
+            @Override public void paintInternalFrameBackground(SynthContext context, Graphics g, int x, int y, int w, int h) {
                 g.setColor(new Color(100, 200, 100, 100));
                 g.fillRoundRect(x, y, w - 1, h - 1, 15, 15);
             }

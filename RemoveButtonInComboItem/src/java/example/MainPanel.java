@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         }), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComboBox<String> makeComboBox(final boolean isDefault, boolean isEditable) {
+    private static JComboBox<String> makeComboBox(boolean isDefault, boolean isEditable) {
         ComboBoxModel<String> m = new DefaultComboBoxModel<>(new String[] {"aaa", "bbb", "ccc"});
         JComboBox<String> comboBox;
         if (isDefault) {
