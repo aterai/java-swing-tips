@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
     }
     class FocusTraversalPolicyChangeAction extends AbstractAction {
         private final FocusTraversalPolicy policy;
-        public FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {
+        protected FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {
             super(name);
             this.policy = p;
         }
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
         }
     }
     private void debugPrint() {
-        Window w = SwingUtilities.getWindowAncestor(getRootPane());
+        Container w = getTopLevelAncestor();
         textarea.setText(
             debugString("frame",    w)
           + debugString("this",     this)
@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
 
 class CustomFocusTraversalPolicy extends FocusTraversalPolicy {
     private final List<? extends Component> order;
-    public CustomFocusTraversalPolicy(List<? extends Component> order) {
+    protected CustomFocusTraversalPolicy(List<? extends Component> order) {
         super();
         this.order = order;
     }

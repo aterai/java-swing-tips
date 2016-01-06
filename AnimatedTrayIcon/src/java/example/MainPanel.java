@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
                 tray.remove(icon);
                 animator.stop();
                 dialog.dispose();
-                Window w = SwingUtilities.getWindowAncestor(getRootPane());
+                Container w = getTopLevelAncestor();
                 if (w instanceof JFrame) {
                     JFrame frame = (JFrame) w;
                     //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

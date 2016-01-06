@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         checkbox.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                Window w = SwingUtilities.getWindowAncestor(getRootPane());
-                if (w instanceof JFrame) {
-                    ((JFrame) w).setResizable(checkbox.isSelected());
+                Container c = getTopLevelAncestor();
+                if (c instanceof JFrame) {
+                    ((JFrame) c).setResizable(checkbox.isSelected());
                 }
             }
         });
