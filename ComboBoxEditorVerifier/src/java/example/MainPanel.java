@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.LayerUI;
@@ -114,24 +114,30 @@ class ValidationLayerUI extends LayerUI<JTextComponent> {
         super.paint(g, c);
         //JLayer jlayer = (JLayer) c;
         //JTextComponent tc = (JTextComponent) jlayer.getView();
-        JComboBox cb = (JComboBox) SwingUtilities.getAncestorOfClass(JComboBox.class, c);
-        if (!cb.getInputVerifier().verify(cb)) {
-            int w = c.getWidth();
-            int h = c.getHeight();
-            int s = 8;
-            int pad = 5;
-            int x = w - pad - s;
-            int y = (h - s) / 2;
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.translate(x, y);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setPaint(Color.RED);
-            g2.fillRect(0, 0, s + 1, s + 1);
-            g2.setPaint(Color.WHITE);
-            g2.drawLine(0, 0, s, s);
-            g2.drawLine(0, s, s, 0);
-            g2.dispose();
+        Container p = SwingUtilities.getAncestorOfClass(JComboBox.class, c);
+        if (p instanceof JComboBox) {
+            JComboBox cb = (JComboBox) p;
+            getInputVerifier(cb).filter(iv -> !iv.verify(cb)).ifPresent(iv -> {
+                int w = c.getWidth();
+                int h = c.getHeight();
+                int s = 8;
+                int pad = 5;
+                int x = w - pad - s;
+                int y = (h - s) / 2;
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.translate(x, y);
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setPaint(Color.RED);
+                g2.fillRect(0, 0, s + 1, s + 1);
+                g2.setPaint(Color.WHITE);
+                g2.drawLine(0, 0, s, s);
+                g2.drawLine(0, s, s, 0);
+                g2.dispose();
+            });
         }
+    }
+    private static Optional<? extends InputVerifier> getInputVerifier(JComponent c) {
+        return Optional.ofNullable(c.getInputVerifier());
     }
 }
 

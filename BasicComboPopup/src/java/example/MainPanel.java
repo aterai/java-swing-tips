@@ -48,12 +48,11 @@ public final class MainPanel extends JPanel {
                 try {
                     Rectangle rect = jtp.modelToView(jtp.getCaretPosition());
                     popup.show(jtp, rect.x, rect.y + rect.height);
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override public void run() {
-                            SwingUtilities.getWindowAncestor(popup).toFront();
-                            popup.requestFocusInWindow();
-                        }
-                    });
+//                     Container c = popup.getTopLevelAncestor();
+//                     if (c instanceof Window) {
+//                         ((Window) c).toFront();
+//                     }
+                    popup.requestFocusInWindow();
                 } catch (BadLocationException ble) {
                     ble.printStackTrace();
                 }
