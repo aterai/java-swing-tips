@@ -11,8 +11,7 @@ import javax.swing.plaf.metal.MetalSliderUI;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 
 public final class MainPanel extends JPanel {
-    private static final double MAXD = .8;
-    private static final int MAXI = (int) (100 * MAXD);
+    private static final int MAXI = 80;
     private MainPanel() {
         super(new GridLayout(2, 1, 5, 5));
 
@@ -63,13 +62,13 @@ public final class MainPanel extends JPanel {
                 @Override public void mouseDragged(MouseEvent e) {
                     //case HORIZONTAL:
                     int halfThumbWidth = thumbRect.width / 2;
-                    int trackLeft   = trackRect.x - halfThumbWidth;
-                    int maxPos = trackLeft + (int) (.5 + trackRect.width * MAXD);
-                    if (e.getX() > maxPos) {
-                        offset = 0;
+                    int thumbLeft = e.getX() - offset;
+                    int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
+                    if (thumbLeft > maxPos) {
+                        int x = maxPos + offset;
                         MouseEvent me = new MouseEvent(
                             e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-                            maxPos, e.getY(),
+                            x, e.getY(),
                             e.getXOnScreen(), e.getYOnScreen(),
                             e.getClickCount(), e.isPopupTrigger(), e.getButton());
                         e.consume();
@@ -87,13 +86,13 @@ public final class MainPanel extends JPanel {
                 @Override public void mouseDragged(MouseEvent e) {
                     //case HORIZONTAL:
                     int halfThumbWidth = thumbRect.width / 2;
-                    int trackLeft   = trackRect.x - halfThumbWidth;
-                    int maxPos = trackLeft + (int) (.5 + trackRect.width * MAXD);
-                    if (e.getX() > maxPos) {
-                        offset = 0;
+                    int thumbLeft = e.getX() - offset;
+                    int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
+                    if (thumbLeft > maxPos) {
+                        int x = maxPos + offset;
                         MouseEvent me = new MouseEvent(
                             e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(),
-                            maxPos, e.getY(),
+                            x, e.getY(),
                             e.getXOnScreen(), e.getYOnScreen(),
                             e.getClickCount(), e.isPopupTrigger(), e.getButton());
                         e.consume();
