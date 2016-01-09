@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
 
 class ButtonsPanel extends JPanel {
     public final List<JButton> buttons = Arrays.asList(new JButton("view"), new JButton("edit"));
-    public ButtonsPanel() {
+    protected ButtonsPanel() {
         super();
         setOpaque(true);
         for (JButton b: buttons) {
@@ -97,7 +97,7 @@ class ButtonsPanel extends JPanel {
 }
 
 class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
-    public ButtonsRenderer() {
+    protected ButtonsRenderer() {
         super();
         setName("Table.cellRenderer");
     }
@@ -109,8 +109,8 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
 
 class ViewAction extends AbstractAction {
     private final JTable table;
-    public ViewAction(JTable table) {
-        super("vdit");
+    protected ViewAction(JTable table) {
+        super("view");
         this.table = table;
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -120,7 +120,7 @@ class ViewAction extends AbstractAction {
 
 class EditAction extends AbstractAction {
     private final JTable table;
-    public EditAction(JTable table) {
+    protected EditAction(JTable table) {
         super("edit");
         this.table = table;
     }
@@ -156,7 +156,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
             });
         }
     }
-    public ButtonsEditor(JTable table) {
+    protected ButtonsEditor(JTable table) {
         super();
         this.table = table;
         buttons.get(0).setAction(new ViewAction(table));
