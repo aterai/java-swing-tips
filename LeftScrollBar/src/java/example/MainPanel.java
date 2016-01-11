@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final JLabel label       = new JLabel();
@@ -28,7 +27,7 @@ public final class MainPanel extends JPanel {
         add(scroll);
         scroll.setPreferredSize(new Dimension(320, 240));
     }
-    class HandScrollListener extends MouseInputAdapter {
+    class HandScrollListener extends MouseAdapter {
         private final Rectangle rect = new Rectangle();
         private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -55,7 +54,6 @@ public final class MainPanel extends JPanel {
             label.repaint();
         }
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {

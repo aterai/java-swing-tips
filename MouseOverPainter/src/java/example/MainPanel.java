@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
@@ -19,7 +18,6 @@ public final class MainPanel extends JPanel {
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -48,25 +46,24 @@ class HighlightCursorTextArea extends JTextArea {
     private int rollOverRowIndex = -1;
     private transient MouseAdapter rolloverHandler;
 
-    public HighlightCursorTextArea() {
+    protected HighlightCursorTextArea() {
         super();
     }
-    public HighlightCursorTextArea(Document doc) {
+    protected HighlightCursorTextArea(Document doc) {
         super(doc);
     }
-    public HighlightCursorTextArea(Document doc, String text, int rows, int columns) {
+    protected HighlightCursorTextArea(Document doc, String text, int rows, int columns) {
         super(doc, text, rows, columns);
     }
-    public HighlightCursorTextArea(int rows, int columns) {
+    protected HighlightCursorTextArea(int rows, int columns) {
         super(rows, columns);
     }
-    public HighlightCursorTextArea(String text) {
+    protected HighlightCursorTextArea(String text) {
         super(text);
     }
-    public HighlightCursorTextArea(String text, int rows, int columns) {
+    protected HighlightCursorTextArea(String text, int rows, int columns) {
         super(text, rows, columns);
     }
-
     @Override public void updateUI() {
         removeMouseMotionListener(rolloverHandler);
         removeMouseListener(rolloverHandler);
@@ -87,7 +84,7 @@ class HighlightCursorTextArea extends JTextArea {
         g2.dispose();
         super.paintComponent(g);
     }
-    private class RollOverListener extends MouseInputAdapter {
+    private class RollOverListener extends MouseAdapter {
         @Override public void mouseExited(MouseEvent e) {
             rollOverRowIndex = -1;
             repaint();
@@ -99,7 +96,7 @@ class HighlightCursorTextArea extends JTextArea {
                 repaint();
             }
         }
-        public int getLineAtPoint(Point pt) {
+        private int getLineAtPoint(Point pt) {
             Element root = getDocument().getDefaultRootElement();
             return root.getElementIndex(viewToModel(pt));
         }
