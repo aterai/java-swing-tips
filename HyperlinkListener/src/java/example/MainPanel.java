@@ -17,7 +17,6 @@ public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html><body>"
                                           + "html tag: <br /><a href='" + LINK + "'>" + LINK + "</a>"
                                           + "</body></html>";
-
     private MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -70,7 +69,6 @@ public final class MainPanel extends JPanel {
         }
         return editorPane;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -96,7 +94,7 @@ public final class MainPanel extends JPanel {
 
 // class URILabel extends JLabel {
 //     private final String href;
-//     public URILabel(String h) {
+//     protected URILabel(String h) {
 //         super(String.format("<html><a href='%s'>%s</a>", h, h));
 //         href = str;
 //         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -130,20 +128,20 @@ class HyperlinkButton extends JButton {
     @Override public LinkViewButtonUI getUI() {
         return BasicLinkViewButtonUI.createUI(this);
     }
-    public HyperlinkButton() {
+    protected HyperlinkButton() {
         this(null, null);
     }
-    public HyperlinkButton(Icon icon) {
+    protected HyperlinkButton(Icon icon) {
         this(null, icon);
     }
-    public HyperlinkButton(String text) {
+    protected HyperlinkButton(String text) {
         this(text, null);
     }
-    public HyperlinkButton(Action a) {
+    protected HyperlinkButton(Action a) {
         this();
         super.setAction(a);
     }
-    public HyperlinkButton(String text, Icon icon) {
+    protected HyperlinkButton(String text, Icon icon) {
         super(text, icon);
     }
 }
@@ -163,7 +161,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
 //         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return LINKVIEW_BUTTON_UI;
     }
-    public BasicLinkViewButtonUI() {
+    protected BasicLinkViewButtonUI() {
         super();
         size = new Dimension();
         viewRect = new Rectangle();

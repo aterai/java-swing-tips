@@ -21,7 +21,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(textArea));
         setPreferredSize(new Dimension(320, 240));
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -48,23 +47,22 @@ public final class MainPanel extends JPanel {
 class LineCursorTextArea extends JTextArea {
     private static final Color LINE_COLOR = Color.BLUE;
 
-    public LineCursorTextArea() {
+    protected LineCursorTextArea() {
         super();
     }
-    public LineCursorTextArea(Document doc) {
+    protected LineCursorTextArea(Document doc) {
         super(doc);
     }
-    public LineCursorTextArea(Document doc, String text, int rows, int columns) {
+    protected LineCursorTextArea(Document doc, String text, int rows, int columns) {
         super(doc, text, rows, columns);
     }
-    public LineCursorTextArea(int rows, int columns) {
+    protected LineCursorTextArea(int rows, int columns) {
         super(rows, columns);
     }
-
-    public LineCursorTextArea(String text) {
+    protected LineCursorTextArea(String text) {
         super(text);
     }
-    public LineCursorTextArea(String text, int rows, int columns) {
+    protected LineCursorTextArea(String text, int rows, int columns) {
         super(text, rows, columns);
     }
     @Override public void updateUI() {

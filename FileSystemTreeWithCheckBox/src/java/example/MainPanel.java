@@ -154,11 +154,11 @@ enum Status { SELECTED, DESELECTED, INDETERMINATE }
 class CheckBoxNode {
     public final File file;
     public final Status status;
-    public CheckBoxNode(File file) {
+    protected CheckBoxNode(File file) {
         this.file = file;
         status = Status.INDETERMINATE;
     }
-    public CheckBoxNode(File file, Status status) {
+    protected CheckBoxNode(File file, Status status) {
         this.file = file;
         this.status = status;
     }
@@ -173,7 +173,7 @@ class FileTreeCellRenderer implements TreeCellRenderer {
     private final TriStateCheckBox checkBox = new TriStateCheckBox();
     private final FileSystemView fileSystemView;
 
-    public FileTreeCellRenderer(FileSystemView fileSystemView) {
+    protected FileTreeCellRenderer(FileSystemView fileSystemView) {
         super();
         this.fileSystemView = fileSystemView;
         panel.setFocusable(false);
@@ -216,7 +216,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final FileSystemView fileSystemView;
     private File file;
 
-    public CheckBoxNodeEditor(FileSystemView fileSystemView) {
+    protected CheckBoxNodeEditor(FileSystemView fileSystemView) {
         super();
         this.fileSystemView = fileSystemView;
         checkBox.setOpaque(false);
@@ -291,7 +291,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 
 class FolderSelectionListener implements TreeSelectionListener {
     private final FileSystemView fileSystemView;
-    public FolderSelectionListener(FileSystemView fileSystemView) {
+    protected FolderSelectionListener(FileSystemView fileSystemView) {
         this.fileSystemView = fileSystemView;
     }
     @Override public void valueChanged(TreeSelectionEvent e) {
@@ -336,7 +336,7 @@ class FolderSelectionListener implements TreeSelectionListener {
 class Task extends SwingWorker<String, File> {
     private final FileSystemView fileSystemView;
     private final File parent;
-    public Task(FileSystemView fileSystemView, File parent) {
+    protected Task(FileSystemView fileSystemView, File parent) {
         super();
         this.fileSystemView = fileSystemView;
         this.parent = parent;
