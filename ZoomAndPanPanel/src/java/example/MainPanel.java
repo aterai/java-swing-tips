@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ZoomAndPanePanel extends JPanel {
-    private final AffineTransform coordTransform = new AffineTransform();
+    private final AffineTransform zoomTransform = new AffineTransform();
     private final transient Image img;
     private final Rectangle imgrect;
     private transient ZoomHandler handler;
@@ -61,24 +61,27 @@ class ZoomAndPanePanel extends JPanel {
         g2.setPaint(new Color(0x55FF0000, true));
         Rectangle r = new Rectangle(500, 140, 150, 150);
 
+        //use: AffineTransform#concatenate(...) and Graphics2D#setTransform(...)
+        //http://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html#concatenate-java.awt.geom.AffineTransform-
         //AffineTransform at = g2.getTransform();
-        //at.concatenate(coordTransform);
+        //at.concatenate(zoomTransform);
         //g2.setTransform(at);
         //g2.drawImage(img, 0, 0, this);
         //g2.fill(r);
 
-        //g2.drawRenderedImage((RenderedImage) img, coordTransform);
-        g2.drawImage(img, coordTransform, this);
-        g2.fill(coordTransform.createTransformedShape(r));
+        //or use: Graphics2D#drawImage(Image, AffineTransform, ImageObserver)
+        //https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html#drawImage-java.awt.Image-java.awt.geom.AffineTransform-java.awt.image.ImageObserver-
+        g2.drawImage(img, zoomTransform, this); //or: g2.drawRenderedImage((RenderedImage) img, zoomTransform);
+        g2.fill(zoomTransform.createTransformedShape(r));
 
-        //XXX
-        //g2.setTransform(coordTransform);
+        //BAD EXAMPLE
+        //g2.setTransform(zoomTransform);
         //g2.drawImage(img, 0, 0, this);
 
         g2.dispose();
     }
     @Override public Dimension getPreferredSize() {
-        Rectangle r = coordTransform.createTransformedShape(imgrect).getBounds();
+        Rectangle r = zoomTransform.createTransformedShape(imgrect).getBounds();
         return new Dimension(r.width, r.height);
     }
     @Override public void updateUI() {
@@ -110,9 +113,9 @@ class ZoomAndPanePanel extends JPanel {
                     JViewport vport = (JViewport) p;
                     Rectangle ovr = vport.getViewRect();
                     double s = dir > 0 ? 1d / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
-                    coordTransform.scale(s, s);
+                    zoomTransform.scale(s, s);
                     //double s = 1d + zoomRange.getValue() * .1;
-                    //coordTransform.setToScale(s, s);
+                    //zoomTransform.setToScale(s, s);
                     Rectangle nvr = AffineTransform.getScaleInstance(s, s).createTransformedShape(ovr).getBounds();
                     Point vp = nvr.getLocation();
                     vp.translate((nvr.width - ovr.width) / 2, (nvr.height - ovr.height) / 2);

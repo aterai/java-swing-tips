@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setTransform(zoomAndPanHandler.getCoordTransform());
+        g2.setTransform(zoomAndPanHandler.getCoordAndZoomTransform());
         g2.drawImage(img, 0, 0, null);
         g2.dispose();
     }
@@ -67,7 +67,7 @@ class ZoomAndPanHandler extends MouseAdapter {
     private static final int MAX_ZOOM = 10;
     private static final int EXTENT = 1;
     private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
-    private final AffineTransform coordTransform = new AffineTransform();
+    private final AffineTransform coordAndZoomTransform = new AffineTransform();
     private final Point dragStartPoint = new Point();
     @Override public void mousePressed(MouseEvent e) {
         dragStartPoint.setLocation(e.getPoint());
@@ -76,7 +76,7 @@ class ZoomAndPanHandler extends MouseAdapter {
         Point dragEndPoint = e.getPoint();
         Point dragStart = transformPoint(dragStartPoint);
         Point dragEnd   = transformPoint(dragEndPoint);
-        coordTransform.translate(dragEnd.x - dragStart.x, dragEnd.y - dragStart.y);
+        coordAndZoomTransform.translate(dragEnd.x - dragStart.x, dragEnd.y - dragStart.y);
         dragStartPoint.setLocation(dragEndPoint);
         e.getComponent().repaint();
     }
@@ -93,9 +93,9 @@ class ZoomAndPanHandler extends MouseAdapter {
         Point p = new Point(r.x + r.width / 2, r.y + r.height / 2);
         Point p1 = transformPoint(p);
         double scale = dir > 0 ? 1 / ZOOM_MULTIPLICATION_FACTOR : ZOOM_MULTIPLICATION_FACTOR;
-        coordTransform.scale(scale, scale);
+        coordAndZoomTransform.scale(scale, scale);
         Point p2 = transformPoint(p);
-        coordTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
+        coordAndZoomTransform.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
         c.repaint();
     }
     //https://community.oracle.com/thread/1263955
@@ -103,14 +103,14 @@ class ZoomAndPanHandler extends MouseAdapter {
     private Point transformPoint(Point p1) {
         Point p2 = new Point();
         try {
-            AffineTransform inverse = coordTransform.createInverse();
+            AffineTransform inverse = coordAndZoomTransform.createInverse();
             inverse.transform(p1, p2);
         } catch (NoninvertibleTransformException ex) {
             ex.printStackTrace();
         }
         return p2;
     }
-    public AffineTransform getCoordTransform() {
-        return coordTransform;
+    public AffineTransform getCoordAndZoomTransform() {
+        return coordAndZoomTransform;
     }
 }
