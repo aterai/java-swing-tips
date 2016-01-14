@@ -82,10 +82,10 @@ public final class MainPanel extends JPanel {
         return new JLayer<JPanel>(p, new EditMenuLayerUI(list.get(size - 1)));
     }
     private static AbstractButton makeButton(String title, Action action) {
-        JButton b = new JButton(action);
+        AbstractButton b = new JButton(action);
         b.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton) e.getSource();
+                AbstractButton b = (AbstractButton) e.getSource();
                 Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, b);
                 if (c instanceof JPopupMenu) {
                     ((JPopupMenu) c).setVisible(false);
@@ -93,9 +93,9 @@ public final class MainPanel extends JPanel {
             }
         });
         b.setText(title);
-        b.setVerticalAlignment(SwingConstants.CENTER);
-        b.setVerticalTextPosition(SwingConstants.CENTER);
-        b.setHorizontalAlignment(SwingConstants.CENTER);
+        //b.setVerticalAlignment(SwingConstants.CENTER);
+        //b.setVerticalTextPosition(SwingConstants.CENTER);
+        //b.setHorizontalAlignment(SwingConstants.CENTER);
         b.setHorizontalTextPosition(SwingConstants.CENTER);
         b.setBorder(BorderFactory.createEmptyBorder());
         b.setContentAreaFilled(false);
@@ -141,8 +141,8 @@ class ToggleButtonBarCellIcon implements Icon {
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Path2D.Float p = new Path2D.Float();
 
+        Path2D.Float p = new Path2D.Float();
         if (c == parent.getComponent(0)) {
             //:first-child
             p.moveTo(x, y + r);
@@ -168,6 +168,7 @@ class ToggleButtonBarCellIcon implements Icon {
         }
         p.closePath();
         Area area = new Area(p);
+
         Color color = new Color(0x0, true);
         Color borderColor = Color.GRAY.brighter();
         if (c instanceof AbstractButton) {

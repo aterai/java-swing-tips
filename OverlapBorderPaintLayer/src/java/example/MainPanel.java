@@ -91,9 +91,9 @@ public final class MainPanel extends JPanel {
         b.setIcon(icon);
         b.setContentAreaFilled(false);
         b.setBorder(BorderFactory.createEmptyBorder());
-        b.setVerticalAlignment(SwingConstants.CENTER);
-        b.setVerticalTextPosition(SwingConstants.CENTER);
-        b.setHorizontalAlignment(SwingConstants.CENTER);
+        //b.setVerticalAlignment(SwingConstants.CENTER);
+        //b.setVerticalTextPosition(SwingConstants.CENTER);
+        //b.setHorizontalAlignment(SwingConstants.CENTER);
         b.setHorizontalTextPosition(SwingConstants.CENTER);
         b.setFocusPainted(false);
         b.setOpaque(false);

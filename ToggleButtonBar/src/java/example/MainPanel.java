@@ -5,7 +5,6 @@ package example;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
-import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -20,40 +19,34 @@ public final class MainPanel extends JPanel {
 
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JRadioButton makeRadioButton(String title) {
-        JRadioButton radio = new JRadioButton(title);
-        radio.setVerticalAlignment(SwingConstants.CENTER);
-        radio.setVerticalTextPosition(SwingConstants.CENTER);
-        radio.setHorizontalAlignment(SwingConstants.CENTER);
-        radio.setHorizontalTextPosition(SwingConstants.CENTER);
-        radio.setBorder(BorderFactory.createEmptyBorder());
-        radio.setContentAreaFilled(false);
-        radio.setFocusPainted(false);
-        //radio.setBackground(new Color(cc));
-        radio.setForeground(Color.WHITE);
-        return radio;
+    private static AbstractButton makeButton(String title) {
+        AbstractButton b = new JRadioButton(title);
+        //b.setVerticalAlignment(SwingConstants.CENTER);
+        //b.setVerticalTextPosition(SwingConstants.CENTER);
+        //b.setHorizontalAlignment(SwingConstants.CENTER);
+        b.setHorizontalTextPosition(SwingConstants.CENTER);
+        b.setBorder(BorderFactory.createEmptyBorder());
+        b.setContentAreaFilled(false);
+        b.setFocusPainted(false);
+        //b.setBackground(new Color(cc));
+        b.setForeground(Color.WHITE);
+        return b;
     }
     private static JPanel makeToggleButtonBar(int cc, boolean round) {
-        List<JRadioButton> list = Arrays.asList(
-            makeRadioButton("left"),
-            makeRadioButton("center"),
-            makeRadioButton("right"));
-        int size = list.size();
         ButtonGroup bg = new ButtonGroup();
-        JPanel p = new JPanel(new GridLayout(1, size, 0, 0));
-        Color color = new Color(cc);
-        for (int i = 0; i < size; i++) {
-            JRadioButton r = list.get(i);
-            r.setBackground(color);
-            if (round) {
-                r.setIcon(new ToggleButtonBarCellIcon());
-            } else {
-                r.setIcon(new CellIcon());
-            }
-            bg.add(r);
-            p.add(r);
-        }
+        JPanel p = new JPanel(new GridLayout(1, 0, 0, 0));
         p.setBorder(BorderFactory.createTitledBorder(String.format("Color: #%06X", cc)));
+        Color color = new Color(cc);
+        for (AbstractButton b: Arrays.asList(makeButton("left"), makeButton("center"), makeButton("right"))) {
+            b.setBackground(color);
+            if (round) {
+                b.setIcon(new ToggleButtonBarCellIcon());
+            } else {
+                b.setIcon(new CellIcon());
+            }
+            bg.add(b);
+            p.add(b);
+        }
         return p;
     }
     public static void main(String... args) {
@@ -93,9 +86,6 @@ class CellIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.setPaint(c.getBackground());
-        g2.fillRect(x, y, w, h);
-
         Color ssc = TL;
         Color bgc = BR;
         if (c instanceof AbstractButton) {
@@ -105,6 +95,10 @@ class CellIcon implements Icon {
                 bgc = SB;
             }
         }
+
+        g2.setPaint(c.getBackground());
+        g2.fillRect(x, y, w, h);
+
         g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fillRect(x, y, w, h);
 
@@ -140,8 +134,8 @@ class ToggleButtonBarCellIcon implements Icon {
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Path2D.Float p = new Path2D.Float();
 
+        Path2D.Float p = new Path2D.Float();
         if (c == parent.getComponent(0)) {
             //:first-child
             p.moveTo(x, y + r);
@@ -166,10 +160,6 @@ class ToggleButtonBarCellIcon implements Icon {
             p.lineTo(x, y + h);
         }
         p.closePath();
-        Area area = new Area(p);
-
-        g2.setPaint(c.getBackground());
-        g2.fill(area);
 
         Color ssc = TL;
         Color bgc = BR;
@@ -180,6 +170,10 @@ class ToggleButtonBarCellIcon implements Icon {
                 bgc = SB;
             }
         }
+
+        Area area = new Area(p);
+        g2.setPaint(c.getBackground());
+        g2.fill(area);
         g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
         g2.fill(area);
         g2.setPaint(BR);
