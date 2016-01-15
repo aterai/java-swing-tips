@@ -99,16 +99,13 @@ public final class MainPanel extends JPanel {
 }
 
 class StarIcon implements Icon {
-    private final Shape star;
-    public StarIcon() {
-        star = makeStar(8, 4, 5);
-    }
-    private Path2D.Double makeStar(int r1, int r2, int vc) {
+    private final Shape star = makeStar(8, 4, 5);
+    private Path2D makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
         double agl = 0d;
         double add = 2 * Math.PI / (vc * 2);
-        Path2D.Double p = new Path2D.Double();
+        Path2D p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);
         for (int i = 0; i < vc * 2 - 1; i++) {
             agl += add;

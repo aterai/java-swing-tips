@@ -58,9 +58,9 @@ class TricoloreLabel extends JComponent {
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
         double d = b.getHeight() / 3d;
-        Rectangle2D.Double clip  = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
-        Rectangle2D.Double clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), d);
-        Rectangle2D.Double clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2 * d, b.getWidth(), d);
+        Rectangle2D clip  = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+        Rectangle2D clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), d);
+        Rectangle2D clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2 * d, b.getWidth(), d);
 
         Shape s = toCenterAT.createTransformedShape(gv.getOutline());
 
@@ -102,7 +102,7 @@ class LineSplittingLabel extends JComponent {
         Shape s = toCenterAT.createTransformedShape(shape);
         g2.setPaint(Color.BLACK);
         g2.fill(s);
-        Rectangle2D.Double clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2);
+        Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2);
         g2.setClip(toCenterAT.createTransformedShape(clip));
         g2.setPaint(Color.RED);
         g2.fill(s);

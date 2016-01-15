@@ -115,7 +115,7 @@ class StarPanel3 extends JPanel {
 //         Graphics2D g2 = (Graphics2D) g.create();
 //         int w = getWidth();
 //         int h = getHeight();
-//         Path2D.Double p = new Path2D.Double();
+//         Path2D p = new Path2D.Double();
 //         p.moveTo(-w / 4.0, -h / 12.0);
 //         p.quadTo(     0.0, -h / 4.0,  +w / 4.0, -h / 12.0);
 //         p.quadTo(+w / 6.0, +h / 4.0,  -w / 6.0, +h / 4.0);
@@ -172,7 +172,7 @@ class StarIcon1 implements Icon {
     protected StarIcon1() {
         double agl = 0d;
         double add = 2 * Math.PI / 5d;
-        Path2D.Double p = new Path2D.Double();
+        Path2D p = new Path2D.Double();
         p.moveTo(R * 1, R * 0);
         for (int i = 0; i < 5; i++) {
             p.lineTo(R * Math.cos(agl), R * Math.sin(agl));
@@ -208,7 +208,7 @@ class StarIcon2 implements Icon {
     protected StarIcon2() {
         double agl = 0d;
         double add = 2 * Math.PI / (VC * 2);
-        Path2D.Double p = new Path2D.Double();
+        Path2D p = new Path2D.Double();
         p.moveTo(R2 * 1, R2 * 0);
         for (int i = 0; i < VC * 2 - 1; i++) {
             agl += add;

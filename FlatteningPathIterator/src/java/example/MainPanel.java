@@ -10,8 +10,8 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
-        Ellipse2D.Double circle  = new Ellipse2D.Double(0, 0, 100, 100);
-        Ellipse2D.Double ellipse = new Ellipse2D.Double(0, 0, 128, 100);
+        Ellipse2D circle  = new Ellipse2D.Double(0, 0, 100, 100);
+        Ellipse2D ellipse = new Ellipse2D.Double(0, 0, 128, 100);
 
         JPanel p = new JPanel();
         p.add(makeLabel("Ellipse2D", circle));
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
 
 class ShapeIcon implements Icon {
     private final Shape shape;
-    public ShapeIcon(Shape s) {
+    protected ShapeIcon(Shape s) {
         shape = s;
     }
     @Override public int getIconWidth() {

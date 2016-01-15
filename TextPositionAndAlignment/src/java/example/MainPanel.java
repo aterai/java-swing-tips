@@ -126,7 +126,7 @@ class StarburstIcon implements Icon {
     protected StarburstIcon() {
         double agl = 0d;
         double add = 2 * Math.PI / (VC * 2);
-        Path2D.Double p = new Path2D.Double();
+        Path2D p = new Path2D.Double();
         p.moveTo(R2 * 1, R2 * 0);
         for (int i = 0; i < VC * 2 - 1; i++) {
             agl += add;

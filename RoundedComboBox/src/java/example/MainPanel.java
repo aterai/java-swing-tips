@@ -279,7 +279,7 @@ class KamabokoBorder extends RoundedCornerBorder {
         int w = width  - 1;
         int h = height - 1;
 //*/
-        Path2D.Float p = new Path2D.Float();
+        Path2D p = new Path2D.Float();
         p.moveTo(x, y + h);
         p.lineTo(x, y + r);
         p.quadTo(x, y, x + r, y);

@@ -380,7 +380,7 @@ class AnimeIcon implements Icon {
 //         int d = (int) R * 2 * (1 + 3);
 //         dim = new Dimension(d, d);
 //
-//         Ellipse2D.Float cricle = new Ellipse2D.Float(R, R, d - 2 * R, d - 2 * R);
+//         Ellipse2D cricle = new Ellipse2D.Float(R, R, d - 2 * R, d - 2 * R);
 //         PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), R);
 //         float[] coords = new float[6];
 //         int idx = 0;

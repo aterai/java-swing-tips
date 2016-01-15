@@ -148,7 +148,7 @@ public final class MainPanel extends JPanel {
         int vc = vcModel.getNumber().intValue();
         boolean antialias = check.isSelected();
         //outer.setMinimum(r2 + 1);
-        Path2D.Double star = StarburstSVGMaker.makeStar(r1, r2, vc);
+        Path2D star = StarburstSVGMaker.makeStar(r1, r2, vc);
         label.setIcon(new StarIcon(star, antialias));
         String desc = String.format("addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"", Math.max(r1, r2), Math.min(r1, r2), vc);
         StringBuilder sb = StarburstSVGMaker.makeStarburstSvg(star.getPathIterator(null), Math.max(r1, r2) * 2, styleField.getText().trim(), desc);
@@ -220,12 +220,12 @@ final class StarburstSVGMaker {
         sb.append(String.format("\" style=\"%s\" />%n</svg>%n", style));
         return sb;
     }
-    public static Path2D.Double makeStar(int r1, int r2, int vc) {
+    public static Path2D makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
         double agl = 0d;
         double add = 2 * Math.PI / (vc * 2);
-        Path2D.Double p = new Path2D.Double();
+        Path2D p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);
         for (int i = 0; i < vc * 2 - 1; i++) {
             agl += add;

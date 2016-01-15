@@ -29,12 +29,12 @@ public final class MainPanel extends JPanel {
         add(new RoundButton("Round Button"));
         setPreferredSize(new Dimension(320, 240));
     }
-    private Path2D.Double makeStar(int r1, int r2, int vc) {
+    private Path2D makeStar(int r1, int r2, int vc) {
         int or = Math.max(r1, r2);
         int ir = Math.min(r1, r2);
         double agl = 0d;
         double add = 2 * Math.PI / (vc * 2);
-        Path2D.Double p = new Path2D.Double();
+        Path2D p = new Path2D.Double();
         p.moveTo(or * 1, or * 0);
         for (int i = 0; i < vc * 2 - 1; i++) {
             agl += add;
