@@ -71,8 +71,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TestRenderer extends WrappedLabel implements TableCellRenderer {
-    public TestRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     }
@@ -93,10 +93,10 @@ class TestRenderer extends WrappedLabel implements TableCellRenderer {
 
 class WrappedLabel extends JLabel {
     private GlyphVector gvtext;
-    public WrappedLabel() {
-        this(null);
+    protected WrappedLabel() {
+        super();
     }
-    public WrappedLabel(String str) {
+    protected WrappedLabel(String str) {
         super(str);
     }
     //private int prevwidth = -1;
@@ -126,7 +126,7 @@ class WrappedLabel extends JLabel {
         }
     }
     private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {
-        Point2D gmPos    = new Point2D.Double(0d, 0d);
+        Point2D gmPos    = new Point2D.Float();
         GlyphVector gv   = font.createGlyphVector(frc, str);
         float lineheight = (float) (gv.getLogicalBounds().getHeight());
         float xpos       = 0f;
@@ -150,8 +150,8 @@ class WrappedLabel extends JLabel {
 
 class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     //public static class UIResource extends TextAreaCellRenderer implements UIResource {}
-    public TextAreaCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         //setName("Table.cellRenderer");

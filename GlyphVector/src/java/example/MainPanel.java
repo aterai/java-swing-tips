@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
 }
 
 class WrappingLabel extends JLabel {
-    public WrappingLabel(String text) {
+    protected WrappingLabel(String text) {
         super(text);
     }
     @Override protected void paintComponent(Graphics g) {
@@ -87,10 +87,10 @@ class WrappedLabel extends JLabel {
     private GlyphVector gvtext;
     private int width = -1;
 
-    public WrappedLabel() {
-        this(null);
+    protected WrappedLabel() {
+        super();
     }
-    public WrappedLabel(String str) {
+    protected WrappedLabel(String str) {
         super(str);
     }
     @Override public void doLayout() {
@@ -117,7 +117,7 @@ class WrappedLabel extends JLabel {
         }
     }
     private GlyphVector getWrappedGlyphVector(String str, float width, Font font, FontRenderContext frc) {
-        Point2D gmPos    = new Point2D.Double(0d, 0d);
+        Point2D gmPos    = new Point2D.Float();
         GlyphVector gv   = font.createGlyphVector(frc, str);
         float lineheight = (float) (gv.getLogicalBounds().getHeight());
         float xpos       = 0f;

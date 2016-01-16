@@ -94,8 +94,8 @@ class TitledSeparator extends JLabel {
             Color color = getBackground();
             if (w != width || Objects.isNull(painter1) || Objects.isNull(painter2)) {
                 width = w;
-                Point2D start = new Point2D.Float(0f, 0f);
-                Point2D end   = new Point2D.Float((float) width, 0f);
+                Point2D start = new Point2D.Float();
+                Point2D end   = new Point2D.Float(width, 0);
                 float[] dist  = {0f, 1f};
                 color = Objects.nonNull(color) ? color : UIManager.getColor("Panel.background");
                 Color tc = Objects.nonNull(target) ? target : color;
