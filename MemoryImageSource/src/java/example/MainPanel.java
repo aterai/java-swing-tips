@@ -177,9 +177,7 @@ final class TextureFactory {
 //     }
 //     private static TexturePaint makeTexturePaint() {
 //         BufferedImage img = makeBGImage();
-//         int w = img.getWidth(), h = img.getHeight();
-//         Rectangle2D r2d = new Rectangle2D.Float(0, 0, w, h);
-//         return new TexturePaint(img, r2d);
+//         return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
 //     }
 //     @Override protected void paintComponent(Graphics g) {
 //         super.paintComponent(g);

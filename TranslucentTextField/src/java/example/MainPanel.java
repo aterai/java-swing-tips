@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         }
         int w = bfimage.getWidth();
         int h = bfimage.getHeight();
-        return new TexturePaint(bfimage, new Rectangle2D.Float(0, 0, w, h));
+        return new TexturePaint(bfimage, new Rectangle(w, h));
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

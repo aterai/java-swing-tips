@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
             }
         }
         g2.dispose();
-        return new TexturePaint(img, new Rectangle2D.Double(0, 0, 16, 16));
+        return new TexturePaint(img, new Rectangle(16, 16));
     }
 
     private static BufferedImage getFilteredImage(URL url) {
