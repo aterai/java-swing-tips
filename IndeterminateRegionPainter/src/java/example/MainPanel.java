@@ -193,7 +193,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     private final Color color27 = decodeColor(NIMBUS_ORANGE,  .0047626942f, -.15147138f,  .1607843f,    0);
     private final Color color28 = decodeColor(NIMBUS_ORANGE,  .010665476f,  -.27317524f,  .25098038f,   0);
     private final PaintContext ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(29, 19), false);
-    private Rectangle2D rect = new Rectangle2D.Float(0, 0, 0, 0);
+    private Rectangle2D rect = new Rectangle2D.Float();
     private Path2D path = new Path2D.Float();
     @Override public void doPaint(Graphics2D g, JComponent c, int width, int height, Object... extendedCacheKeys) {
         path = decodePath1();
