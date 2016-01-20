@@ -24,17 +24,17 @@ public final class MainPanel extends JPanel {
         toolbar1.add(Box.createGlue());
         toolbar1.add(new JButton(new ImageIcon(url3)));
 
-        toolbar2.add(createToolbarButton(url1));
-        toolbar2.add(createToolbarButton(url2));
+        toolbar2.add(createToolBarButton(url1));
+        toolbar2.add(createToolBarButton(url2));
         toolbar2.add(Box.createGlue());
-        toolbar2.add(createToolbarButton(url3));
+        toolbar2.add(createToolBarButton(url3));
 
         add(toolbar1, BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         add(toolbar2, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JButton createToolbarButton(URL url) {
+    private static JButton createToolBarButton(URL url) {
         JButton b = new JButton(new ImageIcon(url));
         b.setRequestFocusEnabled(false);
         return b;

@@ -8,7 +8,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-//         frame.setJMenuBar(createMenubar());
+//         frame.setJMenuBar(createMenuBar());
 //         addComponentListener(new ComponentAdapter() {
 //             @Override public void componentResized(ComponentEvent e) {
 //                 System.out.println("componentResized");
@@ -26,11 +26,11 @@ public final class MainPanel extends JPanel {
 //                 });
 //             }
 //         });
-        add(createMenubar(), BorderLayout.NORTH);
+        add(createMenuBar(), BorderLayout.NORTH);
         add(new JScrollPane(new JTextArea()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private JMenuBar createMenubar() {
+    private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2) {
             @Override public Dimension preferredLayoutSize(Container target) {

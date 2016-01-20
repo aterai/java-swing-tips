@@ -25,13 +25,13 @@ public final class MainPanel extends JPanel {
                                       "Delete24.gif", "Undo24.gif", "Redo24.gif",
                                       "Help24.gif", "Open24.gif", "Save24.gif")) {
             URL url = getClass().getResource(PATH + str);
-            toolbar.add(createToolbarButton(url));
+            toolbar.add(createToolBarButton(url));
         }
         add(toolbar, BorderLayout.NORTH);
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JComponent createToolbarButton(URL url) {
+    private static JComponent createToolBarButton(URL url) {
         JComponent b = new JLabel(new ImageIcon(url));
         b.setOpaque(false);
         return b;
@@ -66,10 +66,6 @@ class DragHandler extends MouseAdapter {
     private final Component gap = Box.createHorizontalStrut(24);
     private Point startPt;
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
-    public DragHandler() {
-        super();
-        window.setBackground(new Color(0x0, true));
-    }
     @Override public void mousePressed(MouseEvent e) {
         JComponent parent = (JComponent) e.getComponent();
         if (parent.getComponentCount() <= 1) {
@@ -77,6 +73,7 @@ class DragHandler extends MouseAdapter {
             return;
         }
         startPt = e.getPoint();
+        window.setBackground(new Color(0x0, true));
     }
     private void startDragging(JComponent parent, Point pt) {
         Component c = parent.getComponentAt(pt);

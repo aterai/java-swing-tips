@@ -11,12 +11,12 @@ public final class MainPanel extends JPanel {
         super();
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                getRootPane().setJMenuBar(createMenubar());
+                getRootPane().setJMenuBar(createMenuBar());
             }
         });
         setPreferredSize(new Dimension(320, 240));
     }
-    private JMenuBar createMenubar() {
+    private JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar() {
             private final TexturePaint texture = makeCheckerTexture();
             @Override protected void paintComponent(Graphics g) {

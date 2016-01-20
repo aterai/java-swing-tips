@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                getRootPane().setJMenuBar(createMenubar());
+                getRootPane().setJMenuBar(createMenuBar());
             }
         });
     }
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         popup.add(new JMenuItem("Delete"));
         return popup;
     }
-    private JMenuBar createMenubar() {
+    private JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar();
         String[] menuKeys = {"File", "Edit", "Help"};
         for (String key: menuKeys) {

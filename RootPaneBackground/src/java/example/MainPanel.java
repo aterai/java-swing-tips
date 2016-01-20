@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
         if (contentPane instanceof JComponent) {
             ((JComponent) contentPane).setOpaque(false);
         }
-        frame.setJMenuBar(ImageUtil.createMenubar());
+        frame.setJMenuBar(ImageUtil.createMenuBar());
         frame.getContentPane().add(new MainPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
@@ -99,7 +99,7 @@ public final class MainPanel extends JPanel {
 
 final class ImageUtil {
     private ImageUtil() { /* Singleton */ }
-    public static JMenuBar createMenubar() {
+    public static JMenuBar createMenuBar() {
         UIManager.put("Menu.background", new Color(200, 0, 0, 0));
         UIManager.put("Menu.selectionBackground", new Color(100, 100, 255, 100));
         UIManager.put("Menu.selectionForeground", new Color(200, 200, 200));

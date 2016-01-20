@@ -22,12 +22,12 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         initActions(getActions());
         JPanel menupanel = new JPanel(new BorderLayout());
-        JMenuBar menuBar = BAR_FACTORY.createMenubar();
+        JMenuBar menuBar = BAR_FACTORY.createMenuBar();
         //if (Objects.nonNull(menuBar))
         menupanel.add(menuBar, BorderLayout.NORTH);
         initHistory();
 
-        JToolBar toolBar = BAR_FACTORY.createToolbar();
+        JToolBar toolBar = BAR_FACTORY.createToolBar();
         if (Objects.nonNull(toolBar)) {
             menupanel.add(toolBar, BorderLayout.SOUTH);
         }

@@ -85,7 +85,7 @@ public final class BarFactory {
         return input.split("\\s");
     }
 
-    public JToolBar createToolbar() {
+    public JToolBar createToolBar() {
         String tmp = getResourceString("toolbar");
         if (Objects.isNull(tmp)) {
             return null;
@@ -108,10 +108,10 @@ public final class BarFactory {
     }
 
     private Component createTool(String key) {
-        return createToolbarButton(key);
+        return createToolBarButton(key);
     }
 
-    private JButton createToolbarButton(String key) {
+    private JButton createToolBarButton(String key) {
         URL url = getResource(key + IMAGE_SUFFIX);
         JButton b;
         if (Objects.nonNull(url)) {
@@ -154,7 +154,7 @@ public final class BarFactory {
         return (JButton) toolButtons.get(key);
     }
 
-    public JMenuBar createMenubar() {
+    public JMenuBar createMenuBar() {
         JMenuBar mb = new JMenuBar();
         String[] menuKeys = tokenize(getResourceString("menubar"));
         for (int i = 0; i < menuKeys.length; i++) {

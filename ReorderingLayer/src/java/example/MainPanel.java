@@ -19,13 +19,13 @@ public final class MainPanel extends JPanel {
         for (JComponent c : Arrays.asList(
             new JLabel("<html>111<br>11<br>11"),
             new JButton("2"), new JCheckBox("3"), new JTextField(14))) {
-            box.add(createToolbarButton(idx++, c));
+            box.add(createToolBarButton(idx++, c));
         }
         add(new JLayer<JComponent>(box, new ReorderingLayerUI()), BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static JComponent createToolbarButton(int i, JComponent c) {
+    private static JComponent createToolBarButton(int i, JComponent c) {
         JLabel l = new JLabel(String.format(" %04d ", i));
         l.setOpaque(true);
         l.setBackground(Color.RED);
