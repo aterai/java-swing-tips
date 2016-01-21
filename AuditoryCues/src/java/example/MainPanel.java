@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
 //         if (soundFile == null) {
 //           return null;
 //         }
-//         byte[] buffer = (byte[])AccessController.doPrivileged(new PrivilegedAction() {
-//             public Object run() {
+//         byte[] buffer = (byte[]) AccessController.doPrivileged(new PrivilegedAction<?>() {
+//             @Override public Object run() {
 //                 try {
 //                     InputStream resource = getClass().getResourceAsStream(soundFile);
 //                     if (resource == null) {

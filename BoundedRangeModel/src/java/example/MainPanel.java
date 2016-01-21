@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         scroll.setVerticalScrollBar(scrollbar);
 
         scrollbar.getModel().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            @Override public void stateChanged(ChangeEvent e) {
                 label.repaint();
             }
         });

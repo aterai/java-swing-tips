@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         table = new JTable(model);
 //        table = new JTable(model) {
 //            private static final Color EVEN_COLOR = new Color(240, 240, 255);
-//            public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+//            @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
 //                Component c = super.prepareRenderer(tcr, row, column);
 //                if (isRowSelected(row)) {
 //                    c.setForeground(getSelectionForeground());

@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
     }
     class HistoryAction extends AbstractAction {
 //         private final File file;
-//         public HistoryAction(File file) {
+//         protected HistoryAction(File file) {
 //             super();
 //             this.file = file;
 //         }

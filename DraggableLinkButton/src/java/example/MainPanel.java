@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
 //             @Override public boolean canImport(JComponent c, DataFlavor... flavors) {
 //                 return (flavors.length > 0 && flavors[0].equals(uriflavor));
 //             }
-//             @Override public Transferable createTransferable(JComponent c) {
+//             @Override protected Transferable createTransferable(JComponent c) {
 //                 return new Transferable() {
 //                     @Override public Object getTransferData(DataFlavor flavor) {
 //                         return MYSITE;
@@ -128,7 +128,7 @@ class LinkViewButtonUI extends BasicButtonUI {
             @Override public boolean canImport(JComponent c, DataFlavor... flavors) {
                 return flavors.length > 0 && flavors[0].equals(URI_FLAVOR);
             }
-            public Transferable createTransferable(JComponent c) {
+            @Override protected Transferable createTransferable(JComponent c) {
                 return new Transferable() {
                     @Override public Object getTransferData(DataFlavor flavor) {
                         //System.out.println(flavor.getMimeType());

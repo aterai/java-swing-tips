@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     private List<? extends AbstractExpansionPanel> makeList() {
         return Arrays.asList(
             new AbstractExpansionPanel("Panel1") {
-                public Container makePanel() {
+                @Override public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     p.add(new JCheckBox("aaaa"));
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
                 }
             },
             new AbstractExpansionPanel("Panel2") {
-                public Container makePanel() {
+                @Override public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     for (int i = 0; i < 16; i++) {
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
                 }
             },
             new AbstractExpansionPanel("Panel3") {
-                public Container makePanel() {
+                @Override public Container makePanel() {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     ButtonGroup bg = new ButtonGroup();

@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);
             if (c instanceof JComponent) {
                 JComponent l = (JComponent) c;

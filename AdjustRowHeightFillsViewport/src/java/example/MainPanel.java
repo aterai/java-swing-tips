@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         int prevHeight = -1;
         int prevCount = -1;
-        public void updateRowsHeigth(JViewport vport) {
+        protected void updateRowsHeigth(JViewport vport) {
             int height = vport.getExtentSize().height;
             int rowCount = getModel().getRowCount();
             int defautlRowHeight = height / rowCount;
