@@ -232,8 +232,8 @@ class EditableTabbedPane extends JTabbedPane {
                 }
             });
             addMouseListener(new MouseAdapter() {
-                @Override public void mouseClicked(MouseEvent me) {
-                    if (Objects.isNull(rect) || rect.contains(me.getPoint())) {
+                @Override public void mouseClicked(MouseEvent e) {
+                    if (Objects.isNull(rect) || rect.contains(e.getPoint())) {
                         return;
                     }
                     renameTab();

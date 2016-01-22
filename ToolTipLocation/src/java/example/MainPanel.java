@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
                     popup.show();
                 }
             }
-            @Override public void mouseReleased(MouseEvent me) {
+            @Override public void mouseReleased(MouseEvent e) {
                 if (popup != null) {
                     popup.hide();
                 }

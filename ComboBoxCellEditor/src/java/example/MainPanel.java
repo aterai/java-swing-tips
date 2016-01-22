@@ -191,10 +191,10 @@ class PluginCellEditor extends DefaultCellEditor {
         }
         return delegate.isCellEditable(e);
     }
-    private void showComboPopup(final JTree tree, final MouseEvent me) {
+    private void showComboPopup(JTree tree, MouseEvent e) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
-                Point pt = SwingUtilities.convertPoint(tree, me.getPoint(), panel);
+                Point pt = SwingUtilities.convertPoint(tree, e.getPoint(), panel);
                 Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
                 if (o instanceof JComboBox) {
                     panel.comboBox.showPopup();

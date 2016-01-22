@@ -196,10 +196,10 @@ class ToolBarButton extends JButton {
         setContentAreaFilled(false);
         setFocusPainted(false);
         handler = new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent me) {
+            @Override public void mouseEntered(MouseEvent e) {
                 setContentAreaFilled(true);
             }
-            @Override public void mouseExited(MouseEvent me) {
+            @Override public void mouseExited(MouseEvent e) {
                 setContentAreaFilled(false);
             }
         };

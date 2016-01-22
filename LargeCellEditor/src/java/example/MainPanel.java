@@ -126,7 +126,7 @@ class MyIconTable extends JTable {
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         initCellSize(50);
         addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent me) {
+            @Override public void mouseClicked(MouseEvent e) {
                 startEditing();
             }
         });
@@ -140,17 +140,17 @@ class MyIconTable extends JTable {
             }
         });
         editor.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent me) {
-                setEditorSelectedIconAt(me.getPoint());
+            @Override public void mouseClicked(MouseEvent e) {
+                setEditorSelectedIconAt(e.getPoint());
             }
         });
 
         panel.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent me) {
-                if (Objects.isNull(rect) || rect.contains(me.getPoint())) {
+            @Override public void mouseClicked(MouseEvent e) {
+                if (Objects.isNull(rect) || rect.contains(e.getPoint())) {
                     return;
                 }
-                setEditorSelectedIconAt(me.getPoint());
+                setEditorSelectedIconAt(e.getPoint());
             }
         });
         panel.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {

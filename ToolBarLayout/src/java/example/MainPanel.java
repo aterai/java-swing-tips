@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
 //         setContentAreaFilled(false);
 //         setFocusPainted(false);
 //         addMouseListener(new MouseAdapter() {
-//             @Override public void mouseEntered(MouseEvent me) {
+//             @Override public void mouseEntered(MouseEvent e) {
 //                 setContentAreaFilled(true);
 //             }
-//             @Override public void mouseExited(MouseEvent me) {
+//             @Override public void mouseExited(MouseEvent e) {
 //                 setContentAreaFilled(false);
 //             }
 //         });

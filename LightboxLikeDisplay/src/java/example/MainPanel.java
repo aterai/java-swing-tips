@@ -86,8 +86,8 @@ class LightboxGlassPane extends JPanel {
         addHierarchyListener(handler);
     }
     private class Handler extends MouseAdapter implements HierarchyListener {
-        @Override public void mouseClicked(MouseEvent me) {
-            me.getComponent().setVisible(false);
+        @Override public void mouseClicked(MouseEvent e) {
+            e.getComponent().setVisible(false);
         }
         @Override public void hierarchyChanged(HierarchyEvent e) {
             if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable() && Objects.nonNull(animator)) {

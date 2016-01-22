@@ -98,30 +98,30 @@ class ComponentTitledBorder implements Border, MouseListener, MouseMotionListene
         return insets;
     }
 
-    private void dispatchEvent(MouseEvent me) {
-        Component src = me.getComponent();
-        comp.dispatchEvent(SwingUtilities.convertMouseEvent(src, me, comp));
+    private void dispatchEvent(MouseEvent e) {
+        Component src = e.getComponent();
+        comp.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, comp));
         src.repaint();
     }
-    @Override public void mouseClicked(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseClicked(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseEntered(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseEntered(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseExited(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseExited(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mousePressed(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mousePressed(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseReleased(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseReleased(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseMoved(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseMoved(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseDragged(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseDragged(MouseEvent e) {
+        dispatchEvent(e);
     }
 }

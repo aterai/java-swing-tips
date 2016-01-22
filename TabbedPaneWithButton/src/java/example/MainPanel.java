@@ -96,16 +96,16 @@ public final class MainPanel extends JPanel {
 }
 
 class ToolBarButton extends JButton {
-    public ToolBarButton(ImageIcon icon) {
+    protected ToolBarButton(ImageIcon icon) {
         super(icon);
         setFocusable(false);
         setContentAreaFilled(false);
         setFocusPainted(false);
         addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent me) {
+            @Override public void mouseEntered(MouseEvent e) {
                 setContentAreaFilled(true);
             }
-            @Override public void mouseExited(MouseEvent me) {
+            @Override public void mouseExited(MouseEvent e) {
                 setContentAreaFilled(false);
             }
         });
@@ -113,10 +113,10 @@ class ToolBarButton extends JButton {
 }
 
 class ClippedTitleTabbedPane extends JTabbedPane {
-    public ClippedTitleTabbedPane() {
+    protected ClippedTitleTabbedPane() {
         super();
     }
-    public ClippedTitleTabbedPane(int tabPlacement) {
+    protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
     protected Insets getTabInsets() {

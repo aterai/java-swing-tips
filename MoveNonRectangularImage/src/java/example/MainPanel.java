@@ -29,13 +29,13 @@ public final class MainPanel extends JPanel {
         MouseAdapter l = new MouseAdapter() {
             private final transient Point start = new Point();
             private Point loc;
-            @Override public void mousePressed(MouseEvent me) {
-                start.setLocation(me.getPoint());
+            @Override public void mousePressed(MouseEvent e) {
+                start.setLocation(e.getPoint());
             }
-            @Override public void mouseDragged(MouseEvent me) {
+            @Override public void mouseDragged(MouseEvent e) {
                 loc = icon.getLocation(loc);
-                int x = loc.x - start.x + me.getX();
-                int y = loc.y - start.y + me.getY();
+                int x = loc.x - start.x + e.getX();
+                int y = loc.y - start.y + e.getY();
                 icon.setLocation(x, y);
             }
         };

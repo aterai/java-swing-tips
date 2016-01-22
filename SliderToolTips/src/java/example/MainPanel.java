@@ -152,29 +152,29 @@ class SliderPopupListener extends MouseAdapter {
         toolTip.add(label);
         toolTip.setSize(size);
     }
-    protected void updateToolTip(MouseEvent me) {
-        JSlider slider = (JSlider) me.getComponent();
+    protected void updateToolTip(MouseEvent e) {
+        JSlider slider = (JSlider) e.getComponent();
         int intValue = (int) slider.getValue();
         if (prevValue != intValue) {
             label.setText(String.format("%03d", slider.getValue()));
-            Point pt = me.getPoint();
+            Point pt = e.getPoint();
             pt.y = -size.height;
-            SwingUtilities.convertPointToScreen(pt, me.getComponent());
+            SwingUtilities.convertPointToScreen(pt, e.getComponent());
             pt.translate(-size.width / 2, 0);
             toolTip.setLocation(pt);
         }
         prevValue = intValue;
     }
-    @Override public void mouseDragged(MouseEvent me) {
-        updateToolTip(me);
+    @Override public void mouseDragged(MouseEvent e) {
+        updateToolTip(e);
     }
-    @Override public void mousePressed(MouseEvent me) {
-        if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(me)) {
+    @Override public void mousePressed(MouseEvent e) {
+        if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
             toolTip.setVisible(true);
-            updateToolTip(me);
+            updateToolTip(e);
         }
     }
-    @Override public void mouseReleased(MouseEvent me) {
+    @Override public void mouseReleased(MouseEvent e) {
         toolTip.setVisible(false);
     }
 }

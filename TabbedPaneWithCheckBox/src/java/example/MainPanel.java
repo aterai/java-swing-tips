@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         cbox.setFocusPainted(false);
         cbox.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent me) {
-                JCheckBox cb = (JCheckBox) me.getComponent();
+            @Override public void mouseClicked(MouseEvent e) {
+                JCheckBox cb = (JCheckBox) e.getComponent();
                 cb.setSelected(!cb.isSelected());
             }
         });
@@ -68,7 +68,7 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
     private final JComponent rubberStamp = new JPanel();
     private final Rectangle rect = new Rectangle();
 
-    public TabbedPaneWithCompBorder(JCheckBox cbox, JTabbedPane tab) {
+    protected TabbedPaneWithCompBorder(JCheckBox cbox, JTabbedPane tab) {
         this.cbox = cbox;
         this.tab  = tab;
     }
@@ -89,26 +89,26 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
     @Override public boolean isBorderOpaque() {
         return true;
     }
-    private void dispatchEvent(MouseEvent me) {
-        if (!rect.contains(me.getX(), me.getY())) {
+    private void dispatchEvent(MouseEvent e) {
+        if (!rect.contains(e.getX(), e.getY())) {
             return;
         }
         cbox.setBounds(rect);
-        cbox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, me, cbox));
+        cbox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, e, cbox));
     }
-    @Override public void mouseClicked(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseClicked(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseEntered(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseEntered(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseExited(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseExited(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mousePressed(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mousePressed(MouseEvent e) {
+        dispatchEvent(e);
     }
-    @Override public void mouseReleased(MouseEvent me) {
-        dispatchEvent(me);
+    @Override public void mouseReleased(MouseEvent e) {
+        dispatchEvent(e);
     }
 }
