@@ -15,19 +15,26 @@ public final class MainPanel extends JPanel {
     private final JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
     private final JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
 
-    public MainPanel(JFrame frame) {
+    public MainPanel() {
         super(new BorderLayout());
 
-        SaveHandler handler = new SaveHandler(frame);
-        handler.addEnabledFlagComponent(saveButton);
-        saveButton.setEnabled(false);
-
-        frame.addWindowListener(handler);
-        textarea.getDocument().addDocumentListener(handler);
+        EventQueue.invokeLater(new Runnable() {
+            @Override public void run() {
+                Component c = getTopLevelAncestor();
+                if (c instanceof JFrame) {
+                    JFrame frame = (JFrame) c;
+                    SaveHandler handler = new SaveHandler(frame);
+                    handler.addEnabledFlagComponent(saveButton);
+                    frame.addWindowListener(handler);
+                    textarea.getDocument().addDocumentListener(handler);
+                    exitButton.addActionListener(handler);
+                    saveButton.addActionListener(handler);
+                }
+            }
+        });
         exitButton.setActionCommand(SaveHandler.CMD_EXIT);
-        exitButton.addActionListener(handler);
         saveButton.setActionCommand(SaveHandler.CMD_SAVE);
-        saveButton.addActionListener(handler);
+        saveButton.setEnabled(false);
 
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
@@ -58,7 +65,7 @@ public final class MainPanel extends JPanel {
         //frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         //frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -73,7 +80,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
     private final String title;
     private final List<JComponent> list = new ArrayList<>();
 
-    public SaveHandler(JFrame frame) {
+    protected SaveHandler(JFrame frame) {
         super();
         this.frame = frame;
         this.title = frame.getTitle();

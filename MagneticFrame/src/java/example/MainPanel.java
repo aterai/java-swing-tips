@@ -95,9 +95,9 @@ public final class MainPanel extends JPanel {
 
 class MagneticDesktopManager extends DefaultDesktopManager {
     @Override public void dragFrame(JComponent frame, int x, int y) {
-        Object o = SwingUtilities.getAncestorOfClass(JDesktopPane.class, frame);
-        if (o instanceof JDesktopPane) {
-            JDesktopPane desktop = (JDesktopPane) o;
+        Container c = SwingUtilities.getAncestorOfClass(JDesktopPane.class, frame);
+        if (c instanceof JDesktopPane) {
+            JDesktopPane desktop = (JDesktopPane) c;
             int e = x;
             int n = y;
             int w = desktop.getSize().width  - frame.getSize().width  - e;

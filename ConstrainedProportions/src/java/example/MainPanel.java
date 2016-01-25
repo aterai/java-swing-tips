@@ -9,30 +9,38 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final int MW = 300;
     private static final int MH = 200;
-    private final JFrame frame;
     private final JLabel label = new JLabel();
-    private final JCheckBox checkbox = new JCheckBox();
-
-    public MainPanel(JFrame frame) {
+    private final JCheckBox checkbox = new JCheckBox(new AbstractAction("Fixed aspect ratio, Minimum size: " + MW + "*" + MH) {
+        @Override public void actionPerformed(ActionEvent e) {
+            Container c = getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                initFrameSize((JFrame) c);
+            }
+        }
+    });
+    public MainPanel() {
         super(new BorderLayout());
-        this.frame = frame;
-        frame.setMinimumSize(new Dimension(MW, MH)); //JDK 1.6.0
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                initFrameSize();
+        EventQueue.invokeLater(() -> {
+            Container c = getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                JFrame frame = (JFrame) c;
+                frame.setMinimumSize(new Dimension(MW, MH)); //JDK 1.6.0
+                frame.addComponentListener(new ComponentAdapter() {
+                    @Override public void componentResized(ComponentEvent e) {
+                        initFrameSize(frame);
+                    }
+                });
             }
         });
+        //checkbox.setSelected(true);
         label.addComponentListener(new ComponentAdapter() {
             @Override public void componentResized(ComponentEvent e) {
-                label.setText(frame.getSize().toString());
+                Container c = getTopLevelAncestor();
+                if (c instanceof JFrame) {
+                    label.setText(c.getSize().toString());
+                }
             }
         });
-        checkbox.setAction(new AbstractAction("Fixed aspect ratio, Minimum size: " + MW + "*" + MH) {
-            @Override public void actionPerformed(ActionEvent e) {
-                initFrameSize();
-            }
-        });
-        checkbox.setSelected(true);
 
         JPanel p = new JPanel(new GridLayout(2, 1));
         p.add(checkbox);
@@ -47,7 +55,7 @@ public final class MainPanel extends JPanel {
         add(label);
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initFrameSize() {
+    private void initFrameSize(JFrame frame) {
         if (!checkbox.isSelected()) {
             return;
         }
@@ -71,7 +79,7 @@ public final class MainPanel extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

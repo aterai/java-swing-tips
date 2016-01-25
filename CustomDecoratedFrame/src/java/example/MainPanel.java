@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
         title.add(makeCloseButton(), BorderLayout.EAST);
         //title.add(iconify, BorderLayout.WEST);
 
-        ResizeWindowListener rwl = new ResizeWindowListener(frame);
+        ResizeWindowListener rwl = new ResizeWindowListener();
         for (SideLabel l: Arrays.asList(left, right, top, bottom, topleft, topright, bottomleft, bottomright)) {
             l.addMouseListener(rwl);
             l.addMouseMotionListener(rwl);
@@ -197,22 +197,20 @@ class SideLabel extends JLabel {
 }
 
 class ResizeWindowListener extends MouseAdapter {
-    private final JFrame frame;
     private final Rectangle rect = new Rectangle();
-    protected ResizeWindowListener(JFrame frame) {
-        super();
-        this.frame = frame;
-        this.rect.setBounds(frame.getBounds());
-    }
     @Override public void mousePressed(MouseEvent e) {
-        rect.setBounds(frame.getBounds());
+        Component p = SwingUtilities.getRoot(e.getComponent());
+        if (p instanceof Window) {
+            rect.setBounds(((Window) p).getBounds());
+        }
     }
     @Override public void mouseDragged(MouseEvent e) {
-        if (rect.isEmpty()) {
-            return;
+        Component c = e.getComponent();
+        Component p = SwingUtilities.getRoot(c);
+        if (!rect.isEmpty() && c instanceof SideLabel && p instanceof Window) {
+            Side side = ((SideLabel) c).side;
+            ((Window) p).setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
         }
-        Side side = ((SideLabel) e.getComponent()).side;
-        frame.setBounds(getResizedRect(rect, side, e.getX(), e.getY()));
     }
     private static Rectangle getResizedRect(Rectangle r, Side side, int dx, int dy) {
         switch (side) {
