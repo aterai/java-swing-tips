@@ -97,8 +97,8 @@ class ButtonsPanel extends JPanel {
 }
 
 class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
-    protected ButtonsRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

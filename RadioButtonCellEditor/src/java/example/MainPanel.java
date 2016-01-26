@@ -65,8 +65,8 @@ public final class MainPanel extends JPanel {
 }
 
 class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
-    public RadioButtonsRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
         setHorizontalAlignment(SwingConstants.CENTER);
     }
@@ -80,7 +80,7 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
 
 class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
     //public RadioButtonsEditor(final DefaultTableModel model) {
-    public RadioButtonsEditor() {
+    protected RadioButtonsEditor() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
         addActionListener(new ActionListener() {

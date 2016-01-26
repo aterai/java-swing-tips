@@ -91,7 +91,7 @@ class RadioButtonsPanel extends JPanel {
     private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};
     public JRadioButton[] buttons;
     public ButtonGroup bg = new ButtonGroup();
-    public RadioButtonsPanel() {
+    protected RadioButtonsPanel() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         initButtons();
@@ -124,8 +124,8 @@ class RadioButtonsPanel extends JPanel {
 }
 
 class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRenderer {
-    public RadioButtonsRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -137,7 +137,7 @@ class RadioButtonsRenderer extends RadioButtonsPanel implements TableCellRendere
 class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
 
-    public RadioButtonsEditor() {
+    protected RadioButtonsEditor() {
         super();
         ActionListener al = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {

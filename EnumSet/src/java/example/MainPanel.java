@@ -114,7 +114,7 @@ class CheckBoxesPanel extends JPanel {
     private static final String OSNAME = System.getProperty("os.name");
     protected final String[] title = {"r", "w", "x"};
     public JCheckBox[] buttons;
-    public CheckBoxesPanel() {
+    protected CheckBoxesPanel() {
         super();
         setOpaque(false);
         setBackground(new Color(0x0, true));
@@ -148,8 +148,8 @@ class CheckBoxesPanel extends JPanel {
 }
 
 class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
-    public CheckBoxesRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -162,7 +162,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
 
-    public CheckBoxesEditor() {
+    protected CheckBoxesEditor() {
         super();
         ActionMap am = getActionMap();
         for (int i = 0; i < buttons.length; i++) {

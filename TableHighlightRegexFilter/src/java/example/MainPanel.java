@@ -113,8 +113,8 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
             return true;
         }
     }
-    public HighlightTableCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder());
         setForeground(Color.BLACK);

@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
 //*
 class ComboBoxPanel extends JPanel {
     public final JComboBox<String> comboBox = new JComboBox<>(new String[] {"aaaaaa", "bbb", "c"});
-    public ComboBoxPanel() {
+    protected ComboBoxPanel() {
         super(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -102,8 +102,8 @@ class ComboBoxPanel extends JPanel {
 }
 //*/
 class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
-    public ComboBoxCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -117,7 +117,7 @@ class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
 class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
 
-    public ComboBoxCellEditor() {
+    protected ComboBoxCellEditor() {
         super();
         comboBox.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -207,7 +207,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
 class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     private final JTextField editor;
     //private JButton button;
-    public ComboCellRenderer() {
+    protected ComboCellRenderer() {
         super();
         setEditable(true);
         //setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));

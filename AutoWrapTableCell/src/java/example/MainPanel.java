@@ -107,8 +107,8 @@ class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
     private final List<List<Integer>> rowAndCellHeightList = new ArrayList<>();
 
     //public static class UIResource extends TextAreaCellRenderer implements javax.swing.plaf.UIResource {}
-    protected TextAreaCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setLineWrap(true);
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         //setBorder(BorderFactory.createLineBorder(Color.RED, 2));
