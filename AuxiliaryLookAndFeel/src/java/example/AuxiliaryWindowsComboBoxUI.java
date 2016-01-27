@@ -56,7 +56,7 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
 
 class BasicComboPopup2 extends BasicComboPopup {
     private transient Handler2 handler2;
-    public BasicComboPopup2(JComboBox combo) {
+    protected BasicComboPopup2(JComboBox combo) {
         super(combo);
     }
     @Override public void uninstallingUI() {
@@ -69,11 +69,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         }
         return handler2;
     }
-    private class Handler2 implements MouseListener {
-        @Override public void mouseEntered(MouseEvent e) { /* not needed */ }
-        @Override public void mouseExited(MouseEvent e)  { /* not needed */ }
-        @Override public void mouseClicked(MouseEvent e) { /* not needed */ }
-        @Override public void mousePressed(MouseEvent e) { /* not needed */ }
+    private class Handler2 extends MouseAdapter {
         @Override public void mouseReleased(MouseEvent e) {
             if (Objects.equals(e.getSource(), list)) {
                 if (list.getModel().getSize() > 0) {
