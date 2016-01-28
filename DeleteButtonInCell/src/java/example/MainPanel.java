@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         //ButtonColumn buttonColumn = new ButtonColumn(table);
         TableColumn column = table.getColumnModel().getColumn(BUTTON_COLUMN);
         column.setCellRenderer(new DeleteButtonRenderer());
-        column.setCellEditor(new DeleteButtonEditor(table));
+        column.setCellEditor(new DeleteButtonEditor());
         column.setMinWidth(20);
         column.setMaxWidth(20);
         column.setResizable(false);
@@ -117,8 +117,8 @@ class DeleteButton extends JButton {
 }
 
 class DeleteButtonRenderer extends DeleteButton implements TableCellRenderer {
-    public DeleteButtonRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -127,17 +127,28 @@ class DeleteButtonRenderer extends DeleteButton implements TableCellRenderer {
 }
 
 class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
-    public DeleteButtonEditor(final JTable table) {
-        super();
-        addActionListener(new ActionListener() {
+    private transient ActionListener listener;
+    private JTable table;
+    @Override public void updateUI() {
+        removeActionListener(listener);
+        super.updateUI();
+        //JComponent c = this;
+        listener = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                int row = table.convertRowIndexToModel(table.getEditingRow());
-                fireEditingStopped();
-                ((DefaultTableModel) table.getModel()).removeRow(row);
+                //Object o = SwingUtilities.getAncestorOfClass(JTable.class, c);
+                //if (o instanceof JTable) {
+                //    JTable table = (JTable) o;
+                if (Objects.nonNull(table)) {
+                    int row = table.convertRowIndexToModel(table.getEditingRow());
+                    fireEditingStopped();
+                    ((DefaultTableModel) table.getModel()).removeRow(row);
+                }
             }
-        });
+        };
+        addActionListener(listener);
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        this.table = table;
         return this;
     }
     @Override public Object getCellEditorValue() {
@@ -231,7 +242,7 @@ class TestModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -241,7 +252,7 @@ class TestModel extends DefaultTableModel {
 
 class Test {
     private String name, comment;
-    public Test(String name, String comment) {
+    protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }

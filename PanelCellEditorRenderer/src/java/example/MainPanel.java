@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
 
 class SpinnerPanel extends JPanel {
     public final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 0, 200, 1));
-    public SpinnerPanel() {
+    protected SpinnerPanel() {
         super(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -123,8 +123,8 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 }
 /*/
 class SpinnerRenderer extends SpinnerPanel implements TableCellRenderer {
-    public SpinnerRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -218,7 +218,7 @@ class ButtonsPanel extends JPanel {
         }
     };
     public int i = -1;
-    public ButtonsPanel() {
+    protected ButtonsPanel() {
         super();
         label.setHorizontalAlignment(SwingConstants.RIGHT);
         setOpaque(true);
@@ -243,7 +243,7 @@ class ButtonsRenderer implements TableCellRenderer {
 
 class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     private final ButtonsPanel p = new ButtonsPanel();
-    public ButtonsEditor() {
+    protected ButtonsEditor() {
         super();
         p.buttons.get(0).addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -294,8 +294,8 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 }
 /*/
 class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
-    public ButtonsRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
