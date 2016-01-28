@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
 
         //SliderEditorRednerer ser = new SliderEditorRednerer(table);
         table.getColumnModel().getColumn(1).setCellRenderer(new SliderRednerer());
-        table.getColumnModel().getColumn(1).setCellEditor(new SliderEditor(table));
+        table.getColumnModel().getColumn(1).setCellEditor(new SliderEditor());
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
@@ -64,8 +64,8 @@ public final class MainPanel extends JPanel {
 }
 
 class SliderRednerer extends JSlider implements TableCellRenderer {
-    public SliderRednerer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setName("Table.cellRenderer");
         setOpaque(true);
     }
@@ -102,23 +102,29 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
 }
 
 class SliderEditor extends JSlider implements TableCellEditor {
-    public SliderEditor(final JTable table) {
-        super();
+    private transient ChangeListener handler;
+    private JTable table;
+    @Override public void updateUI() {
+        removeChangeListener(handler);
+        super.updateUI();
         setOpaque(true);
-        addChangeListener(new ChangeListener() {
+        handler = new ChangeListener() {
+            private int prev;
             @Override public void stateChanged(ChangeEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        int row = table.convertRowIndexToModel(table.getEditingRow());
-                        table.getModel().setValueAt(getValue(), row, 0);
-                        table.getModel().setValueAt(getValue(), row, 1);
-                    }
-                });
+                int value = getValue();
+                if (Objects.nonNull(table) && table.isEditing() && value != prev) {
+                    int row = table.convertRowIndexToModel(table.getEditingRow());
+                    table.getModel().setValueAt(value, row, 0);
+                    table.getModel().setValueAt(value, row, 1);
+                    prev = value;
+                }
             }
-        });
+        };
+        addChangeListener(handler);
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         Integer i = (Integer) value;
+        this.table = table;
         this.setBackground(table.getSelectionBackground());
         this.setValue(i.intValue());
         return this;
@@ -130,7 +136,6 @@ class SliderEditor extends JSlider implements TableCellEditor {
     //Copied from AbstractCellEditor
     //protected EventListenerList listenerList = new EventListenerList();
     //protected transient ChangeEvent changeEvent;
-
     @Override public boolean isCellEditable(EventObject e) {
         return true;
     }

@@ -50,7 +50,13 @@ public final class MainPanel extends JPanel {
     };
     public MainPanel() {
         super(new BorderLayout());
-        HeaderRenderer r = new HeaderRenderer(table.getTableHeader());
+
+        JPopupMenu pop = new JPopupMenu();
+        pop.add("000");
+        pop.add("11111");
+        pop.add("2222222");
+
+        HeaderRenderer r = new HeaderRenderer(table.getTableHeader(), pop);
         table.getColumnModel().getColumn(0).setHeaderRenderer(r);
         table.getColumnModel().getColumn(1).setHeaderRenderer(r);
         table.getColumnModel().getColumn(2).setHeaderRenderer(r);
@@ -85,9 +91,9 @@ public final class MainPanel extends JPanel {
 class HeaderRenderer extends JButton implements TableCellRenderer {
     private static final int BUTTON_WIDTH = 16;
     private static final Color BUTTONBGC = new Color(200, 200, 200, 100);
-    private final JPopupMenu pop = new JPopupMenu();
+    private final JPopupMenu pop;
     private int rolloverIndex = -1;
-    private final transient MouseAdapter ma = new MouseAdapter() {
+    private final transient MouseAdapter handler = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
             JTableHeader header = (JTableHeader) e.getComponent();
             JTable table = header.getTable();
@@ -126,21 +132,19 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         }
     };
 
-    public HeaderRenderer(JTableHeader header) {
+    protected HeaderRenderer(JTableHeader header, JPopupMenu pop) {
         super();
-        //setOpaque(false);
-        //setFont(header.getFont());
-        setBorder(BorderFactory.createEmptyBorder());
-        setContentAreaFilled(false);
-        pop.add("000");
-        pop.add("11111");
-        pop.add("2222222");
-        header.addMouseListener(ma);
-        header.addMouseMotionListener(ma);
+        this.pop = pop;
+        header.addMouseListener(handler);
+        header.addMouseMotionListener(handler);
     }
 
     @Override public void updateUI() {
         super.updateUI();
+        //setOpaque(false);
+        //setFont(header.getFont());
+        setBorder(BorderFactory.createEmptyBorder());
+        setContentAreaFilled(false);
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
                 SwingUtilities.updateComponentTreeUI(pop);
