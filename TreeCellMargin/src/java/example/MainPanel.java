@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
             @Override public void updateUI() {
                 setCellRenderer(null);
                 super.updateUI();
-                setCellRenderer(new MyTreeCellRenderer());
+                setCellRenderer(new MarginTreeCellRenderer());
             }
         };
-        //tree1.setCellRenderer(new MyTreeCellRenderer());
+        //tree1.setCellRenderer(new MarginTreeCellRenderer());
 
         JTree tree2 = new JTree() {
             @Override public void updateUI() {
@@ -64,18 +64,18 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyTreeCellRenderer extends DefaultTreeCellRenderer {
+class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final int MARGIN = 2; // < 3
-    protected final boolean drawsFocusBorderAroundIcon;
-    protected final boolean drawDashedFocusIndicator;
-    protected final boolean fillBackground;
+    protected boolean drawsFocusBorderAroundIcon;
+    protected boolean drawDashedFocusIndicator;
+    protected boolean fillBackground;
     protected Color treeBGColor;
     protected Color focusBGColor;
     //protected boolean selected;
     //protected boolean hasFocus;
 
-    public MyTreeCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         drawsFocusBorderAroundIcon = UIManager.getBoolean("Tree.drawsFocusBorderAroundIcon");
         drawDashedFocusIndicator   = UIManager.getBoolean("Tree.drawDashedFocusIndicator");
         fillBackground             = UIManager.getBoolean("Tree.rendererFillBackground");
@@ -164,7 +164,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     private final Border compoundFocusBorder;
     private final boolean isSynth;
 
-    public CompoundTreeCellRenderer() {
+    protected CompoundTreeCellRenderer() {
         super();
 
         isSynth = getUI().getClass().getName().contains("Synth");
@@ -226,7 +226,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 
 class DotBorder extends LineBorder {
     private final Color borderSelectionColor;
-    public DotBorder(Color color, Color borderSelectionColor) {
+    protected DotBorder(Color color, Color borderSelectionColor) {
         super(color, 1);
         this.borderSelectionColor = borderSelectionColor;
     }

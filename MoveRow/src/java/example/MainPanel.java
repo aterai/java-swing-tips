@@ -85,7 +85,7 @@ class TablePopupMenu extends JPopupMenu {
     private final Action upAction;
     private final Action downAction;
     private final JTable table;
-    public TablePopupMenu(JTable table) {
+    protected TablePopupMenu(JTable table) {
         super();
         this.table = table;
 
@@ -127,7 +127,7 @@ class TablePopupMenu extends JPopupMenu {
 
 class TestCreateAction extends AbstractAction {
     private final JTable table;
-    public TestCreateAction(String str, JTable table) {
+    protected TestCreateAction(String str, JTable table) {
         super(str);
         this.table = table;
     }
@@ -144,7 +144,7 @@ class TestCreateAction extends AbstractAction {
 
 class DeleteAction extends AbstractAction {
     private final JTable table;
-    public DeleteAction(String str, JTable table) {
+    protected DeleteAction(String str, JTable table) {
         super(str);
         this.table = table;
     }
@@ -163,7 +163,7 @@ class DeleteAction extends AbstractAction {
 
 class UpAction extends AbstractAction {
     private final JTable table;
-    public UpAction(String str, JTable table) {
+    protected UpAction(String str, JTable table) {
         super(str);
         this.table = table;
     }
@@ -193,7 +193,7 @@ class UpAction extends AbstractAction {
 
 class DownAction extends AbstractAction {
     private final JTable table;
-    public DownAction(String str, JTable table) {
+    protected DownAction(String str, JTable table) {
         super(str);
         this.table = table;
     }
@@ -223,7 +223,7 @@ class DownAction extends AbstractAction {
 
 class InitAction extends AbstractAction {
     private final JTable table;
-    public InitAction(String str, JTable table) {
+    protected InitAction(String str, JTable table) {
         super(str);
         this.table = table;
     }
@@ -285,7 +285,7 @@ class TestModel extends SortableTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -295,7 +295,7 @@ class TestModel extends SortableTableModel {
 
 class Test {
     private String name, comment;
-    public Test(String name, String comment) {
+    protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }

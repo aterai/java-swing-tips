@@ -52,49 +52,6 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    class TestCreateAction extends AbstractAction {
-        protected TestCreateAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if (table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            model.addTest(new Test("New row", ""));
-            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
-            table.scrollRectToVisible(r);
-        }
-    }
-
-    class DeleteAction extends AbstractAction {
-        protected DeleteAction(String label) {
-            super(label);
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            if (table.isEditing()) {
-                table.getCellEditor().stopCellEditing();
-            }
-            int[] selection = table.getSelectedRows();
-            for (int i = selection.length - 1; i >= 0; i--) {
-                model.removeRow(selection[i]);
-            }
-        }
-    }
-
-    private class TablePopupMenu extends JPopupMenu {
-        private final Action deleteAction = new DeleteAction("delete");
-        protected TablePopupMenu() {
-            super();
-            add(new TestCreateAction("add"));
-            //add(new ClearAction("clearSelection"));
-            addSeparator();
-            add(deleteAction);
-        }
-        @Override public void show(Component c, int x, int y) {
-            deleteAction.setEnabled(table.getSelectedRowCount() > 0);
-            super.show(c, x, y);
-        }
-    }
 
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -116,6 +73,45 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TablePopupMenu extends JPopupMenu {
+    private final Action createAction = new AbstractAction("add") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            if (table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
+            }
+            TestModel model = (TestModel) table.getModel();
+            model.addTest(new Test("New row", ""));
+            Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
+            table.scrollRectToVisible(r);
+        }
+    };
+    private final Action deleteAction = new AbstractAction("delete") {
+        @Override public void actionPerformed(ActionEvent e) {
+            JTable table = (JTable) getInvoker();
+            if (table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
+            }
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            int[] selection = table.getSelectedRows();
+            for (int i = selection.length - 1; i >= 0; i--) {
+                model.removeRow(selection[i]);
+            }
+        }
+    };
+    protected TablePopupMenu() {
+        super();
+        add(createAction);
+        addSeparator();
+        add(deleteAction);
+    }
+    @Override public void show(Component c, int x, int y) {
+        JTable table = (JTable) getInvoker();
+        deleteAction.setEnabled(table.getSelectedRowCount() > 0);
+        super.show(c, x, y);
     }
 }
 

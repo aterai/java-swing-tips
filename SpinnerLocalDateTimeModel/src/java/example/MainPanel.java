@@ -102,11 +102,12 @@ public final class MainPanel extends JPanel {
 }
 
 class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
-    private Comparable<ChronoLocalDateTime<?>> start, end;
+    private Comparable<ChronoLocalDateTime<?>> start;
+    private Comparable<ChronoLocalDateTime<?>> end;
     private ChronoLocalDateTime<?> value;
     private TemporalUnit temporalUnit;
 
-    public SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
+    protected SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value, Comparable<ChronoLocalDateTime<?>> start, Comparable<ChronoLocalDateTime<?>> end, TemporalUnit temporalUnit) {
         super();
         if (Objects.isNull(value)) {
             throw new IllegalArgumentException("value is null");
@@ -194,7 +195,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     private final transient DateTimeFormatter dateTimeFormatter;
     private final SpinnerLocalDateTimeModel model;
 
-    public LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
+    protected LocalDateTimeEditor(final JSpinner spinner, String dateFormatPattern) {
         super(spinner);
         if (!(spinner.getModel() instanceof SpinnerLocalDateTimeModel)) {
             throw new IllegalArgumentException("model not a SpinnerLocalDateTimeModel");
@@ -228,7 +229,7 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     }
 
     class LocalDateTimeFormatter extends InternationalFormatter {
-        public LocalDateTimeFormatter() {
+        protected LocalDateTimeFormatter() {
             super(dateTimeFormatter.toFormat());
         }
         @Override public String valueToString(Object value) throws ParseException {

@@ -26,7 +26,7 @@ class ColumnComparator implements Comparator, Serializable {
     private static final long serialVersionUID = 1L;
     protected final int index;
     protected final boolean ascending;
-    public ColumnComparator(int index, boolean ascending) {
+    protected ColumnComparator(int index, boolean ascending) {
         this.index = index;
         this.ascending = ascending;
     }
@@ -75,14 +75,16 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     private int pushedColumn = -1;
     private final ConcurrentMap<Integer, Integer> state = new ConcurrentHashMap<>();
 
-    public SortButtonRenderer() {
-        super();
-        setHorizontalTextPosition(SwingConstants.LEFT);
+    @Override public void updateUI() {
+        super.updateUI();
+        //ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
+        //descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
+        //noneSortIcon       = new EmptyIcon(ascendingSortIcon);
         Icon i = UIManager.getIcon("Table.ascendingSortIcon");
         iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
         setIcon(new EmptyIcon(iconSize));
+        setHorizontalTextPosition(SwingConstants.LEFT);
     }
-
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setText(Objects.toString(value, ""));
         setIcon(new EmptyIcon(iconSize));
@@ -104,14 +106,6 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
         getModel().setArmed(isPressed);
         return this;
     }
-    @Override public void updateUI() {
-        super.updateUI();
-        //ascendingSortIcon  = UIManager.getIcon("Table.ascendingSortIcon");
-        //descendingSortIcon = UIManager.getIcon("Table.descendingSortIcon");
-        //noneSortIcon       = new EmptyIcon(ascendingSortIcon);
-        Icon i = UIManager.getIcon("Table.ascendingSortIcon");
-        iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
-    }
     public void setPressedColumn(int col) {
         pushedColumn = col;
     }
@@ -128,7 +122,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
     public int getState(int col) {
         Integer i = state.get(col);
-        return (i == null) ? NONE : i;
+        return i == null ? NONE : i;
     }
 }
 
@@ -162,7 +156,7 @@ class HeaderMouseListener extends MouseAdapter {
 
 class EmptyIcon implements Icon {
     private final Dimension size;
-    public EmptyIcon(Dimension size) {
+    protected EmptyIcon(Dimension size) {
         this.size = size;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }

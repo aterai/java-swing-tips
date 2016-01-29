@@ -150,7 +150,7 @@ class FileModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -161,7 +161,7 @@ class FileModel extends DefaultTableModel {
 class Test {
     private String name, comment;
     private int width, height;
-    public Test(String name, String comment, int width, int height) {
+    protected Test(String name, String comment, int width, int height) {
         this.name    = name;
         this.comment = comment;
         this.width   = width;
@@ -204,7 +204,7 @@ class TablePopupMenu extends JPopupMenu {
             }
         }
     };
-    public TablePopupMenu() {
+    protected TablePopupMenu() {
         super();
         add(deleteAction);
     }

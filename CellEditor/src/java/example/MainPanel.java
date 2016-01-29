@@ -107,7 +107,7 @@ class TestModel extends DefaultTableModel {
         public final String  columnName;
         public final Class   columnClass;
         public final boolean isEditable;
-        public ColumnContext(String columnName, Class columnClass, boolean isEditable) {
+        protected ColumnContext(String columnName, Class columnClass, boolean isEditable) {
             this.columnName = columnName;
             this.columnClass = columnClass;
             this.isEditable = isEditable;
@@ -117,7 +117,7 @@ class TestModel extends DefaultTableModel {
 
 class Test {
     private String name, comment;
-    public Test(String name, String comment) {
+    protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
