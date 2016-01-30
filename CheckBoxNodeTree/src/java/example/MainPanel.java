@@ -115,17 +115,17 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 //*
 //delegation pattern
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
-    private final JCheckBox checkBox = new JCheckBox();
-    public CheckBoxNodeEditor() {
-        super();
-        checkBox.setOpaque(false);
-        checkBox.setFocusable(false);
-        checkBox.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                stopCellEditing();
-            }
-        });
-    }
+    private final JCheckBox checkBox = new JCheckBox() {
+        private transient ActionListener handler;
+        @Override public void updateUI() {
+            removeActionListener(handler);
+            super.updateUI();
+            setOpaque(false);
+            setFocusable(false);
+            handler = e -> stopCellEditing();
+            addActionListener(handler);
+        }
+    };
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         if (leaf && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -158,7 +158,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //inheritence to extend a class
 class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
     private final JTree tree;
-    public CheckBoxNodeEditor(JTree tree) {
+    protected CheckBoxNodeEditor(JTree tree) {
         super();
         this.tree = tree;
         setOpaque(false);
@@ -255,7 +255,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
 class CheckBoxNode {
     public final String text;
     public final boolean selected;
-    public CheckBoxNode(String text, boolean selected) {
+    protected CheckBoxNode(String text, boolean selected) {
         this.text = text;
         this.selected = selected;
     }

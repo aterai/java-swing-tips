@@ -193,23 +193,20 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
 
 class CheckBoxNodeRenderer implements TreeCellRenderer {
     private final JPanel panel = new JPanel(new BorderLayout());
-    private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final TriStateCheckBox checkBox = new TriStateCheckBox();
+    private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
-    protected CheckBoxNodeRenderer() {
-        super();
-        panel.setFocusable(false);
-        panel.setRequestFocusEnabled(false);
-        panel.setOpaque(false);
-        panel.add(checkBox, BorderLayout.WEST);
-        checkBox.setOpaque(false);
-    }
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         l.setFont(tree.getFont());
         if (value instanceof DefaultMutableTreeNode) {
+            panel.setFocusable(false);
+            panel.setRequestFocusEnabled(false);
+            panel.setOpaque(false);
             checkBox.setEnabled(tree.isEnabled());
             checkBox.setFont(tree.getFont());
+            checkBox.setFocusable(false);
+            checkBox.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
@@ -221,6 +218,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
                 l.setText(node.label);
                 checkBox.setSelected(node.status == Status.SELECTED);
             }
+            panel.add(checkBox, BorderLayout.WEST);
             panel.add(l);
             return panel;
         }
@@ -230,31 +228,31 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final JPanel panel = new JPanel(new BorderLayout());
+    private final TriStateCheckBox checkBox = new TriStateCheckBox() {
+        private transient ActionListener handler;
+        @Override public void updateUI() {
+            removeActionListener(handler);
+            super.updateUI();
+            setOpaque(false);
+            setFocusable(false);
+            handler = e -> stopCellEditing();
+            addActionListener(handler);
+        }
+    };
     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-    private final TriStateCheckBox checkBox = new TriStateCheckBox();
     private String str;
 
-    protected CheckBoxNodeEditor() {
-        super();
-        checkBox.setOpaque(false);
-        checkBox.setFocusable(false);
-        checkBox.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //System.out.println("actionPerformed: stopCellEditing");
-                stopCellEditing();
-            }
-        });
-        panel.setFocusable(false);
-        panel.setRequestFocusEnabled(false);
-        panel.setOpaque(false);
-        panel.add(checkBox, BorderLayout.WEST);
-    }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
         l.setFont(tree.getFont());
         if (value instanceof DefaultMutableTreeNode) {
+            panel.setFocusable(false);
+            panel.setRequestFocusEnabled(false);
+            panel.setOpaque(false);
             checkBox.setEnabled(tree.isEnabled());
             checkBox.setFont(tree.getFont());
+            //checkBox.setFocusable(false);
+            //checkBox.setOpaque(false);
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
                 CheckBoxNode node = (CheckBoxNode) userObject;
@@ -267,6 +265,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
                 checkBox.setSelected(node.status == Status.SELECTED);
                 str = node.label;
             }
+            panel.add(checkBox, BorderLayout.WEST);
             panel.add(l);
             return panel;
         }
@@ -368,7 +367,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     private final JPanel panel = new JPanel(new BorderLayout());
 //     private String str;
 //
-//     public CheckBoxNodeEditor() {
+//     protected CheckBoxNodeEditor() {
 //         super();
 //         this.addActionListener(new ActionListener() {
 //             @Override public void actionPerformed(ActionEvent e) {
@@ -507,7 +506,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 // class CheckBoxNodeRenderer extends JPanel implements TreeCellRenderer {
 //     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 //     private final TriStateCheckBox check = new TriStateCheckBox();
-//     public CheckBoxNodeRenderer() {
+//     protected CheckBoxNodeRenderer() {
 //         super(new BorderLayout());
 //         String uiName = getUI().getClass().getName();
 //         if (uiName.contains("Synth") && System.getProperty("java.version").startsWith("1.7.0")) {
@@ -562,7 +561,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 //     private final TriStateCheckBox check = new TriStateCheckBox();
 //     private String str = null;
-//     public CheckBoxNodeEditor() {
+//     protected CheckBoxNodeEditor() {
 //         super(new BorderLayout());
 //         check.addActionListener(new ActionListener() {
 //             @Override public void actionPerformed(ActionEvent e) {

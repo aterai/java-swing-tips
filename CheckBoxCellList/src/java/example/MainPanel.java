@@ -37,7 +37,9 @@ public final class MainPanel extends JPanel {
                 "aaaa", "bbbbbbb", "ccc", "dddddd", "eeeeeee",
                 "fffffffff", "gggggg", "hhhhh", "iiii", "jjjjjjjjjj")) {
             boolean flag = title.length() % 2 == 0;
-            addComp(list1, new JCheckBox(title, flag));
+            JCheckBox c = new JCheckBox(title, flag);
+            c.setAlignmentX(Component.LEFT_ALIGNMENT);
+            list1.add(c);
             model.addElement(new CheckBoxNode(title, flag));
             root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, flag)));
         }
@@ -55,10 +57,6 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder(title));
         p.add(new JScrollPane(tree));
         return p;
-    }
-    private static void addComp(Box box, JComponent c) {
-        c.setAlignmentX(Component.LEFT_ALIGNMENT);
-        box.add(c);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -86,7 +84,7 @@ public final class MainPanel extends JPanel {
 class CheckBoxNode {
     public final String text;
     public final boolean selected;
-    public CheckBoxNode(String text, boolean selected) {
+    protected CheckBoxNode(String text, boolean selected) {
         this.text = text;
         this.selected = selected;
     }
@@ -97,7 +95,7 @@ class CheckBoxNode {
 
 class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
     private transient CheckBoxCellRenderer<E> renderer;
-    public CheckBoxList(ListModel<E> model) {
+    protected CheckBoxList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -210,17 +208,21 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 //*
 //delegation pattern
 class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
-    private final JCheckBox checkBox = new JCheckBox();
-    public CheckBoxNodeEditor() {
-        super();
-        checkBox.setOpaque(false);
-        checkBox.setFocusable(false);
-        checkBox.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                stopCellEditing();
-            }
-        });
-    }
+    private final JCheckBox checkBox = new JCheckBox() {
+        private transient ActionListener handler;
+        @Override public void updateUI() {
+            removeActionListener(handler);
+            super.updateUI();
+            setOpaque(false);
+            setFocusable(false);
+            handler = new ActionListener() {
+                @Override public void actionPerformed(ActionEvent e) {
+                    stopCellEditing();
+                }
+            };
+            addActionListener(handler);
+        }
+    };
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         if (leaf && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -254,15 +256,18 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 /*/
 //inheritence to extend a class
 class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
-    public CheckBoxNodeEditor() {
-        super();
+    private transient ActionListener handler;
+    @Override public void updateUI() {
+        removeActionListener(handler);
+        super.updateUI();
         setOpaque(false);
         setFocusable(false);
-        addActionListener(new ActionListener() {
+        handler = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 stopCellEditing();
             }
-        });
+        };
+        addActionListener(handler);
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
         if (leaf && value instanceof DefaultMutableTreeNode) {
