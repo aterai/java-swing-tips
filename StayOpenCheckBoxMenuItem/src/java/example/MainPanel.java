@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
                 setFocusable(false);
                 setOpaque(false);
             }
-        }, BorderLayout.WEST);
+        });
         return mi;
     }
     public static void main(String... args) {

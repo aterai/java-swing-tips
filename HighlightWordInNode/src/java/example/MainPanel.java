@@ -100,8 +100,8 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
     private final transient Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     public String q;
 
-    public HighlightTreeCellRenderer() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder());
         setForeground(Color.BLACK);

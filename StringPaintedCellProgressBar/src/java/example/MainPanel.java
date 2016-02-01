@@ -259,12 +259,6 @@ class ProgressValue {
 class ProgressRenderer extends DefaultTableCellRenderer {
     private final JProgressBar b = new JProgressBar();
     private final JPanel p = new JPanel(new BorderLayout());
-    protected ProgressRenderer() {
-        super();
-        setOpaque(true);
-        b.setStringPainted(true);
-        p.add(b);
-    }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String text = "Done";
         if (value instanceof ProgressValue) {
@@ -276,7 +270,9 @@ class ProgressRenderer extends DefaultTableCellRenderer {
             } else if (current < lengthOfTask) {
                 b.setMaximum(lengthOfTask);
                 b.setValue(current);
+                b.setStringPainted(true);
                 b.setString(String.format("%d/%d", current, lengthOfTask));
+                p.add(b);
                 return p;
             }
         }
@@ -285,6 +281,7 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
+        setOpaque(true);
         if (Objects.nonNull(p)) {
             SwingUtilities.updateComponentTreeUI(p);
         }

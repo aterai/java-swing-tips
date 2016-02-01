@@ -244,12 +244,6 @@ class WorkerModel extends DefaultTableModel {
 class ProgressRenderer extends DefaultTableCellRenderer {
     private final JProgressBar b = new JProgressBar();
     private final JPanel p = new JPanel(new BorderLayout());
-    protected ProgressRenderer() {
-        super();
-        setOpaque(true);
-        p.add(b);
-        p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Integer i = (Integer) value;
         String text = "Done";
@@ -257,6 +251,9 @@ class ProgressRenderer extends DefaultTableCellRenderer {
             text = "Canceled";
         } else if (i < b.getMaximum()) {
             b.setValue(i);
+            p.add(b);
+            p.setOpaque(false);
+            p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
             return p;
         }
         super.getTableCellRendererComponent(table, text, isSelected, hasFocus, row, column);
@@ -264,6 +261,7 @@ class ProgressRenderer extends DefaultTableCellRenderer {
     }
     @Override public void updateUI() {
         super.updateUI();
+        setOpaque(false);
         if (Objects.nonNull(p)) {
             SwingUtilities.updateComponentTreeUI(p);
         }
