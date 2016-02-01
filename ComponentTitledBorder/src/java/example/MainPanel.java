@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class ComponentTitledBorder implements Border, MouseListener, MouseMotionListener, SwingConstants {
+class ComponentTitledBorder extends MouseAdapter implements Border, SwingConstants {
     private static final int OFFSET = 5;
     private final Component comp;
     private final Border border;
