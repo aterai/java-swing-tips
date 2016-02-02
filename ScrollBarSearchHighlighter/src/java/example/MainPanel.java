@@ -145,7 +145,7 @@ class HighlightIcon implements Icon {
     private final Rectangle thumbRect = new Rectangle();
     private final JTextComponent textArea;
     private final JScrollBar scrollbar;
-    public HighlightIcon(JTextComponent textArea, JScrollBar scrollbar) {
+    protected HighlightIcon(JTextComponent textArea, JScrollBar scrollbar) {
         this.textArea  = textArea;
         this.scrollbar = scrollbar;
     }
@@ -196,7 +196,7 @@ class HighlightIcon implements Icon {
 
 class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
     private final JTextComponent textArea;
-    public WindowsHighlightScrollBarUI(JTextComponent textArea) {
+    protected WindowsHighlightScrollBarUI(JTextComponent textArea) {
         super();
         this.textArea = textArea;
     }
@@ -223,7 +223,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
 
 class MetalHighlightScrollBarUI extends MetalScrollBarUI {
     private final JTextComponent textArea;
-    public MetalHighlightScrollBarUI(JTextComponent textArea) {
+    protected MetalHighlightScrollBarUI(JTextComponent textArea) {
         super();
         this.textArea = textArea;
     }

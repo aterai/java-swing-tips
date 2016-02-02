@@ -69,7 +69,7 @@ class SearchEngine {
     public final String name;
     public final String url;
     public final ImageIcon favicon;
-    public SearchEngine(String name, String url, ImageIcon icon) {
+    protected SearchEngine(String name, String url, ImageIcon icon) {
         this.name    = name;
         this.url     = url;
         this.favicon = icon;
@@ -114,22 +114,22 @@ class JSearchBar extends JComboBox<SearchEngine> {
 //             SwingUtilities.updateComponentTreeUI((Component) renderer);
 //         }
     }
-//     public JSearchBar() {
+//     protected JSearchBar() {
 //         super();
 //         setModel(new DefaultComboBoxModel<SearchEngine>());
 //         init();
 //     }
-    public JSearchBar(ComboBoxModel<SearchEngine> aModel) {
+    protected JSearchBar(ComboBoxModel<SearchEngine> aModel) {
         super(aModel);
         //setModel(aModel);
         //init();
     }
-    public JSearchBar(SearchEngine... items) {
+    protected JSearchBar(SearchEngine... items) {
         super(items);
         //setModel(new DefaultComboBoxModel<SearchEngine>(items));
         //init();
     }
-//     public JSearchBar(Vector<?> items) {
+//     protected JSearchBar(Vector<?> items) {
 //         super();
 //         setModel(new DefaultComboBoxModel(items));
 //         init();
