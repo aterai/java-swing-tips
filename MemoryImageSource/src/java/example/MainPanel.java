@@ -160,7 +160,8 @@ final class TextureFactory {
 //     }
 //     private static BufferedImage makeBGImage() {
 //         Color color = new Color(200, 150, 100, 50);
-//         int cs = 6, sz = cs * cs;
+//         int cs = 6;
+//         int sz = cs * cs;
 //         BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
 //         Graphics2D g2 = img.createGraphics();
 //         g2.setPaint(color);

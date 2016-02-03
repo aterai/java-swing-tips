@@ -140,7 +140,8 @@ class DropShadowPopupMenu extends JPopupMenu {
 }
 
 class ShadowBorder extends AbstractBorder {
-    private final int xoff, yoff;
+    private final int xoff;
+    private final int yoff;
     private final transient BufferedImage screen;
     private transient BufferedImage shadow;
 

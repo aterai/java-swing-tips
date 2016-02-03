@@ -160,7 +160,9 @@ class LevelBar extends JPanel implements MouseListener, MouseMotionListener {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
-    private final float rf, gf, bf;
+    private final float rf;
+    private final float gf;
+    private final float bf;
     protected SelectedImageFilter(float rf, float gf, float bf) {
         super();
         this.rf = Math.min(1f, rf);

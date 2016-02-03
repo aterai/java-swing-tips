@@ -116,7 +116,8 @@ class TestModel extends DefaultTableModel {
 }
 
 class Test {
-    private String name, comment;
+    private String name;
+    private String comment;
     protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;

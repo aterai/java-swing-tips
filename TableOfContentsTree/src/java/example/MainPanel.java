@@ -90,7 +90,8 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final BasicStroke READER = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
     private String pn;
     private final Point pnPt = new Point();
-    private int rxs, rxe;
+    private int rxs;
+    private int rxe;
     private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
         @Override protected void paintComponent(Graphics g) {
@@ -110,10 +111,6 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
             return d;
         }
     };
-    protected TableOfContentsTreeCellRenderer() {
-        super();
-        p.setOpaque(false);
-    }
     @Override public void updateUI() {
         super.updateUI();
         isSynth = getUI().getClass().getName().contains("Synth");
@@ -147,6 +144,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
                 rxs = d.width + gap;
                 rxe = tree.getWidth() - ins.right - metrics.stringWidth("000") - gap;
 
+                p.setOpaque(false);
                 return p;
             }
         }
@@ -157,15 +155,15 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 
 class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
     private static final String READER = "... ";
+    private final Point pt = new Point(-1, -1);
     private String pn;
-    private int pnx = -1, pny = -1;
     private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
         @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (pn != null) {
                 g.setColor(isSynth ? getForeground() : getTextNonSelectionColor());
-                g.drawString(pn, pnx - getX(), pny);
+                g.drawString(pn, pt.x - getX(), pt.y);
             }
         }
         @Override public Dimension getPreferredSize() {
@@ -174,10 +172,6 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
             return d;
         }
     };
-    protected TableOfContentsTreeCellRenderer1() {
-        super();
-        p.setOpaque(false);
-    }
     @Override public void updateUI() {
         super.updateUI();
         isSynth = getUI().getClass().getName().contains("Synth");
@@ -203,9 +197,10 @@ class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
                 }
 
                 pn = String.format("%s%3d", READER, toc.page);
-                pnx = tree.getWidth() - metrics.stringWidth(pn) - gap;
-                //pnx = Math.max(pnx, titlex + metrics.stringWidth(pair.title) + gap);
-                pny = (l.getIcon().getIconHeight() + metrics.getAscent()) / 2;
+                pt.x = tree.getWidth() - metrics.stringWidth(pn) - gap;
+                //pt.x = Math.max(pnx, titlex + metrics.stringWidth(pair.title) + gap);
+                pt.y = (l.getIcon().getIconHeight() + metrics.getAscent()) / 2;
+                p.setOpaque(false);
 
                 return p;
             }

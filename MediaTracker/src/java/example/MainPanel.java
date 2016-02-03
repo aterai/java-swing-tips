@@ -159,8 +159,10 @@ class FileModel extends DefaultTableModel {
 }
 
 class Test {
-    private String name, comment;
-    private int width, height;
+    private String name;
+    private String comment;
+    private int width;
+    private int height;
     protected Test(String name, String comment, int width, int height) {
         this.name    = name;
         this.comment = comment;

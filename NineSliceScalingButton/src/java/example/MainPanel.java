@@ -168,8 +168,12 @@ class NineSliceScalingButton extends JButton {
 }
 class NineSliceScalingIcon implements Icon {
     private final BufferedImage image;
-    private final int a, b, c, d;
-    private int width, height;
+    private final int a;
+    private final int b;
+    private final int c;
+    private final int d;
+    private int width;
+    private int height;
     protected NineSliceScalingIcon(BufferedImage image, int a, int b, int c, int d) {
         this.image = image;
         this.a = a;

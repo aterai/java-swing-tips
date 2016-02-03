@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         private final Rectangle rect = new Rectangle();
         private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-        private int startX, startY;
+        private final Point startPt = new Point();
         @Override public void mouseDragged(MouseEvent e) {
             Rectangle vr = vport.getViewRect();
             int w = vr.width;
@@ -39,14 +39,12 @@ public final class MainPanel extends JPanel {
             int x = e.getX();
             int y = e.getY();
             Point pt = SwingUtilities.convertPoint(vport, 0, 0, label);
-            rect.setRect(pt.x - x + startX, pt.y - y + startY, w, h);
+            rect.setRect(pt.x - x + startPt.x, pt.y - y + startPt.y, w, h);
             label.scrollRectToVisible(rect);
-            startX = x;
-            startY = y;
+            startPt.setLocation(x, y);
         }
         @Override public void mousePressed(MouseEvent e) {
-            startX = e.getX();
-            startY = e.getY();
+            startPt.setLocation(e.getPoint());
             label.setCursor(hndCursor);
         }
         @Override public void mouseReleased(MouseEvent e) {

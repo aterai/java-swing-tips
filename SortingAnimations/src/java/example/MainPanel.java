@@ -61,7 +61,8 @@ public final class MainPanel extends JPanel {
     private static final int MAXN = 500;
     private final List<Double> array = new ArrayList<>(MAXN);
     private int number = 150;
-    private double factorx, factory;
+    private double factorx;
+    private double factory;
 
     public MainPanel() {
         super(new BorderLayout());

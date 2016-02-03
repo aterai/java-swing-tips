@@ -58,34 +58,32 @@ public final class MainPanel extends JPanel {
 }
 
 class RotateIcon implements Icon {
-    private int width, height;
+    private final Dimension d = new Dimension();
     private final Image image;
     private AffineTransform trans;
     protected RotateIcon(Icon icon, int rotate) {
         if (rotate % 90 != 0) {
             throw new IllegalArgumentException(rotate + ": Rotate must be (rotate % 90 == 0)");
         }
-
-        width  = icon.getIconWidth();
-        height = icon.getIconHeight();
-        image  = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        d.setSize(icon.getIconWidth(), icon.getIconHeight());
+        image  = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         icon.paintIcon(null, g, 0, 0);
         g.dispose();
 
         int numquadrants = (rotate / 90) % 4;
         if (numquadrants == 1 || numquadrants == -3) {
-            trans = AffineTransform.getTranslateInstance(height, 0);
-            int v = width;
-            width = height;
-            height = v;
+            trans = AffineTransform.getTranslateInstance(d.height, 0);
+            int v = d.width;
+            d.width = d.height;
+            d.height = v;
         } else if (numquadrants == -1 || numquadrants == 3) {
-            trans = AffineTransform.getTranslateInstance(0, width);
-            int v = width;
-            width = height;
-            height = v;
+            trans = AffineTransform.getTranslateInstance(0, d.width);
+            int v = d.width;
+            d.width = d.height;
+            d.height = v;
         } else if (Math.abs(numquadrants) == 2) {
-            trans = AffineTransform.getTranslateInstance(width, height);
+            trans = AffineTransform.getTranslateInstance(d.width, d.height);
         } else {
             trans = AffineTransform.getTranslateInstance(0, 0);
         }
@@ -98,10 +96,10 @@ class RotateIcon implements Icon {
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return width;
+        return d.width;
     }
     @Override public int getIconHeight() {
-        return height;
+        return d.height;
     }
 }
 
