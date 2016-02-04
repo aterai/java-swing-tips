@@ -52,7 +52,7 @@ class MyViewFactory implements ViewFactory {
             if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new LabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
-                return new MyParagraphView(elem);
+                return new ParagraphWithEopmView(elem);
             } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
             } else if (kind.equals(StyleConstants.ComponentElementName)) {
@@ -65,10 +65,10 @@ class MyViewFactory implements ViewFactory {
     }
 }
 
-class MyParagraphView extends ParagraphView {
+class ParagraphWithEopmView extends ParagraphView {
     //private static final ParagraphMarkIcon paragraphMarkIcon = new ParagraphMarkIcon();
     private static final Color MARK_COLOR = new Color(120, 130, 110);
-    public MyParagraphView(Element elem) {
+    protected ParagraphWithEopmView(Element elem) {
         super(elem);
     }
     @Override public void paint(Graphics g, Shape allocation) {
@@ -99,7 +99,7 @@ class MyParagraphView extends ParagraphView {
 // class ParagraphMarkIcon implements Icon {
 //     private static final Color MARK_COLOR = new Color(120, 130, 110);
 //     private final Polygon paragraphMark = new Polygon();
-//     public ParagraphMarkIcon() {
+//     protected ParagraphMarkIcon() {
 //         paragraphMark.addPoint(1, 7);
 //         paragraphMark.addPoint(3, 7);
 //         paragraphMark.addPoint(3, 11);

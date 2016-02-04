@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         JTextPane editor = new JTextPane();
 
         editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        editor.setEditorKit(new MyEditorKit());
+        editor.setEditorKit(new CustomEditorKit());
         editor.setText(ZSTEST + ZS_TAB_ZSTEST + TABTEST);
 
         add(new JScrollPane(editor));
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyEditorKit extends StyledEditorKit {
+class CustomEditorKit extends StyledEditorKit {
     private final SimpleAttributeSet attrs = new SimpleAttributeSet();
     @Override public void install(JEditorPane c) {
         FontMetrics fm = c.getFontMetrics(c.getFont());
@@ -60,7 +60,7 @@ class MyEditorKit extends StyledEditorKit {
         super.install(c);
     }
     @Override public ViewFactory getViewFactory() {
-        return new MyViewFactory();
+        return new CustomViewFactory();
     }
     @Override public Document createDefaultDocument() {
         Document d = super.createDefaultDocument();
@@ -71,14 +71,14 @@ class MyEditorKit extends StyledEditorKit {
     }
 }
 
-class MyViewFactory implements ViewFactory {
+class CustomViewFactory implements ViewFactory {
     @Override public View create(Element elem) {
         String kind = elem.getName();
         if (Objects.nonNull(kind)) {
             if (kind.equals(AbstractDocument.ContentElementName)) {
                 return new WhitespaceLabelView(elem);
             } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
-                return new MyParagraphView(elem);
+                return new ParagraphWithEopmView(elem);
             } else if (kind.equals(AbstractDocument.SectionElementName)) {
                 return new BoxView(elem, View.Y_AXIS);
             } else if (kind.equals(StyleConstants.ComponentElementName)) {
@@ -91,9 +91,9 @@ class MyViewFactory implements ViewFactory {
     }
 }
 
-class MyParagraphView extends ParagraphView {
+class ParagraphWithEopmView extends ParagraphView {
     private static final Color MARK_COLOR = new Color(120, 130, 110);
-    public MyParagraphView(Element elem) {
+    protected ParagraphWithEopmView(Element elem) {
         super(elem);
     }
     @Override public void paint(Graphics g, Shape allocation) {
@@ -123,13 +123,12 @@ class WhitespaceLabelView extends LabelView {
     private static final String IDEOGRAPHIC_SPACE = "\u3000";
     private static final Color MARK_COLOR = new Color(130, 140, 120);
     private static final BasicStroke DASHED = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
-    public WhitespaceLabelView(Element elem) {
+    protected WhitespaceLabelView(Element elem) {
         super(elem);
     }
     @Override public void paint(Graphics g, Shape a) {
         super.paint(g, a);
         Graphics2D g2 = (Graphics2D) g.create();
-        Stroke stroke = g2.getStroke();
         Rectangle alloc = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
         FontMetrics fontMetrics = g.getFontMetrics();
         int spaceWidth = fontMetrics.stringWidth(IDEOGRAPHIC_SPACE);
@@ -155,8 +154,7 @@ class WhitespaceLabelView extends LabelView {
                 g2.drawLine(sx + 2, sy, sx + tabWidth - 2, sy);
                 sumOfTabs += tabWidth;
             }
-            g2.setStroke(stroke);
-            g2.dispose();
         }
+        g2.dispose();
     }
 }
