@@ -65,6 +65,7 @@ class ComponentTitledBorder extends MouseAdapter implements Border, SwingConstan
     private final Border border;
 
     protected ComponentTitledBorder(Component comp, JComponent container, Border border) {
+        super();
         this.comp   = comp;
         this.border = border;
         if (comp instanceof JComponent) {
