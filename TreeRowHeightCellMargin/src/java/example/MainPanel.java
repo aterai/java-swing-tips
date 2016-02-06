@@ -66,13 +66,13 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     private final JLabel text = new JLabel();
     private final Border innerBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
     private final Border emptyBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerBorder);
-    private final Border hasFocusBorder;
+    private final Border compoundFocusBorder;
 
-    public CompoundTreeCellRenderer() {
+    protected CompoundTreeCellRenderer() {
         super();
         Color bsColor = getBorderSelectionColor();
         Color focusBGColor = new Color(~getBackgroundSelectionColor().getRGB());
-        hasFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBGColor, bsColor), innerBorder);
+        compoundFocusBorder = BorderFactory.createCompoundBorder(new DotBorder(focusBGColor, bsColor), innerBorder);
 
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
         text.setBorder(emptyBorder);
@@ -104,7 +104,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
         }
         text.setForeground(fColor);
         text.setBackground(bColor);
-        text.setBorder(hasFocus ? hasFocusBorder : emptyBorder);
+        text.setBorder(hasFocus ? compoundFocusBorder : emptyBorder);
         text.setText(l.getText());
         icon.setIcon(l.getIcon());
 
@@ -115,7 +115,7 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
 
 class DotBorder extends LineBorder {
     private final Color borderSelectionColor;
-    public DotBorder(Color color, Color borderSelectionColor) {
+    protected DotBorder(Color color, Color borderSelectionColor) {
         super(color, 1);
         this.borderSelectionColor = borderSelectionColor;
     }
@@ -134,18 +134,19 @@ class DotBorder extends LineBorder {
 }
 
 class ColorIcon implements Icon {
+    private final Dimension d = new Dimension(24, 24);
     private final Color color;
-    public ColorIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         g.setColor(color);
-        g.fillRoundRect(x + 1, y + 1, 22, 22, 10, 10);
+        g.fillRoundRect(x + 1, y + 1, d.width - 2, d.height - 2, 10, 10);
     }
     @Override public int getIconWidth() {
-        return 24;
+        return d.width;
     }
     @Override public int getIconHeight() {
-        return 24;
+        return d.height;
     }
 }

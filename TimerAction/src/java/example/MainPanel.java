@@ -65,7 +65,7 @@ class Tile1 extends JComponent implements HierarchyListener {
     //http://stackoverflow.com/questions/18933986/javax-swing-timer-slowdown-in-java7u40
     private int red;
     private final Timer timer;
-    public Tile1(final Random rnd) {
+    protected Tile1(final Random rnd) {
         super();
         addHierarchyListener(this);
         timer = new Timer(16, new ActionListener() {
@@ -103,7 +103,7 @@ class Tile1 extends JComponent implements HierarchyListener {
 
 class Tile2 extends JComponent {
     private int red;
-    public Tile2(final Random rnd, Timer timer) {
+    protected Tile2(final Random rnd, Timer timer) {
         super();
         timer.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -123,7 +123,7 @@ class Tile2 extends JComponent {
 }
 
 class TilePanel extends JPanel {
-    public TilePanel(final Random rnd) {
+    protected TilePanel(final Random rnd) {
         super(new GridLayout(10, 10));
         for (int i = 0; i < 100; i++) {
             JLabel l = new JLabel();

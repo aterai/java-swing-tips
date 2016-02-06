@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DefaultFileChooserAction extends AbstractAction {
-    public DefaultFileChooserAction() {
+    protected DefaultFileChooserAction() {
         super("Default");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -59,7 +59,7 @@ class DefaultFileChooserAction extends AbstractAction {
 }
 
 class FixedSizeFileChooserAction extends AbstractAction {
-    public FixedSizeFileChooserAction() {
+    protected FixedSizeFileChooserAction() {
         super("Resizable(false)");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -77,7 +77,7 @@ class FixedSizeFileChooserAction extends AbstractAction {
 }
 
 class MinimumSizeFileChooserAction extends AbstractAction {
-    public MinimumSizeFileChooserAction() {
+    protected MinimumSizeFileChooserAction() {
         super("MinimumSize(640, 480)");
     }
     @Override public void actionPerformed(ActionEvent e) {
@@ -95,7 +95,7 @@ class MinimumSizeFileChooserAction extends AbstractAction {
 }
 
 // class CustomSizeFileChooserAction extends AbstractAction {
-//     public CustomSizeFileChooserAction() {
+//     protected CustomSizeFileChooserAction() {
 //         super("MinimumSize(640, 480)");
 //     }
 //     @Override public void actionPerformed(ActionEvent e) {
