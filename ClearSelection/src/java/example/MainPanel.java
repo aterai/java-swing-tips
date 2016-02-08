@@ -93,8 +93,7 @@ class ClearSelectionListener extends MouseAdapter {
     }
     @Override public void mousePressed(MouseEvent e) {
         JList list = (JList) e.getComponent();
-        startOutside = contains(list, e.getPoint());
-        startOutside ^= true;
+        startOutside = !contains(list, e.getPoint());
         if (startOutside) {
             clearSelectionAndFocus(list);
         }

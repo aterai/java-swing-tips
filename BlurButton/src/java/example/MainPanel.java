@@ -64,8 +64,7 @@ public final class MainPanel extends JPanel {
         add(box, BorderLayout.NORTH);
         add(new JToggleButton(new AbstractAction("setEnabled(false)") {
             @Override public void actionPerformed(ActionEvent e) {
-                boolean f = ((AbstractButton) e.getSource()).isSelected();
-                f ^= true;
+                boolean f = !((AbstractButton) e.getSource()).isSelected();
                 for (JButton b: list) {
                     b.setEnabled(f);
                 }
@@ -108,7 +107,7 @@ class BlurJButton extends JButton {
     private int iw = -1;
     private int ih = -1;
     private transient BufferedImage buf;
-    public BlurJButton(String label) {
+    protected BlurJButton(String label) {
         super(label);
         //System.out.println(op.getEdgeCondition());
     }
@@ -138,7 +137,7 @@ class BlurButton extends JButton {
     private int iw = -1;
     private int ih = -1;
     private transient BufferedImage buf;
-    public BlurButton(String label) {
+    protected BlurButton(String label) {
         super(label);
         //System.out.println(op.getEdgeCondition());
     }

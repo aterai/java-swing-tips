@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SingleMouseClickSelectList<E> extends JList<E> {
-    public SingleMouseClickSelectList(ListModel<E> model) {
+    protected SingleMouseClickSelectList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -85,7 +85,7 @@ class SingleMouseClickSelectList<E> extends JList<E> {
             e.getComponent(),
             e.getID(), e.getWhen(),
             //e.getModifiers() | InputEvent.CTRL_MASK,
-            //select multiple objects in OS X: Command+click
+            //select multiple objects in OS X: Command + click
             //pointed out by nsby
             e.getModifiers() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
             e.getX(), e.getY(),
@@ -103,7 +103,7 @@ class SingleClickSelectList<E> extends JList<E> {
     protected boolean startOutside;
     protected int startIndex = -1;
 
-    public SingleClickSelectList(ListModel<E> model) {
+    protected SingleClickSelectList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -151,8 +151,7 @@ class SingleClickSelectList<E> extends JList<E> {
     private class SelectionHandler extends MouseAdapter {
         @Override public void mousePressed(MouseEvent e) {
             //JList list = (JList) e.getComponent();
-            startOutside = cellsContains(e.getPoint());
-            startOutside ^= true;
+            startOutside = !cellsContains(e.getPoint());
             startIndex = locationToIndex(e.getPoint());
             if (startOutside) {
                 clearSelectionAndFocus();
