@@ -9,45 +9,75 @@ import javax.swing.*;
 import javax.swing.plaf.synth.*;
 
 public final class MainPanel extends JPanel {
+    //[Mini Icons](http://www.famfamfam.com/lab/icons/mini/)
+    private final JButton button = new JButton(new ImageIcon(getClass().getResource("page_new.gif"))) {
+        private transient MouseListener handler;
+        @Override public void updateUI() {
+            removeMouseListener(handler);
+            super.updateUI();
+            setFocusable(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+            //setAlignmentX(Component.LEFT_ALIGNMENT);
+            //setAlignmentY(Component.TOP_ALIGNMENT); //???
+            handler = new MouseAdapter() {
+                @Override public void mouseEntered(MouseEvent e) {
+                    setContentAreaFilled(true);
+                }
+                @Override public void mouseExited(MouseEvent e) {
+                    setContentAreaFilled(false);
+                }
+            };
+            addMouseListener(handler);
+        }
+        @Override public float getAlignmentY() {
+            return Component.TOP_ALIGNMENT;
+        }
+    };
     private final ClippedTitleTabbedPane tabs;
+
     public MainPanel() {
         super(new BorderLayout());
 
-        //famfamfam.com: Mini Icons>http://www.famfamfam.com/lab/icons/mini/
-        ImageIcon icon = new ImageIcon(getClass().getResource("page_new.gif"));
-
-        final JButton b = new ToolBarButton(icon);
-        b.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabs.addTab("qwerqwer", new JLabel("yetyet"));
-            }
-        });
-        //b.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-        //UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets(b));
-
         tabs = new ClippedTitleTabbedPane() {
-            private Insets tabAreaInsets;
             @Override public void updateUI() {
                 UIManager.put("TabbedPane.tabAreaInsets", null); //uninstall
                 super.updateUI();
-                setAlignmentX(Component.LEFT_ALIGNMENT);
-                setAlignmentY(Component.TOP_ALIGNMENT);
-                b.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-                b.setAlignmentX(Component.LEFT_ALIGNMENT);
-                b.setAlignmentY(Component.TOP_ALIGNMENT);
-                tabAreaInsets = getTabAreaInsets();
-                UIManager.put("TabbedPane.tabAreaInsets",
-                              getButtonPaddingTabAreaInsets(b, getTabInsets(), tabAreaInsets));
-                super.updateUI();
+                //setAlignmentX(Component.LEFT_ALIGNMENT);
+                //setAlignmentY(Component.TOP_ALIGNMENT);
+                //System.out.println(button.getAlignmentY());
+                //button.setAlignmentY(Component.TOP_ALIGNMENT);
+                //System.out.println(button.getAlignmentY());
+                UIManager.put("TabbedPane.tabAreaInsets", getButtonPaddingTabAreaInsets());
+                super.updateUI(); //reinstall
+            }
+            @Override public float getAlignmentX() {
+                return Component.LEFT_ALIGNMENT;
+            }
+            @Override public float getAlignmentY() {
+                return Component.TOP_ALIGNMENT;
+            }
+            private Insets getButtonPaddingTabAreaInsets() {
+                Insets ti = getTabInsets();
+                Insets ai = getTabAreaInsets();
+                Dimension d = button.getPreferredSize();
+                FontMetrics fm = getFontMetrics(getFont());
+                int tih = d.height - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
+                return new Insets(Math.max(ai.top, tih), d.width + ai.left, ai.bottom, ai.right);
             }
         };
-        tabs.addTab("asdfasd", new JLabel("456746"));
-        tabs.addTab("1234123", new JScrollPane(new JTree()));
-        tabs.addTab("6780969", new JLabel("zxcvzxc"));
+        tabs.addTab("title1", new JLabel("12345"));
+        tabs.addTab("title2", new JScrollPane(new JTree()));
+        tabs.addTab("title3", new JLabel("67890"));
+
+        button.addActionListener(e -> {
+            tabs.addTab("title", new JLabel("JLabel"));
+        });
 
         JPanel p = new JPanel();
         p.setLayout(new OverlayLayout(p));
-        p.add(b);
+        p.add(button);
         p.add(tabs);
 
         JMenuBar menubar = new JMenuBar();
@@ -58,18 +88,10 @@ public final class MainPanel extends JPanel {
             }
         });
         menubar.add(m1);
-        menubar.add(new JMenu("Dummy1"));
-        menubar.add(new JMenu("Dummy2"));
 
         add(menubar, BorderLayout.NORTH);
         add(p);
         setPreferredSize(new Dimension(320, 240));
-    }
-    public Insets getButtonPaddingTabAreaInsets(JButton b, Insets ti, Insets ai) {
-        FontMetrics fm = b.getFontMetrics(b.getFont());
-        int tih = b.getPreferredSize().height - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
-        return new Insets(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
-        //NO EFFECT?: return new InsetsUIResource(Math.max(ai.top, tih), b.getPreferredSize().width + ai.left, ai.bottom, ai.right);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -92,23 +114,6 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
-
-class ToolBarButton extends JButton {
-    protected ToolBarButton(ImageIcon icon) {
-        super(icon);
-        setFocusable(false);
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                setContentAreaFilled(true);
-            }
-            @Override public void mouseExited(MouseEvent e) {
-                setContentAreaFilled(false);
-            }
-        });
     }
 }
 
@@ -176,9 +181,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        setVisible(false);
         super.insertTab(title, icon, component, Objects.toString(tip, title), index);
         setTabComponentAt(index, new JLabel(title, SwingConstants.CENTER));
-        setVisible(true);
     }
 }

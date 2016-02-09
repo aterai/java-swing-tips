@@ -60,10 +60,10 @@ public final class MainPanel extends JPanel {
 }
 
 class ClippedTitleTabbedPane extends JTabbedPane {
-    public ClippedTitleTabbedPane() {
+    protected ClippedTitleTabbedPane() {
         super();
     }
-    public ClippedTitleTabbedPane(int tabPlacement) {
+    protected ClippedTitleTabbedPane(int tabPlacement) {
         super(tabPlacement);
     }
     private Insets getTabInsets() {
@@ -119,9 +119,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
 //     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-//         setVisible(false);
 //         super.insertTab(title, icon, component, Objects.toString(tip, title), index);
 //         setTabComponentAt(index, new JLabel(title, SwingConstants.CENTER));
-//         setVisible(true);
 //     }
 }

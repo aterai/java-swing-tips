@@ -18,9 +18,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
         if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-            tabbedPane.setUI(new MyWindowsTabbedPaneUI());
+            tabbedPane.setUI(new LeftAlignmentWindowsTabbedPaneUI());
         } else {
-            tabbedPane.setUI(new MyTabbedPaneUI());
+            tabbedPane.setUI(new LeftAlignmentTabbedPaneUI());
         }
         final List<? extends JTabbedPane> list = Arrays.asList(
             makeTestTabbedPane(new JTabbedPane(JTabbedPane.LEFT)),
@@ -135,14 +135,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        setVisible(false);
         super.insertTab(title, icon, component, Objects.toString(tip, title), index);
         setTabComponentAt(index, new ButtonTabComponent(this));
-        setVisible(true);
     }
 }
 
-class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
+class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     @Override protected void layoutLabel(int tabPlacement,
                                          FontMetrics metrics, int tabIndex,
                                          String title, Icon icon,
@@ -178,7 +176,7 @@ class MyWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     }
 }
 
-class MyTabbedPaneUI extends MetalTabbedPaneUI {
+class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
     @Override protected void layoutLabel(int tabPlacement,
                                          FontMetrics metrics, int tabIndex,
                                          String title, Icon icon,

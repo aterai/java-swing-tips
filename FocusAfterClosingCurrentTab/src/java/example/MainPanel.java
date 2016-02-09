@@ -167,10 +167,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         super.doLayout();
     }
     @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-        setVisible(false);
         super.insertTab(title, icon, component, Objects.nonNull(tip) ? tip : title, index);
         setTabComponentAt(index, new ButtonTabComponent(this));
-        setVisible(true);
     }
 }
 
