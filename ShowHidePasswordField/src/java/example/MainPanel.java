@@ -12,100 +12,108 @@ import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
     private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    public MainPanel() {
-        super(new GridLayout(3, 1, 0, 10));
+    private MainPanel() {
+        super(new GridLayout(4, 1, 0, 2));
 
-        final JPasswordField pf1 = new JPasswordField(24);
-        pf1.setText("abcdefghijklmn");
+        JPasswordField pf1 = makePasswordField();
+        AbstractButton b1 = new JCheckBox("show passwords");
+        b1.addActionListener(e -> {
+            AbstractButton c = (AbstractButton) e.getSource();
+            pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
+        });
         JPanel p1 = new JPanel(new BorderLayout());
         p1.add(pf1);
-        p1.add(new JCheckBox(new AbstractAction("show passwords") {
-            @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton c = (AbstractButton) e.getSource();
-                pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
-            }
-        }), BorderLayout.SOUTH);
+        p1.add(b1, BorderLayout.SOUTH);
         add(makeTitlePanel(p1, "BorderLayout + JCheckBox"));
 
-        JPasswordField pf2 = new JPasswordField(24);
-        pf2.setText("abcdefghijklmn");
-        pf2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        JPasswordField pf2 = makePasswordField();
         //AbstractDocument doc = (AbstractDocument) pf2.getDocument();
         //doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
-        AbstractButton b2 = new JToggleButton(new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton c = (AbstractButton) e.getSource();
-                pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
-            }
+        AbstractButton b2 = new JToggleButton();
+        b2.addActionListener(e -> {
+            AbstractButton c = (AbstractButton) e.getSource();
+            pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get("PasswordField.echoChar"));
         });
-        b2.setFocusable(false);
-        b2.setOpaque(false);
-        b2.setContentAreaFilled(false);
-        b2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-        b2.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        b2.setAlignmentY(Component.CENTER_ALIGNMENT);
-        b2.setIcon(new ColorIcon(Color.GREEN));
-        b2.setRolloverIcon(new ColorIcon(Color.BLUE));
-        b2.setSelectedIcon(new ColorIcon(Color.RED));
-        b2.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
-        b2.setToolTipText("show/hide passwords");
-
-        JPanel p2 = new JPanel() {
-            @Override public boolean isOptimizedDrawingEnabled() {
-                return false;
-            }
-        };
-        p2.setLayout(new OverlayLayout(p2));
+        initEyeButton(b2);
+        JPanel p2 = makeOverlayLayoutPanel();
         p2.add(b2);
         p2.add(pf2);
         add(makeTitlePanel(p2, "OverlayLayout + JToggleButton"));
 
-        JPasswordField pf3 = new JPasswordField(24);
-        pf3.setText("abcdefghijklmn");
+        JPasswordField pf3 = makePasswordField();
         AbstractDocument doc = (AbstractDocument) pf3.getDocument();
         JTextField tf3 = new JTextField(24);
         tf3.setFont(FONT);
         tf3.enableInputMethods(false);
         tf3.setDocument(doc);
 
-        final CardLayout cardLayout = new CardLayout();
-        final JPanel p3 = new JPanel(cardLayout);
+        CardLayout cardLayout = new CardLayout();
+        JPanel p3 = new JPanel(cardLayout);
         p3.setAlignmentX(Component.RIGHT_ALIGNMENT);
         p3.add(pf3, PasswordField.HIDE.toString());
         p3.add(tf3, PasswordField.SHOW.toString());
 
-        AbstractButton b3 = new JToggleButton(new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton c = (AbstractButton) e.getSource();
-                PasswordField s = c.isSelected() ? PasswordField.SHOW : PasswordField.HIDE;
-                cardLayout.show(p3, s.toString());
+        AbstractButton b3 = new JToggleButton();
+        b3.addActionListener(e -> {
+            AbstractButton c = (AbstractButton) e.getSource();
+            PasswordField s = c.isSelected() ? PasswordField.SHOW : PasswordField.HIDE;
+            cardLayout.show(p3, s.toString());
+        });
+        initEyeButton(b3);
+
+        JPanel pp3 = makeOverlayLayoutPanel();
+        pp3.add(b3);
+        pp3.add(p3);
+        add(makeTitlePanel(pp3, "CardLayout + JTextField(can copy) + ..."));
+
+        JPasswordField pf4 = makePasswordField();
+        AbstractButton b4 = new JButton();
+        b4.addMouseListener(new MouseAdapter() {
+            @Override public void mousePressed(MouseEvent e) {
+                pf4.setEchoChar('\u0000');
+            }
+            @Override public void mouseReleased(MouseEvent e) {
+                pf4.setEchoChar((Character) UIManager.get("PasswordField.echoChar"));
             }
         });
-        b3.setFocusable(false);
-        b3.setOpaque(false);
-        b3.setContentAreaFilled(false);
-        b3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-        b3.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        b3.setAlignmentY(Component.CENTER_ALIGNMENT);
-        b3.setIcon(new ColorIcon(Color.GREEN));
-        b3.setRolloverIcon(new ColorIcon(Color.BLUE));
-        b3.setSelectedIcon(new ColorIcon(Color.RED));
-        b3.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
+        initEyeButton(b4);
+        JPanel p4 = makeOverlayLayoutPanel();
+        p4.add(b4);
+        p4.add(pf4);
+        add(makeTitlePanel(p4, "press and hold down the mouse button"));
 
-        JPanel panel = new JPanel() {
+        setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+        setPreferredSize(new Dimension(320, 240));
+    }
+    private static void initEyeButton(AbstractButton b) {
+        b.setFocusable(false);
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+        b.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        b.setAlignmentY(Component.CENTER_ALIGNMENT);
+        b.setIcon(new ColorIcon(Color.GREEN));
+        b.setRolloverIcon(new ColorIcon(Color.BLUE));
+        b.setSelectedIcon(new ColorIcon(Color.RED));
+        b.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
+        b.setToolTipText("show/hide passwords");
+    }
+    private static JPanel makeOverlayLayoutPanel() {
+        JPanel p = new JPanel() {
             @Override public boolean isOptimizedDrawingEnabled() {
                 return false;
             }
         };
-        panel.setLayout(new OverlayLayout(panel));
-        panel.add(b3);
-        panel.add(p3);
-        add(makeTitlePanel(panel, "CardLayout + JTextField(can copy) + ..."));
-
-        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-        setPreferredSize(new Dimension(320, 240));
+        p.setLayout(new OverlayLayout(p));
+        return p;
     }
-    private JComponent makeTitlePanel(JComponent cmp, String title) {
+    private static JPasswordField makePasswordField() {
+        JPasswordField pf = new JPasswordField(24);
+        pf.setText("abcdefghijklmn");
+        pf.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        return pf;
+    }
+    private static JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1d;
@@ -186,21 +194,22 @@ enum PasswordField {
 // }
 
 class ColorIcon implements Icon {
+    private final Dimension d = new Dimension(12, 12);
     private final Color color;
-    public ColorIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(color);
-        g2.fillRect(1, 1, 11, 11);
+        g2.fillRect(1, 1, d.width - 1, d.height - 1);
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return 12;
+        return d.width;
     }
     @Override public int getIconHeight() {
-        return 12;
+        return d.height;
     }
 }
