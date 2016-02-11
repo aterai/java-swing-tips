@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     }
     private static class UndoAction extends AbstractAction {
         private final UndoManager undoManager;
-        public UndoAction(UndoManager manager) {
+        protected UndoAction(UndoManager manager) {
             super("undo");
             this.undoManager = manager;
         }
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     }
     private static class RedoAction extends AbstractAction {
         private final UndoManager undoManager;
-        public RedoAction(UndoManager manager) {
+        protected RedoAction(UndoManager manager) {
             super("redo");
             this.undoManager = manager;
         }

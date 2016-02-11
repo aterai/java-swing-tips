@@ -61,7 +61,7 @@ class FishEyeRowContext implements Serializable {
     public final int height;
     public final Font font;
     public final Color color;
-    public FishEyeRowContext(int height, Font font, Color color) {
+    protected FishEyeRowContext(int height, Font font, Color color) {
         this.height = height;
         this.font   = font;
         this.color  = color;
@@ -73,7 +73,7 @@ class FishEyeTable extends JTable {
     private final Font minFont;
     private transient FishEyeTableHandler handler;
 
-    public FishEyeTable(TableModel m) {
+    protected FishEyeTable(TableModel m) {
         super(m);
         Font font = getFont();
         minFont = font.deriveFont(8f);

@@ -29,7 +29,7 @@ public class JTabbedPaneWithCloseButton extends JTabbedPane {
 //https://community.oracle.com/thread/1356993
 class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     public final List<JButton> closeButtons; // = new ArrayList<>();
-    public CloseButtonTabbedPaneUI(List<JButton> closeButtons) {
+    protected CloseButtonTabbedPaneUI(List<JButton> closeButtons) {
         super();
         this.closeButtons = closeButtons;
     }
@@ -76,7 +76,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
 }
 
 class CloseButton extends JButton implements UIResource {
-    public CloseButton(JTabbedPane tabPane, int index) {
+    protected CloseButton(JTabbedPane tabPane, int index) {
         super(new CloseButtonAction(tabPane, index));
         setToolTipText("Close this tab");
         //setMargin(new Insets(0, 0, 0, 0));
@@ -102,7 +102,7 @@ class CloseButton extends JButton implements UIResource {
 class CloseButtonAction extends AbstractAction {
     private final JTabbedPane tabPane;
     private final int index;
-    public CloseButtonAction(JTabbedPane tabPane, int index) {
+    protected CloseButtonAction(JTabbedPane tabPane, int index) {
         super("x");
         this.tabPane = tabPane;
         this.index = index;

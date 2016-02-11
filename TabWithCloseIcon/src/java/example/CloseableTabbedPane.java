@@ -394,7 +394,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     /**
      * Creates a new instance of <code>CloseableTabbedPaneUI</code>
      */
-    public CloseableWindowsTabbedPaneUI() {
+    protected CloseableWindowsTabbedPaneUI() {
         super();
     }
 
@@ -403,7 +403,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
      * @param horizontalTextPosition the horizontal position of the text (e.g.
      * SwingUtilities.TRAILING or SwingUtilities.LEFT)
      */
-    public CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
+    protected CloseableWindowsTabbedPaneUI(int horizontalTextPosition) {
         super();
         this.horizontalTextPosition = horizontalTextPosition;
     }
@@ -469,7 +469,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     /**
      * Creates a new instance of <code>CloseableTabbedPaneUI</code>
      */
-    public CloseableTabbedPaneUI() {
+    protected CloseableTabbedPaneUI() {
         super();
     }
 
@@ -478,7 +478,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
      * @param horizontalTextPosition the horizontal position of the text (e.g.
      * SwingUtilities.TRAILING or SwingUtilities.LEFT)
      */
-    public CloseableTabbedPaneUI(int horizontalTextPosition) {
+    protected CloseableTabbedPaneUI(int horizontalTextPosition) {
         super();
         this.horizontalTextPosition = horizontalTextPosition;
     }

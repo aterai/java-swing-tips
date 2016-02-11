@@ -42,7 +42,7 @@ class SimpleCloseTabIcon implements Icon {
     private final Dimension dim = new Dimension(16, 16);
     private final Point pos = new Point();
 
-    public SimpleCloseTabIcon(Icon fileIcon) {
+    protected SimpleCloseTabIcon(Icon fileIcon) {
         this.fileIcon = fileIcon;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

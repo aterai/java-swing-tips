@@ -57,10 +57,10 @@ public final class MainPanel extends JPanel {
 
 class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
     private static final String NAME = "test";
-    public DnDList() {
+    protected DnDList() {
         this(null);
     }
-    public DnDList(ListModel<E> model) {
+    protected DnDList(ListModel<E> model) {
         super(model);
         DragSource dragSource = new DragSource();
         dragSource.createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_MOVE, (DragGestureListener) this);
