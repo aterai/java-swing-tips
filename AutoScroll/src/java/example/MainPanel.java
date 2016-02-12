@@ -17,13 +17,13 @@ public final class MainPanel extends JPanel {
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 //*
-        ViewportDragScrollListener l = new ViewportDragScrollListener(label);
+        ViewportDragScrollListener l = new ViewportDragScrollListener();
         JViewport v = scroll.getViewport();
         v.addMouseMotionListener(l);
         v.addMouseListener(l);
         v.addHierarchyListener(l);
 /*/
-        ComponentDragScrollListener l = new ComponentDragScrollListener(label);
+        ComponentDragScrollListener l = new ComponentDragScrollListener();
         label.addMouseMotionListener(l);
         label.addMouseListener(l);
         label.addHierarchyListener(l);
@@ -59,95 +59,80 @@ public final class MainPanel extends JPanel {
 class ViewportDragScrollListener extends MouseAdapter implements HierarchyListener {
     private static final int SPEED = 4;
     private static final int DELAY = 10;
-    private final Cursor dc;
-    private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Timer scroller;
-    private final JComponent label;
-    private final Point startPt = new Point();
-    private final Point move    = new Point();
+    private static final Cursor DC = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    private static final Cursor HC = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    private final Point startPt  = new Point();
+    private final Point move     = new Point();
+    private final Timer scroller = new Timer(DELAY, null);
+    private transient ActionListener listener;
 
-    public ViewportDragScrollListener(JComponent comp) {
-        super();
-        this.label = comp;
-        this.dc = comp.getCursor();
-        this.scroller = new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Container c = SwingUtilities.getAncestorOfClass(JViewport.class, label);
-                if (c instanceof JViewport) {
-                    JViewport vport = (JViewport) c;
-                    Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
-                    vp.translate(move.x, move.y);
-                    label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); //vport.setViewPosition(vp);
-                }
-            }
-        });
-    }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             scroller.stop();
+            scroller.removeActionListener(listener);
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
         JViewport vport = (JViewport) e.getComponent();
+        JComponent c = (JComponent) vport.getView();
         Point pt = e.getPoint();
         int dx = startPt.x - pt.x;
         int dy = startPt.y - pt.y;
         Point vp = vport.getViewPosition();
         vp.translate(dx, dy);
-        label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+        c.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
         move.setLocation(SPEED * dx, SPEED * dy);
         startPt.setLocation(pt);
     }
     @Override public void mousePressed(MouseEvent e) {
-        e.getComponent().setCursor(hc); //label.setCursor(hc);
+        e.getComponent().setCursor(HC);
         startPt.setLocation(e.getPoint());
         move.setLocation(0, 0);
         scroller.stop();
+        scroller.removeActionListener(listener);
     }
     @Override public void mouseReleased(MouseEvent e) {
-        e.getComponent().setCursor(dc); //label.setCursor(dc);
-        scroller.start();
+        Component c = e.getComponent();
+        c.setCursor(DC);
+        if (c instanceof JViewport) {
+            JViewport vport = (JViewport) c;
+            JComponent label = (JComponent) vport.getView();
+            listener = event -> {
+                Point vp = vport.getViewPosition(); //= SwingUtilities.convertPoint(vport, 0, 0, label);
+                vp.translate(move.x, move.y);
+                label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); //vport.setViewPosition(vp);
+            };
+            scroller.addActionListener(listener);
+            scroller.start();
+        }
     }
     @Override public void mouseExited(MouseEvent e) {
-        e.getComponent().setCursor(dc); //label.setCursor(dc);
+        e.getComponent().setCursor(DC);
         move.setLocation(0, 0);
         scroller.stop();
+        scroller.removeActionListener(listener);
     }
 }
 
 class ComponentDragScrollListener extends MouseAdapter implements HierarchyListener {
     private static final int SPEED = 4;
     private static final int DELAY = 10;
-    private final Cursor dc;
-    private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-    private final Timer scroller;
-    private final JComponent label;
-    private final Point startPt = new Point();
-    private final Point move    = new Point();
+    private static final Cursor DC = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    private static final Cursor HC = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    private final Point startPt  = new Point();
+    private final Point move     = new Point();
+    private final Timer scroller = new Timer(DELAY, null);
+    private transient ActionListener listener;
 
-    public ComponentDragScrollListener(JComponent comp) {
-        super();
-        this.label = comp;
-        this.dc = comp.getCursor();
-        this.scroller = new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Container c = label.getParent();
-                if (c instanceof JViewport) {
-                    JViewport vport = (JViewport) c;
-                    Point vp = vport.getViewPosition();
-                    vp.translate(move.x, move.y);
-                    label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-                }
-            }
-        });
-    }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
             scroller.stop();
+            scroller.removeActionListener(listener);
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
         scroller.stop();
+        scroller.removeActionListener(listener);
         JComponent jc = (JComponent) e.getComponent();
         Container c = SwingUtilities.getAncestorOfClass(JViewport.class, jc);
         if (c instanceof JViewport) {
@@ -164,9 +149,10 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     }
     @Override public void mousePressed(MouseEvent e) {
         scroller.stop();
+        scroller.removeActionListener(listener);
         move.setLocation(0, 0);
         JComponent jc = (JComponent) e.getComponent();
-        jc.setCursor(hc);
+        jc.setCursor(HC);
         Container c = jc.getParent();
         if (c instanceof JViewport) {
             JViewport vport = (JViewport) c;
@@ -175,12 +161,24 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         }
     }
     @Override public void mouseReleased(MouseEvent e) {
-        e.getComponent().setCursor(dc);
+        Component c = e.getComponent();
+        c.setCursor(DC);
+        listener = event -> {
+            Container p = SwingUtilities.getUnwrappedParent(c);
+            if (p instanceof JViewport) {
+                JViewport vport = (JViewport) p;
+                Point vp = vport.getViewPosition();
+                vp.translate(move.x, move.y);
+                ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            }
+        };
+        scroller.addActionListener(listener);
         scroller.start();
     }
     @Override public void mouseExited(MouseEvent e) {
-        e.getComponent().setCursor(dc);
-        move.setLocation(0, 0);
         scroller.stop();
+        scroller.removeActionListener(listener);
+        e.getComponent().setCursor(DC);
+        move.setLocation(0, 0);
     }
 }
