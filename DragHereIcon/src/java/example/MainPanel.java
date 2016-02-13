@@ -139,7 +139,7 @@ class FileDropTargetAdapter extends DropTargetAdapter {
 }
 
 // class FileTransferHandler extends TransferHandler {
-//     @Override public boolean importData(TransferSupport support) {
+//     @Override public boolean importData(TransferHandler.TransferSupport support) {
 //         try {
 //             if (canImport(support)) {
 //                 for (Object o: (List) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)) {
@@ -155,7 +155,7 @@ class FileDropTargetAdapter extends DropTargetAdapter {
 //         }
 //         return false;
 //     }
-//     @Override public boolean canImport(TransferSupport support) {
+//     @Override public boolean canImport(TransferHandler.TransferSupport support) {
 //         return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
 //     }
 // }

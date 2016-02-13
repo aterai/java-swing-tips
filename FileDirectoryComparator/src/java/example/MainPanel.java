@@ -168,7 +168,7 @@ class FileIconTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class FileTransferHandler extends TransferHandler {
-    @Override public boolean importData(TransferSupport support) {
+    @Override public boolean importData(TransferHandler.TransferSupport support) {
         try {
             if (canImport(support)) {
                 //FileTableModel model = (FileTableModel) ((JTable) support.getComponent()).getModel();
@@ -189,7 +189,7 @@ class FileTransferHandler extends TransferHandler {
         }
         return false;
     }
-    @Override public boolean canImport(TransferSupport support) {
+    @Override public boolean canImport(TransferHandler.TransferSupport support) {
         return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 //     @Override public boolean importData(JComponent component, Transferable transferable) {

@@ -129,7 +129,7 @@ class CellIconTransferHandler extends TransferHandler {
         }
         return new DataHandler(table, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferSupport info) {
+    @Override public boolean canImport(TransferHandler.TransferSupport info) {
         return false;
     }
     @Override public int getSourceActions(JComponent c) {
@@ -143,7 +143,7 @@ class TableCellTransferHandler extends TransferHandler {
         super();
         localObjectFlavor = flavor;
     }
-    @Override public boolean canImport(TransferSupport info) {
+    @Override public boolean canImport(TransferHandler.TransferSupport info) {
         Component c = info.getComponent();
         if (c instanceof JList) {
             return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
@@ -154,7 +154,7 @@ class TableCellTransferHandler extends TransferHandler {
         return TransferHandler.COPY;
     }
     @SuppressWarnings("unchecked")
-    @Override public boolean importData(TransferSupport info) {
+    @Override public boolean importData(TransferHandler.TransferSupport info) {
         if (!canImport(info)) {
             return false;
         }

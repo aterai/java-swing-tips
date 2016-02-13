@@ -298,7 +298,7 @@ class ListItemTransferHandler extends TransferHandler {
         @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferSupport info) {
+    @Override public boolean canImport(TransferHandler.TransferSupport info) {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
 //         if (info.isDrop() && info.isDataFlavorSupported(localObjectFlavor)) {
 //             info.setShowDropLocation(true);
@@ -316,7 +316,7 @@ class ListItemTransferHandler extends TransferHandler {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
     @SuppressWarnings("unchecked")
-    @Override public boolean importData(TransferSupport info) {
+    @Override public boolean importData(TransferHandler.TransferSupport info) {
         TransferHandler.DropLocation tdl = info.getDropLocation();
         if (!canImport(info) || !(tdl instanceof JList.DropLocation)) {
             return false;

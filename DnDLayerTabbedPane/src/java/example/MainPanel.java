@@ -468,7 +468,7 @@ class TabTransferHandler extends TransferHandler {
         }
         return isDropable;
     }
-    @Override public boolean canImport(TransferSupport support) {
+    @Override public boolean canImport(TransferHandler.TransferSupport support) {
         //System.out.println("canImport");
         if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
             System.out.println("canImport:" + support.isDrop() + " " + support.isDataFlavorSupported(localObjectFlavor));
@@ -550,7 +550,7 @@ class TabTransferHandler extends TransferHandler {
         }
         return TransferHandler.NONE;
     }
-    @Override public boolean importData(TransferSupport support) {
+    @Override public boolean importData(TransferHandler.TransferSupport support) {
         System.out.println("importData");
         if (!canImport(support)) {
             return false;

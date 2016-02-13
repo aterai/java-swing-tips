@@ -125,7 +125,7 @@ public class MainPanel extends JPanel {
 //             //TableColumn column = header.getDraggedColumn();
 //             return new DataHandler(header, localObjectFlavor.getMimeType());
 //         }
-//         @Override public boolean canImport(TransferSupport info) {
+//         @Override public boolean canImport(TransferHandler.TransferSupport info) {
 //             //System.out.println("canImport");
 //             return info.isDataFlavorSupported(localObjectFlavor);
 //         }
@@ -133,7 +133,7 @@ public class MainPanel extends JPanel {
 //             System.out.println("getSourceActions");
 //             return TransferHandler.MOVE;
 //         }
-//         @Override public boolean importData(TransferSupport info) {
+//         @Override public boolean importData(TransferHandler.TransferSupport info) {
 //             System.out.println("importData");
 //             JTableHeader target = (JTableHeader) info.getComponent();
 //             //JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
@@ -221,7 +221,7 @@ class TableRowTransferHandler extends TransferHandler {
         }
         return null;
     }
-    private boolean isDropableTableIntersection(TransferSupport info) {
+    private boolean isDropableTableIntersection(TransferHandler.TransferSupport info) {
         Component c = info.getComponent();
         if (!(c instanceof JTable)) {
             return false;
@@ -250,7 +250,7 @@ class TableRowTransferHandler extends TransferHandler {
         }
         return true;
     }
-    @Override public boolean canImport(TransferSupport info) {
+    @Override public boolean canImport(TransferHandler.TransferSupport info) {
         boolean isDropable = info.isDrop() && info.isDataFlavorSupported(localObjectFlavor) && isDropableTableIntersection(info);
         info.getComponent().setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         return isDropable;
@@ -258,7 +258,7 @@ class TableRowTransferHandler extends TransferHandler {
     @Override public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE;
     }
-    @Override public boolean importData(TransferSupport info) {
+    @Override public boolean importData(TransferHandler.TransferSupport info) {
         if (!canImport(info)) {
             return false;
         }
