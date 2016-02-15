@@ -73,23 +73,23 @@ class MarqueePanel extends JComponent implements ActionListener {
         int w = getWidth();
 
         g2.setPaint(Color.RED);
-        g2.draw(new Line2D.Float(0, baseline, w, baseline));
+        g2.draw(new Line2D.Double(0, baseline, w, baseline));
 
         g2.setPaint(Color.GREEN);
         float ascent = baseline - lm.getAscent();
-        g2.draw(new Line2D.Float(0, ascent, w, ascent));
+        g2.draw(new Line2D.Double(0, ascent, w, ascent));
 
         g2.setPaint(Color.BLUE);
         float descent = baseline + lm.getDescent();
-        g2.draw(new Line2D.Float(0, descent, w, descent));
+        g2.draw(new Line2D.Double(0, descent, w, descent));
 
         g2.setPaint(Color.ORANGE);
         float leading = baseline + lm.getDescent() + lm.getLeading();
-        g2.draw(new Line2D.Float(0, leading, w, leading));
+        g2.draw(new Line2D.Double(0, leading, w, leading));
 
         g2.setPaint(Color.CYAN);
         float xh = baseline - xheight;
-        g2.draw(new Line2D.Float(0, xh, w, xh));
+        g2.draw(new Line2D.Double(0, xh, w, xh));
 
         g2.setPaint(Color.BLACK);
         g2.drawGlyphVector(gv, w - xx, baseline);

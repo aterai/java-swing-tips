@@ -272,7 +272,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //     public AnimeIcon() {
 //         super();
 //         int r = 4;
-//         Shape s = new Ellipse2D.Float(0, 0, 2 * r, 2 * r);
+//         Shape s = new Ellipse2D.Double(0, 0, 2 * r, 2 * r);
 //         for (int i = 0; i < 8; i++) {
 //             AffineTransform at = AffineTransform.getRotateInstance(i * 2 * Math.PI / 8);
 //             at.concatenate(AffineTransform.getTranslateInstance(r, r));
@@ -325,7 +325,7 @@ class AnimeIcon implements Icon {
     protected AnimeIcon() {
         super();
         int r = 4;
-        Shape s = new Ellipse2D.Float(0, 0, 2 * r, 2 * r);
+        Shape s = new Ellipse2D.Double(0, 0, 2 * r, 2 * r);
         for (int i = 0; i < 8; i++) {
             AffineTransform at = AffineTransform.getRotateInstance(i * 2 * Math.PI / 8);
             at.concatenate(AffineTransform.getTranslateInstance(r, r));
@@ -380,14 +380,14 @@ class AnimeIcon implements Icon {
 //         int d = (int) R * 2 * (1 + 3);
 //         dim = new Dimension(d, d);
 //
-//         Ellipse2D cricle = new Ellipse2D.Float(R, R, d - 2 * R, d - 2 * R);
+//         Ellipse2D cricle = new Ellipse2D.Double(R, R, d - 2 * R, d - 2 * R);
 //         PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), R);
 //         float[] coords = new float[6];
 //         int idx = 0;
 //         while (!i.isDone()) {
 //             i.currentSegment(coords);
 //             if (idx < 8) { // XXX
-//                 list.add(new Ellipse2D.Float(coords[0] - R, coords[1] - R, 2 * R, 2 * R));
+//                 list.add(new Ellipse2D.Double(coords[0] - R, coords[1] - R, 2 * R, 2 * R));
 //                 idx++;
 //             }
 //             i.next();

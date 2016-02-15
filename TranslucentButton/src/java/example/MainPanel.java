@@ -172,7 +172,7 @@ class TranslucentButton extends JButton {
         int h = getHeight();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Shape area = new RoundRectangle2D.Float(x, y, w - 1, h - 1, R, R);
+        Shape area = new RoundRectangle2D.Double(x, y, w - 1, h - 1, R, R);
         Color ssc = TL;
         Color bgc = BR;
         ButtonModel m = getModel();
@@ -217,7 +217,7 @@ class TranslucentButtonIcon implements Icon {
             height = h - i.top - i.bottom;
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            Shape area = new RoundRectangle2D.Float(x - i.left, y - i.top, w - 1, h - 1, R, R);
+            Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
             Color ssc = TL;
             Color bgc = BR;
             ButtonModel m = b.getModel();

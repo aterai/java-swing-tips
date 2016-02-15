@@ -9,8 +9,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
 public class RoundedCornerButtonUI extends BasicButtonUI {
-    private static final float ARC_WIDTH  = 16f;
-    private static final float ARC_HEIGHT = 16f;
+    private static final double ARC_WIDTH  = 16d;
+    private static final double ARC_HEIGHT = 16d;
     protected static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100, 150, 255);
     protected final Color ac = new Color(220, 225, 230);
@@ -89,11 +89,11 @@ public class RoundedCornerButtonUI extends BasicButtonUI {
     private void initShape(JComponent c) {
         if (!c.getBounds().equals(base)) {
             base = c.getBounds();
-            shape = new RoundRectangle2D.Float(0, 0, c.getWidth() - 1, c.getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
-            border = new RoundRectangle2D.Float(FOCUS_STROKE, FOCUS_STROKE,
-                                                c.getWidth() - 1 - FOCUS_STROKE * 2,
-                                                c.getHeight() - 1 - FOCUS_STROKE * 2,
-                                                ARC_WIDTH, ARC_HEIGHT);
+            shape = new RoundRectangle2D.Double(0, 0, c.getWidth() - 1, c.getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
+            border = new RoundRectangle2D.Double(FOCUS_STROKE, FOCUS_STROKE,
+                                                 c.getWidth() - 1 - FOCUS_STROKE * 2,
+                                                 c.getHeight() - 1 - FOCUS_STROKE * 2,
+                                                 ARC_WIDTH, ARC_HEIGHT);
         }
     }
     private void paintFocusAndRollover(Graphics2D g2, JComponent c, Color color) {

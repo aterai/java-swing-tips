@@ -174,7 +174,7 @@ class RoundButton extends JButton {
         if (!getBounds().equals(base)) {
             Dimension s = getPreferredSize();
             base = getBounds();
-            shape = new Ellipse2D.Float(0, 0, s.width - 1, s.height - 1);
+            shape = new Ellipse2D.Double(0, 0, s.width - 1, s.height - 1);
         }
     }
     @Override protected void paintBorder(Graphics g) {
@@ -263,7 +263,7 @@ class RoundButton extends JButton {
 //         if (!c.getBounds().equals(base)) {
 //             Dimension s = c.getPreferredSize();
 //             base = c.getBounds();
-//             shape = new Ellipse2D.Float(0, 0, s.width - 1, s.height - 1);
+//             shape = new Ellipse2D.Double(0, 0, s.width - 1, s.height - 1);
 //         }
 //     }
 // }

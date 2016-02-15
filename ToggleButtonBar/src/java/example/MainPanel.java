@@ -135,7 +135,7 @@ class ToggleButtonBarCellIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Path2D p = new Path2D.Float();
+        Path2D p = new Path2D.Double();
         if (c == parent.getComponent(0)) {
             //:first-child
             p.moveTo(x, y + r);

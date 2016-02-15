@@ -57,7 +57,7 @@ class DragHereIcon implements Icon {
     private static final float SLIT_WIDTH = 8f;
     private static final int ARC_SIZE = 16;
     private static final int SLIT_NUM = 3;
-    private static final Shape BORDER = new RoundRectangle2D.Float(
+    private static final Shape BORDER = new RoundRectangle2D.Double(
         BORDER_WIDTH, BORDER_WIDTH,
         ICON_SIZE - 2 * BORDER_WIDTH - 1, ICON_SIZE - 2 * BORDER_WIDTH - 1,
         ARC_SIZE, ARC_SIZE);

@@ -88,7 +88,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
         }
     }
     private void initTargetLine(Point p) {
-        Rectangle2D testArea = new Rectangle2D.Float();
+        Rectangle2D testArea = new Rectangle2D.Double();
         int cellHeight = getCellBounds(0, 0).height;
         int lineWidht  = getCellBounds(0, 0).width;
         int lineHeight = 2;

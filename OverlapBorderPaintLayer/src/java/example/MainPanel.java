@@ -137,7 +137,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
         int h = c.getHeight() - 1;
         int h2 = (int) (h * .5 + .5);
         int w2 = TH;
-        Path2D p = new Path2D.Float();
+        Path2D p = new Path2D.Double();
         p.moveTo(0,      0);
         p.lineTo(w - w2, 0);
         p.lineTo(w,      h2);
@@ -186,7 +186,7 @@ class SizeIcon extends ArrowToggleButtonBarCellIcon {
     @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
         int w = c.getWidth()  - 1;
         int h = c.getHeight() - 1;
-        Path2D p = new Path2D.Float();
+        Path2D p = new Path2D.Double();
         p.moveTo(0, 0);
         p.lineTo(w, 0);
         p.lineTo(w, h);
@@ -202,7 +202,7 @@ class ArrowToggleButtonBarCellIcon2 extends ArrowToggleButtonBarCellIcon {
         int w = c.getWidth()  - 1;
         int h = c.getHeight() - 1;
         int h2 = (int) (h * .5 + .5);
-        Path2D p = new Path2D.Float();
+        Path2D p = new Path2D.Double();
         p.moveTo(w - h2, 0);
         p.quadTo(w,      0,      w,      h2);
         p.quadTo(w,      0 + h,  w - h2, h);

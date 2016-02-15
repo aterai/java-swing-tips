@@ -69,8 +69,8 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerButton extends JButton {
-    private static final float ARC_WIDTH  = 16f;
-    private static final float ARC_HEIGHT = 16f;
+    private static final double ARC_WIDTH  = 16d;
+    private static final double ARC_HEIGHT = 16d;
     protected static final int FOCUS_STROKE = 2;
     protected final Color fc = new Color(100, 150, 255, 200);
     protected final Color ac = new Color(230, 230, 230);
@@ -109,11 +109,11 @@ class RoundedCornerButton extends JButton {
     protected void initShape() {
         if (!getBounds().equals(base)) {
             base = getBounds();
-            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
-            border = new RoundRectangle2D.Float(FOCUS_STROKE, FOCUS_STROKE,
-                                                getWidth() - 1 - FOCUS_STROKE * 2,
-                                                getHeight() - 1 - FOCUS_STROKE * 2,
-                                                ARC_WIDTH, ARC_HEIGHT);
+            shape = new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
+            border = new RoundRectangle2D.Double(FOCUS_STROKE, FOCUS_STROKE,
+                                                 getWidth() - 1 - FOCUS_STROKE * 2,
+                                                 getHeight() - 1 - FOCUS_STROKE * 2,
+                                                 ARC_WIDTH, ARC_HEIGHT);
         }
     }
     private void paintFocusAndRollover(Graphics2D g2, Color color) {
@@ -183,10 +183,10 @@ class RoundButton extends RoundedCornerButton {
     @Override protected void initShape() {
         if (!getBounds().equals(base)) {
             base = getBounds();
-            shape = new Ellipse2D.Float(0, 0, getWidth() - 1, getHeight() - 1);
-            border = new Ellipse2D.Float(FOCUS_STROKE, FOCUS_STROKE,
-                                         getWidth() - 1 - FOCUS_STROKE * 2,
-                                         getHeight() - 1 - FOCUS_STROKE * 2);
+            shape = new Ellipse2D.Double(0, 0, getWidth() - 1, getHeight() - 1);
+            border = new Ellipse2D.Double(FOCUS_STROKE, FOCUS_STROKE,
+                                          getWidth() - 1 - FOCUS_STROKE * 2,
+                                          getHeight() - 1 - FOCUS_STROKE * 2);
         }
     }
 }

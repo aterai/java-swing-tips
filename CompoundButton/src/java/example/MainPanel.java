@@ -126,15 +126,15 @@ class CompoundButton extends JButton {
     private void initShape() {
         if (!getBounds().equals(base)) {
             base = getBounds();
-            float ww = getWidth() * .5f;
-            float xx = ww * .5f;
-            Shape inner = new Ellipse2D.Float(xx, xx, ww, ww);
+            double ww = getWidth() * .5;
+            double xx = ww * .5;
+            Shape inner = new Ellipse2D.Double(xx, xx, ww, ww);
             if (ButtonLocation.CENTER == bl) {
                 shape = inner;
             } else {
                 //TEST: parent.isOptimizedDrawingEnabled: false
-                //shape = new Arc2D.Float(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90f, Arc2D.PIE);
-                Shape outer = new Arc2D.Float(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90f, Arc2D.PIE);
+                //shape = new Arc2D.Double(1, 1, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
+                Shape outer = new Arc2D.Double(1, 1d, getWidth() - 2, getHeight() - 2, bl.getStartDegree(), 90, Arc2D.PIE);
                 Area area = new Area(outer);
                 area.subtract(new Area(inner));
                 shape = area;

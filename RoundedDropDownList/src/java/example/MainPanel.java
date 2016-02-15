@@ -225,7 +225,7 @@ class RoundedCornerBorder extends AbstractBorder {
         int w = width  - 1;
         int h = height - 1;
 
-        Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
+        Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
         if (c instanceof JPopupMenu) {
             g2.setPaint(c.getBackground());
             g2.fill(round);
@@ -233,7 +233,7 @@ class RoundedCornerBorder extends AbstractBorder {
             Container parent = c.getParent();
             if (Objects.nonNull(parent)) {
                 g2.setPaint(parent.getBackground());
-                Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
+                Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
                 corner.subtract(round);
                 g2.fill(corner);
             }
@@ -263,7 +263,7 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
         int w = width  - 1;
         int h = height - 1;
 
-        Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
+        Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
         Rectangle b = round.getBounds();
         b.setBounds(b.x, b.y + r, b.width, b.height - r);
         round.add(new Area(b));
@@ -271,7 +271,7 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
             g2.setPaint(parent.getBackground());
-            Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
+            Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
             corner.subtract(round);
             g2.fill(corner);
         }
@@ -303,7 +303,7 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
         int w = width  - 1;
         int h = height - 1;
 
-        Path2D p = new Path2D.Float();
+        Path2D p = new Path2D.Double();
         p.moveTo(x, y);
         p.lineTo(x, y + h - r);
         p.quadTo(x, y + h, x + r, y + h);

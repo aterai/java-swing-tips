@@ -135,7 +135,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         }
     }
     private void initTargetLine(Point p) {
-        Rectangle2D testArea = new Rectangle2D.Float();
+        Rectangle2D testArea = new Rectangle2D.Double();
         int cellHeight = getRowHeight();
         int lineWidht  = getWidth();
         int lineHeight = 2;

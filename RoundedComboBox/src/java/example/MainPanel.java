@@ -231,12 +231,12 @@ class RoundedCornerBorder extends AbstractBorder {
         int w = width  - 1;
         int h = height - 1;
 
-        Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
+        Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
 
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
             g2.setPaint(parent.getBackground());
-            Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
+            Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
             corner.subtract(round);
             g2.fill(corner);
         }
@@ -279,7 +279,7 @@ class KamabokoBorder extends RoundedCornerBorder {
         int w = width  - 1;
         int h = height - 1;
 //*/
-        Path2D p = new Path2D.Float();
+        Path2D p = new Path2D.Double();
         p.moveTo(x, y + h);
         p.lineTo(x, y + r);
         p.quadTo(x, y, x + r, y);
@@ -289,7 +289,7 @@ class KamabokoBorder extends RoundedCornerBorder {
         p.closePath();
         Area round = new Area(p);
 /*/
-        Area round = new Area(new RoundRectangle2D.Float(x, y, w, h, r, r));
+        Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
         Rectangle b = round.getBounds();
         b.setBounds(b.x, b.y + r, b.width, b.height - r);
         round.add(new Area(b));
@@ -297,7 +297,7 @@ class KamabokoBorder extends RoundedCornerBorder {
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
             g2.setPaint(parent.getBackground());
-            Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
+            Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
             corner.subtract(round);
             g2.fill(corner);
         }
