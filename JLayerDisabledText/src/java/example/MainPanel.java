@@ -151,7 +151,8 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 }
 
 // class LockingGlassPane extends JPanel {
-//     public LockingGlassPane() {
+//     protected LockingGlassPane() {
+//         super();
 //         setOpaque(false);
 //         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
 //             @Override public boolean accept(Component c) {
@@ -170,9 +171,10 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 // }
 
 // class LockingGlassPane extends JPanel {
-//     public LockingGlassPane() {
+//     protected LockingGlassPane() {
+//         super();
 //         setOpaque(false);
-//         super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //     }
 //     @Override public void setVisible(boolean isVisible) {
 //         boolean oldVisible = isVisible();
@@ -196,7 +198,7 @@ class DisableInputLayerUI extends LayerUI<JComponent> {
 
 // class PrintGlassPane extends JPanel {
 //     //TexturePaint texture = TextureFactory.createCheckerTexture(4);
-//     public PrintGlassPane() {
+//     protected PrintGlassPane() {
 //         super((LayoutManager) null);
 //         setOpaque(false);
 //     }

@@ -160,7 +160,8 @@ class DocumentFilterUndoManager extends UndoManager {
 
 // class CustomUndoPlainDocument extends PlainDocument {
 // //     private final UndoManager undoManager;
-// //     public CustomUndoPlainDocument(UndoManager undoManager) {
+// //     protected CustomUndoPlainDocument(UndoManager undoManager) {
+// //         super();
 // //         this.undoManager = undoManager;
 // //     }
 //     @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
@@ -189,7 +190,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //         private final String oldValue;
 //         private final String newValue;
 //         private final int offset;
-//         public ReplaceUndoableEdit(int offset, int length, String newValue) {
+//         protected ReplaceUndoableEdit(int offset, int length, String newValue) {
 //             super();
 //             String txt;
 //             try {

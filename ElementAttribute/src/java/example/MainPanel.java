@@ -83,9 +83,6 @@ public final class MainPanel extends JPanel {
 class CustomTooltipEditorPane extends JEditorPane {
     private final transient Position.Bias[] bias = new Position.Bias[1];
     private transient HyperlinkListener listener;
-//     public CustomTooltipEditorPane() {
-//         super();
-//     }
     //private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
     //    if (e != null && offset > 0 && e.getStartOffset() == offset) {
     //        try {

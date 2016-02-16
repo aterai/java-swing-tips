@@ -101,15 +101,15 @@ class DisableItemComboBox<E> extends JComboBox<E> {
             }
         }
     };
-    public DisableItemComboBox() {
+    protected DisableItemComboBox() {
         super();
     }
-    public DisableItemComboBox(ComboBoxModel<E> aModel) {
+    protected DisableItemComboBox(ComboBoxModel<E> aModel) {
         super(aModel);
     }
-    //public DisableItemComboBox(E[] items) {
-    //    super(items);
-    //}
+//     protected DisableItemComboBox(E[] items) {
+//         super(items);
+//     }
     @Override public void updateUI() {
         super.updateUI();
         setRenderer(new DefaultListCellRenderer() {

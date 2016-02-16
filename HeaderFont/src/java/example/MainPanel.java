@@ -22,9 +22,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
-        table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer(font));
+        table.getColumnModel().getColumn(0).setHeaderRenderer(new HeaderRenderer());
 
         //all column
         //table.getTableHeader().setFont(font);
@@ -32,19 +30,6 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static class HeaderRenderer implements TableCellRenderer {
-        private final Font font;
-        public HeaderRenderer(Font font) {
-            this.font = font;
-        }
-        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-            JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            l.setFont(font);
-            return l;
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -65,5 +50,15 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class HeaderRenderer implements TableCellRenderer {
+    private final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+        JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        l.setFont(font);
+        return l;
     }
 }

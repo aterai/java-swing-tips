@@ -12,6 +12,9 @@ import javax.swing.plaf.basic.*;
 // http://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
 // https://community.oracle.com/thread/1392111 Lock JInternalPane
 public final class MainPanel extends JPanel {
+    private static final int XOFFSET = 30;
+    private static final int YOFFSET = 30;
+    private static AtomicInteger openFrameCount = new AtomicInteger();
     private final JDesktopPane desktop;
     private final JInternalFrame immovableFrame;
     public MainPanel() {
@@ -53,7 +56,7 @@ public final class MainPanel extends JPanel {
         menuItem.setActionCommand("new");
         menuItem.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame frame = new MyInternalFrame();
+                JInternalFrame frame = createInternalFrame();
                 desktop.add(frame);
                 frame.setVisible(true);
                 //desktop.getDesktopManager().activateFrame(frame);
@@ -61,6 +64,13 @@ public final class MainPanel extends JPanel {
         });
         menu.add(menuItem);
         return menuBar;
+    }
+
+    private static JInternalFrame createInternalFrame() {
+        JInternalFrame f = new JInternalFrame(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
+        f.setSize(160, 100);
+        f.setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
+        return f;
     }
 
     public static void main(String... args) {
@@ -83,16 +93,5 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
-
-class MyInternalFrame extends JInternalFrame {
-    private static final int XOFFSET = 30;
-    private static final int YOFFSET = 30;
-    private static AtomicInteger openFrameCount = new AtomicInteger();
-    public MyInternalFrame() {
-        super(String.format("Document #%s", openFrameCount.getAndIncrement()), true, true, true, true);
-        setSize(160, 100);
-        setLocation(XOFFSET * openFrameCount.intValue(), YOFFSET * openFrameCount.intValue());
     }
 }

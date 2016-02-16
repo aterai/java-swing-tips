@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
             }
             bg.add(rb);
             box.add(rb);
-            box.add(Box.createHorizontalStrut(3));
+            box.add(Box.createHorizontalStrut(5));
         }
         box.add(Box.createHorizontalGlue());
 
@@ -45,18 +45,6 @@ public final class MainPanel extends JPanel {
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    class TextShiftOffsetAction extends AbstractAction {
-        private final int offset; // = 0;
-        public TextShiftOffsetAction(int offset) {
-            super(" " + offset + " ");
-            this.offset = offset;
-        }
-        @Override public void actionPerformed(ActionEvent e) {
-            UIManager.put("Button.textShiftOffset", offset);
-            SwingUtilities.updateComponentTreeUI(getRootPane());
-        }
-    }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -77,5 +65,21 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class TextShiftOffsetAction extends AbstractAction {
+    private final int offset;
+    protected TextShiftOffsetAction(int offset) {
+        super(String.format(" %d ", offset));
+        this.offset = offset;
+    }
+    @Override public void actionPerformed(ActionEvent e) {
+        Object o = e.getSource();
+        if (o instanceof JComponent) {
+            JComponent c = (JComponent) o;
+            UIManager.put("Button.textShiftOffset", offset);
+            SwingUtilities.updateComponentTreeUI(c.getTopLevelAncestor());
+        }
     }
 }

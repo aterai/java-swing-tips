@@ -149,39 +149,35 @@ class TriSliderUI extends MetalSliderUI {
     }
 }
 
-// class TriSliderUI extends javax.swing.plaf.basic.BasicSliderUI {
-//         public TriSliderUI(JSlider b) {
-//             super(b);
+//TEST:
+// public JSlider makeSlider() {
+//     JSlider slider = new JSlider(0, 100);
+//     slider.setMajorTickSpacing(10);
+//     slider.setMinorTickSpacing(5);
+//     //slider.setPaintTicks(true);
+//     slider.setPaintLabels(true);
+//     Dictionary dictionary = slider.getLabelTable();
+//     if (Objects.nonNull(dictionary)) {
+//         Enumeration elements = dictionary.elements();
+//         while (elements.hasMoreElements()) {
+//             JLabel label = (JLabel) elements.nextElement();
+//             label.setIcon(new TickIcon());
+//             label.setIconTextGap(0);
+//             label.setVerticalAlignment(SwingConstants.TOP);
+//             label.setVerticalTextPosition(SwingConstants.BOTTOM);
+//             label.setHorizontalAlignment(SwingConstants.CENTER);
+//             label.setHorizontalTextPosition(SwingConstants.CENTER);
+//             label.setForeground(Color.RED);
 //         }
-
-// pulbic JSlider makeSlider() {
-//   JSlider slider = new JSlider(0, 100);
-//   slider.setMajorTickSpacing(10);
-//   slider.setMinorTickSpacing(5);
-//   //slider.setPaintTicks(true);
-//   slider.setPaintLabels(true);
-//   Dictionary dictionary = slider.getLabelTable();
-//   if (Objects.nonNull(dictionary)) {
-//     Enumeration elements = dictionary.elements();
-//     while (elements.hasMoreElements()) {
-//       JLabel label = (JLabel) elements.nextElement();
-//       label.setIcon(new TickIcon());
-//       label.setIconTextGap(0);
-//       label.setVerticalAlignment(SwingConstants.TOP);
-//       label.setVerticalTextPosition(SwingConstants.BOTTOM);
-//       label.setHorizontalAlignment(SwingConstants.CENTER);
-//      label.setHorizontalTextPosition(SwingConstants.CENTER);
-//       label.setForeground(Color.RED);
 //     }
-//   }
 // }
 // class TickIcon implements Icon {
-//   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-//     g.setColor(Color.GREEN);
-//     g.drawLine(x + 2, y - 1, x + 2, y + 1);
-//     g.drawLine(x + 1, y + 0, x + 3, y + 0);
-//     g.drawLine(x + 0, y + 1, x + 4, y + 1);
-//   }
-//   @Override public int getIconWidth() { return 5; }
-//   @Override public int getIconHeight() { return 3; }
+//     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+//         g.setColor(Color.GREEN);
+//         g.drawLine(x + 2, y - 1, x + 2, y + 1);
+//         g.drawLine(x + 1, y + 0, x + 3, y + 0);
+//         g.drawLine(x + 0, y + 1, x + 4, y + 1);
+//     }
+//     @Override public int getIconWidth() { return 5; }
+//     @Override public int getIconHeight() { return 3; }
 // }
