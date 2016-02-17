@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
             doc.insertString(doc.getLength(), TEXT, null);
             doc.insertString(doc.getLength(), TEXT, null);
             doc.insertString(doc.getLength(), TEXT, null);
-            textPane.insertComponent(new ChildScrollPane(c));
+            textPane.insertComponent(createChildScrollPane(c));
             doc.insertString(doc.getLength(), "\n", null);
             doc.insertString(doc.getLength(), TEXT, null);
-            textPane.insertComponent(new ChildScrollPane(table));
+            textPane.insertComponent(createChildScrollPane(table));
             doc.insertString(doc.getLength(), "\n", null);
             doc.insertString(doc.getLength(), TEXT, null);
             textPane.insertComponent(new JScrollPane(new JTree()));
@@ -60,6 +60,18 @@ public final class MainPanel extends JPanel {
         add(new JLayer<JScrollPane>(new JScrollPane(textPane), new WheelScrollLayerUI()));
         //add(new JScrollPane(textPane));
         setPreferredSize(new Dimension(320, 240));
+    }
+    protected static JScrollPane createChildScrollPane(Component view) {
+        return new JScrollPane(view) {
+            @Override public Dimension getPreferredSize() {
+                return new Dimension(240, 120);
+            }
+            @Override public Dimension getMaximumSize() {
+                Dimension d = super.getMaximumSize();
+                d.height = getPreferredSize().height;
+                return d;
+            }
+        };
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -81,20 +93,6 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
-
-class ChildScrollPane extends JScrollPane {
-    public ChildScrollPane(JComponent c) {
-        super(c);
-    }
-    @Override public Dimension getPreferredSize() {
-        return new Dimension(240, 120);
-    }
-    @Override public Dimension getMaximumSize() {
-        Dimension d = super.getMaximumSize();
-        d.height = getPreferredSize().height;
-        return d;
     }
 }
 

@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
         setOpaque(false);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JScrollPane makeTranslucentScrollPane(JComponent c) {
-        JScrollPane scroll = new JScrollPane(c);
+    private static JScrollPane makeTranslucentScrollPane(Component view) {
+        JScrollPane scroll = new JScrollPane(view);
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
         return scroll;

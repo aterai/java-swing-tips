@@ -54,10 +54,10 @@ public final class MainPanel extends JPanel {
             row++;
         }
     }
-    private static JScrollPane makeTitledScrollPane(JComponent c, String title) {
-        JScrollPane sp = new JScrollPane(c);
-        sp.setBorder(BorderFactory.createTitledBorder(title));
-        return sp;
+    private static JScrollPane makeTitledScrollPane(Component view, String title) {
+        JScrollPane scroll = new JScrollPane(view);
+        scroll.setBorder(BorderFactory.createTitledBorder(title));
+        return scroll;
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
