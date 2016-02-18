@@ -382,7 +382,7 @@ class AnimeIcon implements Icon {
 //
 //         Ellipse2D cricle = new Ellipse2D.Double(R, R, d - 2 * R, d - 2 * R);
 //         PathIterator i = new FlatteningPathIterator(cricle.getPathIterator(null), R);
-//         float[] coords = new float[6];
+//         double[] coords = new double[6];
 //         int idx = 0;
 //         while (!i.isDone()) {
 //             i.currentSegment(coords);
