@@ -111,20 +111,6 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class LeafTreeCellEditor extends DefaultTreeCellEditor {
-    protected LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
-        super(tree, renderer);
-    }
-    @Override public boolean isCellEditable(EventObject e) {
-        boolean b = super.isCellEditable(e);
-        Object o = tree.getLastSelectedPathComponent();
-        if (b && o instanceof TreeNode) {
-            b = ((TreeNode) o).isLeaf();
-        }
-        return b;
-    }
-}
-
 class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private final JLabel icon = new JLabel();

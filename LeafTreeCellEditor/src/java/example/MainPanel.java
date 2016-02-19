@@ -14,12 +14,24 @@ public final class MainPanel extends JPanel {
         tree1.setEditable(true);
 
         JTree tree2 = new JTree();
-        tree2.setCellEditor(new LeafTreeCellEditor(tree2, (DefaultTreeCellRenderer) tree2.getCellRenderer()));
+        tree2.setCellEditor(makeLeafTreeCellEditor(tree2));
         tree2.setEditable(true);
 
         add(makeTitledPanel("DefaultTreeCellEditor", tree1));
         add(makeTitledPanel("LeafTreeCellEditor",    tree2));
         setPreferredSize(new Dimension(320, 240));
+    }
+    private static TreeCellEditor makeLeafTreeCellEditor(JTree tree) {
+        return new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()) {
+            @Override public boolean isCellEditable(EventObject e) {
+                Object o = tree.getLastSelectedPathComponent();
+                if (super.isCellEditable(e) && o instanceof TreeNode) {
+                    return ((TreeNode) o).isLeaf();
+                } else {
+                    return false;
+                }
+            }
+        };
     }
     private JComponent makeTitledPanel(String title, JTree tree) {
         JPanel p = new JPanel(new BorderLayout());
@@ -27,7 +39,6 @@ public final class MainPanel extends JPanel {
         p.add(new JScrollPane(tree));
         return p;
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -51,17 +62,16 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class LeafTreeCellEditor extends DefaultTreeCellEditor {
-    public LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
-        super(tree, renderer);
-    }
-    @Override public boolean isCellEditable(EventObject e) {
-        boolean b = super.isCellEditable(e);
-        Object o = tree.getLastSelectedPathComponent();
-        if (b && o instanceof TreeNode) {
-            return ((TreeNode) o).isLeaf();
-        } else {
-            return b;
-        }
-    }
-}
+// class LeafTreeCellEditor extends DefaultTreeCellEditor {
+//     protected LeafTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
+//         super(tree, renderer);
+//     }
+//     @Override public boolean isCellEditable(EventObject e) {
+//         Object o = tree.getLastSelectedPathComponent();
+//         if (super.isCellEditable(e) && o instanceof TreeNode) {
+//             return ((TreeNode) o).isLeaf();
+//         } else {
+//             return false;
+//         }
+//     }
+// }
