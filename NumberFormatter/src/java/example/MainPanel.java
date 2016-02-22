@@ -24,8 +24,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static SpinnerNumberModel makeSpinnerNumberModel() {
-        return new SpinnerNumberModel(Long.valueOf(10),    Long.valueOf(0),
-                                      Long.valueOf(99999), Long.valueOf(1));
+        return new SpinnerNumberModel(Long.valueOf(10), Long.valueOf(0), Long.valueOf(99999), Long.valueOf(1));
     }
     private JComponent makeTitlePanel(JComponent cmp, String title) {
         JPanel p = new JPanel(new GridBagLayout());
@@ -62,7 +61,7 @@ public final class MainPanel extends JPanel {
 
 class WarningSpinner extends JSpinner {
     private static final Color ERROR_BG = new Color(255, 200, 200);
-    public WarningSpinner(SpinnerNumberModel model) {
+    protected WarningSpinner(SpinnerNumberModel model) {
         super(model);
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) getEditor();
         final JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();

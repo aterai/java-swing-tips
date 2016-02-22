@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JCheckBox cbx = new JCheckBox(new AbstractAction("setEnabled") {
-            Object old;
+            private Object old;
             @Override public void actionPerformed(ActionEvent e) {
                 boolean flg = ((JCheckBox) e.getSource()).isSelected();
                 for (JSpinner c: Arrays.asList(s0, s1, s2, s3)) {
@@ -53,9 +53,7 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private static SpinnerNumberModel makeSpinnerNumberModel() {
-        return new SpinnerNumberModel(
-            Double.valueOf(10), Double.valueOf(0), Double.valueOf(100),
-            Double.valueOf(1));
+        return new SpinnerNumberModel(Double.valueOf(10), Double.valueOf(0), Double.valueOf(100), Double.valueOf(1));
     }
     private static JSpinner makeSpinner1(SpinnerNumberModel m) {
         JSpinner s = new JSpinner(m);
@@ -93,9 +91,7 @@ public final class MainPanel extends JPanel {
         ((NumberFormatter) displayFormatter).setValueClass(Double.class);
         NumberFormatter editFormatter = new NumberFormatter(format);
         ((NumberFormatter) editFormatter).setValueClass(Double.class);
-        DefaultFormatterFactory dff = new DefaultFormatterFactory(
-            displayFormatter, displayFormatter, editFormatter);
-        return dff;
+        return new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
