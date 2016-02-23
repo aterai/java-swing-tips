@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
             new SortAction(SortOrder.ASCENDING),
             new SortAction(SortOrder.DESCENDING));
             //new SortAction(SortOrder.UNSORTED));
-        public TablePopupMenu() {
+        protected TablePopupMenu() {
             super();
             for (Action a: actions) {
                 add(a);
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
         private final SortOrder dir;
         private int index = -1;
 
-        public SortAction(SortOrder dir) {
+        protected SortAction(SortOrder dir) {
             super(dir.toString());
             this.dir = dir;
         }

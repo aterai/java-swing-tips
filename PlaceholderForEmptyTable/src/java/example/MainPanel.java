@@ -94,7 +94,7 @@ class TablePopupMenu extends JPopupMenu {
             }
         }
     };
-    public TablePopupMenu() {
+    protected TablePopupMenu() {
         super();
         add(addAction);
         addSeparator();

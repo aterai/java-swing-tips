@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    public TreePopupMenu() {
+    protected TreePopupMenu() {
         super();
         add(new AbstractAction("path") {
             @Override public void actionPerformed(ActionEvent e) {
