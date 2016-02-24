@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.datatransfer.*;
+import java.awt.event.*;
 import java.io.IOException;
 import javax.activation.*;
 import javax.swing.*;
@@ -25,6 +26,12 @@ public final class MainPanel extends JPanel {
         tree.setTransferHandler(hanlder);
         tree.setDropMode(DropMode.INSERT);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        //Disable node Cut action
+        tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) { /* Dummy action */ }
+        });
+
         expandTree(tree);
         return tree;
     }
@@ -71,7 +78,7 @@ class TreeTransferHandler extends TransferHandler {
     }
 
     @Override public int getSourceActions(JComponent c) {
-        return MOVE;
+        return TransferHandler.MOVE;
     }
 
     @Override public boolean canImport(TransferHandler.TransferSupport support) {
@@ -128,7 +135,7 @@ class TreeTransferHandler extends TransferHandler {
         return tgt;
     }
     @Override protected void exportDone(JComponent source, Transferable data, int action) {
-        if (action == MOVE) {
+        if (action == TransferHandler.MOVE) {
             JTree tree = (JTree) source;
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             for (TreePath path: tree.getSelectionPaths()) {
