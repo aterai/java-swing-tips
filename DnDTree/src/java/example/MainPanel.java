@@ -6,16 +6,15 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.io.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        DefaultTreeModel model = makeModel();
-        DnDTree tree = new DnDTree();
-        tree.setModel(model);
+        JTree tree = new DnDTree();
+        tree.setModel(makeModel());
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
@@ -67,15 +66,19 @@ public final class MainPanel extends JPanel {
 //Java Swing Hacks - HACK #26: DnD JTree
 //http://www.oreilly.co.jp/books/4873112788/
 class DnDTree extends JTree {
-    private TreeNode dropTargetNode; // = null;
-    private TreeNode draggedNode; // = null;
+    private transient DragGestureRecognizer dragGestureRecognizer;
+    private transient DropTarget dropTarget;
+    private TreeNode dropTargetNode;
+    private TreeNode draggedNode;
 
-    protected DnDTree() {
-        super();
+    @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
         setCellRenderer(new DnDTreeCellRenderer());
-        setModel(new DefaultTreeModel(new DefaultMutableTreeNode("default")));
-        new DragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
-        new DropTarget(this, new NodeDropTargetListener());
+        if (Objects.isNull(dragGestureRecognizer) || Objects.isNull(dropTarget)) {
+            dragGestureRecognizer = DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, new NodeDragGestureListener());
+            dropTarget = new DropTarget(this, new NodeDropTargetListener());
+        }
     }
 
     private class NodeDragGestureListener implements DragGestureListener {
@@ -83,13 +86,13 @@ class DnDTree extends JTree {
             //System.out.println("dragGestureRecognized");
             Point pt = dge.getDragOrigin();
             TreePath path = getPathForLocation(pt.x, pt.y);
-            if (path == null || path.getParentPath() == null) {
+            if (Objects.isNull(path) || Objects.isNull(path.getParentPath())) {
                 return;
             }
             //System.out.println("start " + path.toString());
             draggedNode = (TreeNode) path.getLastPathComponent();
             Transferable trans = new RJLTransferable(draggedNode);
-            new DragSource().startDrag(dge, Cursor.getDefaultCursor(), trans, new NodeDragSourceListener());
+            DragSource.getDefaultDragSource().startDrag(dge, Cursor.getDefaultCursor(), trans, new NodeDragSourceListener());
         }
     }
 
@@ -101,7 +104,7 @@ class DnDTree extends JTree {
             DataFlavor[] f = dtde.getCurrentDataFlavors();
             boolean isDataFlavorSupported = f[0].getHumanPresentableName().equals(RJLTransferable.NAME);
             if (!isDataFlavorSupported) {
-                //サポートされていないDataFlavorである(例えばデスクトップからファイルなど)
+                // This DataFlavor is not supported(e.g. files from the desktop)
                 rejectDrag(dtde);
                 return;
             }
@@ -109,15 +112,15 @@ class DnDTree extends JTree {
             // figure out which cell it's over, no drag to self
             Point pt = dtde.getLocation();
             TreePath path = getPathForLocation(pt.x, pt.y);
-            if (path == null) {
-                //ノード以外の場所である(例えばJTreeの余白など)
+            if (Objects.isNull(path)) {
+                // Dropped into the non-node locations(e.g. margin area of JTree)
                 rejectDrag(dtde);
                 return;
             }
             //Object draggingObject;
             //if (!isWebStart()) {
             //    try {
-            //        draggingObject = dtde.getTransferable().getTransferData(LOCAL_OBJECT_FLAVOR);
+            //        draggingObject = dtde.getTransferable().getTransferData(FLAVOR);
             //    } catch (Exception ex) {
             //        rejectDrag(dtde);
             //        return;
@@ -125,19 +128,17 @@ class DnDTree extends JTree {
             //} else {
             //    draggingObject = getSelectionPath().getLastPathComponent();
             //}
-            Object draggingObject             = getSelectionPath().getLastPathComponent();
-            MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
+            //MutableTreeNode draggingNode = (MutableTreeNode) draggingObject;
+
+            MutableTreeNode draggingNode = (MutableTreeNode) getSelectionPath().getLastPathComponent();
             DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-            while (parentNode != null) {
-                if (draggingNode.equals(parentNode)) {
-                    //親ノードを子ノードにドロップしようとしている
-                    rejectDrag(dtde);
-                    return;
-                }
-                parentNode = (DefaultMutableTreeNode) parentNode.getParent();
+
+            TreeNode parentNode = targetNode.getParent();
+            if (parentNode instanceof DefaultMutableTreeNode && Arrays.asList(((DefaultMutableTreeNode) parentNode).getPath()).contains(draggingNode)) {
+                // Trying to drop a parent node to a child node
+                rejectDrag(dtde);
+                return;
             }
-            //dropTargetNode は、描画用(Rectangle2D、Line)のflag
             dropTargetNode = targetNode; //(TreeNode) path.getLastPathComponent();
             dtde.acceptDrag(dtde.getDropAction());
             repaint();
@@ -146,7 +147,7 @@ class DnDTree extends JTree {
             //System.out.println("drop");
             //if (!isWebStart()) {
             //    try {
-            //        draggingObject = dtde.getTransferable().getTransferData(LOCAL_OBJECT_FLAVOR);
+            //        draggingObject = dtde.getTransferable().getTransferData(FLAVOR);
             //    } catch (Exception ex) {
             //        rejectDrag(dtde);
             //        return;
@@ -165,7 +166,7 @@ class DnDTree extends JTree {
             MutableTreeNode draggingNode      = (MutableTreeNode) draggingObject;
             DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
             if (targetNode.equals(draggingNode)) {
-                //自分を自分にはドロップ不可
+                // Cannot move the node to the node itself
                 dtde.dropComplete(false);
                 return;
             }
@@ -174,9 +175,9 @@ class DnDTree extends JTree {
             DefaultTreeModel model = (DefaultTreeModel) getModel();
             model.removeNodeFromParent(draggingNode);
 
-            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-            if (parentNode != null && targetNode.isLeaf()) {
-                model.insertNodeInto(draggingNode, parentNode, parentNode.getIndex(targetNode));
+            TreeNode parentNode = targetNode.getParent();
+            if (parentNode instanceof MutableTreeNode && targetNode.isLeaf()) {
+                model.insertNodeInto(draggingNode, (MutableTreeNode) parentNode, parentNode.getIndex(targetNode));
             } else {
                 model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
             }
@@ -188,12 +189,12 @@ class DnDTree extends JTree {
         }
         private void rejectDrag(DropTargetDragEvent dtde) {
             dtde.rejectDrag();
-            dropTargetNode = null; // dropTargetNode(flag)をnullにして
-            repaint();             // Rectangle2D、Lineを消すためJTreeを再描画
+            dropTargetNode = null; // dropTargetNode as null,
+            repaint();             // and repaint the JTree(turn off the Rectangle2D and Line2D)
         }
     }
 
-    private class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
+   private class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
         private boolean isTargetNode;
         private boolean isTargetNodeLeaf;
         @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -219,8 +220,8 @@ class DnDTree extends JTree {
 
 class RJLTransferable implements Transferable {
     public static final String NAME = "TREE-TEST";
-    private static final DataFlavor LOCAL_OBJECT_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-    //private static final DataFlavor[] supportedFlavors = {LOCAL_OBJECT_FLAVOR};
+    private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+    //private static final DataFlavor[] supportedFlavors = {FLAVOR};
     private final Object object;
     protected RJLTransferable(Object o) {
         object = o;
@@ -234,10 +235,10 @@ class RJLTransferable implements Transferable {
     }
     @Override public boolean isDataFlavorSupported(DataFlavor df) {
         return df.getHumanPresentableName().equals(NAME);
-        //return (df.equals(LOCAL_OBJECT_FLAVOR));
+        //return (df.equals(FLAVOR));
     }
     @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] {LOCAL_OBJECT_FLAVOR};
+        return new DataFlavor[] {FLAVOR};
     }
 }
 
