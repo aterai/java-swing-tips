@@ -26,6 +26,7 @@ public final class MainPanel extends JPanel {
         slider.setMinorTickSpacing(5);
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
+        slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
         if (icon) {
             Dictionary dictionary = slider.getLabelTable();
             if (Objects.nonNull(dictionary)) {
@@ -82,10 +83,13 @@ public final class MainPanel extends JPanel {
 
 class TickIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.setColor(Color.BLUE);
-        g.drawLine(x + 2, y + 0, x + 2, y + 2);
-        g.drawLine(x + 1, y + 1, x + 3, y + 1);
-        g.drawLine(x + 0, y + 2, x + 4, y + 2);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setColor(Color.BLUE);
+        g2.drawLine(2, 0, 2, 2);
+        g2.drawLine(1, 1, 3, 1);
+        g2.drawLine(0, 2, 4, 2);
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return 5;
