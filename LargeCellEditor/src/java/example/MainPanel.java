@@ -13,27 +13,42 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
-        ListModel<MyIcon> list = makeIconList();
-        MyIconTableModel model = new MyIconTableModel(list);
-        MyIconTable table = new MyIconTable(model, list);
+        ListModel<IconItem> list = makeIconList();
+        TableModel model = makeIconTableModel(list);
+        JTable table = new IconTable(model, list);
         JPanel p = new JPanel(new GridBagLayout());
         p.add(table, new GridBagConstraints());
         p.setBackground(Color.WHITE);
         add(p);
         setPreferredSize(new Dimension(320, 240));
     }
-    private ListModel<MyIcon> makeIconList() {
-        DefaultListModel<MyIcon> list = new DefaultListModel<>();
-        list.addElement(new MyIcon("wi0009"));
-        list.addElement(new MyIcon("wi0054"));
-        list.addElement(new MyIcon("wi0062"));
-        list.addElement(new MyIcon("wi0063"));
-        list.addElement(new MyIcon("wi0064"));
-        list.addElement(new MyIcon("wi0096"));
-        list.addElement(new MyIcon("wi0111"));
-        list.addElement(new MyIcon("wi0122"));
-        list.addElement(new MyIcon("wi0124"));
+    private ListModel<IconItem> makeIconList() {
+        DefaultListModel<IconItem> list = new DefaultListModel<>();
+        list.addElement(new IconItem("wi0009"));
+        list.addElement(new IconItem("wi0054"));
+        list.addElement(new IconItem("wi0062"));
+        list.addElement(new IconItem("wi0063"));
+        list.addElement(new IconItem("wi0064"));
+        list.addElement(new IconItem("wi0096"));
+        list.addElement(new IconItem("wi0111"));
+        list.addElement(new IconItem("wi0122"));
+        list.addElement(new IconItem("wi0124"));
         return list;
+    }
+    private static TableModel makeIconTableModel(ListModel<?> list) {
+        Object[][] data = {
+            {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2)},
+            {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5)},
+            {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8)}
+        };
+        return new DefaultTableModel(data, null) {
+            @Override public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+            @Override public int getColumnCount() {
+                return 3;
+            }
+        };
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -59,34 +74,16 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyIconTableModel extends DefaultTableModel {
-    protected MyIconTableModel(ListModel<?> list) {
-        super();
-        addRow(new Object[] {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2) });
-        addRow(new Object[] {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5) });
-        addRow(new Object[] {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8) });
-    }
-    @Override public boolean isCellEditable(int row, int column) {
-        return false;
-    }
-    @Override public int getColumnCount() {
-        return 3;
-    }
-    @Override public String getColumnName(int col) {
-        return "";
-    }
-}
-
-class MyIcon {
+class IconItem {
     public final ImageIcon large;
     public final ImageIcon small;
-    protected MyIcon(String str) {
+    protected IconItem(String str) {
         large = new ImageIcon(getClass().getResource(str + "-48.png"));
         small = new ImageIcon(getClass().getResource(str + "-24.png"));
     }
 }
 
-class MyIconRenderer extends DefaultTableCellRenderer {
+class IconTableCellRenderer extends DefaultTableCellRenderer {
     @Override public void updateUI() {
         super.updateUI();
         setHorizontalAlignment(SwingConstants.CENTER);
@@ -94,14 +91,14 @@ class MyIconRenderer extends DefaultTableCellRenderer {
         //setBorder(BorderFactory.createEmptyBorder());
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        setIcon(((MyIcon) value).large);
+        setIcon(((IconItem) value).large);
         return this;
     }
 }
 
-class MyIconTable extends JTable {
+class IconTable extends JTable {
     private static final int XOFF = 4;
-    private final MyGlassPane panel = new MyGlassPane() {
+    private final JPanel panel = new TableGlassPane() {
         @Override protected void paintComponent(Graphics g) {
             g.setColor(new Color(0x64FFFFFF, true));
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -120,9 +117,9 @@ class MyIconTable extends JTable {
     private final EditorFromList editor;
     private Rectangle rect;
 
-    protected MyIconTable(TableModel model, ListModel<MyIcon> list) {
+    protected IconTable(TableModel model, ListModel<IconItem> list) {
         super(model);
-        setDefaultRenderer(Object.class, new MyIconRenderer());
+        setDefaultRenderer(Object.class, new IconTableCellRenderer());
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         initCellSize(50);
         addMouseListener(new MouseAdapter() {
@@ -200,13 +197,13 @@ class MyIconTable extends JTable {
     }
 }
 
-class EditorFromList extends JList<MyIcon> {
+class EditorFromList extends JList<IconItem> {
     private static final int INS = 2;
     private transient RollOverListener handler;
     private int rollOverRowIndex = -1;
     private final Dimension dim;
 
-    protected EditorFromList(ListModel<MyIcon> model) {
+    protected EditorFromList(ListModel<IconItem> model) {
         super(model);
         ImageIcon icon = model.getElementAt(0).small;
         int iw = INS + icon.getIconWidth();
@@ -231,10 +228,10 @@ class EditorFromList extends JList<MyIcon> {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setLayoutOrientation(JList.HORIZONTAL_WRAP);
         setVisibleRowCount(0);
-        setCellRenderer(new ListCellRenderer<MyIcon>() {
+        setCellRenderer(new ListCellRenderer<IconItem>() {
             private final JLabel label = new JLabel();
             private final Color selctedColor = new Color(0xC8C8FF);
-            @Override public Component getListCellRendererComponent(JList<? extends MyIcon> list, MyIcon value, int index, boolean isSelected, boolean cellHasFocus) {
+            @Override public Component getListCellRendererComponent(JList<? extends IconItem> list, IconItem value, int index, boolean isSelected, boolean cellHasFocus) {
                 label.setOpaque(true);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 if (index == rollOverRowIndex) {
@@ -265,8 +262,8 @@ class EditorFromList extends JList<MyIcon> {
     }
 }
 
-class MyGlassPane extends JPanel {
-    protected MyGlassPane() {
+class TableGlassPane extends JPanel {
+    protected TableGlassPane() {
         super((LayoutManager) null);
         setOpaque(false);
     }
