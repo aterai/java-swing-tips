@@ -47,25 +47,28 @@ class SimpleCloseTabIcon implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         pos.setLocation(x, y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y + 2);
+
         Color col = g.getColor();
-        g.setColor(Color.BLACK);
+        g2.setColor(Color.BLACK);
 
-        int yp = y + 2;
-        g.drawLine(x + 1,  yp,      x + 12, yp);
-        g.drawLine(x + 1,  yp + 13, x + 12, yp + 13);
-        g.drawLine(x,      yp + 1,  x,      yp + 12);
-        g.drawLine(x + 13, yp + 1,  x + 13, yp + 12);
-        g.drawLine(x + 3,  yp + 3,  x + 10, yp + 10);
-        g.drawLine(x + 3,  yp + 4,  x + 9,  yp + 10);
-        g.drawLine(x + 4,  yp + 3,  x + 10, yp + 9);
-        g.drawLine(x + 10, yp + 3,  x + 3,  yp + 10);
-        g.drawLine(x + 10, yp + 4,  x + 4,  yp + 10);
-        g.drawLine(x + 9,  yp + 3,  x + 3,  yp + 9);
+        g2.drawLine(1,  0, 12,  0);
+        g2.drawLine(1, 13, 12, 13);
+        g2.drawLine(0,  1,  0, 12);
+        g2.drawLine(13, 1, 13, 12);
+        g2.drawLine(3,  3, 10, 10);
+        g2.drawLine(3,  4,  9, 10);
+        g2.drawLine(4,  3, 10,  9);
+        g2.drawLine(10, 3,  3, 10);
+        g2.drawLine(10, 4,  4, 10);
+        g2.drawLine(9,  3,  3,  9);
 
-        g.setColor(col);
+        g2.setColor(col);
         if (fileIcon != null) {
-            fileIcon.paintIcon(c, g, x + dim.width, yp);
+            fileIcon.paintIcon(c, g2, dim.width, 0);
         }
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return fileIcon == null ? dim.width : dim.width + fileIcon.getIconWidth();

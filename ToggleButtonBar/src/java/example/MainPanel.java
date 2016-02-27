@@ -85,6 +85,7 @@ class CellIcon implements Icon {
         int h = c.getHeight();
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.translate(x, y);
 
         Color ssc = TL;
         Color bgc = BR;
@@ -97,15 +98,15 @@ class CellIcon implements Icon {
         }
 
         g2.setPaint(c.getBackground());
-        g2.fillRect(x, y, w, h);
+        g2.fillRect(0, 0, w, h);
 
-        g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
-        g2.fillRect(x, y, w, h);
+        g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
+        g2.fillRect(0, 0, w, h);
 
         g2.setPaint(TL);
-        g2.fillRect(x, y, 1, h);
+        g2.fillRect(0, 0, 1, h);
         g2.setPaint(BR);
-        g2.fillRect(x + w, y, 1, h);
+        g2.fillRect(w, 0, 1, h);
 
         g2.dispose();
     }

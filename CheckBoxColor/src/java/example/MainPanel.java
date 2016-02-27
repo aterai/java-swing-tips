@@ -64,9 +64,12 @@ public final class MainPanel extends JPanel {
 class CheckBoxIcon3 implements Icon {
     private final Icon orgIcon = new MetalCheckBoxIcon();
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        orgIcon.paintIcon(c, g, x, y);
-        g.setColor(new Color(255, 155, 155, 100));
-        g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        orgIcon.paintIcon(c, g2, 0, 0);
+        g2.setColor(new Color(255, 155, 155, 100));
+        g2.fillRect(2, 2, getIconWidth() - 4, getIconHeight() - 4);
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return orgIcon.getIconWidth();
@@ -79,25 +82,28 @@ class CheckBoxIcon3 implements Icon {
 class CheckBoxIcon2 implements Icon {
     private final Icon orgIcon = UIManager.getIcon("CheckBox.icon");
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        orgIcon.paintIcon(c, g, x, y);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        orgIcon.paintIcon(c, g2, 0, 0);
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
             ButtonModel model = b.getModel();
-            g.setColor(new Color(255, 155, 155, 100));
-            g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
+            g2.setColor(new Color(255, 155, 155, 100));
+            g2.fillRect(2, 2, getIconWidth() - 4, getIconHeight() - 4);
             if (model.isSelected()) {
-                g.setColor(Color.RED);
-                g.drawLine(x + 9, y + 3, x + 9, y + 3);
-                g.drawLine(x + 8, y + 4, x + 9, y + 4);
-                g.drawLine(x + 7, y + 5, x + 9, y + 5);
-                g.drawLine(x + 6, y + 6, x + 8, y + 6);
-                g.drawLine(x + 3, y + 7, x + 7, y + 7);
-                g.drawLine(x + 4, y + 8, x + 6, y + 8);
-                g.drawLine(x + 5, y + 9, x + 5, y + 9);
-                g.drawLine(x + 3, y + 5, x + 3, y + 5);
-                g.drawLine(x + 3, y + 6, x + 4, y + 6);
+                g2.setColor(Color.RED);
+                g2.drawLine(9, 3, 9, 3);
+                g2.drawLine(8, 4, 9, 4);
+                g2.drawLine(7, 5, 9, 5);
+                g2.drawLine(6, 6, 8, 6);
+                g2.drawLine(3, 7, 7, 7);
+                g2.drawLine(4, 8, 6, 8);
+                g2.drawLine(5, 9, 5, 9);
+                g2.drawLine(3, 5, 3, 5);
+                g2.drawLine(3, 6, 4, 6);
             }
         }
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return orgIcon.getIconWidth();
@@ -116,76 +122,79 @@ class CheckBoxIcon implements Icon {
         }
         JCheckBox cb = (JCheckBox) c;
         ButtonModel model = cb.getModel();
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
 
         // outer bevel
         if (cb.isBorderPaintedFlat()) {
-            g.setColor(UIManager.getColor("CheckBox.shadow"));
-            g.drawRect(x + 1, y + 1, CSIZE - 3, CSIZE - 3);
+            g2.setColor(UIManager.getColor("CheckBox.shadow"));
+            g2.drawRect(1, 1, CSIZE - 3, CSIZE - 3);
 
             if (model.isPressed() && model.isArmed()) {
-                g.setColor(UIManager.getColor("CheckBox.background"));
+                g2.setColor(UIManager.getColor("CheckBox.background"));
             } else {
-                g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
+                g2.setColor(UIManager.getColor("CheckBox.interiorBackground"));
             }
-            g.fillRect(x + 2, y + 2, CSIZE - 4, CSIZE - 4);
+            g2.fillRect(2, 2, CSIZE - 4, CSIZE - 4);
         } else {
             // Outer top/left
-            g.setColor(UIManager.getColor("CheckBox.shadow"));
-            g.drawLine(x, y, x + 11, y);
-            g.drawLine(x, y + 1, x, y + 11);
+            g2.setColor(UIManager.getColor("CheckBox.shadow"));
+            g2.drawLine(0, 0, 11, 0);
+            g2.drawLine(0, 1, 0, 11);
 
             // Outer bottom/right
-            g.setColor(UIManager.getColor("CheckBox.highlight"));
-            g.drawLine(x + 12, y, x + 12, y + 12);
-            g.drawLine(x, y + 12, x + 11, y + 12);
+            g2.setColor(UIManager.getColor("CheckBox.highlight"));
+            g2.drawLine(12, 0, 12, 12);
+            g2.drawLine(0, 12, 11, 12);
 
             // Inner top.left
-            g.setColor(UIManager.getColor("CheckBox.darkShadow"));
-            g.drawLine(x + 1, y + 1, x + 10, y + 1);
-            g.drawLine(x + 1, y + 2, x + 1, y + 10);
+            g2.setColor(UIManager.getColor("CheckBox.darkShadow"));
+            g2.drawLine(1, 1, 10, 1);
+            g2.drawLine(1, 2, 1, 10);
 
             // Inner bottom/right
-            g.setColor(UIManager.getColor("CheckBox.light"));
-            g.drawLine(x + 1, y + 11, x + 11, y + 11);
-            g.drawLine(x + 11, y + 1, x + 11, y + 10);
+            g2.setColor(UIManager.getColor("CheckBox.light"));
+            g2.drawLine(1, 11, 11, 11);
+            g2.drawLine(11, 1, 11, 10);
 
             // inside box
             Color color = new Color(255, 155, 155);
             if (model.isPressed() && model.isArmed()) {
-                //g.setColor(UIManager.getColor("CheckBox.background"));
-                g.setColor(color.brighter());
+                //g2.setColor(UIManager.getColor("CheckBox.background"));
+                g2.setColor(color.brighter());
             } else {
-                //g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
-                g.setColor(color);
+                //g2.setColor(UIManager.getColor("CheckBox.interiorBackground"));
+                g2.setColor(color);
             }
-            g.fillRect(x + 2, y + 2, CSIZE - 4, CSIZE - 4);
+            g2.fillRect(2, 2, CSIZE - 4, CSIZE - 4);
         }
 
 //         if (model.isEnabled()) {
-//             g.setColor(UIManager.getColor("CheckBox.foreground"));
+//             g2.setColor(UIManager.getColor("CheckBox.foreground"));
 //         } else {
-//             g.setColor(UIManager.getColor("CheckBox.shadow"));
+//             g2.setColor(UIManager.getColor("CheckBox.shadow"));
 //         }
 
         // paint check
         if (model.isSelected()) {
-            g.setColor(Color.BLUE);
-            g.drawLine(x + 9, y + 3, x + 9, y + 3);
-            g.drawLine(x + 8, y + 4, x + 9, y + 4);
-            g.drawLine(x + 7, y + 5, x + 9, y + 5);
-            g.drawLine(x + 6, y + 6, x + 8, y + 6);
-            g.drawLine(x + 3, y + 7, x + 7, y + 7);
-            g.drawLine(x + 4, y + 8, x + 6, y + 8);
-            g.drawLine(x + 5, y + 9, x + 5, y + 9);
-            g.drawLine(x + 3, y + 5, x + 3, y + 5);
-            g.drawLine(x + 3, y + 6, x + 4, y + 6);
+            g2.setColor(Color.BLUE);
+            g2.drawLine(9, 3, 9, 3);
+            g2.drawLine(8, 4, 9, 4);
+            g2.drawLine(7, 5, 9, 5);
+            g2.drawLine(6, 6, 8, 6);
+            g2.drawLine(3, 7, 7, 7);
+            g2.drawLine(4, 8, 6, 8);
+            g2.drawLine(5, 9, 5, 9);
+            g2.drawLine(3, 5, 3, 5);
+            g2.drawLine(3, 6, 4, 6);
         }
 
         if (model.isRollover()) {
-            g.setColor(Color.ORANGE);
-            g.drawLine(x + 1, y + 1, x + 1 + CSIZE - 3, y + 1);
-            g.drawLine(x + 1, y + 1, x + 1, y + 1 + CSIZE - 3);
+            g2.setColor(Color.ORANGE);
+            g2.drawLine(1, 1, 1 + CSIZE - 3, 1);
+            g2.drawLine(1, 1, 1, 1 + CSIZE - 3);
         }
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return CSIZE;

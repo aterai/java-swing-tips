@@ -161,13 +161,15 @@ class HighlightIcon implements Icon {
         Highlighter highlighter = textArea.getHighlighter();
 
         //paint Highlight
-        g.setColor(Color.RED);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setPaint(Color.RED);
         try {
             for (Highlighter.Highlight hh: highlighter.getHighlights()) {
                 Rectangle r = textArea.modelToView(hh.getStartOffset());
                 Rectangle s = at.createTransformedShape(r).getBounds();
                 int h = 2; //Math.max(2, s.height - 2);
-                g.fillRect(x, y + itop + s.y, getIconWidth(), h);
+                g2.fillRect(0, itop + s.y, getIconWidth(), h);
             }
         } catch (BadLocationException e) {
             e.printStackTrace();
@@ -179,10 +181,11 @@ class HighlightIcon implements Icon {
             //Rectangle thumbRect = vport.getBounds();
             thumbRect.height = range.getExtent();
             thumbRect.y = range.getValue(); //vport.getViewPosition().y;
-            g.setColor(THUMB_COLOR);
+            g2.setColor(THUMB_COLOR);
             Rectangle s = at.createTransformedShape(thumbRect).getBounds();
-            g.fillRect(x, y + itop + s.y, getIconWidth(), s.height);
+            g2.fillRect(0, itop + s.y, getIconWidth(), s.height);
         }
+        g2.dispose();
     }
     @Override public int getIconWidth() {
         return 4;
