@@ -143,9 +143,9 @@ class CheckBoxList<E extends CheckBoxNode> extends JList<E> {
 class CheckBoxCellRenderer<E extends CheckBoxNode> extends MouseAdapter implements ListCellRenderer<E> {
     private final JCheckBox checkBox = new JCheckBox();
     private int rollOverRowIndex = -1;
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean selected, boolean cellHasFocus) {
         checkBox.setOpaque(true);
-        if (isSelected) {
+        if (selected) {
             checkBox.setBackground(list.getSelectionBackground());
             checkBox.setForeground(list.getSelectionForeground());
         } else {
@@ -223,7 +223,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
             addActionListener(handler);
         }
     };
-    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
         if (leaf && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {
@@ -269,7 +269,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         };
         addActionListener(handler);
     }
-    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
         if (leaf && value instanceof DefaultMutableTreeNode) {
             Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             if (userObject instanceof CheckBoxNode) {

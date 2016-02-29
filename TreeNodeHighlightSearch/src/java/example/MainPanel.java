@@ -112,9 +112,9 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     @Override public Color getBackgroundNonSelectionColor() {
         return rollOver ? ROLLOVER_ROW_COLOR : super.getBackgroundNonSelectionColor();
     }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-        if (isSelected) {
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        if (selected) {
             c.setForeground(getTextSelectionColor());
         } else {
             rollOver = Objects.nonNull(q) && !q.isEmpty() && Objects.toString(value, "").startsWith(q);
@@ -135,10 +135,10 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
         setBackgroundNonSelectionColor(null);
         super.updateUI();
     }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         //DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-        if (isSelected) {
+        if (selected) {
             c.setOpaque(false);
             c.setForeground(getTextSelectionColor());
             //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());

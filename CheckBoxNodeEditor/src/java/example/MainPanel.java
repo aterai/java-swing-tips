@@ -242,7 +242,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     private String str;
 
-    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
         l.setFont(tree.getFont());
         if (value instanceof DefaultMutableTreeNode) {
@@ -381,7 +381,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //         panel.add(this, BorderLayout.WEST);
 //         this.setOpaque(false);
 //     }
-//     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+//     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
 //         //JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
 //         l.setFont(tree.getFont());
@@ -575,7 +575,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //         add(check, BorderLayout.WEST);
 //         check.setOpaque(false);
 //     }
-//     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+//     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
 //         //JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
 //         l.setFont(tree.getFont());

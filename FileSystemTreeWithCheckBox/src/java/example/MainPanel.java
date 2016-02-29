@@ -232,7 +232,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         panel.setOpaque(false);
         panel.add(checkBox, BorderLayout.WEST);
     }
-    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+    @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
         JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
         l.setFont(tree.getFont());
         if (value instanceof DefaultMutableTreeNode) {

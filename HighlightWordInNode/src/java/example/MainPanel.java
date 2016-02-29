@@ -108,11 +108,11 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
         setBackground(Color.WHITE);
         setEditable(false);
     }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         String txt = Objects.toString(value, "");
         getHighlighter().removeAllHighlights();
         setText(txt);
-        setBackground(isSelected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
+        setBackground(selected ? BACKGROUND_SELECTION_COLOR : Color.WHITE);
         if (Objects.nonNull(q) && !q.isEmpty() && txt.startsWith(q)) {
             try {
                 getHighlighter().addHighlight(0, q.length(), highlightPainter);

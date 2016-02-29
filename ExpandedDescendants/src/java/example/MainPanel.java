@@ -213,9 +213,9 @@ public final class MainPanel extends JPanel {
 //         this.renderer = renderer;
 //         this.fileSystemView = fileSystemView;
 //     }
-//     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//         JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
-//         if (isSelected) {
+//     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+//         JLabel c = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//         if (selected) {
 //             c.setOpaque(false);
 //             c.setForeground(getTextSelectionColor());
 //             //c.setBackground(Color.BLUE); //getBackgroundSelectionColor());

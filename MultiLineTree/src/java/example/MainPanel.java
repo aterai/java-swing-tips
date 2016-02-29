@@ -131,14 +131,14 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
         add(icon, BorderLayout.WEST);
         add(text);
     }
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        //String stringValue = tree.convertValueToText(value, isSelected, expanded, leaf, row, hasFocus);
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        //String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
         //setText(stringValue);
-        JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+        JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         //setEnabled(tree.isEnabled());
         Color bColor;
         Color fColor;
-        if (isSelected) {
+        if (selected) {
             bColor = renderer.getBackgroundSelectionColor();
             fColor = renderer.getTextSelectionColor();
         } else {
