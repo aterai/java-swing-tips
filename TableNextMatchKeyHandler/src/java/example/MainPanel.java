@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
 //@see javax/swing/plaf/basic/BasicTreeUI.Handler
 class TableNextMatchKeyHandler extends KeyAdapter {
     private static final int TARGET_COLUMN = 0;
+    private static final long TIME_FACTOR = 500L;
     private String prefix = "";
     private String typedString;
     private long lastTime;
-    private final long timeFactor = 500L;
 //     private final long timeFactor;
 //     protected TableNextMatchKeyHandler() {
 //         super();
@@ -97,7 +97,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         int increment = e.isShiftDown() ? -1 : 1;
         long time = e.getWhen();
         int startIndex = src.getSelectedRow();
-        if (time - lastTime < timeFactor) {
+        if (time - lastTime < TIME_FACTOR) {
             typedString += c;
             if (prefix.length() == 1 && c == prefix.charAt(0)) {
                 // Subsequent same key presses move the keyboard focus to the next
