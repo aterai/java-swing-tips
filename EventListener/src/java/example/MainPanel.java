@@ -11,9 +11,9 @@ import javax.swing.event.EventListenerList;
 public final class MainPanel extends JPanel {
     private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
-    private final MyButton   button = new MyButton("dummy");
-    private final MyLabel    label  = new MyLabel("test");
-    private final MyComboBox combo  = new MyComboBox();
+    private final MyButton button  = new MyButton("dummy");
+    private final MyLabel label    = new MyLabel("test");
+    private final MyComboBox combo = new MyComboBox();
 
 //*
     //http://docs.oracle.com/javase/jp/6/api/javax/swing/event/EventListenerList.html

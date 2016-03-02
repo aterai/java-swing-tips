@@ -66,7 +66,7 @@ class RotateIcon implements Icon {
             throw new IllegalArgumentException(rotate + ": Rotate must be (rotate % 90 == 0)");
         }
         d.setSize(icon.getIconWidth(), icon.getIconHeight());
-        image  = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         icon.paintIcon(null, g, 0, 0);
         g.dispose();

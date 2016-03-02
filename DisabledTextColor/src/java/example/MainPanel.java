@@ -22,10 +22,10 @@ public final class MainPanel extends JPanel {
 // Menu.disabledForeground
 // MenuItem.disabledForeground
 // Button.disabledText
-    private final JCheckBox cbx1   = new JCheckBox("default", true);
-    private final JCheckBox cbx2   = new JCheckBox("<html>html tag</html>", true);
-    private final JLabel label     = new JLabel("label disabledForeground");
-    private final JButton button   = new JButton("button disabledText");
+    private final JCheckBox cbx1 = new JCheckBox("default", true);
+    private final JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
+    private final JLabel label   = new JLabel("label disabledForeground");
+    private final JButton button = new JButton("button disabledText");
     private final JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
     private final JComboBox<String> combo2 = new JComboBox<>(new String[] {"<html>html</html>", "renderer"});
     private final JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});

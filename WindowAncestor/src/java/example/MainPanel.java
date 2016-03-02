@@ -11,10 +11,9 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         add(new JButton(new AbstractAction("show frame title") {
             @Override public void actionPerformed(ActionEvent e) {
-                JButton btn  = (JButton) e.getSource();
-                Window w = SwingUtilities.getWindowAncestor(btn);
-                //Container c = btn.getTopLevelAncestor();
-                //Frame f = JOptionPane.getFrameForComponent(btn);
+                Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
+                //Container c = ((JComponent) e.getSource()).getTopLevelAncestor();
+                //Frame f = JOptionPane.getFrameForComponent((Component) e.getSource());
                 if (w instanceof JFrame) {
                     JFrame frame = (JFrame) w;
                     JOptionPane.showMessageDialog(frame, "parentFrame.getTitle(): " + frame.getTitle(), "title", JOptionPane.INFORMATION_MESSAGE);

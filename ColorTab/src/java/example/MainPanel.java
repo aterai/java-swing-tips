@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
             tab.remove(tab.getSelectedIndex());
         }
     };
-    private final Action closeAllAction  = new AbstractAction(MENUITEM_CLOSEALL) {
+    private final Action closeAllAction = new AbstractAction(MENUITEM_CLOSEALL) {
         @Override public void actionPerformed(ActionEvent e) {
             tab.removeAll();
         }

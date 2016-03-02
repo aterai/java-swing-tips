@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         dialog.setTitle("xxxxxxxxx");
 
         tray = SystemTray.getSystemTray();
-        //TEST: icon   = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
+        //TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("anime.gif")).getImage(), "TRAY", popup);
         icon = new TrayIcon(imglist[0], "TRAY", popup);
         animator = new Timer(100, new ActionListener() {
             private int idx;

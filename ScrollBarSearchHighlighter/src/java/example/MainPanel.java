@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 //             return d;
 //         }
 //     };
-    private final JCheckBox check      = new JCheckBox(new AbstractAction("LineWrap") {
+    private final JCheckBox check = new JCheckBox(new AbstractAction("LineWrap") {
         @Override public void actionPerformed(ActionEvent e) {
             JCheckBox c = (JCheckBox) e.getSource();
             textArea.setLineWrap(c.isSelected());

@@ -40,8 +40,8 @@ public final class MainPanel extends JPanel {
         Border outside = BorderFactory.createTitledBorder("JComboBox Padding Test");
         p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.insets = new Insets(5, 5, 5, 0);
+        c.anchor = GridBagConstraints.LINE_END;
         for (int i = 0; i < list.size(); i++) {
             c.gridx   = 0;
             c.weightx = 0d;

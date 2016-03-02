@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("JComboBox"));
         GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 0);
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx  = 0;
+        c.insets = new Insets(5, 5, 5, 0);
+        c.anchor = GridBagConstraints.LINE_END;
         p.add(new JLabel("Wheel:"), c);
         p.add(new JLabel("Nomal:"), c);
 

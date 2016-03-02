@@ -68,7 +68,7 @@ class DraggableImageMouseListener extends MouseAdapter {
 
     protected DraggableImageMouseListener(ImageIcon ii) {
         super();
-        image  = ii.getImage();
+        image = ii.getImage();
         int width  = ii.getIconWidth();
         int height = ii.getIconHeight();
         centerPt.x = width / 2d;

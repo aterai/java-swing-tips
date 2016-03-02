@@ -47,17 +47,17 @@ public final class MainPanel extends JPanel {
         Border outside = BorderFactory.createTitledBorder("HyperlinkLabel");
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
-        c.insets  = new Insets(5, 5, 5, 0);
+        c.insets = new Insets(5, 5, 5, 0);
 
-        c.gridx   = 0;
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx  = 0;
+        c.anchor = GridBagConstraints.LINE_END;
         add(new JLabel("JLabel+MouseListener: "), c);
         add(new JLabel("JButton: "), c);
         add(new JLabel("JButton+ButtonUI: "), c);
         add(new JLabel("JEditorPane+HyperlinkListener: "), c);
 
-        c.gridx   = 1;
-        c.anchor  = GridBagConstraints.LINE_START;
+        c.gridx  = 1;
+        c.anchor = GridBagConstraints.LINE_START;
         add(new URILabel(MYSITE), c);
         add(new JButton(browseAction), c);
         add(new HyperlinkButton(browseAction), c);

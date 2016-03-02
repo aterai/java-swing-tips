@@ -14,8 +14,8 @@ public final class MainPanel extends JPanel {
     private final transient SystemTray tray = SystemTray.getSystemTray();
     private final transient Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
     private final transient TrayIcon icon   = new TrayIcon(image, "TRAY", null);
-    //private final JWindow dummy    = new JWindow(); //Ubuntu?
-    private final JDialog dummy    = new JDialog();
+    //private final JWindow dummy = new JWindow(); //Ubuntu?
+    private final JDialog dummy = new JDialog();
     private final JFrame frame;
 
     public MainPanel(JFrame f) {

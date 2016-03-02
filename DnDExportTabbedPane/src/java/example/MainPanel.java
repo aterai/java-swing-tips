@@ -231,7 +231,7 @@ class DnDTabbedPane extends JTabbedPane {
             return;
         }
 
-        Component cmp    = getComponentAt(dragIndex);
+        Component cmp = getComponentAt(dragIndex);
         Container parent = target;
         while (Objects.nonNull(parent)) {
             if (cmp.equals(parent)) { //target == child: JTabbedPane in JTabbedPane

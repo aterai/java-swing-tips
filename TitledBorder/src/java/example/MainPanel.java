@@ -33,9 +33,9 @@ public final class MainPanel extends JPanel {
 
         JPanel p2 = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx   = 0;
-        c.insets  = new Insets(5, 5, 5, 5);
-        c.anchor  = GridBagConstraints.LINE_END;
+        c.gridx  = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.LINE_END;
         p2.add(new JLabel("TitlePosition:"), c);
         p2.add(new JLabel("TitleJustification:"), c);
 

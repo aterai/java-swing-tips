@@ -52,9 +52,9 @@ public final class MainPanel extends JPanel {
         JLayeredPane p = new JLayeredPane();
         p.setLayout(layout);
 
-        Spring x     = layout.getConstraint(SpringLayout.WIDTH, p);
-        Spring y     = layout.getConstraint(SpringLayout.HEIGHT, p);
-        Spring g     = Spring.minus(Spring.constant(ir));
+        Spring x = layout.getConstraint(SpringLayout.WIDTH, p);
+        Spring y = layout.getConstraint(SpringLayout.HEIGHT, p);
+        Spring g = Spring.minus(Spring.constant(ir));
 
         SpringLayout.Constraints constraints = layout.getConstraints(c);
         constraints.setConstraint(SpringLayout.EAST,  Spring.sum(x, g));

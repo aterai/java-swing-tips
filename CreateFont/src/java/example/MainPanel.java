@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        Font font    = makeFont(getClass().getResource("mona.ttf"));
+        Font font = makeFont(getClass().getResource("mona.ttf"));
         //Document doc = makeDocument(getClass().getResource("bar.utf8.txt"), "UTF-8");
         if (Objects.nonNull(font)) {
             System.out.println(font.toString());

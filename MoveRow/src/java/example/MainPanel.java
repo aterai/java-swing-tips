@@ -102,9 +102,9 @@ class TablePopupMenu extends JPopupMenu {
         add(downAction);
     }
     @Override public void show(Component c, int x, int y) {
-        int row     = table.rowAtPoint(new Point(x, y));
-        int count   = table.getSelectedRowCount();
-        int[] l     = table.getSelectedRows();
+        int row   = table.rowAtPoint(new Point(x, y));
+        int count = table.getSelectedRowCount();
+        int[] l   = table.getSelectedRows();
         boolean flg = true;
         for (int i = 0; i < l.length; i++) {
             if (l[i] == row) {

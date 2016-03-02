@@ -8,7 +8,7 @@ import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final JComboBox<String> comboBox = new JComboBox<>(makeModel());
-    private final JSpinner spinner   = new JSpinner(new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1));
+    private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1));
     public MainPanel() {
         super(new BorderLayout());
         spinner.addChangeListener(new ChangeListener() {

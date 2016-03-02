@@ -37,12 +37,12 @@ public final class BarFactory {
             //System.exit(1);
         }
         resources = res;
-        //actions   = act;
+        //actions = act;
         //initActions();
     }
     public BarFactory(ResourceBundle res) {
         resources = res;
-        //actions   = act;
+        //actions = act;
         //initActions();
     }
 

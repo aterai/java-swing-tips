@@ -38,13 +38,13 @@ public final class MainPanel extends JPanel {
                     int targetWidth = target.getSize().width;
                     targetWidth = targetWidth == 0 ? Integer.MAX_VALUE : targetWidth;
                     Insets insets = target.getInsets();
-                    int hgap = getHgap();
-                    int vgap = getVgap();
-                    int maxWidth = targetWidth - insets.left - insets.right;
-                    int height   = vgap;
-                    int rowWidth = hgap;
+                    int hgap      = getHgap();
+                    int vgap      = getVgap();
+                    int maxWidth  = targetWidth - insets.left - insets.right;
+                    int height    = vgap;
+                    int rowWidth  = hgap;
                     int rowHeight = 0;
-                    int nmembers = target.getComponentCount();
+                    int nmembers  = target.getComponentCount();
                     for (int i = 0; i < nmembers; i++) {
                         Component m = target.getComponent(i);
                         if (m.isVisible()) {

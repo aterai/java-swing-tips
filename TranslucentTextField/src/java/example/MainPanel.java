@@ -48,9 +48,9 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(outside, inside));
         GridBagConstraints c = new GridBagConstraints();
 
-        c.gridx   = 0;
-        c.insets  = new Insets(15, 15, 15, 0);
-        c.anchor  = GridBagConstraints.LINE_START;
+        c.gridx  = 0;
+        c.insets = new Insets(15, 15, 15, 0);
+        c.anchor = GridBagConstraints.LINE_START;
         add(new JLabel("0. setOpaque(true)"), c);
         add(new JLabel("1. setOpaque(false)"), c);
         add(new JLabel("2. 1+paintComponent"), c);
