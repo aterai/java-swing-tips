@@ -210,14 +210,13 @@ public final class MainPanel extends JPanel {
 }
 
 class PlaceholderLayerUI extends LayerUI<JTextComponent> {
-    private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
-    public final JLabel hint;
-    public PlaceholderLayerUI() {
-        super();
-        this.hint = new JLabel();
-        hint.setForeground(INACTIVE);
-        hint.setBackground(Color.RED);
-    }
+    public final JLabel hint = new JLabel() {
+        @Override public void updateUI() {
+            super.updateUI();
+            setForeground(UIManager.getColor("TextField.inactiveForeground"));
+            setBackground(Color.RED);
+        }
+    };
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
@@ -225,12 +224,13 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
             JTextComponent tc = (JTextComponent) jlayer.getView();
             if (!tc.getText().isEmpty()) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setPaint(INACTIVE);
+                g2.setPaint(hint.getForeground());
                 Insets i = tc.getInsets();
                 Dimension d = hint.getPreferredSize();
                 int x = tc.getWidth() - i.right - d.width - 2;
                 int y = (tc.getHeight() - d.height) / 2;
-                SwingUtilities.paintComponent(g2, hint, tc, x, y, d.width, d.height);
+                g2.translate(x, y);
+                SwingUtilities.paintComponent(g2, hint, tc, 0, 0, d.width, d.height);
                 g2.dispose();
             }
         }
