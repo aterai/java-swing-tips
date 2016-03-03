@@ -28,7 +28,8 @@ public final class MainPanel extends JPanel {
         AbstractButton b = new JToggleButton(title) {
             private final transient ArrowToggleButtonBarCellIcon icon = new ArrowToggleButtonBarCellIcon();
             @Override public boolean contains(int x, int y) {
-                return icon.getShape().contains(x, y);
+                Shape s = icon.getShape();
+                return Objects.nonNull(s) && s.contains(x, y);
             }
             @Override public Dimension getPreferredSize() {
                 return new Dimension(icon.getIconWidth(), icon.getIconHeight());
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
         b.setIcon(new Icon() {
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
                 g.setColor(Color.GRAY);
-                g.drawOval(x, y, 12, 12);
+                g.drawOval(x, y, getIconWidth(), getIconHeight());
             }
             @Override public int getIconWidth() {
                 return 12;
