@@ -194,7 +194,6 @@ enum PasswordField {
 // }
 
 class ColorIcon implements Icon {
-    private final Dimension d = new Dimension(12, 12);
     private final Color color;
     protected ColorIcon(Color color) {
         this.color = color;
@@ -203,13 +202,13 @@ class ColorIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(color);
-        g2.fillRect(1, 1, d.width - 1, d.height - 1);
+        g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
         g2.dispose();
     }
     @Override public int getIconWidth() {
-        return d.width;
+        return 12;
     }
     @Override public int getIconHeight() {
-        return d.height;
+        return 12;
     }
 }

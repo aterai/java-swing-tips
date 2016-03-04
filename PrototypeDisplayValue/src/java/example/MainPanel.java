@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
 class Site {
     public final Icon favicon;
     public final String title;
-    public Site(String title, Icon favicon) {
+    protected Site(String title, Icon favicon) {
         this.title = title;
         this.favicon = favicon;
     }
@@ -96,14 +96,14 @@ class Site {
 
 class DummyIcon implements Icon {
     private final Color color;
-    public DummyIcon(Color color) {
+    protected DummyIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(color);
         g2.translate(x, y);
-        g2.fillOval(4, 4, 16, 16);
+        g2.fillOval(4, 4, getIconWidth() - 8, getIconHeight() - 8);
         g2.dispose();
     }
     @Override public int getIconWidth() {

@@ -134,19 +134,21 @@ class DotBorder extends LineBorder {
 }
 
 class ColorIcon implements Icon {
-    private final Dimension d = new Dimension(24, 24);
     private final Color color;
     protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.setColor(color);
-        g.fillRoundRect(x + 1, y + 1, d.width - 2, d.height - 2, 10, 10);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
+        g2.setPaint(color);
+        g2.fillOval(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+        g2.dispose();
     }
     @Override public int getIconWidth() {
-        return d.width;
+        return 24;
     }
     @Override public int getIconHeight() {
-        return d.height;
+        return 24;
     }
 }

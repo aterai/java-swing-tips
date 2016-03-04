@@ -191,7 +191,7 @@ class ColorIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(color);
-        g2.fillRect(1, 1, 11, 11);
+        g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
         g2.dispose();
     }
     @Override public int getIconWidth() {

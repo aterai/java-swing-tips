@@ -112,7 +112,7 @@ class DummyIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.RED);
         g2.translate(x, y);
-        g2.fillOval(0, 0, 32, 32);
+        g2.fillOval(0, 0, getIconWidth(), getIconHeight());
         g2.dispose();
     }
     @Override public int getIconWidth() {

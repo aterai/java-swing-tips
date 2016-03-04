@@ -71,7 +71,8 @@ class RadioButtonMenuItemIcon1 implements Icon, UIResource, Serializable {
         if (model.isSelected()) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.fillRoundRect(x + 3, y + 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
+            g2.translate(x, y);
+            g2.fillRoundRect(3, 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
             g2.dispose();
         }
     }
@@ -92,9 +93,12 @@ class RadioButtonMenuItemIcon2 implements Icon, UIResource, Serializable {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
         if (model.isSelected()) {
-            //g.fillRoundRect(x + 3, y + 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
-            g.fillOval(x + 2, y + 2, getIconWidth() - 5, getIconHeight() - 5);
-            //g.fillArc(x + 2, y + 2, getIconWidth() - 5, getIconHeight() - 5, 0, 360);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
+            //g2.fillRoundRect(3, 3, getIconWidth() - 6, getIconHeight() - 6, 4, 4);
+            g2.fillOval(2, 2, getIconWidth() - 5, getIconHeight() - 5);
+            //g2.fillArc(2, 2, getIconWidth() - 5, getIconHeight() - 5, 0, 360);
+            g2.dispose();
         }
     }
     @Override public int getIconWidth() {

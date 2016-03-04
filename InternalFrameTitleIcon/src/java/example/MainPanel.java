@@ -51,14 +51,14 @@ public final class MainPanel extends JPanel {
 
 class ColorIcon implements Icon {
     private final Color color;
-    public ColorIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setPaint(color);
-        g2.fillRect(1, 1, 15, 15);
+        g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
         g2.dispose();
     }
     @Override public int getIconWidth() {
