@@ -78,10 +78,6 @@ class RearrangingHandler extends MouseAdapter {
     private Component gap;
     private final Point dragOffset = new Point();
 
-    public RearrangingHandler() {
-        super();
-        window.setBackground(new Color(0x0, true));
-    }
     @Override public void mousePressed(MouseEvent e) {
         if (((JComponent) e.getComponent()).getComponentCount() <= 1) {
             startPt.setLocation(0, 0);
@@ -104,6 +100,7 @@ class RearrangingHandler extends MouseAdapter {
         gap = Box.createRigidArea(d);
         swapComponentLocation(parent, c, gap, index);
 
+        window.setBackground(new Color(0x0, true));
         window.add(draggingComonent);
         //window.setSize(d);
         window.pack();
