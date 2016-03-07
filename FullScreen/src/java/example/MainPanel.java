@@ -9,22 +9,8 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final String KEY = "full-screen";
-    private final JDialog dialog;
-    public MainPanel(JDialog frame) {
+    public MainPanel() {
         super(new BorderLayout());
-        this.dialog = frame;
-        dialog.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosing(WindowEvent e) {
-                System.out.println("windowClosing:");
-                System.out.println("  triggered only when you click on the X");
-                System.out.println("  or on the close menu item in the window's system menu.'");
-                System.out.println("System.exit(0);");
-                System.exit(0); //WebStart
-            }
-            @Override public void windowClosed(WindowEvent e) {
-                System.out.println("windowClosed & rebuild:");
-            }
-        });
         setFocusable(true);
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
@@ -55,31 +41,39 @@ public final class MainPanel extends JPanel {
 //                 } else {
 
                 ////click on the X
-                dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+                Component c = SwingUtilities.getRoot(getRootPane());
+                if (c instanceof JDialog) {
+                    JDialog d = (JDialog) c;
+                    d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
+                }
                 //triggered windowClosing
             }
         });
         add(new JLabel("<html>F11 or Double Click: toggle full-screen<br>ESC: exit"), BorderLayout.NORTH);
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
     private void toggleFullScreenWindow() {
-        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-        if (Objects.isNull(graphicsDevice.getFullScreenWindow())) {
-            dialog.dispose(); //destroy the native resources
-            dialog.setUndecorated(true);
-            dialog.setVisible(true); //rebuilding the native resources
-            graphicsDevice.setFullScreenWindow(dialog);
-        } else {
-            graphicsDevice.setFullScreenWindow(null);
-            dialog.dispose();
-            dialog.setUndecorated(false);
-            dialog.setVisible(true);
-            dialog.repaint();
+        Component c = SwingUtilities.getRoot(getRootPane());
+        if (c instanceof JDialog) {
+            JDialog dialog = (JDialog) c;
+            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+            if (Objects.isNull(graphicsDevice.getFullScreenWindow())) {
+                dialog.dispose(); //destroy the native resources
+                dialog.setUndecorated(true);
+                dialog.setVisible(true); //rebuilding the native resources
+                graphicsDevice.setFullScreenWindow(dialog);
+            } else {
+                graphicsDevice.setFullScreenWindow(null);
+                dialog.dispose();
+                dialog.setUndecorated(false);
+                dialog.setVisible(true);
+                dialog.repaint();
+            }
         }
         requestFocusInWindow(); //for Ubuntu
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -94,8 +88,21 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final JDialog dialog = new JDialog();
-        dialog.getContentPane().add(new MainPanel(dialog));
+        JDialog dialog = new JDialog();
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) {
+                System.out.println("windowClosing:");
+                System.out.println("  triggered only when you click on the X");
+                System.out.println("  or on the close menu item in the window's system menu.'");
+                System.out.println("System.exit(0);");
+                System.exit(0); //WebStart
+            }
+            @Override public void windowClosed(WindowEvent e) {
+                System.out.println("windowClosed & rebuild:");
+            }
+        });
+        dialog.getContentPane().add(new MainPanel());
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
