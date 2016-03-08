@@ -11,16 +11,9 @@ import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
     private final JPopupMenu popup = new JPopupMenu();
-    private final transient SystemTray tray = SystemTray.getSystemTray();
-    private final transient Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
-    private final transient TrayIcon icon   = new TrayIcon(image, "TRAY", null);
-    //private final JWindow dummy = new JWindow(); //Ubuntu?
-    private final JDialog dummy = new JDialog();
-    private final JFrame frame;
 
-    public MainPanel(JFrame f) {
+    public MainPanel() {
         super(new BorderLayout());
-        this.frame = f;
         add(new JLabel("SystemTray.isSupported(): " + SystemTray.isSupported()), BorderLayout.NORTH);
 
         ButtonGroup group = new ButtonGroup();
@@ -35,32 +28,35 @@ public final class MainPanel extends JPanel {
 
         add(box);
         setPreferredSize(new Dimension(320, 240));
-        if (!SystemTray.isSupported()) {
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            return;
-        }
-        frame.addWindowListener(new WindowAdapter() {
-            @Override public void windowIconified(WindowEvent e) {
-                e.getWindow().dispose();
+
+        EventQueue.invokeLater(() -> {
+            Container c = getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                initPopupMenu((JFrame) c);
             }
         });
-        dummy.setUndecorated(true);
-        //dummy.setAlwaysOnTop(true);
-
-        icon.addMouseListener(new TrayIconPopupMenuHandler(popup, dummy));
-
-        initPopupMenu();
-        try {
-            tray.add(icon);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void initPopupMenu() {
+    private void initPopupMenu(JFrame frame) {
         // This code is inspired from:
         // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
         // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
+
+        //JWindow dummy = new JWindow(); //Ubuntu?
+        JDialog dummy = new JDialog();
+        dummy.setUndecorated(true);
+        //dummy.setAlwaysOnTop(true);
+
+        Image image = new ImageIcon(getClass().getResource("16x16.png")).getImage();
+        TrayIcon icon = new TrayIcon(image, "TRAY", null);
+        icon.addMouseListener(new TrayIconPopupMenuHandler(popup, dummy));
+        try {
+            SystemTray.getSystemTray().add(icon);
+        } catch (AWTException ex) {
+            ex.printStackTrace();
+        }
+
+        //init JPopupMenu
         popup.addPopupMenuListener(new PopupMenuListener() {
             @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) { /* not needed */ }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -75,16 +71,22 @@ public final class MainPanel extends JPanel {
         popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem aaaaaaaaaaa"));
         popup.add(new AbstractAction("OPEN") {
             @Override public void actionPerformed(ActionEvent e) {
+                frame.setExtendedState(Frame.NORMAL);
                 frame.setVisible(true);
             }
         });
         popup.add(new AbstractAction("EXIT") {
             @Override public void actionPerformed(ActionEvent e) {
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.dispose();
-                dummy.dispose();
-                tray.remove(icon);
-                //System.exit(0);
+                SystemTray tray = SystemTray.getSystemTray();
+                for (TrayIcon icon: tray.getTrayIcons()) {
+                    tray.remove(icon);
+                }
+                for (Frame f: Frame.getFrames()) {
+                    f.dispose();
+                }
+                //tray.remove(icon);
+                //frame.dispose();
+                //dummy.dispose();
             }
         });
     }
@@ -99,18 +101,22 @@ public final class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//             for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels())
-//               if ("Nimbus".equals(laf.getName()))
-//                 UIManager.setLookAndFeel(laf.getClassName());
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
-        frame.setResizable(false);
+        if (SystemTray.isSupported()) {
+            frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            frame.addWindowStateListener(e -> {
+                if (e.getNewState() == Frame.ICONIFIED) {
+                    e.getWindow().dispose();
+                }
+            });
+        } else {
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

@@ -7,19 +7,12 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private MainPanel(final JFrame frame) {
+    private MainPanel() {
         super();
         setPreferredSize(new Dimension(320, 240));
-        if (!SystemTray.isSupported()) {
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            return;
-        }
-        frame.addWindowListener(new WindowAdapter() {
-            @Override public void windowIconified(WindowEvent e) {
-                e.getWindow().dispose();
-            }
-        });
-        final SystemTray tray = SystemTray.getSystemTray();
+    }
+    private static TrayIcon makeTrayIcon(JFrame frame) {
+//         final SystemTray tray = SystemTray.getSystemTray();
 //         final Dimension d = tray.getTrayIconSize();
 //         BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 //         ImageIcon i = new ImageIcon(getClass().getResource("16x16.png"));
@@ -28,33 +21,29 @@ public final class MainPanel extends JPanel {
 //         g.clearRect(0, 0, d.width, d.height);
 //         i.paintIcon(null, g, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
 //         g.dispose();
-        final Image image     = new ImageIcon(getClass().getResource("16x16.png")).getImage();
-        final PopupMenu popup = new PopupMenu();
-        final TrayIcon icon   = new TrayIcon(image, "TRAY", popup);
 
         MenuItem item1 = new MenuItem("OPEN");
-        item1.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                frame.setVisible(true);
-            }
+        item1.addActionListener(e -> {
+            frame.setExtendedState(Frame.NORMAL);
+            frame.setVisible(true);
         });
+
         MenuItem item2 = new MenuItem("EXIT");
-        item2.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+        item2.addActionListener(e -> {
+            SystemTray tray = SystemTray.getSystemTray();
+            for (TrayIcon icon: tray.getTrayIcons()) {
                 tray.remove(icon);
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.dispose();
-                //System.exit(0);
             }
+            frame.dispose();
+            //System.exit(0);
         });
+
+        PopupMenu popup = new PopupMenu();
         popup.add(item1);
         popup.add(item2);
 
-        try {
-            tray.add(icon);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        Image image = new ImageIcon(MainPanel.class.getResource("16x16.png")).getImage();
+        return new TrayIcon(image, "TRAY", popup);
     }
 
     public static void main(String... args) {
@@ -72,10 +61,22 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
         JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel(frame));
-        frame.setResizable(false);
+        if (SystemTray.isSupported()) {
+            frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            frame.addWindowStateListener(e -> {
+                if (e.getNewState() == Frame.ICONIFIED) {
+                    e.getWindow().dispose();
+                }
+            });
+            try {
+                SystemTray.getSystemTray().add(makeTrayIcon(frame));
+            } catch (AWTException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+        frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

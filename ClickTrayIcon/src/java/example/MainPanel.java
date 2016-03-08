@@ -25,9 +25,31 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(new JTextArea(TEXT)));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static TrayIcon makeTrayIcon(final JFrame frame, final SystemTray tray, Image image) {
+    private static TrayIcon makeTrayIcon(final JFrame frame) {
+        MenuItem open = new MenuItem("Option");
+        open.addActionListener(e -> frame.setVisible(true));
+
+        MenuItem exit = new MenuItem("Exit");
+        exit.addActionListener(e -> {
+            SystemTray tray = SystemTray.getSystemTray();
+            for (TrayIcon icon: tray.getTrayIcons()) {
+                tray.remove(icon);
+            }
+            //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            frame.dispose();
+        });
+
         PopupMenu popup = new PopupMenu();
-        final TrayIcon icon = new TrayIcon(image, "Click Test", popup);
+        popup.add(open);
+        popup.add(exit);
+
+        Image image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        new StarIcon().paintIcon(null, g, 0, 0);
+        g.dispose();
+
+        TrayIcon icon = new TrayIcon(image, "Click Test", popup);
         icon.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
@@ -38,23 +60,7 @@ public final class MainPanel extends JPanel {
                 }
             }
         });
-        MenuItem open = new MenuItem("Option");
-        MenuItem exit = new MenuItem("Exit");
-        popup.add(open);
-        popup.add(exit);
-        open.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                frame.setVisible(true);
-            }
-        });
-        exit.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tray.remove(icon);
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                //frame.dispose();
-                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-            }
-        });
+
         return icon;
     }
     public static void main(String... args) {
@@ -71,29 +77,20 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final JFrame frame = new JFrame("@title@");
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        JFrame frame = new JFrame("@title@");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        if (!SystemTray.isSupported()) {
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            return;
-        }
-        Image image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-        new StarIcon().paintIcon(null, g, 0, 0);
-        g.dispose();
-
-        SystemTray tray = SystemTray.getSystemTray();
-        TrayIcon icon = makeTrayIcon(frame, tray, image);
-        try {
-            tray.add(icon);
-        } catch (AWTException e) {
-            e.printStackTrace();
+        if (SystemTray.isSupported()) {
+            frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            try {
+                SystemTray.getSystemTray().add(makeTrayIcon(frame));
+            } catch (AWTException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
