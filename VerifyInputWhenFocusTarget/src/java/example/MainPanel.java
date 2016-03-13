@@ -126,7 +126,7 @@ class IntegerInputVerifier extends InputVerifier {
             try {
                 Integer.parseInt(textField.getText());
                 verified = true;
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ex) {
                 System.out.println("InputVerifier#verify: false");
                 UIManager.getLookAndFeel().provideErrorFeedback(c);
             }

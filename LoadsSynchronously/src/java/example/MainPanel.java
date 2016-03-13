@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
 //         tracker.addImage(img, 0);
 //         try {
 //             tracker.waitForID(0);
-//         } catch (InterruptedException e) {
-//             e.printStackTrace();
+//         } catch (InterruptedException ex) {
+//             ex.printStackTrace();
 //         } finally {
 //             if (!tracker.isErrorID(0)) {
 //                 w = img.getWidth(this);
@@ -117,8 +117,8 @@ public final class MainPanel extends JPanel {
                     tmp.deleteOnExit();
                     ImageIO.write(image, "jpeg", tmp);
                     label.setIcon(new ImageIcon(tmp.getAbsolutePath()));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

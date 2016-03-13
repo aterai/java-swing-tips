@@ -271,8 +271,8 @@ class StarIcon implements Icon {
 //     public void writeData(String str) {
 //         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 //             writer.write(str, 0, str.length());
-//         } catch (IOException e) {
-//             e.printStackTrace();
+//         } catch (IOException ex) {
+//             ex.printStackTrace();
 //         }
 //     }
 // }

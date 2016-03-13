@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
         desktop.add(f);
         try {
             f.setIcon(true);
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
+        } catch (PropertyVetoException ex) {
+            ex.printStackTrace();
         }
     }
     public static void main(String... args) {

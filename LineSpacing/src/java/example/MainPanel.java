@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
         try {
             StyledDocument doc = textPane.getStyledDocument();
             doc.insertString(doc.getLength(), "134500698\n", attr);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
 //         StyledDocument doc = new DefaultStyledDocument();
 //         SimpleAttributeSet a = new SimpleAttributeSet();

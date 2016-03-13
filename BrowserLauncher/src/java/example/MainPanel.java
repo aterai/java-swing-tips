@@ -95,9 +95,9 @@ final class BrowserLauncher {
                     throw new UnsupportedOperationException("Could not find web browser");
                 }
             }
-        } catch (IOException | InterruptedException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (IOException | InterruptedException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, ERR_MSG + ":\n" + e.getLocalizedMessage(), "titlebar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ERR_MSG + ":\n" + ex.getLocalizedMessage(), "titlebar", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

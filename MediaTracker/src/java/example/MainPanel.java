@@ -67,8 +67,8 @@ public final class MainPanel extends JPanel {
 
         try {
             addImageFile(new File(getClass().getResource("test.png").toURI()));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
         }
         add(scroll);
         setPreferredSize(new Dimension(320, 240));
@@ -83,8 +83,8 @@ public final class MainPanel extends JPanel {
         tracker.addImage(img, IMAGE_ID);
         try {
             tracker.waitForID(IMAGE_ID);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         } finally {
             if (!tracker.isErrorID(IMAGE_ID)) {
                 model.addTest(new Test(file.getName(), path,

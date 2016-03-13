@@ -10,8 +10,8 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         try {
             Thread.sleep(5000); //dummy task
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));
@@ -77,8 +77,9 @@ public final class MainPanel extends JPanel {
 //     public static void createAndShowGUI() {
 //         try {
 //             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//         } catch (Exception e) {
-//             e.printStackTrace();
+//         } catch (ClassNotFoundException | InstantiationException
+//                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//             ex.printStackTrace();
 //         }
 //         System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
 //         final JWindow splashScreen = new JWindow();

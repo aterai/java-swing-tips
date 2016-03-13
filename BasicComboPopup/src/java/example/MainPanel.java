@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
         try {
             Document doc = jtp.getDocument();
             doc.insertString(jtp.getCaretPosition(), str, null);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
 

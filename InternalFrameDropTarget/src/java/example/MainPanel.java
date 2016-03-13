@@ -146,8 +146,8 @@ public class MainPanel extends JPanel {
 //                     source.getColumnModel().removeColumn(column);
 //                     target.getColumnModel().addColumn(column);
 //                 }
-//             } catch (Exception e) {
-//                 e.printStackTrace();
+//             } catch (Exception ex) {
+//                 ex.printStackTrace();
 //             }
 //             return false;
 //         }

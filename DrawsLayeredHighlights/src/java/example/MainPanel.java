@@ -103,8 +103,8 @@ public final class MainPanel extends JPanel {
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
-        } catch (BadLocationException | PatternSyntaxException e) {
-            //e.printStackTrace();
+        } catch (BadLocationException | PatternSyntaxException ex) {
+            //ex.printStackTrace();
             field.setBackground(WARNING_COLOR);
         }
         repaint();

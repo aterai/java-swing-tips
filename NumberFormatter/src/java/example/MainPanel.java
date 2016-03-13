@@ -94,10 +94,8 @@ class WarningSpinner extends JSpinner {
             @Override public Object stringToValue(String text) throws ParseException {
                 try {
                     Long.parseLong(text);
-                } catch (NumberFormatException e) {
-                    ParseException ex = new ParseException(e.getMessage(), 0);
-                    ex.initCause(e);
-                    throw ex;
+                } catch (NumberFormatException ex) {
+                    throw (ParseException) new ParseException(ex.getMessage(), 0).initCause(ex);
                 }
                 Object o = format.parse(text);
                 if (o instanceof Long) {
@@ -180,7 +178,7 @@ class WarningSpinner extends JSpinner {
 //         if (!proposedValue.isEmpty()) {
 //             try {
 //                 newValue = Integer.parseInt(proposedValue);
-//             } catch (NumberFormatException e) {
+//             } catch (NumberFormatException ex) {
 //                 throw new BadLocationException(proposedValue, offset);
 //             }
 //         }

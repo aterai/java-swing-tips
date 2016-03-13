@@ -30,8 +30,8 @@ class MainPanel {
                             splashScreen.dispose();
                         }
                     });
-                } catch (InterruptedException | InvocationTargetException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException | InvocationTargetException ex) {
+                    ex.printStackTrace();
                 }
             }
         }).start();

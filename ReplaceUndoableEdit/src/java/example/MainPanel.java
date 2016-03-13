@@ -195,7 +195,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //             String txt;
 //             try {
 //                 txt = getText(offset, length);
-//             } catch (BadLocationException e) {
+//             } catch (BadLocationException ex) {
 //                 txt = null;
 //             }
 //             this.oldValue = txt;
@@ -205,19 +205,15 @@ class DocumentFilterUndoManager extends UndoManager {
 //         @Override public void undo() { //throws CannotUndoException {
 //             try {
 //                 replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
-//             } catch (BadLocationException e) {
-//                 CannotUndoException ex = new CannotUndoException();
-//                 ex.initCause(e);
-//                 throw ex;
+//             } catch (BadLocationException ex) {
+//                 throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //             }
 //         }
 //         @Override public void redo() { //throws CannotRedoException {
 //             try {
 //                 replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
-//             } catch (BadLocationException e) {
-//                 CannotUndoException ex = new CannotUndoException();
-//                 ex.initCause(e);
-//                 throw ex;
+//             } catch (BadLocationException ex) {
+//                 throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //             }
 //         }
 //         @Override public boolean canUndo() {

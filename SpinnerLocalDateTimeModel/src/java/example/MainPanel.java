@@ -213,9 +213,9 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
                     String maxString = formatter.valueToString(model.getStart());
                     String minString = formatter.valueToString(model.getEnd());
                     ftf.setColumns(Math.max(maxString.length(), minString.length()));
-                } catch (ParseException e) {
+                } catch (ParseException ex) {
                     // PENDING: hmuller
-                    e.printStackTrace();
+                    ex.printStackTrace();
                 }
                 ftf.setHorizontalAlignment(SwingConstants.LEFT);
                 ftf.setEditable(true);
@@ -259,8 +259,8 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
                     throw new ParseException(text + " is out of range", 0);
                 }
                 return value;
-            } catch (DateTimeParseException e) {
-                throw (ParseException) new ParseException(e.getMessage(), e.getErrorIndex()).initCause(e);
+            } catch (DateTimeParseException ex) {
+                throw (ParseException) new ParseException(ex.getMessage(), ex.getErrorIndex()).initCause(ex);
             }
         }
     }

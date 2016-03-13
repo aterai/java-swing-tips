@@ -95,7 +95,7 @@ class IntegerInputVerifier extends InputVerifier {
             try {
                 Integer.parseInt(textField.getText());
                 verified = true;
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ex) {
                 UIManager.getLookAndFeel().provideErrorFeedback(c);
                 //Toolkit.getDefaultToolkit().beep();
             }
@@ -143,10 +143,8 @@ class IntegerDocument extends PlainDocument {
         } else {
             try {
                 return Integer.parseInt(proposedValue);
-            } catch (NumberFormatException e) {
-                BadLocationException ex = new BadLocationException(proposedValue, offset);
-                ex.initCause(e);
-                throw ex;
+            } catch (NumberFormatException ex) {
+                throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
             }
         }
     }
@@ -181,10 +179,8 @@ class IntegerDocumentFilter extends DocumentFilter {
         } else {
             try {
                 return Integer.parseInt(proposedValue);
-            } catch (NumberFormatException e) {
-                BadLocationException ex = new BadLocationException(proposedValue, offset);
-                ex.initCause(e);
-                throw ex;
+            } catch (NumberFormatException ex) {
+                throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
             }
         }
     }
@@ -202,7 +198,7 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
         //amountEditFormat.setGroupingUsed(false);
         //try {
         //    mf = new MaskFormatter("#######");
-        //} catch (ParseException e) {}
+        //} catch (ParseException ex) {}
         numberFormatter.setValueClass(Integer.class);
         ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
     }

@@ -86,8 +86,8 @@ public final class MainPanel extends JPanel {
         try {
             doc.insertString(doc.getLength(), text + LINESEPARATOR, null);
             jtp.setCaretPosition(doc.getLength());
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
 

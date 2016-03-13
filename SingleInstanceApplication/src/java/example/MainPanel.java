@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         ServerSocket socket = null;
         try {
             socket = new ServerSocket(38765);
-        } catch (IOException e) {
+        } catch (IOException ex) {
             socket = null;
         }
         if (socket == null) {

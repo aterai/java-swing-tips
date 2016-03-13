@@ -11,8 +11,8 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         try {
             Thread.sleep(3000); //dummy task
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
         add(new JScrollPane(new JTree()));
         setPreferredSize(new Dimension(320, 240));

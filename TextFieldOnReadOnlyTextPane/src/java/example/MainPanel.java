@@ -65,8 +65,8 @@ public final class MainPanel extends JPanel {
 
             textPane.insertComponent(field);
             doc.insertString(doc.getLength(), "\n", null);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
     public static void main(String... args) {

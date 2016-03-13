@@ -338,4 +338,4 @@ class TextAreaHandler extends StreamHandler {
 //             }
 //         }
 //     }).start();
-// } catch (IOException e) {}
+// } catch (IOException ex) {}

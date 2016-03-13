@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
             //    jtc.getHighlighter().addHighlight(pos, nextp, HIGHLIGHT_PAINTER);
             //    pos = text.indexOf(pattern, nextp);
             //}
-        } catch (BadLocationException | PatternSyntaxException e) {
-            e.printStackTrace();
+        } catch (BadLocationException | PatternSyntaxException ex) {
+            ex.printStackTrace();
         }
     }
 

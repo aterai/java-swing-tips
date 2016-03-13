@@ -140,8 +140,8 @@ public final class MainPanel extends JPanel {
                 scrollToCenter(textArea, hh.getStartOffset());
             }
             label.setText(String.format("%02d / %02d%n", current + 1, hits));
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
         field.repaint();
     }

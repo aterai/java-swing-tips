@@ -116,8 +116,8 @@ class HighlightTreeCellRenderer extends JTextField implements TreeCellRenderer {
         if (Objects.nonNull(q) && !q.isEmpty() && txt.startsWith(q)) {
             try {
                 getHighlighter().addHighlight(0, q.length(), highlightPainter);
-            } catch (BadLocationException e) {
-                e.printStackTrace();
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
             }
         }
         return this;

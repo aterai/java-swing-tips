@@ -100,8 +100,8 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
         prefs.putInt(PREFIX + "dimh", dim.height);
         try {
             prefs.flush();
-        } catch (BackingStoreException e) {
-            e.printStackTrace();
+        } catch (BackingStoreException ex) {
+            ex.printStackTrace();
         }
     }
     @Override public void componentHidden(ComponentEvent e) { /* not needed */ }

@@ -112,8 +112,8 @@ public final class MainPanel extends JPanel {
                 highlighter.addHighlight(start, end, highlightPainter);
                 pos = end;
             }
-        } catch (BadLocationException | PatternSyntaxException e) {
-            e.printStackTrace();
+        } catch (BadLocationException | PatternSyntaxException ex) {
+            ex.printStackTrace();
         }
         repaint();
     }
@@ -171,8 +171,8 @@ class HighlightIcon implements Icon {
                 int h = 2; //Math.max(2, s.height - 2);
                 g2.fillRect(0, itop + s.y, getIconWidth(), h);
             }
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
 
         //paint Thumb
@@ -218,8 +218,8 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
                 int h = 2; //Math.max(2, s.height - 2);
                 g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
             }
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
 }
@@ -245,8 +245,8 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
                 int h = 2; //Math.max(2, s.height - 2);
                 g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
             }
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
 }

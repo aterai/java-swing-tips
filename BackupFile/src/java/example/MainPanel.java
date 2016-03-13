@@ -120,8 +120,8 @@ public final class MainPanel extends JPanel {
         StyledDocument doc = jtp.getStyledDocument();
         try {
             doc.insertString(doc.getLength(), m.text + "\n", doc.getStyle(m.type.toString()));
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
     public static void main(String... args) {

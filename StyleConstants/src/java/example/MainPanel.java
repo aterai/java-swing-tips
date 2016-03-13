@@ -74,8 +74,8 @@ public final class MainPanel extends JPanel {
 //             Document doc = jtp.getDocument();
 //             doc.insertString(doc.getLength(), str + SEPARATOR, sas);
 //             jtp.setCaretPosition(doc.getLength());
-//         } catch (BadLocationException e) {
-//             e.printStackTrace();
+//         } catch (BadLocationException ex) {
+//             ex.printStackTrace();
 //         }
 //     }
     private void append(String str, boolean flg) {
@@ -83,8 +83,8 @@ public final class MainPanel extends JPanel {
         StyledDocument doc = jtp.getStyledDocument();
         try {
             doc.insertString(doc.getLength(), str + "\n", doc.getStyle(style));
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
     }
 

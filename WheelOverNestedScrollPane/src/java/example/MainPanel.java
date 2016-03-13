@@ -54,8 +54,8 @@ public final class MainPanel extends JPanel {
             textPane.insertComponent(new JScrollPane(new JTree()));
             doc.insertString(doc.getLength(), "\n", null);
             doc.insertString(doc.getLength(), TEXT, null);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
         }
         add(new JLayer<JScrollPane>(new JScrollPane(textPane), new WheelScrollLayerUI()));
         //add(new JScrollPane(textPane));
