@@ -13,16 +13,12 @@ public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     private final Action closeSelectedFrameAction1 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(f -> {
-                desktop.getDesktopManager().closeFrame(f);
-            });
+            getSelectedFrame().ifPresent(desktop.getDesktopManager()::closeFrame);
         }
     };
     private final Action closeSelectedFrameAction2 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(f -> {
-                f.doDefaultCloseAction();
-            });
+            getSelectedFrame().ifPresent(f -> f.doDefaultCloseAction());
         }
     };
     private final Action closeSelectedFrameAction3 = new AbstractAction() {
@@ -38,9 +34,7 @@ public final class MainPanel extends JPanel {
     };
     private final Action disposeSelectedFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(f -> {
-                f.dispose();
-            });
+            getSelectedFrame().ifPresent(f -> f.dispose());
         }
     };
     private final Action createNewFrameAction = new AbstractAction() {

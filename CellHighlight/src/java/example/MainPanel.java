@@ -104,7 +104,7 @@ class HighlightRenderer extends DefaultTableCellRenderer {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
         setBackground(table.getBackground());
-        highlighter.getHighlightableCellColor(row, column).ifPresent(c -> setBackground(c));
+        highlighter.getHighlightableCellColor(row, column).ifPresent(this::setBackground);
         return this;
     }
 }

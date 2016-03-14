@@ -56,9 +56,10 @@ public final class MainPanel extends JPanel {
         map.put("TabbedPane.selected",              Color.WHITE);
         map.put("TabbedPane.selectHighlight",       Color.WHITE);
         map.put("TabbedPane.borderHightlightColor", Color.WHITE);
-        for (Map.Entry<String, Color> entry: map.entrySet()) {
-            UIManager.put(entry.getKey(), entry.getValue());
-        }
+        //for (Map.Entry<String, Color> entry: map.entrySet()) {
+        //    UIManager.put(entry.getKey(), entry.getValue());
+        //}
+        map.forEach(UIManager::put);
 
         final JTabbedPane tabs = makeTabbedPane();
         final JComboBox combo  = makeComboBox(map);
@@ -82,9 +83,7 @@ public final class MainPanel extends JPanel {
                 if (e.getStateChange() != ItemEvent.SELECTED) {
                     return;
                 }
-                for (Map.Entry<String, Color> entry: map.entrySet()) {
-                    UIManager.put(entry.getKey(), entry.getValue());
-                }
+                map.forEach(UIManager::put);
                 if (combo.getSelectedIndex() > 0) {
                     UIManager.put(combo.getSelectedItem(), Color.GREEN);
                 }
@@ -140,9 +139,7 @@ public final class MainPanel extends JPanel {
     private static JComboBox<String> makeComboBox(Map<String, Color> map) {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         model.addElement("gray-white");
-        for (Map.Entry<String, Color> entry: map.entrySet()) {
-            model.addElement(entry.getKey());
-        }
+        map.forEach((key, value) -> model.addElement(key));
         return new JComboBox<String>(model);
     }
 
