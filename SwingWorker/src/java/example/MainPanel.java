@@ -242,11 +242,11 @@ class AnimeIcon implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
         g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
-        g2.fillRect(x, y, getIconWidth(), getIconHeight());
+        g2.fillRect(0, 0, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(ELLIPSE_COLOR);
-        g2.translate(x, y);
         int size = list.size();
         for (int i = 0; i < size; i++) {
             float alpha = isRunning ? (i + 1) / (float) size : .5f;

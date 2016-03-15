@@ -104,10 +104,11 @@ class TitledSeparator extends JLabel {
             }
             int h = getIconHeight() / 2;
             Graphics2D g2 = (Graphics2D) g.create();
+            g2.translate(x, y);
             g2.setPaint(painter1);
-            g2.fillRect(x, y, width, getIconHeight());
+            g2.fillRect(0, 0, width, getIconHeight());
             g2.setPaint(painter2);
-            g2.fillRect(x, y + h, width, getIconHeight() - h);
+            g2.fillRect(0, h, width, getIconHeight() - h);
             g2.dispose();
         }
         @Override public int getIconWidth() {
