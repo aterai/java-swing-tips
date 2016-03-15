@@ -55,12 +55,10 @@ public final class MainPanel extends JPanel {
         JSlider slider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 50);
         slider.setBackground(Color.GRAY);
         slider.setOpaque(false);
-        slider.addMouseMotionListener(new MouseAdapter() {
+        MouseAdapter ma = new MouseAdapter() {
             @Override public void mouseDragged(MouseEvent e) {
                 e.getComponent().repaint();
             }
-        });
-        slider.addMouseWheelListener(new MouseWheelListener() {
             @Override public void mouseWheelMoved(MouseWheelEvent e) {
                 JSlider source = (JSlider) e.getComponent();
                 int intValue = (int) source.getValue() - e.getWheelRotation();
@@ -69,7 +67,9 @@ public final class MainPanel extends JPanel {
                     source.setValue(intValue);
                 }
             }
-        });
+        };
+        slider.addMouseMotionListener(ma);
+        slider.addMouseWheelListener(ma);
         return slider;
     }
     private static JComponent createPanel(JComponent cmp, String str) {
