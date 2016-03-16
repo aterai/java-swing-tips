@@ -27,15 +27,13 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         label.setBorder(BorderFactory.createTitledBorder("Horizontal scroll: CTRL + Wheel"));
-        label.addMouseWheelListener(new MouseWheelListener() {
-            @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                Component c = e.getComponent();
-                Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
-                if (s instanceof JScrollPane) {
-                    JScrollPane sp = (JScrollPane) s;
-                    JComponent sb = e.isControlDown() ? sp.getHorizontalScrollBar() : sp.getVerticalScrollBar();
-                    sb.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, sb));
-                }
+        label.addMouseWheelListener(e -> {
+            Component c = e.getComponent();
+            Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
+            if (s instanceof JScrollPane) {
+                JScrollPane sp = (JScrollPane) s;
+                JComponent sb = e.isControlDown() ? sp.getHorizontalScrollBar() : sp.getVerticalScrollBar();
+                sb.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, sb));
             }
         });
 
@@ -43,18 +41,16 @@ public final class MainPanel extends JPanel {
 
         JScrollBar hsb = scroll.getHorizontalScrollBar();
         hsb.setUnitIncrement(10);
-        hsb.addMouseWheelListener(new MouseWheelListener() {
-            @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JScrollBar hsb = (JScrollBar) e.getComponent();
-                Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, hsb);
-                if (c instanceof JScrollPane) {
-                    JViewport vport = ((JScrollPane) c).getViewport();
-                    Point vp = vport.getViewPosition();
-                    int d = hsb.getUnitIncrement() * e.getWheelRotation();
-                    vp.translate(d, 0);
-                    JComponent v = (JComponent) SwingUtilities.getUnwrappedView(vport);
-                    v.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-                }
+        hsb.addMouseWheelListener(e -> {
+            JScrollBar sb = (JScrollBar) e.getComponent();
+            Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, sb);
+            if (c instanceof JScrollPane) {
+                JViewport vport = ((JScrollPane) c).getViewport();
+                Point vp = vport.getViewPosition();
+                int d = hsb.getUnitIncrement() * e.getWheelRotation();
+                vp.translate(d, 0);
+                JComponent v = (JComponent) SwingUtilities.getUnwrappedView(vport);
+                v.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
             }
         });
 

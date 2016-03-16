@@ -8,56 +8,44 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel {
-    private final JSpinner spinner;
-    private final JSlider  slider;
+    private final JSlider slider = new JSlider(0, 100, 50);
+    private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(500, 0, 1000, 10));
 
     public MainPanel() {
         super(new GridLayout(2, 1));
-        slider = new JSlider(0, 100, 50);
+
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JSlider source = (JSlider) e.getSource();
-                int intValue = (int) source.getValue() * 10;
-                spinner.setValue(intValue);
+        slider.addChangeListener(e -> {
+            JSlider source = (JSlider) e.getSource();
+            int intValue = (int) source.getValue() * 10;
+            spinner.setValue(intValue);
+        });
+        slider.addMouseWheelListener(e -> {
+            JSlider source = (JSlider) e.getComponent();
+            int intValue = (int) source.getValue() - e.getWheelRotation();
+            BoundedRangeModel model = source.getModel();
+            if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
+                slider.setValue(intValue);
             }
         });
 
-        SpinnerNumberModel model = new SpinnerNumberModel(500, 0, 1000, 10);
-        spinner = new JSpinner(model);
-
-        spinner.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JSpinner source = (JSpinner) e.getSource();
-                Integer newValue = (Integer) source.getValue();
-                slider.setValue((int) newValue.intValue() / 10);
-            }
+        spinner.addChangeListener(e -> {
+            JSpinner source = (JSpinner) e.getSource();
+            Integer newValue = (Integer) source.getValue();
+            slider.setValue((int) newValue.intValue() / 10);
         });
-        spinner.addMouseWheelListener(new MouseWheelListener() {
-            @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSpinner source = (JSpinner) e.getComponent();
-                SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
-                Integer oldValue = (Integer) source.getValue();
-                int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
-                int max = ((Integer) model.getMaximum()).intValue(); //1000
-                int min = ((Integer) model.getMinimum()).intValue(); //0
-                if (min <= intValue && intValue <= max) {
-                    source.setValue(intValue);
-                }
-            }
-        });
-
-        slider.addMouseWheelListener(new MouseWheelListener() {
-            @Override public void mouseWheelMoved(MouseWheelEvent e) {
-                JSlider source = (JSlider) e.getComponent();
-                int intValue = (int) source.getValue() - e.getWheelRotation();
-                BoundedRangeModel model = source.getModel();
-                if (model.getMaximum() >= intValue && model.getMinimum() <= intValue) {
-                    slider.setValue(intValue);
-                }
+        spinner.addMouseWheelListener(e -> {
+            JSpinner source = (JSpinner) e.getComponent();
+            SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
+            Integer oldValue = (Integer) source.getValue();
+            int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
+            int max = ((Integer) model.getMaximum()).intValue(); //1000
+            int min = ((Integer) model.getMinimum()).intValue(); //0
+            if (min <= intValue && intValue <= max) {
+                source.setValue(intValue);
             }
         });
 
