@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 import javax.imageio.*;
 import javax.swing.*;
@@ -14,7 +13,7 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
-    private static final TexturePaint TEXTURE = makeImageTexture(MainPanel.class.getResource("unkaku_w.png"));
+    private static final TexturePaint TEXTURE = makeImageTexture();
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -119,15 +118,14 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
 
-    private static TexturePaint makeImageTexture(URL url) {
-        BufferedImage bi = null;
+    private static TexturePaint makeImageTexture() {
         try {
-            bi = ImageIO.read(url);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new IllegalArgumentException(ioe);
+            BufferedImage bi = ImageIO.read(MainPanel.class.getResource("unkaku_w.png"));
+            return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
         }
-        return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
     }
 
     public static void main(String... args) {
@@ -154,8 +152,9 @@ public final class MainPanel extends JPanel {
 }
 
 class TransparentHeader extends JLabel implements TableCellRenderer {
-    private final Border b = BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
-                                                                BorderFactory.createEmptyBorder(2, 2, 1, 2));
+    private final Border b = BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
+        BorderFactory.createEmptyBorder(2, 2, 1, 2));
     private final Color alphaZero = new Color(0x0, true);
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setText(Objects.toString(value, ""));
@@ -172,11 +171,11 @@ class TranslucentBooleanRenderer extends JCheckBox implements TableCellRenderer 
     private static final Color SELECTION_BACKGROUND = new Color(0, 0, 100, 50);
     @Override public void updateUI() {
         super.updateUI();
-        setHorizontalAlignment(SwingConstants.CENTER);
         setBorderPainted(true);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        setHorizontalAlignment(SwingConstants.CENTER);
         if (isSelected) {
             //setOpaque(true);
             setOpaque(false);
