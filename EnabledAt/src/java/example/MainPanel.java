@@ -14,13 +14,11 @@ public final class MainPanel extends JPanel {
         tab.addTab("Preferences", checkbox);
         tab.addTab("Advanced", new JScrollPane(new JTree()));
         tab.setEnabledAt(1, false);
-        checkbox.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    tab.setEnabledAt(1, true);
-                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    tab.setEnabledAt(1, false);
-                }
+        checkbox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                tab.setEnabledAt(1, true);
+            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                tab.setEnabledAt(1, false);
             }
         });
         add(tab);

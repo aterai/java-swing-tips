@@ -50,15 +50,13 @@ public final class MainPanel extends JPanel {
         model.addTest(new Test("Name a", "ff"));
         model.addTest(new Test("Name 0", "Test aa"));
 
-        cbox.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                hrenderer.setEnabledAt(2, !((JCheckBox) e.getItemSelectable()).isSelected());
-                //if (e.getStateChange() == ItemEvent.SELECTED) {
-                //    hrenderer.setEnabledAt(2, false);
-                //} else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                //    hrenderer.setEnabledAt(2, true);
-                //}
-            }
+        cbox.addItemListener(e -> {
+            hrenderer.setEnabledAt(2, !((JCheckBox) e.getItemSelectable()).isSelected());
+            //if (e.getStateChange() == ItemEvent.SELECTED) {
+            //    hrenderer.setEnabledAt(2, false);
+            //} else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            //    hrenderer.setEnabledAt(2, true);
+            //}
         });
 
         add(new JScrollPane(table));

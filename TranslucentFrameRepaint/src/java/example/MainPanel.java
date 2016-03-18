@@ -55,13 +55,11 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
-        combo.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    TexturePaints t = (TexturePaints) e.getItem();
-                    tp.setTexturePaint(t.getTexturePaint());
-                    repaintWindowAncestor(tp);
-                }
+        combo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                TexturePaints t = (TexturePaints) e.getItem();
+                tp.setTexturePaint(t.getTexturePaint());
+                repaintWindowAncestor(tp);
             }
         });
         JToggleButton button = new JToggleButton(new AbstractAction("timer") {

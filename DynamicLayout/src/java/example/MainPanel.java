@@ -17,13 +17,11 @@ public final class MainPanel extends JPanel {
         });
         Toolkit.getDefaultToolkit().setDynamicLayout(true);
         final JCheckBox cbox = new JCheckBox("DynamicLayout", true);
-        cbox.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Toolkit.getDefaultToolkit().setDynamicLayout(true);
-                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    Toolkit.getDefaultToolkit().setDynamicLayout(false);
-                }
+        cbox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Toolkit.getDefaultToolkit().setDynamicLayout(true);
+            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                Toolkit.getDefaultToolkit().setDynamicLayout(false);
             }
         });
         add(label);

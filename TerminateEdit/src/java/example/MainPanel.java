@@ -103,11 +103,9 @@ public final class MainPanel extends JPanel {
         teoflCheck.setSelected(true);
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        combobox.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    table.setAutoResizeMode(((AutoResizeMode) e.getItem()).mode);
-                }
+        combobox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                table.setAutoResizeMode(((AutoResizeMode) e.getItem()).mode);
             }
         });
 

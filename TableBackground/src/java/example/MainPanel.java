@@ -54,15 +54,13 @@ public final class MainPanel extends JPanel {
         scroll.getViewport().setOpaque(true);
         //scroll.getViewport().setBackground(Color.WHITE);
         check.setSelected(true);
-        check.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    scroll.getViewport().setOpaque(true);
-                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    scroll.getViewport().setOpaque(false);
-                }
-                scroll.repaint();
+        check.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                scroll.getViewport().setOpaque(true);
+            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                scroll.getViewport().setOpaque(false);
             }
+            scroll.repaint();
         });
         JPanel pnl = new JPanel();
         pnl.add(check);

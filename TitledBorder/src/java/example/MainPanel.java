@@ -15,18 +15,14 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
-        verticalOrientationChoices.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    initTitleBorder();
-                }
+        verticalOrientationChoices.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                initTitleBorder();
             }
         });
-        justificationChoices.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    initTitleBorder();
-                }
+        justificationChoices.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                initTitleBorder();
             }
         });
         panel.setBorder(border);

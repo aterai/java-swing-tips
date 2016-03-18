@@ -15,11 +15,9 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        comboBox.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).tabPlacement);
-                }
+        comboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).tabPlacement);
             }
         });
         Box box = Box.createHorizontalBox();

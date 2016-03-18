@@ -21,11 +21,9 @@ public final class MainPanel extends JPanel {
         model.addElement(new LRItem("14234125", "64345424684"));
         model.addElement(new LRItem("hjklhjk",  "asdfasdfasdfasdfasdfasd"));
         JComboBox<LRItem> combo = new JComboBox<>(model);
-        combo.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    initTextField(e.getItem());
-                }
+        combo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                initTextField(e.getItem());
             }
         });
         initTextField(combo.getSelectedItem());
@@ -71,7 +69,7 @@ public final class MainPanel extends JPanel {
 class LRItem {
     private final String leftText;
     private final String rightText;
-    public LRItem(String strLeft, String strRight) {
+    protected LRItem(String strLeft, String strRight) {
         leftText  = strLeft;
         rightText = strRight;
     }

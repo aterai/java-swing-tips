@@ -33,13 +33,11 @@ public final class MainPanel extends JPanel {
         box.add(leftTextField);
         box.add(Box.createVerticalStrut(2));
         box.add(rightTextField);
-        combo.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    LRItem item = (LRItem) e.getItem();
-                    leftTextField.setText(item.getLeftText());
-                    rightTextField.setText(item.getRightText());
-                }
+        combo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                LRItem item = (LRItem) e.getItem();
+                leftTextField.setText(item.getLeftText());
+                rightTextField.setText(item.getRightText());
             }
         });
         return box;

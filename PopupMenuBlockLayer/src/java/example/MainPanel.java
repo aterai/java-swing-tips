@@ -60,11 +60,7 @@ public final class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
 
         final DisableInputLayerUI layerUI = new DisableInputLayerUI();
-        check.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent ie) {
-                layerUI.setLocked(((JCheckBox) ie.getItemSelectable()).isSelected());
-            }
-        });
+        check.addItemListener(e -> layerUI.setLocked(((JCheckBox) e.getItemSelectable()).isSelected()));
 
         JLayer<JComponent> layer = new JLayer<>(scroll, layerUI);
         add(layer);

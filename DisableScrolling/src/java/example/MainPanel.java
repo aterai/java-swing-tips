@@ -47,23 +47,21 @@ public final class MainPanel extends JPanel {
         }
         table.setAutoCreateRowSorter(true);
 
-        check.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent ie) {
-                table.clearSelection();
-                JScrollBar bar = scroll.getVerticalScrollBar();
-                if (ie.getStateChange() == ItemEvent.SELECTED) {
-                    bar.setEnabled(false);
-                    scroll.setWheelScrollingEnabled(false);
-                    table.setEnabled(false);
-                    //table.getTableHeader().setEnabled(false);
-                    //scroll.setComponentPopupMenu(null);
-                } else if (ie.getStateChange() == ItemEvent.DESELECTED) {
-                    bar.setEnabled(true);
-                    scroll.setWheelScrollingEnabled(true);
-                    table.setEnabled(true);
-                    //table.getTableHeader().setEnabled(true);
-                    //scroll.setComponentPopupMenu(pop);
-                }
+        check.addItemListener(e -> {
+            table.clearSelection();
+            JScrollBar bar = scroll.getVerticalScrollBar();
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                bar.setEnabled(false);
+                scroll.setWheelScrollingEnabled(false);
+                table.setEnabled(false);
+                //table.getTableHeader().setEnabled(false);
+                //scroll.setComponentPopupMenu(null);
+            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                bar.setEnabled(true);
+                scroll.setWheelScrollingEnabled(true);
+                table.setEnabled(true);
+                //table.getTableHeader().setEnabled(true);
+                //scroll.setComponentPopupMenu(pop);
             }
         });
 

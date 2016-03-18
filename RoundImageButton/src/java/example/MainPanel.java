@@ -57,15 +57,13 @@ public final class MainPanel extends JPanel {
                 box.repaint();
             }
         }));
-        alignmentsChoices.addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    ButtonAlignments ba = (ButtonAlignments) alignmentsChoices.getSelectedItem();
-                    for (JButton b: buttons) {
-                        b.setAlignmentY(ba.alingment);
-                    }
-                    box.revalidate();
+        alignmentsChoices.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                ButtonAlignments ba = (ButtonAlignments) alignmentsChoices.getSelectedItem();
+                for (JButton b: buttons) {
+                    b.setAlignmentY(ba.alingment);
                 }
+                box.revalidate();
             }
         });
         alignmentsChoices.setSelectedIndex(1);

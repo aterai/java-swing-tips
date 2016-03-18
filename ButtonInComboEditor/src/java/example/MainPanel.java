@@ -106,11 +106,9 @@ class URLItemComboBox extends JComboBox<URLItem> {
                 setSelectedIndex(0);
             }
         });
-        addItemListener(new ItemListener() {
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    updateFavicon(label);
-                }
+        addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                updateFavicon(label);
             }
         });
         updateFavicon(label);

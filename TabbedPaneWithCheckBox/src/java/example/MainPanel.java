@@ -8,8 +8,10 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public final class MainPanel extends JPanel {
-    private final JTabbedPane tab = new JTabbedPane();
-    private final JCheckBox cbox  = new JCheckBox("Details");
+    private final JTabbedPane tab  = new JTabbedPane();
+    private final JCheckBox cbox   = new JCheckBox("Details");
+    private final JComponent panel = new JLabel("Preferences");
+
     public MainPanel() {
         super(new BorderLayout());
         cbox.setFocusPainted(false);
@@ -19,15 +21,12 @@ public final class MainPanel extends JPanel {
                 cb.setSelected(!cb.isSelected());
             }
         });
-        cbox.addItemListener(new ItemListener() {
-            private final JComponent panel = new JLabel("Preferences");
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    tab.addTab("Preferences", panel);
-                    tab.setSelectedComponent(panel);
-                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    tab.remove(panel);
-                }
+        cbox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                tab.addTab("Preferences", panel);
+                tab.setSelectedComponent(panel);
+            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                tab.remove(panel);
             }
         });
 

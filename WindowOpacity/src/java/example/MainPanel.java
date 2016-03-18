@@ -11,7 +11,10 @@ import javax.imageio.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+    private final transient TexturePaint imageTexture   = makeImageTexture();
+    private final transient TexturePaint checkerTexture = makeCheckerTexture();
     private transient TexturePaint texture;
+
     public MainPanel() {
         super();
         setBackground(new Color(.5f, .8f, .5f, .5f));
@@ -28,34 +31,30 @@ public final class MainPanel extends JPanel {
 //             // http://bugs.java.com/view_bug.do?bug_id=7156657
 //             combo.addPopupMenuListener(new TranslucencyFrameComboBoxPopupMenuListener());
 //         }
-        combo.addItemListener(new ItemListener() {
-            private final TexturePaint imageTexture   = makeImageTexture();
-            private final TexturePaint checkerTexture = makeCheckerTexture();
-            @Override public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    //JComboBox cbox = (JComboBox) e.getSource();
-                    //Object o = cbox.getSelectedItem();
-                    Object o = e.getItem();
-                    if ("ImageTexturePaint".equals(o)) {
-                        texture = imageTexture;
-                        setOpaque(false);
-                    } else if ("CheckerTexturePaint".equals(o)) {
-                        texture = checkerTexture;
-                        setOpaque(false);
-                    } else {
-                        texture = null;
-                        setOpaque(true);
-                    }
-                    getRootPane().getContentPane().repaint();
-//                     Window w = SwingUtilities.getWindowAncestor(getRootPane());
-//                     if (w instanceof JFrame) { //XXX: JDK 1.7.0 ???
-//                         //((JFrame) w).getRootPane().repaint();
-//                         ((JFrame) w).getContentPane().repaint();
-//                     } else {
-//                         revalidate();
-//                         repaint();
-//                     }
+        combo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                //JComboBox cbox = (JComboBox) e.getSource();
+                //Object o = cbox.getSelectedItem();
+                Object o = e.getItem();
+                if ("ImageTexturePaint".equals(o)) {
+                    texture = imageTexture;
+                    setOpaque(false);
+                } else if ("CheckerTexturePaint".equals(o)) {
+                    texture = checkerTexture;
+                    setOpaque(false);
+                } else {
+                    texture = null;
+                    setOpaque(true);
                 }
+                getRootPane().getContentPane().repaint();
+//                 Window w = SwingUtilities.getWindowAncestor(getRootPane());
+//                 if (w instanceof JFrame) { //XXX: JDK 1.7.0 ???
+//                     //((JFrame) w).getRootPane().repaint();
+//                     ((JFrame) w).getContentPane().repaint();
+//                 } else {
+//                     revalidate();
+//                     repaint();
+//                 }
             }
         });
         add(combo);
