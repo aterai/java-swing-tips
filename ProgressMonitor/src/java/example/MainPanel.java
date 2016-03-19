@@ -120,11 +120,13 @@ class ProgressListener implements PropertyChangeListener {
         this.monitor.setProgress(0);
     }
     @Override public void propertyChange(PropertyChangeEvent e) {
+        Object o = e.getSource();
         String strPropertyName = e.getPropertyName();
-        if ("progress".equals(strPropertyName)) {
+        if ("progress".equals(strPropertyName) && o instanceof SwingWorker) {
+            SwingWorker task = (SwingWorker) o;
             monitor.setProgress((Integer) e.getNewValue());
-            if (monitor.isCanceled()) {
-                ((SwingWorker) e.getSource()).cancel(true);
+            if (monitor.isCanceled() || task.isDone()) {
+                task.cancel(true);
             }
         }
     }
