@@ -48,11 +48,9 @@ public final class MainPanel extends JPanel {
         s.toggleSortOrder(1);
         table.setRowSorter(s);
 
-        model.addTableModelListener(new TableModelListener() {
-            @Override public void tableChanged(TableModelEvent e) {
-                if (e.getType() == TableModelEvent.UPDATE) {
-                    table.repaint();
-                }
+        model.addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE) {
+                table.repaint();
             }
         });
         TableCellRenderer renderer = new DefaultTableCellRenderer() {

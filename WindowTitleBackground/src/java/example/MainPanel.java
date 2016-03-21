@@ -58,17 +58,15 @@ public final class MainPanel extends JPanel {
         table.setDefaultRenderer(Color.class, new ColorRenderer());
         table.setDefaultEditor(Color.class,   new ColorEditor());
 
-        model.addTableModelListener(new TableModelListener() {
-            @Override public void tableChanged(TableModelEvent e) {
-                if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 1) {
-                    int row = e.getFirstRow();
-                    String key = (String) model.getValueAt(row, 0);
-                    Color color = (Color) model.getValueAt(row, 1);
-                    UIManager.put(key, new ColorUIResource(color));
-                    EventQueue.invokeLater(() -> {
-                        Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI);
-                    });
-                }
+        model.addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 1) {
+                int row = e.getFirstRow();
+                String key = (String) model.getValueAt(row, 0);
+                Color color = (Color) model.getValueAt(row, 1);
+                UIManager.put(key, new ColorUIResource(color));
+                EventQueue.invokeLater(() -> {
+                    Optional.ofNullable(table.getTopLevelAncestor()).ifPresent(SwingUtilities::updateComponentTreeUI);
+                });
             }
         });
 

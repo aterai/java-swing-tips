@@ -29,12 +29,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         final JTable table = makeTable(model);
         //TEST: final JTable table = makeTable2(model);
-        model.addTableModelListener(new TableModelListener() {
-            @Override public void tableChanged(TableModelEvent e) {
-                if (e.getType() == TableModelEvent.UPDATE) {
-                    //System.out.println("TableModel: tableChanged");
-                    rowRepaint(table, table.convertRowIndexToView(e.getFirstRow()));
-                }
+        model.addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE) {
+                //System.out.println("TableModel: tableChanged");
+                rowRepaint(table, table.convertRowIndexToView(e.getFirstRow()));
             }
         });
         table.setAutoCreateRowSorter(true);
