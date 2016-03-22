@@ -104,21 +104,23 @@ public final class MainPanel extends JPanel {
     }
 }
 
-//@see https://community.oracle.com/thread/2105230
-//@see SyntaxDocument.java, MultiSyntaxDocument.java
+//This code is taken from: SyntaxDocument.java, MultiSyntaxDocument.java
+// Fast styled JTextPane editor | Oracle Community
+// @author camickr
+// @author David Underhill
+// https://community.oracle.com/thread/2105230
+// modified by aterai aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
     private static final char LB = '\n';
     //HashMap<String, AttributeSet> keywords = new HashMap<>();
-    private final Style normal; //MutableAttributeSet normal = new SimpleAttributeSet();
     private static final String OPERANDS = ".,";
-    public SimpleSyntaxDocument() {
+    private final Style def = getStyle(StyleContext.DEFAULT_STYLE);
+    protected SimpleSyntaxDocument() {
         super();
-        Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        normal = addStyle("normal", def);
-        StyleConstants.setForeground(normal, Color.BLACK);
-        StyleConstants.setForeground(addStyle("red",   normal), Color.RED);
-        StyleConstants.setForeground(addStyle("green", normal), Color.GREEN);
-        StyleConstants.setForeground(addStyle("blue",  normal), Color.BLUE);
+        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        StyleConstants.setForeground(addStyle("red",   def), Color.RED);
+        StyleConstants.setForeground(addStyle("green", def), Color.GREEN);
+        StyleConstants.setForeground(addStyle("blue",  def), Color.BLUE);
     }
     @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
         // @see PlainDocument#insertString(...)
@@ -158,7 +160,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
         int lineLength    = endOffset - startOffset;
         int contentLength = content.length();
         endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
-        setCharacterAttributes(startOffset, lineLength, normal, true);
+        setCharacterAttributes(startOffset, lineLength, def, true);
         checkForTokens(content, startOffset, endOffset);
     }
     private void checkForTokens(String content, int startOffset, int endOffset) {
@@ -197,7 +199,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
 }
 
 class NoWrapParagraphView extends ParagraphView {
-    public NoWrapParagraphView(Element elem) {
+    protected NoWrapParagraphView(Element elem) {
         super(elem);
     }
     @Override protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
