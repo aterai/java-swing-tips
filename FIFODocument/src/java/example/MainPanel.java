@@ -43,11 +43,9 @@ public final class MainPanel extends JPanel {
         //*/
         jta.setEditable(false);
 
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-                    timer.stop();
-                }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                timer.stop();
             }
         });
 
@@ -90,7 +88,7 @@ public final class MainPanel extends JPanel {
 class FIFODocumentListener implements DocumentListener {
     private static final int MAX_LINES = 10;
     private final JTextComponent textComponent;
-    public FIFODocumentListener(JTextComponent textComponent) {
+    protected FIFODocumentListener(JTextComponent textComponent) {
         this.textComponent = textComponent;
     }
     @Override public void insertUpdate(DocumentEvent e) {

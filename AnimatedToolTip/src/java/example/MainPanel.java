@@ -116,14 +116,12 @@ class AnimatedLabel extends JLabel implements ActionListener {
         setOpaque(true);
         animator = new Timer(100, this);
         setIcon(icon);
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (e.getComponent().isShowing()) {
-                        startAnimation();
-                    } else {
-                        stopAnimation();
-                    }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (e.getComponent().isShowing()) {
+                    startAnimation();
+                } else {
+                    stopAnimation();
                 }
             }
         });
@@ -132,11 +130,11 @@ class AnimatedLabel extends JLabel implements ActionListener {
         icon.next();
         repaint();
     }
-    public void startAnimation() {
+    private void startAnimation() {
         icon.setRunning(true);
         animator.start();
     }
-    public void stopAnimation() {
+    private void stopAnimation() {
         icon.setRunning(false);
         animator.stop();
     }

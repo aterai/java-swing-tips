@@ -27,16 +27,14 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-                    if (e.getComponent().isDisplayable()) {
-                        timer1.start();
-                        timer2.start();
-                    } else {
-                        timer1.stop();
-                        timer2.stop();
-                    }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
+                if (e.getComponent().isDisplayable()) {
+                    timer1.start();
+                    timer2.start();
+                } else {
+                    timer1.stop();
+                    timer2.stop();
                 }
             }
         });

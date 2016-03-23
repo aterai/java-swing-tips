@@ -42,11 +42,9 @@ public final class MainPanel extends JPanel {
             }
         });
         button.setCursor(list[0]);
-        button.addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
-                    animator.stop();
-                }
+        button.addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && Objects.nonNull(animator) && !e.getComponent().isDisplayable()) {
+                animator.stop();
             }
         });
 

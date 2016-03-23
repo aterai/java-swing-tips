@@ -58,11 +58,9 @@ class FontRotateAnimation extends JComponent {
     });
     protected FontRotateAnimation(String str) {
         super();
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-                    animator.stop();
-                }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                animator.stop();
             }
         });
         Font font = new Font(Font.SERIF, Font.PLAIN, 200);

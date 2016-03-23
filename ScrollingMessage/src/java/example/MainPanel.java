@@ -47,11 +47,9 @@ class MarqueePanel extends JComponent implements ActionListener {
 
     protected MarqueePanel() {
         super();
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-                    animator.stop();
-                }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                animator.stop();
             }
         });
 

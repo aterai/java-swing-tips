@@ -191,11 +191,9 @@ class AnimatedLabel extends JLabel implements ActionListener {
         super();
         animator = new Timer(100, this);
         setIcon(icon);
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-                    stopAnimation();
-                }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                animator.stop();
             }
         });
     }

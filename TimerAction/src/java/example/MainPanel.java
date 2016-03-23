@@ -19,14 +19,12 @@ public final class MainPanel extends JPanel {
             c1.add(new Tile1(rnd));
             c2.add(new Tile2(rnd, timer));
         }
-        c2.addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (e.getComponent().isShowing()) {
-                        timer.start();
-                    } else {
-                        timer.stop();
-                    }
+        c2.addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (e.getComponent().isShowing()) {
+                    timer.start();
+                } else {
+                    timer.stop();
                 }
             }
         });
@@ -139,14 +137,12 @@ class TilePanel extends JPanel {
                 }
             }
         });
-        addHierarchyListener(new HierarchyListener() {
-            @Override public void hierarchyChanged(HierarchyEvent e) {
-                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (e.getComponent().isShowing()) {
-                        timer.start();
-                    } else {
-                        timer.stop();
-                    }
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (e.getComponent().isShowing()) {
+                    timer.start();
+                } else {
+                    timer.stop();
                 }
             }
         });
