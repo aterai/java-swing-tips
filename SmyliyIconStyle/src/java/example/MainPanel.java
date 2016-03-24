@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         textPane.setEditorKit(new StyledEditorKit());
 
-        StyledDocument doc = (StyledDocument) textPane.getDocument();
+        StyledDocument doc = textPane.getStyledDocument();
         doc.addDocumentListener(new DocumentListener() {
             @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
             @Override public void insertUpdate(DocumentEvent e) {
@@ -60,8 +60,7 @@ public final class MainPanel extends JPanel {
                 });
             }
         });
-        Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        Style face = doc.addStyle(FACE, def);
+        Style face = doc.addStyle(FACE, doc.getStyle(StyleContext.DEFAULT_STYLE));
         StyleConstants.setIcon(face, new FaceIcon());
         //StyleConstants.setForeground(face, Color.RED);
 

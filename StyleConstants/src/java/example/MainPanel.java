@@ -39,13 +39,13 @@ public final class MainPanel extends JPanel {
 
         jtp.setEditable(false);
         StyledDocument doc = jtp.getStyledDocument();
-        Style def = StyleContext.getDefaultStyleContext().getStyle(
-            StyleContext.DEFAULT_STYLE);
+        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
 
-        Style regular = doc.addStyle("regular", def);
+        //Style regular = doc.addStyle("regular", def);
         //StyleConstants.setForeground(def, Color.BLACK);
 
-        Style error = doc.addStyle("error", regular);
+        Style error = doc.addStyle("error", def);
         StyleConstants.setForeground(error, Color.RED);
 
         JScrollPane scroll = new JScrollPane(jtp);
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
 //         }
 //     }
     private void append(String str, boolean flg) {
-        String style = flg ? "regular" : "error";
+        String style = flg ? StyleContext.DEFAULT_STYLE : "error";
         StyledDocument doc = jtp.getStyledDocument();
         try {
             doc.insertString(doc.getLength(), str + "\n", doc.getStyle(style));

@@ -51,9 +51,10 @@ public final class MainPanel extends JPanel {
         nextButton.setActionCommand("next");
 
         StyledDocument doc = textPane.getStyledDocument();
-        Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        Style regular = doc.addStyle("regular", def);
-        Style htf = doc.addStyle("highlight-text-foreground", regular);
+        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        //Style regular = doc.addStyle("regular", def);
+        Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+        Style htf = doc.addStyle("highlight-text-foreground", def);
         StyleConstants.setForeground(htf, new Color(0xFFDDFF));
 
         field.getDocument().addDocumentListener(handler);
@@ -118,7 +119,7 @@ public final class MainPanel extends JPanel {
         field.setBackground(Color.WHITE);
         StyledDocument doc = textPane.getStyledDocument();
         Style s = doc.getStyle("highlight-text-foreground");
-        Style def = doc.getStyle("regular");
+        Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
 
         //clear the previous highlight:
         Highlighter highlighter = textPane.getHighlighter();

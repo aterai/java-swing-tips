@@ -59,12 +59,13 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         jtp.setEditable(false);
         StyledDocument doc = jtp.getStyledDocument();
-        Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
+        //Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+        //Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
         //StyleConstants.setForeground(error, Color.BLACK);
         //Style error = doc.addStyle(ERROR, regular);
-        StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), regular), Color.RED);
-        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  regular), Color.BLUE);
+        StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
+        StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(),  def), Color.BLUE);
 
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
@@ -156,7 +157,7 @@ enum MessageType {
 class Message {
     public final String text;
     public final MessageType type;
-    public Message(String text, MessageType type) {
+    protected Message(String text, MessageType type) {
         this.text = text;
         this.type = type;
     }
@@ -166,7 +167,7 @@ class Task extends SwingWorker<File, Message> {
     private final File file;
     private final int intold;
     private final int intnew;
-    public Task(File file, int intold, int intnew) {
+    protected Task(File file, int intold, int intnew) {
         super();
         this.file = file;
         this.intold = intold;
