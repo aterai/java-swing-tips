@@ -28,18 +28,16 @@ public final class MainPanel extends JPanel {
         }
     };
 
-    private MainPanel() {
+    protected MainPanel() {
         super(new GridBagLayout());
 
         JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE));
         editor.setOpaque(false); //editor.setBackground(getBackground());
         editor.setEditable(false); //REQUIRED
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-        editor.addHyperlinkListener(new HyperlinkListener() {
-            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    Toolkit.getDefaultToolkit().beep();
-                }
+        editor.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                Toolkit.getDefaultToolkit().beep();
             }
         });
 
@@ -89,14 +87,20 @@ public final class MainPanel extends JPanel {
 }
 
 class URILabel extends JLabel {
+    private transient MouseListener handler;
     protected URILabel(String h) {
-        super(String.format("<html><a href='%s'>%s</a>", h, h));
+        super(String.format("<html><a href='%s'>%s", h, h));
+    }
+    @Override public void updateUI() {
+        removeMouseListener(handler);
+        super.updateUI();
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        addMouseListener(new MouseAdapter() {
+        handler = new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 Toolkit.getDefaultToolkit().beep();
             }
-        });
+        };
+        addMouseListener(handler);
     }
 }
 

@@ -18,12 +18,10 @@ public final class MainPanel extends JPanel {
         editor.setOpaque(false);
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editor.setEditable(false);
-        editor.addHyperlinkListener(new HyperlinkListener() {
-            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    BrowserLauncher.openURL(MYSITE);
-                    textArea.setText(e.toString());
-                }
+        editor.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                BrowserLauncher.openURL(MYSITE);
+                textArea.setText(e.toString());
             }
         });
         JPanel p = new JPanel();

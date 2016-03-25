@@ -17,6 +17,8 @@ public final class MainPanel extends JPanel {
     private static final String HTML_TEXT = "<html><body>"
                                           + "html tag: <br /><a href='" + LINK + "'>" + LINK + "</a>"
                                           + "</body></html>";
+    private static String tooltip;
+
     private MainPanel() {
         super(new BorderLayout());
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -32,18 +34,15 @@ public final class MainPanel extends JPanel {
         editorPane.setContentType("text/html");
         editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editorPane.setText(HTML_TEXT);
-        editorPane.addHyperlinkListener(new HyperlinkListener() {
-            private String tooltip;
-            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
-                } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-                    tooltip = editorPane.getToolTipText();
-                    URL url = e.getURL();
-                    editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
-                } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-                    editorPane.setToolTipText(tooltip);
-                }
+        editorPane.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
+            } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+                tooltip = editorPane.getToolTipText();
+                URL url = e.getURL();
+                editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+            } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+                editorPane.setToolTipText(tooltip);
             }
         });
 

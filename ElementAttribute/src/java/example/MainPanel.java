@@ -19,6 +19,7 @@ public final class MainPanel extends JPanel {
       + "<div style='padding: 2 24;'><img src='" + image + "' alt='16x16 favicon' />&nbsp;"
       + "<a href='http://ateraimemo.com/' title='Title: JST'>Java Swing Tips</a></div>"
       + "</body></html>";
+    private String tooltip;
 
     private MainPanel() {
         super(new BorderLayout());
@@ -33,19 +34,16 @@ public final class MainPanel extends JPanel {
         editor2.setEditorKit(new TooltipEditorKit());
         editor2.setText(HTML_TEXT);
         editor2.setEditable(false);
-        editor2.addHyperlinkListener(new HyperlinkListener() {
-            private String tooltip;
-            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                JEditorPane editorPane = (JEditorPane) e.getSource();
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
-                } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-                    tooltip = editorPane.getToolTipText();
-                    URL url = e.getURL();
-                    editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
-                } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-                    editorPane.setToolTipText(tooltip);
-                }
+        editor2.addHyperlinkListener(e -> {
+            JEditorPane editorPane = (JEditorPane) e.getSource();
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
+            } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+                tooltip = editorPane.getToolTipText();
+                URL url = e.getURL();
+                editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+            } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+                editorPane.setToolTipText(tooltip);
             }
         });
         ToolTipManager.sharedInstance().registerComponent(editor2);

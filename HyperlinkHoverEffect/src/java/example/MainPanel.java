@@ -22,19 +22,17 @@ public final class MainPanel extends JPanel {
         //      if ("foreground".equals(name)) {
         editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 
-        editor.addHyperlinkListener(new HyperlinkListener() {
-            @Override public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-                    setElementColor(e.getSourceElement(), "red");
-                } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-                    setElementColor(e.getSourceElement(), "blue");
-                } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    Toolkit.getDefaultToolkit().beep();
-                }
-                //??? call BasicTextUI#modelChanged() ???
-                editor.setForeground(Color.WHITE);
-                editor.setForeground(Color.BLACK);
+        editor.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+                setElementColor(e.getSourceElement(), "red");
+            } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+                setElementColor(e.getSourceElement(), "blue");
+            } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                Toolkit.getDefaultToolkit().beep();
             }
+            //??? call BasicTextUI#modelChanged() ???
+            editor.setForeground(Color.WHITE);
+            editor.setForeground(Color.BLACK);
         });
         add(new JScrollPane(editor));
         setPreferredSize(new Dimension(320, 240));
