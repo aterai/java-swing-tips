@@ -104,7 +104,6 @@ class BasicTransferable implements Transferable {
      * @exception UnsupportedFlavorException if the requested data flavor is
      *              not supported.
      */
-    //@SuppressWarnings("deprecation")
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         //???: DataFlavor[] richerFlavors = getRicherFlavors();
         if (isRicherFlavor(flavor)) {

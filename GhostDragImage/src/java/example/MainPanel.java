@@ -95,9 +95,9 @@ class ListItemTransferHandler extends TransferHandler {
         LABEL.setBackground(new Color(0, 0, 255, 200));
     }
     @Override protected Transferable createTransferable(JComponent c) {
-        JList source = (JList) c;
+        JList<?> source = (JList<?>) c;
         indices = source.getSelectedIndices();
-        @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
+        Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {

@@ -97,9 +97,9 @@ class ListItemTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
     }
     @Override protected Transferable createTransferable(JComponent c) {
-        JList source = (JList) c;
+        JList<?> source = (JList<?>) c;
         indices = source.getSelectedIndices();
-        @SuppressWarnings("deprecation") Object[] transferedObjects = source.getSelectedValues();
+        Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
     @Override public boolean canImport(TransferHandler.TransferSupport info) {
