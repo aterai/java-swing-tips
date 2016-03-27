@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
                 h - STROKE_SIZE,
                 ARC, ARC);
 
-            g2.setPaint(Color.WHITE);
+            g2.setPaint(Color.CYAN);
             g2.fill(r);
             g2.setColor(Color.RED);
             g2.setStroke(new BasicStroke(STROKE_SIZE));
