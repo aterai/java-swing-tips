@@ -32,16 +32,14 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("Save:取消し->キャンセル") {
             @Override public void actionPerformed(ActionEvent e) {
                 final JFileChooser fileChooser = new JFileChooser();
-//                 fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
-//                     @Override public void propertyChange(PropertyChangeEvent e) {
-//                         String prop = e.getPropertyName();
-//                         System.out.println("----\n" + prop);
-//                         if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
-//                             prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
-//                             System.out.println("sss");
-//                             fileChooser.setApproveButtonText("保存(S)");
-//                             fileChooser.setApproveButtonMnemonic('S');
-//                         }
+//                 fileChooser.addPropertyChangeListener(e -> {
+//                     String prop = e.getPropertyName();
+//                     System.out.println("----\n" + prop);
+//                     if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
+//                         prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
+//                         System.out.println("sss");
+//                         fileChooser.setApproveButtonText("保存(S)");
+//                         fileChooser.setApproveButtonMnemonic('S');
 //                     }
 //                 });
                 int retvalue = fileChooser.showSaveDialog(p);

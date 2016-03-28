@@ -42,18 +42,16 @@ public final class MainPanel extends JPanel {
         internal.setVisible(true);
 
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        focusManager.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                String prop = e.getPropertyName();
-                //System.out.println(prop);
-                if ("activeWindow".equals(prop)) {
-                    try {
-                        internal.setSelected(Objects.nonNull(e.getNewValue()));
-                    } catch (PropertyVetoException ex) {
-                        ex.printStackTrace();
-                    }
-                    //System.out.println("---------------------");
+        focusManager.addPropertyChangeListener(e -> {
+            String prop = e.getPropertyName();
+            //System.out.println(prop);
+            if ("activeWindow".equals(prop)) {
+                try {
+                    internal.setSelected(Objects.nonNull(e.getNewValue()));
+                } catch (PropertyVetoException ex) {
+                    ex.printStackTrace();
                 }
+                //System.out.println("---------------------");
             }
         });
 
@@ -75,15 +73,13 @@ public final class MainPanel extends JPanel {
 //                 }
 //             }
 //         });
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 try {
-//                     internal.setSelected(true);
-//                 } catch (PropertyVetoException ex) {
-//                     ex.printStackTrace();
-//                 }
-//                 //internal.requestFocusInWindow();
+//         EventQueue.invokeLater(() -> {
+//             try {
+//                 internal.setSelected(true);
+//             } catch (PropertyVetoException ex) {
+//                 ex.printStackTrace();
 //             }
+//             //internal.requestFocusInWindow();
 //         });
         return internal;
     }

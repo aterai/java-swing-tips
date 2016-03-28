@@ -13,12 +13,10 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
         final SlideInNotification handler = new SlideInNotification();
 
-//         optionPane.addPropertyChangeListener(new PropertyChangeListener() {
-//             @Override public void propertyChange(PropertyChangeEvent e) {
-//                 if (dialog.isVisible() && e.getSource() == optionPane && //(event.getPropertyName().equals(VALUE_PROPERTY)) &&
-//                     Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
-//                     dialog.setVisible(false);
-//                 }
+//         optionPane.addPropertyChangeListener(e -> {
+//             if (dialog.isVisible() && e.getSource() == optionPane && //(event.getPropertyName().equals(VALUE_PROPERTY)) &&
+//                 Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+//                 dialog.setVisible(false);
 //             }
 //         });
 //         dialog.getContentPane().add(optionPane);

@@ -36,26 +36,22 @@ public final class MainPanel extends JPanel {
 
         System.out.println(splashScreen.getModalityType());
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                splashScreen.setUndecorated(true);
-                splashScreen.getContentPane().add(new JLabel(new ImageIcon(getClass().getResource("splash.png"))));
-                splashScreen.getContentPane().add(progress, BorderLayout.SOUTH);
-                splashScreen.pack();
-                splashScreen.setLocationRelativeTo(null);
-                splashScreen.setVisible(true);
-            }
+        EventQueue.invokeLater(() -> {
+            splashScreen.setUndecorated(true);
+            splashScreen.getContentPane().add(new JLabel(new ImageIcon(MainPanel.class.getResource("splash.png"))));
+            splashScreen.getContentPane().add(progress, BorderLayout.SOUTH);
+            splashScreen.pack();
+            splashScreen.setLocationRelativeTo(null);
+            splashScreen.setVisible(true);
         });
         SwingWorker<Void, Void> worker = new Task() {
             @Override public void done() {
                 splashScreen.dispose();
             }
         };
-        worker.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                if ("progress".equals(e.getPropertyName())) {
-                    progress.setValue((Integer) e.getNewValue());
-                }
+        worker.addPropertyChangeListener(e -> {
+            if ("progress".equals(e.getPropertyName())) {
+                progress.setValue((Integer) e.getNewValue());
             }
         });
         worker.execute();
@@ -64,11 +60,7 @@ public final class MainPanel extends JPanel {
         frame.getContentPane().add(new MainPanel());
         frame.pack();
         frame.setLocationRelativeTo(null);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                frame.setVisible(true);
-            }
-        });
+        EventQueue.invokeLater(() -> frame.setVisible(true));
     }
 }
 

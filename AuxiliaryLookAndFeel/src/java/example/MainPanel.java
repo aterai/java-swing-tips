@@ -15,33 +15,29 @@ public final class MainPanel extends JPanel {
         final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
 
         UIManager.put("ComboBox.font", combo.getFont());
-        UIManager.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                if (e.getPropertyName().equals("lookAndFeel")) {
-                    String lnf = e.getNewValue().toString();
-                    if (lnf.contains("Windows")) {
-                        if (check.isSelected()) {
-                            UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
-                        }
-                        check.setEnabled(true);
-                    } else {
-                        UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
-                        check.setEnabled(false);
+        UIManager.addPropertyChangeListener(e -> {
+            if (e.getPropertyName().equals("lookAndFeel")) {
+                String lnf = e.getNewValue().toString();
+                if (lnf.contains("Windows")) {
+                    if (check.isSelected()) {
+                        UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
                     }
+                    check.setEnabled(true);
+                } else {
+                    UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
+                    check.setEnabled(false);
                 }
             }
         });
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox check = (JCheckBox) e.getSource();
-                String lnf = UIManager.getLookAndFeel().getName();
-                if (check.isSelected() && lnf.contains("Windows")) {
-                    UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
-                } else {
-                    UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
-                }
-                SwingUtilities.updateComponentTreeUI(getRootPane());
+        check.addActionListener(e -> {
+            JCheckBox check = (JCheckBox) e.getSource();
+            String lnf = UIManager.getLookAndFeel().getName();
+            if (check.isSelected() && lnf.contains("Windows")) {
+                UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
+            } else {
+                UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
             }
+            SwingUtilities.updateComponentTreeUI(getRootPane());
         });
 
         combo.setEditable(true);

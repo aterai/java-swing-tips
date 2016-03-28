@@ -153,15 +153,13 @@ class DraggableInternalFrame extends JInternalFrame {
     protected DraggableInternalFrame(String title) {
         super(title);
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        focusManager.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                String prop = e.getPropertyName();
-                if ("activeWindow".equals(prop)) {
-                    try {
-                        setSelected(Objects.nonNull(e.getNewValue()));
-                    } catch (PropertyVetoException ex) {
-                        ex.printStackTrace();
-                    }
+        focusManager.addPropertyChangeListener(e -> {
+            String prop = e.getPropertyName();
+            if ("activeWindow".equals(prop)) {
+                try {
+                    setSelected(Objects.nonNull(e.getNewValue()));
+                } catch (PropertyVetoException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

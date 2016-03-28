@@ -24,32 +24,26 @@ public class MainPanel extends JPanel {
         log("MainPanel: init");
         //updateCheckBox("MainPanel: init");
 
-        UIManager.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                if (e.getPropertyName().equals("lookAndFeel")) {
-                    //String lnf = e.getNewValue().toString();
-                    updateCheckBox("UIManager: propertyChange");
-                }
+        UIManager.addPropertyChangeListener(e -> {
+            if (e.getPropertyName().equals("lookAndFeel")) {
+                //String lnf = e.getNewValue().toString();
+                updateCheckBox("UIManager: propertyChange");
             }
         });
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                ActionListener al = new ActionListener() {
-                    @Override public void actionPerformed(ActionEvent e) {
-                        log("JMenuItem: actionPerformed");
-                        Object o = e.getSource();
-                        if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
-                            updateCheckBox("JMenuItem: actionPerformed: invokeLater");
-                        }
-                    }
-                };
-                List<JRadioButtonMenuItem> list = new ArrayList<>();
-                JMenuBar menuBar = getRootPane().getJMenuBar();
-                LookAndFeelUtil.searchAllMenuElements(menuBar, list);
-                for (JRadioButtonMenuItem mi: list) {
-                    mi.addActionListener(al);
+        EventQueue.invokeLater(() -> {
+            ActionListener al = e -> {
+                log("JMenuItem: actionPerformed");
+                Object o = e.getSource();
+                if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
+                    updateCheckBox("JMenuItem: actionPerformed: invokeLater");
                 }
+            };
+            List<JRadioButtonMenuItem> list = new ArrayList<>();
+            JMenuBar menuBar = getRootPane().getJMenuBar();
+            LookAndFeelUtil.searchAllMenuElements(menuBar, list);
+            for (JRadioButtonMenuItem mi: list) {
+                mi.addActionListener(al);
             }
         });
 
@@ -77,16 +71,14 @@ public class MainPanel extends JPanel {
     }
 
     private void updateCheckBox(final String str) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                log("--------\n" + str);
+        EventQueue.invokeLater(() -> {
+            log("--------\n" + str);
 
-                log(DRAWS_FOCUS_BORDER_AROUND_ICON + ": " + UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
-                dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
+            log(DRAWS_FOCUS_BORDER_AROUND_ICON + ": " + UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
+            dfbaiCheck.setSelected(UIManager.getBoolean(DRAWS_FOCUS_BORDER_AROUND_ICON));
 
-                log(DRAW_DASHED_FOCUS_INDICATOR + ": " + UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
-                ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
-            }
+            log(DRAW_DASHED_FOCUS_INDICATOR + ": " + UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
+            ddfiCheck.setSelected(UIManager.getBoolean(DRAW_DASHED_FOCUS_INDICATOR));
         });
     }
 
@@ -125,7 +117,7 @@ public class MainPanel extends JPanel {
 }
 
 class ActionCommandCheckBox extends JCheckBox {
-    public ActionCommandCheckBox(String cmd) {
+    protected ActionCommandCheckBox(String cmd) {
         super(cmd);
         setActionCommand(cmd);
         setAction(new AbstractAction(cmd) {

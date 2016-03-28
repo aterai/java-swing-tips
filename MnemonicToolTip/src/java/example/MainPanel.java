@@ -10,29 +10,25 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JButton b = (JButton) e.getSource();
-                int mnemonic = b.getMnemonic();
-                if (mnemonic < KeyEvent.VK_A) {
-                    mnemonic = KeyEvent.VK_A;
-                } else if (mnemonic < KeyEvent.VK_K) {
-                    mnemonic++;
-                } else {
-                    mnemonic = 0;
-                }
-                b.setMnemonic(mnemonic);
+        ActionListener al = e -> {
+            JButton b = (JButton) e.getSource();
+            int mnemonic = b.getMnemonic();
+            if (mnemonic < KeyEvent.VK_A) {
+                mnemonic = KeyEvent.VK_A;
+            } else if (mnemonic < KeyEvent.VK_K) {
+                mnemonic++;
+            } else {
+                mnemonic = 0;
             }
+            b.setMnemonic(mnemonic);
         };
         JButton button1 = new JButton("Hello World");
-        button1.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                String prop = e.getPropertyName();
-                JButton b = (JButton) e.getSource();
-                if (AbstractButton.MNEMONIC_CHANGED_PROPERTY.equals(prop)) {
-                    String str = KeyEvent.getKeyText(b.getMnemonic());
-                    b.setToolTipText("tooltip (Alt+" + str + ")");
-                }
+        button1.addPropertyChangeListener(e -> {
+            String prop = e.getPropertyName();
+            JButton b = (JButton) e.getSource();
+            if (AbstractButton.MNEMONIC_CHANGED_PROPERTY.equals(prop)) {
+                String str = KeyEvent.getKeyText(b.getMnemonic());
+                b.setToolTipText("tooltip (Alt+" + str + ")");
             }
         });
         JButton button2 = new JButton("abcdefghijk") {
@@ -88,7 +84,7 @@ public final class MainPanel extends JPanel {
 
 class MnemonicToolTip extends JToolTip {
     private final JLabel mnemonicLabel = new JLabel();
-    public MnemonicToolTip() {
+    protected MnemonicToolTip() {
         super();
         setLayout(new BorderLayout());
         //LookAndFeel.installColorsAndFont(mnemonicLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
