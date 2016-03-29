@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
             });
         }
 
-        JComboBox<String> combo2 = makeComboBox(5);
+        JComboBox<String> combo2 = makeComboBox(20);
         if (combo2.getUI() instanceof WindowsComboBoxUI) {
             combo2.setUI(new WindowsComboBoxUI() {
                 @Override protected ComboPopup createPopup() {
@@ -109,7 +109,7 @@ class BasicComboPopup2 extends BasicComboPopup {
         super.uninstallingUI();
         handler2 = null;
     }
-    public BasicComboPopup2(JComboBox combo) {
+    protected BasicComboPopup2(JComboBox combo) {
         super(combo);
     }
     @Override protected MouseListener createListMouseListener() {
@@ -144,27 +144,28 @@ class BasicComboPopup2 extends BasicComboPopup {
 }
 
 class BasicComboPopup3 extends BasicComboPopup {
-    public BasicComboPopup3(JComboBox combo) {
+    protected BasicComboPopup3(JComboBox combo) {
         super(combo);
     }
-    @Override protected JScrollPane createScroller() {
-        JScrollPane sp = new JScrollPane(list,
-                                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
-            @Override protected void processEvent(AWTEvent e) {
-                if (e instanceof MouseWheelEvent) {
-                    JScrollBar toScroll = getVerticalScrollBar();
-                    if (Objects.isNull(toScroll) || !toScroll.isVisible()) {
-                        ((MouseWheelEvent) e).consume();
-                        return;
-                    }
-                }
-                super.processEvent(e);
-            }
-        };
-        sp.setHorizontalScrollBar(null);
-        return sp;
-    }
+//     // Fixed 8u60: mouse wheel scroll closes combobox popup
+//     // https://bugs.openjdk.java.net/browse/JDK-8033069
+//     @Override protected JScrollPane createScroller() {
+//         JScrollPane sp = new JScrollPane(list) {
+//             @Override protected void processEvent(AWTEvent e) {
+//                 if (e instanceof MouseWheelEvent) {
+//                     JScrollBar toScroll = getVerticalScrollBar();
+//                     if (Objects.isNull(toScroll) || !toScroll.isVisible()) {
+//                         ((MouseWheelEvent) e).consume();
+//                         return;
+//                     }
+//                 }
+//                 super.processEvent(e);
+//             }
+//         };
+//         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+//         sp.setHorizontalScrollBar(null);
+//         return sp;
+//     }
     @SuppressWarnings("unchecked")
     @Override protected JList createList() {
         return new JList(comboBox.getModel()) {
