@@ -27,12 +27,10 @@ public final class MainPanel extends JPanel {
                     list[i++] = Float.parseFloat(ss);
                 }
             }
-        } catch (NumberFormatException nfe) {
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        } catch (NumberFormatException ex) {
+            EventQueue.invokeLater(() -> {
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             });
             return DEFAULT_DASH_ARRAY;
         }

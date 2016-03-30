@@ -46,9 +46,9 @@ public final class MainPanel extends JPanel {
     private Set<Integer> getDisableIndexFromTextField() {
         try {
             return Arrays.stream(field.getText().split(",")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf).collect(Collectors.toSet());
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ex) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(field, "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(field, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return Collections.<Integer>emptySet();
         }
     }

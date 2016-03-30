@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
               case 0:
                 return String.class;
               case 1:
-                return Number.class;
+                return Integer.class;
               case 2:
                 return Boolean.class;
               default:
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
                     JCheckBox b = (JCheckBox) c;
                     b.setBorderPainted(true);
                     b.setBackground(getSelectionBackground());
-                } else if (convertColumnIndexToModel(column) == 1) {
+                } else if (c instanceof JComponent && convertColumnIndexToModel(column) == 1) {
                     ((JComponent) c).setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
                 }
                 return c;
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
 //                 Integer iv;
 //                 try {
 //                     iv = Integer.valueOf(o.toString());
-//                 } catch (NumberFormatException nfe) {
+//                 } catch (NumberFormatException ex) {
 //                     iv = null;
 //                 }
 //                 return iv;

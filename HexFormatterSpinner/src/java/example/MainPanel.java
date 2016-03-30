@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
                 return Integer.valueOf(text, 16);
 //                 try {
 //                     return Integer.valueOf(text, 16);
-//                 } catch (NumberFormatException nfe) {
+//                 } catch (NumberFormatException ex) {
 //                     throw new ParseException(text, 0);
 //                 }
             }

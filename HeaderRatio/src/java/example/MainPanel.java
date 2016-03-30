@@ -92,9 +92,9 @@ public final class MainPanel extends JPanel {
             Stream<Integer> a = Arrays.stream(field.getText().split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf);
             Stream<Integer> b = Stream.generate(() -> 1).limit(length);
             return Stream.concat(a, b).limit(length).collect(Collectors.toList());
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ex) {
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(getRootPane(), "invalid value.\n" + nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(getRootPane(), "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return Stream.generate(() -> 1).limit(length).collect(Collectors.toList());
         }
     }
