@@ -4,7 +4,6 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
@@ -74,27 +73,9 @@ class AutomaticallyCloseListener implements HierarchyListener {
     //private final transient Logger logger = Logger.getLogger(getClass().getName());
     private static final int SECONDS = 5;
     private final AtomicInteger atomicDown = new AtomicInteger(SECONDS);
-    private Timer timer;
+    private final Timer timer = new Timer(1000, null);
+    private transient ActionListener listener;
 
-    private Timer makeTimer(final JLabel l) {
-        return new Timer(1000, new ActionListener() {
-            //private int countdown = SECONDS;
-            @Override public void actionPerformed(ActionEvent e) {
-                //int i = --countdown;
-                int i = atomicDown.decrementAndGet();
-                l.setText(String.format("Closing in %d seconds", i));
-                if (i <= 0) {
-                    Window w = SwingUtilities.getWindowAncestor(l);
-                    if (Objects.nonNull(w) && Objects.nonNull(timer) && timer.isRunning()) {
-                        //logger.info("Timer: timer.stop()\n");
-                        timer.stop();
-                        //logger.info("window.dispose()\n");
-                        w.dispose();
-                    }
-                }
-            }
-        });
-    }
     @Override public void hierarchyChanged(HierarchyEvent e) {
         if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
             JLabel l = (JLabel) e.getComponent();
@@ -102,14 +83,27 @@ class AutomaticallyCloseListener implements HierarchyListener {
                 //logger.info("isShowing=true\n");
                 atomicDown.set(SECONDS);
                 l.setText(String.format("Closing in %d seconds", SECONDS));
-                timer = makeTimer(l);
+                timer.removeActionListener(listener);
+                listener = event -> {
+                    int i = atomicDown.decrementAndGet();
+                    l.setText(String.format("Closing in %d seconds", i));
+                    if (i <= 0) {
+                        Container c = l.getTopLevelAncestor();
+                        if (c instanceof Window && timer.isRunning()) {
+                            //logger.info("Timer: timer.stop()\n");
+                            timer.stop();
+                            //logger.info("window.dispose()\n");
+                            ((Window) c).dispose();
+                        }
+                    }
+                };
+                timer.addActionListener(listener);
                 timer.start();
             } else {
                 //logger.info("isShowing=false\n");
-                if (Objects.nonNull(timer) && timer.isRunning()) {
+                if (timer.isRunning()) {
                     //logger.info("timer.stop()\n");
                     timer.stop();
-                    timer = null;
                 }
             }
         }
