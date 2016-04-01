@@ -55,8 +55,7 @@ public final class MainPanel extends JPanel {
                 StringBuilder nbuf = new StringBuilder(3);
                 StringBuilder buf = new StringBuilder(9);
                 for (int i = 0; i < model.getRowCount(); i++) {
-                    @SuppressWarnings("unchecked")
-                    EnumSet<Permissions> v = (EnumSet<Permissions>) model.getValueAt(i, 1);
+                    EnumSet<?> v = (EnumSet<?>) model.getValueAt(i, 1);
                     int flg = 0;
                     if (v.contains(Permissions.READ)) {
                         flg |= map.get(Permissions.READ);
