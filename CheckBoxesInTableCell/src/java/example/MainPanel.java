@@ -81,7 +81,6 @@ public final class MainPanel extends JPanel {
 }
 
 class CheckBoxesPanel extends JPanel {
-    private static final String OSNAME = System.getProperty("os.name");
     protected final String[] title = {"r", "w", "x"};
     public JCheckBox[] buttons;
     protected CheckBoxesPanel() {
@@ -105,10 +104,8 @@ class CheckBoxesPanel extends JPanel {
         }
     }
     protected void updateButtons(Object v) {
-        if ("Windows 7".equals(OSNAME)) { //Windows aero?
-            removeAll();
-            initButtons();
-        }
+        removeAll();
+        initButtons();
         Integer i = (Integer) (Objects.nonNull(v) ? v : 0);
         buttons[0].setSelected((i & (1 << 2)) != 0);
         buttons[1].setSelected((i & (1 << 1)) != 0);
@@ -131,11 +128,7 @@ class CheckBoxesRenderer extends CheckBoxesPanel implements TableCellRenderer {
 class CheckBoxesEditor extends CheckBoxesPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
 
-//     private final ActionListener al = new ActionListener() {
-//         @Override public void actionPerformed(ActionEvent e) {
-//             fireEditingStopped();
-//         }
-//     };
+//     private final ActionListener al = e -> fireEditingStopped();
     protected CheckBoxesEditor() {
         super();
         ActionMap am = getActionMap();
