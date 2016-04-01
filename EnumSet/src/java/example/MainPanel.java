@@ -111,7 +111,6 @@ public final class MainPanel extends JPanel {
 enum Permissions { EXECUTE, WRITE, READ; }
 
 class CheckBoxesPanel extends JPanel {
-    private static final String OSNAME = System.getProperty("os.name");
     protected final String[] title = {"r", "w", "x"};
     public JCheckBox[] buttons;
     protected CheckBoxesPanel() {
@@ -135,12 +134,9 @@ class CheckBoxesPanel extends JPanel {
         }
     }
     protected void updateButtons(Object v) {
-        if ("Windows 7".equals(OSNAME)) { //Windows aero?
-            removeAll();
-            initButtons();
-        }
-        @SuppressWarnings("unchecked")
-        EnumSet<Permissions> f = Objects.nonNull(v) ? (EnumSet<Permissions>) v : EnumSet.noneOf(Permissions.class);
+        removeAll();
+        initButtons();
+        EnumSet<?> f = v instanceof EnumSet ? (EnumSet<?>) v : EnumSet.noneOf(Permissions.class);
         buttons[0].setSelected(f.contains(Permissions.READ));
         buttons[1].setSelected(f.contains(Permissions.WRITE));
         buttons[2].setSelected(f.contains(Permissions.EXECUTE));
