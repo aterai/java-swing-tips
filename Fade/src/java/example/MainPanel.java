@@ -27,13 +27,13 @@ public final class MainPanel extends JPanel {
         animator = new Timer(25, fade);
 
         JButton button1 = new JButton(new AbstractAction("Open") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 mode = true;
                 animator.start();
             }
         });
         JButton button2 = new JButton(new AbstractAction("Close") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 mode = false;
                 animator.start();
             }

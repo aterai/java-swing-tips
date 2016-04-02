@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
         p.add(new JButton(new AbstractAction("showOpenDialog") {
             private JFileChooser chooser;
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 if (chooser == null) {
                     chooser = new JFileChooser();
                     JPopupMenu pop = searchPopupMenu(chooser);

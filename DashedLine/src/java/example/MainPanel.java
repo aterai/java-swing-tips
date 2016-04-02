@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         JButton button = new JButton(new AbstractAction("Change") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 dashedStroke = null;
                 label.repaint();
             }

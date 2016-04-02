@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 //                     }
 //                 }
 //             }
-//             @Override public void actionPerformed(ActionEvent ae) {
+//             @Override public void actionPerformed(ActionEvent e) {
 //                 System.out.println("------------------");
 //                 searchTreeForCheckedNode(tree.getPathForRow(0));
 //                 //DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();

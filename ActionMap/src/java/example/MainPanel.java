@@ -34,14 +34,10 @@ public final class MainPanel extends JPanel {
         };
         am = pf2.getActionMap();
         am.put(DefaultEditorKit.pasteAction, new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent ae) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        Toolkit.getDefaultToolkit().beep();
-                        JOptionPane.showMessageDialog(
-                            getRootPane(), "paste is disabled", "title",
-                            JOptionPane.ERROR_MESSAGE);
-                    }
+            @Override public void actionPerformed(ActionEvent e) {
+                EventQueue.invokeLater(() -> {
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(getRootPane(), "paste is disabled", "title", JOptionPane.ERROR_MESSAGE);
                 });
             }
         });

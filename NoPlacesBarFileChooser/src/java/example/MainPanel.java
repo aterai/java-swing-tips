@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         final JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
         p.add(new JButton(new AbstractAction("noPlacesBar") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
                 JFileChooser fileChooser = new JFileChooser();
                 int retvalue = fileChooser.showOpenDialog(p);
@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
             }
         }));
         p.add(new JButton(new AbstractAction("Default") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
                 JFileChooser fileChooser = new JFileChooser();
                 int retvalue = fileChooser.showOpenDialog(p);

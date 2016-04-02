@@ -13,17 +13,17 @@ public final class MainPanel extends JPanel {
         final ZoomImage zoom = new ZoomImage(icon.getImage());
 
         JButton button1 = new JButton(new AbstractAction("Zoom In") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 zoom.changeScale(-5);
             }
         });
         JButton button2 = new JButton(new AbstractAction("Zoom Out") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 zoom.changeScale(5);
             }
         });
         JButton button3 = new JButton(new AbstractAction("Original size") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 zoom.initScale();
             }
         });

@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
         BufferedImage i2 = makeImage(getClass().getResource("test.jpg"));
         final RandomDissolve randomDissolve = new RandomDissolve(i1, i2);
         JButton button = new JButton(new AbstractAction("change") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 randomDissolve.animationStart();
             }
         });

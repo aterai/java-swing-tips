@@ -19,13 +19,13 @@ public final class MainPanel extends JPanel {
         animator = new Timer(5, wipe);
 
         JButton button1 = new JButton(new AbstractAction("Wipe In") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 mode = true;
                 animator.start();
             }
         });
         JButton button2 = new JButton(new AbstractAction("Wipe Out") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 mode = false;
                 animator.start();
             }

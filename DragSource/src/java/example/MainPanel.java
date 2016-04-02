@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         box.add(Box.createHorizontalGlue());
         box.add(new JButton(new AbstractAction("Create Temp File") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 File outfile;
                 try {
                     outfile = File.createTempFile("test", ".tmp");
@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
         }));
         box.add(Box.createHorizontalStrut(2));
         box.add(new JButton(new AbstractAction("Clear") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 clearFile();
                 repaint();
             }

@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser#showOpenDialog(...)"));
         p.add(new JButton(new AbstractAction("showOpenDialog") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 int retvalue = fileChooser.showOpenDialog(getRootPane());
                 System.out.println(retvalue);
                 //if (retvalue == JFileChooser.APPROVE_OPTION) {

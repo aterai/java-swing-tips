@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         p.add(new JLabel("Ratio:"), BorderLayout.WEST);
         p.add(field);
         p.add(new JButton(new AbstractAction("revalidate") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 setTableHeaderColumnRaito();
             }
         }), BorderLayout.EAST);

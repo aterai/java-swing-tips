@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         ImageIcon i2 = new ImageIcon(getClass().getResource("test.jpg"));
         final Crossfade crossfade = new Crossfade(i1, i2);
         JButton button = new JButton(new AbstractAction("change") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 crossfade.animationStart();
             }
         });

@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
             }
         });
         start = new JButton(new AbstractAction("start") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 sequencer.setTickPosition(tickpos);
                 sequencer.start();
                 stop.setEnabled(true);
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             }
         });
         stop = new JButton(new AbstractAction("stop") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 tickpos = sequencer.getTickPosition();
                 sequencer.stop();
                 start.setEnabled(true);
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
             }
         });
         JButton init = new JButton(new AbstractAction("init") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 sequencer.stop();
                 tickpos = 0;
                 start.setEnabled(true);

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout(10, 10));
         JPanel p = new JPanel(new GridLayout(3, 1, 10, 10));
         p.add(makePanel("IOException", new JButton(new AbstractAction("c:/con.txt") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 File file = new File(DEVICE_NAME);
                 try {
                     if (file.createNewFile()) {
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
             }
         })));
         p.add(makePanel("getCanonicalPath", new JButton(new AbstractAction("c:/con.txt:getCanonicalPath") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 File file = new File(DEVICE_NAME);
                 if (!isCanonicalPath(file)) {
                     Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
             }
         })));
         p.add(makePanel("isFile: JDK 1.5+ ", new JButton(new AbstractAction("c:/con.txt:isFile") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 File file = new File(DEVICE_NAME);
                 if (!file.isFile()) {
                     Object[] obj = {file.getAbsolutePath() + " is not a file."};

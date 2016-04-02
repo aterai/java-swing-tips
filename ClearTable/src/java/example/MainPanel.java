@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         table.setComponentPopupMenu(new TablePopupMenu());
 
         add(new JButton(new AbstractAction("remove all rows") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 //model.clear();
                 if (DEBUG) {
                     // ArrayIndexOutOfBoundsException: 0 >= 0

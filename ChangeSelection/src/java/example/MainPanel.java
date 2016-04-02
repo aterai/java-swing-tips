@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
         colField = new JSpinner(new SpinnerNumberModel(2, 0, model.getColumnCount() - 1, 1));
 
         table.getActionMap().put("clear-selection", new AbstractAction("clear-selection") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 table.clearSelection();
                 requestFocusInWindow();
             }

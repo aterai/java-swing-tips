@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         initDisableIndex(disableIndexSet);
         ActionMap am = list.getActionMap();
         am.put("selectNextRow", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 int index = list.getSelectedIndex();
                 for (int i = index + 1; i < list.getModel().getSize(); i++) {
                     if (!disableIndexSet.contains(i)) {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
             }
         });
         am.put("selectPreviousRow", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 int index = list.getSelectedIndex();
                 for (int i = index - 1; i >= 0; i--) {
                     if (!disableIndexSet.contains(i)) {

@@ -29,11 +29,9 @@ public final class MainPanel extends JPanel {
                 }
             }
         } catch (NumberFormatException ex) {
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            EventQueue.invokeLater(() -> {
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(getRootPane(), "Invalid input.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             });
             return DEFAULT_DASH_ARRAY;
         }
@@ -43,7 +41,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         button = new JButton(new AbstractAction("Change") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 BasicStroke dashedStroke = new BasicStroke(5f,
                     ((EndCapStyle) endcapCombo.getSelectedItem()).style,
                     ((JoinStyle) joinCombo.getSelectedItem()).style,

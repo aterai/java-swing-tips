@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         final JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
         p.add(new JButton(new AbstractAction("List View(Default)") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 int retvalue = chooser.showOpenDialog(p);
                 if (retvalue == JFileChooser.APPROVE_OPTION) {
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         }));
         p.add(new JButton(new AbstractAction("Details View") {
             private JFileChooser chooser;
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
 //                 sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
 //                 filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);

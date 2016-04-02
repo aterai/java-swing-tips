@@ -30,29 +30,25 @@ public final class MainPanel extends JPanel {
         box.add(comp);
         box.add(glue);
         box.revalidate();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                comp.scrollRectToVisible(comp.getBounds());
-            }
-        });
+        EventQueue.invokeLater(() -> comp.scrollRectToVisible(comp.getBounds()));
     }
 
     private JToolBar makeToolBar() {
         JToolBar bar = new JToolBar();
         bar.add(new AbstractAction("add JLabel") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 addComp(MakeComponentUtil.makeLabel());
             }
         });
         bar.addSeparator();
         bar.add(new AbstractAction("add JButton") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 addComp(MakeComponentUtil.makeButton());
             }
         });
         bar.addSeparator();
         bar.add(new AbstractAction("add JCheckBox") {
-            @Override public void actionPerformed(ActionEvent ae) {
+            @Override public void actionPerformed(ActionEvent e) {
                 addComp(MakeComponentUtil.makeCheckBox());
             }
         });
