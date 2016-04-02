@@ -142,7 +142,7 @@
            classpathref="project.class.path">
       <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
       <compilerarg value="-J-Duser.language=${user.language}" />
-      <!-- compilerarg value="-Xlint:unchecked" / -->
+      <compilerarg value="-Xlint:unchecked" />
     </javac>
   </target>
 
