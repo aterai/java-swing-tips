@@ -128,17 +128,14 @@ class DeleteButtonRenderer extends DeleteButton implements TableCellRenderer {
 
 class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
     private transient ActionListener listener;
-    private JTable table;
     @Override public void updateUI() {
         removeActionListener(listener);
         super.updateUI();
-        //JComponent c = this;
         listener = new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                //Object o = SwingUtilities.getAncestorOfClass(JTable.class, c);
-                //if (o instanceof JTable) {
-                //    JTable table = (JTable) o;
-                if (Objects.nonNull(table)) {
+                Object o = SwingUtilities.getAncestorOfClass(JTable.class, DeleteButtonEditor.this);
+                if (o instanceof JTable) {
+                    JTable table = (JTable) o;
                     int row = table.convertRowIndexToModel(table.getEditingRow());
                     fireEditingStopped();
                     ((DefaultTableModel) table.getModel()).removeRow(row);
@@ -148,7 +145,6 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
         addActionListener(listener);
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        this.table = table;
         return this;
     }
     @Override public Object getCellEditorValue() {
@@ -229,14 +225,14 @@ class TestModel extends DefaultTableModel {
     @Override public boolean isCellEditable(int row, int col) {
         return COLUMN_ARRAY[col].isEditable;
     }
-    @Override public Class<?> getColumnClass(int modelIndex) {
-        return COLUMN_ARRAY[modelIndex].columnClass;
+    @Override public Class<?> getColumnClass(int column) {
+        return COLUMN_ARRAY[column].columnClass;
     }
     @Override public int getColumnCount() {
         return COLUMN_ARRAY.length;
     }
-    @Override public String getColumnName(int modelIndex) {
-        return COLUMN_ARRAY[modelIndex].columnName;
+    @Override public String getColumnName(int column) {
+        return COLUMN_ARRAY[column].columnName;
     }
     private static class ColumnContext {
         public final String  columnName;

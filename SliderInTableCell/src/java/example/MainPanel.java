@@ -78,12 +78,14 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
     //Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
-        Component p = getParent();
-        if (Objects.nonNull(p)) {
-            p = p.getParent();
-        } // p should now be the JTable. //System.out.println(p.getClass());
-        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return !colorMatch && super.isOpaque();
+        Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+        if (o instanceof JTable) {
+            JTable table = (JTable) o;
+            boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+            return !colorMatch && super.isOpaque();
+        } else {
+            return super.isOpaque();
+        }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //         //System.out.println(propertyName);
@@ -103,16 +105,17 @@ class SliderRednerer extends JSlider implements TableCellRenderer {
 
 class SliderEditor extends JSlider implements TableCellEditor {
     private transient ChangeListener handler;
-    private JTable table;
+    private int prev;
     @Override public void updateUI() {
         removeChangeListener(handler);
         super.updateUI();
         setOpaque(true);
-        handler = new ChangeListener() {
-            private int prev;
-            @Override public void stateChanged(ChangeEvent e) {
+        handler = e -> {
+            Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+            if (o instanceof JTable) {
+                JTable table = (JTable) o;
                 int value = getValue();
-                if (Objects.nonNull(table) && table.isEditing() && value != prev) {
+                if (table.isEditing() && value != prev) {
                     int row = table.convertRowIndexToModel(table.getEditingRow());
                     table.getModel().setValueAt(value, row, 0);
                     table.getModel().setValueAt(value, row, 1);
@@ -124,7 +127,6 @@ class SliderEditor extends JSlider implements TableCellEditor {
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         Integer i = (Integer) value;
-        this.table = table;
         this.setBackground(table.getSelectionBackground());
         this.setValue(i.intValue());
         return this;

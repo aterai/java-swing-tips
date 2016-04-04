@@ -22,13 +22,6 @@ public final class MainPanel extends JPanel {
         }
     };
     private final JTable table = new JTable(model) {
-        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-            Component c = super.prepareEditor(editor, row, column);
-            if (c instanceof JCheckBox) {
-                ((JCheckBox) c).setBackground(getSelectionBackground());
-            }
-            return c;
-        }
         private transient HighlightListener highlighter;
         @Override public void updateUI() {
             addMouseListener(highlighter);
@@ -37,12 +30,19 @@ public final class MainPanel extends JPanel {
             setDefaultRenderer(Number.class,  null);
             setDefaultRenderer(Boolean.class, null);
             super.updateUI();
-            highlighter = new HighlightListener(this);
+            highlighter = new HighlightListener();
             addMouseListener(highlighter);
             addMouseMotionListener(highlighter);
             setDefaultRenderer(Object.class,  new RolloverDefaultTableCellRenderer(highlighter));
             setDefaultRenderer(Number.class,  new RolloverNumberRenderer(highlighter));
             setDefaultRenderer(Boolean.class, new RolloverBooleanRenderer(highlighter));
+        }
+        @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+            Component c = super.prepareEditor(editor, row, column);
+            if (c instanceof JCheckBox) {
+                ((JCheckBox) c).setBackground(getSelectionBackground());
+            }
+            return c;
         }
     };
 
@@ -84,18 +84,18 @@ public final class MainPanel extends JPanel {
 class HighlightListener extends MouseAdapter {
     private int row = -1;
     private int col = -1;
-    private final JTable table;
-    protected HighlightListener(JTable table) {
-        super();
-        this.table = table;
-    }
     public boolean isHighlightableCell(int row, int column) {
         return this.row == row && this.col == column;
     }
     @Override public void mouseMoved(MouseEvent e) {
-        Point pt = e.getPoint();
+        Component c = e.getComponent();
+        if (!(c instanceof JTable)) {
+            return;
+        }
+        JTable table = (JTable) c;
         int prevRow = row;
         int prevCol = col;
+        Point pt = e.getPoint();
         row = table.rowAtPoint(pt);
         col = table.columnAtPoint(pt);
         if (row < 0 || col < 0) {
