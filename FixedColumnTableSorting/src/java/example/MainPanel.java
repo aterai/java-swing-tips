@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
     private final Object[] columnNames = {"fixed 1", "fixed 2", "a", "b", "c", "d", "e", "f"};
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int modelIndex) {
-            return modelIndex < 2 ? Integer.class : Object.class;
+        @Override public Class<?> getColumnClass(int column) {
+            return column < 2 ? Integer.class : Object.class;
         }
     };
     private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);

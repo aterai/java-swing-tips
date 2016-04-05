@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"1", "2", "a", "b", "c"};
     //</blockquote>
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-        @Override public Class<?> getColumnClass(int modelIndex) {
-            return modelIndex < 2 ? Integer.class : Object.class;
+        @Override public Class<?> getColumnClass(int column) {
+            return column < 2 ? Integer.class : Object.class;
         }
     };
     private final JTable table;

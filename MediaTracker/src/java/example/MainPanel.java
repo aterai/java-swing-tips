@@ -137,14 +137,14 @@ class FileModel extends DefaultTableModel {
     @Override public boolean isCellEditable(int row, int col) {
         return COLUMN_LIST.get(col).isEditable;
     }
-    @Override public Class<?> getColumnClass(int modelIndex) {
-        return COLUMN_LIST.get(modelIndex).columnClass;
+    @Override public Class<?> getColumnClass(int column) {
+        return COLUMN_LIST.get(column).columnClass;
     }
     @Override public int getColumnCount() {
         return COLUMN_LIST.size();
     }
-    @Override public String getColumnName(int modelIndex) {
-        return COLUMN_LIST.get(modelIndex).columnName;
+    @Override public String getColumnName(int column) {
+        return COLUMN_LIST.get(column).columnName;
     }
     private static class ColumnContext {
         public final String  columnName;
