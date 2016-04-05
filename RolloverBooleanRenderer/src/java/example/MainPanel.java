@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -87,47 +87,53 @@ class HighlightListener extends MouseAdapter {
     public boolean isHighlightableCell(int row, int column) {
         return this.row == row && this.col == column;
     }
-    @Override public void mouseMoved(MouseEvent e) {
+    private static Optional<JTable> getTable(MouseEvent e) {
         Component c = e.getComponent();
-        if (!(c instanceof JTable)) {
-            return;
+        if (c instanceof JTable) {
+            return Optional.of((JTable) c);
         }
-        JTable table = (JTable) c;
-        int prevRow = row;
-        int prevCol = col;
-        Point pt = e.getPoint();
-        row = table.rowAtPoint(pt);
-        col = table.columnAtPoint(pt);
-        if (row < 0 || col < 0) {
-            row = -1;
-            col = -1;
-        }
-// >>>> HyperlinkCellRenderer.java
-// @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-        if (row == prevRow && col == prevCol) {
-            return;
-        }
-        Rectangle repaintRect;
-        if (row >= 0 && col >= 0) {
-            Rectangle r = table.getCellRect(row, col, false);
-            if (prevRow >= 0 && prevCol >= 0) {
-                repaintRect = r.union(table.getCellRect(prevRow, prevCol, false));
-            } else {
-                repaintRect = r;
+        return Optional.empty();
+    }
+    @Override public void mouseMoved(MouseEvent e) {
+        getTable(e).ifPresent(table -> {
+            int prevRow = row;
+            int prevCol = col;
+            Point pt = e.getPoint();
+            row = table.rowAtPoint(pt);
+            col = table.columnAtPoint(pt);
+            if (row < 0 || col < 0) {
+                row = -1;
+                col = -1;
             }
-        } else {
-            repaintRect = table.getCellRect(prevRow, prevCol, false);
-        }
-        table.repaint(repaintRect);
-// <<<<
-        //table.repaint();
+            // >>>> HyperlinkCellRenderer.java
+            // @see http://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+            if (row == prevRow && col == prevCol) {
+                return;
+            }
+            Rectangle repaintRect;
+            if (row >= 0 && col >= 0) {
+                Rectangle r = table.getCellRect(row, col, false);
+                if (prevRow >= 0 && prevCol >= 0) {
+                    repaintRect = r.union(table.getCellRect(prevRow, prevCol, false));
+                } else {
+                    repaintRect = r;
+                }
+            } else {
+                repaintRect = table.getCellRect(prevRow, prevCol, false);
+            }
+            table.repaint(repaintRect);
+            // <<<<
+            //table.repaint();
+        });
     }
     @Override public void mouseExited(MouseEvent e) {
-        if (row >= 0 && col >= 0) {
-            table.repaint(table.getCellRect(row, col, false));
-        }
-        row = -1;
-        col = -1;
+        getTable(e).ifPresent(table -> {
+            if (row >= 0 && col >= 0) {
+                table.repaint(table.getCellRect(row, col, false));
+            }
+            row = -1;
+            col = -1;
+        });
     }
 }
 
@@ -190,12 +196,14 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
     //Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
-        Component p = getParent();
-        if (Objects.nonNull(p)) {
-            p = p.getParent();
-        } // p should now be the JTable.
-        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return !colorMatch && super.isOpaque();
+        Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+        if (o instanceof JTable) {
+            JTable table = (JTable) o;
+            boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+            return !colorMatch && super.isOpaque();
+        } else {
+            return super.isOpaque();
+        }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //         System.out.println(propertyName);
