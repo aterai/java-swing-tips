@@ -149,11 +149,7 @@ class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
             }
         }
         @Override public void actionPerformed(ActionEvent e) {
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    fireEditingStopped();
-                }
-            });
+            EventQueue.invokeLater(() -> fireEditingStopped());
         }
     }
     protected ButtonsEditor(JTable table) {

@@ -127,11 +127,7 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
 //         checkBox.setOpaque(false);
 //         checkBox.setFocusable(false);
 //         checkBox.setRolloverEnabled(false);
-//         checkBox.addActionListener(new ActionListener() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 fireEditingStopped();
-//             }
-//         });
+//         checkBox.addActionListener(e -> fireEditingStopped());
 //         p.add(checkBox);
 //         p.setBorder(UIManager.getBorder("Table.noFocusBorder"));
 //     }

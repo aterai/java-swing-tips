@@ -215,11 +215,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
             super.updateUI();
             setOpaque(false);
             setFocusable(false);
-            handler = new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    stopCellEditing();
-                }
-            };
+            handler = e -> stopCellEditing();
             addActionListener(handler);
         }
     };
@@ -262,11 +258,7 @@ class CheckBoxNodeEditor extends JCheckBox implements TreeCellEditor {
         super.updateUI();
         setOpaque(false);
         setFocusable(false);
-        handler = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                stopCellEditing();
-            }
-        };
+        handler = e -> stopCellEditing();
         addActionListener(handler);
     }
     @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {

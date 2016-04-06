@@ -144,11 +144,7 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
 
     protected RadioButtonsEditor() {
         super();
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
-        };
+        ActionListener al = e -> fireEditingStopped();
         for (AbstractButton b: buttons) {
             b.addActionListener(al);
         }

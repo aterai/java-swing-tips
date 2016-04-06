@@ -108,11 +108,7 @@ class CloseableTabbedPane extends JTabbedPane {
         JButton button = new JButton(CLOSE_ICON);
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                removeTabAt(indexOfComponent(content));
-            }
-        });
+        button.addActionListener(e -> removeTabAt(indexOfComponent(content)));
         tab.add(label, BorderLayout.WEST);
         tab.add(button, BorderLayout.EAST);
         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));

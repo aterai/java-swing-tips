@@ -369,12 +369,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //
 //     protected CheckBoxNodeEditor() {
 //         super();
-//         this.addActionListener(new ActionListener() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 //System.out.println("actionPerformed: stopCellEditing");
-//                 stopCellEditing();
-//             }
-//         });
+//         this.addActionListener(e -> stopCellEditing());
 //         panel.setFocusable(false);
 //         panel.setRequestFocusEnabled(false);
 //         panel.setOpaque(false);
@@ -563,12 +558,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //     private String str = null;
 //     protected CheckBoxNodeEditor() {
 //         super(new BorderLayout());
-//         check.addActionListener(new ActionListener() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 //System.out.println("actionPerformed: stopCellEditing");
-//                 stopCellEditing();
-//             }
-//         });
+//         check.addActionListener(e -> stopCellEditing());
 //         setFocusable(false);
 //         setRequestFocusEnabled(false);
 //         setOpaque(false);

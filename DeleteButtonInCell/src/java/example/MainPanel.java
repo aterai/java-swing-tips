@@ -131,15 +131,13 @@ class DeleteButtonEditor extends DeleteButton implements TableCellEditor {
     @Override public void updateUI() {
         removeActionListener(listener);
         super.updateUI();
-        listener = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Object o = SwingUtilities.getAncestorOfClass(JTable.class, DeleteButtonEditor.this);
-                if (o instanceof JTable) {
-                    JTable table = (JTable) o;
-                    int row = table.convertRowIndexToModel(table.getEditingRow());
-                    fireEditingStopped();
-                    ((DefaultTableModel) table.getModel()).removeRow(row);
-                }
+        listener = e -> {
+            Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+            if (o instanceof JTable) {
+                JTable table = (JTable) o;
+                int row = table.convertRowIndexToModel(table.getEditingRow());
+                fireEditingStopped();
+                ((DefaultTableModel) table.getModel()).removeRow(row);
             }
         };
         addActionListener(listener);
@@ -247,18 +245,18 @@ class TestModel extends DefaultTableModel {
 }
 
 class Test {
-    private String name;
-    private String comment;
+    private final String name;
+    private final String comment;
     protected Test(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
-    public void setName(String str) {
-        name = str;
-    }
-    public void setComment(String str) {
-        comment = str;
-    }
+//     public void setName(String str) {
+//         name = str;
+//     }
+//     public void setComment(String str) {
+//         comment = str;
+//     }
     public String getName() {
         return name;
     }
