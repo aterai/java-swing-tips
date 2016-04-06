@@ -110,8 +110,8 @@ public final class MainPanel extends JPanel {
 class DummyIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(Color.RED);
         g2.translate(x, y);
+        g2.setPaint(Color.RED);
         g2.fillOval(0, 0, getIconWidth(), getIconHeight());
         g2.dispose();
     }

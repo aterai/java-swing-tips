@@ -101,8 +101,8 @@ class DummyIcon implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(color);
         g2.translate(x, y);
+        g2.setPaint(color);
         g2.fillOval(4, 4, getIconWidth() - 8, getIconHeight() - 8);
         g2.dispose();
     }
