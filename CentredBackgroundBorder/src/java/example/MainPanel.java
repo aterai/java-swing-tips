@@ -20,13 +20,13 @@ public final class MainPanel extends JPanel {
         area.setBackground(new Color(0x0, true)); //Nimbus
         area.setLineWrap(true);
         area.setOpaque(false);
-        area.setText("  public static void createAndShowGUI() {\n"
-                   + "    final JFrame frame = new JFrame();\n"
-                   + "    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);\n"
-                   + "    frame.getContentPane().add(new MainPanel());\n"
-                   + "    frame.pack();\n"
-                   + "    frame.setLocationRelativeTo(null);\n"
-                   + "    frame.setVisible(true);\n"
+        area.setText("public static void createAndShowGUI() {\n"
+                   + "  final JFrame frame = new JFrame();\n"
+                   + "  frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);\n"
+                   + "  frame.getContentPane().add(new MainPanel());\n"
+                   + "  frame.pack();\n"
+                   + "  frame.setLocationRelativeTo(null);\n"
+                   + "  frame.setVisible(true);\n"
                    + "}\n");
         URL url = getClass().getResource("tokeidai.jpg");
         BufferedImage bi = getFilteredImage(url);
@@ -79,11 +79,11 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
+// How can I use TextArea with Background Picture ?
+// https://community.oracle.com/thread/1395763
 class CentredBackgroundBorder implements Border {
-    private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
-    public CentredBackgroundBorder(BufferedImage image) {
+    protected CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -94,7 +94,7 @@ class CentredBackgroundBorder implements Border {
         g2.dispose();
     }
     @Override public Insets getBorderInsets(Component c) {
-        return insets;
+        return new Insets(0, 0, 0, 0);
     }
     @Override public boolean isBorderOpaque() {
         return true;

@@ -77,7 +77,7 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
     private final JLabel view;
     private JButton arrowButton;
 
-    public AutoRepeatHandler(int extent, JLabel view) {
+    protected AutoRepeatHandler(int extent, JLabel view) {
         super();
         this.extent = BigInteger.valueOf(extent);
         this.view = view;
