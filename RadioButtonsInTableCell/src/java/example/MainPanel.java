@@ -144,7 +144,13 @@ class RadioButtonsEditor extends RadioButtonsPanel implements TableCellEditor {
 
     protected RadioButtonsEditor() {
         super();
-        ActionListener al = e -> fireEditingStopped();
+        // PMD: False positive: ConstructorCallsOverridableMethod
+        // ActionListener al = e -> fireEditingStopped();
+        ActionListener al = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+        };
         for (AbstractButton b: buttons) {
             b.addActionListener(al);
         }

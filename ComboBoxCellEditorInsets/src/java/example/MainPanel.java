@@ -119,7 +119,13 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
 
     protected ComboBoxCellEditor() {
         super();
-        comboBox.addActionListener(e -> fireEditingStopped());
+        // PMD: False positive: ConstructorCallsOverridableMethod
+        // comboBox.addActionListener(e -> fireEditingStopped());
+        comboBox.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+        });
         addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 fireEditingStopped();
