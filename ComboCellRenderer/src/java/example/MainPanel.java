@@ -146,12 +146,14 @@ class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     //Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
         Color back = getBackground();
-        Component p = getParent();
-        if (Objects.nonNull(p)) {
-            p = p.getParent();
-        } // p should now be the JTable.
-        boolean colorMatch = Objects.nonNull(back) && Objects.nonNull(p) && back.equals(p.getBackground()) && p.isOpaque();
-        return !colorMatch && super.isOpaque();
+        Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+        if (o instanceof JTable) {
+            JTable table = (JTable) o;
+            boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+            return !colorMatch && super.isOpaque();
+        } else {
+            return super.isOpaque();
+        }
     }
     @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 //         System.out.println(propertyName);
