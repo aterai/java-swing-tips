@@ -188,7 +188,10 @@ class URLRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
         Rectangle repaintRect;
         if (isRollover) {
             Rectangle r = table.getCellRect(row, col, false);
-            repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
+            // PMD: False positive: SimplifiedTernary
+            // repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
+            Rectangle cr = table.getCellRect(prevRow, prevCol, false);
+            repaintRect = prevRollover ? r.union(cr) : r;
         } else { //if (prevRollover) {
             repaintRect = table.getCellRect(prevRow, prevCol, false);
         }
