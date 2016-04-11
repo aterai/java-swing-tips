@@ -46,17 +46,15 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private static void initTextFieldBorder(final JTextField textField) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Border b = new StringBorder(textField, "%");
-                //if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
-                if (textField.getUI().getClass().getName().startsWith("Synth")) {
-                    Border c = textField.getBorder();
-                    textField.setBorder(Objects.nonNull(c) ? BorderFactory.createCompoundBorder(c, b) : b);
-                } else {
-                    textField.setBorder(b);
-                }
+    private static void initTextFieldBorder(JTextField textField) {
+        EventQueue.invokeLater(() -> {
+            Border b = new StringBorder(textField, "%");
+            //if (textField.getUI() instanceof javax.swing.plaf.synth.SynthFormattedTextFieldUI) {
+            if (textField.getUI().getClass().getName().startsWith("Synth")) {
+                Border c = textField.getBorder();
+                textField.setBorder(Objects.nonNull(c) ? BorderFactory.createCompoundBorder(c, b) : b);
+            } else {
+                textField.setBorder(b);
             }
         });
     }
@@ -96,7 +94,7 @@ class StringBorder implements Border {
     private final Insets insets;
     private final Rectangle rect;
     private final String str;
-    public StringBorder(JComponent parent, String str) {
+    protected StringBorder(JComponent parent, String str) {
         this.str = str;
         FontRenderContext frc = new FontRenderContext(null, true, true);
         rect = parent.getFont().getStringBounds(str, frc).getBounds();

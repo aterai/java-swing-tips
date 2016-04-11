@@ -15,18 +15,11 @@ public final class MainPanel extends JPanel {
         //textArea.setBorder(new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder()));
 
         JCheckBox c = new JCheckBox("setEnabled", true);
-        c.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tree.setEnabled(((JCheckBox) e.getSource()).isSelected());
-            }
-        });
+        c.addActionListener(e -> tree.setEnabled(((JCheckBox) e.getSource()).isSelected()));
 
-        JButton b = new JButton(new AbstractAction("Clear") {
-            @Override public void actionPerformed(ActionEvent e) {
-                textArea.setText("");
-            }
-        });
+        JButton b = new JButton("Clear");
         b.setFocusable(false);
+        b.addActionListener(e -> textArea.setText(""));
 
         add(makePanel(new JScrollPane(tree), c));
         add(makePanel(new JScrollPane(textArea), b));
@@ -101,7 +94,7 @@ public final class MainPanel extends JPanel {
 //     private final JComponent container;
 //     private final Border border;
 //
-//     public ComponentTitledBorder(Component comp, JComponent container, Border border) {
+//     protected ComponentTitledBorder(Component comp, JComponent container, Border border) {
 //         this.comp      = comp;
 //         this.container = container;
 //         this.border    = border;

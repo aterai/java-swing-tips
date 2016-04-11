@@ -188,7 +188,6 @@ class TranslucentTexturePanel extends JPanel {
 // https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
 // http://ateraimemo.com/Swing/CentredBackgroundBorder.html
 class CentredBackgroundBorder implements Border {
-    private final Insets insets = new Insets(0, 0, 0, 0);
     private final BufferedImage image;
     protected CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
@@ -201,7 +200,7 @@ class CentredBackgroundBorder implements Border {
         g2.dispose();
     }
     @Override public Insets getBorderInsets(Component c) {
-        return insets;
+        return new Insets(0, 0, 0, 0);
     }
     @Override public boolean isBorderOpaque() {
         return true;

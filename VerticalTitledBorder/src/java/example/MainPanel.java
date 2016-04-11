@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
 class VerticalTitledBorder extends TitledBorder {
     private final JLabel label;
-    public VerticalTitledBorder(String title) {
+    protected VerticalTitledBorder(String title) {
         super(title);
         this.label = new JLabel(title);
         this.label.setOpaque(true);

@@ -137,10 +137,10 @@ public class ReorderbleList<E extends ListItem> extends JList<E> {
 }
 
 // class DotBorder extends EmptyBorder {
-//     public DotBorder(Insets borderInsets) {
+//     protected DotBorder(Insets borderInsets) {
 //         super(borderInsets);
 //     }
-//     public DotBorder(int top, int left, int bottom, int right) {
+//     protected DotBorder(int top, int left, int bottom, int right) {
 //         super(top, left, bottom, right);
 //     }
 //     @Override public boolean isBorderOpaque() {

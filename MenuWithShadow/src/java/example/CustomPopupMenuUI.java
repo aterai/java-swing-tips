@@ -37,7 +37,7 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
     }
     static class ShadowBorder extends AbstractBorder {
         private final transient BufferedImage screenShot;
-        public ShadowBorder(JComponent c, Point p) {
+        protected ShadowBorder(JComponent c, Point p) {
             super();
             BufferedImage bi = null;
             try {
@@ -80,12 +80,10 @@ public class CustomPopupMenuUI extends BasicPopupMenuUI {
 /*/
     @Override public Popup getPopup(final JPopupMenu popup, int x, int y) {
         Popup pp = super.getPopup(popup, x, y);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Window p = SwingUtilities.getWindowAncestor(popup);
-                if (p instanceof JWindow) {
-                    p.setBackground(new Color(0x0, true)); //JDK 1.7.0
-                }
+        EventQueue.invokeLater(() -> {
+            Window p = SwingUtilities.getWindowAncestor(popup);
+            if (p instanceof JWindow) {
+                p.setBackground(new Color(0x0, true)); //JDK 1.7.0
             }
         });
         Container c = SwingUtilities.getUnwrappedParent(popup);

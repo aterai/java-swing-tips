@@ -94,7 +94,7 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
 }
 
 // class DotBorder extends LineBorder {
-//     public DotBorder(Color color, int thickness) {
+//     protected DotBorder(Color color, int thickness) {
 //         super(color, thickness);
 //     }
 //     @Override public boolean isBorderOpaque() {
@@ -113,10 +113,10 @@ class TextAreaRenderer<E extends String> extends JTextArea implements ListCellRe
 //     private static final BasicStroke dashed = new BasicStroke(
 //         1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
 //         new float[]{1f}, 0f);
-//     public DotBorder(Insets borderInsets) {
+//     protected DotBorder(Insets borderInsets) {
 //         super(borderInsets);
 //     }
-//     public DotBorder(int top, int left, int bottom, int right) {
+//     protected DotBorder(int top, int left, int bottom, int right) {
 //         super(top, left, bottom, right);
 //     }
 //     @Override public boolean isBorderOpaque() {

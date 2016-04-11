@@ -65,7 +65,7 @@ class ComponentTitledBorder implements Border, SwingConstants {
     private final Component comp;
     private final Border border;
 
-    public ComponentTitledBorder(Component comp, Border border) {
+    protected ComponentTitledBorder(Component comp, Border border) {
         this.comp   = comp;
         this.border = border;
         if (comp instanceof JComponent) {

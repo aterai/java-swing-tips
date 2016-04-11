@@ -24,11 +24,9 @@ public final class MainPanel extends JPanel {
 
         label.setIcon(new ImageIcon(getClass().getResource("test.png")));
         label.setComponentPopupMenu(popup1);
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox c = (JCheckBox) e.getSource();
-                label.setComponentPopupMenu(c.isSelected() ? popup1 : popup0);
-            }
+        check.addActionListener(e -> {
+            JCheckBox c = (JCheckBox) e.getSource();
+            label.setComponentPopupMenu(c.isSelected() ? popup1 : popup0);
         });
         add(check, BorderLayout.NORTH);
         add(label);
@@ -145,7 +143,7 @@ class ShadowBorder extends AbstractBorder {
     private final transient BufferedImage screen;
     private transient BufferedImage shadow;
 
-    public ShadowBorder(int x, int y, JComponent c, Point p) {
+    protected ShadowBorder(int x, int y, JComponent c, Point p) {
         super();
         this.xoff = x;
         this.yoff = y;

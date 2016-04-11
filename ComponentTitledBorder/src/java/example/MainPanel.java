@@ -12,11 +12,7 @@ public final class MainPanel extends JPanel {
         super(new GridLayout(3, 1, 5, 5));
         final JTree tree = new JTree();
         final JCheckBox c = new JCheckBox("CheckBox", true);
-        c.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tree.setEnabled(c.isSelected());
-            }
-        });
+        c.addActionListener(e -> tree.setEnabled(c.isSelected()));
         c.setFocusPainted(false);
         JScrollPane l1 = new JScrollPane(tree);
         l1.setBorder(new ComponentTitledBorder(c, l1, BorderFactory.createEtchedBorder()));
