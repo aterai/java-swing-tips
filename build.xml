@@ -273,7 +273,7 @@
     </copy>
   </target>
   <target name="sign" depends="sign-libcopy">
-    <input message="Enter Password:" addproperty="store.password" />
+    <input type="secure" message="Enter Password:" addproperty="store.password" />
     <signjar keystore="${signjar.keystore}" alias="${signjar.alias}" storepass="${store.password}">
       <fileset dir="${build.dir}" includes="**/*.jar" />
     </signjar>
@@ -409,9 +409,17 @@
     <property name="ftp.userid" value="${env.FTP_USERID}" />
     <property name="ftp.server" value="${env.FTP_SERVER}" />
     <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
-    <input message="Enter Password:" addproperty="ftp.password">
-      <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
-    </input>
+    <!-- input type="secure" message="Enter Password:" addproperty="ftp.password" / -->
+    <property name="ssh.inkey" value="${env.SSH_INKEY}" />
+    <property name="ssh.in"    value="${env.SSH_IN}" />
+    <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
+      <arg value="rsautl"/>
+      <arg value="-decrypt"/>
+      <arg value="-inkey"/>
+      <arg value="${ssh.inkey}"/>
+      <arg value="-in"/>
+      <arg value="${ssh.in}"/>
+    </exec>
     <ftp action="mkdir"
          server="${ftp.server}" remotedir="${ftp.remotedir}"
          userid="${ftp.userid}" password="${ftp.password}"
