@@ -64,20 +64,18 @@ public final class MainPanel extends JPanel {
         field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
         field.getActionMap().put("Enter", enterAction);
 
-        ActionListener jumpActionListener = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Object c = e.getSource();
-                if (first.equals(c)) {
-                    currentPageIndex = 1;
-                } else if (prev.equals(c)) {
-                    currentPageIndex -= 1;
-                } else if (next.equals(c)) {
-                    currentPageIndex += 1;
-                } else if (last.equals(c)) {
-                    currentPageIndex = maxPageIndex;
-                }
-                initFilterAndButtons();
+        ActionListener jumpActionListener = e -> {
+            Object c = e.getSource();
+            if (first.equals(c)) {
+                currentPageIndex = 1;
+            } else if (prev.equals(c)) {
+                currentPageIndex -= 1;
+            } else if (next.equals(c)) {
+                currentPageIndex += 1;
+            } else if (last.equals(c)) {
+                currentPageIndex = maxPageIndex;
             }
+            initFilterAndButtons();
         };
         for (JButton b: Arrays.asList(first, prev, next, last)) {
             b.addActionListener(jumpActionListener);
@@ -91,7 +89,7 @@ public final class MainPanel extends JPanel {
     }
 
     class TableUpdateTask extends LoadTask {
-        public TableUpdateTask(int max, int itemsPerPage) {
+        protected TableUpdateTask(int max, int itemsPerPage) {
             super(max, itemsPerPage);
         }
         @Override protected void process(List<List<Object[]>> chunks) {
@@ -172,7 +170,7 @@ public final class MainPanel extends JPanel {
 class LoadTask extends SwingWorker<String, List<Object[]>> {
     private final int max;
     private final int itemsPerPage;
-    public LoadTask(int max, int itemsPerPage) {
+    protected LoadTask(int max, int itemsPerPage) {
         super();
         this.max = max;
         this.itemsPerPage = itemsPerPage;

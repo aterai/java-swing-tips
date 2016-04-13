@@ -42,12 +42,33 @@ public final class MainPanel extends JPanel {
 
 class ImageCaptionLabel extends JLabel {
     private final JTextArea textArea = new JTextArea() {
+        private transient MouseListener listener;
         @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setPaint(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());
             g2.dispose();
             super.paintComponent(g);
+        }
+        @Override public void updateUI() {
+            removeMouseListener(listener);
+            super.updateUI();
+            setFont(getFont().deriveFont(11f));
+            setOpaque(false);
+            setEditable(false);
+            //setFocusable(false);
+            setBackground(new Color(0x0, true));
+            setForeground(Color.WHITE);
+            setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
+            listener = new MouseAdapter() {
+                @Override public void mouseEntered(MouseEvent e) {
+                    dispatchMouseEvent(e);
+                }
+                @Override public void mouseExited(MouseEvent e) {
+                    dispatchMouseEvent(e);
+                }
+            };
+            addMouseListener(listener);
         }
         //@Override public boolean contains(int x, int y) {
         //    return false;
@@ -59,26 +80,8 @@ class ImageCaptionLabel extends JLabel {
         //this: target Component;
         this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));
     }
-    public ImageCaptionLabel(String caption, Icon icon) {
-        super();
-        setIcon(icon);
-        textArea.setFont(textArea.getFont().deriveFont(11f));
-        textArea.setText(caption);
-        textArea.setOpaque(false);
-        textArea.setEditable(false);
-        //textArea.setFocusable(false);
-        textArea.setBackground(new Color(0x0, true));
-        textArea.setForeground(Color.WHITE);
-        textArea.setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
-        textArea.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                dispatchMouseEvent(e);
-            }
-            @Override public void mouseExited(MouseEvent e) {
-                dispatchMouseEvent(e);
-            }
-        });
-
+    @Override public void updateUI() {
+        super.updateUI();
         setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(222, 222, 222)),
             BorderFactory.createLineBorder(Color.WHITE, 4)));
@@ -99,6 +102,11 @@ class ImageCaptionLabel extends JLabel {
                 //}
             }
         });
+    }
+    protected ImageCaptionLabel(String caption, Icon icon) {
+        super();
+        setIcon(icon);
+        textArea.setText(caption);
         add(textArea);
         addMouseListener(handler);
         addHierarchyListener(handler);
@@ -135,7 +143,7 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
     private int count;
     private int direction;
 
-    public LabelHandler(JComponent textArea) {
+    protected LabelHandler(JComponent textArea) {
         super();
         this.textArea = textArea;
     }

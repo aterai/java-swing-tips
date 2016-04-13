@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 
 class LinkCellList<E> extends JList<E> {
     private int prevIndex = -1;
-    public LinkCellList(ListModel<E> model) {
+    protected LinkCellList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {
@@ -83,7 +83,7 @@ class LinkCellRenderer<E> implements ListCellRenderer<E> {
     private final JCheckBox check = new JCheckBox("check");
     private final JButton button = new JButton("button");
     private final JLabel label = new JLabel();
-    public LinkCellRenderer() {
+    protected LinkCellRenderer() {
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         check.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));

@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 class RowHeaderRenderer extends JLabel implements TableCellRenderer {
     private int rollOverRowIndex = -1;
 
-    public RowHeaderRenderer(JTable table) {
+    protected RowHeaderRenderer(JTable table) {
         super();
         RollOverListener rol = new RollOverListener();
         table.addMouseListener(rol);
@@ -138,7 +138,7 @@ class RowHeaderRenderer extends JLabel implements TableCellRenderer {
 
 class ComponentIcon implements Icon {
     private final JComponent cmp;
-    public ComponentIcon(JComponent cmp) {
+    protected ComponentIcon(JComponent cmp) {
         this.cmp = cmp;
     }
     @Override public int getIconWidth() {
