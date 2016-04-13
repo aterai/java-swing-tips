@@ -137,8 +137,9 @@ class RegexDateFilter extends RowFilter<TableModel, Integer> {
         this.matcher = pattern.matcher("");
     }
     @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        TableModel m = entry.getModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
+        //TableModel m = entry.getModel();
+        //for (int i = 0; i < m.getColumnCount(); i++) {
+        for (int i = entry.getValueCount() - 1; i >= 0; i--) {
             Object v = entry.getValue(i);
             if (v instanceof Date) {
                 matcher.reset(DateFormat.getDateInstance().format(v));
