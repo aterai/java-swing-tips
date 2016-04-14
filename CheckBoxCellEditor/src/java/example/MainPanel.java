@@ -67,28 +67,40 @@ public class MainPanel extends JPanel {
 }
 
 class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor {
-    private final JPanel p = new JPanel(new GridBagLayout());
-    private final JCheckBox checkBox = new JCheckBox();
-    public CheckBoxPanelEditor() {
-        super();
-        checkBox.setOpaque(false);
-        checkBox.setFocusable(false);
-        checkBox.setRolloverEnabled(false);
-        Handler handler = new Handler();
-        checkBox.addActionListener(handler);
-        checkBox.addMouseListener(handler);
-        p.addMouseListener(new MouseAdapter() {
-            @Override public void mousePressed(MouseEvent e) {
-                fireEditingStopped();
-            }
-        });
-        p.add(checkBox);
-        p.setBorder(UIManager.getBorder("Table.noFocusBorder"));
-    }
+    private final JComponent renderer = new JPanel(new GridBagLayout()) {
+        private transient MouseListener listener;
+        @Override public void updateUI() {
+            removeMouseListener(listener);
+            super.updateUI();
+            setBorder(UIManager.getBorder("Table.noFocusBorder"));
+            listener = new MouseAdapter() {
+                @Override public void mousePressed(MouseEvent e) {
+                    fireEditingStopped();
+                }
+            };
+            addMouseListener(listener);
+        }
+    };
+    private final JCheckBox checkBox = new JCheckBox() {
+        private transient Handler handler;
+        @Override public void updateUI() {
+            removeActionListener(handler);
+            removeMouseListener(handler);
+            super.updateUI();
+            setOpaque(false);
+            setFocusable(false);
+            setRolloverEnabled(false);
+            handler = new Handler();
+            addActionListener(handler);
+            addMouseListener(handler);
+        }
+    };
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         checkBox.setSelected(Objects.equals(value, Boolean.TRUE));
-        //p.setBackground(table.getSelectionBackground());
-        return p;
+        //renderer.setBackground(table.getSelectionBackground());
+        //renderer.removeAll();
+        renderer.add(checkBox);
+        return renderer;
     }
     @Override public Object getCellEditorValue() {
         return checkBox.isSelected();
@@ -102,9 +114,9 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
             if (c instanceof JTable) {
                 JTable table = (JTable) c;
                 if (checkBox.getModel().isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
-                    p.setBackground(table.getBackground());
+                    renderer.setBackground(table.getBackground());
                 } else {
-                    p.setBackground(table.getSelectionBackground());
+                    renderer.setBackground(table.getSelectionBackground());
                 }
             }
         }
