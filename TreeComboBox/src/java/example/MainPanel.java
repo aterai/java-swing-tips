@@ -122,8 +122,32 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
             }
         }
     };
-    public TreeComboBox() {
-        super();
+    @Override public void updateUI() {
+        super.updateUI();
+        ListCellRenderer<? super E> cellRenderer = getRenderer();
+        setRenderer(new ListCellRenderer<E>() {
+            private final Icon h20Icon = new H20Icon();
+            @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel c;
+                if (value instanceof DefaultMutableTreeNode) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+                    int indent = index < 0 ? 0 : (node.getPath().length - 2) * 16;
+                    if (node.isLeaf()) {
+                        c = (JLabel) cellRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    } else {
+                        c = (JLabel) cellRenderer.getListCellRendererComponent(list, value, index, false, false);
+                        JLabel l = (JLabel) c;
+                        l.setForeground(Color.WHITE);
+                        l.setBackground(Color.GRAY.darker());
+                    }
+                    c.setBorder(BorderFactory.createEmptyBorder(0, 2 + indent, 0, 0));
+                } else {
+                    c = (JLabel) cellRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                }
+                c.setIcon(index >= 0 ? h20Icon : null);
+                return c;
+            }
+        });
         ActionMap am = getActionMap();
         am.put("selectPrevious3", up);
         am.put("selectNext3", down);
@@ -132,31 +156,6 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0),   "selectPrevious3");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),    "selectNext3");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "selectNext3");
-    }
-    @Override public void updateUI() {
-        super.updateUI();
-        final ListCellRenderer<? super E> r = getRenderer();
-        setRenderer(new ListCellRenderer<E>() {
-            @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel c;
-                if (value instanceof DefaultMutableTreeNode) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-                    int indent = 2 + index < 0 ? 0 : (node.getPath().length - 2) * 16;
-                    if (node.isLeaf()) {
-                        c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    } else {
-                        c = (JLabel) r.getListCellRendererComponent(list, value, index, false, false);
-                        JLabel l = (JLabel) c;
-                        l.setForeground(Color.WHITE);
-                        l.setBackground(Color.GRAY.darker());
-                    }
-                    c.setBorder(BorderFactory.createEmptyBorder(0, indent, 0, 0));
-                } else {
-                    c = (JLabel) r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                }
-                return c;
-            }
-        });
     }
     @Override public void setPopupVisible(boolean v) {
         if (!v && isNotSelectableIndex) {
@@ -172,5 +171,15 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
         } else {
             isNotSelectableIndex = true;
         }
+    }
+}
+
+class H20Icon implements Icon {
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) { /* Empty icon */ }
+    @Override public int getIconWidth() {
+        return 0;
+    }
+    @Override public int getIconHeight() {
+        return 20;
     }
 }
