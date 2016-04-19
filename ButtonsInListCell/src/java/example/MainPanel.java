@@ -17,12 +17,19 @@ public final class MainPanel extends JPanel {
         model.addElement("3333333333333333333\n33333333333333333333\n33333333333333333");
         model.addElement("444");
 
-        JList<String> list = new JList<>(model);
-        list.setFixedCellHeight(-1);
-        CellButtonsMouseListener cbml = new CellButtonsMouseListener(list);
-        list.addMouseListener(cbml);
-        list.addMouseMotionListener(cbml);
-        list.setCellRenderer(new ButtonsRenderer<String>(model));
+        JList<String> list = new JList<String>(model) {
+            private transient MouseAdapter cbml;
+            @Override public void updateUI() {
+                removeMouseListener(cbml);
+                removeMouseMotionListener(cbml);
+                super.updateUI();
+                setFixedCellHeight(-1);
+                cbml = new CellButtonsMouseListener(this);
+                addMouseListener(cbml);
+                addMouseMotionListener(cbml);
+                setCellRenderer(new ButtonsRenderer<String>(model));
+            }
+        };
 
         add(new JScrollPane(list));
         setPreferredSize(new Dimension(320, 240));
@@ -148,7 +155,7 @@ class CellButtonsMouseListener extends MouseAdapter {
 
 class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
     private static final Color EVEN_COLOR = new Color(230, 255, 230);
-    private final JTextArea label = new JTextArea();
+    private final JTextArea textArea = new JTextArea();
     private final JButton deleteButton = new JButton(new AbstractAction("delete") {
         @Override public void actionPerformed(ActionEvent e) {
             if (model.getSize() > 1) {
@@ -172,9 +179,9 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         this.model = model;
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
         setOpaque(true);
-        label.setLineWrap(true);
-        label.setOpaque(false);
-        add(label);
+        textArea.setLineWrap(true);
+        textArea.setOpaque(false);
+        add(textArea);
 
         Box box = Box.createHorizontalBox();
         for (JButton b: Arrays.asList(deleteButton, copyButton)) {
@@ -185,15 +192,20 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         }
         add(box, BorderLayout.EAST);
     }
+    @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.width = 0; // VerticalScrollBar as needed
+        return d;
+    }
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-        label.setText(Objects.toString(value, ""));
+        textArea.setText(Objects.toString(value, ""));
         this.index = index;
         if (isSelected) {
             setBackground(list.getSelectionBackground());
-            label.setForeground(list.getSelectionForeground());
+            textArea.setForeground(list.getSelectionForeground());
         } else {
             setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
-            label.setForeground(list.getForeground());
+            textArea.setForeground(list.getForeground());
         }
         resetButtonStatus();
         if (Objects.nonNull(button)) {
