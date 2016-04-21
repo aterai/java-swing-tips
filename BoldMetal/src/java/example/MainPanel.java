@@ -78,7 +78,6 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private final JTextField textField = new JTextField(24);
     private TreePath path;
     private final Action addNodeAction = new AbstractAction("add") {
         @Override public void actionPerformed(ActionEvent e) {
@@ -87,12 +86,25 @@ class TreePopupMenu extends JPopupMenu {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
             DefaultMutableTreeNode child  = new DefaultMutableTreeNode("New node");
             model.insertNodeInto(child, parent, parent.getChildCount());
-            //parent.add(child);
-            //model.reload(parent); //= model.nodeStructureChanged(parent);
             tree.scrollPathToVisible(new TreePath(child.getPath()));
         }
     };
     private final Action editNodeAction = new AbstractAction("edit") {
+        private final JTextField textField = new JTextField(24) {
+            private transient AncestorListener listener;
+            @Override public void updateUI() {
+                removeAncestorListener(listener);
+                super.updateUI();
+                listener = new AncestorListener() {
+                    @Override public void ancestorAdded(AncestorEvent e) {
+                        requestFocusInWindow();
+                    }
+                    @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+                    @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+                };
+                addAncestorListener(listener);
+            }
+        };
         @Override public void actionPerformed(ActionEvent e) {
             Object node = path.getLastPathComponent();
             if (node instanceof DefaultMutableTreeNode) {
@@ -124,13 +136,6 @@ class TreePopupMenu extends JPopupMenu {
     };
     protected TreePopupMenu() {
         super();
-        textField.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(AncestorEvent e) {
-                textField.requestFocusInWindow();
-            }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
-            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
-        });
         add(addNodeAction);
         add(editNodeAction);
         addSeparator();

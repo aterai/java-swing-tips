@@ -94,7 +94,6 @@ public final class MainPanel extends JPanel {
 }
 
 class TreePopupMenu extends JPopupMenu {
-    private final JTextField textField = new JTextField(24);
     private TreePath path;
     private final Action addFolderAction = new AbstractAction("add folder") {
         @Override public void actionPerformed(ActionEvent e) {
@@ -117,6 +116,21 @@ class TreePopupMenu extends JPopupMenu {
         }
     };
     private final Action editNodeAction = new AbstractAction("edit") {
+        private final JTextField textField = new JTextField(24) {
+            private transient AncestorListener listener;
+            @Override public void updateUI() {
+                removeAncestorListener(listener);
+                super.updateUI();
+                listener = new AncestorListener() {
+                    @Override public void ancestorAdded(AncestorEvent e) {
+                        requestFocusInWindow();
+                    }
+                    @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
+                    @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
+                };
+                addAncestorListener(listener);
+            }
+        };
         @Override public void actionPerformed(ActionEvent e) {
             Object node = path.getLastPathComponent();
             if (node instanceof DefaultMutableTreeNode) {
@@ -148,13 +162,6 @@ class TreePopupMenu extends JPopupMenu {
     };
     protected TreePopupMenu() {
         super();
-        textField.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(AncestorEvent e) {
-                textField.requestFocusInWindow();
-            }
-            @Override public void ancestorMoved(AncestorEvent e)   { /* not needed */ }
-            @Override public void ancestorRemoved(AncestorEvent e) { /* not needed */ }
-        });
         add(addFolderAction);
         add(addItemAction);
         add(editNodeAction);
