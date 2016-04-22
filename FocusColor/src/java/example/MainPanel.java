@@ -12,10 +12,9 @@ public final class MainPanel extends JPanel {
     private final JTextField field3 = new JTextField("123465789735");
     public MainPanel() {
         super(new BorderLayout());
-        Color c = field1.getBackground();
-        field1.addFocusListener(new BGFocusListener(c, new Color(230, 230, 255)));
-        field2.addFocusListener(new BGFocusListener(c, new Color(255, 255, 230)));
-        field3.addFocusListener(new BGFocusListener(c, new Color(255, 230, 230)));
+        field1.addFocusListener(new BGFocusListener(new Color(230, 230, 255)));
+        field2.addFocusListener(new BGFocusListener(new Color(255, 255, 230)));
+        field3.addFocusListener(new BGFocusListener(new Color(255, 230, 230)));
         Box box = Box.createVerticalBox();
         box.add(makePanel("Color(230, 230, 255)", field1));
         box.add(Box.createVerticalStrut(5));
@@ -57,16 +56,14 @@ public final class MainPanel extends JPanel {
 }
 
 class BGFocusListener implements FocusListener {
-    private final Color dColor;
-    private final Color oColor;
-    public BGFocusListener(Color oColor, Color dColor) {
-        this.dColor = dColor;
-        this.oColor = oColor;
+    private final Color color;
+    protected BGFocusListener(Color color) {
+        this.color = color;
     }
     @Override public void focusGained(FocusEvent e) {
-        e.getComponent().setBackground(dColor);
+        e.getComponent().setBackground(color);
     }
     @Override public void focusLost(FocusEvent e) {
-        e.getComponent().setBackground(oColor);
+        e.getComponent().setBackground(UIManager.getColor("TextField.background"));
     }
 }
