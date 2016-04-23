@@ -19,9 +19,8 @@ public final class MainPanel extends JPanel {
         IIOMetadataNode root = null;
         Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
         ImageReader reader = (ImageReader) readers.next();
-        final StringBuilder buf = new StringBuilder();
-        try (InputStream is = getClass().getResourceAsStream("test.jpg");
-             ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+        StringBuilder buf = new StringBuilder();
+        try (InputStream is = getClass().getResourceAsStream("test.jpg"); ImageInputStream iis = ImageIO.createImageInputStream(is)) {
             //FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
             reader.setInput(iis, true);
 
@@ -107,9 +106,9 @@ class XMLTreeNode implements TreeNode {
     private XMLTreeNode parent;
     private List<XMLTreeNode> list;
     private Boolean showAttributes;
-    public XMLTreeNode(Node xmlNode) {
+    protected XMLTreeNode(Node xmlNode) {
         this.xmlNode = xmlNode;
-        showAttributes = Boolean.TRUE;
+        this.showAttributes = Boolean.TRUE;
     }
     protected XMLTreeNode(Node xmlNode, XMLTreeNode parent) {
         this(xmlNode);
