@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
+    private static final Color EVEN_COLOR = new Color(250, 230, 230);
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
@@ -20,17 +21,34 @@ public final class MainPanel extends JPanel {
             return getValueAt(0, column).getClass();
         }
     };
-    private final JTable table = new SortingColumnColorTable(model);
-    //private final transient RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    private final JTable table = new JTable(model) {
+        @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+            Component c = super.prepareRenderer(tcr, row, column);
+            if (isRowSelected(row)) {
+                c.setForeground(getSelectionForeground());
+                c.setBackground(getSelectionBackground());
+            } else {
+                c.setForeground(getForeground());
+                c.setBackground(isSortingColumn(column) ? EVEN_COLOR : getBackground());
+            }
+            return c;
+        }
+        private boolean isSortingColumn(int column) {
+            RowSorter<? extends TableModel> sorter = getRowSorter();
+            if (Objects.nonNull(sorter)) {
+                List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
+                return !keys.isEmpty() && column == convertColumnIndexToView(keys.get(0).getColumn());
+            }
+            return false;
+        }
+    };
 
     private MainPanel() {
         super(new BorderLayout());
-        //table.setRowSorter(sorter);
         table.setAutoCreateRowSorter(true);
 
         add(new JButton(new AbstractAction("clear SortKeys") {
             @Override public void actionPerformed(ActionEvent e) {
-                //sorter.setSortKeys(null);
                 table.getRowSorter().setSortKeys(null);
             }
         }), BorderLayout.SOUTH);
@@ -58,36 +76,5 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
-
-class SortingColumnColorTable extends JTable {
-    private static final Color EVEN_COLOR = new Color(250, 230, 230);
-    public SortingColumnColorTable(TableModel model) {
-        super(model);
-    }
-    @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isRowSelected(row)) {
-            c.setForeground(getSelectionForeground());
-            c.setBackground(getSelectionBackground());
-        } else {
-            c.setForeground(getForeground());
-            c.setBackground(isSortingColumn(column) ? EVEN_COLOR : getBackground());
-        }
-        return c;
-    }
-    private boolean isSortingColumn(int column) {
-        RowSorter<? extends TableModel> sorter = getRowSorter();
-        if (Objects.nonNull(sorter)) {
-            List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
-            if (keys.isEmpty()) {
-                return false;
-            }
-            if (column == convertColumnIndexToView(keys.get(0).getColumn())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
