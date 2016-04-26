@@ -203,7 +203,7 @@ class WorkerModel extends DefaultTableModel {
         new ColumnContext("Name",     String.class,  false),
         new ColumnContext("Progress", Integer.class, false)
     };
-    private final ConcurrentMap<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
+    private final Map<Integer, SwingWorker> swmap = new ConcurrentHashMap<>();
     private int number;
     public void addProgressValue(String name, Integer iv, SwingWorker worker) {
         Object[] obj = {number, name, iv};

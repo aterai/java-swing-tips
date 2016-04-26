@@ -73,8 +73,8 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     //private transient Icon noneSortIcon       = new EmptyIcon(ascendingSortIcon);
     private Dimension iconSize;
     private int pushedColumn = -1;
-    private final ConcurrentMap<Integer, Integer> state = new ConcurrentHashMap<>();
-    private final ConcurrentMap<Integer, Boolean> dmap  = new ConcurrentHashMap<>();
+    private final Map<Integer, Integer> state = new ConcurrentHashMap<>();
+    private final Map<Integer, Boolean> dmap  = new ConcurrentHashMap<>();
     private final JTableHeader header;
 
     protected SortButtonRenderer(JTableHeader header) {

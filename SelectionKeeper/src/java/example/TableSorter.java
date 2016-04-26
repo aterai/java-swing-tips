@@ -112,7 +112,7 @@ public class TableSorter extends AbstractTableModel {
     private final List<Directive> sortingColumns = new ArrayList<>();
 
     private JTableHeader tableHeader;
-    private final transient ConcurrentMap<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
+    private final transient Map<Class, Comparator> columnComparators = new ConcurrentHashMap<>();
     private final transient RowComparator<Row> rowComparator = new RowComparator<>();
     private transient MouseListener mouseListener;
     private transient TableModelListener tableModelListener;

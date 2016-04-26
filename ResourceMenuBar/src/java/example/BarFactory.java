@@ -20,10 +20,10 @@ public final class BarFactory {
 
     private final ResourceBundle resources;
 
-    private final ConcurrentMap<String, JMenuItem> menuItems   = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, JButton>   toolButtons = new ConcurrentHashMap<>();
-    private final ConcurrentMap<Object, Action>    commands    = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, JMenu>     menus       = new ConcurrentHashMap<>();
+    private final Map<String, JMenuItem> menuItems   = new ConcurrentHashMap<>();
+    private final Map<String, JButton>   toolButtons = new ConcurrentHashMap<>();
+    private final Map<Object, Action>    commands    = new ConcurrentHashMap<>();
+    private final Map<String, JMenu>     menus       = new ConcurrentHashMap<>();
     //private Action[] actions;
 
     public BarFactory(String restr) {
