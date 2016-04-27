@@ -90,7 +90,7 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     protected AlternateRowColorComboBox(ComboBoxModel<E> aModel) {
         super(aModel);
     }
-    //public AlternateRowColorComboBox(E[] items) {
+    //protected AlternateRowColorComboBox(E[] items) {
     //    super(items);
     //}
     @Override public void setEditable(boolean aFlag) {

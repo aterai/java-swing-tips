@@ -53,7 +53,7 @@ class RollOverList<E> extends JList<E> {
     private transient RollOverListener rollOverListener;
     private int rollOverRowIndex = -1;
 
-    public RollOverList(ListModel<E> model) {
+    protected RollOverList(ListModel<E> model) {
         super(model);
     }
     @Override public void updateUI() {

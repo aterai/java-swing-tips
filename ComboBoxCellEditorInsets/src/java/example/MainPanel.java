@@ -93,7 +93,7 @@ class ComboBoxPanel extends JPanel {
             return new Dimension(40, d.height);
         }
     };
-    public ComboBoxPanel() {
+    protected ComboBoxPanel() {
         super();
         setOpaque(true);
         comboBox.setEditable(true);
@@ -114,6 +114,7 @@ class ComboBoxCellRenderer extends ComboBoxPanel implements TableCellRenderer {
         return this;
     }
 }
+
 class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
 
@@ -206,6 +207,7 @@ class ComboBoxCellEditor extends ComboBoxPanel implements TableCellEditor {
         }
     }
 }
+
 class ComboCellRenderer extends JComboBox<String> implements TableCellRenderer {
     private final JTextField editor;
     //private JButton button;
