@@ -7,62 +7,20 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+    private transient MouseAdapter handler;
     private MainPanel() {
         super();
-        MouseAdapter ma = new MouseAdapter() {
-            private JWindow window = new JWindow();
-            private JToolTip tip = new JToolTip();
-            private PopupFactory factory = PopupFactory.getSharedInstance();
-            private Popup popup;
-            private Point getToolTipLocation(MouseEvent e) {
-                Point p = e.getPoint();
-                SwingUtilities.convertPointToScreen(p, e.getComponent());
-                p.translate(0, -16);
-                return p;
-            }
-            @Override public void mousePressed(MouseEvent e) {
-                Point p = getToolTipLocation(e);
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    tip.setTipText(String.format("Window(x, y)=(%4d,%4d)", p.x, p.y));
-                    window.getContentPane().removeAll();
-                    window.add(tip);
-                    window.pack();
-                    window.setLocation(p);
-                    //window.setAlwaysOnTop(true);
-                    window.setVisible(true);
-                }
-            }
-            @Override public void mouseDragged(MouseEvent e) {
-                Point p = e.getPoint();
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    tip.setTipText(String.format("Window(x, y)=(%4d,%4d)", p.x, p.y));
-                    //tip.revalidate();
-                    tip.repaint();
-                    //window.pack();
-                    window.setLocation(getToolTipLocation(e));
-                } else {
-                    if (popup != null) {
-                        popup.hide();
-                    }
-                    tip.setTipText(String.format("Popup(x, y)=(%d,%d)", p.x, p.y));
-                    p = getToolTipLocation(e);
-                    popup = factory.getPopup(e.getComponent(), tip, p.x, p.y);
-                    popup.show();
-                }
-            }
-            @Override public void mouseReleased(MouseEvent e) {
-                if (popup != null) {
-                    popup.hide();
-                }
-                window.setVisible(false);
-            }
-        };
-        addMouseMotionListener(ma);
-        addMouseListener(ma);
         add(new JLabel("mouseDragged: Show JToolTip"));
         setPreferredSize(new Dimension(320, 240));
     }
-
+    @Override public void updateUI() {
+        removeMouseMotionListener(handler);
+        removeMouseListener(handler);
+        super.updateUI();
+        handler = new ToolTipLocationHandler();
+        addMouseMotionListener(handler);
+        addMouseListener(handler);
+    }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
@@ -83,5 +41,64 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class ToolTipLocationHandler extends MouseAdapter {
+    private final JWindow window = new JWindow();
+    private final JToolTip tip = new JToolTip();
+    private final PopupFactory factory = PopupFactory.getSharedInstance();
+    private Popup popup;
+    private String prev = "";
+    private Point getToolTipLocation(MouseEvent e) {
+        Point p = e.getPoint();
+        Component c = e.getComponent();
+        SwingUtilities.convertPointToScreen(p, c);
+        p.translate(0, -tip.getPreferredSize().height);
+        return p;
+    }
+    private void updateTipText(MouseEvent e) {
+        Point pt = e.getPoint();
+        String txt = String.format("Window(x, y)=(%d, %d)", pt.x, pt.y);
+        tip.setTipText(txt);
+        Point p = getToolTipLocation(e);
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            if (prev.length() != txt.length()) {
+                window.pack();
+            }
+            window.setLocation(p);
+            window.setAlwaysOnTop(true);
+        } else {
+            if (popup != null) {
+                popup.hide();
+            }
+            popup = factory.getPopup(e.getComponent(), tip, p.x, p.y);
+            Container c = tip.getTopLevelAncestor();
+            if (c instanceof JWindow && ((JWindow) c).getType() == Window.Type.POPUP) {
+                System.out.println("Popup$HeavyWeightWindow");
+            } else {
+                popup.show();
+            }
+        }
+        prev = txt;
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            //window.getContentPane().removeAll();
+            window.add(tip);
+            updateTipText(e);
+            window.setVisible(true);
+        } else {
+            updateTipText(e);
+        }
+    }
+    @Override public void mouseDragged(MouseEvent e) {
+        updateTipText(e);
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        if (popup != null) {
+            popup.hide();
+        }
+        window.setVisible(false);
     }
 }
