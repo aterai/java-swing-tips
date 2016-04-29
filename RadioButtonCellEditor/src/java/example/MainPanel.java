@@ -79,7 +79,7 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
 }
 
 class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
-    //public RadioButtonsEditor(final DefaultTableModel model) {
+    //protected RadioButtonsEditor(final DefaultTableModel model) {
     protected RadioButtonsEditor() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);

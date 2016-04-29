@@ -308,7 +308,7 @@ class ButtonsRenderer extends ButtonsPanel implements TableCellRenderer {
 
 class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
-    public ButtonsEditor() {
+    protected ButtonsEditor() {
         super();
         buttons.get(0).addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {

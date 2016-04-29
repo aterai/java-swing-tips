@@ -187,7 +187,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
     protected transient ChangeEvent changeEvent;
     private final JSpinner.DateEditor editor;
 
-    public DateEditor() {
+    protected DateEditor() {
         super(new SpinnerDateModel());
         editor = new JSpinner.DateEditor(this, "yyyy/MM/dd");
         setEditor(editor);

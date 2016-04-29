@@ -209,7 +209,7 @@ public final class MainPanel extends JPanel {
 // class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 //     private final TreeCellRenderer renderer;
 //     private final FileSystemView fileSystemView;
-//     public FileTreeCellRenderer(TreeCellRenderer renderer, FileSystemView fileSystemView) {
+//     protected FileTreeCellRenderer(TreeCellRenderer renderer, FileSystemView fileSystemView) {
 //         this.renderer = renderer;
 //         this.fileSystemView = fileSystemView;
 //     }

@@ -134,7 +134,7 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
 // class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor {
 //     private final JPanel p = new JPanel(new GridBagLayout());
 //     private final JCheckBox checkBox = new JCheckBox();
-//     public CheckBoxPanelEditor() {
+//     protected CheckBoxPanelEditor() {
 //         super();
 //         checkBox.setOpaque(false);
 //         checkBox.setFocusable(false);
@@ -155,7 +155,7 @@ class CheckBoxPanelEditor extends AbstractCellEditor implements TableCellEditor 
 // class CheckBoxPanelRenderer implements TableCellRenderer {
 //     private final JPanel p = new JPanel(new GridBagLayout());
 //     private final JCheckBox checkBox = new JCheckBox();
-//     public CheckBoxPanelRenderer() {
+//     protected CheckBoxPanelRenderer() {
 //         checkBox.setOpaque(false);
 //         checkBox.setFocusable(false);
 //         checkBox.setRolloverEnabled(false);

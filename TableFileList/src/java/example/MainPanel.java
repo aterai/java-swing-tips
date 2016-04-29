@@ -162,7 +162,7 @@ class FileNameRenderer implements TableCellRenderer {
 //     private final ImageIcon nicon;
 //     private final ImageIcon sicon;
 //
-//     public FileNameRenderer(JTable table) {
+//     protected FileNameRenderer(JTable table) {
 //         super(new BorderLayout());
 //         Border b = UIManager.getBorder("Table.noFocusBorder");
 //         if (Objects.isNull(b)) { //Nimbus???

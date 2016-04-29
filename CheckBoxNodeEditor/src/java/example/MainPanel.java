@@ -309,7 +309,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 // class CheckBoxNodeRenderer extends TriStateCheckBox implements TreeCellRenderer {
 //     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 //     private final JPanel panel = new JPanel(new BorderLayout());
-//     public CheckBoxNodeRenderer() {
+//     protected CheckBoxNodeRenderer() {
 //         super();
 //         //Fixed?
 //         //String uiName = getUI().getClass().getName();
