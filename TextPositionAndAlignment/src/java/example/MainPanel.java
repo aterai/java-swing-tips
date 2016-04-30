@@ -140,12 +140,6 @@ class StarburstIcon implements Icon {
         AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2, R2, 0);
         star = new Path2D.Double(p, at);
     }
-    @Override public int getIconWidth() {
-        return 2 * R2;
-    }
-    @Override public int getIconHeight() {
-        return 2 * R2;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -155,5 +149,11 @@ class StarburstIcon implements Icon {
         g2.setPaint(Color.BLACK);
         g2.draw(star);
         g2.dispose();
+    }
+    @Override public int getIconWidth() {
+        return 2 * R2;
+    }
+    @Override public int getIconHeight() {
+        return 2 * R2;
     }
 }

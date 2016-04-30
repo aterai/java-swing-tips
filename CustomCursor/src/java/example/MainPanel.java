@@ -87,12 +87,6 @@ public final class MainPanel extends JPanel {
 }
 
 class GreenBlueIcon implements Icon {
-    @Override public int getIconWidth() {
-        return 32;
-    }
-    @Override public int getIconHeight() {
-        return 32;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -101,5 +95,11 @@ class GreenBlueIcon implements Icon {
         g2.setPaint(Color.BLUE);
         g2.fillRect(16, 16, 8, 8);
         g2.dispose();
+    }
+    @Override public int getIconWidth() {
+        return 32;
+    }
+    @Override public int getIconHeight() {
+        return 32;
     }
 }

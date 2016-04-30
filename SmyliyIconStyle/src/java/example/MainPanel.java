@@ -96,12 +96,12 @@ class FaceIcon implements Icon {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
         g2.setColor(Color.RED);
-        g2.drawOval(1, 1, 14, 14);
-        g2.drawLine(5, 10, 6, 10);
-        g2.drawLine(7, 11, 9, 11);
+        g2.drawOval(1,   1, 14, 14);
+        g2.drawLine(5,  10,  6, 10);
+        g2.drawLine(7,  11,  9, 11);
         g2.drawLine(10, 10, 11, 10);
-        g2.drawOval(4, 5, 1, 1);
-        g2.drawOval(10, 5, 1, 1);
+        g2.drawOval(4,   5,  1,  1);
+        g2.drawOval(10,  5,  1,  1);
         g2.dispose();
     }
     @Override public int getIconWidth() {

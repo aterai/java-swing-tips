@@ -245,12 +245,6 @@ class StarIcon implements Icon {
         star = s;
         antialias = a;
     }
-    @Override public int getIconWidth() {
-        return star.getBounds().width;
-    }
-    @Override public int getIconHeight() {
-        return star.getBounds().height;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -260,6 +254,12 @@ class StarIcon implements Icon {
         }
         g2.fill(star);
         g2.dispose();
+    }
+    @Override public int getIconWidth() {
+        return star.getBounds().width;
+    }
+    @Override public int getIconHeight() {
+        return star.getBounds().height;
     }
 }
 

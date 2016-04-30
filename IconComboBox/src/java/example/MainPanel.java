@@ -110,13 +110,6 @@ final class ComboBoxUtil {
     private ComboBoxUtil() { /* Singleton */ }
 //     public static Border makeIconComboBorder(final JComponent comp, final ImageIcon icon) {
 //         Icon wrappedIcon = new ImageIcon() {
-//             @Override public int getIconWidth() {
-//                 return icon.getIconWidth();
-//             }
-//             @Override public int getIconHeight() {
-//                 Insets is = comp.getInsets();
-//                 return comp.getPreferredSize().height - is.top - is.bottom;
-//             }
 //             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //                 g.translate(x, y);
 //                 int ih = icon.getIconHeight();
@@ -124,6 +117,13 @@ final class ComboBoxUtil {
 //                 int yy = Math.max((ch - ih) / 2, 0); //ch - ih > 0 ? (ch - ih) / 2 : 0;
 //                 g.drawImage(icon.getImage(), 0, yy, c);
 //                 g.translate(-x, -y);
+//             }
+//             @Override public int getIconWidth() {
+//                 return icon.getIconWidth();
+//             }
+//             @Override public int getIconHeight() {
+//                 Insets is = comp.getInsets();
+//                 return comp.getPreferredSize().height - is.top - is.bottom;
 //             }
 //         };
 //         Border b1 = BorderFactory.createMatteBorder(0, icon.getIconWidth(), 0, 0, wrappedIcon);
@@ -134,13 +134,6 @@ final class ComboBoxUtil {
     public static void initIconComboBorder1(JComboBox comboBox, final ImageIcon icon) {
         final JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
         Icon wrappedIcon = new ImageIcon() {
-            @Override public int getIconWidth() {
-                return icon.getIconWidth();
-            }
-            @Override public int getIconHeight() {
-                Insets is = comp.getInsets();
-                return comp.getPreferredSize().height - is.top - is.bottom;
-            }
             @Override public void paintIcon(Component c, Graphics g, int x, int y) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 int ih = icon.getIconHeight();
@@ -148,6 +141,13 @@ final class ComboBoxUtil {
                 int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); //ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
                 g2.drawImage(icon.getImage(), 0, yy, c);
                 g2.dispose();
+            }
+            @Override public int getIconWidth() {
+                return icon.getIconWidth();
+            }
+            @Override public int getIconHeight() {
+                Insets is = comp.getInsets();
+                return comp.getPreferredSize().height - is.top - is.bottom;
             }
         };
         Border b1 = BorderFactory.createMatteBorder(0, icon.getIconWidth(), 0, 0, wrappedIcon);

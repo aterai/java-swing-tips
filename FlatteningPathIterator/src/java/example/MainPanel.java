@@ -85,12 +85,6 @@ class ShapeIcon implements Icon {
     protected ShapeIcon(Shape s) {
         shape = s;
     }
-    @Override public int getIconWidth() {
-        return shape.getBounds().width + 1;
-    }
-    @Override public int getIconHeight() {
-        return shape.getBounds().height + 1;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -106,5 +100,11 @@ class ShapeIcon implements Icon {
             i.next();
         }
         g2.dispose();
+    }
+    @Override public int getIconWidth() {
+        return shape.getBounds().width + 1;
+    }
+    @Override public int getIconHeight() {
+        return shape.getBounds().height + 1;
     }
 }

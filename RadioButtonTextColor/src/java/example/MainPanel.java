@@ -113,12 +113,6 @@ class DefaultIcon implements Icon {
     protected static final Color SELECTED_COLOR = Color.RED;
     protected static final Color ROLLOVER_COLOR = Color.BLUE;
     protected static final int ICON_SIZE = 16;
-    @Override public int getIconWidth() {
-        return ICON_SIZE * 2;
-    }
-    @Override public int getIconHeight() {
-        return ICON_SIZE;
-    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
@@ -126,6 +120,12 @@ class DefaultIcon implements Icon {
         g2.drawRect(0, 0, getIconWidth() - 1,     getIconHeight() - 1);
         g2.drawRect(1, 1, getIconWidth() - 2 - 1, getIconHeight() - 2 - 1);
         g2.dispose();
+    }
+    @Override public int getIconWidth() {
+        return ICON_SIZE * 2;
+    }
+    @Override public int getIconHeight() {
+        return ICON_SIZE;
     }
 }
 
