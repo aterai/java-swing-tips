@@ -15,6 +15,7 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
 
+        // http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html
         String[] columnNames = {"SNo.", "1", "2", "Native", "2", "3"};
         Object[][] data = {
             {"119", "foo", "bar", "ja", "ko", "zh"},
@@ -70,6 +71,7 @@ public final class MainPanel extends JPanel {
 }
 
 /** GroupableTableHeader
+ * http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
  * modified by aterai aterai@outlook.com
@@ -111,6 +113,7 @@ class GroupableTableHeader extends JTableHeader {
 }
 
 /** GroupableTableHeaderUI
+ * http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
  * modified by aterai aterai@outlook.com
@@ -222,6 +225,7 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
 }
 
 /** ColumnGroup
+ * http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html
  * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
  * modified by aterai aterai@outlook.com
@@ -234,7 +238,7 @@ class ColumnGroup {
     }
 
     /**
-     * @param obj    TableColumn or ColumnGroup
+     * @param obj: TableColumn or ColumnGroup
      */
     public void add(Object obj) {
         if (obj == null) {
@@ -266,7 +270,7 @@ class ColumnGroup {
     public Dimension getSize(JTableHeader header) {
         TableCellRenderer renderer = header.getDefaultRenderer();
         Component c = renderer.getTableCellRendererComponent(header.getTable(), getHeaderValue(), false, false, -1, -1);
-        int width  = 0;
+        int width = 0;
         for (Object obj: v) {
             if (obj instanceof TableColumn) {
                 TableColumn aColumn = (TableColumn) obj;
