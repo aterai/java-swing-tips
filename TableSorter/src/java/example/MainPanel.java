@@ -11,6 +11,7 @@ public final class MainPanel extends JPanel {
     private final String[] columnNames = {"String", "Integer", "Boolean"};
     private final Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false},
+        {null,  15, true}, {"", null, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
     private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {

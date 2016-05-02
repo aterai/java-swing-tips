@@ -277,9 +277,8 @@ public class TableSorter extends AbstractTableModel {
     private List<Integer> getModelToView() {
         if (modelToView.isEmpty()) {
             int n = getViewToModel().size();
-            //modelToView = new int[n];
             for (int i = 0; i < n; i++) {
-                modelToView.set(modelIndex(i), i);
+                modelToView.add(modelIndex(i));
             }
         }
         return modelToView;
@@ -324,22 +323,27 @@ public class TableSorter extends AbstractTableModel {
                 int column = directive.column;
                 Object o1 = tableModel.getValueAt(row1, column);
                 Object o2 = tableModel.getValueAt(row2, column);
-
-                int comparison;
-                // Define null less than everything, except null.
-                if (o1 == null && o2 == null) {
-                    comparison = 0;
-                } else if (o1 == null) {
-                    comparison = -1;
-                } else if (o2 == null) {
-                    comparison = 1;
-                } else {
-                    @SuppressWarnings("unchecked")
-                    Comparator<Object> comparator = getComparator(column);
-                    comparison = comparator.compare(o1, o2);
-                }
+//                 int comparison;
+//                 // Define null less than everything, except null.
+//                 if (o1 == null && o2 == null) {
+//                     comparison = 0;
+//                 } else if (o1 == null) {
+//                     comparison = -1;
+//                 } else if (o2 == null) {
+//                     comparison = 1;
+//                 } else {
+//                     @SuppressWarnings("unchecked")
+//                     Comparator<Object> comparator = getComparator(column);
+//                     comparison = comparator.compare(o1, o2);
+//                 }
+//                 if (comparison != 0) {
+//                     return directive.direction == DESCENDING ? -comparison : comparison;
+//                 }
+                @SuppressWarnings("unchecked")
+                Comparator<Object> comparator = getComparator(column);
+                int comparison = Objects.compare(o1, o2, Comparator.nullsFirst(comparator));
                 if (comparison != 0) {
-                    return directive.direction == DESCENDING ? -comparison : comparison;
+                    return directive.direction == DESCENDING ? ~comparison + 1 : comparison;
                 }
             }
             return row1 - row2;
