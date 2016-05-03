@@ -142,7 +142,7 @@ class NoWrapEditorKit1 extends StyledEditorKit {
         }
     }
     static class NoWrapBoxView extends BoxView {
-        public NoWrapBoxView(Element elem, int axis) {
+        protected NoWrapBoxView(Element elem, int axis) {
             super(elem, axis);
         }
         @Override public void layout(int width, int height) {
@@ -155,7 +155,7 @@ class NoWrapEditorKit1 extends StyledEditorKit {
 /*/
 // https://community.oracle.com/thread/1353861 Disabling word wrap for JTextPane
 class NoWrapParagraphView extends ParagraphView {
-    public NoWrapParagraphView(Element elem) {
+    protected NoWrapParagraphView(Element elem) {
         super(elem);
     }
     @Override protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {

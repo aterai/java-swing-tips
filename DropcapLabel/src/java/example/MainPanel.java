@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 }
 
 class DropcapLabel extends JLabel {
-    public DropcapLabel(String text) {
+    protected DropcapLabel(String text) {
         super(text);
     }
     @Override protected void paintComponent(Graphics g) {
