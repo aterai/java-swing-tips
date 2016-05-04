@@ -128,11 +128,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         button.setRolloverIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip)));
         //button.setRolloverIcon(makeFilteredImage(rss));
         //button.setRolloverIcon(makeFilteredImage2(rss));
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked...");
-            }
-        });
+        button.addActionListener(e -> System.out.println("clicked..."));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);

@@ -28,11 +28,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalGlue());
         box.add(b1);
         box.add(b2);
-        b2.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-        });
+        b2.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
         return box;
     }
     private Box makeRadioPane() {
@@ -42,12 +38,10 @@ public final class MainPanel extends JPanel {
         map.put("null",    null);
         map.put("Button1", b1);
         map.put("Button2", b2);
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JRootPane rootPane = box.getRootPane();
-                if (Objects.nonNull(rootPane)) {
-                    rootPane.setDefaultButton(map.get(bg.getSelection().getActionCommand()));
-                }
+        ActionListener al = e -> {
+            JRootPane rootPane = box.getRootPane();
+            if (Objects.nonNull(rootPane)) {
+                rootPane.setDefaultButton(map.get(bg.getSelection().getActionCommand()));
             }
         };
         for (String key: map.keySet()) {

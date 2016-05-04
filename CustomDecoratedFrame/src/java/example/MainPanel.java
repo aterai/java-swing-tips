@@ -52,14 +52,12 @@ public final class MainPanel extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setOpaque(true);
         button.setBackground(Color.ORANGE);
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JComponent b = (JComponent) e.getSource();
-                Container c = b.getTopLevelAncestor();
-                if (c instanceof Window) {
-                    Window w = (Window) c;
-                    w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
-                }
+        button.addActionListener(e -> {
+            JComponent b = (JComponent) e.getSource();
+            Container c = b.getTopLevelAncestor();
+            if (c instanceof Window) {
+                Window w = (Window) c;
+                w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
             }
         });
         return button;
@@ -72,11 +70,7 @@ public final class MainPanel extends JPanel {
 //         iconify.setBorder(BorderFactory.createEmptyBorder());
 //         iconify.setOpaque(true);
 //         iconify.setBackground(Color.ORANGE);
-//         iconify.addActionListener(new ActionListener() {
-//             @Override public void actionPerformed(ActionEvent e) {
-//                 frame.setExtendedState(state | Frame.ICONIFIED);
-//             }
-//         });
+//         iconify.addActionListener(e -> frame.setExtendedState(state | Frame.ICONIFIED));
 //     }
 
     public JFrame makeFrame(String str) {
