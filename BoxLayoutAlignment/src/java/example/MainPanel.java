@@ -5,40 +5,38 @@ package example;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
 public class MainPanel extends JPanel {
-    private final JPanel panel = new JPanel(new GridLayout(1, 2, 5, 5));
     private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(9, 0, 100, 1));
-    private Integer value = 9;
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
 
-        final JPanel p1 = new TestPanel();
+        JPanel p1 = new TestPanel();
         p1.setLayout(new BoxLayout(p1, BoxLayout.X_AXIS));
         p1.add(Box.createHorizontalGlue());
         p1.add(makeLabel());
         p1.add(Box.createHorizontalGlue());
 
-        final JPanel p2 = new TestPanel();
+        JPanel p2 = new TestPanel();
         p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
         p2.add(Box.createVerticalGlue());
         p2.add(makeLabel());
         p2.add(Box.createVerticalGlue());
 
-        for (JPanel c: Arrays.asList(p1, p2)) {
+        JPanel panel = new JPanel(new GridLayout(1, 2, 5, 5));
+        List<Component> list = Arrays.asList(p1, p2);
+        for (Component c: list) {
             c.setBackground(Color.WHITE);
             panel.add(c);
         }
 
-        spinner.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JSpinner s = (JSpinner) e.getSource();
-                value = (Integer) s.getValue();
-                p1.revalidate();
-                p2.revalidate();
+        spinner.addChangeListener(e -> {
+            for (Component c: list) {
+                c.revalidate();
             }
         });
 
@@ -65,8 +63,8 @@ public class MainPanel extends JPanel {
             @Override public Dimension getMinimumSize() {
                 Dimension d = super.getMinimumSize();
                 if (Objects.nonNull(d)) {
-                    d.width = value;
-                    d.height = value;
+                    int i = ((Integer) spinner.getValue()).intValue();
+                    d.setSize(i, i);
                 }
                 return d;
             }
