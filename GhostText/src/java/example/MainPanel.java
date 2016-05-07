@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 class PlaceholderFocusListener implements FocusListener {
     private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
     private final String hintMessage;
-    public PlaceholderFocusListener(JTextComponent tf) {
+    protected PlaceholderFocusListener(JTextComponent tf) {
         hintMessage = tf.getText();
         tf.setForeground(INACTIVE);
     }

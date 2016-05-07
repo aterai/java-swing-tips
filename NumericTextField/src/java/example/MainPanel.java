@@ -202,7 +202,7 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
         numberFormatter.setValueClass(Integer.class);
         ((NumberFormat) numberFormatter.getFormat()).setGroupingUsed(false);
     }
-    public NumberFormatterFactory() {
+    protected NumberFormatterFactory() {
         super(numberFormatter, numberFormatter, numberFormatter);
 //         super(new NumberFormatter(amountEditFormat),
 //               new NumberFormatter(amountEditFormat),
