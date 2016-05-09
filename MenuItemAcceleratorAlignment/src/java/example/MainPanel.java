@@ -17,7 +17,7 @@ public final class MainPanel {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu0 = new JMenu("Default");
         JMenu menu1 = new JMenu("RightAcc");
-        JMenu menu2 = new JMenu("EastAcc");
+        //JMenu menu2 = new JMenu("EastAcc");
         //XXX: JMenuItem.setDefaultLocale(Locale.ENGLISH);
 
         //UIManager.put("MenuItem.acceleratorForeground", menu1.getBackground());
@@ -25,10 +25,10 @@ public final class MainPanel {
 
         menu0.setMnemonic(KeyEvent.VK_D);
         menu1.setMnemonic(KeyEvent.VK_R);
-        menu2.setMnemonic(KeyEvent.VK_E);
+        //menu2.setMnemonic(KeyEvent.VK_E);
         menuBar.add(menu0);
         menuBar.add(menu1);
-        menuBar.add(menu2);
+        //menuBar.add(menu2);
 
         List<JMenuItem> list = new ArrayList<>();
         JMenuItem menuItem = new JMenuItem("mi");
@@ -54,7 +54,7 @@ public final class MainPanel {
         for (JMenuItem mi: list) {
             menu0.add(mi);
             menu1.add(makeMenuItem1(mi));
-            menu2.add(makeMenuItem2(mi));
+            //menu2.add(makeMenuItem2(mi));
         }
         return menuBar;
     }
@@ -76,63 +76,64 @@ public final class MainPanel {
         return menuItem;
     }
 
-    private static JMenuItem makeMenuItem2(JMenuItem mi) {
-        final JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
-        label.setOpaque(true);
-        JMenuItem item = new JMenuItem(mi.getText()) {
-//             @Override public Dimension getPreferredSize() {
-//                 Dimension d = super.getPreferredSize();
-//                 label.setText(MenuItemUIHelper.getAccText(this, "+"));
-//                 //d.width += label.getPreferredSize().width;
-//                 d.height = Math.max(label.getPreferredSize().height, d.height);
-//                 return d;
-//             }
-//             @Override protected void fireStateChanged() {
-//                 super.fireStateChanged();
-//                 ButtonModel m = getModel();
-//                 if (m.isSelected() || m.isRollover() || m.isArmed()) {
-//                     label.setForeground(UIManager.getColor("MenuItem.acceleratorSelectionForeground"));
-//                     label.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
-//                 } else {
-//                     label.setForeground(getForeground());
-//                     label.setBackground(getBackground());
+//     //TEST: work Windows 7 only?
+//     private static JMenuItem makeMenuItem2(JMenuItem mi) {
+//         final JLabel label = new JLabel(MenuItemUIHelper.getAccText(mi, "+"));
+//         label.setOpaque(true);
+//         JMenuItem item = new JMenuItem(mi.getText()) {
+// //             @Override public Dimension getPreferredSize() {
+// //                 Dimension d = super.getPreferredSize();
+// //                 label.setText(MenuItemUIHelper.getAccText(this, "+"));
+// //                 //d.width += label.getPreferredSize().width;
+// //                 d.height = Math.max(label.getPreferredSize().height, d.height);
+// //                 return d;
+// //                         }
+// //             @Override protected void fireStateChanged() {
+// //                 super.fireStateChanged();
+// //                 ButtonModel m = getModel();
+// //                 if (m.isSelected() || m.isRollover() || m.isArmed()) {
+// //                     label.setForeground(UIManager.getColor("MenuItem.acceleratorSelectionForeground"));
+// //                     label.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+// //                 } else {
+// //                     label.setForeground(getForeground());
+// //                     label.setBackground(getBackground());
+// //                 }
+// //             }
+//             @Override public void updateUI() {
+//                 super.updateUI();
+//                 if (getUI() instanceof WindowsMenuItemUI) {
+//                     setUI(new WindowsMenuItemUI() {
+//                         @Override protected void installDefaults() {
+//                             super.installDefaults();
+//                             acceleratorForeground = UIManager.getColor("MenuItem.background");
+//                             acceleratorSelectionForeground = acceleratorForeground;
+//                         }
+//                     });
 //                 }
 //             }
-            @Override public void updateUI() {
-                super.updateUI();
-                if (getUI() instanceof WindowsMenuItemUI) {
-                    setUI(new WindowsMenuItemUI() {
-                        @Override protected void installDefaults() {
-                            super.installDefaults();
-                            acceleratorForeground = UIManager.getColor("MenuItem.background");
-                            acceleratorSelectionForeground = acceleratorForeground;
-                        }
-                    });
-                }
-            }
-        };
-
-        if (mi.getAccelerator() == null) {
-            return item;
-        }
-
-        item.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.LINE_END;
-        c.insets = new Insets(0, 0, 0, 4);
-
-        c.weightx = 1d;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        item.add(Box.createHorizontalGlue(), c);
-
-        c.weightx = 0d;
-        c.fill = GridBagConstraints.NONE;
-        item.add(label, c);
-
-        item.setMnemonic(mi.getMnemonic());
-        item.setAccelerator(mi.getAccelerator());
-        return item;
-    }
+//         };
+//
+//         if (mi.getAccelerator() == null) {
+//             return item;
+//         }
+//
+//         item.setLayout(new GridBagLayout());
+//         GridBagConstraints c = new GridBagConstraints();
+//         c.anchor = GridBagConstraints.LINE_END;
+//         c.insets = new Insets(0, 0, 0, 4);
+//
+//         c.weightx = 1d;
+//         c.fill = GridBagConstraints.HORIZONTAL;
+//         item.add(Box.createHorizontalGlue(), c);
+//
+//         c.weightx = 0d;
+//         c.fill = GridBagConstraints.NONE;
+//         item.add(label, c);
+//
+//         item.setMnemonic(mi.getMnemonic());
+//         item.setAccelerator(mi.getAccelerator());
+//         return item;
+//     }
 
     public static void main(String... args) {
         //Locale.setDefault(Locale.ENGLISH);
@@ -166,14 +167,14 @@ public final class MainPanel {
 //@see javax/swing/plaf/basic/BasicMenuItemUI.java
 final class MenuItemUIHelper {
     private MenuItemUIHelper() { /* Singleton */ }
-    public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc) {
-        if (lh.getIcon() != null) {
+    public static void paintIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) { //, Color holdc) {
+        Optional.ofNullable(lh.getIcon()).ifPresent(i -> {
             Icon icon;
             ButtonModel model = lh.getMenuItem().getModel();
             if (model.isEnabled()) {
                 if (model.isPressed() && model.isArmed()) {
                     icon = lh.getMenuItem().getPressedIcon();
-                    if (icon == null) {
+                    if (Objects.isNull(icon)) {
                         // Use default icon
                         icon = lh.getMenuItem().getIcon();
                     }
@@ -183,15 +184,15 @@ final class MenuItemUIHelper {
             } else {
                 icon = lh.getMenuItem().getDisabledIcon();
             }
-            if (icon != null) {
+            if (Objects.nonNull(icon)) {
                 icon.paintIcon(lh.getMenuItem(), g, lr.getIconRect().x, lr.getIconRect().y);
-                g.setColor(holdc);
+                //g.setColor(holdc);
             }
-        }
+        });
     }
 
     public static void paintCheckIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
-        if (lh.getCheckIcon() != null) {
+        Optional.ofNullable(lh.getCheckIcon()).ifPresent(checkIcon -> {
             ButtonModel model = lh.getMenuItem().getModel();
             if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
@@ -199,71 +200,71 @@ final class MenuItemUIHelper {
                 g.setColor(holdc);
             }
             if (lh.useCheckAndArrow()) {
-                lh.getCheckIcon().paintIcon(lh.getMenuItem(), g, lr.getCheckRect().x, lr.getCheckRect().y);
+                checkIcon.paintIcon(lh.getMenuItem(), g, lr.getCheckRect().x, lr.getCheckRect().y);
             }
-            g.setColor(holdc);
-        }
+            //g.setColor(holdc);
+        });
     }
 
     public static void paintAccText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color disabledForeground, Color acceleratorForeground, Color acceleratorSelectionForeground) {
-        if (!lh.getAccText().equals("")) {
-            ButtonModel model = lh.getMenuItem().getModel();
-            g.setFont(lh.getAccFontMetrics().getFont());
-            if (model.isEnabled()) {
-                // *** paint the accText normally
-                if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
-                    g.setColor(acceleratorSelectionForeground);
-                } else {
-                    g.setColor(acceleratorForeground);
-                }
-                sun.swing.SwingUtilities2.drawString(
-                    lh.getMenuItem(), g, lh.getAccText(),
-                    lh.getViewRect().x + lh.getViewRect().width - lh.getMenuItem().getIconTextGap() - lr.getAccRect().width,
-                    lr.getAccRect().y  + lh.getAccFontMetrics().getAscent());
+        if (lh.getAccText().isEmpty()) {
+            return;
+        }
+        ButtonModel model = lh.getMenuItem().getModel();
+        g.setFont(lh.getAccFontMetrics().getFont());
+        if (model.isEnabled()) {
+            // *** paint the accText normally
+            if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
+                g.setColor(acceleratorSelectionForeground);
             } else {
-                // *** paint the accText disabled
-                if (disabledForeground == null) {
-                    g.setColor(lh.getMenuItem().getBackground().brighter());
-                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
-                    g.setColor(lh.getMenuItem().getBackground().darker());
-                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x - 1, lr.getAccRect().y + lh.getFontMetrics().getAscent() - 1);
-                } else {
-                    g.setColor(disabledForeground);
-                    sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
-                }
+                g.setColor(acceleratorForeground);
+            }
+            sun.swing.SwingUtilities2.drawString(
+                lh.getMenuItem(), g, lh.getAccText(),
+                lh.getViewRect().x + lh.getViewRect().width - lh.getMenuItem().getIconTextGap() - lr.getAccRect().width,
+                lr.getAccRect().y  + lh.getAccFontMetrics().getAscent());
+        } else {
+            // *** paint the accText disabled
+            if (Objects.nonNull(disabledForeground)) {
+                g.setColor(disabledForeground);
+                sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
+            } else {
+                g.setColor(lh.getMenuItem().getBackground().brighter());
+                sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x, lr.getAccRect().y + lh.getAccFontMetrics().getAscent());
+                g.setColor(lh.getMenuItem().getBackground().darker());
+                sun.swing.SwingUtilities2.drawString(lh.getMenuItem(), g, lh.getAccText(), lr.getAccRect().x - 1, lr.getAccRect().y + lh.getFontMetrics().getAscent() - 1);
             }
         }
     }
 
     public static void paintArrowIcon(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
-        if (lh.getArrowIcon() != null) {
+        Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
             ButtonModel model = lh.getMenuItem().getModel();
             if (model.isArmed() || lh.getMenuItem() instanceof JMenu && model.isSelected()) {
                 g.setColor(foreground);
             }
             if (lh.useCheckAndArrow()) {
-                lh.getArrowIcon().paintIcon(lh.getMenuItem(), g, lr.getArrowRect().x, lr.getArrowRect().y);
+                arrowIcon.paintIcon(lh.getMenuItem(), g, lr.getArrowRect().x, lr.getArrowRect().y);
             }
-        }
+        });
     }
 
     public static void applyInsets(Rectangle rect, Insets insets) {
-        if (insets != null) {
-            rect.x += insets.left;
-            rect.y += insets.top;
-            rect.width  -= insets.right  + rect.x;
-            rect.height -= insets.bottom + rect.y;
-        }
+        Optional.ofNullable(insets).ifPresent(i -> {
+            rect.x += i.left;
+            rect.y += i.top;
+            rect.width  -= i.right  + rect.x;
+            rect.height -= i.bottom + rect.y;
+        });
     }
 
     public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
         StringBuilder accText = new StringBuilder();
-        KeyStroke accelerator = mi.getAccelerator();
-        if (accelerator != null) {
+        //KeyStroke accelerator = mi.getAccelerator();
+        Optional.ofNullable(mi.getAccelerator()).ifPresent(accelerator -> {
             int modifiers = accelerator.getModifiers();
             if (modifiers > 0) {
-                accText.append(KeyEvent.getKeyModifiersText(modifiers))
-                       .append(acceleratorDelimiter);
+                accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(acceleratorDelimiter);
             }
             int keyCode = accelerator.getKeyCode();
             if (keyCode == 0) {
@@ -271,21 +272,22 @@ final class MenuItemUIHelper {
             } else {
                 accText.append(KeyEvent.getKeyText(keyCode));
             }
-        }
+        });
         return accText.toString();
     }
 }
 
 class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
     @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
-        // Save original graphics font and color
-        Font holdf = g.getFont();
-        Color holdc = g.getColor();
+//         // Save original graphics font and color
+//         Font holdf = g.getFont();
+//         Color holdc = g.getColor();
 
+        Graphics2D g2 = (Graphics2D) g.create();
         //System.out.println(defaultTextIconGap);
 
         JMenuItem mi = (JMenuItem) c;
-        g.setFont(mi.getFont());
+        g2.setFont(mi.getFont());
 
         Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
         MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
@@ -295,25 +297,25 @@ class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
             true, mi.getFont(), acceleratorFont, sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
         sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
-        paintBackground(g, mi, background);
-        MenuItemUIHelper.paintCheckIcon(g, lh, lr, holdc, foreground);
-        MenuItemUIHelper.paintIcon(g, lh, lr, holdc);
-        paintText(g, lh, lr);
-        MenuItemUIHelper.paintAccText(g, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
-        MenuItemUIHelper.paintArrowIcon(g, lh, lr, foreground);
+        paintBackground(g2, mi, background);
+        MenuItemUIHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
+        MenuItemUIHelper.paintIcon(g2, lh, lr); //, g.getColor());
+        paintText(g2, lh, lr);
+        MenuItemUIHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
+        MenuItemUIHelper.paintArrowIcon(g2, lh, lr, foreground);
 
-        // Restore original graphics font and color
-        g.setColor(holdc);
-        g.setFont(holdf);
+//         // Restore original graphics font and color
+//         g.setColor(holdc);
+//         g.setFont(holdf);
     }
     private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
         if (!lh.getText().isEmpty()) {
-            if (lh.getHtmlView() == null) {
-                // Text isn't HTML
-                paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
-            } else {
+            if (Objects.nonNull(lh.getHtmlView())) {
                 // Text is HTML
                 lh.getHtmlView().paint(g, lr.getTextRect());
+            } else {
+                // Text isn't HTML
+                paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
             }
         }
     }
@@ -321,14 +323,15 @@ class RAAWindowsMenuItemUI extends WindowsMenuItemUI {
 
 class RAABasicMenuItemUI extends BasicMenuItemUI {
     @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int defaultTextIconGap) {
-        // Save original graphics font and color
-        Font holdf = g.getFont();
-        Color holdc = g.getColor();
+//         // Save original graphics font and color
+//         Font holdf = g.getFont();
+//         Color holdc = g.getColor();
 
+        Graphics2D g2 = (Graphics2D) g.create();
         //System.out.println(defaultTextIconGap);
 
         JMenuItem mi = (JMenuItem) c;
-        g.setFont(mi.getFont());
+        g2.setFont(mi.getFont());
 
         Rectangle viewRect = new Rectangle(mi.getWidth(), mi.getHeight());
         MenuItemUIHelper.applyInsets(viewRect, mi.getInsets());
@@ -338,25 +341,25 @@ class RAABasicMenuItemUI extends BasicMenuItemUI {
             true, mi.getFont(), acceleratorFont, sun.swing.MenuItemLayoutHelper.useCheckAndArrow(menuItem), getPropertyPrefix());
         sun.swing.MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem();
 
-        paintBackground(g, mi, background);
-        MenuItemUIHelper.paintCheckIcon(g, lh, lr, holdc, foreground);
-        MenuItemUIHelper.paintIcon(g, lh, lr, holdc);
-        paintText(g, lh, lr);
-        MenuItemUIHelper.paintAccText(g, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
-        MenuItemUIHelper.paintArrowIcon(g, lh, lr, foreground);
+        paintBackground(g2, mi, background);
+        MenuItemUIHelper.paintCheckIcon(g2, lh, lr, g.getColor(), foreground);
+        MenuItemUIHelper.paintIcon(g2, lh, lr); //, g.getColor());
+        paintText(g2, lh, lr);
+        MenuItemUIHelper.paintAccText(g2, lh, lr, disabledForeground, acceleratorForeground, acceleratorSelectionForeground);
+        MenuItemUIHelper.paintArrowIcon(g2, lh, lr, foreground);
 
-        // Restore original graphics font and color
-        g.setColor(holdc);
-        g.setFont(holdf);
+//         // Restore original graphics font and color
+//         g.setColor(holdc);
+//         g.setFont(holdf);
     }
     private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh, sun.swing.MenuItemLayoutHelper.LayoutResult lr) {
         if (!lh.getText().isEmpty()) {
-            if (lh.getHtmlView() == null) {
-                // Text isn't HTML
-                paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
-            } else {
+            if (Objects.nonNull(lh.getHtmlView())) {
                 // Text is HTML
                 lh.getHtmlView().paint(g, lr.getTextRect());
+            } else {
+                // Text isn't HTML
+                paintText(g, lh.getMenuItem(), lr.getTextRect(), lh.getText());
             }
         }
     }
