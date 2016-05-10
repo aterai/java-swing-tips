@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
     private final JComboBox<String> combo3 = new JComboBox<>(m);
 
     private final ComboBoxModel<Site> model = new DefaultComboBoxModel<>(new Site[] {
-        new Site("a", new DummyIcon(Color.RED)),
-        new Site("b", new DummyIcon(Color.GREEN)),
-        new Site("c", new DummyIcon(Color.BLUE))});
+        new Site("a", new ColorIcon(Color.RED)),
+        new Site("b", new ColorIcon(Color.GREEN)),
+        new Site("c", new ColorIcon(Color.BLUE))});
     private final JComboBox<Site> combo4 = new JComboBox<>(model);
     private final JComboBox<Site> combo5 = new JComboBox<>(model);
     private final JComboBox<Site> combo6 = new JComboBox<>();
@@ -49,9 +49,9 @@ public final class MainPanel extends JPanel {
 
         combo4.setRenderer(new SiteListCellRenderer<Site>());
         combo5.setRenderer(new SiteListCellRenderer<Site>());
-        combo5.setPrototypeDisplayValue(new Site(TITLE, new DummyIcon(Color.GRAY)));
+        combo5.setPrototypeDisplayValue(new Site(TITLE, new ColorIcon(Color.GRAY)));
         combo6.setRenderer(new SiteListCellRenderer<Site>());
-        combo6.setPrototypeDisplayValue(new Site(TITLE, new DummyIcon(Color.GRAY)));
+        combo6.setPrototypeDisplayValue(new Site(TITLE, new ColorIcon(Color.GRAY)));
 
         add(combo1);
         add(combo2);
@@ -94,9 +94,9 @@ class Site {
     }
 }
 
-class DummyIcon implements Icon {
+class ColorIcon implements Icon {
     private final Color color;
-    protected DummyIcon(Color color) {
+    protected ColorIcon(Color color) {
         this.color = color;
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {

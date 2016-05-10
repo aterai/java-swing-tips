@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 10, 5, 10);
         c.anchor = GridBagConstraints.LINE_START;
-        p.add(new JLabel(new DummyIcon()), c);
+        p.add(new JLabel(new ColorIcon(Color.RED)), c);
 
         c.insets = new Insets(5, 0, 5, 0);
         //p.add(new JLabel("<html>Message<br>aaaaaa<br>aaaaaaaaaaa<br>aaaaaaaaaaaaaaaa"), c);
@@ -107,11 +107,15 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class DummyIcon implements Icon {
+class ColorIcon implements Icon {
+    private final Color color;
+    protected ColorIcon(Color color) {
+        this.color = color;
+    }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        g2.setPaint(Color.RED);
+        g2.setPaint(color);
         g2.fillOval(0, 0, getIconWidth(), getIconHeight());
         g2.dispose();
     }

@@ -79,7 +79,7 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
     private final Timer holdTimer = new Timer(1000, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             System.out.println("InitialDelay(1000)");
-            if (arrowButton != null && arrowButton.getModel().isPressed() && holdTimer.isRunning()) {
+            if (Objects.nonNull(arrowButton) && arrowButton.getModel().isPressed() && holdTimer.isRunning()) {
                 holdTimer.stop();
                 pop.show(arrowButton, 0, arrowButton.getHeight());
                 pop.requestFocusInWindow();
@@ -95,11 +95,9 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
             b.setActionCommand(m.command);
             b.setForeground(m.color);
             b.setBorder(BorderFactory.createEmptyBorder());
-            b.addActionListener(new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    System.out.println(bg.getSelection().getActionCommand());
-                    pop.setVisible(false);
-                }
+            b.addActionListener(e -> {
+                System.out.println(bg.getSelection().getActionCommand());
+                pop.setVisible(false);
             });
             //b.setIcon(m.small);
             //b.setRolloverIcon(m.rollover);
@@ -126,7 +124,7 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
         System.out.println("actionPerformed");
         if (holdTimer.isRunning()) {
             ButtonModel model = bg.getSelection();
-            if (model != null) {
+            if (Objects.nonNull(model)) {
                 System.out.println(model.getActionCommand());
             }
             holdTimer.stop();
@@ -160,8 +158,8 @@ class MenuContext {
     protected MenuContext(String cmd, Color c) {
         command = cmd;
         color = c;
-//         small = new DummyIcon(c);
-//         rollover = new DummyIcon2(c);
+//         small = new ColorIcon(c);
+//         rollover = new ColorIcon2(c);
     }
 }
 
@@ -183,15 +181,15 @@ class MenuArrowIcon implements Icon {
     }
 }
 
-// class DummyIcon implements Icon {
+// class ColorIcon implements Icon {
 //     private final Color color;
-//     public DummyIcon(Color color) {
+//     protected ColorIcon(Color color) {
 //         this.color = color;
 //     }
 //     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //         Graphics2D g2 = (Graphics2D) g.create();
-//         g2.setPaint(color);
 //         g2.translate(x, y);
+//         g2.setPaint(color);
 //         g2.fillOval(4, 4, 16, 16);
 //         g2.dispose();
 //     }
@@ -203,15 +201,15 @@ class MenuArrowIcon implements Icon {
 //     }
 // }
 //
-// class DummyIcon2 extends DummyIcon {
-//     public DummyIcon2(Color color) {
+// class ColorIcon2 extends ColorIcon {
+//     protected ColorIcon2(Color color) {
 //         super(color);
 //     }
 //     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
 //         super.paintIcon(c, g, x, y);
 //         Graphics2D g2 = (Graphics2D) g.create();
-//         g2.setPaint(Color.BLACK);
 //         g2.translate(x, y);
+//         g2.setPaint(Color.BLACK);
 //         g2.drawOval(4, 4, 16, 16);
 //         g2.dispose();
 //     }
