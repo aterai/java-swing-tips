@@ -155,8 +155,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
     private final JProgressBar b = new JProgressBar(0, 100) {
         @Override public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
-            d.height = barHeight;
-            d.width  = nodeWidth;
+            d.setSize(nodeWidth, barHeight);
             return d;
         }
         @Override public void updateUI() {

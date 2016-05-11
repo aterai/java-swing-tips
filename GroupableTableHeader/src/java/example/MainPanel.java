@@ -127,22 +127,17 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
         int cMin = header.columnAtPoint(left);
         int cMax = header.columnAtPoint(right);
 
-        //Rectangle cellRect = new Rectangle(0, 0, size.width, size.height);
         Rectangle cellRect = header.getHeaderRect(cMin);
-        Dimension size = cellRect.getSize();
-        Point pt = cellRect.getLocation();
+        int headerY      = cellRect.y;
+        int headerHeight = cellRect.height;
 
         Map<ColumnGroup, Rectangle> h = new ConcurrentHashMap<>();
         //int columnMargin = header.getColumnModel().getColumnMargin();
-
-        int columnWidth;
-        TableColumn aColumn;
+        //int columnWidth;
         for (int column = cMin; column <= cMax; column++) {
-            cellRect.height = size.height;
-            cellRect.y      = pt.y;
-            aColumn = cm.getColumn(column);
-            columnWidth = aColumn.getWidth();
-            cellRect.width = columnWidth;
+            TableColumn aColumn = cm.getColumn(column);
+            cellRect.y = headerY;
+            cellRect.setSize(aColumn.getWidth(), headerHeight);
 
             int groupHeight = 0;
             List<?> cGroups = ((GroupableTableHeader) header).getColumnGroups(aColumn);
@@ -150,15 +145,12 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
                 ColumnGroup cGroup = (ColumnGroup) o;
                 Rectangle groupRect = (Rectangle) h.get(cGroup);
                 if (groupRect == null) {
-                    groupRect = new Rectangle(cellRect);
-                    Dimension d = cGroup.getSize(header);
-                    groupRect.width  = d.width;
-                    groupRect.height = d.height;
+                    groupRect = new Rectangle(cellRect.getLocation(), cGroup.getSize(header));
                     h.put(cGroup, groupRect);
                 }
                 paintCellGroup(g, groupRect, cGroup);
                 groupHeight += groupRect.height;
-                cellRect.height = size.height - groupHeight;
+                cellRect.height = headerHeight - groupHeight;
                 cellRect.y      = groupHeight;
             }
             paintCell(g, cellRect, column);
