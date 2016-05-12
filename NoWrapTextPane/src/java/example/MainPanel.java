@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     private final JButton editorPaneButton = new JButton("JEditorPane");
     private final JButton textAreaButton   = new JButton("JTextArea");
 
-    public MainPanel(final ExecutorService threadPool) {
+    protected MainPanel(final ExecutorService threadPool) {
         super(new BorderLayout());
 /*
         textPane = new JTextPane() {

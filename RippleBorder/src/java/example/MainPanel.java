@@ -56,7 +56,7 @@ class RippleBorder extends EmptyBorder {
     private final JComponent comp;
     private float count = 1f;
 
-    public RippleBorder(JComponent c, int width) {
+    protected RippleBorder(JComponent c, int width) {
         super(width, width, width, width);
         this.comp = c;
         animator = new Timer(80, new ActionListener() {

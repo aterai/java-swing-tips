@@ -118,7 +118,7 @@ class EmptyThumbHandler extends ComponentAdapter implements DocumentListener {
     private final BoundedRangeModel emptyThumbModel = new DefaultBoundedRangeModel(0, 1, 0, 1);
     private final JTextField textField;
     private final JScrollBar scroller;
-    public EmptyThumbHandler(JTextField textField, JScrollBar scroller) {
+    protected EmptyThumbHandler(JTextField textField, JScrollBar scroller) {
         super();
         this.textField = textField;
         this.scroller = scroller;

@@ -287,7 +287,7 @@ class FileGroupComparator extends DefaultFileComparator {
 //     protected FileTableModel() {
 //         this(new File[0]);
 //     }
-//     public FileTableModel(File[] files) {
+//     protected FileTableModel(File[] files) {
 //         this.files = files;
 //     }
 //     @Override public Object getValueAt(int row, int column) {

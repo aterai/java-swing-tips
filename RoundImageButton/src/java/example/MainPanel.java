@@ -129,20 +129,20 @@ public final class MainPanel extends JPanel {
 class RoundButton extends JButton {
     protected Shape shape;
     protected Shape base;
-//     public RoundButton() {
+//     protected RoundButton() {
 //         super();
 //     }
-//     public RoundButton(Icon icon) {
+//     protected RoundButton(Icon icon) {
 //         super(icon);
 //     }
-//     public RoundButton(String text) {
+//     protected RoundButton(String text) {
 //         super(text);
 //     }
-//     public RoundButton(Action a) {
+//     protected RoundButton(Action a) {
 //         super(a);
 //         //setAction(a);
 //     }
-//     public RoundButton(String text, Icon icon) {
+//     protected RoundButton(String text, Icon icon) {
 //         super(text, icon);
 //         //setModel(new DefaultButtonModel());
 //         //init(text, icon);

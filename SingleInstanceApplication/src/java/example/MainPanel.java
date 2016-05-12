@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 //
 // class JVMDescriptorInstanceCounter implements IAppInstanceCounter {
 //     private final String mainclassName;
-//     public JVMDescriptorInstanceCounter() {
+//     protected JVMDescriptorInstanceCounter() {
 //         StackTraceElement[] traces = Thread.currentThread().getStackTrace();
 //         mainclassName = traces[traces.length-1].getClassName();
 //         //System.out.println(mainclassName);
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
 // class PseudoFileSemaphoreCounter implements IAppInstanceCounter {
 //     private PseudoFileSemaphore semaphore;
 //     private int launchLimit;
-//     public PseudoFileSemaphoreCounter(String appName, int launchLimit) {
+//     protected PseudoFileSemaphoreCounter(String appName, int launchLimit) {
 //         this.semaphore = new PseudoFileSemaphore(appName, launchLimit);
 //         this.launchLimit = launchLimit;
 //         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

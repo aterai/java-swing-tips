@@ -215,7 +215,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 //     private final JTabbedPane tabbedPane;
 //     private final Rectangle buttonRect = new Rectangle(button.getPreferredSize());
 //
-//     public CloseableTabbedPaneGlassPane(JTabbedPane tabbedPane) {
+//     protected CloseableTabbedPaneGlassPane(JTabbedPane tabbedPane) {
 //         super();
 //         this.tabbedPane = tabbedPane;
 //         MouseAdapter h = new Handler();

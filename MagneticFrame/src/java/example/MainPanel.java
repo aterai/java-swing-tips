@@ -42,7 +42,8 @@ public final class MainPanel extends JPanel {
 //     private class MagneticListener extends MouseAdapter {
 //         private final JInternalFrame frame;
 //         private final Point loc = new Point();
-//         public MagneticListener(JInternalFrame frame) {
+//         protected MagneticListener(JInternalFrame frame) {
+//             super();
 //             this.frame = frame;
 //         }
 //         @Override public void mousePressed(MouseEvent e) {

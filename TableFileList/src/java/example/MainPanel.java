@@ -232,7 +232,7 @@ class FileNameRenderer implements TableCellRenderer {
 //     private final Border empBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //     private boolean focusflag;
 //
-//     public MyLabel(Color color) {
+//     protected MyLabel(Color color) {
 //         super("dummy");
 //         setOpaque(true);
 //         dotBorder = new DotBorder(color, 2);
@@ -247,7 +247,7 @@ class FileNameRenderer implements TableCellRenderer {
 //         focusflag = flag;
 //     }
 //     private class DotBorder extends LineBorder {
-//         public DotBorder(Color color, int thickness) {
+//         protected DotBorder(Color color, int thickness) {
 //             super(color, thickness);
 //         }
 //         @Override public boolean isBorderOpaque() {

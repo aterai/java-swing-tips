@@ -70,7 +70,7 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
     protected HoverCloseButtonTabbedPane(int tabPlacement) {
         super(tabPlacement, SCROLL_TAB_LAYOUT);
     }
-//     public HoverCloseButtonTabbedPane(int tabPlacement, int tabLayoutPolicy) {
+//     protected HoverCloseButtonTabbedPane(int tabPlacement, int tabLayoutPolicy) {
 //         super(tabPlacement, SCROLL_TAB_LAYOUT);
 //     }
     @Override public void updateUI() {

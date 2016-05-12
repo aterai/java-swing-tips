@@ -155,7 +155,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
 }
 
 // class TestBufferedInputStream extends BufferedInputStream {
-//     public TestBufferedInputStream(InputStream in) {
+//     protected TestBufferedInputStream(InputStream in) {
 //         super(in);
 //     }
 //     @Override public void close() throws IOException {
@@ -166,7 +166,7 @@ class LoadSaveTask extends SwingWorker<WindowAdapter, Void> {
 // }
 //
 // class TestBufferedOutputStream extends BufferedOutputStream {
-//     public TestBufferedOutputStream(OutputStream out) {
+//     protected TestBufferedOutputStream(OutputStream out) {
 //         super(out);
 //     }
 //     @Override public void close() throws IOException {

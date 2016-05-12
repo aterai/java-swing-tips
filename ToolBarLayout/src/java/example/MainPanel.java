@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 }
 
 // class ToolBarButton extends JButton {
-//     public ToolBarButton(ImageIcon icon) {
+//     protected ToolBarButton(ImageIcon icon) {
 //         super(icon);
 //         setContentAreaFilled(false);
 //         setFocusPainted(false);

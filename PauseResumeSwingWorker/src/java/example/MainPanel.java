@@ -283,7 +283,7 @@ class Task extends SwingWorker<String, Progress> {
 //     }
 //
 //     class RunAction extends AbstractAction {
-//         public RunAction() {
+//         protected RunAction() {
 //             super("run");
 //         }
 //         @Override public void actionPerformed(ActionEvent e) {
@@ -367,7 +367,7 @@ class Task extends SwingWorker<String, Progress> {
 //         }
 //     }
 //     class CancelAction extends AbstractAction {
-//         public CancelAction() {
+//         protected CancelAction() {
 //             super("cancel");
 //         }
 //         @Override public void actionPerformed(ActionEvent e) {

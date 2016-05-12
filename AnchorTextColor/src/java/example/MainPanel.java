@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 }
 
 // class URILabel extends JLabel {
-//     public URILabel(String h) {
+//     protected URILabel(String h) {
 //         super(String.format("<html><a href='%s'>%s</a>", h, h));
 //         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //         addMouseListener(new MouseAdapter() {
@@ -111,20 +111,20 @@ public final class MainPanel extends JPanel {
 //     public LinkViewButtonUI getUI() {
 //         return BasicLinkViewButtonUI.createUI(this);
 //     }
-//     public HyperlinkButton() {
+//     protected HyperlinkButton() {
 //         this(null, null);
 //     }
-//     public HyperlinkButton(Icon icon) {
+//     protected HyperlinkButton(Icon icon) {
 //         this(null, icon);
 //     }
-//     public HyperlinkButton(String text) {
+//     protected HyperlinkButton(String text) {
 //         this(text, null);
 //     }
-//     public HyperlinkButton(Action a) {
+//     protected HyperlinkButton(Action a) {
 //         this();
 //         super.setAction(a);
 //     }
-//     public HyperlinkButton(String text, Icon icon) {
+//     protected HyperlinkButton(String text, Icon icon) {
 //         super(text, icon);
 //     }
 // }
@@ -144,7 +144,7 @@ public final class MainPanel extends JPanel {
 // //         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //         return LINKVIEW_BUTTON_UI;
 //     }
-//     public BasicLinkViewButtonUI() {
+//     protected BasicLinkViewButtonUI() {
 //         super();
 //         size = new Dimension();
 //         viewRect = new Rectangle();

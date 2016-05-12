@@ -127,10 +127,10 @@ class JustifiedLabel extends JLabel {
 // class JustifiedLabel extends JLabel {
 //     private GlyphVector gvtext;
 //     private int prevWidth = -1;
-//     public JustifiedLabel() {
+//     protected JustifiedLabel() {
 //         this(null);
 //     }
-//     public JustifiedLabel(String str) {
+//     protected JustifiedLabel(String str) {
 //         super(str);
 //     }
 //     @Override public void setText(String text) {

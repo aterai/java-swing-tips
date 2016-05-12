@@ -267,7 +267,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //     private final List<Shape> list = new ArrayList<>();
 //     private final Dimension dim;
 //     private boolean isRunning;
-//     public AnimeIcon() {
+//     protected AnimeIcon() {
 //         super();
 //         int r = 4;
 //         Shape s = new Ellipse2D.Double(0, 0, 2 * r, 2 * r);
@@ -373,7 +373,7 @@ class AnimeIcon implements Icon {
 //     private final Dimension dim;
 //     private boolean isRunning;
 //     private final List<Shape> list = new ArrayList<>();
-//     public AnimeIcon() {
+//     protected AnimeIcon() {
 //         super();
 //         int d = (int) R * 2 * (1 + 3);
 //         dim = new Dimension(d, d);

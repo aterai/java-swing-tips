@@ -49,7 +49,7 @@ class DockingListener implements ComponentListener {
     private final JFrame frame1;
     private final JFrame frame2;
 
-    public DockingListener(JFrame f1, JFrame f2) {
+    protected DockingListener(JFrame f1, JFrame f2) {
         frame1 = f1;
         frame1.addComponentListener(this);
         frame2 = f2;
