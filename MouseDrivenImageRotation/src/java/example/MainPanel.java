@@ -54,12 +54,13 @@ class DraggableImageMouseListener extends MouseAdapter {
     private static final Color HOVER_COLOR  = new Color(100, 255, 200, 100);
     private static final int IR = 40;
     private static final int OR = IR * 3;
-    private final RoundRectangle2D.Double border;
-    private final Ellipse2D.Double inner = new Ellipse2D.Double(0, 0, IR, IR);
-    private final Ellipse2D.Double outer = new Ellipse2D.Double(0, 0, OR, OR);
-    private final Point2D.Double imagePt = new Point2D.Double(10d, 50d);
-    private final Point2D.Double startPt = new Point2D.Double(); //drag start point
-    private final Point2D.Double centerPt = new Point2D.Double();
+    private final RoundRectangle2D border;
+    private final Rectangle2D polaroid;
+    private final Ellipse2D inner  = new Ellipse2D.Double(0, 0, IR, IR);
+    private final Ellipse2D outer  = new Ellipse2D.Double(0, 0, OR, OR);
+    private final Point2D startPt  = new Point2D.Double(); //drag start point
+    private final Point2D centerPt = new Point2D.Double(100d, 100d); //center of Image
+    private final Dimension imageSz;
     private final Image image;
     private double radian = 45d * (Math.PI / 180d);
     private double startRadian; //drag start radian
@@ -71,28 +72,34 @@ class DraggableImageMouseListener extends MouseAdapter {
         image = ii.getImage();
         int width  = ii.getIconWidth();
         int height = ii.getIconHeight();
-        centerPt.x = width / 2d;
-        centerPt.y = height / 2d;
-        inner.x = imagePt.x + centerPt.x - IR / 2;
-        inner.y = imagePt.y + centerPt.y - IR / 2;
-        outer.x = imagePt.x + centerPt.x - OR / 2;
-        outer.y = imagePt.y + centerPt.y - OR / 2;
-        border  = new RoundRectangle2D.Double(0d, 0d, width, height, 10d, 10d);
+        imageSz  = new Dimension(width, height);
+        border   = new RoundRectangle2D.Double(0d, 0d, width, height, 10d, 10d);
+        polaroid = new Rectangle2D.Double(-2, -2, width + 4, height + 20);
+        setCirclesLocation(centerPt);
     }
-    public void paint(Graphics g, ImageObserver ior) {
+    private void setCirclesLocation(Point2D center) {
+        double cx = center.getX();
+        double cy = center.getY();
+        inner.setFrameFromCenter(cx, cy, cx + IR / 2d, cy - IR / 2d);
+        outer.setFrameFromCenter(cx, cy, cx + OR / 2d, cy - OR / 2d);
+    }
+    public void paint(Graphics g, ImageObserver observer) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        AffineTransform at = AffineTransform.getTranslateInstance(imagePt.x, imagePt.y);
-        at.rotate(radian, centerPt.x, centerPt.y);
+        double w2 = imageSz.width / 2d;
+        double h2 = imageSz.height / 2d;
+        AffineTransform at = AffineTransform.getTranslateInstance(centerPt.getX() - w2, centerPt.getY() - h2);
+        at.rotate(radian, w2, h2);
 
         g2.setPaint(BORDER_COLOR);
         g2.setStroke(BORDER_STROKE);
-        Shape s = new Rectangle2D.Double(border.x - 2, border.y - 2, border.width + 4, border.height + 20);
-        g2.fill(at.createTransformedShape(s));
-        g2.draw(at.createTransformedShape(s));
+        Shape s = at.createTransformedShape(polaroid);
+        g2.fill(s);
+        g2.draw(s);
 
-        g2.drawImage(image, at, ior);
+        g2.drawImage(image, at, observer);
+
         if (rotatorHover) {
             Area donut = new Area(outer);
             donut.subtract(new Area(inner));
@@ -102,8 +109,9 @@ class DraggableImageMouseListener extends MouseAdapter {
             g2.setPaint(HOVER_COLOR);
             g2.fill(inner);
         }
-        g2.setStroke(BORDER_STROKE);
+
         g2.setPaint(BORDER_COLOR);
+        g2.setStroke(BORDER_STROKE);
         g2.draw(at.createTransformedShape(border));
         g2.dispose();
     }
@@ -128,28 +136,22 @@ class DraggableImageMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
         if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
             rotatorHover = true;
-            startRadian = radian - Math.atan2(e.getY() - imagePt.y - centerPt.y, e.getX() - imagePt.x - centerPt.x);
+            startRadian = radian - Math.atan2(e.getY() - centerPt.getY(), e.getX() - centerPt.getX());
             e.getComponent().repaint();
         } else if (inner.contains(e.getX(), e.getY())) {
             moverHover = true;
-            startPt.x = e.getX();
-            startPt.y = e.getY();
+            startPt.setLocation(e.getPoint());
             e.getComponent().repaint();
         }
     }
     @Override public void mouseDragged(MouseEvent e) {
         if (rotatorHover) {
-            radian = startRadian + Math.atan2(e.getY() - imagePt.y - centerPt.y, e.getX() - imagePt.x - centerPt.x);
+            radian = startRadian + Math.atan2(e.getY() - centerPt.getY(), e.getX() - centerPt.getX());
             e.getComponent().repaint();
         } else if (moverHover) {
-            imagePt.x += e.getX() - startPt.x;
-            imagePt.y += e.getY() - startPt.y;
-            inner.x = imagePt.x + centerPt.x - IR / 2;
-            inner.y = imagePt.y + centerPt.y - IR / 2;
-            outer.x = imagePt.x + centerPt.x - OR / 2;
-            outer.y = imagePt.y + centerPt.y - OR / 2;
-            startPt.x = e.getX();
-            startPt.y = e.getY();
+            centerPt.setLocation(centerPt.getX() + e.getX() - startPt.getX(), centerPt.getY() + e.getY() - startPt.getY());
+            setCirclesLocation(centerPt);
+            startPt.setLocation(e.getPoint());
             e.getComponent().repaint();
         }
     }
