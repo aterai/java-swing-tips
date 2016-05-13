@@ -54,10 +54,10 @@ class DraggableImageMouseListener extends MouseAdapter {
     private static final Color HOVER_COLOR  = new Color(100, 255, 200, 100);
     private static final int IR = 40;
     private static final int OR = IR * 3;
-    private final RoundRectangle2D border;
-    private final Rectangle2D polaroid;
-    private final Ellipse2D inner  = new Ellipse2D.Double(0, 0, IR, IR);
-    private final Ellipse2D outer  = new Ellipse2D.Double(0, 0, OR, OR);
+    private final Shape border;
+    private final Shape polaroid;
+    private final RectangularShape inner = new Ellipse2D.Double(0, 0, IR, IR);
+    private final RectangularShape outer = new Ellipse2D.Double(0, 0, OR, OR);
     private final Point2D startPt  = new Point2D.Double(); //drag start point
     private final Point2D centerPt = new Point2D.Double(100d, 100d); //center of Image
     private final Dimension imageSz;
@@ -73,7 +73,7 @@ class DraggableImageMouseListener extends MouseAdapter {
         int width  = ii.getIconWidth();
         int height = ii.getIconHeight();
         imageSz  = new Dimension(width, height);
-        border   = new RoundRectangle2D.Double(0d, 0d, width, height, 10d, 10d);
+        border   = new RoundRectangle2D.Double(0, 0, width, height, 10, 10);
         polaroid = new Rectangle2D.Double(-2, -2, width + 4, height + 20);
         setCirclesLocation(centerPt);
     }
