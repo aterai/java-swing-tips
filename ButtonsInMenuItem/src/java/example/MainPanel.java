@@ -83,13 +83,11 @@ public final class MainPanel extends JPanel {
     }
     private static AbstractButton makeButton(String title, Action action) {
         AbstractButton b = new JButton(action);
-        b.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
-                Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, b);
-                if (c instanceof JPopupMenu) {
-                    ((JPopupMenu) c).setVisible(false);
-                }
+        b.addActionListener(e -> {
+            Component a = (Component) e.getSource();
+            Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, a);
+            if (c instanceof JPopupMenu) {
+                ((JPopupMenu) c).setVisible(false);
             }
         });
         b.setText(title);

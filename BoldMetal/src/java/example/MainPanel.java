@@ -16,21 +16,19 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         JCheckBox check = new JCheckBox("swing.boldMetal");
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //http://docs.oracle.com/javase/jp/6/api/javax/swing/plaf/metal/DefaultMetalTheme.html
-                JCheckBox c = (JCheckBox) e.getSource();
-                UIManager.put("swing.boldMetal", c.isSelected());
-                // re-install the Metal Look and Feel
-                try {
-                    UIManager.setLookAndFeel(new MetalLookAndFeel());
-                } catch (UnsupportedLookAndFeelException ex) {
-                    ex.printStackTrace();
-                }
-                // Update the ComponentUIs for all Components. This
-                // needs to be invoked for all windows.
-                SwingUtilities.updateComponentTreeUI(c.getTopLevelAncestor());
+        check.addActionListener(e -> {
+            //http://docs.oracle.com/javase/jp/6/api/javax/swing/plaf/metal/DefaultMetalTheme.html
+            JCheckBox c = (JCheckBox) e.getSource();
+            UIManager.put("swing.boldMetal", c.isSelected());
+            // re-install the Metal Look and Feel
+            try {
+                UIManager.setLookAndFeel(new MetalLookAndFeel());
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
             }
+            // Update the ComponentUIs for all Components. This
+            // needs to be invoked for all windows.
+            SwingUtilities.updateComponentTreeUI(c.getTopLevelAncestor());
         });
 
         JTree tree = new JTree();
@@ -41,16 +39,14 @@ public final class MainPanel extends JPanel {
         tabbedPane.addTab("JLabel",      new JLabel("JLabel"));
         tabbedPane.addTab("JTextArea",   new JScrollPane(new JTextArea("JTextArea")));
         tabbedPane.addTab("JButton",     new JScrollPane(new JButton("JButton")));
-        tabbedPane.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane t = (JTabbedPane) e.getSource();
-                for (int i = 0; i < t.getTabCount(); i++) {
-                    String title = t.getTitleAt(i);
-                    if (i == t.getSelectedIndex()) {
-                        t.setTitleAt(i, TAG + title);
-                    } else if (title.startsWith(TAG)) {
-                        t.setTitleAt(i, title.substring(TAG.length()));
-                    }
+        tabbedPane.addChangeListener(e -> {
+            JTabbedPane t = (JTabbedPane) e.getSource();
+            for (int i = 0; i < t.getTabCount(); i++) {
+                String title = t.getTitleAt(i);
+                if (i == t.getSelectedIndex()) {
+                    t.setTitleAt(i, TAG + title);
+                } else if (title.startsWith(TAG)) {
+                    t.setTitleAt(i, title.substring(TAG.length()));
                 }
             }
         });

@@ -83,12 +83,10 @@ public final class MainPanel extends JPanel {
             }
         };
         if (Objects.nonNull(tree)) {
-            b.addActionListener(new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    JRadioButton r = (JRadioButton) e.getSource();
-                    tree.setSelectionPath(path);
-                    r.setSelected(true);
-                }
+            b.addActionListener(e -> {
+                JRadioButton r = (JRadioButton) e.getSource();
+                tree.setSelectionPath(path);
+                r.setSelected(true);
             });
         }
         b.setIcon(new ArrowToggleButtonBarCellIcon());
