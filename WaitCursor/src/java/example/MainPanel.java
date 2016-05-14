@@ -11,31 +11,27 @@ public final class MainPanel extends JPanel {
     private final JButton button = new JButton("Stop 5sec");
     public MainPanel() {
         super(new BorderLayout());
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                JComponent gp = new LockingGlassPane();
-                gp.setVisible(false);
-                getRootPane().setGlassPane(gp);
-            }
+        EventQueue.invokeLater(() -> {
+            JComponent gp = new LockingGlassPane();
+            gp.setVisible(false);
+            getRootPane().setGlassPane(gp);
         });
 
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
-                getRootPane().getGlassPane().setVisible(true);
-                button.setEnabled(false);
-                (new Task() {
-                    @Override public void done() {
-                        if (!isDisplayable()) {
-                            System.out.println("done: DISPOSE_ON_CLOSE");
-                            cancel(true);
-                            return;
-                        }
-                        getRootPane().getGlassPane().setVisible(false);
-                        button.setEnabled(true);
+        button.addActionListener(e -> {
+            //System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
+            getRootPane().getGlassPane().setVisible(true);
+            button.setEnabled(false);
+            (new Task() {
+                @Override public void done() {
+                    if (!isDisplayable()) {
+                        System.out.println("done: DISPOSE_ON_CLOSE");
+                        cancel(true);
+                        return;
                     }
-                }).execute();
-            }
+                    getRootPane().getGlassPane().setVisible(false);
+                    button.setEnabled(true);
+                }
+            }).execute();
         });
         Box box = Box.createHorizontalBox();
         box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

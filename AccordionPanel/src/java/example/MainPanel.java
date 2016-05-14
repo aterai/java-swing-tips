@@ -169,11 +169,7 @@ abstract class AbstractExpansionPanel extends JPanel {
         label.setText(String.format("%s %s", panel.isVisible() ? "\u25B3" : "\u25BC", title));
         revalidate();
         //fireExpansionEvent();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                panel.scrollRectToVisible(panel.getBounds());
-            }
-        });
+        EventQueue.invokeLater(() -> panel.scrollRectToVisible(panel.getBounds()));
     }
 
 //     protected Vector<ExpansionListener> expansionListenerList = new Vector<>();

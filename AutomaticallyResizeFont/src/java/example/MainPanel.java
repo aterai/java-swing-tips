@@ -34,11 +34,7 @@ public final class MainPanel extends JPanel {
         sp.setResizeWeight(.5);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                sp.setDividerLocation(.5);
-            }
-        });
+        EventQueue.invokeLater(() -> sp.setDividerLocation(.5));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {

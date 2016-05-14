@@ -28,23 +28,19 @@ public final class MainPanel extends JPanel {
     private final Action minAction = new AbstractAction("Min:Action") {
         @Override public void actionPerformed(final ActionEvent e) {
             splitPane.requestFocusInWindow();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    Action selectMinAction = splitPane.getActionMap().get("selectMin");
-                    selectMinAction.actionPerformed(new ActionEvent(splitPane, 1001, null));
-                }
+            EventQueue.invokeLater(() -> {
+                Action selectMinAction = splitPane.getActionMap().get("selectMin");
+                selectMinAction.actionPerformed(new ActionEvent(splitPane, 1001, null));
             });
         }
     };
     private final Action maxAction = new AbstractAction("Max:Action") {
         @Override public void actionPerformed(final ActionEvent e) {
             splitPane.requestFocusInWindow();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    Action selectMaxAction = splitPane.getActionMap().get("selectMax");
-                    e.setSource(splitPane);
-                    selectMaxAction.actionPerformed(e);
-                }
+            EventQueue.invokeLater(() -> {
+                Action selectMaxAction = splitPane.getActionMap().get("selectMax");
+                e.setSource(splitPane);
+                selectMaxAction.actionPerformed(e);
             });
         }
     };
