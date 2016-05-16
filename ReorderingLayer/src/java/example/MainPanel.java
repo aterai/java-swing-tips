@@ -103,11 +103,10 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
         JComponent parent = l.getView();
         switch (e.getID()) {
           case MouseEvent.MOUSE_PRESSED:
-            if (parent.getComponentCount() <= 1) {
-                return;
+            if (parent.getComponentCount() > 0) {
+                startPt.setLocation(e.getPoint());
+                l.repaint();
             }
-            startPt.setLocation(e.getPoint());
-            l.repaint();
             break;
           case MouseEvent.MOUSE_RELEASED:
             if (Objects.isNull(draggingComonent)) {
@@ -150,9 +149,7 @@ class ReorderingLayerUI extends LayerUI<JComponent> {
 
             if (Objects.isNull(draggingComonent)) {
                 //MotionThreshold
-                double a = Math.pow(pt.x - startPt.x, 2);
-                double b = Math.pow(pt.y - startPt.y, 2);
-                if (Math.sqrt(a + b) > gestureMotionThreshold) {
+                if (startPt.distance(pt) > gestureMotionThreshold) {
                     startDragging(parent, pt);
                 }
                 return;

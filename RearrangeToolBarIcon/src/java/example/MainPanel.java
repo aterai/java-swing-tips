@@ -22,10 +22,9 @@ public final class MainPanel extends JPanel {
         toolbar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
         for (String str: Arrays.asList("Copy24.gif", "Cut24.gif", "Paste24.gif",
-                                      "Delete24.gif", "Undo24.gif", "Redo24.gif",
-                                      "Help24.gif", "Open24.gif", "Save24.gif")) {
-            URL url = getClass().getResource(PATH + str);
-            toolbar.add(createToolBarButton(url));
+                                       "Delete24.gif", "Undo24.gif", "Redo24.gif",
+                                       "Help24.gif", "Open24.gif", "Save24.gif")) {
+            toolbar.add(createToolBarButton(getClass().getResource(PATH + str)));
         }
         add(toolbar, BorderLayout.NORTH);
         add(new JScrollPane(new JTree()));
@@ -64,16 +63,14 @@ class DragHandler extends MouseAdapter {
     private Component draggingComonent;
     private int index = -1;
     private final Component gap = Box.createHorizontalStrut(24);
-    private Point startPt;
+    private final Point startPt = new Point();
     private final int gestureMotionThreshold = DragSource.getDragThreshold();
     @Override public void mousePressed(MouseEvent e) {
         JComponent parent = (JComponent) e.getComponent();
-        if (parent.getComponentCount() <= 1) {
-            startPt = null;
-            return;
+        if (parent.getComponentCount() > 0) {
+            startPt.setLocation(e.getPoint());
+            window.setBackground(new Color(0x0, true));
         }
-        startPt = e.getPoint();
-        window.setBackground(new Color(0x0, true));
     }
     private void startDragging(JComponent parent, Point pt) {
         Component c = parent.getComponentAt(pt);
@@ -103,12 +100,10 @@ class DragHandler extends MouseAdapter {
         Point pt = e.getPoint();
         JComponent parent = (JComponent) e.getComponent();
 
-        if (Objects.nonNull(startPt) && Math.sqrt(Math.pow(pt.x - startPt.x, 2) + Math.pow(pt.y - startPt.y, 2)) > gestureMotionThreshold) {
-            startDragging(parent, pt);
-            startPt = null;
-            return;
-        }
         if (!window.isVisible() || Objects.isNull(draggingComonent)) {
+            if (startPt.distance(pt) > gestureMotionThreshold) {
+                startDragging(parent, pt);
+            }
             return;
         }
 
@@ -136,7 +131,6 @@ class DragHandler extends MouseAdapter {
     }
 
     @Override public void mouseReleased(MouseEvent e) {
-        startPt = null;
         if (!window.isVisible() || Objects.isNull(draggingComonent)) {
             return;
         }

@@ -68,18 +68,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeCheckBoxPanel() {
-        final JCheckBox tcheck = new JCheckBox("Top", true);
-        tcheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT);
-            }
-        });
-        final JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-        scheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabbedPane.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
-            }
-        });
+        JCheckBox tcheck = new JCheckBox("Top", true);
+        tcheck.addActionListener(e-> tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+        JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
+        scheck.addActionListener(e -> tabbedPane.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(tcheck);
         p.add(scheck);
@@ -116,14 +108,13 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final TabTransferHandler handler = new TabTransferHandler();
-        final LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
+        TabTransferHandler handler = new TabTransferHandler();
+        LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
 
-        final JCheckBoxMenuItem check = new JCheckBoxMenuItem(new AbstractAction("Ghost image: Heavyweight") {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBoxMenuItem c = (JCheckBoxMenuItem) e.getSource();
-                handler.setDragImageMode(c.isSelected() ? DragImageMode.Heavyweight : DragImageMode.Lightweight);
-            }
+        JCheckBoxMenuItem check = new JCheckBoxMenuItem("Ghost image: Heavyweight");
+        check.addActionListener(e -> {
+            JCheckBoxMenuItem c = (JCheckBoxMenuItem) e.getSource();
+            handler.setDragImageMode(c.isSelected() ? DragImageMode.Heavyweight : DragImageMode.Lightweight);
         });
         JMenu menu = new JMenu("Debug");
         menu.add(check);
@@ -364,7 +355,7 @@ class DnDTabbedPane extends JTabbedPane {
         }
         @Override public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
-            if (Objects.nonNull(startPt) && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
+            if (Objects.nonNull(startPt) && startPt.distance(tabPt) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
@@ -384,6 +375,7 @@ class TabDropTargetAdapter extends DropTargetAdapter {
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane t = (DnDTabbedPane) c;
             t.setDropLocation(null, null, false);
+            t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
     @Override public void drop(DropTargetDropEvent dtde) {
@@ -491,6 +483,10 @@ class TabTransferHandler extends TransferHandler {
 //             }
 //         }
         boolean isDropable = isDropable(target, pt, idx);
+
+        // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
+        // http://bugs.java.com/view_bug.do?bug_id=6700748
+        target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
         if (isDropable) {
             support.setShowDropLocation(true);
@@ -604,10 +600,9 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
     }
     private void initLineRect(DnDTabbedPane tabbedPane, DnDTabbedPane.DropLocation loc) {
         int index = loc.getIndex();
-        boolean isZero = index == 0;
-        Rectangle r = tabbedPane.getBoundsAt(isZero ? 0 : index - 1);
+        int a = index == 0 ? 0 : 1;
+        Rectangle r = tabbedPane.getBoundsAt(a * (index - 1));
         Rectangle rect = new Rectangle();
-        int a = isZero ? 0 : 1;
         if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
             rect.x = r.x - LINEWIDTH / 2 + r.width * a;
             rect.y = r.y;

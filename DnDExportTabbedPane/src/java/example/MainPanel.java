@@ -67,18 +67,10 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     private JComponent makeCheckBoxPanel() {
-        final JCheckBox tcheck = new JCheckBox("Top", true);
-        tcheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT);
-            }
-        });
-        final JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-        scheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                tabbedPane.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
-            }
-        });
+        JCheckBox tcheck = new JCheckBox("Top", true);
+        tcheck.addActionListener(e -> tabbedPane.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT));
+        JCheckBox scheck = new JCheckBox("SCROLL_TAB_LAYOUT", true);
+        scheck.addActionListener(e -> tabbedPane.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(tcheck);
         p.add(scheck);
@@ -295,12 +287,12 @@ class DnDTabbedPane extends JTabbedPane {
             lineRect.setRect(0, 0, 0, 0);
             return null;
         }
-        boolean isZero = index == 0;
-        Rectangle r = getBoundsAt(isZero ? 0 : index - 1);
+        int a = index == 0 ? 0 : 1;
+        Rectangle r = getBoundsAt(a * (index - 1));
         if (getTabPlacement() == TOP || getTabPlacement() == BOTTOM) {
-            lineRect.setRect(r.x - LINE_WIDTH / 2 + r.width * (isZero ? 0 : 1), r.y, LINE_WIDTH, r.height);
+            lineRect.setRect(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
         } else {
-            lineRect.setRect(r.x, r.y - LINE_WIDTH / 2 + r.height * (isZero ? 0 : 1), r.width, LINE_WIDTH);
+            lineRect.setRect(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
         }
         return lineRect;
     }
@@ -367,7 +359,7 @@ class DnDTabbedPane extends JTabbedPane {
         }
         @Override public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
-            if (Objects.nonNull(startPt) && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
+            if (Objects.nonNull(startPt) && startPt.distance(tabPt) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
@@ -475,11 +467,12 @@ class TabTransferHandler extends TransferHandler {
 
         // Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         // http://bugs.java.com/view_bug.do?bug_id=6700748
+        Cursor cursor = isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
         Component glassPane = target.getRootPane().getGlassPane();
         glassPane.setVisible(false);
-        glassPane.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        glassPane.setCursor(cursor);
         glassPane.setVisible(true);
-        target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        target.setCursor(cursor);
 
         if (isDropable) {
             support.setShowDropLocation(true);

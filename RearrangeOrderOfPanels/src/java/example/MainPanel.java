@@ -79,9 +79,7 @@ class RearrangingHandler extends MouseAdapter {
     private final Point dragOffset = new Point();
 
     @Override public void mousePressed(MouseEvent e) {
-        if (((JComponent) e.getComponent()).getComponentCount() <= 1) {
-            startPt.setLocation(0, 0);
-        } else {
+        if (((JComponent) e.getComponent()).getComponentCount() > 0) {
             startPt.setLocation(e.getPoint());
         }
     }
@@ -138,9 +136,7 @@ class RearrangingHandler extends MouseAdapter {
         Point pt = e.getPoint();
         JComponent parent = (JComponent) e.getComponent();
         if (Objects.isNull(draggingComonent)) {
-            double a = Math.pow(pt.x - startPt.x, 2);
-            double b = Math.pow(pt.y - startPt.y, 2);
-            if (Math.sqrt(a + b) > gestureMotionThreshold) {
+            if (startPt.distance(pt) > gestureMotionThreshold) {
                 startDragging(parent, pt);
             }
             return;
@@ -168,7 +164,6 @@ class RearrangingHandler extends MouseAdapter {
     }
 
     @Override public void mouseReleased(MouseEvent e) {
-        startPt.setLocation(0, 0);
         dragOffset.setLocation(0, 0);
         prevRect.setBounds(0, 0, 0, 0);
         window.setVisible(false);
