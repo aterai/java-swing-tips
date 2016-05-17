@@ -155,7 +155,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 
 class TableOfContentsTreeCellRenderer1 extends DefaultTreeCellRenderer {
     private static final String READER = "... ";
-    private final Point pt = new Point(-1, -1);
+    private final Point pt = new Point();
     private String pn;
     private boolean isSynth;
     private final JPanel p = new JPanel(new BorderLayout()) {
