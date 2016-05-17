@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
 }
 
 // class PaintPanel extends JPanel {
-//     private final Point startPoint = new Point(-10, 0);
-//     private final Point p = new Point(-10, 0);
+//     private final Point startPoint = new Point();
+//     private final Point p = new Point();
 //     private MouseAdapter handler;
 //     @Override public void updateUI() {
 //         removeMouseMotionListener(handler);
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 
 // class PaintPanel extends JPanel {
 //     private final Polygon polygon = new Polygon();
-//     private final Point startPoint = new Point(-10, 0);
+//     private final Point startPoint = new Point();
 //     private transient BufferedImage offImage;
 //     private transient MouseAdapter handler;
 //     @Override public void updateUI() {
@@ -130,14 +130,12 @@ class PaintPanel extends JPanel {
         handler = new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
                 path = new Path2D.Double();
+                path.moveTo(e.getX(), e.getY());
                 list.add(path);
-                Point p = e.getPoint();
-                path.moveTo(p.x, p.y);
                 repaint();
             }
             @Override public void mouseDragged(MouseEvent e) {
-                Point p = e.getPoint();
-                path.lineTo(p.x, p.y);
+                path.lineTo(e.getX(), e.getY());
                 repaint();
             }
         };

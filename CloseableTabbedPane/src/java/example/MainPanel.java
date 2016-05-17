@@ -119,7 +119,7 @@ class CloseableTabbedPane extends JTabbedPane {
 
 class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     private final JComponent rubberStamp = new JPanel();
-    private final Point pt = new Point(-100, -100);
+    private final Point pt = new Point();
     private final JButton button = new JButton(new CloseTabIcon());
 //     {
 //         @Override public Dimension getPreferredSize() {
@@ -206,7 +206,7 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
 }
 
 // class CloseableTabbedPaneGlassPane extends JPanel {
-//     private final Point pt = new Point(-100, -100);
+//     private final Point pt = new Point();
 //     private final JButton button = new JButton("x") {
 //         @Override public Dimension getPreferredSize() {
 //             return new Dimension(16, 16);

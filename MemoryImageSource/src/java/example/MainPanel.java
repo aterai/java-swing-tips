@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 }
 
 class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
-    private Point startPoint = new Point(-1, -1);
+    private Point startPoint = new Point();
     private final transient BufferedImage backImage;
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6, new Color(200, 150, 100, 50));
     private final Rectangle r = new Rectangle(320, 240);
@@ -143,7 +143,7 @@ final class TextureFactory {
 // class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
 //     private static final Color ERASER = new Color(0x0, true);
 //     private boolean isPen = true;
-//     private Point startPoint = new Point(-10, -10);
+//     private Point startPoint = new Point();
 //     private BufferedImage currentImage = null;
 //     private BufferedImage backImage = null;
 //     private TexturePaint texture = makeTexturePaint();
