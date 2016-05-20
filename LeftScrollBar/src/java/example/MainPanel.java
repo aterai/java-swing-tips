@@ -7,50 +7,30 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private final JLabel label       = new JLabel();
-    private final JScrollPane scroll = new JScrollPane(label);
-    private final JViewport vport    = scroll.getViewport();
-
-    public MainPanel() {
+    private MainPanel() {
         super(new BorderLayout());
-        label.setIcon(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))); //http://sozai-free.com/
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("CRW_3857_JFR.jpg"))) { //http://sozai-free.com/
+            private transient MouseAdapter listener;
+            @Override public void updateUI() {
+                removeMouseMotionListener(listener);
+                removeMouseListener(listener);
+                super.updateUI();
+                listener = new DragScrollListener();
+                addMouseMotionListener(listener);
+                addMouseListener(listener);
+            }
+        };
 
-        HandScrollListener hsl = new HandScrollListener();
-        vport.addMouseMotionListener(hsl);
-        vport.addMouseListener(hsl);
-
+        JScrollPane scroll = new JScrollPane(label);
         scroll.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(Box.createHorizontalStrut(scroll.getVerticalScrollBar().getPreferredSize().width), BorderLayout.WEST);
         panel.add(scroll.getHorizontalScrollBar());
+
         add(panel, BorderLayout.NORTH);
         add(scroll);
-        scroll.setPreferredSize(new Dimension(320, 240));
-    }
-    class HandScrollListener extends MouseAdapter {
-        private final Rectangle rect = new Rectangle();
-        private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-        private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-        private final Point startPt = new Point();
-        @Override public void mouseDragged(MouseEvent e) {
-            Rectangle vr = vport.getViewRect();
-            int w = vr.width;
-            int h = vr.height;
-            int x = e.getX();
-            int y = e.getY();
-            Point pt = SwingUtilities.convertPoint(vport, 0, 0, label);
-            rect.setRect(pt.x - x + startPt.x, pt.y - y + startPt.y, w, h);
-            label.scrollRectToVisible(rect);
-            startPt.setLocation(x, y);
-        }
-        @Override public void mousePressed(MouseEvent e) {
-            startPt.setLocation(e.getPoint());
-            label.setCursor(hndCursor);
-        }
-        @Override public void mouseReleased(MouseEvent e) {
-            label.setCursor(defCursor);
-            label.repaint();
-        }
+        setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
@@ -72,5 +52,36 @@ public final class MainPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+}
+
+class DragScrollListener extends MouseAdapter {
+    private final Cursor defCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+    private final Point pp = new Point();
+    @Override public void mouseDragged(MouseEvent e) {
+        Component c = e.getComponent();
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if (p instanceof JViewport) {
+            JViewport vport = (JViewport) p;
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+            Point vp = vport.getViewPosition();
+            vp.translate(pp.x - cp.x, pp.y - cp.y);
+            ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+            pp.setLocation(cp);
+        }
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        Component c = e.getComponent();
+        Container p = SwingUtilities.getUnwrappedParent(c);
+        if (p instanceof JViewport) {
+            c.setCursor(hndCursor);
+            JViewport vport = (JViewport) p;
+            Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+            pp.setLocation(cp);
+        }
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        e.getComponent().setCursor(defCursor);
     }
 }
