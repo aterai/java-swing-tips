@@ -49,81 +49,100 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class TabTitleEditListener extends MouseAdapter implements ChangeListener {
+class TabTitleEditListener extends MouseAdapter implements ChangeListener, DocumentListener {
     private final JTextField editor = new JTextField();
     private final JTabbedPane tabbedPane;
     private int editingIdx = -1;
     private int len = -1;
     private Dimension dim;
     private Component tabComponent;
-
-    protected TabTitleEditListener(final JTabbedPane tabbedPane) {
+    private final Action startEditing = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            editingIdx = tabbedPane.getSelectedIndex();
+            tabComponent = tabbedPane.getTabComponentAt(editingIdx);
+            tabbedPane.setTabComponentAt(editingIdx, editor);
+            editor.setVisible(true);
+            editor.setText(tabbedPane.getTitleAt(editingIdx));
+            editor.selectAll();
+            editor.requestFocusInWindow();
+            len = editor.getText().length();
+            dim = editor.getPreferredSize();
+            editor.setMinimumSize(dim);
+        }
+    };
+    private final Action renameTabTitle = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            String title = editor.getText().trim();
+            if (editingIdx >= 0 && !title.isEmpty()) {
+                tabbedPane.setTitleAt(editingIdx, title);
+            }
+            cancelEditing.actionPerformed(null);
+        }
+    };
+    private final Action cancelEditing = new AbstractAction() {
+        @Override public void actionPerformed(ActionEvent e) {
+            if (editingIdx >= 0) {
+                tabbedPane.setTabComponentAt(editingIdx, tabComponent);
+                editor.setVisible(false);
+                editingIdx = -1;
+                len = -1;
+                tabComponent = null;
+                editor.setPreferredSize(null);
+                tabbedPane.requestFocusInWindow();
+            }
+        }
+    };
+    protected TabTitleEditListener(JTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
         editor.setBorder(BorderFactory.createEmptyBorder());
         editor.addFocusListener(new FocusAdapter() {
             @Override public void focusLost(FocusEvent e) {
-                renameTabTitle();
+                renameTabTitle.actionPerformed(null);
             }
         });
-        editor.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    renameTabTitle();
-                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    cancelEditing();
-                } else {
-                    editor.setPreferredSize(editor.getText().length() > len ? null : dim);
-                    tabbedPane.revalidate();
-                }
-            }
-        });
+        InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+        ActionMap am = editor.getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+        am.put("cancel-editing", cancelEditing);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab-title");
+        am.put("rename-tab-title", renameTabTitle);
+        editor.getDocument().addDocumentListener(this);
+//         editor.addKeyListener(new KeyAdapter() {
+//             @Override public void keyPressed(KeyEvent e) {
+//                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//                     renameTabTitle();
+//                 } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+//                     cancelEditing();
+//                 } else {
+//                     editor.setPreferredSize(editor.getText().length() > len ? null : dim);
+//                     tabbedPane.revalidate();
+//                 }
+//             }
+//         });
         tabbedPane.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
-        tabbedPane.getActionMap().put("start-editing", new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
-                startEditing();
-            }
-        });
+        tabbedPane.getActionMap().put("start-editing", startEditing);
     }
     @Override public void stateChanged(ChangeEvent e) {
-        renameTabTitle();
+        renameTabTitle.actionPerformed(null);
     }
+    @Override public void insertUpdate(DocumentEvent e) {
+        updateTabSize();
+    }
+    @Override public void removeUpdate(DocumentEvent e) {
+        updateTabSize();
+    }
+    @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
     @Override public void mouseClicked(MouseEvent e) {
-        Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
-        if (rect.contains(e.getPoint()) && e.getClickCount() == 2) {
-            startEditing();
+        Rectangle r = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
+        if (r.contains(e.getPoint()) && e.getClickCount() == 2) {
+            startEditing.actionPerformed(null);
         } else {
-            renameTabTitle();
+            renameTabTitle.actionPerformed(null);
         }
     }
-    private void startEditing() {
-        editingIdx = tabbedPane.getSelectedIndex();
-        tabComponent = tabbedPane.getTabComponentAt(editingIdx);
-        tabbedPane.setTabComponentAt(editingIdx, editor);
-        editor.setVisible(true);
-        editor.setText(tabbedPane.getTitleAt(editingIdx));
-        editor.selectAll();
-        editor.requestFocusInWindow();
-        len = editor.getText().length();
-        dim = editor.getPreferredSize();
-        editor.setMinimumSize(dim);
-    }
-    private void cancelEditing() {
-        if (editingIdx >= 0) {
-            tabbedPane.setTabComponentAt(editingIdx, tabComponent);
-            editor.setVisible(false);
-            editingIdx = -1;
-            len = -1;
-            tabComponent = null;
-            editor.setPreferredSize(null);
-            tabbedPane.requestFocusInWindow();
-        }
-    }
-    private void renameTabTitle() {
-        String title = editor.getText().trim();
-        if (editingIdx >= 0 && !title.isEmpty()) {
-            tabbedPane.setTitleAt(editingIdx, title);
-        }
-        cancelEditing();
+    private void updateTabSize() {
+        editor.setPreferredSize(editor.getText().length() > len ? null : dim);
+        tabbedPane.revalidate();
     }
 }

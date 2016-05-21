@@ -55,13 +55,14 @@ public final class MainPanel extends JPanel {
 class EditableTabbedPane extends JTabbedPane {
     private final JComponent glassPane = new EditorGlassPane();
     private final JTextField editor = new JTextField();
-    private Rectangle rect;
     private final Action startEditing = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
             getRootPane().setGlassPane(glassPane);
-            rect = getUI().getTabBounds(EditableTabbedPane.this, getSelectedIndex());
+            Rectangle rect = getUI().getTabBounds(EditableTabbedPane.this, getSelectedIndex());
             Point p = SwingUtilities.convertPoint(EditableTabbedPane.this, rect.getLocation(), glassPane);
-            rect.setRect(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
+            //rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
+            rect.setLocation(p);
+            rect.grow(-2, -2);
             editor.setBounds(rect);
             editor.setText(getTitleAt(getSelectedIndex()));
             editor.selectAll();
@@ -80,10 +81,10 @@ class EditableTabbedPane extends JTabbedPane {
             if (!editor.getText().trim().isEmpty()) {
                 setTitleAt(getSelectedIndex(), editor.getText());
                 //java 1.6.0 ---->
-                //Component c = getTabComponentAt(getSelectedIndex());
-                //if (c instanceof JComponent) {
-                //    ((JComponent) c).revalidate();
-                //}
+                Component c = getTabComponentAt(getSelectedIndex());
+                if (c instanceof JComponent) {
+                    ((JComponent) c).revalidate();
+                }
                 //<----
             }
             glassPane.setVisible(false);
@@ -118,13 +119,12 @@ class EditableTabbedPane extends JTabbedPane {
             });
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent e) {
-                    if (Objects.isNull(rect) || rect.contains(e.getPoint())) {
-                        return;
+                    //if (Objects.nonNull(rect) && !rect.contains(e.getPoint())) {
+                    if (!editor.getBounds().contains(e.getPoint())) {
+                        renameTab.actionPerformed(null);
                     }
-                    renameTab.actionPerformed(null);
                 }
             });
-            requestFocusInWindow();
         }
         @Override public void setVisible(boolean flag) {
             super.setVisible(flag);

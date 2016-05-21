@@ -87,8 +87,6 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
     @Override public void updateUI() {
         super.updateUI();
         setHorizontalAlignment(SwingConstants.CENTER);
-        //setOpaque(true);
-        //setBorder(BorderFactory.createEmptyBorder());
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setIcon(((IconItem) value).large);
@@ -98,7 +96,13 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 
 class IconTable extends JTable {
     private static final int XOFF = 4;
-    private final JPanel panel = new TableGlassPane() {
+    private final JList<IconItem> editor;
+    private final JComponent glassPane = new JComponent() {
+        @Override public void setVisible(boolean flag) {
+            super.setVisible(flag);
+            setFocusTraversalPolicyProvider(flag);
+            setFocusCycleRoot(flag);
+        }
         @Override protected void paintComponent(Graphics g) {
             g.setColor(new Color(0x64FFFFFF, true));
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -107,15 +111,14 @@ class IconTable extends JTable {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
             g2.setPaint(Color.BLACK);
+            Rectangle r = editor.getBounds();
             for (int i = 0; i < XOFF; i++) {
-                g2.fillRoundRect(rect.x - i, rect.y + XOFF, rect.width + i + i, rect.height - XOFF + i, 5, 5);
+                g2.fillRoundRect(r.x - i, r.y + XOFF, r.width + i + i, r.height - XOFF + i, 5, 5);
             }
             g2.dispose();
             g.drawImage(bufimg, 0, 0, null);
         }
     };
-    private final EditorFromList editor;
-    private Rectangle rect;
 
     protected IconTable(TableModel model, ListModel<IconItem> list) {
         super(model);
@@ -128,35 +131,45 @@ class IconTable extends JTable {
             }
         });
 
-        editor = new EditorFromList(list);
-        editor.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    cancelEditing();
-                }
+        editor = new EditorFromList<>(list);
+        editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+        editor.getActionMap().put("cancel-editing", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                cancelEditing();
             }
         });
+//         editor.addKeyListener(new KeyAdapter() {
+//             @Override public void keyPressed(KeyEvent e) {
+//                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+//                     cancelEditing();
+//                 }
+//             }
+//         });
         editor.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                setEditorSelectedIconAt(e.getPoint());
+                Point p = e.getPoint();
+                IconItem item = editor.getModel().getElementAt(editor.locationToIndex(p));
+                setValueAt(item, getSelectedRow(), getSelectedColumn());
+                cancelEditing();
             }
         });
 
-        panel.addMouseListener(new MouseAdapter() {
+        glassPane.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                if (Objects.isNull(rect) || rect.contains(e.getPoint())) {
-                    return;
-                }
-                setEditorSelectedIconAt(e.getPoint());
+                //Point pt = e.getPoint();
+                //if (!editor.getBounds().contains(pt)) {
+                //    cancelEditing();
+                //}
+                cancelEditing();
             }
         });
-        panel.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+        glassPane.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
             @Override public boolean accept(Component c) {
                 return Objects.equals(c, editor);
             }
         });
-        panel.add(editor);
-        panel.setVisible(false);
+        glassPane.add(editor);
+        glassPane.setVisible(false);
     }
     private void initCellSize(int size) {
         setRowHeight(size);
@@ -172,38 +185,34 @@ class IconTable extends JTable {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
     public void startEditing() {
-        //JFrame f = (JFrame) getTopLevelAncestor();
-        //f.setGlassPane(panel);
-        getRootPane().setGlassPane(panel);
-        Dimension dim = editor.getPreferredSize();
-        rect = getCellRect(getSelectedRow(), getSelectedColumn(), true);
-        int iv = (dim.width - rect.width) / 2;
-        Point p = SwingUtilities.convertPoint(this, rect.getLocation(), panel);
-        rect.setRect(p.x - iv, p.y - iv, dim.width, dim.height);
-        editor.setBounds(rect);
-        editor.setSelectedValue(getValueAt(getSelectedRow(), getSelectedColumn()), true);
-        panel.setVisible(true);
+        getRootPane().setGlassPane(glassPane);
+
+        Dimension d = editor.getPreferredSize();
+        editor.setSize(d);
+
+        int sr = getSelectedRow();
+        int sc = getSelectedColumn();
+        Rectangle r = getCellRect(sr, sc, true);
+        Point p = SwingUtilities.convertPoint(this, r.getLocation(), glassPane);
+        p.translate((r.width - d.width) / 2, (r.height - d.height) / 2);
+        editor.setLocation(p);
+
+        glassPane.setVisible(true);
+        editor.setSelectedValue(getValueAt(sr, sc), true);
         editor.requestFocusInWindow();
     }
     private void cancelEditing() {
-        panel.setVisible(false);
-    }
-    private void setEditorSelectedIconAt(Point p) {
-        Object o = editor.getModel().getElementAt(editor.locationToIndex(p));
-        if (Objects.nonNull(o)) {
-            setValueAt(o, getSelectedRow(), getSelectedColumn());
-        }
-        panel.setVisible(false);
+        glassPane.setVisible(false);
     }
 }
 
-class EditorFromList extends JList<IconItem> {
+class EditorFromList<E extends IconItem> extends JList<E> {
     private static final int INS = 2;
     private transient RollOverListener handler;
     private int rollOverRowIndex = -1;
     private final Dimension dim;
 
-    protected EditorFromList(ListModel<IconItem> model) {
+    protected EditorFromList(ListModel<E> model) {
         super(model);
         ImageIcon icon = model.getElementAt(0).small;
         int iw = INS + icon.getIconWidth();
@@ -259,17 +268,5 @@ class EditorFromList extends JList<IconItem> {
                 repaint();
             }
         }
-    }
-}
-
-class TableGlassPane extends JPanel {
-    protected TableGlassPane() {
-        super((LayoutManager) null);
-        setOpaque(false);
-    }
-    @Override public void setVisible(boolean flag) {
-        super.setVisible(flag);
-        setFocusTraversalPolicyProvider(flag);
-        setFocusCycleRoot(flag);
     }
 }
