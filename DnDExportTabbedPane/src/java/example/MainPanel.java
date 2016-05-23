@@ -284,15 +284,15 @@ class DnDTabbedPane extends JTabbedPane {
         DropLocation loc = getDropLocation();
         int index = getDropLocationIndex(loc);
         if (index < 0) {
-            lineRect.setRect(0, 0, 0, 0);
+            lineRect.setBounds(0, 0, 0, 0);
             return null;
         }
         int a = index == 0 ? 0 : 1;
         Rectangle r = getBoundsAt(a * (index - 1));
         if (getTabPlacement() == TOP || getTabPlacement() == BOTTOM) {
-            lineRect.setRect(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
+            lineRect.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
         } else {
-            lineRect.setRect(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
+            lineRect.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
         }
         return lineRect;
     }
@@ -364,7 +364,7 @@ class DnDTabbedPane extends JTabbedPane {
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-                lineRect.setRect(0, 0, 0, 0);
+                lineRect.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
                 src.setDropLocation(new DropLocation(tabPt, -1), null, true);
                 startPt = null;

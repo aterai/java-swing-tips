@@ -62,8 +62,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     }
     protected DnDList(ListModel<E> model) {
         super(model);
-        DragSource dragSource = new DragSource();
-        dragSource.createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_MOVE, (DragGestureListener) this);
+        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_MOVE, (DragGestureListener) this);
     }
 
     // Interface: DragGestureListener

@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
 //                 TransferHandler th = src.getTransferHandler();
 //                 index = src.columnAtPoint(tabPt);
 //                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-//                 //lineRect.setRect(0, 0, 0, 0);
+//                 //lineRect.setBounds(0, 0, 0, 0);
 //                 //src.getRootPane().getGlassPane().setVisible(true);
 //                 //src.setDropLocation(new DropLocation(tabPt, -1), null, true);
 //                 startPt = null;

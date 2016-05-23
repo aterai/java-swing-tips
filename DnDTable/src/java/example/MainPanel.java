@@ -114,7 +114,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
     private static final String NAME = "test";
     private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
     private static final Color LINE_COLOR = new Color(255, 100, 100);
-    private final Rectangle2D targetLine = new Rectangle2D.Float();
+    private final Rectangle targetLine = new Rectangle();
     private int draggedIndex = -1;
     private int targetIndex  = -1;
 
@@ -122,8 +122,7 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         super(model);
         //DropTarget dropTarget =
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
-        //DragSource dragSource = new DragSource();
-        new DragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
+        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer((Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -135,23 +134,25 @@ class DnDTable extends JTable implements DragGestureListener, Transferable {
         }
     }
     private void initTargetLine(Point p) {
-        Rectangle2D testArea = new Rectangle2D.Double();
+        Rectangle rect = new Rectangle();
         int cellHeight = getRowHeight();
-        int lineWidht  = getWidth();
+        int lineWidth  = getWidth();
         int lineHeight = 2;
         int modelSize  = getRowCount();
+        rect.setSize(lineWidth, cellHeight);
+        targetLine.setSize(lineWidth, lineHeight);
         targetIndex = -1;
         for (int i = 0; i < modelSize; i++) {
-            testArea.setRect(0, cellHeight * i - cellHeight / 2, lineWidht, cellHeight);
-            if (testArea.contains(p)) {
+            rect.setLocation(0, cellHeight * i - cellHeight / 2);
+            if (rect.contains(p)) {
                 targetIndex = i;
-                targetLine.setRect(0, i * cellHeight, lineWidht, lineHeight);
+                targetLine.setLocation(0, i * cellHeight);
                 break;
             }
         }
         if (targetIndex < 0) {
             targetIndex = modelSize;
-            targetLine.setRect(0, targetIndex * cellHeight - lineHeight, lineWidht, lineHeight);
+            targetLine.setLocation(0, targetIndex * cellHeight - lineHeight);
         }
     }
 

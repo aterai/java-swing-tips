@@ -580,8 +580,8 @@ class TabTransferHandler extends TransferHandler {
 }
 
 class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
-    private static final int LINEWIDTH = 3;
-    private final Rectangle lineRect = new Rectangle();
+    private static final int LINE_WIDTH = 3;
+    private static final Rectangle LINE_RECT = new Rectangle();
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
@@ -593,28 +593,20 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
                 g2.setPaint(Color.RED);
                 initLineRect(tabbedPane, loc);
-                g2.fill(lineRect);
+                g2.fill(LINE_RECT);
                 g2.dispose();
             }
         }
     }
-    private void initLineRect(DnDTabbedPane tabbedPane, DnDTabbedPane.DropLocation loc) {
+    private static void initLineRect(JTabbedPane tabbedPane, DnDTabbedPane.DropLocation loc) {
         int index = loc.getIndex();
         int a = index == 0 ? 0 : 1;
         Rectangle r = tabbedPane.getBoundsAt(a * (index - 1));
-        Rectangle rect = new Rectangle();
         if (tabbedPane.getTabPlacement() == JTabbedPane.TOP || tabbedPane.getTabPlacement() == JTabbedPane.BOTTOM) {
-            rect.x = r.x - LINEWIDTH / 2 + r.width * a;
-            rect.y = r.y;
-            rect.width  = LINEWIDTH;
-            rect.height = r.height;
+            LINE_RECT.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
         } else {
-            rect.x = r.x;
-            rect.y = r.y - LINEWIDTH / 2 + r.height * a;
-            rect.width  = r.width;
-            rect.height = LINEWIDTH;
+            LINE_RECT.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
         }
-        lineRect.setRect(rect);
     }
 }
 
