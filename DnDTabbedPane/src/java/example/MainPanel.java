@@ -301,9 +301,7 @@ class TabDragSourceListener implements DragSourceListener {
     }
     @Override public void dragDropEnd(DragSourceDropEvent e) {
         //dragTabIndex = -1;
-        //glassPane.setTargetRect(0, 0, 0, 0);
         //glassPane.setVisible(false);
-        //glassPane.setImage(null);
     }
     @Override public void dropActionChanged(DragSourceDragEvent e) { /* not needed */ }
 }
@@ -354,6 +352,7 @@ class TabDropTargetListener implements DropTargetListener {
     @Override public void dragExit(DropTargetEvent e) {
         Component c = e.getDropTargetContext().getComponent();
         System.out.println("DropTargetListener#dragExit: " + c.getName());
+        getGhostGlassPane(c).ifPresent(glassPane -> glassPane.setVisible(false));
     }
     @Override public void dropActionChanged(DropTargetDragEvent e) { /* not needed */ }
     @Override public void dragOver(DropTargetDragEvent e) {
@@ -389,10 +388,8 @@ class TabDropTargetListener implements DropTargetListener {
                 e.dropComplete(false);
             }
             tabbedPane.dragTabIndex = -1;
-            glassPane.setTargetRect(0, 0, 0, 0);
             glassPane.setVisible(false);
-            glassPane.setImage(null);
-            tabbedPane.repaint();
+            //tabbedPane.repaint();
         });
     }
 }
@@ -422,6 +419,13 @@ class GhostGlassPane extends JPanel {
     public void setPoint(Point location) {
         this.location = location;
     }
+    @Override public void setVisible(boolean v) {
+        super.setVisible(v);
+        if (!v) {
+            setTargetRect(0, 0, 0, 0);
+            setImage(null);
+        }
+    }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(ALPHA);
@@ -435,10 +439,8 @@ class GhostGlassPane extends JPanel {
             double yy = location.getY() - img.getHeight(this) / 2d;
             g2.drawImage(img, (int) xx, (int) yy, null);
         });
-        if (tabbedPane.dragTabIndex >= 0) {
-            g2.setPaint(lineColor);
-            g2.fill(lineRect);
-        }
+        g2.setPaint(lineColor);
+        g2.fill(lineRect);
         g2.dispose();
     }
 }
