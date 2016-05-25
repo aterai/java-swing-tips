@@ -95,7 +95,7 @@ class DragHereIcon implements Icon {
         //g2.drawLine(0 * v, 3 * v, 4 * v, 3 * v);
 
         g2.setPaint(LINE_COLOR);
-        Rectangle2D b = ARROW.getBounds();
+        Rectangle2D b = ARROW.getBounds2D();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(ICON_SIZE / 2d - b.getCenterX(), ICON_SIZE / 2d - b.getCenterY());
         g2.fill(toCenterAT.createTransformedShape(ARROW));
         g2.dispose();

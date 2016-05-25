@@ -107,7 +107,7 @@ class SymbolIcon implements Icon {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.translate(x, y);
         g2.setPaint(c.isEnabled() ? Color.BLACK : Color.GRAY);
-        Rectangle2D b = symbol.getBounds();
+        Rectangle2D b = symbol.getBounds2D();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(getIconWidth() / 2d - b.getCenterX(), getIconHeight() / 2d - b.getCenterY());
         g2.fill(toCenterAT.createTransformedShape(symbol));
         g2.dispose();

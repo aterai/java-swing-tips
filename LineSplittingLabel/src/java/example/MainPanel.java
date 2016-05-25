@@ -96,13 +96,13 @@ class LineSplittingLabel extends JComponent {
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Rectangle2D b = shape.getBounds();
+        Rectangle2D b = shape.getBounds2D();
         AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - b.getCenterX(), h / 2d - b.getCenterY());
 
         Shape s = toCenterAT.createTransformedShape(shape);
         g2.setPaint(Color.BLACK);
         g2.fill(s);
-        Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2);
+        Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2d);
         g2.setClip(toCenterAT.createTransformedShape(clip));
         g2.setPaint(Color.RED);
         g2.fill(s);
