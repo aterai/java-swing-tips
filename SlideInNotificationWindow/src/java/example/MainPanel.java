@@ -117,12 +117,12 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
                     a = AnimationUtil.easeInOut(count++ / (double) d.height);
                     break;
                 }
-                int visibleHeidht = (int) (.5 + a * d.height);
-                if (visibleHeidht >= d.height) {
-                    visibleHeidht = d.height;
+                int visibleHeight = (int) (.5 + a * d.height);
+                if (visibleHeight >= d.height) {
+                    visibleHeight = d.height;
                     animator.stop();
                 }
-                dialog.setLocation(new Point(dx, dy - visibleHeidht));
+                dialog.setLocation(new Point(dx, dy - visibleHeight));
             }
         };
         animator.addActionListener(listener);

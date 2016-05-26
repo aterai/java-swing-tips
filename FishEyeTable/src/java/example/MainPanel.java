@@ -119,7 +119,7 @@ class FishEyeTable extends JTable {
             if (prevRow == row) {
                 return;
             }
-            initRowHeigth(prevHeight, row);
+            initRowHeight(prevHeight, row);
             prevRow = row;
         }
         @Override public void mouseDragged(MouseEvent e) {
@@ -127,7 +127,7 @@ class FishEyeTable extends JTable {
             if (prevRow == row) {
                 return;
             }
-            initRowHeigth(prevHeight, row);
+            initRowHeight(prevHeight, row);
             prevRow = row;
         }
         @Override public void mousePressed(MouseEvent e) {
@@ -141,7 +141,7 @@ class FishEyeTable extends JTable {
             if (prevRow == row) {
                 return;
             }
-            initRowHeigth(prevHeight, row);
+            initRowHeight(prevHeight, row);
             prevRow = row;
         }
     }
@@ -156,7 +156,7 @@ class FishEyeTable extends JTable {
         if (h == handler.prevHeight) {
             return;
         }
-        initRowHeigth(h, getSelectedRow());
+        initRowHeight(h, getSelectedRow());
         handler.prevHeight = h;
     }
 
@@ -197,7 +197,7 @@ class FishEyeTable extends JTable {
         return fishEyeRowList.size();
     }
 
-    private void initRowHeigth(int height, int ccRow) {
+    private void initRowHeight(int height, int ccRow) {
         int rd2      = (fishEyeRowList.size() - 1) / 2;
         int rowCount = getModel().getRowCount();
         int viewRc   = getViewableColoredRowCount(ccRow);
