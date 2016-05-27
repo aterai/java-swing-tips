@@ -83,16 +83,16 @@ class RoundedCornerBorder extends AbstractBorder {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int r = height - 1;
-        RoundRectangle2D round = new RoundRectangle2D.Double(x, y, width - 1, height - 1, r, r);
+        Shape border = new RoundRectangle2D.Double(x, y, width - 1, height - 1, r, r);
         Container parent = c.getParent();
         if (Objects.nonNull(parent)) {
             g2.setPaint(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
-            corner.subtract(new Area(round));
+            corner.subtract(new Area(border));
             g2.fill(corner);
         }
         g2.setPaint(Color.GRAY);
-        g2.draw(round);
+        g2.draw(border);
         g2.dispose();
     }
     @Override public Insets getBorderInsets(Component c) {

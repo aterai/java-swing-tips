@@ -109,12 +109,7 @@ public final class MainPanel extends JPanel {
             Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            RoundRectangle2D r = new RoundRectangle2D.Double(
-                0, h - OVERPAINT,
-                w - STROKE_SIZE,
-                h - STROKE_SIZE,
-                ARC, ARC);
-
+            Shape r = new RoundRectangle2D.Double(0, h - OVERPAINT, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
             g2.setPaint(Color.CYAN);
             g2.fill(r);
             g2.setColor(Color.RED);
@@ -129,12 +124,7 @@ public final class MainPanel extends JPanel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.translate(0, -OVERPAINT);
 
-            RoundRectangle2D r = new RoundRectangle2D.Double(
-                0, 0,
-                w - STROKE_SIZE,
-                h - STROKE_SIZE + OVERPAINT,
-                ARC, ARC);
-
+            Shape r = new RoundRectangle2D.Double(0, 0, w - STROKE_SIZE, h - STROKE_SIZE + OVERPAINT, ARC, ARC);
             g2.setPaint(Color.WHITE);
             g2.fill(r);
             g2.setColor(Color.ORANGE);
