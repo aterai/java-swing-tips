@@ -90,16 +90,16 @@ class RandomDissolve extends JComponent implements ActionListener {
             return false;
         }
     }
-    private BufferedImage copyImage(final BufferedImage image) {
+    private static BufferedImage copyImage(BufferedImage image) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = result.createGraphics();
-        g.drawRenderedImage(image, null);
-        g.dispose();
+        Graphics2D g2 = result.createGraphics();
+        g2.drawRenderedImage(image, null);
+        g2.dispose();
         return result;
     }
-    private int[] getData(BufferedImage image) {
+    private static int[] getData(BufferedImage image) {
         WritableRaster wr = image.getRaster();
         DataBufferInt dbi = (DataBufferInt) wr.getDataBuffer();
         return dbi.getData();

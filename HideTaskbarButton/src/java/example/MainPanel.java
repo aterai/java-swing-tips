@@ -71,9 +71,9 @@ public final class MainPanel extends JPanel {
     }
     private static BufferedImage makeBufferedImage(Icon icon, int w, int h) {
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = image.createGraphics();
-        icon.paintIcon(null, g, (w - icon.getIconWidth()) / 2, (h - icon.getIconWidth()) / 2);
-        g.dispose();
+        Graphics2D g2 = image.createGraphics();
+        icon.paintIcon(null, g2, (w - icon.getIconWidth()) / 2, (h - icon.getIconWidth()) / 2);
+        g2.dispose();
         return image;
     }
     public static void main(String... args) {
