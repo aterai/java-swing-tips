@@ -26,28 +26,14 @@ public final class MainPanel extends JPanel {
         jtp.setEditable(false);
         stopButton.setEnabled(false);
 
-        timer = new Timer(200, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                append(df.format(new Date()));
-            }
-        });
-        startButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                timerStart();
-            }
-        });
-        stopButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                timerStop();
-            }
-        });
-        clearButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                jtp.setText("");
-                if (!timer.isRunning()) {
-                    startButton.setEnabled(true);
-                    stopButton.setEnabled(false);
-                }
+        timer = new Timer(200, e -> append(df.format(new Date())));
+        startButton.addActionListener(e -> timerStart());
+        stopButton.addActionListener(e -> timerStop());
+        clearButton.addActionListener(e -> {
+            jtp.setText("");
+            if (!timer.isRunning()) {
+                startButton.setEnabled(true);
+                stopButton.setEnabled(false);
             }
         });
         Box box = Box.createHorizontalBox();

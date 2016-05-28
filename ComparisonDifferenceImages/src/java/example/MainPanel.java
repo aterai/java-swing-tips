@@ -14,25 +14,32 @@ public final class MainPanel extends JPanel {
     private final JRadioButton ra = new JRadioButton("a.png");
     private final JRadioButton rb = new JRadioButton("b.png");
     private final JRadioButton rr = new JRadioButton("diff");
-    private final transient MemoryImageSource source;
     private final ImageIcon iia = new ImageIcon(getClass().getResource("a.png"));
     private final ImageIcon iib = new ImageIcon(getClass().getResource("b.png"));
-//     private final transient BufferedImage ia = makeBI("a.png");
-//     private final transient BufferedImage ib = makeBI("b.png");
     private final JLabel label = new JLabel(iia);
 
     public MainPanel() {
         super(new BorderLayout());
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JComponent c = (JComponent) e.getSource();
-                if (ra.equals(c)) {
-                    label.setIcon(iia);
-                } else if (rb.equals(c)) {
-                    label.setIcon(iib);
-                } else {
-                    label.setIcon(new ImageIcon(createImage(source)));
-                }
+
+        int w = iia.getIconWidth();
+        int h = iia.getIconHeight();
+        int[] pixelsA = getData(iia, w, h);
+        int[] pixelsB = getData(iib, w, h);
+        MemoryImageSource source = new MemoryImageSource(w, h, pixelsA, 0, w);
+        for (int i = 0; i < pixelsA.length; i++) {
+            if (pixelsA[i] == pixelsB[i]) {
+                pixelsA[i] = pixelsA[i] & 0x44FFFFFF;
+            }
+        }
+
+        ActionListener al = e -> {
+            JComponent c = (JComponent) e.getSource();
+            if (ra.equals(c)) {
+                label.setIcon(iia);
+            } else if (rb.equals(c)) {
+                label.setIcon(iib);
+            } else {
+                label.setIcon(new ImageIcon(createImage(source)));
             }
         };
         JPanel p = new JPanel();
@@ -45,18 +52,6 @@ public final class MainPanel extends JPanel {
         ra.setSelected(true);
         add(label);
         add(p, BorderLayout.SOUTH);
-
-        int w = iia.getIconWidth();
-        int h = iia.getIconHeight();
-        int[] pixelsA = getData(iia, w, h);
-        int[] pixelsB = getData(iib, w, h);
-        source = new MemoryImageSource(w, h, pixelsA, 0, w);
-        for (int i = 0; i < pixelsA.length; i++) {
-            if (pixelsA[i] == pixelsB[i]) {
-                pixelsA[i] = pixelsA[i] & 0x44FFFFFF;
-            }
-        }
-
         setPreferredSize(new Dimension(320, 240));
     }
 //     private BufferedImage makeBI(String str) {

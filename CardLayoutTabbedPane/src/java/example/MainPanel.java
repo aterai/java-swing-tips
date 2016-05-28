@@ -100,20 +100,18 @@ class CardLayoutTabbedPane extends JPanel {
                 return new Dimension(12, 12);
             }
         };
-        close.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //@See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
-                System.out.println("dummy action: close button");
-                //tabPanel.remove(tab);
-                //contentsPanel.remove(comp);
-                //if (tabPanel.getComponentCount() > 1) {
-                //    tabPanel.revalidate();
-                //    TabButton b = (TabButton) tabPanel.getComponent(0);
-                //    b.setSelected(true);
-                //    cardLayout.first(contentsPanel);
-                //}
-                //tabPanel.revalidate();
-            }
+        close.addActionListener(e -> {
+            //@See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
+            System.out.println("dummy action: close button");
+            //tabPanel.remove(tab);
+            //contentsPanel.remove(comp);
+            //if (tabPanel.getComponentCount() > 1) {
+            //    tabPanel.revalidate();
+            //    TabButton b = (TabButton) tabPanel.getComponent(0);
+            //    b.setSelected(true);
+            //    cardLayout.first(contentsPanel);
+            //}
+            //tabPanel.revalidate();
         });
         close.setBorder(BorderFactory.createEmptyBorder());
         close.setFocusPainted(false);
