@@ -64,17 +64,9 @@ public final class MainPanel extends JPanel {
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("new");
-        menuItem.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                createFrame();
-            }
-        });
+        menuItem.addActionListener(e -> createFrame(null));
         menu.add(menuItem);
         return menuBar;
-    }
-
-    private JInternalFrame createFrame() {
-        return createFrame(null);
     }
 
     private static JInternalFrame createFrame(JComponent c) {
@@ -153,9 +145,10 @@ class CentredBackgroundBorder implements Border {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        int cx = (width  - image.getWidth())  / 2;
+        int cy = (height - image.getHeight()) / 2;
         Graphics2D g2 = (Graphics2D) g.create();
-        int cx = x + (width - image.getWidth()) / 2;
-        int cy = y + (height - image.getHeight()) / 2;
+        g2.translate(x, y);
         g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
         g2.dispose();
     }

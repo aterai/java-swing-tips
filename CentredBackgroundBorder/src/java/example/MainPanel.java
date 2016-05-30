@@ -79,17 +79,17 @@ public final class MainPanel extends JPanel {
     }
 }
 
-// How can I use TextArea with Background Picture ?
-// https://community.oracle.com/thread/1395763
+// https://community.oracle.com/thread/1395763 How can I use TextArea with Background Picture ?
 class CentredBackgroundBorder implements Border {
     private final BufferedImage image;
     protected CentredBackgroundBorder(BufferedImage image) {
         this.image = image;
     }
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        int cx = x + (width  - image.getWidth())  / 2;
-        int cy = y + (height - image.getHeight()) / 2;
+        int cx = (width  - image.getWidth())  / 2;
+        int cy = (height - image.getHeight()) / 2;
         Graphics2D g2 = (Graphics2D) g.create();
+        g2.translate(x, y);
         g2.drawRenderedImage(image, AffineTransform.getTranslateInstance(cx, cy));
         g2.dispose();
     }
