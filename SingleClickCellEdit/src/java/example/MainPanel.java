@@ -42,22 +42,20 @@ public final class MainPanel extends JPanel {
 //         col.setMaxWidth(50);
 //         col.setResizable(false);
 
-        final DefaultTableCellRenderer defalutRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(Object.class);
-        final UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
-        final DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
-        modelCheck.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (modelCheck.isSelected()) {
-                    table.setDefaultRenderer(Object.class, underlineRenderer);
-                    table.addMouseListener(underlineRenderer);
-                    table.addMouseMotionListener(underlineRenderer);
-                    ce.setClickCountToStart(1);
-                } else {
-                    table.setDefaultRenderer(Object.class, defalutRenderer);
-                    table.removeMouseListener(underlineRenderer);
-                    table.removeMouseMotionListener(underlineRenderer);
-                    ce.setClickCountToStart(2);
-                }
+        TableCellRenderer defaultRenderer = (DefaultTableCellRenderer) table.getDefaultRenderer(Object.class);
+        UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
+        DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
+        modelCheck.addActionListener(e -> {
+            if (modelCheck.isSelected()) {
+                table.setDefaultRenderer(Object.class, underlineRenderer);
+                table.addMouseListener(underlineRenderer);
+                table.addMouseMotionListener(underlineRenderer);
+                ce.setClickCountToStart(1);
+            } else {
+                table.setDefaultRenderer(Object.class, defaultRenderer);
+                table.removeMouseListener(underlineRenderer);
+                table.removeMouseMotionListener(underlineRenderer);
+                ce.setClickCountToStart(2);
             }
         });
         JScrollPane scrollPane = new JScrollPane(table);

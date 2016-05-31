@@ -22,9 +22,9 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         Painter<JComponent> painter = new Painter<JComponent>() {
             @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
                 g.setColor(new Color(100, 250, 120, 50));
-                g.fillRect(0, 0, w - 1, h - 1);
+                g.fillRect(0, 0, w, h);
                 g.setColor(new Color(100, 250, 120, 150));
-                g.fillRect(3, h / 2, w - 5, h / 2 - 2);
+                g.fillRect(3, h / 2, w - 6, h / 2 - 2);
             }
         };
         d.put("ProgressBar[Enabled].foregroundPainter", painter);

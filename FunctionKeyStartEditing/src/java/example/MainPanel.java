@@ -71,11 +71,11 @@ public final class MainPanel extends JPanel {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "beep");
 
 //         for (int ks: Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,
-//                                             KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8,
-//                                             KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12)) {
+//                                    KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8,
+//                                    KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12)) {
 //             InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //             if (im.get(KeyStroke.getKeyStroke(ks, 0)) == null) {
-//                 im.put(KeyStroke.getKeyStroke(ks, 0),            "none");
+//                 im.put(KeyStroke.getKeyStroke(ks, 0), "none");
 //             }
 //             im.put(KeyStroke.getKeyStroke(ks, InputEvent.CTRL_DOWN_MASK),  "none");
 //             im.put(KeyStroke.getKeyStroke(ks, InputEvent.SHIFT_DOWN_MASK), "none");

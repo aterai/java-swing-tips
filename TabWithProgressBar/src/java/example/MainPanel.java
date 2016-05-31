@@ -15,15 +15,28 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
+        Action act = new AbstractAction("Add") {
+            private int count;
+            @Override public void actionPerformed(ActionEvent e) {
+                JComponent c = count % 2 == 0 ? new JTree() : new JLabel("Tab" + count);
+                tab.addTab("Title" + count, c);
+                tab.setSelectedIndex(tab.getTabCount() - 1);
+                count++;
+            }
+        };
         JPopupMenu popup = new JPopupMenu();
-        popup.add(new NewTabAction("Add"));
+        popup.add(act);
         popup.addSeparator();
-        popup.add(new CloseAllAction("Close All"));
+        popup.add(new AbstractAction("Close All") {
+            @Override public void actionPerformed(ActionEvent e) {
+                tab.removeAll();
+            }
+        });
         tab.setComponentPopupMenu(popup);
 
         tab.addTab("PopupMenu+addTab", new JScrollPane(new JTree()));
         add(tab);
-        add(new JButton(new NewTabAction("Add")), BorderLayout.SOUTH);
+        add(new JButton(act), BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     class NewTabAction extends AbstractAction {

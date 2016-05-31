@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
                 getActionMap().put(ENTER_PRESSED, null);
                 super.updateUI();
                 final JComboBox<String> cb = this;
-                final Action defalutEnterPressedAction = getActionMap().get(ENTER_PRESSED);
+                final Action defaultEnterPressedAction = getActionMap().get(ENTER_PRESSED);
                 getActionMap().put(ENTER_PRESSED, new AbstractAction() {
                     @Override public void actionPerformed(ActionEvent e) {
                         boolean isPopupVisible = isPopupVisible();
@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
                             setSelectedIndex(0);
                             setPopupVisible(isPopupVisible);
                         } else {
-                            defalutEnterPressedAction.actionPerformed(e);
+                            defaultEnterPressedAction.actionPerformed(e);
                         }
                     }
                 });

@@ -70,8 +70,8 @@ public final class MainPanel extends JPanel {
 //     private String saveButtonText = null;
 //     private String openButtonText = null;
 //     private String cancelButtonText = null;
-//     private void initDefaultButtonText(boolean defalut) {
-//         if (defalut) {
+//     private void initDefaultButtonText(boolean default) {
+//         if (default) {
 //             if (saveButtonText == null) {
 //                 Locale l = fc.getLocale();
 //                 saveButtonText   = UIManager.getString("FileChooser.saveButtonText", l);

@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
         key = DefaultEditorKit.deleteNextCharAction; //"delete-next";
         am.put(key, new SilentDeleteTextAction(key, am.get(key)));
 
-        add(makeTitlePanel(new JTextField(), "Defalut"));
+        add(makeTitlePanel(new JTextField(), "Default"));
         add(makeTitlePanel(tf, "Override delete-previous, delete-next beep"));
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setPreferredSize(new Dimension(320, 240));

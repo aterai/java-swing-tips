@@ -76,7 +76,8 @@ public final class MainPanel extends JPanel {
 //         AbstractButton b = null;
 //         for (Component c: parent.getComponents()) {
 //             if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
-//                 b = (AbstractButton) c; break;
+//                 b = (AbstractButton) c;
+//                 break;
 //             } else {
 //                 if (Objects.nonNull(b = getDetailsViewButton((Container) c, icon))) {
 //                     break;
