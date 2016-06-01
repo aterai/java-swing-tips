@@ -132,18 +132,16 @@ public final class MainPanel extends JPanel {
                     b.setPreferredSize(null);
                 }
                 super.updateUI();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        int maxHeight = 0;
-                        for (JButton b: list) {
-                            maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
-                        }
-                        Dimension d = new Dimension(buttonWidth, maxHeight);
-                        for (JButton b: list) {
-                            b.setPreferredSize(d);
-                        }
-                        revalidate();
+                EventQueue.invokeLater(() -> {
+                    int maxHeight = 0;
+                    for (JButton b: list) {
+                        maxHeight = Math.max(maxHeight, b.getPreferredSize().height);
                     }
+                    Dimension d = new Dimension(buttonWidth, maxHeight);
+                    for (JButton b: list) {
+                        b.setPreferredSize(d);
+                    }
+                    revalidate();
                 });
             }
         };

@@ -145,11 +145,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
         //setFont(header.getFont());
         setBorder(BorderFactory.createEmptyBorder());
         setContentAreaFilled(false);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                SwingUtilities.updateComponentTreeUI(pop);
-            }
-        });
+        EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(pop));
     }
 
 //     JButton button = new JButton(new AbstractAction() {

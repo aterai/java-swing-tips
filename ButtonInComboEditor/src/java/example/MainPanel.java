@@ -114,12 +114,10 @@ class URLItemComboBox extends JComboBox<URLItem> {
         updateFavicon(label);
     }
     private void updateFavicon(final JLabel label) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Object o = getSelectedItem();
-                URLItem i = o instanceof URLItem ? (URLItem) o : getURLItemFromModel(o.toString());
-                label.setIcon(i.favicon);
-            }
+        EventQueue.invokeLater(() -> {
+            Object o = getSelectedItem();
+            URLItem i = o instanceof URLItem ? (URLItem) o : getURLItemFromModel(o.toString());
+            label.setIcon(i.favicon);
         });
     }
     private static JButton makeRssButton(ImageIcon rss) {
@@ -140,11 +138,9 @@ class URLItemComboBox extends JComboBox<URLItem> {
         JLabel label = new JLabel();
         label.addMouseListener(new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        field.requestFocusInWindow();
-                        field.selectAll();
-                    }
+                EventQueue.invokeLater(() -> {
+                    field.requestFocusInWindow();
+                    field.selectAll();
                 });
             }
         });
