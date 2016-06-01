@@ -4,10 +4,8 @@
   <!--property file="build.properties" /-->
   <property environment="env" />
   <property name="config.dir" value="config" />
-  <!--native2ascii encoding="UTF-8" src="${config.dir}" dest="${config.dir}" includes="**/*.properties.utf8" ext="" /-->
-  <!--property file="${config.dir}/build.properties.utf8"/-->
-  <import file="${config.dir}/properties.xml" />
-  <import file="${config.dir}/jnlp.xml" />
+  <import file="${basedir}/${config.dir}/properties.xml" />
+  <import file="${basedir}/${config.dir}/jnlp.xml" />
 
   <condition property="have.resources">
     <available file="${res.dir}" />
@@ -108,7 +106,10 @@
     </copy>
   </target>
 
-  <target name="prepare-web" depends="prepare">
+  <condition property="have.web">
+    <available file="${web.dir}" />
+  </condition>
+  <target name="prepare-web" depends="prepare" if="have.web">
     <filter token="codebase"       value="${jnlp.codebase}" />
     <filter token="title"          value="${jnlp.title}" />
     <filter token="homepage"       value="${jnlp.homepage}" />
@@ -137,7 +138,10 @@
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
            includeAntRuntime="no"
+           fork="true"
            classpathref="project.class.path">
+      <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
+      <compilerarg value="-J-Duser.language=${user.language}" />
       <compilerarg value="-Xlint:unchecked" />
     </javac>
   </target>
@@ -145,7 +149,7 @@
   <target name="run" depends="compile">
     <java classname="${main.class}" classpathref="project.class.path" fork="true" />
   </target>
-  
+
   <!-- =================================================================== -->
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
@@ -224,7 +228,7 @@
 
 <!-- End of file -->
 
-  <fileset id="dist.src.fileset" dir="${basedir}">
+  <fileset id="dist.src.fileset" dir=".">
     <include name="build.xml" />
     <include name="*.bat" />
     <include name="*.sh" />
@@ -235,9 +239,6 @@
     <include name="${lib.dir}/*.jar" />
   </fileset>
   <target name="dist" depends="package, dist-libcopy">
-    <tstamp>
-      <format property="TSTAMP_BACKUP" pattern="yyyyMMddHHmm" />
-    </tstamp>
     <mkdir dir="${bkup.dir}" />
     <filter token="homepage" value="${jnlp.homepage}" />
     <filter token="title" value="${jnlp.Name}" />
@@ -272,21 +273,12 @@
     </copy>
   </target>
   <target name="sign" depends="sign-libcopy">
-    <input message="Enter Password:" addproperty="store.password" />
+    <input type="secure" message="Enter Password:" addproperty="store.password" />
     <signjar keystore="${signjar.keystore}" alias="${signjar.alias}" storepass="${store.password}">
       <fileset dir="${build.dir}" includes="**/*.jar" />
     </signjar>
   </target>
 
-  <!--fileset id="bkup.src.fileset" dir="${basedir}">
-    <exclude name="${src.dir}/**/*.bak" />
-    <include name="${src.dir}/**" />
-    <include name="${config.dir}/**/*.properties.utf8" />
-    <include name="${res.dir}/**" />
-    <include name="build.xml" />
-    <include name="*.bat" />
-    <include name="*.sh" />
-  </fileset-->
   <target name="bkup">
     <echo message="Building the buckup files (zip)" />
     <tstamp>
@@ -294,10 +286,9 @@
     </tstamp>
     <mkdir dir="${bkup.dir}" />
     <copy todir="${bkup.dir}">
-      <!--fileset refid="bkup.src.fileset"/-->
       <fileset refid="dist.src.fileset" />
     </copy>
-    <zip destfile="fse-${TSTAMP_BACKUP}.zip" basedir="${bkup.dir}" includes="**" />
+    <zip destfile="${name}-${TSTAMP_BACKUP}.zip" basedir="${bkup.dir}" includes="**" />
     <delete dir="${bkup.dir}" />
   </target>
 
@@ -345,6 +336,10 @@
     <mkdir dir="${src.n2a}" />
     <native2ascii encoding="UTF-8" src="${src.dir}" dest="${src.n2a}" includes="**/*.java" />
   </target-->
+
+  <!-- static code analysis -->
+  <property name="sca.dir" value=".." />
+
   <condition property="have.findbugs">
     <and>
       <available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
@@ -354,17 +349,31 @@
   <target name="findbugs" depends="compile" if="have.findbugs">
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
     <mkdir dir="${build.reports}" />
-    <findbugs home="${env.FINDBUGS_HOME}" effort="max"
-            output="xml" outputFile="${build.reports}/findbugs.xml" >
+    <echo>userdir: ${user.dir}</echo>
+    <echo>basedir: ${basedir}</echo>
+    <findbugs home="${env.FINDBUGS_HOME}" effort="max" reportLevel="low"
+            excludeFilter="${sca.dir}/excludefilter.xml"
+            output="xml:withMessages" outputFile="${build.reports}/findbugs.xml">
       <auxClasspath refid="project.class.path" />
       <sourcePath path="${src.dir}" />
       <class location="${build.dest}" />
     </findbugs>
   </target>
-  <target name="pmd">
-    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
+
+  <condition property="have.pmd">
+    <available file="${env.PMD_HOME}" />
+  </condition>
+  <target name="pmd" if="have.pmd">
+    <echo>${env.PMD_HOME}</echo>
+    <path id="pmd.classpath">
+      <fileset dir="${env.PMD_HOME}/lib">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
-    <pmd rulesetfiles="java-basic,java-imports,java-strings" encoding="${compile.encoding}">
+    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}">
+      <sourceLanguage name="java" version="${compile.source}" />
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <formatter type="text" toConsole="true" />
@@ -373,7 +382,23 @@
       </fileset>
     </pmd>
   </target>
-  <target name="reports" depends="clean,findbugs,pmd">
+
+  <condition property="have.checkstyle">
+    <available file="${env.CHECKSTYLE_JAR}" />
+  </condition>
+  <target name="checkstyle" if="have.checkstyle">
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
+    <mkdir dir="${build.reports}" />
+    <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
+      <formatter type="plain" />
+      <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
+      <fileset dir="${src.dir}">
+        <include name="**/*.java" />
+      </fileset>
+    </checkstyle>
+  </target>
+
+  <target name="reports" depends="clean,findbugs,pmd,checkstyle">
   </target>
 
   <fileset id="ftp.upload.fileset" dir="${build.dir}">
@@ -387,9 +412,17 @@
     <property name="ftp.userid" value="${env.FTP_USERID}" />
     <property name="ftp.server" value="${env.FTP_SERVER}" />
     <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
-    <input message="Enter Password:" addproperty="ftp.password">
-      <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
-    </input>
+    <!-- input type="secure" message="Enter Password:" addproperty="ftp.password" / -->
+    <property name="ssh.inkey" value="${env.SSH_INKEY}" />
+    <property name="ssh.in"    value="${env.SSH_IN}" />
+    <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
+      <arg value="rsautl"/>
+      <arg value="-decrypt"/>
+      <arg value="-inkey"/>
+      <arg value="${ssh.inkey}"/>
+      <arg value="-in"/>
+      <arg value="${ssh.in}"/>
+    </exec>
     <ftp action="mkdir"
          server="${ftp.server}" remotedir="${ftp.remotedir}"
          userid="${ftp.userid}" password="${ftp.password}"

@@ -337,6 +337,9 @@
     <native2ascii encoding="UTF-8" src="${src.dir}" dest="${src.n2a}" includes="**/*.java" />
   </target-->
 
+  <!-- static code analysis -->
+  <property name="sca.dir" value="${user.dir}" />
+
   <condition property="have.findbugs">
     <and>
       <available classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
@@ -349,8 +352,8 @@
     <echo>userdir: ${user.dir}</echo>
     <echo>basedir: ${basedir}</echo>
     <findbugs home="${env.FINDBUGS_HOME}" effort="max" reportLevel="low"
-            excludeFilter="${user.dir}/excludefilter.xml"
-            output="xml:withMessages" outputFile="${build.reports}/findbugs.xml" >
+            excludeFilter="${sca.dir}/excludefilter.xml"
+            output="xml:withMessages" outputFile="${build.reports}/findbugs.xml">
       <auxClasspath refid="project.class.path" />
       <sourcePath path="${src.dir}" />
       <class location="${build.dest}" />
@@ -369,7 +372,7 @@
     </path>
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
-    <pmd rulesetfiles="ruleset.xml" encoding="${compile.encoding}">
+    <pmd rulesetfiles="${sca.dir}/ruleset.xml" encoding="${compile.encoding}">
       <sourceLanguage name="java" version="${compile.source}" />
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
@@ -386,7 +389,7 @@
   <target name="checkstyle" if="have.checkstyle">
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
     <mkdir dir="${build.reports}" />
-    <checkstyle config="${user.dir}/checks.xml" failOnViolation="false">
+    <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
       <fileset dir="${src.dir}">
