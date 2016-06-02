@@ -12,8 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> distributionsChoices = new JComboBox<>(GenerateInputs.values());
     private final JComboBox<? extends Enum> algorithmsChoices    = new JComboBox<>(SortAlgorithms.values());
-    //private final JComboBox<Enum> algorithmsChoices = new JComboBox<Enum>(SortAlgorithms.values());
-    //private final JComboBox<SortAlgorithms> algorithmsChoices = new JComboBox<>(SortAlgorithms.values());
     private final SpinnerNumberModel model;
     private final JSpinner spinner;
     private SwingWorker<String, Rectangle> worker;

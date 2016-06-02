@@ -218,7 +218,7 @@ class ComboKeyHandler extends KeyAdapter {
 //         return new DefaultSuggestionComboBoxUI();
 //     }
 //     private KeyListener editorKeyListener = null;
-//     private Vector<String> list = new Vector<String>();
+//     private Vector<String> list = new Vector<>();
 //     @Override protected void configureEditor() {
 //         super.configureEditor();
 //         JTextField textField = (JTextField) editor;

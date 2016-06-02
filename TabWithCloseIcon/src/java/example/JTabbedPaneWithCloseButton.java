@@ -19,7 +19,7 @@ public class JTabbedPaneWithCloseButton extends JTabbedPane {
             closeButtons.clear();
         }
         super.updateUI();
-        closeButtons = new ArrayList<JButton>();
+        closeButtons = new ArrayList<>();
         setUI(new CloseButtonTabbedPaneUI(closeButtons));
     }
 }

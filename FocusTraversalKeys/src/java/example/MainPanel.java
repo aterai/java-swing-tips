@@ -35,14 +35,14 @@ public final class MainPanel extends JPanel {
         box.add(new JButton("333"));
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
-        //Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(frame.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        //Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,  0));
         //frame.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
         focusManager.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 
-        //Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(frame.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+        //Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         Set<AWTKeyStroke> backwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP,   0));
@@ -75,12 +75,12 @@ public final class MainPanel extends JPanel {
 //         //JDialog dialog = pane.createDialog(parentComponent, title, style);
 //         JDialog dialog = pane.createDialog(parentComponent, title);
 //
-//         Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(dialog.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+//         Set<AWTKeyStroke> forwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
 //         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
 //         forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,  0));
 //         dialog.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 //
-//         Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(dialog.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+//         Set<AWTKeyStroke> backwardKeys = new HashSet<>(dialog.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
 //         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
 //         backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP,   0));
 //         dialog.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);

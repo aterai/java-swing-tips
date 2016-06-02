@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
 //
 // final class FinderUtil {
 //     public static final <T> List<T> findAll(List<T> list, IPredicate<T> match) {
-//         List<T> temp = new ArrayList<T>();
+//         List<T> temp = new ArrayList<>();
 //         for (T t: list) {
 //             if (match.evaluate(t)) {
 //                 temp.add(t);

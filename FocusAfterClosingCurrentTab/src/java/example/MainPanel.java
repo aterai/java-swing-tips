@@ -14,7 +14,7 @@ import javax.swing.plaf.synth.*;
 public class MainPanel extends JPanel {
     private static final String CLOSE_CURRENT_TAB = "close_current_tab";
     private final JTabbedPane tabbedPane = new ClippedTitleTabbedPane() {
-        private final List<Component> history = new ArrayList<Component>(5);
+        private final List<Component> history = new ArrayList<>(5);
         @Override public void setSelectedIndex(int index) {
             super.setSelectedIndex(index);
             Component component = getComponentAt(index);

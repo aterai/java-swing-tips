@@ -141,7 +141,7 @@ class PaintPanel extends JPanel {
         };
         addMouseMotionListener(handler);
         addMouseListener(handler);
-        list = new ArrayList<Shape>();
+        list = new ArrayList<>();
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);

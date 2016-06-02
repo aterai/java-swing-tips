@@ -219,7 +219,7 @@ class AnimatedLabel extends JLabel implements ActionListener {
 //     private static final double SY = 1d;
 //     private static final int WIDTH  = (int) (R * 8 + SX * 2);
 //     private static final int HEIGHT = (int) (R * 8 + SY * 2);
-//     private final List<Shape> list = new ArrayList<Shape>(Arrays.asList(
+//     private final List<Shape> list = new ArrayList<>(Arrays.asList(
 //         new Ellipse2D.Double(SX + 3 * R, SY + 0 * R, 2 * R, 2 * R),
 //         new Ellipse2D.Double(SX + 5 * R, SY + 1 * R, 2 * R, 2 * R),
 //         new Ellipse2D.Double(SX + 6 * R, SY + 3 * R, 2 * R, 2 * R),

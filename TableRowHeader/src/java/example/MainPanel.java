@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        RowHeaderList rowHeader = new RowHeaderList<String>(listModel, table);
+        RowHeaderList<String> rowHeader = new RowHeaderList<>(listModel, table);
         rowHeader.setFixedCellWidth(50);
 
         final JScrollPane scroll = new JScrollPane(table);

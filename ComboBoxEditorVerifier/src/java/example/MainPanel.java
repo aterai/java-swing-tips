@@ -16,7 +16,7 @@ public class MainPanel extends JPanel {
     private final String[] model = {"123456", "7890"};
     public MainPanel() {
         super(new BorderLayout());
-        JComboBox combo = new JComboBox<String>(model);
+        JComboBox<String> combo = new JComboBox<>(model);
         combo.setEditable(true);
 
         JComboBox<String> comboBox = new JComboBox<String>(model) {
