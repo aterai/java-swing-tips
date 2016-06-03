@@ -7,13 +7,11 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import javax.imageio.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-    private Flip mode = Flip.NONE;
+    private Flip mode;
     private final transient BufferedImage bufferedImage;
     private final ButtonGroup bg = new ButtonGroup();
     private final JPanel p = new JPanel() {
@@ -22,9 +20,7 @@ public final class MainPanel extends JPanel {
             g.fillRect(0, 0, getWidth(), getHeight());
             int w = bufferedImage.getWidth(this);
             int h = bufferedImage.getHeight(this);
-            if (mode == Flip.NONE) {
-                g.drawImage(bufferedImage, 0, 0, w, h, this);
-            } else if (mode == Flip.VERTICAL) {
+            if (mode == Flip.VERTICAL) {
                 AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
                 at.translate(0, -h);
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -35,6 +31,8 @@ public final class MainPanel extends JPanel {
                 at.translate(-w, 0);
                 AffineTransformOp atOp = new AffineTransformOp(at, null);
                 g.drawImage(atOp.filter(bufferedImage, null), 0, 0, w, h, this);
+            } else { //if (mode == Flip.NONE) {
+                g.drawImage(bufferedImage, 0, 0, w, h, this);
             }
         }
     };
@@ -43,36 +41,20 @@ public final class MainPanel extends JPanel {
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(getClass().getResource("test.jpg"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         bufferedImage = bi;
-        List<AbstractAction> list = Arrays.asList(
-            new AbstractAction("NONE") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    mode = Flip.NONE;
-                    repaint();
-                }
-            },
-            new AbstractAction("VERTICAL") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    mode = Flip.VERTICAL;
-                    repaint();
-                }
-            },
-            new AbstractAction("HORIZONTAL") {
-                @Override public void actionPerformed(ActionEvent e) {
-                    mode = Flip.HORIZONTAL;
-                    repaint();
-                }
-            }
-        );
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(new JLabel("Flip: "));
-        for (AbstractAction a: list) {
-            JRadioButton rb = new JRadioButton(a);
-            if (bg.getButtonCount() == 0) {
+        for (Flip f: Flip.values()) {
+            JRadioButton rb = new JRadioButton(f.toString());
+            rb.addActionListener(e -> {
+                mode = f;
+                repaint();
+            });
+            if (f == Flip.NONE) {
                 rb.setSelected(true);
             }
             box.add(rb);
