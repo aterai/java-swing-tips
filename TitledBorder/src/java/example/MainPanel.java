@@ -17,12 +17,12 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout(5, 5));
         verticalOrientationChoices.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                initTitleBorder();
+                initTitledBorder();
             }
         });
         justificationChoices.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                initTitleBorder();
+                initTitledBorder();
             }
         });
         panel.setBorder(border);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
     }
-    private void initTitleBorder() {
+    private void initTitledBorder() {
         VerticalOrientation vo = (VerticalOrientation) verticalOrientationChoices.getSelectedItem();
         border.setTitlePosition(vo.mode);
         Justification jc = (Justification) justificationChoices.getSelectedItem();
