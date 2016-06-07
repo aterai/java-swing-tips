@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
     //menuItem = new JMenuItem(new ModalInternalFrameAction2("InternalMessageDialog"));
     //menuItem.setMnemonic(KeyEvent.VK_2);
     class ModalInternalFrameAction2 extends AbstractAction {
-        private final JPanel glass = new MyGlassPane();
+        private final JComponent glass = new MyGlassPane();
         protected ModalInternalFrameAction2(String label) {
             super(label);
             glass.setOpaque(false);
@@ -128,7 +128,7 @@ public final class MainPanel extends JPanel {
     //Creating Modal Internal Frames -- Approach 1 and Approach 2
     //http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
     class ModalInternalFrameAction3 extends AbstractAction {
-        private final JPanel glass = new PrintGlassPane();
+        private final JComponent glass = new PrintGlassPane();
         protected ModalInternalFrameAction3(String label) {
             super(label);
             glass.setVisible(false);
@@ -223,10 +223,14 @@ public final class MainPanel extends JPanel {
     }
 }
 
-class MyGlassPane extends JPanel {
+class MyGlassPane extends JDesktopPane {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(6);
-    protected MyGlassPane() {
-        super((LayoutManager) null);
+//     protected MyGlassPane() {
+//         super((LayoutManager) null);
+//     }
+    @Override public void updateUI() {
+        //setFocusTraversalPolicy(null);
+        super.updateUI();
         setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
             @Override public boolean accept(Component c) {
                 return false;
@@ -241,11 +245,11 @@ class MyGlassPane extends JPanel {
     }
 }
 
-class PrintGlassPane extends JPanel {
+class PrintGlassPane extends JDesktopPane {
     private static final TexturePaint TEXTURE = TextureFactory.createCheckerTexture(4);
-    protected PrintGlassPane() {
-        super((LayoutManager) null);
-    }
+//     protected PrintGlassPane() {
+//         super((LayoutManager) null);
+//     }
     @Override public void setVisible(boolean isVisible) {
         boolean oldVisible = isVisible();
         super.setVisible(isVisible);
