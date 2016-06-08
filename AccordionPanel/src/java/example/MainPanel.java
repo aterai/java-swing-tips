@@ -74,16 +74,15 @@ public final class MainPanel extends JPanel {
                 @Override public JPanel makePanel() {
                     JPanel pnl = new JPanel(new GridLayout(0, 1));
                     ButtonGroup bg = new ButtonGroup();
-                    JRadioButton b1 = new JRadioButton("aaa");
-                    JRadioButton b2 = new JRadioButton("bbb");
-                    JRadioButton b3 = new JRadioButton("ccc");
-                    JRadioButton b4 = new JRadioButton("ddd");
-                    for (JRadioButton b: Arrays.asList(b1, b2, b3, b4)) {
+                    for (String s: Arrays.asList("aaa", "bbb", "ccc", "ddd")) {
+                        JRadioButton b = new JRadioButton(s);
+                        if (pnl.getComponentCount() == 0) {
+                            b.setSelected(true);
+                        }
                         b.setOpaque(false);
                         pnl.add(b);
                         bg.add(b);
                     }
-                    b1.setSelected(true);
                     return pnl;
                 }
             }
