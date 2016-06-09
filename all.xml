@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $ ant -f all.xml -Dall=package -->
 <project name="swingall" default="all" basedir=".">
+  <property environment="env" />
+
   <target name="all">
     <subant target="${all}">
       <fileset dir="." casesensitive="yes">
@@ -9,5 +11,42 @@
         <filename name="*/build.xml"/>
       </fileset>
     </subant>
+  </target>
+
+  <condition property="have.pmd">
+    <available file="${env.PMD_HOME}" />
+  </condition>
+  <target name="pmd" if="have.pmd">
+    <path id="pmd.classpath">
+      <fileset dir="${env.PMD_HOME}/lib">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
+    <pmd rulesetfiles="${basedir}/ruleset.xml" encoding="UTF-8">
+      <sourceLanguage name="java" version="1.8" />
+      <formatter type="text" toConsole="true" />
+      <formatter type="xml" toFile="pmd.xml" />
+      <fileset dir="${basedir}">
+        <exclude name="**/target/**" />
+        <include name="**/*.java" />
+      </fileset>
+    </pmd>
+  </target>
+
+  <condition property="have.checkstyle">
+    <available file="${env.CHECKSTYLE_JAR}" />
+  </condition>
+  <target name="checkstyle" if="have.checkstyle">
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${env.CHECKSTYLE_JAR}" />
+    <!-- mkdir dir="${build.reports}" / -->
+    <checkstyle config="${basedir}/checks.xml" failOnViolation="false">
+      <formatter type="plain" />
+      <formatter type="xml" toFile="checkstyle-result.xml" />
+      <fileset dir="${basedir}">
+        <exclude name="**/target/**" />
+        <include name="**/*.java" />
+      </fileset>
+    </checkstyle>
   </target>
 </project>
