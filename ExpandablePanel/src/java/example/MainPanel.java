@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
                     Box p = Box.createVerticalBox();
                     p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
                     ButtonGroup bg = new ButtonGroup();
-                    for (JRadioButton b: Arrays.<JRadioButton>asList(new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc"))) {
+                    for (JRadioButton b: Arrays.asList(new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc"))) {
                         p.add(b);
                         bg.add(b);
                         b.setSelected(true);
