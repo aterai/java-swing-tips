@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         {"aaa", 1, false}, {"bbb", 20, false},
         {"ccc", 2, false}, {"ddd", 3,  false},
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }
-    public static JTable makeTable(final DefaultTableModel model) {
+    public static JTable makeTable(TableModel model) {
         return new JTable(model) {
             @Override public void updateUI() {
                 // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
@@ -80,25 +80,26 @@ public final class MainPanel extends JPanel {
             }
         };
     }
-    public static JTable makeTable2(final DefaultTableModel model) {
-        final JTable table = new JTable(model);
-        TableColumnModel columns = table.getColumnModel();
-        TableCellRenderer r = new RowColorTableRenderer();
-        for (int i = 0; i < columns.getColumnCount(); i++) {
-            columns.getColumn(i).setCellRenderer(r);
-        }
-        return table;
-    }
-    private static class RowColorTableRenderer extends DefaultTableCellRenderer {
-        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            TableModel model = table.getModel();
-            Boolean isChecked = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
-            c.setForeground(table.getForeground());
-            c.setBackground(isChecked ? Color.ORANGE : table.getBackground());
-            return c;
-        }
-    }
+//     //TEST:
+//     public static JTable makeTable2(TableModel model) {
+//         final JTable table = new JTable(model);
+//         TableColumnModel columns = table.getColumnModel();
+//         TableCellRenderer r = new RowColorTableRenderer();
+//         for (int i = 0; i < columns.getColumnCount(); i++) {
+//             columns.getColumn(i).setCellRenderer(r);
+//         }
+//         return table;
+//     }
+//     private static class RowColorTableRenderer extends DefaultTableCellRenderer {
+//         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//             TableModel model = table.getModel();
+//             Boolean isChecked = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
+//             c.setForeground(table.getForeground());
+//             c.setBackground(isChecked ? Color.ORANGE : table.getBackground());
+//             return c;
+//         }
+//     }
     private static void rowRepaint(JTable table, int row) {
         Rectangle r = table.getCellRect(row, 0, true);
         //r.height = table.getRowHeight();

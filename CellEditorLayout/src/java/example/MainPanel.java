@@ -11,16 +11,9 @@ public final class MainPanel extends JPanel {
     private MainPanel() {
         super(new BorderLayout());
         JTable table = new JTable(8, 4);
-
-        table.getColumnModel().getColumn(0).setCellEditor(
-            new CustomComponentCellEditor(new JTextField()));
-
-        table.getColumnModel().getColumn(1).setCellEditor(
-            new CustomCellEditor(new JTextField()));
-
-        table.getColumnModel().getColumn(2).setCellEditor(
-            new CustomComponentCellEditor2(new CustomComponent()));
-
+        table.getColumnModel().getColumn(0).setCellEditor(new CustomComponentCellEditor(new JTextField()));
+        table.getColumnModel().getColumn(1).setCellEditor(new CustomCellEditor(new JTextField()));
+        table.getColumnModel().getColumn(2).setCellEditor(new CustomComponentCellEditor2(new CustomComponent()));
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));
     }

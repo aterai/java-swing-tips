@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         add(sp);
         setPreferredSize(new Dimension(320, 240));
     }
-    private static JTable makeTable(DefaultTableModel model) {
+    private static JTable makeTable(TableModel model) {
         return new JTable(model) {
             @Override public void updateUI() {
                 // Bug ID: 6788475 Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
