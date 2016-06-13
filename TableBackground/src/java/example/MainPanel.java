@@ -67,11 +67,9 @@ public final class MainPanel extends JPanel {
         pnl.add(new JButton(new AbstractAction("Choose background color") {
             private final JColorChooser cc = new JColorChooser();
             @Override public void actionPerformed(ActionEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        Color color = cc.showDialog(getRootPane(), "background color", scroll.getViewport().getBackground());
-                        scroll.getViewport().setBackground(color);
-                    }
+                EventQueue.invokeLater(() -> {
+                    Color color = cc.showDialog(getRootPane(), "background color", scroll.getViewport().getBackground());
+                    scroll.getViewport().setBackground(color);
                 });
                 scroll.repaint();
             }

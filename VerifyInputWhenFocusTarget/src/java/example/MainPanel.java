@@ -19,18 +19,12 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                field0.requestFocusInWindow();
-            }
-        });
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-                System.out.println(c);
-                for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-                    tf.setText("");
-                }
+        EventQueue.invokeLater(() -> field0.requestFocusInWindow());
+        ActionListener al = e -> {
+            Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+            System.out.println(c);
+            for (JTextField tf: Arrays.asList(field0, field1, field2)) {
+                tf.setText("");
             }
         };
         button0.addActionListener(al);
@@ -46,23 +40,25 @@ public final class MainPanel extends JPanel {
             tf.setInputVerifier(new IntegerInputVerifier());
         }
 
+        JButton b0 = new JButton("setText(0)");
+        b0.addActionListener(e -> {
+            for (JTextField tf: Arrays.asList(field0, field1, field2)) {
+                tf.setText("0");
+            }
+            field0.requestFocusInWindow();
+        });
+
+        JButton b1 = new JButton("setText(Integer.MAX_VALUE+1)");
+        b1.addActionListener(e -> {
+            for (JTextField tf: Arrays.asList(field0, field1, field2)) {
+                tf.setText("2147483648");
+            }
+            field0.requestFocusInWindow();
+        });
+
         JPanel bp = new JPanel();
-        bp.add(new JButton(new AbstractAction("setText(Integer.MAX_VALUE+1)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-                    tf.setText("2147483648");
-                }
-                field0.requestFocusInWindow();
-            }
-        }));
-        bp.add(new JButton(new AbstractAction("setText(0)") {
-            @Override public void actionPerformed(ActionEvent e) {
-                for (JTextField tf: Arrays.asList(field0, field1, field2)) {
-                    tf.setText("0");
-                }
-                field0.requestFocusInWindow();
-            }
-        }));
+        bp.add(b0);
+        bp.add(b1);
 
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -13,11 +13,7 @@ public final class MainPanel extends JPanel {
         tree.setComponentPopupMenu(makePopupMenu());
         add(new JScrollPane(tree));
         setPreferredSize(new Dimension(320, 240));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setJMenuBar(createMenuBar());
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     }
     private static JPopupMenu makePopupMenu() {
         JMenu menu = new TransparentMenu("Test");

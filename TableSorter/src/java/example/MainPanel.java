@@ -35,12 +35,10 @@ public final class MainPanel extends JPanel {
         @Override public void updateUI() {
             sorter.setTableHeader(null);
             super.updateUI();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    JTableHeader h = table.getTableHeader();
-                    sorter.setTableHeader(h);
-                    h.repaint();
-                }
+            EventQueue.invokeLater(() -> {
+                JTableHeader h = table.getTableHeader();
+                sorter.setTableHeader(h);
+                h.repaint();
             });
         }
     };
