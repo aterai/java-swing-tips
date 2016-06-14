@@ -74,7 +74,7 @@ final class TextUtilties {
     //@see javax.swint.text.Utilities.getWordStart(...)
     public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {
         Element line = Utilities.getParagraphElement(c, offs);
-        if (line == null) {
+        if (Objects.isNull(line)) {
             throw new BadLocationException("No word at " + offs, offs);
         }
         Document doc = c.getDocument();
@@ -109,7 +109,7 @@ final class TextUtilties {
     //@see javax.swint.text.Utilities.getWordEnd(...)
     public static int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
         Element line = Utilities.getParagraphElement(c, offs);
-        if (line == null) {
+        if (Objects.isNull(line)) {
             throw new BadLocationException("No word at " + offs, offs);
         }
         Document doc = c.getDocument();
@@ -190,7 +190,6 @@ class SegmentCache {
     public Segment getSegment() {
         synchronized (this) {
             int size = segments.size();
-
             if (size > 0) {
                 return segments.remove(size - 1);
             }

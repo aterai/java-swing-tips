@@ -4,6 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,7 +20,7 @@ public final class MainPanel extends JPanel {
         p.add(new JButton(new AbstractAction("showOpenDialog") {
             private JFileChooser chooser;
             @Override public void actionPerformed(ActionEvent e) {
-                if (chooser == null) {
+                if (Objects.isNull(chooser)) {
                     chooser = new JFileChooser();
                     JPopupMenu pop = searchPopupMenu(chooser);
                     pop.addSeparator();
@@ -43,11 +44,11 @@ public final class MainPanel extends JPanel {
     }
     private static JPopupMenu searchPopupMenu(Container parent) {
         for (Component c: parent.getComponents()) {
-            if (c instanceof JComponent && ((JComponent) c).getComponentPopupMenu() != null) {
+            if (c instanceof JComponent && Objects.nonNull(((JComponent) c).getComponentPopupMenu())) {
                 return ((JComponent) c).getComponentPopupMenu();
             } else {
                 JPopupMenu pop = searchPopupMenu((Container) c);
-                if (pop != null) {
+                if (Objects.nonNull(pop)) {
                     return pop;
                 }
             }
