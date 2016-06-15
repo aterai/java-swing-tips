@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -56,10 +56,7 @@ class ButtonTabComponent extends JPanel {
 
     protected ButtonTabComponent(final JTabbedPane pane) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if (Objects.isNull(pane)) {
-            throw new IllegalArgumentException("TabbedPane cannot be null");
-        }
-        this.pane = pane;
+        this.pane = Optional.ofNullable(pane).orElseThrow(() -> new IllegalArgumentException("TabbedPane cannot be null"));
         setOpaque(false);
         JLabel label = new JLabel() {
             @Override public String getText() {
@@ -148,8 +145,7 @@ class TabTitleRenamePopupMenu extends JPopupMenu {
             int idx = t.getSelectedIndex();
             String title = t.getTitleAt(idx);
             textField.setText(title);
-            int result = JOptionPane.showConfirmDialog(
-                t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 String str = textField.getText();
                 if (!str.trim().isEmpty()) {
