@@ -45,9 +45,7 @@ public final class MainPanel extends JPanel {
                 break;
             }
         }
-        if (Objects.isNull(reader)) {
-            throw new IOException("Can not read image format!");
-        }
+        reader = Objects.requireNonNull(reader, "Can not read image format!");
         boolean isGif = reader.getFormatName().equalsIgnoreCase("gif");
         reader.setInput(imageStream, false, !isGif);
         List<BufferedImage> list = new ArrayList<>();
