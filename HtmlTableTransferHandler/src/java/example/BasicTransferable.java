@@ -5,7 +5,8 @@ package example;
 import java.awt.datatransfer.*;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.*;
 
 //Copied from javax/swing/plaf/basic/BasicTransferable.java
 class BasicTransferable implements Transferable {
@@ -84,13 +85,14 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
-        DataFlavor[] flavors = getTransferDataFlavors();
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
-                return true;
-            }
-        }
-        return false;
+//         DataFlavor[] flavors = getTransferDataFlavors();
+//         for (int i = 0; i < flavors.length; i++) {
+//             if (flavors[i].equals(flavor)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+        return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
     }
 
     /**
@@ -122,28 +124,27 @@ class BasicTransferable implements Transferable {
         //if (!isFlavorCharsetTextType(flavor)) {
         //    return null;
         //}
-        String encoding = flavor.getParameter("charset");
-        return Objects.nonNull(encoding) ? encoding : Charset.defaultCharset().name();
+        //String encoding = flavor.getParameter("charset");
+        //return Objects.nonNull(encoding) ? encoding : Charset.defaultCharset().name();
+        return Optional.ofNullable(flavor.getParameter("charset")).orElse(Charset.defaultCharset().name());
     }
     private InputStream createInputStream(DataFlavor flavor, String data) throws IOException, UnsupportedFlavorException {
-        String cs = getTextCharset(flavor);
-        if (Objects.isNull(cs)) {
-            throw new UnsupportedFlavorException(flavor);
-        }
+        String cs = Optional.ofNullable(getTextCharset(flavor)).orElseThrow(() -> new UnsupportedFlavorException(flavor));
         return new ByteArrayInputStream(data.getBytes(cs));
     }
 
     // --- richer subclass flavors ----------------------------------------------
 
     protected boolean isRicherFlavor(DataFlavor flavor) {
-        DataFlavor[] richerFlavors = getRicherFlavors();
-        int nFlavors = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
-        for (int i = 0; i < nFlavors; i++) {
-            if (richerFlavors[i].equals(flavor)) {
-                return true;
-            }
-        }
-        return false;
+//         DataFlavor[] richerFlavors = getRicherFlavors();
+//         int nFlavors = richerFlavors.length; //Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+//         for (int i = 0; i < nFlavors; i++) {
+//             if (richerFlavors[i].equals(flavor)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+        return Stream.of(getRicherFlavors()).anyMatch(f -> f.equals(flavor));
     }
 
     /**
@@ -168,13 +169,14 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     protected boolean isHTMLFlavor(DataFlavor flavor) {
-        DataFlavor[] flavors = htmlFlavors;
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
-                return true;
-            }
-        }
-        return false;
+//         DataFlavor[] flavors = htmlFlavors;
+//         for (int i = 0; i < flavors.length; i++) {
+//             if (flavors[i].equals(flavor)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+        return Stream.of(htmlFlavors).anyMatch(f -> f.equals(flavor));
     }
 
     /**
@@ -216,13 +218,14 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     protected boolean isPlainFlavor(DataFlavor flavor) {
-        DataFlavor[] flavors = plainFlavors;
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
-                return true;
-            }
-        }
-        return false;
+//         DataFlavor[] flavors = plainFlavors;
+//         for (int i = 0; i < flavors.length; i++) {
+//             if (flavors[i].equals(flavor)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+        return Stream.of(plainFlavors).anyMatch(f -> f.equals(flavor));
     }
 
     /**
@@ -264,12 +267,13 @@ class BasicTransferable implements Transferable {
      * @return boolean indicating whether or not the data flavor is supported
      */
     protected boolean isStringFlavor(DataFlavor flavor) {
-        DataFlavor[] flavors = stringFlavors;
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(flavor)) {
-                return true;
-            }
-        }
-        return false;
+//         DataFlavor[] flavors = stringFlavors;
+//         for (int i = 0; i < flavors.length; i++) {
+//             if (flavors[i].equals(flavor)) {
+//                 return true;
+//             }
+//         }
+//         return false;
+        return Stream.of(stringFlavors).anyMatch(f -> f.equals(flavor));
     }
 }
