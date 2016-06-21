@@ -4,7 +4,7 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -33,18 +33,17 @@ public class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
     @Override public void removeEditor()         { /* Override all UI-specific methods your UI classes inherit. */ }
     @Override public void addEditor() {
         removeEditor();
-        ComboBoxEditor cbe = comboBox.getEditor();
-        if (Objects.nonNull(cbe)) {
+        Optional.ofNullable(comboBox.getEditor()).ifPresent(cbe -> {
             editor = cbe.getEditorComponent();
-            if (Objects.nonNull(editor)) {
+            Optional.ofNullable(editor).ifPresent(ec -> {
                 configureEditor();
-                comboBox.add(editor);
+                comboBox.add(ec);
                 if (comboBox.isFocusOwner()) {
                     // Switch focus to the editor component
-                    editor.requestFocusInWindow();
+                    ec.requestFocusInWindow();
                 }
-            }
-        }
+            });
+        });
     }
 //     @Override public void unconfigureArrowButton() {}
 //     @Override public void configureArrowButton() {}
@@ -64,9 +63,10 @@ class BasicComboPopup2 extends BasicComboPopup {
         handler2 = null;
     }
     @Override protected MouseListener createListMouseListener() {
-        if (Objects.isNull(handler2)) {
-            handler2 = new Handler2();
-        }
+//         if (Objects.isNull(handler2)) {
+//             handler2 = new Handler2();
+//         }
+        handler2 = Optional.ofNullable(handler2).orElseGet(Handler2::new);
         return handler2;
     }
     private class Handler2 extends MouseAdapter {
