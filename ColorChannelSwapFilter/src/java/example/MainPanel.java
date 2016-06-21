@@ -106,9 +106,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
 class BlockedColorLayerUI extends LayerUI<JProgressBar> {
     public boolean isPreventing;
-    private transient BufferedImage bi;
-    private int prevw = -1;
-    private int prevh = -1;
+    private transient BufferedImage buf;
 
     @Override public void paint(Graphics g, JComponent c) {
         if (isPreventing && c instanceof JLayer) {
@@ -117,17 +115,14 @@ class BlockedColorLayerUI extends LayerUI<JProgressBar> {
             int w = progress.getSize().width;
             int h = progress.getSize().height;
 
-            if (Objects.isNull(bi) || w != prevw || h != prevh) {
-                bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            }
-            prevw = w;
-            prevh = h;
+            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == w && bi.getHeight() == h)
+                          .orElseGet(() -> new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB));
 
-            Graphics2D g2 = bi.createGraphics();
+            Graphics2D g2 = buf.createGraphics();
             super.paint(g2, c);
             g2.dispose();
 
-            Image image = c.createImage(new FilteredImageSource(bi.getSource(), new RedGreenChannelSwapFilter()));
+            Image image = c.createImage(new FilteredImageSource(buf.getSource(), new RedGreenChannelSwapFilter()));
             //BUG: cause an infinite repaint loop: g.drawImage(image, 0, 0, c);
             g.drawImage(image, 0, 0, null);
         } else {

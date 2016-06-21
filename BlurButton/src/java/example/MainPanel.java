@@ -104,8 +104,6 @@ class BlurJButton extends JButton {
         .05f, .60f, .05f,
         .05f, .05f, .05f
     }));
-    private int iw = -1;
-    private int ih = -1;
     private transient BufferedImage buf;
     protected BlurJButton(String label) {
         super(label);
@@ -115,11 +113,13 @@ class BlurJButton extends JButton {
         if (isEnabled()) {
             super.paintComponent(g);
         } else {
-            if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
-                iw = getWidth();
-                ih = getHeight();
-                buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
-            }
+//             if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
+//                 iw = getWidth();
+//                 ih = getHeight();
+//                 buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
+//             }
+            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
+                          .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
             Graphics2D g2 = buf.createGraphics();
             super.paintComponent(g2);
             g2.dispose();
@@ -134,8 +134,6 @@ class BlurButton extends JButton {
         .05f, .60f, .05f,
         .05f, .05f, .05f
     }), ConvolveOp.EDGE_NO_OP, null);
-    private int iw = -1;
-    private int ih = -1;
     private transient BufferedImage buf;
     protected BlurButton(String label) {
         super(label);
@@ -145,11 +143,8 @@ class BlurButton extends JButton {
         if (isEnabled()) {
             super.paintComponent(g);
         } else {
-            if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
-                iw = getWidth();
-                ih = getHeight();
-                buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
-            }
+            buf = Optional.ofNullable(buf).filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
+                          .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
             Graphics2D g2 = buf.createGraphics();
             super.paintComponent(g2);
             g2.dispose();
