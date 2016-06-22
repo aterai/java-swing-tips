@@ -12,11 +12,7 @@ public final class MainPanel extends JPanel {
     private final JPanel p = new JPanel();
     private final DisableInputLayerUI layerUI = new DisableInputLayerUI();
     private final JLayer<JPanel> jlayer = new JLayer<>(p, layerUI);
-    private final Timer stopper = new Timer(5000, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            layerUI.stop();
-        }
-    });
+    private final Timer stopper = new Timer(5000, e -> layerUI.stop());
 
     public MainPanel() {
         super(new BorderLayout());

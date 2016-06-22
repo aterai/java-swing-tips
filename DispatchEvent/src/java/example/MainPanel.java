@@ -8,11 +8,11 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
     private static final int DELAY = 10 * 1000; //10s
+    private final Timer timer = new Timer(DELAY, null);
     private final JLabel label = new JLabel("Not connected");
     private final JComboBox<String> combo = makeComboBox();
     private final JTextField textField = new JTextField(20);
     private final JButton button;
-    private final Timer timer;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -24,21 +24,17 @@ public final class MainPanel extends JPanel {
 //                 }
 //             }
 //         };
-        final AWTEventListener awtEvent = new AWTEventListener() {
-            @Override public void eventDispatched(AWTEvent e) {
-                if (timer.isRunning()) {
-                    System.out.println("timer.restart()");
-                    timer.restart();
-                }
+        AWTEventListener awtEvent = e -> {
+            if (timer.isRunning()) {
+                System.out.println("timer.restart()");
+                timer.restart();
             }
         };
-        timer = new Timer(DELAY, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("timeout");
-                setTestConnected(false);
-                Toolkit.getDefaultToolkit().removeAWTEventListener(awtEvent);
-                timer.stop();
-            }
+        timer.addActionListener(e -> {
+            System.out.println("timeout");
+            setTestConnected(false);
+            Toolkit.getDefaultToolkit().removeAWTEventListener(awtEvent);
+            timer.stop();
         });
         button = new JButton(new AbstractAction("Connect") {
             @Override public void actionPerformed(ActionEvent e) {

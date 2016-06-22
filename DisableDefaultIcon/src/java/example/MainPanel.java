@@ -18,34 +18,30 @@ public final class MainPanel extends JPanel {
         final JRadioButton r3 = new JRadioButton("img=new BufferedImage(1, 1, TYPE_INT_ARGB)");
         final JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)");
 
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
-                Image image = null;
-                if (b.equals(r2)) {
-                    //JDK 1.5
-                    image = new ImageIcon("").getImage();
-                } else if (b.equals(r3)) {
-                    //size=(1x1)
-                    image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-                } else if (b.equals(r4)) {
-                    //16x16transparent.png
-                    image = Toolkit.getDefaultToolkit().createImage(url);
-                }
-                Container c = b.getTopLevelAncestor();
-                if (c instanceof JFrame) {
-                    ((JFrame) c).setIconImage(image);
-                }
+        ActionListener al = e -> {
+            AbstractButton b = (AbstractButton) e.getSource();
+            Image image = null;
+            if (b.equals(r2)) {
+                //JDK 1.5
+                image = new ImageIcon("").getImage();
+            } else if (b.equals(r3)) {
+                //size=(1x1)
+                image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            } else if (b.equals(r4)) {
+                //16x16transparent.png
+                image = Toolkit.getDefaultToolkit().createImage(url);
+            }
+            Container c = b.getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                ((JFrame) c).setIconImage(image);
             }
         };
         r4.setSelected(true);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Image image = Toolkit.getDefaultToolkit().createImage(url);
-                Container c = getTopLevelAncestor();
-                if (c instanceof JFrame) {
-                    ((JFrame) c).setIconImage(image);
-                }
+        EventQueue.invokeLater(() -> {
+            Image image = Toolkit.getDefaultToolkit().createImage(url);
+            Container c = getTopLevelAncestor();
+            if (c instanceof JFrame) {
+                ((JFrame) c).setIconImage(image);
             }
         });
 
