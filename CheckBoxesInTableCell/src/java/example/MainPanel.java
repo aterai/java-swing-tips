@@ -106,7 +106,7 @@ class CheckBoxesPanel extends JPanel {
     protected void updateButtons(Object v) {
         removeAll();
         initButtons();
-        Integer i = (Integer) (Objects.nonNull(v) ? v : 0);
+        Integer i = v instanceof Integer ? (Integer) v : 0;
         buttons[0].setSelected((i & (1 << 2)) != 0);
         buttons[1].setSelected((i & (1 << 1)) != 0);
         buttons[2].setSelected((i & (1 << 0)) != 0);
