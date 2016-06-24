@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -100,25 +101,24 @@ class URLItemComboBox extends JComboBox<URLItem> {
                 button.setVisible(false);
             }
             @Override public void focusLost(FocusEvent e) {
-                URLItem item = getURLItemFromModel(field.getText());
-                label.setIcon(item.favicon);
-                button.setVisible(item.hasRSS);
-                setSelectedIndex(0);
+                getURLItemFromModel(model, field.getText()).ifPresent(item -> {
+                    model.removeElement(item);
+                    model.insertElementAt(item, 0);
+                    label.setIcon(item.favicon);
+                    button.setVisible(item.hasRSS);
+                    setSelectedIndex(0);
+                });
             }
         });
         addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateFavicon(label);
+                updateFavicon(model, label);
             }
         });
-        updateFavicon(label);
+        updateFavicon(model, label);
     }
-    private void updateFavicon(final JLabel label) {
-        EventQueue.invokeLater(() -> {
-            Object o = getSelectedItem();
-            URLItem i = o instanceof URLItem ? (URLItem) o : getURLItemFromModel(o.toString());
-            label.setIcon(i.favicon);
-        });
+    private void updateFavicon(ComboBoxModel<URLItem> model, JLabel l) {
+        EventQueue.invokeLater(() -> getURLItemFromModel(model, getSelectedItem()).ifPresent(i -> l.setIcon(i.favicon)));
     }
     private static JButton makeRssButton(ImageIcon rss) {
         JButton button = new JButton(rss);
@@ -148,21 +148,29 @@ class URLItemComboBox extends JComboBox<URLItem> {
         label.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
         return label;
     }
-    private URLItem getURLItemFromModel(String text) {
-        DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>) getModel();
-        URLItem item = null;
-        for (int i = 0; i < model.getSize(); i++) {
-            URLItem tmp = model.getElementAt(i);
-            if (tmp.url.equals(text)) {
-                item = tmp;
-                break;
-            }
+    private Optional<URLItem> getURLItemFromModel(ComboBoxModel<URLItem> model, Object o) {
+        if (o instanceof URLItem) {
+            return Optional.of((URLItem) o);
         }
-        if (Objects.nonNull(item)) {
-            model.removeElement(item);
-            model.insertElementAt(item, 0);
-        }
-        return item;
+        String str = Objects.toString(o, "");
+        return Stream.iterate(0, i -> i++).limit(model.getSize())
+                     .map(i -> model.getElementAt(i))
+                     .filter(ui -> ui.url.equals(str))
+                     .findFirst();
+//         DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>) getModel();
+//         URLItem item = null;
+//         for (int i = 0; i < model.getSize(); i++) {
+//             URLItem tmp = model.getElementAt(i);
+//             if (tmp.url.equals(text)) {
+//                 item = tmp;
+//                 break;
+//             }
+//         }
+//         if (Objects.nonNull(item)) {
+//             model.removeElement(item);
+//             model.insertElementAt(item, 0);
+//         }
+//         return item;
     }
 //     private ImageIcon getFavicon(String url) {
 //         if (url.startsWith("http://ateraimemo.com/")) {
