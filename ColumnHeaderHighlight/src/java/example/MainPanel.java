@@ -21,10 +21,8 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < cm.getColumnCount(); i++) {
             cm.getColumn(i).setHeaderRenderer(r);
         }
-        cm.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override public void valueChanged(ListSelectionEvent e) {
-                header.repaint();
-            }
+        cm.getSelectionModel().addListSelectionListener(e -> {
+            header.repaint();
         });
 
         add(new JScrollPane(table));
