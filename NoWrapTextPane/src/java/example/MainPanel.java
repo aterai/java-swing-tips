@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
         textPane = new JTextPane() {
             //Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java examples (example source code) Organized by topic
             //http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
-            @Override public boolean getScrollableTracksViewportWidth() { //NOPMD A getX() method which returns a boolean should be named isX()
+            @Override public boolean getScrollableTracksViewportWidth() {
                 Component p = getParent();
                 if (Objects.isNull(p)) {
                     return true;

@@ -184,7 +184,7 @@ class XMLTreeNode implements TreeNode {
             }
         };
     }
-    @Override public boolean getAllowsChildren() { //NOPMD A getX() method which returns a boolean should be named isX()
+    @Override public boolean getAllowsChildren() {
         return true;
     }
     @Override public TreeNode getChildAt(int childIndex) {
