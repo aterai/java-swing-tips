@@ -104,7 +104,8 @@ class AnimatedToolTip extends JToolTip {
         firePropertyChange("tiptext", oldValue, tipText);
     }
     @Override public String getTipText() {
-        return Objects.nonNull(iconlabel) ? iconlabel.getText() : "";
+        //return Objects.nonNull(iconlabel) ? iconlabel.getText() : "";
+        return Optional.ofNullable(iconlabel).map(JLabel::getText).orElse("");
     }
 }
 
@@ -168,7 +169,8 @@ class AnimeIcon implements Icon {
     }
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        //g2.setPaint(Objects.nonNull(c) ? c.getBackground() : Color.WHITE);
+        g2.setPaint(Optional.ofNullable(c).map(Component::getBackground).orElse(Color.WHITE));
         g2.fillRect(x, y, getIconWidth(), getIconHeight());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(ELLIPSE_COLOR);
