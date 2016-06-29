@@ -68,34 +68,31 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
     @Override public void updateUI() {
         super.updateUI();
         setName("Table.cellRenderer");
-        setHorizontalAlignment(SwingConstants.CENTER);
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value instanceof Boolean) {
+            setHorizontalAlignment(SwingConstants.CENTER);
             setSelected((Boolean) value);
+            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         }
         return this;
     }
 }
 
 class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
-    //protected RadioButtonsEditor(final DefaultTableModel model) {
-    protected RadioButtonsEditor() {
-        super();
-        setHorizontalAlignment(SwingConstants.CENTER);
-        addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-//                 for (int i = 0; i < model.getRowCount(); i++) {
-//                     model.setValueAt(i == index, i, 2);
-//                 }
-            }
-        });
+    private ActionListener listener;
+    @Override public void updateUI() {
+        removeActionListener(listener);
+        super.updateUI();
+        setName("Table.cellRenderer");
+        listener = e -> fireEditingStopped();
+        addActionListener(listener);
     }
-//     private int index = -1;
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-//         index = table.convertRowIndexToModel(row);
         if (value instanceof Boolean) {
+            //setOpaque(true);
+            setBackground(table.getSelectionBackground());
+            setHorizontalAlignment(SwingConstants.CENTER);
             setSelected((Boolean) value);
         }
         return this;
