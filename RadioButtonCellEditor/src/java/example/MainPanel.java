@@ -71,9 +71,9 @@ class RadioButtonsRenderer extends JRadioButton implements TableCellRenderer {
     }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (value instanceof Boolean) {
+            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             setHorizontalAlignment(SwingConstants.CENTER);
             setSelected((Boolean) value);
-            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         }
         return this;
     }
@@ -90,7 +90,6 @@ class RadioButtonsEditor extends JRadioButton implements TableCellEditor {
     }
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         if (value instanceof Boolean) {
-            //setOpaque(true);
             setBackground(table.getSelectionBackground());
             setHorizontalAlignment(SwingConstants.CENTER);
             setSelected((Boolean) value);
