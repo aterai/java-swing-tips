@@ -22,16 +22,9 @@ public final class MainPanel extends JPanel {
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
         textArea.setEditable(false);
 
-        JButton button = new JButton(new AbstractAction("Goto Line") {
-            @Override public void actionPerformed(ActionEvent e) {
-                startScroll();
-            }
-        });
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setDefaultButton(button);
-            }
-        });
+        JButton button = new JButton("Goto Line");
+        button.addActionListener(e -> startScroll());
+        EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(textField);
@@ -50,21 +43,19 @@ public final class MainPanel extends JPanel {
             final Element elem = root.getElement(ln - 1);
             final Rectangle dest = textArea.modelToView(elem.getStartOffset());
             final Rectangle current = scroll.getViewport().getViewRect();
-            new Timer(20, new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    Timer animator = (Timer) e.getSource();
-                    if (dest.y < current.y && animator.isRunning()) {
-                        int d = Math.max(1, (current.y - dest.y) / 2);
-                        current.y = current.y - d;
-                        textArea.scrollRectToVisible(current);
-                    } else if (dest.y > current.y && animator.isRunning()) {
-                        int d = Math.max(1, (dest.y - current.y) / 2);
-                        current.y = current.y + d;
-                        textArea.scrollRectToVisible(current);
-                    } else {
-                        textArea.setCaretPosition(elem.getStartOffset());
-                        animator.stop();
-                    }
+            new Timer(20, e -> {
+                Timer animator = (Timer) e.getSource();
+                if (dest.y < current.y && animator.isRunning()) {
+                    int d = Math.max(1, (current.y - dest.y) / 2);
+                    current.y = current.y - d;
+                    textArea.scrollRectToVisible(current);
+                } else if (dest.y > current.y && animator.isRunning()) {
+                    int d = Math.max(1, (dest.y - current.y) / 2);
+                    current.y = current.y + d;
+                    textArea.scrollRectToVisible(current);
+                } else {
+                    textArea.setCaretPosition(elem.getStartOffset());
+                    animator.stop();
                 }
             }).start();
         } catch (BadLocationException ble) {

@@ -59,13 +59,11 @@ public final class MainPanel extends JPanel {
 //             }
 //         });
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                System.out.println("invokeLater");
-                field.requestFocusInWindow();
-                System.out.println("getRootPane().setDefaultButton(eb)");
-                getRootPane().setDefaultButton(eb);
-            }
+        EventQueue.invokeLater(() -> {
+            System.out.println("invokeLater");
+            field.requestFocusInWindow();
+            System.out.println("getRootPane().setDefaultButton(eb)");
+            getRootPane().setDefaultButton(eb);
         });
 
         System.out.println("this");

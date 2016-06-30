@@ -41,11 +41,7 @@ public final class MainPanel extends JPanel {
             }
         });
         //frame.getRootPane().setDefaultButton(button);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setDefaultButton(button);
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(textField);

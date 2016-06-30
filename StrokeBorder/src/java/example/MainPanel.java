@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final JComboBox<? extends Enum> endcapCombo = new JComboBox<>(EndCapStyle.values());
     private final JTextField field = new JTextField("10, 20");
     private final JLabel label = new JLabel();
-    public  final JButton button;
+    public  final JButton button = new JButton("Change");
     private float[] getDashArray() {
         String[] slist = field.getText().split(",");
         if (slist.length == 0) {
@@ -40,14 +40,11 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout());
-        button = new JButton(new AbstractAction("Change") {
-            @Override public void actionPerformed(ActionEvent e) {
-                BasicStroke dashedStroke = new BasicStroke(5f,
-                    ((EndCapStyle) endcapCombo.getSelectedItem()).style,
-                    ((JoinStyle) joinCombo.getSelectedItem()).style,
-                    5f, getDashArray(), 0f);
-                label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
-            }
+        button.addActionListener(e -> {
+            int ecs = ((EndCapStyle) endcapCombo.getSelectedItem()).style;
+            int js = ((JoinStyle) joinCombo.getSelectedItem()).style;
+            BasicStroke dashedStroke = new BasicStroke(5f, ecs, js, 5f, getDashArray(), 0f);
+            label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
         });
 
         JPanel p = new JPanel(new BorderLayout(2, 2));

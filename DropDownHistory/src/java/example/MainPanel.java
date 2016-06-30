@@ -39,21 +39,16 @@ public final class MainPanel extends JPanel {
         combo.setModel(model);
         combo.setEditable(true);
 
-        JButton searchButton = new JButton(new AbstractAction("Search") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String pattern = (String) combo.getEditor().getItem();
-                if (addItem(combo, pattern, 4)) {
-                    setHighlight(textArea, pattern);
-                } else {
-                    textArea.getHighlighter().removeAllHighlights();
-                }
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(e -> {
+            String pattern = (String) combo.getEditor().getItem();
+            if (addItem(combo, pattern, 4)) {
+                setHighlight(textArea, pattern);
+            } else {
+                textArea.getHighlighter().removeAllHighlights();
             }
         });
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setDefaultButton(searchButton);
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setDefaultButton(searchButton));
 
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));

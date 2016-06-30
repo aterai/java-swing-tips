@@ -28,64 +28,59 @@ public final class MainPanel extends JPanel {
         scroll.setRowHeaderView(new LineNumberView(textArea));
         textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 
-        final JButton button = new JButton(new AbstractAction("count commented lines: startsWith(\"#\")") {
-            @Override public void actionPerformed(ActionEvent e) {
-                int count = 0;
-                StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
-                while (st.hasMoreTokens()) {
-                    //if (st.nextToken().startsWith("#")) {
-                    //if (st.nextToken().charAt(0) == '#') {
-                    if (st.nextToken().codePointAt(0) == '#') {
-                        count++;
-                    }
-                }
+        JButton button = new JButton("count commented lines: startsWith(\"#\")");
 
-//                 //String#split >>>>
-//                 for (String line: textArea.getText().split("\\n")) {
+        button.addActionListener(e -> {
+            int count = 0;
+            StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
+            while (st.hasMoreTokens()) {
+                //if (st.nextToken().startsWith("#")) {
+                //if (st.nextToken().charAt(0) == '#') {
+                if (st.nextToken().codePointAt(0) == '#') {
+                    count++;
+                }
+            }
+//             //String#split >>>>
+//             for (String line: textArea.getText().split("\\n")) {
+//                 if (!line.isEmpty() && line.codePointAt(0) == '#') {
+//                     count++;
+//                 }
+//             }
+//             //<<<< String#split
+//
+//             //LineNumberReader >>>>
+//             try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
+//                 String line = null;
+//                 while ((line = lnr.readLine()) != null) {
 //                     if (!line.isEmpty() && line.codePointAt(0) == '#') {
 //                         count++;
 //                     }
 //                 }
-//                 //<<<< String#split
+//             } catch (java.io.IOException ioe) {
+//                 ioe.printStackTrace();
+//             }
+//             //<<<< LineNumberReader
 //
-//                 //LineNumberReader >>>>
-//                 try (java.io.LineNumberReader lnr = new java.io.LineNumberReader(new java.io.StringReader(textArea.getText()))) {
-//                     String line = null;
-//                     while ((line = lnr.readLine()) != null) {
-//                         if (!line.isEmpty() && line.codePointAt(0) == '#') {
-//                             count++;
-//                         }
+//             //ElementCount >>>>
+//             Document doc = textArea.getDocument();
+//             Element root = doc.getDefaultRootElement();
+//             try {
+//                 for (int i = 0; i < root.getElementCount(); i++) {
+//                     Element elem = root.getElement(i);
+//                     String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
+//                     if (line.codePointAt(0) == '#') {
+//                         count++;
 //                     }
-//                 } catch (java.io.IOException ioe) {
-//                     ioe.printStackTrace();
 //                 }
-//                 //<<<< LineNumberReader
-//
-//                 //ElementCount >>>>
-//                 Document doc = textArea.getDocument();
-//                 Element root = doc.getDefaultRootElement();
-//                 try {
-//                     for (int i = 0; i < root.getElementCount(); i++) {
-//                         Element elem = root.getElement(i);
-//                         String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
-//                         if (line.codePointAt(0) == '#') {
-//                             count++;
-//                         }
-//                     }
-//                 } catch (BadLocationException ble) {
-//                     ble.printStackTrace();
-//                 }
-//                 //<<<< ElementCount
+//             } catch (BadLocationException ble) {
+//                 ble.printStackTrace();
+//             }
+//             //<<<< ElementCount
 
-                JOptionPane.showMessageDialog(scroll, "commented lines: " + count, "title", JOptionPane.INFORMATION_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(scroll, "commented lines: " + count, "title", JOptionPane.INFORMATION_MESSAGE);
         });
         //frame.getRootPane().setDefaultButton(button);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setDefaultButton(button);
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
 
         add(button, BorderLayout.NORTH);
         add(scroll);
