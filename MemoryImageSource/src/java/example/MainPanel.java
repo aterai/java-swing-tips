@@ -59,14 +59,10 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     }
     @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (backImage != null) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.drawImage(backImage, 0, 0, this);
-            g2.dispose();
-        }
-        if (source != null) {
-            g.drawImage(createImage(source), 0, 0, null);
-        }
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.drawImage(backImage, 0, 0, this);
+        g2.drawImage(createImage(source), 0, 0, this);
+        g2.dispose();
     }
     @Override public void mouseDragged(MouseEvent e) {
         Point pt = e.getPoint();
@@ -182,12 +178,10 @@ final class TextureFactory {
 //     }
 //     @Override protected void paintComponent(Graphics g) {
 //         super.paintComponent(g);
-//         if (backImage != null) {
-//             g.drawImage(backImage, 0, 0, this);
-//         }
-//         if (currentImage != null) {
-//             g.drawImage(currentImage, 0, 0, this);
-//         }
+//         //if (Objects.nonNull(backImage)) {
+//         g.drawImage(backImage, 0, 0, this);
+//         //if (Objects.nonNull(currentImage)) {
+//         g.drawImage(currentImage, 0, 0, this);
 //     }
 //     @Override public void mouseDragged(MouseEvent e) {
 //         Point pt = e.getPoint();
