@@ -11,12 +11,10 @@ public final class MainPanel extends JPanel {
     private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(comboBox.getMaximumRowCount(), -1, 1000, 1));
     public MainPanel() {
         super(new BorderLayout());
-        spinner.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JSpinner source = (JSpinner) e.getSource();
-                Integer newValue = (Integer) source.getValue();
-                comboBox.setMaximumRowCount(newValue);
-            }
+        spinner.addChangeListener(e -> {
+            JSpinner source = (JSpinner) e.getSource();
+            Integer newValue = (Integer) source.getValue();
+            comboBox.setMaximumRowCount(newValue);
         });
 
         Box box = Box.createVerticalBox();

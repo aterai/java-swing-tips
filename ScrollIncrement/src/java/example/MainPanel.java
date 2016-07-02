@@ -20,11 +20,9 @@ public final class MainPanel extends JPanel {
 
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(scrollPane.getVerticalScrollBar().getUnitIncrement(1), 1, 100000, 1));
         spinner.setEditor(new JSpinner.NumberEditor(spinner, "#####0"));
-        spinner.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JSpinner s = (JSpinner) e.getSource();
-                scrollPane.getVerticalScrollBar().setUnitIncrement((Integer) s.getValue());
-            }
+        spinner.addChangeListener(e -> {
+            JSpinner s = (JSpinner) e.getSource();
+            scrollPane.getVerticalScrollBar().setUnitIncrement((Integer) s.getValue());
         });
         Box box = Box.createHorizontalBox();
         box.add(new JLabel("Unit Increment:"));

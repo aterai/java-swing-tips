@@ -68,11 +68,9 @@ public final class MainPanel extends JPanel {
 
         //<blockquote cite="http://tips4java.wordpress.com/2008/11/05/fixed-column-table/">
         //@auther Rob Camick
-        scroll.getRowHeader().addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JViewport viewport = (JViewport) e.getSource();
-                scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
-            }
+        scroll.getRowHeader().addChangeListener(e -> {
+            JViewport viewport = (JViewport) e.getSource();
+            scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
         });
         //</blockquote>
         add(scroll);

@@ -26,11 +26,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        spinner.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                repaint();
-            }
-        });
+        spinner.addChangeListener(e -> repaint());
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spinner.getEditor();
         JFormattedTextField ftf = (JFormattedTextField) editor.getTextField();
         ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));

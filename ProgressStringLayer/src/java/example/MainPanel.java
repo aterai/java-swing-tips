@@ -157,19 +157,15 @@ class TextLabelProgressBar extends JProgressBar {
         removeChangeListener(changeListener);
         super.updateUI();
         setLayout(new BorderLayout());
-        changeListener = new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                int iv = (int) (100 * getPercentComplete());
-                label.setText(String.format("%03d/100", iv));
-                //label.setText(getString());
-            }
+        changeListener = e -> {
+            int iv = (int) (100 * getPercentComplete());
+            label.setText(String.format("%03d/100", iv));
+            //label.setText(getString());
         };
         addChangeListener(changeListener);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                add(label);
-                label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
-            }
+        EventQueue.invokeLater(() -> {
+            add(label);
+            label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         });
     }
     @Override public Dimension getPreferredSize() {

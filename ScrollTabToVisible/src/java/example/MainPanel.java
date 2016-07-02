@@ -20,14 +20,12 @@ public final class MainPanel extends JPanel {
         slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                int i = ((JSlider) e.getSource()).getValue();
-                if (check.isSelected()) {
-                    jtp.setSelectedIndex(i);
-                }
-                scrollTabAt(jtp, i);
+        slider.addChangeListener(e -> {
+            int i = ((JSlider) e.getSource()).getValue();
+            if (check.isSelected()) {
+                jtp.setSelectedIndex(i);
             }
+            scrollTabAt(jtp, i);
         });
         check.setHorizontalAlignment(SwingConstants.RIGHT);
         JPanel p = new JPanel(new BorderLayout());

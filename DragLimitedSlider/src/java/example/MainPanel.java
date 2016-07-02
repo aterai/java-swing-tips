@@ -43,12 +43,10 @@ public final class MainPanel extends JPanel {
                 }
             }
         }
-        slider.getModel().addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-                if (m.getValue() > MAXI) {
-                    m.setValue(MAXI);
-                }
+        slider.getModel().addChangeListener(e -> {
+            BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+            if (m.getValue() > MAXI) {
+                m.setValue(MAXI);
             }
         });
         return slider;

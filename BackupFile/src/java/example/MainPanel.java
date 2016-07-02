@@ -86,12 +86,10 @@ public final class MainPanel extends JPanel {
         editor2.getTextField().setEditable(false);
         spinner2.setEditor(editor2);
 
-        ChangeListener cl = new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                int i1 = ((Integer) spinner1.getValue()).intValue();
-                int i2 = ((Integer) spinner2.getValue()).intValue();
-                label.setText(String.valueOf(i1 + i2));
-            }
+        ChangeListener cl = e -> {
+            int i1 = ((Integer) spinner1.getValue()).intValue();
+            int i2 = ((Integer) spinner2.getValue()).intValue();
+            label.setText(String.valueOf(i1 + i2));
         };
         spinner1.addChangeListener(cl);
         spinner2.addChangeListener(cl);

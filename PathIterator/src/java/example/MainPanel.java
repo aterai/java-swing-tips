@@ -31,11 +31,7 @@ public final class MainPanel extends JPanel {
         super(new BorderLayout());
 
         initStar();
-        ChangeListener cl = new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                initStar();
-            }
-        };
+        ChangeListener cl = e -> initStar();
         spinner1.addChangeListener(cl);
         spinner2.addChangeListener(cl);
         vcSpinner.addChangeListener(cl);

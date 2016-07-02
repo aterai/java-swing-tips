@@ -12,27 +12,22 @@ public final class MainPanel extends JPanel {
     private static final int MIN    = 0;
     private static final int MAX    = EXTENT * 10; //200
     private static final int VALUE  = 50;
-    private final JSpinner spinner;
-    private final JScrollBar scrollbar;
+    private final JScrollBar scrollbar = new JScrollBar(Adjustable.HORIZONTAL, VALUE, EXTENT, MIN, MAX + EXTENT);
+    private final JSpinner spinner     = new JSpinner(new SpinnerNumberModel(VALUE, MIN, MAX, STEP));
 
     public MainPanel() {
         super(new GridLayout(2, 1));
-        scrollbar = new JScrollBar(Adjustable.HORIZONTAL, VALUE, EXTENT, MIN, MAX + EXTENT);
+
         scrollbar.setUnitIncrement(STEP);
-        scrollbar.getModel().addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-                spinner.setValue(m.getValue());
-            }
+        scrollbar.getModel().addChangeListener(e -> {
+            BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+            spinner.setValue(m.getValue());
         });
 
-        spinner = new JSpinner(new SpinnerNumberModel(VALUE, MIN, MAX, STEP));
-        spinner.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JSpinner source = (JSpinner) e.getSource();
-                Integer iv = (Integer) source.getValue();
-                scrollbar.setValue(iv);
-            }
+        spinner.addChangeListener(e -> {
+            JSpinner source = (JSpinner) e.getSource();
+            Integer iv = (Integer) source.getValue();
+            scrollbar.setValue(iv);
         });
 
         add(makeTitlePanel(spinner, "JSpinner"));
@@ -48,6 +43,7 @@ public final class MainPanel extends JPanel {
         c.insets  = new Insets(5, 5, 5, 5);
         p.add(cmp, c);
         p.setBorder(BorderFactory.createTitledBorder(title));
+        p.setBackground(Color.WHITE);
         return p;
     }
 

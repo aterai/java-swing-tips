@@ -21,9 +21,6 @@ public final class MainPanel extends JPanel {
     private final JEditorPane editor1 = new JEditorPane();
     private final JEditorPane editor2 = new JEditorPane();
 
-    private final String st0;
-    private final String st1;
-
     private MainPanel() {
         super(new BorderLayout());
 
@@ -64,8 +61,8 @@ public final class MainPanel extends JPanel {
             sb0.append(TEXT);
             sb1.append(TEXT);
         }
-        st0 = sb0.toString();
-        st1 = sb1.toString();
+        String st0 = sb0.toString();
+        String st1 = sb1.toString();
 
         editor0.setEditorKit(new HTMLEditorKit());
         editor0.setText(sb0.toString());
@@ -77,22 +74,20 @@ public final class MainPanel extends JPanel {
         editor2.setEditorKit(new ImageLoadSynchronouslyHTMLEditorKit());
         tabs.addTab("LoadsSynchronously", new JScrollPane(editor2));
 
-        tabs.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                switch (tabs.getSelectedIndex()) {
-                  case 2:
-                    editor2.setText(st0);
-                    saveImage(editor2);
-                    break;
-                  case 1:
-                    editor1.setText(st1);
-                    saveImage(editor1);
-                    break;
-                  default:
-                    editor0.setText(st0);
-                    saveImage(editor0);
-                    break;
-                }
+        tabs.addChangeListener(e -> {
+            switch (tabs.getSelectedIndex()) {
+              case 2:
+                editor2.setText(st0);
+                saveImage(editor2);
+                break;
+              case 1:
+                editor1.setText(st1);
+                saveImage(editor1);
+                break;
+              default:
+                editor0.setText(st0);
+                saveImage(editor0);
+                break;
             }
         });
 

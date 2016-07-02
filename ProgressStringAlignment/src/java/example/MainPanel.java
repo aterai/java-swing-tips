@@ -104,11 +104,9 @@ class StringAlignmentProgressBar extends JProgressBar {
         removeChangeListener(changeListener);
         super.updateUI();
         setLayout(new BorderLayout());
-        changeListener = new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
-                label.setText(getString());
-            }
+        changeListener = e -> {
+            //BoundedRangeModel m = (BoundedRangeModel) e.getSource(); //label.setText(m.getValue() + "%");
+            label.setText(getString());
         };
         addChangeListener(changeListener);
         EventQueue.invokeLater(new Runnable() {

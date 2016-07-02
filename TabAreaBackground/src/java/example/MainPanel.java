@@ -110,13 +110,11 @@ public final class MainPanel extends JPanel {
         final JTabbedPane tabs = new JTabbedPane();
         //tabs.setBackground(Color.GREEN);
         tabs.setOpaque(true);
-        tabs.addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                JTabbedPane t = (JTabbedPane) e.getSource();
-                int si = t.getSelectedIndex();
-                for (int i = 0; i < t.getTabCount(); i++) {
-                    t.setForegroundAt(i, (i == si) ? Color.BLACK : Color.WHITE);
-                }
+        tabs.addChangeListener(e -> {
+            JTabbedPane t = (JTabbedPane) e.getSource();
+            int si = t.getSelectedIndex();
+            for (int i = 0; i < t.getTabCount(); i++) {
+                t.setForegroundAt(i, (i == si) ? Color.BLACK : Color.WHITE);
             }
         });
         tabs.addMouseMotionListener(new MouseMotionAdapter() {

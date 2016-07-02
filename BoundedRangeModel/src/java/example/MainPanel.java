@@ -48,12 +48,8 @@ public final class MainPanel extends JPanel {
         });
         table.setFillsViewportHeight(true);
         scroll.setVerticalScrollBar(scrollbar);
+        scrollbar.getModel().addChangeListener(e -> label.repaint());
 
-        scrollbar.getModel().addChangeListener(new ChangeListener() {
-            @Override public void stateChanged(ChangeEvent e) {
-                label.repaint();
-            }
-        });
         label.setIcon(new HighlightIcon());
         Border in  = BorderFactory.createLineBorder(Color.BLACK);
         Border out = BorderFactory.createEmptyBorder(5, 5, 5, 5);
