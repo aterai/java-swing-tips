@@ -20,10 +20,8 @@ public final class MainPanel extends JPanel {
         tree.setSelectionRow(0);
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                if (Objects.isNull(node) || node.isLeaf()) {
-                    return;
-                } else {
+                Object o = tree.getLastSelectedPathComponent();
+                if (o instanceof MutableTreeNode && !((MutableTreeNode) o).isLeaf()) {
                     initBreadcrumbList(breadcrumb, tree);
                     breadcrumb.revalidate();
                     breadcrumb.repaint();
@@ -76,10 +74,12 @@ public final class MainPanel extends JPanel {
             @Override public boolean contains(int x, int y) {
                 Icon i = getIcon();
                 if (i instanceof ArrowToggleButtonBarCellIcon) {
-                    return ((ArrowToggleButtonBarCellIcon) i).getShape().contains(x, y);
-                } else {
-                    return super.contains(x, y);
+                    Shape s = ((ArrowToggleButtonBarCellIcon) i).getShape();
+                    if (Objects.nonNull(s)) {
+                        return s.contains(x, y);
+                    }
                 }
+                return super.contains(x, y);
             }
         };
         if (Objects.nonNull(tree)) {
