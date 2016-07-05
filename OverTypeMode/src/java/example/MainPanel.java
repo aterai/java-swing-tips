@@ -50,14 +50,12 @@ class OvertypeTextArea extends JTextArea {
 
     @Override public void updateUI() {
         super.updateUI();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                //setCaretColor(Color.RED);
-                defaultCaret = getCaret();
-                overtypeCaret = new OvertypeCaret();
-                overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
-                setOvertypeMode(overtypeMode);
-            }
+        EventQueue.invokeLater(() -> {
+            //setCaretColor(Color.RED);
+            defaultCaret = getCaret();
+            overtypeCaret = new OvertypeCaret();
+            overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
+            setOvertypeMode(overtypeMode);
         });
     }
 

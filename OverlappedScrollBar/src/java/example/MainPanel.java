@@ -30,16 +30,14 @@ public final class MainPanel extends JPanel {
             }
             @Override public void updateUI() {
                 super.updateUI();
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
-                        getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
-                        setComponentZOrder(getVerticalScrollBar(), 0);
-                        setComponentZOrder(getHorizontalScrollBar(), 1);
-                        setComponentZOrder(getViewport(), 2);
-                        getVerticalScrollBar().setOpaque(false);
-                        getHorizontalScrollBar().setOpaque(false);
-                    }
+                EventQueue.invokeLater(() -> {
+                    getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
+                    getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
+                    setComponentZOrder(getVerticalScrollBar(), 0);
+                    setComponentZOrder(getHorizontalScrollBar(), 1);
+                    setComponentZOrder(getViewport(), 2);
+                    getVerticalScrollBar().setOpaque(false);
+                    getHorizontalScrollBar().setOpaque(false);
                 });
                 setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                 setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

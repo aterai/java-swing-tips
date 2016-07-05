@@ -69,18 +69,16 @@ public final class MainPanel extends JPanel {
 }
 
 class RightPopupMenuListener implements PopupMenuListener {
-    @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                JComboBox combo = (JComboBox) e.getSource();
-                Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
-                //Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-                if (a instanceof BasicComboPopup) {
-                    BasicComboPopup pop = (BasicComboPopup) a;
-                    Point p = new Point(combo.getSize().width, 0);
-                    SwingUtilities.convertPointToScreen(p, combo);
-                    pop.setLocation(p);
-                }
+    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        EventQueue.invokeLater(() -> {
+            JComboBox combo = (JComboBox) e.getSource();
+            Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
+            //Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+            if (a instanceof BasicComboPopup) {
+                BasicComboPopup pop = (BasicComboPopup) a;
+                Point p = new Point(combo.getSize().width, 0);
+                SwingUtilities.convertPointToScreen(p, combo);
+                pop.setLocation(p);
             }
         });
     }

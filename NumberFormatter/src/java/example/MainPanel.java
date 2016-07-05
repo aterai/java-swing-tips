@@ -77,11 +77,7 @@ class WarningSpinner extends JSpinner {
                 updateEditValid();
             }
             private void updateEditValid() {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        ftf.setBackground(ftf.isEditValid() ? Color.WHITE : ERROR_BG);
-                    }
-                });
+                EventQueue.invokeLater(() -> ftf.setBackground(ftf.isEditValid() ? Color.WHITE : ERROR_BG));
             }
         });
     }

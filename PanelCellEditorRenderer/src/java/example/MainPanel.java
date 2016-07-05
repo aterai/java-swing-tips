@@ -25,17 +25,15 @@ public final class MainPanel extends JPanel {
     private final JTable table = new JTable(model) {
         @Override public void updateUI() {
             super.updateUI();
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    TableColumn column = getColumnModel().getColumn(0);
-                    column.setCellRenderer(new SpinnerRenderer());
-                    column.setCellEditor(new SpinnerEditor());
+            EventQueue.invokeLater(() -> {
+                TableColumn column = getColumnModel().getColumn(0);
+                column.setCellRenderer(new SpinnerRenderer());
+                column.setCellEditor(new SpinnerEditor());
 
-                    column = getColumnModel().getColumn(1);
-                    column.setCellRenderer(new ButtonsRenderer());
-                    column.setCellEditor(new ButtonsEditor());
-                    repaint();
-                }
+                column = getColumnModel().getColumn(1);
+                column.setCellRenderer(new ButtonsRenderer());
+                column.setCellEditor(new ButtonsEditor());
+                repaint();
             });
         }
     };

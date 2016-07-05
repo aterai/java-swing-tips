@@ -11,10 +11,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public final class MainPanel extends JPanel implements HierarchyListener {
-    private static BoundedRangeModel model = new DefaultBoundedRangeModel();
+    private final BoundedRangeModel model   = new DefaultBoundedRangeModel();
     private final JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
     private final JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
-    private final List<JProgressBar> list = Arrays.asList(progressBar1, progressBar2);
+    private final List<JProgressBar> list   = Arrays.asList(progressBar1, progressBar2);
     private SwingWorker<String, Void> worker;
 
     public MainPanel() {
@@ -109,11 +109,9 @@ class StringAlignmentProgressBar extends JProgressBar {
             label.setText(getString());
         };
         addChangeListener(changeListener);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                add(label);
-                label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
-            }
+        EventQueue.invokeLater(() -> {
+            add(label);
+            label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         });
     }
 }
