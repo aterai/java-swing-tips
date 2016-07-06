@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -61,12 +61,12 @@ public final class MainPanel extends JPanel {
         setPreferredSize(new Dimension(320, 240));
     }
     @Override protected void paintComponent(Graphics g) {
-        if (Objects.nonNull(texture)) {
+        Optional.ofNullable(texture).ifPresent(tx -> {
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.setPaint(texture);
+            g2.setPaint(tx);
             g2.fillRect(0, 0, getWidth(), getHeight());
             g2.dispose();
-        }
+        });
         super.paintComponent(g);
     }
     private TexturePaint makeImageTexture() {
@@ -116,9 +116,7 @@ public final class MainPanel extends JPanel {
 
         //if (System.getProperty("java.version").startsWith("1.6.0")) {
         //    AWTUtilities.setWindowOpaque(frame, false);
-        //} else {
-            frame.setBackground(new Color(0x0, true)); //1.7.0
-        //}
+        frame.setBackground(new Color(0x0, true)); //1.7.0
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.pack();
@@ -130,14 +128,12 @@ public final class MainPanel extends JPanel {
 // // Bug ID: 7156657 Version 7 doesn't support translucent popup menus against a translucent window
 // // http://bugs.java.com/view_bug.do?bug_id=7156657
 // class TranslucencyFrameComboBoxPopupMenuListener implements PopupMenuListener {
-//     @Override public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 JComboBox combo = (JComboBox) e.getSource();
-//                 Object o = combo.getAccessibleContext().getAccessibleChild(0);
-//                 if (o instanceof JComponent) { //BasicComboPopup
-//                     ((JComponent) o).repaint();
-//                 }
+//     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+//         EventQueue.invokeLater(() -> {
+//             JComboBox combo = (JComboBox) e.getSource();
+//             Object o = combo.getAccessibleContext().getAccessibleChild(0);
+//             if (o instanceof JComponent) { //BasicComboPopup
+//                 ((JComponent) o).repaint();
 //             }
 //         });
 //     }
