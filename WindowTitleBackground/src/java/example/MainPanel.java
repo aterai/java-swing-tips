@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         {"windowBorder",          UIManager.getColor("windowBorder")},
         {"windowText",            UIManager.getColor("windowText")}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
             return column == 1;
         }

@@ -20,7 +20,7 @@ public class MainPanel extends JPanel {
         {"Boolean", Boolean.TRUE},
         {"Color",   Color.RED   }
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

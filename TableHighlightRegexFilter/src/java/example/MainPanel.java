@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         {"ccccbbbbaaabbbbaaeabee", "xxx"}, {"dddaaabbbbb", "ccbbaa"},
         {"cc cc bbbb aaa bbbb e", "xxx"}, {"ddd aaa b bbbb", "cc bbaa"}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return String.class;
         }

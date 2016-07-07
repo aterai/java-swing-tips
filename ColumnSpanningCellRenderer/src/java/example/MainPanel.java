@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         {new Test("questionIcon",    UIManager.getIcon("OptionPane.questionIcon"),    "public static final int QUESTION_MESSAGE\nUsed for questions."), SEE},
         {new Test("warningIcon",     UIManager.getIcon("OptionPane.warningIcon"),     "public static final int WARNING_MESSAGE\nUsed for warning messages."), SEE},
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
             return false;
         }

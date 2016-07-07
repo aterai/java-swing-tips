@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
         {"dd", Arrays.asList(getOptionPaneIcon("OptionPane.informationIcon"))},
         {"ee", Arrays.asList(getOptionPaneIcon("OptionPane.warningIcon"), getOptionPaneIcon("OptionPane.questionIcon"))}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         {"FFF", 19, true}, {"fff", 6, false},
         {"GGG", 92, true}, {"ggg", 0, false}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             // ArrayIndexOutOfBoundsException: 0 >= 0
             // Bug ID: JDK-6967479 JTable sorter fires even if the model is empty

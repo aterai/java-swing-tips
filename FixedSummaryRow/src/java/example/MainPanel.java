@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
         {1, 5}, {1, 4}, {1, -5}, {1, 0}, {1, 6},
         {Integer.MAX_VALUE, Integer.MAX_VALUE}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return Integer.class; //getValueAt(0, column).getClass();
         }

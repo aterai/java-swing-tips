@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         {"代表取締役", ""},
         {"事業内容", ""}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames);
+    private final TableModel model = new DefaultTableModel(data, columnNames);
     private final JTable table = new JTable(model) {
         @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
             Component c = super.prepareRenderer(tcr, row, column);

@@ -15,7 +15,7 @@ public class MainPanel extends JPanel {
         {"aaa", 1.4142, 1.4142}, {"bbb", 98.765, 98.765},
         {"CCC", 1.73, 1.73}, {"DDD", 0d, 0d}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

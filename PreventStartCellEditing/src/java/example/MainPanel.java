@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
         {"aaa", 12, "eee"}, {"bbb", 5, "ggg"},
         {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

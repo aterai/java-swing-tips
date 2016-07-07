@@ -140,7 +140,7 @@ public final class MainPanel extends JPanel {
 class LineFocusTable extends JTable {
     private final DotBorder dotBorder = new DotBorder(2, 2, 2, 2);
     private final Border emptyBorder  = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-    protected LineFocusTable(DefaultTableModel model) {
+    protected LineFocusTable(TableModel model) {
         super(model);
     }
     @Override public void updateUI() {

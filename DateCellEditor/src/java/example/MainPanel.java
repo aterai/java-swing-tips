@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         {-9, "EEE", new Date()}, {1, "",    new Date()},
         {10, "CCC", new Date()}, {7, "FFF", new Date()},
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

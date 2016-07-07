@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
         {"AAA",  "bbbbbb"}, {"CCC", "ddddddd"}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

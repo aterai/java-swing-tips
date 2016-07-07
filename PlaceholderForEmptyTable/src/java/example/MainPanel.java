@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     private static final String PLACEHOLDER = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
     private final JEditorPane editor = new JEditorPane("text/html", PLACEHOLDER);
     private final String[] columnNames = {"Integer", "String", "Boolean"};
-    private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    private final TableModel model = new DefaultTableModel(null, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             switch (column) {
               case 0:  return Integer.class;

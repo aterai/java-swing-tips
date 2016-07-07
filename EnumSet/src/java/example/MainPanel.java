@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
         {"group", EnumSet.of(Permissions.READ)},
         {"other", EnumSet.noneOf(Permissions.class)}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

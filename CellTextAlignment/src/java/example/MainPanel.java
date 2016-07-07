@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel implements ActionListener {
         {12, "aaa", true}, {5, "bbb", false},
         {92, "CCC", true}, {0, "DDD", false}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }

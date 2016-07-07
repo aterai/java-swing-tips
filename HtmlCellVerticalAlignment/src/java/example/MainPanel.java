@@ -19,7 +19,7 @@ public class MainPanel extends JPanel {
         {"<html><font color=orange>font color orange</font> " + TEXT},
         {"<html><font color=gray>font color gray</font> " + TEXT}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return String.class;
         }

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
         {"aaa", 12, true}, {"bbb", 5, false},
         {"CCC", 92, true}, {"DDD", 0, false}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public boolean isCellEditable(int row, int column) {
             return column == 2;
         }

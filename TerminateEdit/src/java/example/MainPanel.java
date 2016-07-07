@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     private final Object[][] data = {
         {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
     };
-    private final DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    private final TableModel model = new DefaultTableModel(data, columnNames) {
         @Override public Class<?> getColumnClass(int column) {
             return getValueAt(0, column).getClass();
         }
