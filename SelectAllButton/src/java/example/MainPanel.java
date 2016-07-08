@@ -46,11 +46,7 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setJMenuBar(createMenuBar());
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
     }
 
     private JMenuBar createMenuBar() {

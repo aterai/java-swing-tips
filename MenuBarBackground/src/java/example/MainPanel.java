@@ -9,11 +9,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setJMenuBar(createMenuBar());
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
         setPreferredSize(new Dimension(320, 240));
     }
     private JMenuBar createMenuBar() {

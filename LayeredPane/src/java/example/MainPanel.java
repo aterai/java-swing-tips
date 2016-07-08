@@ -12,11 +12,7 @@ public final class MainPanel extends JPanel {
     private final JDesktopPane desktop = new JDesktopPane();
     public MainPanel() {
         super(new BorderLayout());
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setJMenuBar(createMenuBar());
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
         //title, resizable, closable, maximizable, iconifiable
         JInternalFrame jif = new JInternalFrame("AlwaysOnTop", true, false, true, true);
         jif.setSize(180, 180);
@@ -37,13 +33,11 @@ public final class MainPanel extends JPanel {
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("new");
-        menuItem.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JInternalFrame jif = new MyInternalFrame();
-                desktop.add(jif);
-                jif.setVisible(true);
-                //desktop.getDesktopManager().activateFrame(jif);
-            }
+        menuItem.addActionListener(e -> {
+            JInternalFrame jif = new MyInternalFrame();
+            desktop.add(jif);
+            jif.setVisible(true);
+            //desktop.getDesktopManager().activateFrame(jif);
         });
         menu.add(menuItem);
 
@@ -51,11 +45,9 @@ public final class MainPanel extends JPanel {
         menuItem.setMnemonic(KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.ALT_DOWN_MASK));
         menuItem.setActionCommand("quit");
-        menuItem.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //SwingUtilities.getWindowAncestor(desktop).dispose();
-                Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(w -> w.dispose());
-            }
+        menuItem.addActionListener(e -> {
+            //SwingUtilities.getWindowAncestor(desktop).dispose();
+            Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(w -> w.dispose());
         });
         menu.add(menuItem);
         return menuBar;

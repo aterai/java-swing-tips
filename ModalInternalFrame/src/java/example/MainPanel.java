@@ -78,11 +78,7 @@ public final class MainPanel extends JPanel {
         b.setMnemonic(KeyEvent.VK_B);
         add(b, BorderLayout.SOUTH);
         add(desktop);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setJMenuBar(menuBar);
-            }
-        });
+        EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
         setPreferredSize(new Dimension(320, 240));
     }
 
@@ -94,8 +90,7 @@ public final class MainPanel extends JPanel {
         }
         @Override public void actionPerformed(ActionEvent e) {
             setJMenuEnabled(false);
-            JOptionPane.showInternalMessageDialog(
-                desktop, "information", "modal1", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(desktop, "information", "modal1", JOptionPane.INFORMATION_MESSAGE);
             setJMenuEnabled(true);
         }
     }
@@ -116,8 +111,7 @@ public final class MainPanel extends JPanel {
             Rectangle screen = w.getGraphicsConfiguration().getBounds();
             glass.setSize(screen.width, screen.height);
             glass.setVisible(true);
-            JOptionPane.showInternalMessageDialog(
-                desktop, "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showInternalMessageDialog(desktop, "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
             glass.setVisible(false);
             setJMenuEnabled(true);
         }
