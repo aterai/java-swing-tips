@@ -6,7 +6,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -15,13 +15,11 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        Font font = makeFont(getClass().getResource("mona.ttf"));
-        //Document doc = makeDocument(getClass().getResource("bar.utf8.txt"), "UTF-8");
-        if (Objects.nonNull(font)) {
+        makeFont(getClass().getResource("mona.ttf")).ifPresent(font -> {
             System.out.println(font.toString());
             textpane.setFont(font.deriveFont(10f));
             //textpane.setDocument(doc);
-        }
+        });
 
         URL url = getClass().getResource("bar.utf8.txt");
         try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
@@ -67,14 +65,13 @@ public final class MainPanel extends JPanel {
 //         return font;
 //     }
 
-    private static Font makeFont(URL url) {
-        Font font = null;
+    private static Optional<Font> makeFont(URL url) {
         try (InputStream is = url.openStream()) {
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
+            return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
         } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }
-        return font;
+        return Optional.empty();
     }
 
 //     private static Document makeDocument(URL url, String encoding) {
