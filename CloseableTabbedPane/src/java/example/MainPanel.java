@@ -12,6 +12,7 @@ import javax.swing.plaf.*;
 public class MainPanel extends JPanel {
     private final JTabbedPane tabbedPane0 = new CloseableTabbedPane();
     private final JTabbedPane tabbedPane1 = new JTabbedPane();
+    private final JButton addTabButton = new JButton("add tab");
 
     public MainPanel() {
         super(new BorderLayout());
@@ -32,19 +33,19 @@ public class MainPanel extends JPanel {
 //             }
 //         });
 
+        addTabButton.addActionListener(e -> {
+            String title = new Date().toString();
+            for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
+                t.addTab(title, new JLabel(title));
+            }
+        });
+
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setTopComponent(tabbedPane0);
         sp.setBottomComponent(new JLayer<JTabbedPane>(tabbedPane1, new CloseableTabbedPaneLayerUI()));
 
         add(sp);
-        add(new JButton(new AbstractAction("add tab") {
-            @Override public void actionPerformed(ActionEvent e) {
-                String title = new Date().toString();
-                for (JTabbedPane t: Arrays.asList(tabbedPane0, tabbedPane1)) {
-                    t.addTab(title, new JLabel(title));
-                }
-            }
-        }), BorderLayout.SOUTH);
+        add(addTabButton, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     public static void main(String... args) {
@@ -57,7 +58,8 @@ public class MainPanel extends JPanel {
     public static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.put("TabbedPane.tabInsets", new Insets(2, 18, 2, 18));
+            int g = CloseableTabbedPaneLayerUI.GAP;
+            UIManager.put("TabbedPane.tabInsets", new Insets(g, 16 + g, g, 16 + g));
         } catch (ClassNotFoundException | InstantiationException
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
@@ -75,12 +77,10 @@ class CloseTabIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.translate(x, y);
-        g2.setPaint(Color.BLACK);
-        if (c instanceof AbstractButton) {
-            ButtonModel m = ((AbstractButton) c).getModel();
-            if (m.isRollover()) {
-                g2.setPaint(Color.ORANGE);
-            }
+        if (c instanceof AbstractButton && ((AbstractButton) c).getModel().isRollover()) {
+            g2.setPaint(Color.ORANGE);
+        } else {
+            g2.setPaint(Color.BLACK);
         }
         g2.drawLine(4,  4, 11, 11);
         g2.drawLine(4,  5, 10, 11);
@@ -118,33 +118,35 @@ class CloseableTabbedPane extends JTabbedPane {
 }
 
 class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
+    public static final int GAP = 2;
     private final JComponent rubberStamp = new JPanel();
     private final Point pt = new Point();
-    private final JButton button = new JButton(new CloseTabIcon());
-//     {
-//         @Override public Dimension getPreferredSize() {
-//             return new Dimension(16, 16);
-//         }
-//     };
-    protected CloseableTabbedPaneLayerUI() {
-        super();
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setRolloverEnabled(false);
+    private final JButton button = new JButton(new CloseTabIcon()) {
+        @Override public void updateUI() {
+            super.updateUI();
+            setBorder(BorderFactory.createEmptyBorder());
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setContentAreaFilled(false);
+            setRolloverEnabled(false);
+        }
+    };
+    private final Dimension d = button.getPreferredSize();
+    private final Rectangle repaintRect = new Rectangle(d.width * 2, d.height * 2);
+
+    private Rectangle getTabButtonRect(JTabbedPane tabbedPane, int index) {
+        Rectangle r = tabbedPane.getBoundsAt(index);
+        //Dimension d = button.getPreferredSize();
+        r.translate(r.width - d.width - GAP, (r.height - d.height) / 2);
+        r.setSize(d);
+        return r;
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
-            JTabbedPane tabPane = (JTabbedPane) jlayer.getView();
-            for (int i = 0; i < tabPane.getTabCount(); i++) {
-                Rectangle rect = tabPane.getBoundsAt(i);
-                Dimension d = button.getPreferredSize();
-                int x = rect.x + rect.width - d.width - 2;
-                int y = rect.y + (rect.height - d.height) / 2;
-                Rectangle r = new Rectangle(x, y, d.width, d.height);
+            JTabbedPane tabbedPane = (JTabbedPane) ((JLayer) c).getView();
+            for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+                Rectangle r = getTabButtonRect(tabbedPane, i);
                 button.getModel().setRollover(r.contains(pt));
                 SwingUtilities.paintComponent(g, button, rubberStamp, r);
             }
@@ -167,26 +169,19 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
             pt.setLocation(e.getPoint());
             JTabbedPane tabbedPane = (JTabbedPane) l.getView();
             int index = tabbedPane.indexAtLocation(pt.x, pt.y);
-            if (index >= 0) {
-                Rectangle rect = tabbedPane.getBoundsAt(index);
-                Dimension d = button.getPreferredSize();
-                int x = rect.x + rect.width - d.width - 2;
-                int y = rect.y + (rect.height - d.height) / 2;
-                Rectangle r = new Rectangle(x, y, d.width, d.height);
-                if (r.contains(pt)) {
-                    tabbedPane.removeTabAt(index);
-                }
+            if (index >= 0 && getTabButtonRect(tabbedPane, index).contains(pt)) {
+                tabbedPane.removeTabAt(index);
             }
         }
     }
     @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JTabbedPane> l) {
-        pt.setLocation(e.getPoint());
-        JTabbedPane tabbedPane = (JTabbedPane) l.getView();
-        int index = tabbedPane.indexAtLocation(pt.x, pt.y);
-        if (index >= 0) {
-            Point loc = e.getPoint();
-            loc.translate(-16, -16);
-            l.repaint(new Rectangle(loc, new Dimension(32, 32)));
+        Point loc = e.getPoint();
+        pt.setLocation(loc);
+        if (((JTabbedPane) l.getView()).indexAtLocation(pt.x, pt.y) >= 0) {
+            //Dimension d = button.getPreferredSize();
+            loc.translate(-d.width, -d.height);
+            repaintRect.setLocation(loc);
+            l.repaint(repaintRect);
         }
     }
 //         System.out.format("%d : %d%n", prevIndex, index);

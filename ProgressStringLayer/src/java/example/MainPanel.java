@@ -186,8 +186,7 @@ class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
-            JProgressBar progress = (JProgressBar) jlayer.getView();
+            JProgressBar progress = (JProgressBar) ((JLayer) c).getView();
             int iv = (int) (100 * progress.getPercentComplete());
             label.setText(String.format("%03d/100", iv));
 

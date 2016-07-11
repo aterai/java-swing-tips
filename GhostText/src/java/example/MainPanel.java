@@ -82,13 +82,15 @@ class PlaceholderFocusListener implements FocusListener {
 }
 
 class PlaceholderLayerUI extends LayerUI<JTextComponent> {
-    private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
-//     private final String hintMessage;
-    private final JLabel hint;
+    private final JLabel hint = new JLabel() {
+        @Override public void updateUI() {
+            super.updateUI();
+            setForeground(UIManager.getColor("TextField.inactiveForeground"));
+        }
+    };
     protected PlaceholderLayerUI(String hintMessage) {
         super();
-        this.hint = new JLabel(hintMessage);
-        hint.setForeground(INACTIVE);
+        hint.setText(hintMessage);
     }
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
@@ -97,7 +99,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
             JTextComponent tc = (JTextComponent) jlayer.getView();
             if (tc.getText().isEmpty() && !tc.hasFocus()) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setPaint(INACTIVE);
+                g2.setPaint(hint.getBackground());
                 Insets i = tc.getInsets();
                 Dimension d = hint.getPreferredSize();
                 SwingUtilities.paintComponent(g2, hint, tc, i.left, i.top, d.width, d.height);
