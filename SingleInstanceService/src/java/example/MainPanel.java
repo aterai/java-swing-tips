@@ -33,12 +33,10 @@ public final class MainPanel extends JPanel {
                 private int count;
                 @Override public void newActivation(String... args) {
                     //System.out.println(EventQueue.isDispatchThread());
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override public void run() {
-                            JOptionPane.showMessageDialog(frame, "already running: " + count);
-                            frame.setTitle("title:" + count);
-                            count++;
-                        }
+                    EventQueue.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(frame, "already running: " + count);
+                        frame.setTitle("title:" + count);
+                        count++;
                     });
                 }
             });

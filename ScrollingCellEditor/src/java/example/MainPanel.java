@@ -89,12 +89,10 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
         System.out.println("getTableCellEditorComponent");
         setFont(table.getFont());
         setText(Objects.toString(value, ""));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                setCaretPosition(getText().length());
-                requestFocusInWindow();
-                System.out.println("invokeLater: getTableCellEditorComponent");
-            }
+        EventQueue.invokeLater(() -> {
+            setCaretPosition(getText().length());
+            requestFocusInWindow();
+            System.out.println("invokeLater: getTableCellEditorComponent");
         });
         return scroll;
     }
@@ -103,15 +101,13 @@ class TextAreaCellEditor extends JTextArea implements TableCellEditor {
             return ((MouseEvent) e).getClickCount() >= 2;
         }
         System.out.println("isCellEditable");
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                if (e instanceof KeyEvent) {
-                    KeyEvent ke = (KeyEvent) e;
-                    char kc = ke.getKeyChar();
-                    if (Character.isUnicodeIdentifierStart(kc)) {
-                        setText(getText() + kc);
-                        System.out.println("invokeLater: isCellEditable");
-                    }
+        EventQueue.invokeLater(() -> {
+            if (e instanceof KeyEvent) {
+                KeyEvent ke = (KeyEvent) e;
+                char kc = ke.getKeyChar();
+                if (Character.isUnicodeIdentifierStart(kc)) {
+                    setText(getText() + kc);
+                    System.out.println("invokeLater: isCellEditable");
                 }
             }
         });

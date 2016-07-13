@@ -29,38 +29,34 @@ public final class MainPanel extends JPanel {
                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        final JWindow splashScreen = new JWindow();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
-                ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("example/splash.png"));
-                splashScreen.getContentPane().add(new JLabel(img));
-                splashScreen.pack();
-                splashScreen.setLocationRelativeTo(null);
-                splashScreen.setVisible(true);
-                System.out.println("splashScreen show end");
-            }
+        JWindow splashScreen = new JWindow();
+        EventQueue.invokeLater(() -> {
+            System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
+            ImageIcon img = new ImageIcon(MainPanel.class.getClassLoader().getResource("example/splash.png"));
+            splashScreen.getContentPane().add(new JLabel(img));
+            splashScreen.pack();
+            splashScreen.setLocationRelativeTo(null);
+            splashScreen.setVisible(true);
+            System.out.println("splashScreen show end");
         });
 
         System.out.println("createGUI start / EDT: " + EventQueue.isDispatchThread());
-        final JFrame frame = new JFrame("@title@");
+        JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel()); //new MainPanel() take long time
         frame.pack();
         frame.setLocationRelativeTo(null);
         System.out.println("createGUI end");
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                System.out.println("    splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
-                //splashScreen.setVisible(false);
-                splashScreen.dispose();
-                System.out.println("    splashScreen dispose end");
+        EventQueue.invokeLater(() -> {
+            System.out.println("    splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
+            //splashScreen.setVisible(false);
+            splashScreen.dispose();
+            System.out.println("    splashScreen dispose end");
 
-                System.out.println("  frame show start / EDT: " + EventQueue.isDispatchThread());
-                frame.setVisible(true);
-                System.out.println("  frame show end");
-            }
+            System.out.println("  frame show start / EDT: " + EventQueue.isDispatchThread());
+            frame.setVisible(true);
+            System.out.println("  frame show end");
         });
     }
 }

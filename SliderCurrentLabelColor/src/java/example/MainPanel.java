@@ -38,11 +38,9 @@ public final class MainPanel extends JPanel {
         add(box);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(320, 240));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                slider1.getModel().setValue(40);
-                slider1.repaint();
-            }
+        EventQueue.invokeLater(() -> {
+            slider1.getModel().setValue(40);
+            slider1.repaint();
         });
     }
     private static JSlider makeSlider() {

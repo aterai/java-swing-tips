@@ -72,14 +72,12 @@ public final class MainPanel extends JPanel {
         f.setSize(240, 120);
         f.setLocation(20 * row + 20 * col, 20 * row);
         f.setVisible(true);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                Rectangle drect = desktopPane.getBounds();
-                drect.setLocation(0, 0);
-                if (!drect.contains(f.getBounds())) {
-                    row = 0;
-                    col += 1;
-                }
+        EventQueue.invokeLater(() -> {
+            Rectangle drect = desktopPane.getBounds();
+            drect.setLocation(0, 0);
+            if (!drect.contains(f.getBounds())) {
+                row = 0;
+                col += 1;
             }
         });
         return f;

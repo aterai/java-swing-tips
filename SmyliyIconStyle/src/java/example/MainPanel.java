@@ -30,33 +30,31 @@ public final class MainPanel extends JPanel {
             }
             private void update(DefaultStyledDocument doc, int offset) {
                 final Element elm = doc.getCharacterElement(offset);
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        try {
-                            int start = elm.getStartOffset();
-                            int end = elm.getEndOffset();
-                            System.out.format("start: %d, end: %d%n", start, end);
-                            String text = doc.getText(start, end - start);
-//                             int pos = text.lastIndexOf(FACE);
-//                             while (pos > -1) {
-//                                 Style face = doc.getStyle(FACE);
-//                                 doc.replace(start + pos, FACE.length(), " ", face);
-//                                 pos = text.lastIndexOf(FACE, pos - 1);
-//                                 textPane.getInputAttributes().removeAttributes(face);
-//                             }
-                            int pos = text.indexOf(FACE);
-                            while (pos > -1) {
-                                Style face = doc.getStyle(FACE);
-                                doc.setCharacterAttributes(start + pos, FACE.length(), face, false);
-                                pos = text.indexOf(FACE, pos + FACE.length());
-                                //textPane.getInputAttributes().removeAttributes(face);
-                            }
-                        } catch (BadLocationException ex) {
-                            ex.printStackTrace();
+                EventQueue.invokeLater(() -> {
+                    try {
+                        int start = elm.getStartOffset();
+                        int end = elm.getEndOffset();
+                        System.out.format("start: %d, end: %d%n", start, end);
+                        String text = doc.getText(start, end - start);
+//                         int pos = text.lastIndexOf(FACE);
+//                         while (pos > -1) {
+//                             Style face = doc.getStyle(FACE);
+//                             doc.replace(start + pos, FACE.length(), " ", face);
+//                             pos = text.lastIndexOf(FACE, pos - 1);
+//                             textPane.getInputAttributes().removeAttributes(face);
+//                         }
+                        int pos = text.indexOf(FACE);
+                        while (pos > -1) {
+                            Style face = doc.getStyle(FACE);
+                            doc.setCharacterAttributes(start + pos, FACE.length(), face, false);
+                            pos = text.indexOf(FACE, pos + FACE.length());
+                            //textPane.getInputAttributes().removeAttributes(face);
                         }
-                        //MutableAttributeSet inputAttributes = textPane.getInputAttributes();
-                        //inputAttributes.removeAttributes(inputAttributes);
+                    } catch (BadLocationException ex) {
+                        ex.printStackTrace();
                     }
+                    //MutableAttributeSet inputAttributes = textPane.getInputAttributes();
+                    //inputAttributes.removeAttributes(inputAttributes);
                 });
             }
         });

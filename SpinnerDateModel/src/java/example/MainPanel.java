@@ -34,11 +34,9 @@ public final class MainPanel extends JPanel {
         spinner3.setEditor(editor);
         editor.getTextField().addFocusListener(new FocusAdapter() {
             @Override public void focusGained(FocusEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        int i = DATE_FORMAT_PATTERN.lastIndexOf("dd");
-                        editor.getTextField().select(i, i + 2);
-                    }
+                EventQueue.invokeLater(() -> {
+                    int i = DATE_FORMAT_PATTERN.lastIndexOf("dd");
+                    editor.getTextField().select(i, i + 2);
                 });
             }
         });

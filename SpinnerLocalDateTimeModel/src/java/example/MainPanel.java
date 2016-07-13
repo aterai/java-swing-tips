@@ -201,23 +201,21 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         model = (SpinnerLocalDateTimeModel) spinner.getModel();
         final DefaultFormatter formatter = new LocalDateTimeFormatter();
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                formatter.setValueClass(LocalDateTime.class);
-                DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
-                JFormattedTextField ftf = (JFormattedTextField) getTextField();
-                try {
-                    String maxString = formatter.valueToString(model.getStart());
-                    String minString = formatter.valueToString(model.getEnd());
-                    ftf.setColumns(Math.max(maxString.length(), minString.length()));
-                } catch (ParseException ex) {
-                    // PENDING: hmuller
-                    ex.printStackTrace();
-                }
-                ftf.setHorizontalAlignment(SwingConstants.LEFT);
-                ftf.setEditable(true);
-                ftf.setFormatterFactory(factory);
+        EventQueue.invokeLater(() -> {
+            formatter.setValueClass(LocalDateTime.class);
+            DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
+            JFormattedTextField ftf = (JFormattedTextField) getTextField();
+            try {
+                String maxString = formatter.valueToString(model.getStart());
+                String minString = formatter.valueToString(model.getEnd());
+                ftf.setColumns(Math.max(maxString.length(), minString.length()));
+            } catch (ParseException ex) {
+                // PENDING: hmuller
+                ex.printStackTrace();
             }
+            ftf.setHorizontalAlignment(SwingConstants.LEFT);
+            ftf.setEditable(true);
+            ftf.setFormatterFactory(factory);
         });
     }
 
