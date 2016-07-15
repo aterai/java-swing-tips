@@ -156,26 +156,24 @@ final class ComboBoxUtil {
         comp.setBorder(BorderFactory.createCompoundBorder(comp.getBorder(), b3));
     }
     public static void initIconComboBorder2(final JComboBox comboBox, final ImageIcon icon) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
-                Insets is = c.getInsets();
+        EventQueue.invokeLater(() -> {
+            JTextField c = (JTextField) comboBox.getEditor().getEditorComponent();
+            Insets is = c.getInsets();
 
-                int ih = icon.getIconHeight();
-                int ch = comboBox.getPreferredSize().height;
-                //int ch = c.getPreferredSize().height; //Nimbus???
-                int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); //ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
+            int ih = icon.getIconHeight();
+            int ch = comboBox.getPreferredSize().height;
+            //int ch = c.getPreferredSize().height; //Nimbus???
+            int yy = Math.max((int) (.5 + (ch - ih) * .5), 0); //ch - ih > 0 ? (int) (.5 + (ch - ih) * .5) : 0;
 
-                Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
-                c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
+            Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
+            c.setBorder(BorderFactory.createCompoundBorder(c.getBorder(), margin));
 
-                JLabel label = new JLabel(icon);
-                label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                label.setBorder(BorderFactory.createEmptyBorder());
-                c.add(label);
+            JLabel label = new JLabel(icon);
+            label.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            label.setBorder(BorderFactory.createEmptyBorder());
+            c.add(label);
 
-                label.setBounds(is.left, yy, icon.getIconWidth(), icon.getIconHeight());
-            }
+            label.setBounds(is.left, yy, icon.getIconWidth(), icon.getIconHeight());
         });
     }
     public static void initComboBoxRenderer(JComboBox<String> combo, final ImageIcon icon) {

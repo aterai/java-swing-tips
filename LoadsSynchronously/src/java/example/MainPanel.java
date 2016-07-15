@@ -97,24 +97,22 @@ public final class MainPanel extends JPanel {
     }
 
     private void saveImage(final JComponent c) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                double s = .02;
-                int w = (int) (c.getWidth() * s);
-                int h = (int) (c.getHeight() * s);
-                BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-                Graphics2D g2 = image.createGraphics();
-                g2.scale(s, s);
-                c.paint(g2);
-                g2.dispose();
-                try {
-                    File tmp = File.createTempFile("jst_tmp", ".jpg");
-                    tmp.deleteOnExit();
-                    ImageIO.write(image, "jpeg", tmp);
-                    label.setIcon(new ImageIcon(tmp.getAbsolutePath()));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            double s = .02;
+            int w = (int) (c.getWidth() * s);
+            int h = (int) (c.getHeight() * s);
+            BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = image.createGraphics();
+            g2.scale(s, s);
+            c.paint(g2);
+            g2.dispose();
+            try {
+                File tmp = File.createTempFile("jst_tmp", ".jpg");
+                tmp.deleteOnExit();
+                ImageIO.write(image, "jpeg", tmp);
+                label.setIcon(new ImageIcon(tmp.getAbsolutePath()));
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         });
     }

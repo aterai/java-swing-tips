@@ -13,17 +13,12 @@ import javax.swing.Timer;
 public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new GridLayout(1, 2));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                getRootPane().setGlassPane(new LightboxGlassPane());
-                getRootPane().getGlassPane().setVisible(false);
-            }
+        EventQueue.invokeLater(() -> {
+            getRootPane().setGlassPane(new LightboxGlassPane());
+            getRootPane().getGlassPane().setVisible(false);
         });
-        JButton button = new JButton(new AbstractAction("Open") {
-            @Override public void actionPerformed(ActionEvent e) {
-                getRootPane().getGlassPane().setVisible(true);
-            }
-        });
+        JButton button = new JButton("Open");
+        button.addActionListener(e -> getRootPane().getGlassPane().setVisible(true));
         add(makeDummyPanel());
         add(button);
         setPreferredSize(new Dimension(320, 240));
@@ -107,11 +102,9 @@ class LightboxGlassPane extends JPanel {
             w = 40;
             h = 40;
             alpha = 0f;
-            animator = new Timer(10, new ActionListener() {
-                @Override public void actionPerformed(ActionEvent e) {
-                    animatedIcon.next();
-                    repaint();
-                }
+            animator = new Timer(10, e -> {
+                animatedIcon.next();
+                repaint();
             });
             animator.start();
         } else {
@@ -122,10 +115,7 @@ class LightboxGlassPane extends JPanel {
         animatedIcon.setRunning(isVisible);
     }
     @Override protected void paintComponent(Graphics g) {
-        JRootPane rootPane = getRootPane();
-        if (Objects.nonNull(rootPane)) {
-            rootPane.getLayeredPane().print(g);
-        }
+        Optional.ofNullable(getRootPane()).ifPresent(r -> r.getLayeredPane().print(g));
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
 
