@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.util.Objects;
 import javax.swing.*;
 //import com.sun.tools.attach.*;
 
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
         } catch (IOException ex) {
             socket = null;
         }
-        if (socket == null) {
+        if (Objects.isNull(socket)) {
             //String stag = "<html><center><br /><br /><br /><br /><br />";
             //String etag = "<br /><br /><br /><br /><br /><br /></center>";
             //JOptionPane.showMessageDialog(null, stag + "An instance of the application is already running..." + etag);

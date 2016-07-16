@@ -3,6 +3,7 @@ package example;
 // vim:set fileencoding=utf-8:
 //@homepage@
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 
@@ -16,7 +17,7 @@ public final class MainPanel extends JPanel {
     }
 //     @Override public void updateUI() {
 //         super.updateUI();
-//         if (tree != null && System.getProperty("java.version").startsWith("1.6.0")) {
+//         if (Objects.nonNull(tree) && System.getProperty("java.version").startsWith("1.6.0")) {
 //             System.out.println("???: 1.6.0_xx bug??? remake JPopupMenu");
 //             tree.setComponentPopupMenu(makePopupMenu());
 //         }
@@ -65,7 +66,7 @@ class TranslucentPopupMenu extends JPopupMenu {
     }
     @Override public void updateUI() {
         super.updateUI();
-        if (UIManager.getBorder("PopupMenu.border") == null) {
+        if (Objects.isNull(UIManager.getBorder("PopupMenu.border"))) {
             setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.GRAY)));
         }
     }
