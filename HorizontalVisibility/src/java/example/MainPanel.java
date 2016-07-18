@@ -124,15 +124,13 @@ class EmptyThumbHandler extends ComponentAdapter implements DocumentListener {
         this.scroller = scroller;
     }
     private void changeThumbModel() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                BoundedRangeModel m = textField.getHorizontalVisibility();
-                int iv = m.getMaximum() - m.getMinimum() - m.getExtent() - 1; // -1: bug?
-                if (iv <= 0) {
-                    scroller.setModel(emptyThumbModel);
-                } else {
-                    scroller.setModel(textField.getHorizontalVisibility());
-                }
+        EventQueue.invokeLater(() -> {
+            BoundedRangeModel m = textField.getHorizontalVisibility();
+            int iv = m.getMaximum() - m.getMinimum() - m.getExtent() - 1; // -1: bug?
+            if (iv <= 0) {
+                scroller.setModel(emptyThumbModel);
+            } else {
+                scroller.setModel(textField.getHorizontalVisibility());
             }
         });
     }

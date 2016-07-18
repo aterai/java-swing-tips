@@ -70,11 +70,7 @@ public final class MainPanel extends JPanel {
         sp.add(bp, BorderLayout.EAST);
         sp.add(cp, BorderLayout.SOUTH);
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                changeHighlight();
-            }
-        });
+        EventQueue.invokeLater(() -> changeHighlight());
 
         add(sp, BorderLayout.NORTH);
         add(new JScrollPane(textArea));

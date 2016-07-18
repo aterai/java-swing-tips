@@ -131,12 +131,10 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
             @Override public void focusGained(FocusEvent e) {
                 //System.out.println("getTextField");
                 setArrowButtonEnabled(true);
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        editor.getTextField().setCaretPosition(8);
-                        editor.getTextField().setSelectionStart(8);
-                        editor.getTextField().setSelectionEnd(10);
-                    }
+                EventQueue.invokeLater(() -> {
+                    editor.getTextField().setCaretPosition(8);
+                    editor.getTextField().setSelectionStart(8);
+                    editor.getTextField().setSelectionEnd(10);
                 });
             }
         });
