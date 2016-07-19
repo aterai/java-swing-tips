@@ -12,42 +12,43 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.*;
 
 public final class MainPanel extends JPanel {
-    private final JTree tree = new JTree() {
+    private final JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot())) {
         @Override public void updateUI() {
             super.updateUI();
             setCellRenderer(new ProgressBarRenderer());
+            setRowHeight(-1);
         }
     };
+    private final JButton button = new JButton("start");
     public MainPanel() {
         super(new BorderLayout());
-        tree.setModel(new DefaultTreeModel(makeTreeRoot()));
+
+        button.addActionListener(e -> {
+            JButton b = (JButton) e.getSource();
+            b.setEnabled(false);
+            ExecutorService executor = Executors.newCachedThreadPool();
+            (new SwingWorker<Boolean, Void>() {
+                @Override protected Boolean doInBackground() throws InterruptedException {
+                     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+                     Enumeration e = root.breadthFirstEnumeration();
+                     while (e.hasMoreElements()) {
+                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+                         if (!root.equals(node) && !model.isLeaf(node)) {
+                             executor.execute(new NodeProgressWorker(tree, node));
+                         }
+                     }
+                     executor.shutdown();
+                     return executor.awaitTermination(1, TimeUnit.MINUTES);
+                 }
+                @Override protected void done() {
+                    b.setEnabled(true);
+                }
+            }).execute();
+        });
 
         add(new JScrollPane(tree));
-        add(new JButton(new AbstractAction("start") {
-            @Override public void actionPerformed(ActionEvent ev) {
-                final ExecutorService executor = Executors.newCachedThreadPool();
-                final JButton b = (JButton) ev.getSource();
-                b.setEnabled(false);
-                (new SwingWorker<Boolean, Void>() {
-                    @Override protected Boolean doInBackground() throws InterruptedException {
-                        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-                        Enumeration e = root.breadthFirstEnumeration();
-                        while (e.hasMoreElements()) {
-                            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-                            if (!root.equals(node) && !model.isLeaf(node)) {
-                                executor.execute(new NodeProgressWorker(tree, node));
-                            }
-                        }
-                        executor.shutdown();
-                        return executor.awaitTermination(1, TimeUnit.MINUTES);
-                    }
-                    @Override protected void done() {
-                        b.setEnabled(true);
-                    }
-                }).execute();
-            }
-        }), BorderLayout.SOUTH);
+        add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
     private static DefaultMutableTreeNode makeTreeRoot() {
@@ -161,17 +162,18 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new BasicProgressBarUI());
+            setStringPainted(true);
+            setString("");
+            setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder());
         }
     };
-    private final JPanel p = new JPanel(new BorderLayout());
-    protected ProgressBarRenderer() {
-        super();
-        b.setOpaque(false);
-        p.setOpaque(false);
-        b.setStringPainted(true);
-        b.setString("");
-        b.setBorder(BorderFactory.createEmptyBorder());
-    }
+    private final JPanel p = new JPanel(new BorderLayout()) {
+        @Override public void updateUI() {
+            super.updateUI();
+            setOpaque(false);
+        }
+    };
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         Object o = ((DefaultMutableTreeNode) value).getUserObject();
@@ -186,10 +188,18 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
 
             p.removeAll();
             p.add(c);
-            p.add(i < b.getMaximum() ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
+            if (i < b.getMaximum()) {
+                p.add(b, BorderLayout.SOUTH);
+            }
+            //p.add(i < b.getMaximum() ? b : Box.createVerticalStrut(barHeight), BorderLayout.SOUTH);
             c = p;
         }
         return c;
+    }
+    @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.height = 18;
+        return d;
     }
 }
 
