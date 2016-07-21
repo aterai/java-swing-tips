@@ -51,10 +51,11 @@ public final class MainPanel extends JPanel {
         frame.setVisible(true);
     }
 }
+
 class NonEditableLineDocumentFilter extends DocumentFilter {
-    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if (Objects.nonNull(string)) {
-            replace(fb, offset, 0, string, attr);
+    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+        if (Objects.nonNull(text)) {
+            replace(fb, offset, 0, text, attr);
         }
     }
     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
@@ -62,9 +63,8 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     }
     @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         Document doc = fb.getDocument();
-        if (doc.getDefaultRootElement().getElementIndex(offset) < 2) {
-            return;
+        if (doc.getDefaultRootElement().getElementIndex(offset) >= 2) {
+            fb.replace(offset, length, text, attrs);
         }
-        fb.replace(offset, length, text, attrs);
     }
 }

@@ -10,11 +10,11 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 public final class MainPanel extends JPanel {
-    private final JTextArea jta = new JTextArea();
+    private final JTextArea textArea = new JTextArea();
     private final Timer timer = new Timer(200, new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
             String s = new Date().toString();
-            jta.append(jta.getDocument().getLength() > 0 ? "\n" + s : s);
+            textArea.append(textArea.getDocument().getLength() > 0 ? "\n" + s : s);
         }
     });
     private final JButton start = new JButton(new AbstractAction("Start") {
@@ -31,17 +31,17 @@ public final class MainPanel extends JPanel {
     });
     private final JButton clr = new JButton(new AbstractAction("Clear") {
         @Override public void actionPerformed(ActionEvent e) {
-            jta.setText("");
+            textArea.setText("");
         }
     });
     public MainPanel() {
         super(new BorderLayout());
         /* //TEST
-        ((AbstractDocument) jta.getDocument()).setDocumentFilter(new FIFODocumentFilter());
+        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new FIFODocumentFilter());
         /*/
-        jta.getDocument().addDocumentListener(new FIFODocumentListener(jta));
+        textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
         //*/
-        jta.setEditable(false);
+        textArea.setEditable(false);
 
         addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalStrut(5));
         box.add(clr);
 
-        add(new JScrollPane(jta));
+        add(new JScrollPane(textArea));
         add(box, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
@@ -118,8 +118,8 @@ class FIFODocumentListener implements DocumentListener {
 
 class FIFODocumentFilter extends DocumentFilter {
     private static final int MAX_LINES = 10;
-    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        fb.insertString(offset, string, attr);
+    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+        fb.insertString(offset, text, attr);
         Element root = fb.getDocument().getDefaultRootElement();
         if (root.getElementCount() > MAX_LINES) {
             fb.remove(0, root.getElement(0).getEndOffset());

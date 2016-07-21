@@ -150,9 +150,9 @@ class WarningSpinner extends JSpinner {
 //     }
 
 // class IntegerDocumentFilter extends DocumentFilter {
-//     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-//         if (Objects.nonNull(string)) {
-//             replace(fb, offset, 0, string, attr);
+//     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+//         if (Objects.nonNull(text)) {
+//             replace(fb, offset, 0, text, attr);
 //         }
 //     }
 //     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {

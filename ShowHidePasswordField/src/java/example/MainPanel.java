@@ -154,11 +154,9 @@ enum PasswordField {
 //     //private static Pattern pattern = Pattern.compile("\\A\\p{ASCII}*\\z");
 //     private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
 //
-//     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-//         if (Objects.isNull(string)) {
-//             return;
-//         } else {
-//             replace(fb, offset, 0, string, attr);
+//     @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+//         if (Objects.nonNull(text)) {
+//             replace(fb, offset, 0, text, attr);
 //         }
 //     }
 //     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {

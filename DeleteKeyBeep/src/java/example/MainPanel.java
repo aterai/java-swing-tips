@@ -93,13 +93,13 @@ class SilentDeleteTextAction extends TextAction {
 
 class SizeFilter extends DocumentFilter {
     private static final int MAX = 5;
-    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
         int len = fb.getDocument().getLength();
-        if (len + string.length() > MAX) {
+        if (len + text.length() > MAX) {
             Toolkit.getDefaultToolkit().beep();
             return;
         }
-        fb.insertString(offset, string, attr);
+        fb.insertString(offset, text, attr);
     }
     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
         fb.remove(offset, length);

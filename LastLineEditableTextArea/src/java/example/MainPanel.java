@@ -45,11 +45,9 @@ public final class MainPanel extends JPanel {
 class NonEditableLineDocumentFilter extends DocumentFilter {
     public static final String LB = "\n";
     public static final String PROMPT = "> ";
-    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-        if (Objects.nonNull(string)) {
-            replace(fb, offset, 0, string, attr);
-        } else {
-            return;
+    @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+        if (Objects.nonNull(text)) {
+            replace(fb, offset, 0, text, attr);
         }
     }
     @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
