@@ -5,6 +5,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
+import javax.swing.plaf.*;
 
 public final class MainPanel extends JPanel {
     private final JTree tree = new JTree();
@@ -37,8 +38,9 @@ public final class MainPanel extends JPanel {
         }
         return mb;
     }
-    private JMenu createMenu(String key) {
+    public static JMenu createMenu(String key) {
         JMenu menu = new TransparentMenu(key);
+        //menu.setForeground(new Color(200, 200, 200));
         menu.setOpaque(false); // Motif lnf
         JMenu sub = new TransparentMenu("Submenu");
         sub.add(new JMenuItem("JMenuItem"));
@@ -74,11 +76,18 @@ public final class MainPanel extends JPanel {
 
 //http://ateraimemo.com/Swing/TranslucentPopupMenu.html
 class TranslucentPopupMenu extends JPopupMenu {
+    private static final Color ALPHA_ZERO = new Color(0x0, true);
     private static final Color POPUP_BACK = new Color(250, 250, 250, 200);
     private static final Color POPUP_LEFT = new Color(230, 230, 230, 200);
     private static final int LEFT_WIDTH = 24;
     @Override public boolean isOpaque() {
         return false;
+    }
+    @Override public void updateUI() {
+        super.updateUI();
+        if (Objects.isNull(UIManager.getBorder("PopupMenu.border"))) {
+            setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.GRAY)));
+        }
     }
     @Override public Component add(Component c) {
         if (c instanceof JComponent) {
@@ -90,22 +99,18 @@ class TranslucentPopupMenu extends JPopupMenu {
         menuItem.setOpaque(false);
         return super.add(menuItem);
     }
-//     private static final Color ALPHA_ZERO = new Color(0x0, true);
-//     @Override public void show(Component c, int x, int y) {
-//         EventQueue.invokeLater(new Runnable() {
-//             @Override public void run() {
-//                 Window p = SwingUtilities.getWindowAncestor(getRootPane());
-//                 if (p instanceof JWindow) {
-//                     System.out.println("Heavy weight");
-//                     JWindow w = (JWindow) p;
-//                     w.setBackground(ALPHA_ZERO);
-//                 } else {
-//                     System.out.println("Light weight");
-//                 }
-//             }
-//         });
-//         super.show(c, x, y);
-//     }
+    @Override public void show(Component c, int x, int y) {
+        EventQueue.invokeLater(() -> {
+            Container p = getTopLevelAncestor();
+            if (p instanceof JWindow) {
+                System.out.println("Heavy weight");
+                ((JWindow) p).setBackground(ALPHA_ZERO);
+            } else {
+                System.out.println("Light weight");
+            }
+        });
+        super.show(c, x, y);
+    }
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(POPUP_LEFT);

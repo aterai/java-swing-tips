@@ -70,6 +70,12 @@ class TranslucentPopupMenu extends JPopupMenu {
             setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.GRAY)));
         }
     }
+    @Override public Component add(Component c) {
+        if (c instanceof JComponent) {
+            ((JComponent) c).setOpaque(false);
+        }
+        return c;
+    }
     @Override public JMenuItem add(JMenuItem menuItem) {
         menuItem.setOpaque(false);
         //menuItem.setBackground(ALPHA_ZERO);
