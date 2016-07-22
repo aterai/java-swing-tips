@@ -85,7 +85,7 @@ public class MainPanel extends JPanel {
 }
 
 class FocusCaret extends DefaultCaret {
-    private static final DefaultHighlighter.DefaultHighlightPainter NON_FOCUS_HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY.brighter());
+    private static final Highlighter.HighlightPainter NON_FOCUS_HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY.brighter());
     @Override public void focusLost(FocusEvent e) {
         super.focusLost(e);
         setSelectionVisible(true);
