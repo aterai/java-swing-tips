@@ -26,12 +26,10 @@ public final class MainPanel extends JPanel {
     };
     @Override public void updateUI() {
         super.updateUI();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                SwingUtilities.updateComponentTreeUI(fc0);
-                SwingUtilities.updateComponentTreeUI(fc1);
-                SwingUtilities.updateComponentTreeUI(fc2);
-            }
+        EventQueue.invokeLater(() -> {
+            SwingUtilities.updateComponentTreeUI(fc0);
+            SwingUtilities.updateComponentTreeUI(fc1);
+            SwingUtilities.updateComponentTreeUI(fc2);
         });
     }
     public MainPanel() {

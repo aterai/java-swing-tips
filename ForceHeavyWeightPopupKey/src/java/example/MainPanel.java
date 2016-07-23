@@ -43,15 +43,13 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                glass.setOpaque(false);
-                glass.add(label1, BorderLayout.WEST);
-                glass.add(label2, BorderLayout.EAST);
-                glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
-                getRootPane().setGlassPane(glass);
-                getRootPane().getGlassPane().setVisible(true);
-            }
+        EventQueue.invokeLater(() -> {
+            glass.setOpaque(false);
+            glass.add(label1, BorderLayout.WEST);
+            glass.add(label2, BorderLayout.EAST);
+            glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
+            getRootPane().setGlassPane(glass);
+            getRootPane().getGlassPane().setVisible(true);
         });
         setPreferredSize(new Dimension(320, 240));
     }

@@ -97,11 +97,7 @@ class FIFODocumentListener implements DocumentListener {
         if (root.getElementCount() <= MAX_LINES) {
             return;
         }
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                removeLines(doc, root);
-            }
-        });
+        EventQueue.invokeLater(() -> removeLines(doc, root));
         textComponent.setCaretPosition(doc.getLength());
     }
     private static void removeLines(Document doc, Element root) {

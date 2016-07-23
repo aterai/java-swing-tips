@@ -63,21 +63,15 @@ public final class MainPanel extends JPanel {
         box.add(Box.createHorizontalGlue());
 
         check.setHorizontalAlignment(SwingConstants.RIGHT);
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                textarea.setEditable(check.isSelected());
-                debugPrint();
-            }
+        check.addActionListener(e -> {
+            textarea.setEditable(check.isSelected());
+            debugPrint();
         });
         add(p);
         add(box, BorderLayout.NORTH);
         add(check, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                debugPrint();
-            }
-        });
+        EventQueue.invokeLater(() -> debugPrint());
     }
     class FocusTraversalPolicyChangeAction extends AbstractAction {
         private final FocusTraversalPolicy policy;
