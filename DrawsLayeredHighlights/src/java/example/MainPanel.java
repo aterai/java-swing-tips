@@ -37,16 +37,14 @@ public final class MainPanel extends JPanel {
         textArea.setEditable(false);
 
         check.setFocusable(false);
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                int start = textArea.getSelectionStart();
-                int end   = textArea.getSelectionEnd();
-                DefaultHighlighter dh = (DefaultHighlighter) textArea.getHighlighter();
-                dh.setDrawsLayeredHighlights(cb.isSelected());
-                fireDocumentChangeEvent();
-                textArea.select(start, end);
-            }
+        check.addActionListener(e -> {
+            JCheckBox cb = (JCheckBox) e.getSource();
+            int start = textArea.getSelectionStart();
+            int end   = textArea.getSelectionEnd();
+            DefaultHighlighter dh = (DefaultHighlighter) textArea.getHighlighter();
+            dh.setDrawsLayeredHighlights(cb.isSelected());
+            fireDocumentChangeEvent();
+            textArea.select(start, end);
         });
 
         field.getDocument().addDocumentListener(new DocumentListener() {
@@ -59,11 +57,9 @@ public final class MainPanel extends JPanel {
             @Override public void changedUpdate(DocumentEvent e) { /* not needed */ }
         });
         fireDocumentChangeEvent();
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                textArea.requestFocusInWindow();
-                textArea.selectAll();
-            }
+        EventQueue.invokeLater(() -> {
+            textArea.requestFocusInWindow();
+            textArea.selectAll();
         });
 
         JPanel sp = new JPanel(new BorderLayout(5, 5));

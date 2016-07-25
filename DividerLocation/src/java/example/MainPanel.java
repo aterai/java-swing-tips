@@ -25,15 +25,13 @@ public final class MainPanel extends JPanel {
     private final JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(new JTable(model)), new JScrollPane(new JTree()));
     public MainPanel() {
         super(new BorderLayout());
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (r2.isSelected()) {
-                    sp.setResizeWeight(1d);
-                } else if (r1.isSelected()) {
-                    sp.setResizeWeight(.5);
-                } else {
-                    sp.setResizeWeight(0d);
-                }
+        ActionListener al = e -> {
+            if (r2.isSelected()) {
+                sp.setResizeWeight(1d);
+            } else if (r1.isSelected()) {
+                sp.setResizeWeight(.5);
+            } else {
+                sp.setResizeWeight(0d);
             }
         };
         ButtonGroup bg = new ButtonGroup();
@@ -48,11 +46,9 @@ public final class MainPanel extends JPanel {
         add(p, BorderLayout.NORTH);
         add(sp);
         setPreferredSize(new Dimension(320, 240));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                sp.setDividerLocation(.5);
-                //sp.setResizeWeight(.5);
-            }
+        EventQueue.invokeLater(() -> {
+            sp.setDividerLocation(.5);
+            //sp.setResizeWeight(.5);
         });
     }
     public static void main(String... args) {

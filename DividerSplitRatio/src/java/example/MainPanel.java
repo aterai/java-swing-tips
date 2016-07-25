@@ -12,11 +12,7 @@ public final class MainPanel extends JPanel {
     private final SplitPaneWrapper spw = new SplitPaneWrapper(splitPane);
     public MainPanel() {
         super(new BorderLayout());
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                spw.setTestFlag(check.isSelected());
-            }
-        });
+        check.addActionListener(e -> spw.setTestFlag(check.isSelected()));
         add(check, BorderLayout.NORTH);
         add(spw);
         setPreferredSize(new Dimension(320, 240));
@@ -53,11 +49,7 @@ class SplitPaneWrapper extends JPanel {
         super(new BorderLayout());
         this.splitPane = splitPane;
         add(splitPane);
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                splitPane.setDividerLocation(.5);
-            }
-        });
+        EventQueue.invokeLater(() -> splitPane.setDividerLocation(.5));
     }
     public void setTestFlag(boolean flag) {
         this.flag = flag;
@@ -74,13 +66,11 @@ class SplitPaneWrapper extends JPanel {
             super.doLayout();
             int state = ((Frame) SwingUtilities.getWindowAncestor(splitPane)).getExtendedState();
             if (splitPane.isShowing() && state != prevState) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        int s = getOrientedSize(splitPane);
-                        int iv = (int) Math.round(s * proportionalLocation);
-                        System.out.format("DividerLocation: %d%n", iv);
-                        splitPane.setDividerLocation(iv);
-                    }
+                EventQueue.invokeLater(() -> {
+                    int s = getOrientedSize(splitPane);
+                    int iv = (int) Math.round(s * proportionalLocation);
+                    System.out.format("DividerLocation: %d%n", iv);
+                    splitPane.setDividerLocation(iv);
                 });
                 prevState = state;
             }
