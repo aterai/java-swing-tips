@@ -23,11 +23,7 @@ public final class MainPanel extends JPanel {
                 doReIconify((JDesktopPane) e.getComponent());
             }
         });
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                doReIconify(desktop);
-            }
-        });
+        button.addActionListener(e -> doReIconify(desktop));
         addButton.addActionListener(new ActionListener() {
             private int n;
             @Override public void actionPerformed(ActionEvent e) {

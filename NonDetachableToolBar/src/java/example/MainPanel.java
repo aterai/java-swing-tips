@@ -50,11 +50,7 @@ public final class MainPanel extends JPanel {
         toolbar.add(combo);
         toolbar.add(Box.createGlue());
 
-        movable.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                toolbar.setFloatable(((JCheckBox) e.getSource()).isSelected());
-            }
-        });
+        movable.addActionListener(e -> toolbar.setFloatable(((JCheckBox) e.getSource()).isSelected()));
 
         JPanel p = new JPanel();
         p.add(movable);

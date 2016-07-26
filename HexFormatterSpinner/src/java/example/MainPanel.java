@@ -37,11 +37,7 @@ public final class MainPanel extends JPanel {
 
         JPanel p = new JPanel();
         ButtonGroup bg = new ButtonGroup();
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                repaint();
-            }
-        };
+        ActionListener al = e -> repaint();
         for (AbstractButton b: Arrays.asList(exMi, mjMi, both)) {
             p.add(b);
             bg.add(b);

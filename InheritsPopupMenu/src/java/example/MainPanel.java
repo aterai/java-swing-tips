@@ -55,18 +55,8 @@ public final class MainPanel extends JPanel {
         //table.setOpaque(false);
         //table.getTableHeader().setInheritsPopupMenu(true);
 
-        cb1.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                table.setInheritsPopupMenu(cb.isSelected());
-            }
-        });
-        cb2.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                table.setFillsViewportHeight(cb.isSelected());
-            }
-        });
+        cb1.addActionListener(e -> table.setInheritsPopupMenu(((JCheckBox) e.getSource()).isSelected()));
+        cb2.addActionListener(e -> table.setFillsViewportHeight(((JCheckBox) e.getSource()).isSelected()));
         Box box = Box.createHorizontalBox();
         box.add(cb1);
         box.add(cb2);
