@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
         menuItem.setActionCommand("quit");
         menuItem.addActionListener(e -> {
             //SwingUtilities.getWindowAncestor(desktop).dispose();
-            Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(w -> w.dispose());
+            Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(Window::dispose);
         });
         menu.add(menuItem);
         return menuBar;

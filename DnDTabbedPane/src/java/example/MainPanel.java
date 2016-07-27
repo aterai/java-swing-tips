@@ -128,7 +128,7 @@ class DnDTabbedPane extends JTabbedPane {
     }
     private void clickArrowButton(String actionKey) {
         ActionMap am = getActionMap(); //= getActionMap(create=true) = non null
-        Optional.ofNullable(am.get(actionKey)).filter(a -> a.isEnabled()).ifPresent(a -> {
+        Optional.ofNullable(am.get(actionKey)).filter(Action::isEnabled).ifPresent(a -> {
             a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
         });
 //         ActionMap map = getActionMap();

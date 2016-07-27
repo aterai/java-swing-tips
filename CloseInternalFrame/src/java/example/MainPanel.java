@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     };
     private final Action closeSelectedFrameAction2 = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(f -> f.doDefaultCloseAction());
+            getSelectedFrame().ifPresent(JInternalFrame::doDefaultCloseAction);
         }
     };
     private final Action closeSelectedFrameAction3 = new AbstractAction() {
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     };
     private final Action disposeSelectedFrameAction = new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-            getSelectedFrame().ifPresent(f -> f.dispose());
+            getSelectedFrame().ifPresent(JInternalFrame::dispose);
         }
     };
     private final Action createNewFrameAction = new AbstractAction() {

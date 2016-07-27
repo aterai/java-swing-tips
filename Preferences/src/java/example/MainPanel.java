@@ -23,14 +23,14 @@ public final class MainPanel extends JPanel {
                 } catch (BackingStoreException ex) {
                     ex.printStackTrace();
                 }
-                Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(w -> w.dispose());
+                Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
             }
         }));
         box.add(Box.createHorizontalStrut(2));
         box.add(new JButton(new AbstractAction("exit") {
             @Override public void actionPerformed(ActionEvent e) {
                 handler.saveLocation();
-                Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(w -> w.dispose());
+                Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
             }
         }));
 
