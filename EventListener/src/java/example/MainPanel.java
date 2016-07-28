@@ -80,16 +80,8 @@ public final class MainPanel extends JPanel {
         menu.add(font32);
         menubar.add(menu);
 
-        font12.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireFontChangeEvent("font12", FONT12);
-            }
-        });
-        font32.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                fireFontChangeEvent("font32", FONT32);
-            }
-        });
+        font12.addActionListener(e -> fireFontChangeEvent("font12", FONT12));
+        font32.addActionListener(e -> fireFontChangeEvent("font32", FONT32));
 
         label.setFont(FONT12);
         combo.setFont(FONT12);

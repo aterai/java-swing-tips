@@ -50,11 +50,7 @@ public final class MainPanel extends JPanel {
             }
         });
 
-        check1.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setUpdateSelectionOnSort(check1.isSelected());
-            }
-        });
+        check1.addActionListener(e -> table.setUpdateSelectionOnSort(check1.isSelected()));
 
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(check1);
