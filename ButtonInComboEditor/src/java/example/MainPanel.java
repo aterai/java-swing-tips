@@ -154,7 +154,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         }
         String str = Objects.toString(o, "");
         return Stream.iterate(0, i -> i++).limit(model.getSize())
-                     .map(i -> model.getElementAt(i))
+                     .map(model::getElementAt)
                      .filter(ui -> ui.url.equals(str))
                      .findFirst();
 //         DefaultComboBoxModel<URLItem> model = (DefaultComboBoxModel<URLItem>) getModel();
