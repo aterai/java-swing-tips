@@ -25,14 +25,12 @@ public class MainPanel extends JPanel {
         JComboBox<String> comboBox = new JComboBox<>(model);
         //comboBox.setEnabled(false);
         comboBox.addAncestorListener(new AncestorListener() {
-            @Override public void ancestorAdded(final AncestorEvent e) {
+            @Override public void ancestorAdded(AncestorEvent e) {
                 System.out.println("ancestorAdded");
                 e.getComponent().setEnabled(false);
-                EventQueue.invokeLater(new Runnable() {
-                    @Override public void run() {
-                        System.out.println("invokeLater");
-                        e.getComponent().setEnabled(true);
-                    }
+                EventQueue.invokeLater(() -> {
+                    System.out.println("invokeLater");
+                    e.getComponent().setEnabled(true);
                 });
             }
             @Override public void ancestorRemoved(AncestorEvent e) {

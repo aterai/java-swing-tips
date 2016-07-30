@@ -41,11 +41,7 @@ public final class MainPanel extends JPanel {
 
                 if (column != -1 && e.isShiftDown()) {
                     //if (column != -1 && e.isControlDown()) {
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override public void run() {
-                            sorter.setSortKeys(null);
-                        }
-                    });
+                    EventQueue.invokeLater(() -> sorter.setSortKeys(null));
                 }
             }
         });

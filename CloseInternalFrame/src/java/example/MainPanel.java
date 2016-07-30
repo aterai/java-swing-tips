@@ -104,14 +104,12 @@ public final class MainPanel extends JPanel {
             setSize(240, 120);
             setLocation(20 * row + 20 * col, 20 * row);
             setVisible(true);
-            EventQueue.invokeLater(new Runnable() {
-                @Override public void run() {
-                    Rectangle drect = desktop.getBounds();
-                    drect.setLocation(0, 0);
-                    if (!drect.contains(getBounds())) {
-                        row = 0;
-                        col += 1;
-                    }
+            EventQueue.invokeLater(() -> {
+                Rectangle drect = desktop.getBounds();
+                drect.setLocation(0, 0);
+                if (!drect.contains(getBounds())) {
+                    row = 0;
+                    col += 1;
                 }
             });
             addInternalFrameListener(new MyInternalFrameListener());

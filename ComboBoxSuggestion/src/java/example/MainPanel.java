@@ -146,24 +146,22 @@ class ComboKeyHandler extends KeyAdapter {
             list.add((String) comboBox.getItemAt(i));
         }
     }
-    @Override public void keyTyped(final KeyEvent e) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                String text = ((JTextField) e.getComponent()).getText();
-                ComboBoxModel<String> m;
-                if (text.isEmpty()) {
-                    String[] array = list.toArray(new String[list.size()]);
-                    m = new DefaultComboBoxModel<String>(array);
-                    setSuggestionModel(comboBox, m, "");
+    @Override public void keyTyped(KeyEvent e) {
+        EventQueue.invokeLater(() -> {
+            String text = ((JTextField) e.getComponent()).getText();
+            ComboBoxModel<String> m;
+            if (text.isEmpty()) {
+                String[] array = list.toArray(new String[list.size()]);
+                m = new DefaultComboBoxModel<String>(array);
+                setSuggestionModel(comboBox, m, "");
+                comboBox.hidePopup();
+            } else {
+                m = getSuggestedModel(list, text);
+                if (m.getSize() == 0 || shouldHide) {
                     comboBox.hidePopup();
                 } else {
-                    m = getSuggestedModel(list, text);
-                    if (m.getSize() == 0 || shouldHide) {
-                        comboBox.hidePopup();
-                    } else {
-                        setSuggestionModel(comboBox, m, text);
-                        comboBox.showPopup();
-                    }
+                    setSuggestionModel(comboBox, m, text);
+                    comboBox.showPopup();
                 }
             }
         });

@@ -15,11 +15,9 @@ public class MainPanel extends JPanel {
         desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), new JScrollPane(makeTextArea(false))));
         desktop.add(makeInternalFrame("FocusCaret", new Point(50, 50), new JScrollPane(makeTextArea(true))));
         desktop.add(makeInternalFrame("FocusCaret", new Point(90, 90), new JScrollPane(makeTextArea(true))));
-        EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
-                for (JInternalFrame f: desktop.getAllFrames()) {
-                    f.setVisible(true);
-                }
+        EventQueue.invokeLater(() -> {
+            for (JInternalFrame f: desktop.getAllFrames()) {
+                f.setVisible(true);
             }
         });
         add(desktop);
