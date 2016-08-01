@@ -13,11 +13,11 @@ import javax.swing.table.*;
 public final class MainPanel extends JPanel {
     private static final Color EVEN_COLOR = new Color(250, 250, 250);
     private final JTable table;
-    private final TestModel model;
     private final JCheckBox check = new JCheckBox("display an odd number of rows");
+
     public MainPanel() {
         super(new BorderLayout());
-        model = new TestModel();
+        TestModel model = new TestModel();
         table = new JTable(model) {
             @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
                 Component c = super.prepareRenderer(tcr, row, column);
@@ -58,11 +58,7 @@ public final class MainPanel extends JPanel {
         model.addTest(new Test("Name a", "hh"));
         model.addTest(new Test("Name 0", "Test aa"));
 
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                model.filterRows(check.isSelected());
-            }
-        });
+        check.addActionListener(e -> model.filterRows(check.isSelected()));
         add(new JScrollPane(table));
         add(check, BorderLayout.NORTH);
         setPreferredSize(new Dimension(320, 240));

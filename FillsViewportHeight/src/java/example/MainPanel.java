@@ -89,11 +89,7 @@ public final class MainPanel extends JPanel {
         final JRadioButton r1 = new JRadioButton("WHITE");
         final JRadioButton r2 = new JRadioButton("BLUE");
         ButtonGroup bg = new ButtonGroup();
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setBackground(r1.isSelected() ? Color.WHITE : Color.BLUE);
-            }
-        };
+        ActionListener al = e -> table.setBackground(r1.isSelected() ? Color.WHITE : Color.BLUE);
         p.add(new JLabel("table.setBackground: "));
         bg.add(r1);
         p.add(r1);

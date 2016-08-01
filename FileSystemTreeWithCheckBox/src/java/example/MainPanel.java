@@ -221,12 +221,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         this.fileSystemView = fileSystemView;
         checkBox.setOpaque(false);
         checkBox.setFocusable(false);
-        checkBox.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                //System.out.println("actionPerformed: stopCellEditing");
-                stopCellEditing();
-            }
-        });
+        checkBox.addActionListener(e -> stopCellEditing());
         panel.setFocusable(false);
         panel.setRequestFocusEnabled(false);
         panel.setOpaque(false);
