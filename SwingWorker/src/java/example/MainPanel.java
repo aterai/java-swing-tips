@@ -186,23 +186,20 @@ class ProgressListener implements PropertyChangeListener {
     }
 }
 
-class AnimatedLabel extends JLabel implements ActionListener, HierarchyListener {
-    private final Timer animator;
+class AnimatedLabel extends JLabel {
     private final transient AnimeIcon icon = new AnimeIcon();
-    protected AnimatedLabel() {
-        super();
-        animator = new Timer(100, this);
-        setIcon(icon);
-        addHierarchyListener(this);
-    }
-    @Override public void actionPerformed(ActionEvent e) {
+    private final Timer animator = new Timer(100, e -> {
         icon.next();
         repaint();
-    }
-    @Override public void hierarchyChanged(HierarchyEvent e) {
-        if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
-            animator.stop();
-        }
+    });
+    protected AnimatedLabel() {
+        super();
+        setIcon(icon);
+        addHierarchyListener(e -> {
+            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+                animator.stop();
+            }
+        });
     }
     public void startAnimation() {
         icon.setRunning(true);

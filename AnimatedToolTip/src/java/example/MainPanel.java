@@ -109,13 +109,15 @@ class AnimatedToolTip extends JToolTip {
     }
 }
 
-class AnimatedLabel extends JLabel implements ActionListener {
-    private final Timer animator;
+class AnimatedLabel extends JLabel {
     private final transient AnimeIcon icon = new AnimeIcon();
+    private final Timer animator = new Timer(100, e -> {
+        icon.next();
+        repaint();
+    });
     protected AnimatedLabel(String title) {
         super(title);
         setOpaque(true);
-        animator = new Timer(100, this);
         setIcon(icon);
         addHierarchyListener(e -> {
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
@@ -126,10 +128,6 @@ class AnimatedLabel extends JLabel implements ActionListener {
                 }
             }
         });
-    }
-    @Override public void actionPerformed(ActionEvent e) {
-        icon.next();
-        repaint();
     }
     private void startAnimation() {
         icon.setRunning(true);
