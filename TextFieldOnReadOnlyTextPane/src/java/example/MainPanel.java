@@ -59,7 +59,8 @@ public final class MainPanel extends JPanel {
             int baseline = field.getBaseline(d.width, d.height);
             field.setAlignmentY(baseline / (float) d.height);
 
-            SimpleAttributeSet a = new SimpleAttributeSet();
+            //MutableAttributeSet a = new SimpleAttributeSet();
+            MutableAttributeSet a = textPane.getStyle(StyleContext.DEFAULT_STYLE);
             StyleConstants.setLineSpacing(a, 1.5f);
             textPane.setParagraphAttributes(a, true);
 

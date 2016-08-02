@@ -69,17 +69,18 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
             d.width = 60;
             return d;
         }
+        @Override public void updateUI() {
+            super.updateUI();
+            setOpaque(false);
+            putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+            EventQueue.invokeLater(() -> {
+                //MutableAttributeSet attr = new SimpleAttributeSet();
+                Style attr = getStyle(StyleContext.DEFAULT_STYLE);
+                StyleConstants.setTabSet(attr, new TabSet(new TabStop[] {new TabStop(25f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)}));
+                setParagraphAttributes(attr, false);
+            });
+        }
     };
-    protected AlignDecimalCellRenderer() {
-        textPane.setOpaque(false);
-        SimpleAttributeSet attr = new SimpleAttributeSet();
-        StyleConstants.setTabSet(attr, new TabSet(new TabStop[] {
-            new TabStop(25f, TabStop.ALIGN_DECIMAL, TabStop.LEAD_NONE)
-        }));
-        textPane.setParagraphAttributes(attr, false);
-        textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-        p.add(textPane, BorderLayout.EAST);
-    }
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         textPane.setFont(table.getFont());
         textPane.setText("\t" + Objects.toString(value, ""));
@@ -90,6 +91,7 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
             textPane.setForeground(table.getForeground());
             p.setBackground(table.getBackground());
         }
+        p.add(textPane, BorderLayout.EAST);
         return p;
     }
 }

@@ -81,11 +81,11 @@ public final class MainPanel extends JPanel {
 class HTMLColorPopupMenu extends JPopupMenu {
     protected HTMLColorPopupMenu() {
         super();
-        final SimpleAttributeSet red = new SimpleAttributeSet();
+        MutableAttributeSet red = new SimpleAttributeSet();
         StyleConstants.setForeground(red, Color.RED);
-        final SimpleAttributeSet green = new SimpleAttributeSet();
+        MutableAttributeSet green = new SimpleAttributeSet();
         StyleConstants.setForeground(green, Color.GREEN);
-        final SimpleAttributeSet blue = new SimpleAttributeSet();
+        MutableAttributeSet blue = new SimpleAttributeSet();
         StyleConstants.setForeground(blue, Color.BLUE);
 
         add(new AbstractAction("Red") {

@@ -12,11 +12,11 @@ public final class MainPanel extends JPanel {
     private final JTextPane editor2 = new JTextPane();
     public MainPanel() {
         super(new BorderLayout());
-        SimpleAttributeSet attr = new SimpleAttributeSet();
+        MutableAttributeSet attr = new SimpleAttributeSet();
         StyleConstants.setForeground(attr, Color.RED);
         StyleConstants.setFontSize(attr, 32);
 
-        SimpleAttributeSet a = new SimpleAttributeSet();
+        MutableAttributeSet a = new SimpleAttributeSet();
         StyleConstants.setLineSpacing(a, .5f);
         //StyleConstants.setSpaceAbove(a, 5f);
         //StyleConstants.setSpaceBelow(a, 5f);
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
             ex.printStackTrace();
         }
 //         StyledDocument doc = new DefaultStyledDocument();
-//         SimpleAttributeSet a = new SimpleAttributeSet();
+//         MutableAttributeSet a = new SimpleAttributeSet();
 //         StyleConstants.setLineSpacing(a, .5f);
 //         doc.setParagraphAttributes(0, doc.getLength() - 1, a, false);
 //         textPane.setStyledDocument(doc);

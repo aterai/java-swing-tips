@@ -16,7 +16,8 @@ public final class MainPanel extends JPanel {
         //http://www.icongalore.com/ XP Style Icons - Windows Application Icon, Software XP Icons
         ImageIcon icon = new ImageIcon(getClass().getResource("wi0124-32.png"));
 
-        SimpleAttributeSet attr = new SimpleAttributeSet();
+        //MutableAttributeSet attr = new SimpleAttributeSet();
+        Style attr = label1.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setLineSpacing(attr, -.2f);
         label1.setParagraphAttributes(attr, true);
 

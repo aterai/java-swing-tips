@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 
 //     private static final String SEPARATOR = "\n";
 //     private void append_(String str, boolean flg) {
-//         SimpleAttributeSet sas = null;
+//         MutableAttributeSet sas = null;
 //         if (!flg) {
 //             //sas = new SimpleAttributeSet(jtp.getCharacterAttributes());
 //             sas = new SimpleAttributeSet();
