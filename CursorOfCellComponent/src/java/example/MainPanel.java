@@ -80,20 +80,31 @@ class LinkCellList<E> extends JList<E> {
 
 class LinkCellRenderer<E> implements ListCellRenderer<E> {
     private final JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    private final JCheckBox check = new JCheckBox("check");
-    private final JButton button = new JButton("button");
-    private final JLabel label = new JLabel();
-    protected LinkCellRenderer() {
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        check.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    private final JCheckBox check = new JCheckBox("check") {
+        @Override public void updateUI() {
+            super.updateUI();
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            setOpaque(false);
+        }
+    };
+    private final JButton button = new JButton("button") {
+        @Override public void updateUI() {
+            super.updateUI();
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        }
+    };
+    private final JLabel label = new JLabel() {
+        @Override public void updateUI() {
+            super.updateUI();
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+    };
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+        p.removeAll();
         p.add(label);
         p.add(check);
         p.add(button);
         p.setOpaque(true);
-        check.setOpaque(false);
-    }
-    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
         if (isSelected) {
             p.setBackground(list.getSelectionBackground());
             p.setForeground(list.getSelectionForeground());
