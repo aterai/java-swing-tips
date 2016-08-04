@@ -42,11 +42,7 @@ public final class MainPanel extends JPanel {
         group.add(onRadio);
         group.add(offRadio);
         onRadio.setSelected(true);
-        ActionListener al = new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                ToolTipManager.sharedInstance().setEnabled(onRadio.isSelected());
-            }
-        };
+        ActionListener al = e -> ToolTipManager.sharedInstance().setEnabled(onRadio.isSelected());
         onRadio.addActionListener(al);
         offRadio.addActionListener(al);
         panel.add(new JLabel("ToolTip enabled:"));

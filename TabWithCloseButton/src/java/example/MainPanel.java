@@ -76,11 +76,7 @@ class MyJTabbedPane extends JTabbedPane {
         //button.setFocusPainted(false);
         //button.setContentAreaFilled(false);
         button.setBorder(BorderFactory.createEmptyBorder());
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                removeTabAt(indexOfComponent(content));
-            }
-        });
+        button.addActionListener(e -> removeTabAt(indexOfComponent(content)));
         tab.add(label,  BorderLayout.WEST);
         tab.add(button, BorderLayout.EAST);
         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));

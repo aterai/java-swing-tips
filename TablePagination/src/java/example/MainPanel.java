@@ -129,11 +129,7 @@ public final class MainPanel extends JPanel {
         if (target == current) {
             radio.setSelected(true);
         }
-        radio.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                initLinkBox(itemsPerPage, target);
-            }
-        });
+        radio.addActionListener(e -> initLinkBox(itemsPerPage, target));
         return radio;
     }
     private JRadioButton makePrevNextRadioButton(final int itemsPerPage, final int target, String title, boolean flag) {
@@ -141,11 +137,7 @@ public final class MainPanel extends JPanel {
         radio.setForeground(Color.BLUE);
         radio.setUI(LINKVIEW_RADIOBUTTON_UI);
         radio.setEnabled(flag);
-        radio.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                initLinkBox(itemsPerPage, target);
-            }
-        });
+        radio.addActionListener(e -> initLinkBox(itemsPerPage, target));
         return radio;
     }
     public static void main(String... args) {
