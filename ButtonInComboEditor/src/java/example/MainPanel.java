@@ -95,7 +95,7 @@ class URLItemComboBox extends JComboBox<URLItem> {
         add(button);
         add(label);
 
-        field.addFocusListener(new FocusAdapter() {
+        field.addFocusListener(new FocusListener() {
             @Override public void focusGained(FocusEvent e) {
                 //field.setBorder(BorderFactory.createEmptyBorder(0, 16 + 4, 0, 0));
                 button.setVisible(false);

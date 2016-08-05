@@ -124,7 +124,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
         setArrowButtonEnabled(false);
         editor.getTextField().setHorizontalAlignment(JFormattedTextField.LEFT);
 
-        editor.getTextField().addFocusListener(new FocusAdapter() {
+        editor.getTextField().addFocusListener(new FocusListener() {
             @Override public void focusLost(FocusEvent e) {
                 setArrowButtonEnabled(false);
             }
@@ -192,7 +192,7 @@ class DateEditor extends JSpinner implements TableCellEditor {
         setArrowButtonEnabled(false);
         editor.getTextField().setHorizontalAlignment(SwingConstants.LEFT);
 
-        editor.getTextField().addFocusListener(new FocusAdapter() {
+        editor.getTextField().addFocusListener(new FocusListener() {
             @Override public void focusLost(FocusEvent e) {
                 setArrowButtonEnabled(false);
             }

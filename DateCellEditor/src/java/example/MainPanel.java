@@ -75,7 +75,7 @@ class SpinnerCellEditor extends JSpinner implements TableCellEditor {
 //                 editor.getTextField().requestFocusInWindow();
 //             }
 //         });
-        editor.getTextField().addFocusListener(new FocusAdapter() {
+        editor.getTextField().addFocusListener(new FocusListener() {
             @Override public void focusLost(FocusEvent e) {
                 setArrowButtonEnabled(false);
             }
