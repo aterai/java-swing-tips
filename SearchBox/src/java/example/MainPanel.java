@@ -16,11 +16,6 @@ public final class MainPanel extends JPanel {
     private final JButton button   = new JButton();
     private final JButton showHideButton = new JButton();
     private final List<TreePath> rollOverPathLists = new ArrayList<>();
-    private final Timer animator = new Timer(5, new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
-            controls.revalidate();
-        }
-    });
     private boolean isHidden = true;
     private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
         private int controlsHeight;
@@ -51,6 +46,7 @@ public final class MainPanel extends JPanel {
             return ps;
         }
     });
+    private final Timer animator = new Timer(5, e -> controls.revalidate());
     private final Action findNextAction = new AbstractAction("Find Next") {
         @Override public void actionPerformed(ActionEvent e) {
             TreePath selectedPath = tree.getSelectionPath();

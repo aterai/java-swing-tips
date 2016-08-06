@@ -72,11 +72,7 @@ public final class MainPanel extends JPanel {
         p.add(p2);
         add(p, BorderLayout.NORTH);
         add(tab);
-        timer = new Timer(4000, new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                printInfo(new Date().toString());
-            }
-        });
+        timer = new Timer(4000, e -> printInfo(new Date().toString()));
         timer.start();
         setPreferredSize(new Dimension(320, 240));
     }

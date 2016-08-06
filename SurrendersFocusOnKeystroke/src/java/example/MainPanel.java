@@ -24,11 +24,7 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
 
-        check.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                table.setSurrendersFocusOnKeystroke(((JCheckBox) e.getSource()).isSelected());
-            }
-        });
+        check.addActionListener(e -> table.setSurrendersFocusOnKeystroke(((JCheckBox) e.getSource()).isSelected()));
         add(check, BorderLayout.NORTH);
         add(new JScrollPane(table));
         setPreferredSize(new Dimension(320, 240));

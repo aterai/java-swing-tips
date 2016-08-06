@@ -15,21 +15,9 @@ public final class MainPanel extends JPanel {
 
     public MainPanel() {
         super(new BorderLayout(5, 5));
-        ok.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                append("Test test test test", true);
-            }
-        });
-        err.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                append("Error error error error", false);
-            }
-        });
-        clr.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                jtp.setText("");
-            }
-        });
+        ok.addActionListener(e -> append("Test test test test", true));
+        err.addActionListener(e -> append("Error error error error", false));
+        clr.addActionListener(e -> jtp.setText(""));
         Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(ok);
