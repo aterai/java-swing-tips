@@ -106,12 +106,10 @@ class LabelTransferHandler extends TransferHandler {
         //window.setAlwaysOnTop(true); // AccessControlException: access denied ("java.awt.AWTPermission" "setWindowAlwaysOnTop")
         //AWTUtilities.setWindowOpaque(window, false); // JDK 1.6.0
         window.setBackground(new Color(0x0, true)); // JDK 1.7.0
-        DragSource.getDefaultDragSource().addDragSourceMotionListener(new DragSourceMotionListener() {
-            @Override public void dragMouseMoved(DragSourceDragEvent dsde) {
-                Point pt = dsde.getLocation();
-                //pt.translate(5, 5); // offset
-                window.setLocation(pt);
-            }
+        DragSource.getDefaultDragSource().addDragSourceMotionListener(e -> {
+            Point pt = e.getLocation();
+            //pt.translate(5, 5); // offset
+            window.setLocation(pt);
         });
     }
     @Override protected Transferable createTransferable(JComponent c) {

@@ -424,12 +424,10 @@ class TabTransferHandler extends TransferHandler {
         //dialog.setAlwaysOnTop(true); // Web Start
         dialog.setOpacity(.5f);
         //AWTUtilities.setWindowOpacity(dialog, .5f); // JDK 1.6.0
-        DragSource.getDefaultDragSource().addDragSourceMotionListener(new DragSourceMotionListener() {
-            @Override public void dragMouseMoved(DragSourceDragEvent dsde) {
-                Point pt = dsde.getLocation();
-                pt.translate(5, 5); // offset
-                dialog.setLocation(pt);
-            }
+        DragSource.getDefaultDragSource().addDragSourceMotionListener(e -> {
+            Point pt = e.getLocation();
+            pt.translate(5, 5); // offset
+            dialog.setLocation(pt);
         });
     }
     @Override protected Transferable createTransferable(JComponent c) {
