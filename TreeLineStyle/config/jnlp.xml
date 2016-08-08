@@ -3,7 +3,7 @@
 <project>
  <property name="jnlp.title"    value="JST JTreeの接続線スタイルを変更" />
  <property name="jnlp.Name"     value="TreeLineStyle" />
- <property name="jnlp.name"     value="TreeLineStyle" />
+ <property name="jnlp.name"     value="treelinestyle" />
  <property name="jnlp.codebase" value="http://ateraimemo.com/swing/${jnlp.name}/" />
  <property name="jnlp.homepage" value="http://ateraimemo.com/Swing/${jnlp.Name}.html" />
 </project>
