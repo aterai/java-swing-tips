@@ -18,14 +18,12 @@ public final class MainPanel extends JPanel {
     public MainPanel() {
         super(new BorderLayout());
         tree.setSelectionRow(0);
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override public void valueChanged(TreeSelectionEvent e) {
-                Object o = tree.getLastSelectedPathComponent();
-                if (o instanceof MutableTreeNode && !((MutableTreeNode) o).isLeaf()) {
-                    initBreadcrumbList(breadcrumb, tree);
-                    breadcrumb.revalidate();
-                    breadcrumb.repaint();
-                }
+        tree.addTreeSelectionListener(e -> {
+            Object o = tree.getLastSelectedPathComponent();
+            if (o instanceof MutableTreeNode && !((MutableTreeNode) o).isLeaf()) {
+                initBreadcrumbList(breadcrumb, tree);
+                breadcrumb.revalidate();
+                breadcrumb.repaint();
             }
         });
 
