@@ -13,11 +13,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
     private static final byte END_OF_TRACK = 0x2F;
     private long tickpos;
-    private final JButton start;
-    private final JButton stop;
-    private Sequencer sequencer;
+    private final JButton start = new JButton("start");
+    private final JButton stop  = new JButton("stop");
+    private final JButton init  = new JButton("init");
     public MainPanel() {
         super(new BorderLayout(5, 5));
+        Sequencer sequencer;
         URL url = getClass().getResource("Mozart_toruko_k.mid");
         try {
             Sequence s = MidiSystem.getSequence(url);
@@ -26,43 +27,36 @@ public final class MainPanel extends JPanel {
             sequencer.setSequence(s);
         } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
             ex.printStackTrace();
-            start = null;
-            stop = null;
             add(new JLabel(ex.toString()));
+            start.setEnabled(false);
+            stop.setEnabled(false);
+            init.setEnabled(false);
             return;
         }
-        sequencer.addMetaEventListener(new MetaEventListener() {
-            @Override public void meta(MetaMessage meta) {
-                if (meta.getType() == END_OF_TRACK) {
-                    tickpos = 0;
-                    start.setEnabled(true);
-                    stop.setEnabled(false);
-                }
-            }
-        });
-        start = new JButton(new AbstractAction("start") {
-            @Override public void actionPerformed(ActionEvent e) {
-                sequencer.setTickPosition(tickpos);
-                sequencer.start();
-                stop.setEnabled(true);
-                start.setEnabled(false);
-            }
-        });
-        stop = new JButton(new AbstractAction("stop") {
-            @Override public void actionPerformed(ActionEvent e) {
-                tickpos = sequencer.getTickPosition();
-                sequencer.stop();
-                start.setEnabled(true);
-                stop.setEnabled(false);
-            }
-        });
-        JButton init = new JButton(new AbstractAction("init") {
-            @Override public void actionPerformed(ActionEvent e) {
-                sequencer.stop();
+        sequencer.addMetaEventListener(e -> {
+            if (e.getType() == END_OF_TRACK) {
                 tickpos = 0;
                 start.setEnabled(true);
                 stop.setEnabled(false);
             }
+        });
+        start.addActionListener(e -> {
+            sequencer.setTickPosition(tickpos);
+            sequencer.start();
+            stop.setEnabled(true);
+            start.setEnabled(false);
+        });
+        stop.addActionListener(e -> {
+            tickpos = sequencer.getTickPosition();
+            sequencer.stop();
+            start.setEnabled(true);
+            stop.setEnabled(false);
+        });
+        init.addActionListener(e -> {
+            sequencer.stop();
+            tickpos = 0;
+            start.setEnabled(true);
+            stop.setEnabled(false);
         });
         stop.setEnabled(false);
 
