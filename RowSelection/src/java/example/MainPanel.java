@@ -25,14 +25,11 @@ public final class MainPanel extends JPanel {
         table.setAutoCreateRowSorter(true);
         //table.setRowSorter(new TableRowSorter<TableModel>(model));
 
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                int sc = table.getSelectedRowCount();
-                changeInfoPanel((sc == 1) ? getInfo() : " ");
+        table.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
+            changeInfoPanel(table.getSelectedRowCount() == 1 ? getInfo() : " ");
         });
         table.setRowSelectionAllowed(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
