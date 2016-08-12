@@ -4,44 +4,41 @@ package example;
 //@homepage@
 import java.awt.*;
 import java.beans.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
 public final class MainPanel extends JPanel {
     private final String[] columnNames = {"Name", "Class", "Value"};
     private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
-    private final JTable table = new JTable(model);
+    private final JTable table = new JTable(model) {
+        @Override public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
     public MainPanel() {
         super(new BorderLayout());
         table.setAutoCreateRowSorter(true);
-        //for (String s:(String[])Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
-        Toolkit.getDefaultToolkit().addPropertyChangeListener("win.xpstyle.colorName", new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                System.out.println("----\n" + e.getPropertyName());
-                System.out.println(Toolkit.getDefaultToolkit().getDesktopProperty(e.getPropertyName()));
-                initModel();
-            }
-        });
-        Toolkit.getDefaultToolkit().addPropertyChangeListener("awt.multiClickInterval", new PropertyChangeListener() {
-            @Override public void propertyChange(PropertyChangeEvent e) {
-                System.out.println("----\n" + e.getPropertyName());
-                System.out.println(Toolkit.getDefaultToolkit().getDesktopProperty(e.getPropertyName()));
-                initModel();
-            }
-        });
-        initModel();
+        //for (String s: (String[]) Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) System.out.println(s);
+        PropertyChangeListener l = this::initModel;
+        Toolkit.getDefaultToolkit().addPropertyChangeListener("win.xpstyle.colorName", l);
+        Toolkit.getDefaultToolkit().addPropertyChangeListener("awt.multiClickInterval", l);
+        initModel(null);
         setPreferredSize(new Dimension(320, 240));
         add(new JScrollPane(table));
     }
-    private void initModel() {
+    private void initModel(PropertyChangeEvent e) {
+        if (Objects.nonNull(e)) {
+            System.out.println("----\n" + e.getPropertyName());
+            System.out.println(Toolkit.getDefaultToolkit().getDesktopProperty(e.getPropertyName()));
+        }
         model.setRowCount(0);
         Toolkit tk = Toolkit.getDefaultToolkit();
-        for (String s:(String[]) tk.getDesktopProperty("win.propNames")) {
+        for (String s: (String[]) tk.getDesktopProperty("win.propNames")) {
             Object o = tk.getDesktopProperty(s);
             model.addRow(new Object[] {s, o.getClass(), o});
         }
     }
-
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
             @Override public void run() {
