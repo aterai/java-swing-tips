@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
         //slider.updateUI();
         //@see JSlider#updateUI()
         //public void updateUI() {
-        //    setUI((SliderUI)UIManager.getUI(this));
+        //    setUI((SliderUI) UIManager.getUI(this));
         //    // The labels preferred size may be derived from the font
         //    // of the slider, so we must update the UI of the slider first, then
         //    // that of labels.  This way when setSize is called the right

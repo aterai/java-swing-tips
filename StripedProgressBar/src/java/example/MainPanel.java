@@ -114,7 +114,7 @@ class StripedProgressBarUI extends BasicProgressBarUI {
         this.slope = slope;
     }
     @Override protected int getBoxLength(int availableLength, int otherDimension) {
-        return availableLength; //(int)Math.round(availableLength/6.0);
+        return availableLength; //(int) Math.round(availableLength / 6d);
     }
     @Override public void paintIndeterminate(Graphics g, JComponent c) {
         //if (!(g instanceof Graphics2D)) {

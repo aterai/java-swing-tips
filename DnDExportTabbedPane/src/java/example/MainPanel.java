@@ -325,7 +325,7 @@ class DnDTabbedPane extends JTabbedPane {
     private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
         private Point startPt;
         private final int gestureMotionThreshold = DragSource.getDragThreshold();
-        //private final Integer gestureMotionThreshold = (Integer)Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
+        //private final Integer gestureMotionThreshold = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
 
         private void repaintDropLocation() {
             Component c = getRootPane().getGlassPane();

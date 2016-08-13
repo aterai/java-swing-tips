@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 //         {
 //             @Override public JPopupMenu getComponentPopupMenu() {
 //                 System.out.println("JScrollPane#getComponentPopupMenu");
-//                 return check.isSelected()? null: super.getComponentPopupMenu();
+//                 return check.isSelected() ? null : super.getComponentPopupMenu();
 //             }
 //         };
         scroll.setComponentPopupMenu(new TablePopupMenu());
