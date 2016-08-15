@@ -217,8 +217,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
     @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         if (c instanceof JLayer) {
-            JLayer jlayer = (JLayer) c;
-            JTextComponent tc = (JTextComponent) jlayer.getView();
+            JTextComponent tc = (JTextComponent) ((JLayer) c).getView();
             if (!tc.getText().isEmpty()) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setPaint(hint.getForeground());
@@ -226,8 +225,7 @@ class PlaceholderLayerUI extends LayerUI<JTextComponent> {
                 Dimension d = hint.getPreferredSize();
                 int x = tc.getWidth() - i.right - d.width - 2;
                 int y = (tc.getHeight() - d.height) / 2;
-                g2.translate(x, y);
-                SwingUtilities.paintComponent(g2, hint, tc, 0, 0, d.width, d.height);
+                SwingUtilities.paintComponent(g2, hint, tc, x, y, d.width, d.height);
                 g2.dispose();
             }
         }
